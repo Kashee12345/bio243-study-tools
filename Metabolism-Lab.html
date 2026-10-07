@@ -83,6 +83,11 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
 .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab:not([aria-selected="true"]){color:var(--ink)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#0B1A20}}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#0B1A20}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.bin button.bh{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%;border-radius:4px}
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
 .tbtn:hover{border-color:var(--accent)}
 .tbtn:disabled{opacity:.45;cursor:default}
@@ -191,7 +196,10 @@ footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
 [hidden]{display:none!important}
+/* keep the site-kit tool button names available to screen readers when their labels are hidden on narrow screens */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -213,6 +221,7 @@ sub,sup{line-height:0}
 
   <!-- PART 1: ATP factory -->
   <section id="tab-fac" role="tabpanel" aria-labelledby="tabbtn-fac">
+    <h2 class="sr-only">Part 1: ATP factory</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvFac" role="img" aria-label="ATP factory simulation"></canvas></div>
@@ -242,7 +251,7 @@ sub,sup{line-height:0}
         <label class="tog" id="tgUN"><input type="checkbox" id="fUN"><span>Uncoupler (like brown fat)<small>Lets H⁺ leak back without making ATP</small></span></label>
         <div class="btnrow"><button class="tbtn" id="fReset" type="button">Reset factory</button></div>
         <h3>Live readouts</h3>
-        <table class="readouts" id="fRead"></table>
+        <table class="readouts" id="fRead"><caption class="sr-only">Live readouts</caption><thead class="sr-only"><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead><tbody></tbody></table>
         <h3>What is happening</h3>
         <div class="now" id="fNow"></div>
         <h3>Challenges <span class="totstars" id="fStars"></span></h3>
@@ -255,6 +264,7 @@ sub,sup{line-height:0}
 
   <!-- PART 2: switchboard -->
   <section id="tab-day" role="tabpanel" aria-labelledby="tabbtn-day" hidden>
+    <h2 class="sr-only">Part 2: Fed vs fasting switchboard</h2>
     <div class="grid">
       <div class="card stage">
         <div class="seg" id="dScen" style="margin:2px 2px 10px">
@@ -284,6 +294,7 @@ sub,sup{line-height:0}
 
   <!-- PART 3: sorter -->
   <section id="tab-sort" role="tabpanel" aria-labelledby="tabbtn-sort" hidden>
+    <h2 class="sr-only">Part 3: Pathway sorter</h2>
     <div class="rounds" id="sRounds" aria-label="Rounds"></div>
     <div class="card">
       <div class="sorttop">
@@ -297,7 +308,7 @@ sub,sup{line-height:0}
         </div>
       </div>
       <p class="small" style="margin:0 0 8px">Drag a card onto a box, or tap a card and then tap a box. Tap a placed card to send it back.</p>
-      <div class="pool" id="sPool" aria-label="Cards to sort"></div>
+      <div class="pool" id="sPool" role="group" aria-label="Cards to sort"></div>
       <div class="bins" id="sBins"></div>
       <div class="btnrow" style="margin-top:12px">
         <button class="btn" id="sCheck" type="button">Check</button>
@@ -313,6 +324,7 @@ sub,sup{line-height:0}
 
   <!-- PART 4: heat & energy -->
   <section id="tab-heat" role="tabpanel" aria-labelledby="tabbtn-heat" hidden>
+    <h2 class="sr-only">Part 4: Heat and energy balance</h2>
     <div class="grid">
       <div class="card stage">
         <div class="seg" id="hEnv" style="margin:2px 2px 10px">
@@ -335,9 +347,9 @@ sub,sup{line-height:0}
       </div>
       <aside class="card side ctl" aria-live="polite">
         <h3>Surroundings</h3>
-        <div class="sl"><span>Air temperature</span><output id="oAir">22 °C</output><input type="range" id="hAir" min="-10" max="45" step="1" value="22"></div>
-        <div class="sl"><span>Humidity</span><output id="oHum">40%</output><input type="range" id="hHum" min="10" max="95" step="5" value="40"></div>
-        <div class="sl"><span>Wind</span><output id="oWind">0 m/s</output><input type="range" id="hWind" min="0" max="10" step="1" value="0"></div>
+        <div class="sl"><label for="hAir">Air temperature</label><output id="oAir">22 °C</output><input type="range" id="hAir" min="-10" max="45" step="1" value="22"></div>
+        <div class="sl"><label for="hHum">Humidity</label><output id="oHum">40%</output><input type="range" id="hHum" min="10" max="95" step="5" value="40"></div>
+        <div class="sl"><label for="hWind">Wind</label><output id="oWind">0 m/s</output><input type="range" id="hWind" min="0" max="10" step="1" value="0"></div>
         <label class="tog" id="tgSun"><input type="checkbox" id="hSun"><span>In direct sun<small>Radiant heat gain from the sun</small></span></label>
         <label class="tog" id="tgWater"><input type="checkbox" id="hWater"><span>In water<small>Water pulls heat away fast</small></span></label>
         <h3>Activity</h3>
@@ -347,7 +359,7 @@ sub,sup{line-height:0}
           <button type="button" data-act="2" aria-pressed="false">Hard exercise</button>
         </div>
         <h3>Heat budget (watts)</h3>
-        <table class="readouts" id="hRead"></table>
+        <table class="readouts" id="hRead"><caption class="sr-only">Heat budget in watts</caption><thead class="sr-only"><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead><tbody></tbody></table>
         <h3>The hypothalamus responds</h3>
         <div class="now" id="hNow"></div>
         <h3>Challenges <span class="totstars" id="hStars"></span></h3>
@@ -364,10 +376,10 @@ sub,sup{line-height:0}
       </div>
       <aside class="card side ctl" aria-live="polite">
         <h3>Energy in</h3>
-        <div class="sl"><span>Food eaten per day</span><output id="oKcal">2200 kcal</output><input type="range" id="bKcal" min="1200" max="4000" step="50" value="2200"></div>
+        <div class="sl"><label for="bKcal">Food eaten per day</label><output id="oKcal">2200 kcal</output><input type="range" id="bKcal" min="1200" max="4000" step="50" value="2200"></div>
         <h3>BMR factors</h3>
-        <div class="sl"><span>Lean body mass</span><output id="oLbm">55 kg</output><input type="range" id="bLbm" min="35" max="85" step="1" value="55"></div>
-        <div class="sl"><span>Age</span><output id="oAge">20 y</output><input type="range" id="bAge" min="18" max="85" step="1" value="20"></div>
+        <div class="sl"><label for="bLbm">Lean body mass</label><output id="oLbm">55 kg</output><input type="range" id="bLbm" min="35" max="85" step="1" value="55"></div>
+        <div class="sl"><label for="bAge">Age</label><output id="oAge">20 y</output><input type="range" id="bAge" min="18" max="85" step="1" value="20"></div>
         <div class="seg" id="bThy" aria-label="Thyroid hormone">
           <button type="button" data-thy="0.85" aria-pressed="false">Low thyroid</button>
           <button type="button" data-thy="1" aria-pressed="true">Normal thyroid</button>
@@ -381,7 +393,7 @@ sub,sup{line-height:0}
           <button type="button" data-f="1.725" aria-pressed="false">Very active</button>
         </div>
         <h3>Results</h3>
-        <table class="readouts" id="bRead"></table>
+        <table class="readouts" id="bRead"><caption class="sr-only">Energy balance results</caption><thead class="sr-only"><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead><tbody></tbody></table>
         <h3>Challenges <span class="totstars" id="bStars"></span></h3>
         <ul class="chal" id="bChal"></ul>
         <div class="msg info" id="bMsg" role="status"></div>
@@ -746,7 +758,7 @@ function setFuel(f){F.fuel=f;setSeg($("#fuelSeg"),"fuel",f);setRate(F.rate,true)
 function setTog(o,c,u){F.noO2=o;F.cn=c;F.un=u;$("#fNoO2").checked=o;$("#fCN").checked=c;$("#fUN").checked=u;["tgO2","tgCN","tgUN"].forEach((id,i)=>$("#"+id).classList.toggle("on",[o,c,u][i]))}
 function facLegend(){$("#fLegend").innerHTML=legendHTML([F.fuel==="glu"?["glu","Glucose","hex"]:["fat","Fatty acid","r"],["pyr","Pyruvate"],["acoa","Acetyl CoA"],["nad","NADH truck","r"],["fad","FADH₂ truck","r"],["hplus","H⁺"],["atp","ATP","r"],["lact","Lactate","s"],["co2","CO₂"],["o2","O₂"]])+
   `<span style="margin-left:8px">Chart:</span>`+legendHTML([["atp","Net ATP / s","ln"],["o2","O₂ use / s (×10)","ln"],["heat","Heat / s","ln"],["hplus","H⁺ gradient","dash"]])}
-function facSide(){const c=S.c;$("#fRead").innerHTML=[["Net ATP (made − spent)",c.made-c.spent],["ATP made",c.made],["ATP spent",c.spent],["CO₂ released",c.co2],["O₂ used",c.o2.toFixed(1)],["H₂O formed at the ETC",c.h2o],["Lactate made",c.lact],["Heat (uncoupled H⁺)",c.heat],["Trucks waiting at ETC",S.etcQ.length],["H⁺ gradient",S.H.toFixed(1)]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
+function facSide(){const c=S.c;$("#fRead tbody").innerHTML=[["Net ATP (made − spent)",c.made-c.spent],["ATP made",c.made],["ATP spent",c.spent],["CO₂ released",c.co2],["O₂ used",c.o2.toFixed(1)],["H₂O formed at the ETC",c.h2o],["Lactate made",c.lact],["Heat (uncoupled H⁺)",c.heat],["Trucks waiting at ETC",S.etcQ.length],["H⁺ gradient",S.H.toFixed(1)]].map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join("");
   let s;
   if(F.cn)s="<b>Cyanide blocks complex IV.</b> Even with oxygen around, electrons can't reach it. Loaded trucks pile up, NAD⁺ runs out in the matrix, and the Krebs cycle stops. Cells fall back on glycolysis and lactate (2 ATP per glucose). Heart and brain, which need the most ATP, fail first.";
   else if(F.noO2)s="<b>No oxygen means no final electron acceptor.</b> The ETC stops, the trucks can't unload, and the Krebs cycle stops. Glycolysis keeps going only because pyruvate becomes lactate, which frees NAD⁺. "+(F.fuel==="fat"?"Fat cannot be burned at all without oxygen.":"You get only 2 ATP per glucose.");
@@ -952,14 +964,14 @@ function loadRound(i){SR.r=i;SR.placed={};SR.locked=new Set();SR.sel=null;SR.mis
   $("#sRoundName").textContent=ROUNDS[i].name;$("#sPrompt").textContent=ROUNDS[i].prompt;$("#sMsg").className="msg";$("#sNext").hidden=true;sortRounds();renderSort()}
 function cardBtn(k){const c=ROUNDS[SR.r].cards[k];const b=document.createElement("button");b.type="button";b.className="scard";b.dataset.k=k;b.textContent=c[0];
   if(SR.locked.has(k)){b.classList.add("ok");b.innerHTML=`<span class="mk">✓</span>`+c[0];b.setAttribute("aria-label",c[0]+", correct")}
-  if(SR.sel===k)b.classList.add("sel");return b}
+  if(SR.sel===k)b.classList.add("sel");if(SR.placed[k]==null)b.setAttribute("aria-pressed",String(SR.sel===k));return b}
 function renderSort(){const R=ROUNDS[SR.r];const pool=$("#sPool");pool.innerHTML="";
   SR.order.forEach(k=>{if(SR.placed[k]==null){const b=cardBtn(k);attachDrag(b,k);pool.appendChild(b)}});
   const bins=$("#sBins");bins.innerHTML="";
-  R.bins.forEach(([id,name,sub])=>{const d=document.createElement("div");d.className="bin";d.dataset.bin=id;d.setAttribute("role","button");d.tabIndex=0;d.setAttribute("aria-label","Box: "+name);
-    d.innerHTML=`<div class="bh">${ICON[id]||""}<div><div class="bt">${name}</div>${sub?`<div class="bs">${sub}</div>`:""}</div></div><div class="slot"></div>`;
+  R.bins.forEach(([id,name,sub])=>{const d=document.createElement("div");d.className="bin";d.dataset.bin=id;d.setAttribute("role","group");d.setAttribute("aria-label",name);
+    d.innerHTML=`<button type="button" class="bh">${ICON[id]||""}<span><span class="bt" style="display:block">${name}</span>${sub?`<span class="bs" style="display:block">${sub}</span>`:""}</span><span class="sr-only">: place the selected card here</span></button><div class="slot"></div>`;
     const slot=d.querySelector(".slot");Object.keys(SR.placed).forEach(k=>{if(SR.placed[k]===id){const b=cardBtn(+k);b.onclick=e=>{e.stopPropagation();if(SR.locked.has(+k))return;delete SR.placed[k];renderSort()};slot.appendChild(b)}});
-    d.onclick=()=>{if(SR.sel!=null){place(SR.sel,id)}};d.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();d.onclick()}};bins.appendChild(d)})}
+    d.onclick=()=>{if(SR.sel!=null){const k=SR.sel;place(SR.sel,id);const nb=document.querySelector(`.bin[data-bin="${id}"] .bh`);nb&&nb.focus()}};bins.appendChild(d)})}
 function place(k,bin){SR.placed[k]=bin;SR.sel=null;renderSort()}
 let drag=null;
 function attachDrag(b,k){b.addEventListener("pointerdown",e=>{if(e.button!==0)return;drag={k,x:e.clientX,y:e.clientY,el:b,ghost:null,moved:false};b.setPointerCapture(e.pointerId)});
@@ -1059,7 +1071,7 @@ function hMark(i){if(hDone.has(i))return;hDone.add(i);store.set("heatDone",[...h
 function heatChecks(){const f=HT.f;if(!f)return;if(HT.air>=36&&f.rad<=0&&f.conv<=0&&f.evap>0&&!HT.water)hMark(0);if(HT.Tc>=38.5)hMark(1);if(HT.shiver>.3)hMark(2);
   if(HT.water&&f.cond>=Math.max(f.rad,f.conv,f.evap))hMark(3);if(f.rad<-1)hMark(4)}
 function heatSide(){const f=HT.f||flows();const net=f.prod-f.loss;
-  $("#hRead").innerHTML=[["Heat made (metabolism"+(HT.shiver>.05?" + shivering":"")+")",Math.round(f.prod)],["Radiation",Math.round(f.rad)],["Evaporation",Math.round(f.evap)],["Convection",Math.round(f.conv)],["Conduction",Math.round(f.cond)],["Net (+ warms, − cools)",(net>0?"+":"")+Math.round(net)],["Core temperature",HT.Tc.toFixed(2)+" °C"]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
+  $("#hRead tbody").innerHTML=[["Heat made (metabolism"+(HT.shiver>.05?" + shivering":"")+")",Math.round(f.prod)],["Radiation",Math.round(f.rad)],["Evaporation",Math.round(f.evap)],["Convection",Math.round(f.conv)],["Conduction",Math.round(f.cond)],["Net (+ warms, − cools)",(net>0?"+":"")+Math.round(net)],["Core temperature",HT.Tc.toFixed(2)+" °C"]].map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join("");
   const e=HT.Tc-37;let s;
   if(e>.05)s=`<b>Too warm.</b> The hypothalamus widens skin blood vessels (vasodilation, ${Math.round(clamp(HT.vaso,0,1)*100)}%) and turns on sweating (${Math.round(HT.sweat*100)}%).`+(f.eff<.3&&!HT.water?" The air is so humid that most sweat can't evaporate.":"");
   else if(e<-.05)s=`<b>Too cold.</b> Skin vessels narrow (vasoconstriction) to keep warm blood in the core`+(HT.shiver>.05?`, and muscles shiver (${Math.round(HT.shiver*100)}%) to make extra heat.`:".");
@@ -1097,7 +1109,7 @@ const BCH_LIST=[{t:"Balance energy in and out within ±50 kcal per day."},{t:"Ra
 const bDone=new Set(store.get("balDone",[]));
 function bMark(i){if(bDone.has(i))return;bDone.add(i);store.set("balDone",[...bDone]);chalList($("#bChal"),BCH_LIST,bDone);$("#bStars").innerHTML=starsText(bDone.size,3);
   showMsg($("#bMsg"),"good",`<span class="stars">★</span> `+["Energy in equals energy out, so weight stays about steady.","More lean muscle and more thyroid hormone both raise BMR. Muscle uses energy even at rest.","Low thyroid hormone lowers BMR, so the same food now gives a surplus. That is one reason hypothyroidism can cause weight gain."][i])}
-function balSide(){const r=balCalc();$("#bRead").innerHTML=[["BMR (resting)",Math.round(r.bmr)+" kcal"],["Physical activity",Math.round(r.act)+" kcal"],["Digesting food (≈10%)",Math.round(r.tef)+" kcal"],["Total energy out",Math.round(r.out)+" kcal"],["Balance per day",(r.bal>0?"+":"")+Math.round(r.bal)+" kcal"],["Change per week",(r.kgwk>0?"+":"")+r.kgwk.toFixed(2)+" kg"]].map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join("");
+function balSide(){const r=balCalc();$("#bRead tbody").innerHTML=[["BMR (resting)",Math.round(r.bmr)+" kcal"],["Physical activity",Math.round(r.act)+" kcal"],["Digesting food (≈10%)",Math.round(r.tef)+" kcal"],["Total energy out",Math.round(r.out)+" kcal"],["Balance per day",(r.bal>0?"+":"")+Math.round(r.bal)+" kcal"],["Change per week",(r.kgwk>0?"+":"")+r.kgwk.toFixed(2)+" kg"]].map(x=>`<tr><th scope="row">${x[0]}</th><td>${x[1]}</td></tr>`).join("");
   $("#oKcal").textContent=BAL.kcal+" kcal";$("#oLbm").textContent=BAL.lbm+" kg";$("#oAge").textContent=BAL.age+" y";
   if(Math.abs(r.bal)<=50)bMark(0);if(r.bmr>1800)bMark(1);if(BAL.thy<1&&r.bal>0)bMark(2)}
 function initHeat(){chalList($("#hChal"),HCH_LIST,hDone);$("#hStars").innerHTML=starsText(hDone.size,5);chalList($("#bChal"),BCH_LIST,bDone);$("#bStars").innerHTML=starsText(bDone.size,3);
@@ -1115,17 +1127,56 @@ function initHeat(){chalList($("#hChal"),HCH_LIST,hDone);$("#hStars").innerHTML=
   syncHeatUI();balSide()}
 
 /* =====================================================================
+   ACCESSIBILITY: canvas labels and picture descriptions
+   ===================================================================== */
+const AX={lab:{},desc:""};
+function axSet(el,label,desc){if(AX.lab[el.id]!==label){AX.lab[el.id]=label;el.setAttribute("aria-label",label)}
+  if(desc&&AX.desc!==desc){AX.desc=desc;if(window.gkDescribe)window.gkDescribe(desc)}}
+function axMoveDesc(el){const d=document.getElementById("gk-desc");if(!d||!el)return;const h=el.closest(".canvas-holder")||el;if(h.nextSibling!==d)h.parentNode.insertBefore(d,h.nextSibling);el.setAttribute("aria-describedby","gk-desc")}
+function axFac(){const c=S.c;const fuel=F.fuel==="glu"?"glucose":"a 16-carbon fatty acid";
+  const cond=F.cn?"cyanide blocking complex IV":F.noO2?"no oxygen":F.un?"an uncoupler leaking H+":"normal conditions";
+  const lab=`ATP factory: ${fuel}, ${cond}${F.paused?", paused":""}. Net ATP ${c.made-c.spent}, CO2 ${c.co2}, O2 used ${c.o2.toFixed(1)}, lactate ${c.lact}.`;
+  let d=`A cell is drawn with the cytoplasm on the left and a large pink mitochondrion on the right. In the cytoplasm, ${F.fuel==="glu"?"yellow glucose hexagons enter a box labelled Glycolysis, which splits each into two pyruvates and makes ATP":"a box labelled Glycolysis sits idle, because fatty acids skip it and go straight to beta-oxidation in the matrix"}; a second box below handles pyruvate to lactate, and a counter box at the bottom shows net ATP, CO2 and O2. Inside the mitochondrion, pyruvate becomes acetyl CoA, a gray Krebs cycle ring turns and loads blue NADH and purple FADH2 trucks, and the trucks unload at purple complexes I to IV on the inner membrane, which pump red H+ dots across; H+ flowing back through the green ATP synthase makes ATP.`;
+  if(F.cn)d+=" A cyanide marker blocks complex IV, so loaded trucks queue up at the chain, the Krebs cycle stalls, and only glycolysis to lactate keeps making a little ATP.";
+  else if(F.noO2)d+=" A red \"no O2\" tag sits by the chain, so the chain stops; pyruvate goes to lactate instead, and a dashed arrow returns NAD+ to glycolysis.";
+  else if(F.un)d+=" The leak channel in the membrane is open, so H+ flows back without passing through ATP synthase and the energy shows up as heat.";
+  if(F.rate===0)d+=" Feeding is off, so no new fuel enters.";
+  axSet(FCH.cv,`Live chart, last 60 seconds: net ATP, O2 use, heat and H+ gradient. Net ATP so far ${c.made-c.spent}.`);
+  return [FAC.cv,lab,d]}
+function axDay(){const v=at(D.t),st=status(v);const on=a=>a.filter(x=>x[1]).map(x=>x[0].toLowerCase());const lvl=x=>x>.6?"high":x>.3?"medium":"low";
+  const lab=`${SCEN[D.sc].name}, ${clockStr(D.t)}: ${st.abs?"absorptive (fed)":"postabsorptive (fasting)"} state, blood glucose about ${Math.round(v.g)} mg/dL, insulin ${lvl(v.I)}, glucagon ${lvl(v.Gc)}.`;
+  const d=`A pink rectangular loop of blood vessel sits in the middle, surrounded by the gut (top left), pancreas (top), brain (top right), liver (left), skeletal muscle and adipose tissue (right). A panel inside the loop reads "${st.abs?"Absorptive (fed) state":"Postabsorptive (fasting) state"}" with the time, ${Math.round(v.tf)} hour${Math.round(v.tf)===1?"":"s"} since eating, a blue insulin bar (${lvl(v.I)}), a red glucagon bar (${lvl(v.Gc)}) and blood glucose of about ${Math.round(v.g)} mg/dL. Yellow glucose hexagons, ${st.abs?"blue insulin dots and nutrients from the gut":"red glucagon triangles, fatty acids and glycerol"} travel around the loop and between the organs. Switches beside each organ show what is ON: liver ${on(st.liver).join(", ")||"resting"}; muscle ${on(st.muscle).join(", ")||"resting"}; adipose ${on(st.adipose).join(", ")||"resting"}${st.brainK?"; the brain also uses orange ketone bodies":""}.`;
+  axSet(DCH.cv,`Chart of blood glucose, insulin and glucagon over the ${SCEN[D.sc].name.toLowerCase()}, with a marker at ${clockStr(D.t)}. Use the Time slider to move the marker.`);
+  return [DAY.cv,lab,d]}
+function axHeat(){const f=HT.f||flows();const e=HT.Tc-37;const stt=e>.05?"too warm":e<-.05?"too cold":"in range";const r=balCalc();
+  const loss=[["radiation",f.rad],["evaporation",f.evap],["convection",f.conv],["conduction",f.cond]];
+  const big=loss.slice().sort((a,b)=>b[1]-a[1])[0][0];const gains=loss.filter(x=>x[1]<-1).map(x=>x[0]);
+  const lab=`Body heat: core ${HT.Tc.toFixed(1)} °C (${stt}), makes ${Math.round(f.prod)} W; radiation ${Math.round(f.rad)} W, evaporation ${Math.round(f.evap)} W, convection ${Math.round(f.conv)} W, conduction ${Math.round(f.cond)} W.`;
+  let d=`A person stands ${HT.water?"up to the neck in blue water":"in the open air"} with a glowing core labelled with the heat it makes, and a thermometer on the right shows core temperature, now ${stt} compared with the shaded normal band. Arrows with labels show heat flows: radiation (orange-red), evaporation and convection (blue) and conduction into the ground or water (teal); arrows pointing away from the body are heat lost, and a red arrow pointing toward the body means heat gained. Right now ${big} removes the most heat${gains.length?", and "+gains.join(" and ")+" "+(gains.length>1?"add":"adds")+" heat to the body":""}.`;
+  if(e<-.05&&HT.shiver>.05)d+=" The label \"Shivering\" shows muscles making extra heat, and the skin is pale because skin vessels narrow.";
+  else if(e>.05&&HT.sweat>.05)d+=" Sweat drops on the skin show sweating, and the skin is flushed because skin vessels widen.";
+  d+=` Below, a balance scale compares food energy in (${BAL.kcal} kcal, yellow blocks) with energy out (${Math.round(r.out)} kcal, red, teal and brown blocks); it tips toward ${Math.abs(r.bal)<=50?"neither side, staying level":r.bal>0?"energy in, so a fat circle in the body outline grows":"energy out, so the fat circle shrinks"}.`;
+  axSet(HCH.cv,`Chart of core temperature over time, now ${HT.Tc.toFixed(1)} °C, with the normal range of 36.5 to 37.5 °C shaded.`);
+  axSet(BC.cv,`Energy balance scale: ${BAL.kcal} kcal in, ${Math.round(r.out)} kcal out, ${r.bal>0?"surplus":"deficit"} of ${Math.abs(Math.round(r.bal))} kcal per day.`);
+  axSet(BCH.cv,`Projected weight change over 12 weeks: ${(r.kgwk*12>0?"+":"")+(r.kgwk*12).toFixed(1)} kg.`);
+  return [HC.cv,lab,d]}
+function axUpdate(){try{if(tab==="fac"){const r=axFac();axSet(r[0],r[1],r[2]);axMoveDesc(r[0])}else if(tab==="day"){const r=axDay();axSet(r[0],r[1],r[2]);axMoveDesc(r[0])}
+  else if(tab==="heat"){const r=axHeat();axSet(r[0],r[1],r[2]);axMoveDesc(r[0])}}catch(e){console.error(e)}}
+/* the site kit marks white-on-light text for dark mode but never unmarks it when a toggle turns off: unmark on toggle, the kit re-marks if still needed */
+new MutationObserver(ms=>ms.forEach(m=>{const t=m.target;if(t.classList&&t.classList.contains("gk-oninv"))t.classList.remove("gk-oninv")})).observe(document.body,{subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-selected"]});
+
+/* =====================================================================
    TABS, THEME, LOOP
    ===================================================================== */
 let tab="fac";
-function setTab(k){tab=k;document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===k)));document.querySelectorAll("[role=tabpanel]").forEach(p=>p.hidden=p.id!=="tab-"+k);fitAll()}
+function setTab(k){tab=k;document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===k)));document.querySelectorAll("[role=tabpanel]").forEach(p=>p.hidden=p.id!=="tab-"+k);fitAll();axUpdate()}
 document.querySelectorAll(".tab").forEach(b=>{b.onclick=()=>setTab(b.dataset.tab);b.onkeydown=e=>{const tabs=[...document.querySelectorAll(".tab")];const i=tabs.indexOf(b);if(e.key==="ArrowRight"||e.key==="ArrowLeft"){const n=tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];n.focus();n.click()}}});
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
 function fitAll(){[FAC,FCH,DAY,DCH,HC,HCH,BC,BCH].forEach(o=>o.fit())}
 window.addEventListener("resize",fitAll);
-let last=performance.now(),sideT=0;
-function frame(now){const dt=clamp((now-last)/1000,0,.05);last=now;sideT+=dt;
+let last=performance.now(),sideT=0,axT=0;
+function frame(now){const dt=clamp((now-last)/1000,0,.05);last=now;sideT+=dt;axT+=dt;if(axT>.5){axT=0;axUpdate()}
   try{
     if(tab==="fac"){if(!F.paused){let rem=dt*F.speed;while(rem>1e-6){const h=Math.min(.03,rem);facStep(h);rem-=h}}drawFac();drawFacChart();if(sideT>.25){facSide();sideT=0}}
     else if(tab==="day"){dayStep(dt);drawDay();drawDayChart()}
@@ -1133,7 +1184,7 @@ function frame(now){const dt=clamp((now-last)/1000,0,.05);last=now;sideT+=dt;
     else if(tab==="heat"){heatStep(dt);drawHeat();drawHeatChart();drawBal();drawBalChart();if(sideT>.25){heatSide();sideT=0}}
   }catch(e){console.error(e)}
   requestAnimationFrame(frame)}
-readColors();initFac();initDay();initSort();initHeat();fitAll();facSide();heatSide();requestAnimationFrame(frame);
+readColors();initFac();initDay();initSort();initHeat();fitAll();facSide();heatSide();axUpdate();if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(axUpdate,0));requestAnimationFrame(frame);
 window.__lab={get S(){return S},F,D,HT,BAL,SR,setTab,runTest,setFuel,setTog,setRate,facStep,heatStep,applyEnv,setScen,setDayT,ROUNDS,loadRound,sortCheck,place};
 })();
 </script>

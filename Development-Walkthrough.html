@@ -157,7 +157,19 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+
+/* a11y retrofit: act chips readable at 11px; current-step dot readable in dark mode */
+:root{--act1-chip:#7B5CC9;--act2-chip:#A36715;--act3-chip:#B25B48;--act4-chip:#2B8273;--act5-chip:#A04E8C;--act6-chip:#4F6F94}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--act6-chip:var(--act6)}:root:not([data-theme="light"]) .actchip,:root:not([data-theme="light"]) .dot.cur{color:#10161A}}
+:root[data-theme="dark"]{--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--act6-chip:var(--act6)}:root[data-theme="dark"] .actchip,:root[data-theme="dark"] .dot.cur{color:#10161A}
+.dot.done.gk-oninv:not(.cur){color:var(--good)!important}
+/* a11y retrofit: germ-layer text on washes */
+:root{--ecto-ink:#2B66B1;--meso-ink:#AD3D35;--endo-ink:#87620C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ecto-ink:var(--ecto);--meso-ink:var(--meso);--endo-ink:var(--endo)}}
+:root[data-theme="dark"]{--ecto-ink:var(--ecto);--meso-ink:var(--meso);--endo-ink:var(--endo)}
+.gl.ec{color:var(--ecto-ink)}.gl.me{color:var(--meso-ink)}.gl.en{color:var(--endo-ink)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -232,7 +244,7 @@ const STEPS=[
   ["A blastocyst",0,"The blastocyst is a hollow ball of about 100 or more cells. It comes a few days after the zygote."],
   ["A fetus",0,"\"Fetus\" is the name used from week 9 until birth. The first cell is much earlier."],
   ["A morula",0,"A morula is a solid ball of cells made by dividing the zygote. It is not the first cell."]]},
- caption:"One cell divides, implants, grows into a fetus, is born, and carries genes from both parents.",
+ desc:"Six cards are laid out in two rows of three, one for each part, each with a coloured PART tag, and they light up one at a time. The pictures are: sperm swimming toward a large oocyte (fertilization); a ball of cells that doubles from 1 to 2 to 4 to 8 cells (first two weeks); three wavy bands in blue, red and gold labelled ectoderm, mesoderm and endoderm (building the embryo); a placenta joined by a cord to a fetus in its fluid sac, with red and blue dots flowing along the cord (life support); a uterus that squeezes around a head-down fetus while orange oxytocin diamonds drift by (birth and milk); and a Punnett square that fills with four small children (inheritance).",caption:"One cell divides, implants, grows into a fetus, is born, and carries genes from both parents.",
  legend:[["oocyte","Oocyte or early cells"],["sperm","Sperm"],["ecto","Ectoderm"],["meso","Mesoderm"],["endo","Endoderm"]]},
 
 /* ---------- Part 1 ---------- */
@@ -247,7 +259,7 @@ const STEPS=[
   ["In the uterus",0,"The zygote reaches the uterus several days later. Fertilization happens earlier, in the tube."],
   ["In the ovary",0,"The ovary releases the oocyte. Sperm do not meet it there."],
   ["In the vagina",0,"Sperm are deposited there, but they still have a long trip to reach the oocyte."]]},
- caption:"The oocyte is swept into the tube. Sperm swim up, capacitate (glow) and gather in the ampulla. (Hours are sped up.)",
+ desc:"The female tract is drawn across the screen: an ovary and uterine tube on the left, the uterus in the middle, and the cervix at the bottom. An oocyte leaves the ovary and is swept into the tube to the ampulla, labelled ovulation. Many small sperm enter through the cervix at the bottom, swim up through the uterus and into the tube; some get lost or go up the other tube, and the ones heading for the oocyte begin to glow gold as they become capacitated. A purple glow then marks the ampulla as the fertilization site. A close-up box at the top right shows one sperm: grey coat particles drift away from its head and its tail beats harder.",caption:"The oocyte is swept into the tube. Sperm swim up, capacitate (glow) and gather in the ampulla. (Hours are sped up.)",
  legend:[["oocyte","Oocyte"],["sperm","Sperm"],["glow","Capacitated sperm"]]},
 
 {act:1,scene:"acro",id:"acro",title:"Breaking through: the acrosomal reaction",
@@ -261,7 +273,7 @@ const STEPS=[
   ["Give the sperm energy to swim",0,"Energy for swimming comes from mitochondria in the midpiece, not the acrosome."],
   ["Start the cortical reaction",0,"The cortical reaction is the oocyte's response after one sperm fuses. That is the next step."],
   ["Help the sperm survive in the vagina",0,"The acrosome's enzymes act at the oocyte's coats, not earlier in the trip."]]},
- caption:"Many sperm wedge between corona cells. Their acrosomes (purple caps) release enzymes that digest the zona pellucida.",
+ desc:"A large round oocyte sits in the middle, surrounded by a pale blue ring (the zona pellucida) and an outer ring of tan follicle cells (the corona radiata). Twelve sperm swim in from all directions and push between the corona cells, which are nudged aside. When they reach the zona, the gold cap on each sperm head bursts and small purple enzyme dots spill out, digging pale channels into the zona. One sperm gets all the way through to the oocyte's membrane. A caption in the middle counts through four steps, and a close-up box at the top right shows a single sperm head with its cap opening and enzymes spilling out.",caption:"Many sperm wedge between corona cells. Their acrosomes (purple caps) release enzymes that digest the zona pellucida.",
  legend:[["corona","Corona radiata cells"],["zona","Zona pellucida","r"],["acro","Acrosome enzymes"],["sperm","Sperm"]]},
 
 {act:1,scene:"cortical",id:"cortical",title:"One sperm only: fusion and the cortical reaction",
@@ -275,7 +287,7 @@ const STEPS=[
   ["To help more sperm get through the corona",0,"It does the opposite. It shuts out all sperm after the first."],
   ["To start ovulation",0,"Ovulation happened earlier, at the ovary. This step happens after fusion."],
   ["To dissolve the zona pellucida",0,"It hardens the zona. Dissolving it would let more sperm in."]]},
- caption:"One sperm fuses. A wave of cortical granules (gold) spreads around the oocyte, the zona hardens, and the other sperm bounce off.",
+ desc:"A large oocyte sits in the middle with a pale blue zona pellucida around it and gold cortical granules lining the inside of its edge. One sperm at the upper right fuses with the membrane, and its blue nucleus moves into the cell. Starting from that point, a wave sweeps around the whole cell: the gold granules move out and fade, and the zona turns a darker, thicker blue as it hardens. The other sperm around the outside are pushed back and red X marks appear beside them. A meter at the lower left fills to show the percent of the zona that has hardened.",caption:"One sperm fuses. A wave of cortical granules (gold) spreads around the oocyte, the zona hardens, and the other sperm bounce off.",
  legend:[["cortical","Cortical granules"],["zona-hard","Hardened zona pellucida","r"],["sperm","Sperm"]]},
 
 {act:1,scene:"zygote",id:"zygote",title:"Two pronuclei become one zygote (2n = 46)",
@@ -289,7 +301,7 @@ const STEPS=[
   ["23",0,"23 is the haploid number in each sperm or ovum. The zygote combines two sets."],
   ["92",0,"That would be four sets. Each parent gives only one set of 23."],
   ["69",0,"That would be three sets, which can happen with polyspermy. It is why the cortical reaction matters."]]},
- caption:"Meiosis II finishes and a polar body pinches off. The female and male pronuclei (23 each) meet and form a zygote with 46.",
+ desc:"A large oocyte fills the left of the screen. At its upper edge, a set of salmon chromosomes splits in two, and half of them pinch off into a small second polar body outside the cell. Then two round pronuclei appear: a salmon female pronucleus near the top and a blue male pronucleus near the bottom, each filled with 23 short chromosome rods. They grow, drift toward the center, meet and dissolve, and the 23 salmon and 23 blue chromosomes line up in pairs in a column. A counter on the right shows 23 from the ovum, 23 from the sperm, and then 46 for the zygote, labelled 2n = 46.",caption:"Meiosis II finishes and a polar body pinches off. The female and male pronuclei (23 each) meet and form a zygote with 46.",
  legend:[["pnf","Female pronucleus (23)"],["pnm","Male pronucleus (23)"],["chrom","Chromosomes"]]},
 
 /* ---------- Part 2 ---------- */
@@ -304,7 +316,7 @@ const STEPS=[
   ["It doubles with every division",0,"The cells double in number, not the embryo in size. The zona pellucida still holds it."],
   ["It shrinks to half",0,"The total stays about the same. Only each cell gets smaller."],
   ["It grows quickly because the cells absorb nutrients",0,"Real growth comes later, after implantation, when the embryo gets nutrients from the mother."]]},
- caption:"1 → 2 → 4 → 8 → morula. The cell count doubles while the total size inside the zona stays the same.",
+ desc:"Inside a thin clear ring (the zona pellucida), one round cell divides again and again: 1 cell, then 2, then 4, then 8, then a solid ball of 16 cells called the morula. Dashed lines appear across each cell just before it splits. A title above shows the stage and the day, from about day 1 to day 3 to 4. A panel on the right shows three bars: the number of cells keeps rising, the total size of the embryo stays the same, and the size of each cell gets smaller. The note says the cells double but the embryo does not grow.",caption:"1 → 2 → 4 → 8 → morula. The cell count doubles while the total size inside the zona stays the same.",
  legend:[["oocyte","Blastomeres"],["zona","Zona pellucida","r"]]},
 
 {act:2,scene:"travel",id:"travel",title:"The blastocyst travels to the uterus",
@@ -321,7 +333,7 @@ const STEPS=[
   ["The trophoblast",0,"The trophoblast is the outer ring. It forms part of the placenta, not the baby's body."],
   ["The blastocoel",0,"The blastocoel is just fluid in the cavity. It has no cells."],
   ["The zona pellucida",0,"The zona is the protective coat. The blastocyst hatches out of it."]]},
- caption:"The embryo divides as it travels: 2 cells, 8 cells, morula, then a fluid-filled blastocyst in the uterus by about day 5.",
+ desc:"The female tract is drawn across the screen, and a small glowing embryo moves along the uterine tube from the ampulla toward the uterus, while small hair-like cilia beat along the tube. A tag under the embryo shows the day as it travels, from day 1 to 2 up to day 5 to 6. A close-up box at the top right shows the embryo changing on the way: 2-cell stage, 8-cell stage, a solid morula, then a hollow blastocyst with a teal inner cell mass, a fluid space (blastocoel), and a plum outer layer (trophoblast). At the end the blastocyst slips out of the zona ring, which fades away: it hatches.",caption:"The embryo divides as it travels: 2 cells, 8 cells, morula, then a fluid-filled blastocyst in the uterus by about day 5.",
  legend:[["troph","Trophoblast"],["icm","Inner cell mass"],["cavity","Blastocoel"]]},
 
 {act:2,scene:"implant",id:"implant",title:"Implantation and hCG (day 6 to 7 onward)",
@@ -335,7 +347,7 @@ const STEPS=[
   ["Progesterone in urine",0,"Progesterone also rises, but tests look for hCG because only an embryo makes it."],
   ["Oxytocin in blood",0,"Oxytocin matters at birth and for milk ejection, not for early pregnancy tests."],
   ["Sperm in the uterus",0,"Tests detect a hormone made by the embryo, not sperm."]]},
- caption:"The blastocyst attaches, the syncytiotrophoblast invades the endometrium and releases hCG (green), which keeps the corpus luteum alive.",
+ desc:"The lower part of the screen is the pink endometrium, with tube-shaped glands and a red maternal capillary near the bottom carrying blood. A hollow blastocyst, its teal inner cell mass facing down, drops onto the surface. A dark plum layer, the syncytiotrophoblast, grows finger-like projections into the lining, and the blastocyst sinks in until the surface closes over it. Then green hCG diamonds flow from it into the maternal capillary. A box at the top right shows the ovary's gold corpus luteum receiving hCG and sending out brown progesterone, and a pregnancy test strip below it shows a second line appearing: hCG found, positive.",caption:"The blastocyst attaches, the syncytiotrophoblast invades the endometrium and releases hCG (green), which keeps the corpus luteum alive.",
  legend:[["syncy","Syncytiotrophoblast"],["icm","Inner cell mass"],["hcg","hCG","d"],["prog","Progesterone","s"],["endom","Endometrium","r"]]},
 
 /* ---------- Part 3 ---------- */
@@ -352,7 +364,7 @@ const STEPS=[
   ["Because the fetus is largest then",0,"The fetus is largest near birth. The embryo is tiny in weeks 3 to 8."],
   ["Because the placenta is fully mature then",0,"The placenta is still forming in this period. The risk is about organs being built."],
   ["Because the heart has not started beating",0,"The heart starts beating in week 4, inside the embryonic period. That is not the reason."]]},
- caption:"A timeline from fertilization to birth. The embryo forms its organs in weeks 3 to 8, then the fetus grows. (Sizes are rough.)",
+ desc:"A timeline along the bottom runs from week 0 to week 38, split into three coloured bands: a short orange pre-embryonic band for weeks 1 to 2, a salmon embryonic period for weeks 2 to 8, and a long teal fetal period for weeks 8 to 38. A black marker moves along it while the picture above grows: first a ball of cells and a blastocyst, then a C-shaped embryo that gets bigger, starts a beating heart around week 4 and grows limb buds, then a curled fetus inside a pale blue fluid sac that slowly grows. Captions mark the milestones: three germ layers at week 3, heartbeat at week 4, all organ systems begun at week 8, called a fetus from week 9, and birth at about week 38. A red label marks weeks 3 to 8 as most sensitive to teratogens.",caption:"A timeline from fertilization to birth. The embryo forms its organs in weeks 3 to 8, then the fetus grows. (Sizes are rough.)",
  legend:[["act2","Pre-embryonic (wk 1–2)"],["act3","Embryonic (wk 3–8)"],["act4","Fetal (wk 9–birth)"]]},
 
 {act:3,scene:"gastrula",id:"gastrula",title:"Gastrulation: two layers become three",
@@ -366,7 +378,7 @@ const STEPS=[
   ["The neural tube",0,"The neural tube forms a little later, from ectoderm, during neurulation."],
   ["The blastocoel",0,"The blastocoel was the cavity of the blastocyst. Gastrulation happens in the embryonic disc."],
   ["The umbilical cord",0,"The cord carries blood. It is not part of forming the germ layers."]]},
- caption:"Top: the disc seen from above with the primitive streak. Bottom: a cut through the disc as cells dive in to form endoderm and mesoderm.",
+ desc:"At the top, a flat oval disc is seen from above, with a dark blue line, the primitive streak, growing from the middle toward the tail end, and small cells moving toward it from both sides. A dashed line shows where it is cut. Below is the cross-section: a blue upper row of cells (epiblast) under the amniotic cavity, and a lower row (hypoblast) above the yolk sac. Cells dip down through a groove at the streak: first gold endoderm cells spread out and replace the lower row, then red mesoderm cells spread out in a new middle layer. At the end the top row is labelled ectoderm, giving three layers: blue ectoderm, red mesoderm and gold endoderm.",caption:"Top: the disc seen from above with the primitive streak. Bottom: a cut through the disc as cells dive in to form endoderm and mesoderm.",
  legend:[["ecto","Ectoderm (from epiblast)"],["meso","Mesoderm"],["endo","Endoderm"],["yolk","Hypoblast / yolk sac side"]]},
 
 {act:3,scene:"germ",id:"germ",title:"What each germ layer builds",
@@ -382,7 +394,7 @@ const STEPS=[
   ["Mesoderm",0,"Mesoderm makes muscle, bone, blood, heart and kidneys, not nervous tissue."],
   ["Endoderm",0,"Endoderm makes the inner linings of the gut and airways, plus the liver and pancreas."],
   ["The trophoblast",0,"The trophoblast helps form the placenta. It does not become part of the baby's organs."]]},
- caption:"Each layer lights up and sends its color to the organs it builds: blue ectoderm, red mesoderm, yellow endoderm.",
+ desc:"Three rows run down the screen, one for each germ layer: blue ectoderm (outer layer), red mesoderm (middle layer) and gold endoderm (inner layer). Each row has a coloured band on the left and a set of organ cards to its right. The rows light up one at a time; an arrow and a coloured dot travel from the band to each card in turn, and each organ icon fills with the layer's colour. Ectoderm gives epidermis, hair and nails, brain, spinal cord and nerves; mesoderm gives muscle, bone, blood, heart and kidneys; endoderm gives the GI lining, airway lining, liver and pancreas.",caption:"Each layer lights up and sends its color to the organs it builds: blue ectoderm, red mesoderm, yellow endoderm.",
  legend:[["ecto","Ectoderm"],["meso","Mesoderm"],["endo","Endoderm"]]},
 
 {act:3,scene:"neural",id:"neural",title:"Neurulation: building the neural tube",
@@ -396,7 +408,7 @@ const STEPS=[
   ["The notochord",0,"The notochord is the mesoderm rod underneath. It signals the tube to form."],
   ["The skin's pigment cells",0,"Pigment cells come from neural crest cells, which break away from the folds."],
   ["The vertebral column",0,"The vertebrae form from mesoderm around the tube, not from the tube itself."]]},
- caption:"Cross-section: the neural plate folds up, the folds fuse into a neural tube, and neural crest cells (purple) break away.",
+ desc:"This is a cross-section through the embryo. Pale blue amniotic cavity is at the top, two red mesoderm blocks sit on either side, a green notochord sits in the middle, and a gold endoderm line runs along the bottom. A thick blue band of ectoderm above the notochord (the neural plate) thickens, then curls upward into a U shape, a groove, whose raised edges (the neural folds) rise and meet at the top. The closed ring, the neural tube, sinks below the surface while the thinner surface ectoderm seals over it. Finally salmon neural crest cells break away from the top of the tube and move outward to both sides.",caption:"Cross-section: the neural plate folds up, the folds fuse into a neural tube, and neural crest cells (purple) break away.",
  legend:[["ecto","Ectoderm / neural tissue"],["act1","Neural crest cells"],["notch","Notochord"],["meso","Mesoderm"],["endo","Endoderm"]]},
 
 {act:3,scene:"fold",id:"fold",title:"Folding, organs, and the first heartbeat",
@@ -410,7 +422,7 @@ const STEPS=[
   ["Week 1",0,"In week 1 the embryo is still a ball of cells traveling down the tube. There is no heart yet."],
   ["Week 12",0,"By week 12 the heart has been beating for about two months."],
   ["Only at birth",0,"The heart beats for months before birth. Ultrasound can detect it early in pregnancy."]]},
- caption:"The flat disc folds into a C-shaped embryo. The heart tube starts beating in week 4 (heart rate counter shown).",
+ desc:"On the left, three flat bands (blue ectoderm on top, red mesoderm, gold endoderm) bend into a C shape, with a gold yolk sac hanging below that shrinks. The head and tail ends are labelled as they fold under. A small red heart tube appears in the curve and starts to beat. The bands then fade into a C-shaped embryo drawing with a head, tail, limb buds and a beating heart. A box at the top right shows a heartbeat trace that starts once the heart forms, labelled beating since about day 22. A box at the lower right shows a cut across the embryo: the three layers curl down and around until they form a tube within a tube, ectoderm outside and the gut inside.",caption:"The flat disc folds into a C-shaped embryo. The heart tube starts beating in week 4 (heart rate counter shown).",
  legend:[["ecto","Ectoderm (outside)"],["meso","Mesoderm"],["endo","Endoderm (gut tube)"],["heart","Heart"]]},
 
 /* ---------- Part 4 ---------- */
@@ -427,7 +439,7 @@ const STEPS=[
   ["The amnion",0,"The amnion holds the amniotic fluid around the baby. It does not form the placenta."],
   ["The yolk sac",0,"The yolk sac makes early blood cells and germ cells. It shrinks later."],
   ["The allantois",0,"The allantois helps form the umbilical blood vessels, not the placenta itself."]]},
- caption:"The amnion, yolk sac, allantois and chorion appear one by one around the embryo. The fluid ripples as the embryo moves.",
+ desc:"The embryo floats inside nested sacs drawn on the pink uterine wall. The four membranes light up one after another: first a blue amnion sac grows around the embryo and fills with rippling fluid; then a gold yolk sac below it, with red dots for the first blood cells; then a green allantois inside the stalk running to the lower right, with red and blue vessel lines beside it; and finally a purple outer chorion ring with short finger-like villi all around. A label for each membrane brightens when it is shown, and a tag at the bottom right names the current one.",caption:"The amnion, yolk sac, allantois and chorion appear one by one around the embryo. The fluid ripples as the embryo moves.",
  legend:[["amnion","Amnion"],["yolk","Yolk sac"],["allant","Allantois"],["chorion","Chorion"]]},
 
 {act:4,scene:"placenta",id:"placenta",title:"The placenta and the umbilical cord",
@@ -442,7 +454,7 @@ const STEPS=[
   ["The umbilical arteries",0,"Arteries carry blood away from the fetal heart, out to the placenta. That blood is oxygen-poor."],
   ["The maternal blood pools",0,"Maternal blood stays in the mother. O₂ diffuses out of it into fetal blood."],
   ["The yolk sac",0,"The yolk sac does not carry oxygen to the fetus."]]},
- caption:"Left: a villus in a maternal blood pool; O₂ and nutrients cross in, CO₂ and wastes cross out, and the bloods never mix. Right: the cord cut across.",
+ desc:"The left side shows a close-up of the placenta. A pink pool of maternal blood fills the space, with a maternal artery spurting blood in from the uterine wall at the bottom and red cells drifting. One purple-edged chorionic villus hangs down from the chorionic plate at the top, with a fetal capillary looping through it that changes from blue to red as blood moves through. Red O₂ pairs and orange nutrient hexagons move from the mother's blood into the villus; blue CO₂ and grey waste triangles move out. Small hCG, estrogen and progesterone shapes are released. The right side shows the umbilical cord cut across: one large red vein and two smaller blue arteries in pale Wharton's jelly, with a key explaining the vein carries O₂-rich blood to the baby and the arteries carry O₂-poor blood back.",caption:"Left: a villus in a maternal blood pool; O₂ and nutrients cross in, CO₂ and wastes cross out, and the bloods never mix. Right: the cord cut across.",
  legend:[["oxy","Oxygen-rich blood"],["deoxy","Oxygen-poor blood"],["mblood","Maternal blood"],["hcg","hCG","d"],["estro","Estrogen","t"],["prog","Progesterone","s"]]},
 
 {act:4,scene:"fetal",id:"fetal",title:"Fetal circulation: three shortcuts",
@@ -458,7 +470,7 @@ const STEPS=[
   ["The ductus arteriosus",0,"The ductus arteriosus connects the pulmonary trunk to the aorta, outside the heart."],
   ["The ductus venosus",0,"The ductus venosus connects the umbilical vein to the IVC and bypasses the liver."],
   ["The umbilical vein",0,"The umbilical vein brings blood from the placenta. It is not a shunt inside the heart."]]},
- caption:"Red = oxygen-rich, purple = mixed, blue = oxygen-poor. Watch blood skip the liver, cross the foramen ovale and take the ductus arteriosus.",
+ desc:"A diagram of the fetal circulation fills the screen: the placenta and umbilical vessels, the liver, the heart chambers, the lungs, the pulmonary trunk and aorta, with boxes for the head and arms at the top and the lower body at the lower right. Vessels are coloured by oxygen: red for oxygen-rich, purple for mixed, and blue for oxygen-poor, and dots flow along them. The three shortcuts are highlighted in gold one at a time while the rest of the drawing dims: the ductus venosus bypassing the liver, the foramen ovale between the right and left atria, and the ductus arteriosus linking the pulmonary trunk to the aorta. A BEFORE BIRTH tag sits at the top right.",caption:"Red = oxygen-rich, purple = mixed, blue = oxygen-poor. Watch blood skip the liver, cross the foramen ovale and take the ductus arteriosus.",
  legend:[["oxy","Oxygen-rich"],["mixed","Mixed"],["deoxy","Oxygen-poor"],["glow","Shunt highlighted"]]},
 
 {act:4,scene:"birth",id:"birth",title:"At birth: the shortcuts close",
@@ -474,7 +486,7 @@ const STEPS=[
   ["Oxytocin from the mother",0,"Oxytocin drives labor contractions. It does not close the foramen ovale."],
   ["The ductus arteriosus pulling on it",0,"The two shunts close separately. The flap closes because of the pressure change."],
   ["It stays open for life in everyone",0,"In most people it seals. When it doesn't, it is called a patent foramen ovale."]]},
- caption:"First breath: the lungs inflate, the cord is clamped, then the foramen ovale, ductus arteriosus and ductus venosus close and become remnants.",
+ desc:"The same fetal circulation diagram plays the changes at birth. First the cord is clamped, bubbles of air enter, and the lungs fill and turn pink as blood rushes into them. Next the foramen ovale flap is pushed shut and is relabelled fossa ovalis. Then the ductus arteriosus narrows and closes, becoming the ligamentum arteriosum, and the ductus venosus closes, becoming the ligamentum venosum. Each change is highlighted in gold as it happens, the tag at the top right switches from BEFORE BIRTH to AFTER BIRTH, and the caption ends with every drop from the right ventricle now going to the lungs.",caption:"First breath: the lungs inflate, the cord is clamped, then the foramen ovale, ductus arteriosus and ductus venosus close and become remnants.",
  legend:[["oxy","Oxygen-rich"],["mixed","Mixed"],["deoxy","Oxygen-poor"],["ink-soft","Closed shunt (remnant)","dl"]]},
 
 /* ---------- Part 5 ---------- */
@@ -492,7 +504,7 @@ const STEPS=[
   ["Oxytocin makes contractions weaker over time",0,"That would be negative feedback. In labor, contractions get stronger."],
   ["It keeps the uterus at a steady set point",0,"Keeping a steady set point is negative feedback. Labor builds toward an end point instead."],
   ["The baby feels good during labor",0,"\"Positive\" here means the loop amplifies itself, not that it feels good."]]},
- caption:"Stretch → hypothalamus → posterior pituitary → oxytocin → stronger contractions → more stretch. The loop speeds up until birth.",
+ desc:"On the left, a pear-shaped uterus holds a head-down fetus in fluid, with the placenta on the upper wall. The uterus squeezes rhythmically, more often and harder over time, and turns slightly orange with each contraction, while the cervix below glows and opens; a gauge counts dilation up to 10 cm. Then the baby moves down and out (Baby born), and finally the placenta slides out. On the right, a loop of five boxes lights up in a circle: the head stretches the cervix, a signal goes to the hypothalamus, the posterior pituitary releases oxytocin, oxytocin travels in the blood, the uterus contracts harder. Orange oxytocin diamonds flow along it, labelled positive feedback, until the stretch stops after birth. Three stage boxes below highlight dilation, expulsion and placental stages.",caption:"Stretch → hypothalamus → posterior pituitary → oxytocin → stronger contractions → more stretch. The loop speeds up until birth.",
  legend:[["oxt","Oxytocin","d"],["uterus","Uterine muscle"],["glow","Nerve signal"]]},
 
 {act:5,scene:"lact",id:"lact",title:"Lactation: making milk and letting it down",
@@ -507,7 +519,7 @@ const STEPS=[
   ["Prolactin",0,"Prolactin makes milk. Here plenty of milk is being made, so the problem is ejection."],
   ["hCG",0,"hCG matters in early pregnancy, not for milk flow."],
   ["Progesterone",0,"High progesterone in pregnancy actually holds back milk production until after birth."]]},
- caption:"Prolactin (purple) fills the alveoli with milk. Suckling releases oxytocin (orange), the myoepithelial cells squeeze, and milk flows down the duct.",
+ desc:"A side view of a breast fills the left side, with five clusters of round alveoli connected by ducts to the nipple on the right. First, purple prolactin hexagons travel through a capillary, and the alveoli fill with cream-coloured milk. Next, a gold glow travels from the nipple along a nerve path to a head profile on the right, showing suckling sending a signal to the hypothalamus. Then orange oxytocin diamonds travel through the capillary, dashed orange rings around the alveoli (myoepithelial cells) tighten and squeeze, and milk drops flow through the ducts and spray out of the nipple. The head is labelled anterior pituitary: prolactin and posterior pituitary: oxytocin.",caption:"Prolactin (purple) fills the alveoli with milk. Suckling releases oxytocin (orange), the myoepithelial cells squeeze, and milk flows down the duct.",
  legend:[["prl","Prolactin","h"],["oxt","Oxytocin","d"],["milk-edge","Milk"]]},
 
 /* ---------- Part 6 ---------- */
@@ -523,7 +535,7 @@ const STEPS=[
   ["1 in 2 (50%)",0,"50% is the chance the child will be a carrier (Cc), the two middle boxes."],
   ["3 in 4 (75%)",0,"75% is the chance the child will NOT have cystic fibrosis (CC or Cc)."],
   ["0%, because neither parent has the disease",0,"Carriers can each pass on a c allele. If both do, the child is cc."]]},
- caption:"Each parent's alleles split apart, slide to the edges and fill the boxes: 1 CC : 2 Cc : 1 cc.",
+ desc:"On the left, two parents are shown, each a carrier (Cc), with a pair of purple chromosomes carrying a teal C band on one and a salmon c band on the other. The chromosomes separate and the alleles slide over into a 2-by-2 Punnett square on the right. The four boxes fill one at a time with a small child figure and its two letters: CC unaffected, Cc carrier, Cc carrier, and cc has CF, with the cc box shaded salmon. Labels then add homozygous or heterozygous to each box, and a bar below shows the genotype ratio 1 CC : 2 Cc : 1 cc and the phenotype ratio 3 unaffected : 1 with CF.",caption:"Each parent's alleles split apart, slide to the edges and fill the boxes: 1 CC : 2 Cc : 1 cc.",
  legend:[["dom","Dominant allele (C)"],["rec","Recessive allele (c)"],["ink","Affected (cc)","s"]]},
 
 {act:6,scene:"codom",id:"codom",title:"Incomplete dominance and codominance",
@@ -538,7 +550,7 @@ const STEPS=[
   ["AB or O only",0,"A child would need both Iᴬ and Iᴮ for AB, but the O parent can only give i."],
   ["Any of A, B, AB or O",0,"The AB parent always passes Iᴬ or Iᴮ, so no child can be O, and the O parent can't give a second I allele for AB."],
   ["O only",0,"Type O needs ii, but the AB parent has no i allele to give."]]},
- caption:"Left: red × white flowers give all pink (incomplete dominance). Right: IᴬIᴮ × ii, each box gets one antigen type (codominance).",
+ desc:"Two panels sit side by side. The left panel, incomplete dominance, crosses a red flower (RR) with a white flower (rr); the Punnett square fills with four pink flowers, each Rr, and the caption says the heterozygote is in between. The right panel, codominance in ABO blood type, crosses a red blood cell with both red triangle A antigens and teal dot B antigens on its surface (type AB) with a plain cell (type O, ii). The square fills with two cells that carry only A antigens (I^Ai, type A) and two that carry only B antigens (I^Bi, type B). The caption says the AB parent shows both antigens at once.",caption:"Left: red × white flowers give all pink (incomplete dominance). Right: IᴬIᴮ × ii, each box gets one antigen type (codominance).",
  legend:[["flower-r","Red (RR)"],["flower-p","Pink (Rr)"],["flower-w","White (rr)"],["oxy","A antigen","t"],["dom","B antigen"]]},
 
 {act:6,scene:"xlink",id:"xlink",title:"X-linked recessive inheritance",
@@ -552,7 +564,7 @@ const STEPS=[
   ["25%",0,"25% is the chance for any child before you know the sex. Once you know it's a son, it's 50%."],
   ["0%, because the father is unaffected",0,"A son's X comes from his mother, so the father's X doesn't protect him."],
   ["100%",0,"The mother has one normal Xᴴ too. Half her sons get that one."]]},
- caption:"Carrier mother × unaffected father. The h allele (marked) passes to half of the sons (affected) and half of the daughters (carriers).",
+ desc:"At the top left, a carrier mother has two pink X chromosomes, one marked with a salmon band (X^H and X^h), and an unaffected father has a pink X and a short blue Y. Their chromosomes slide into a 2-by-2 Punnett square on the right, which fills one box at a time: a daughter X^HX^H unaffected, a daughter X^HX^h carrier, a son X^HY unaffected, and a son X^hY with hemophilia, shaded salmon. Then a family tree appears at the lower left, with circles for females and squares for males: filled means affected and a dot means carrier. It reads sons 1 in 2 affected, daughters 1 in 2 carriers, and notes the same pattern for red-green colour blindness.",caption:"Carrier mother × unaffected father. The h allele (marked) passes to half of the sons (affected) and half of the daughters (carriers).",
  legend:[["xc","X chromosome"],["yc","Y chromosome"],["rec","Recessive allele h"]]},
 
 {act:6,scene:"sex",id:"sex",title:"Sex determination: XX or XY",
@@ -566,7 +578,7 @@ const STEPS=[
   ["The mother's ovum",0,"Every ovum carries an X, so the ovum can't make the difference."],
   ["Both equally",0,"The mother always gives X. Only the father's gamete varies."],
   ["Neither; it depends on the hormones in the uterus",0,"Chromosomal sex is set at fertilization by the sperm."]]},
- caption:"Each ovum carries X. Sperm carry X or Y. Over many births, about half are XX and half are XY.",
+ desc:"A large oocyte in the middle holds a pink X chromosome, labelled every ovum carries an X. On the left, a column of five sperm is labelled alternately X (pink) and Y (blue). Every couple of seconds, one sperm swims to the oocyte; if it carries a Y, a short blue Y chromosome appears and the label reads XY → male, and if it carries an X, it reads XX → female. Two bar bins on the right count the babies so far as XX female and XY male, staying close to 50 : 50. A strip at the bottom shows 22 pairs of autosomes plus one pair of sex chromosomes.",caption:"Each ovum carries X. Sperm carry X or Y. Over many births, about half are XX and half are XY.",
  legend:[["xc","X chromosome"],["yc","Y chromosome"]]},
 
 {act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole story.",
@@ -585,7 +597,7 @@ const STEPS=[
  <li>Alleles, genotype, phenotype; Punnett squares.</li><li>Incomplete dominance (pink); codominance (AB blood).</li><li>X-linked recessive: carrier mothers, affected sons.</li><li>XX or XY: the sperm decides.</li></ol>
  <p>Next: sequence the first two weeks, sort the germ layers, run Punnett crosses and trace fetal blood in the <b>Development Lab</b>.</p>`,
  analogy:"Two half-plans combine, a foundation is laid, three crews build, utilities are connected, the family moves in, and the plans get passed on again.",
- terms:[],check:null,caption:"The whole journey, from zygote to newborn, with the genes that came along.",
+ terms:[],check:null,desc:"Six cards are laid out in two rows of three, and in this summary all of them are lit at once. The pictures are: sperm swimming toward a large oocyte; a ball of cells that doubles from 1 to 8 cells; three wavy bands in blue, red and gold labelled ectoderm, mesoderm and endoderm; a placenta joined by a cord to a fetus in its fluid sac; a uterus squeezing around a head-down fetus with oxytocin diamonds; and a Punnett square filling with four small children. A banner across the middle reads: zygote, embryo, fetus, newborn, with genes from both parents.",caption:"The whole journey, from zygote to newborn, with the genes that came along.",
  legend:[["oocyte","Early cells"],["ecto","Ectoderm"],["meso","Mesoderm"],["endo","Endoderm"],["oxy","Oxygen-rich blood"]]}
 ];
 /* ================= shared drawing kit ================= */
@@ -1026,7 +1038,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip,var(--${a.col}))">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -1034,6 +1046,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

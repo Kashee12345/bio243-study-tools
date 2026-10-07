@@ -22,6 +22,7 @@
   --lat:#7B5CC9;--con:#C4644F;--rel:#1B6E88;
   --so:#A8322E;--fo:#D9817A;--fg:#EFD9C9;--fg-edge:#B9998A;--cap:#C0392B;--mito:#5A3B2E;--glyc:#4F6F94;
   --zone-short:#B4632A;--zone-opt:#2F6F4F;--zone-long:#7B5CC9;
+  --warn-ink:#8F4E1F;--on-accent:#fff;--stop-bg:#9E5723;--rel-ink:#1B6E88;--act1-ink:#7B5CC9;--act2-ink:#976013;--con-ink:#A65443;--mu-ink:#297A4D;--zone-short-ink:#9A5524;--zone-opt-ink:#2F6F4F;--zone-long-ink:#6E52B8;
   --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
   --r:6px;
   --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -42,6 +43,7 @@
   --lat:#A98BEF;--con:#E08A74;--rel:#4FB3D1;
   --so:#C4473F;--fo:#D98C84;--fg:#D8C5B6;--fg-edge:#A08A7E;--cap:#E0675A;--mito:#6E3F2C;--glyc:#8FB1D9;
   --zone-short:#E39A5B;--zone-opt:#6BC293;--zone-long:#A98BEF;
+  --warn-ink:#E39A5B;--on-accent:#0B1A20;--stop-bg:#E39A5B;--rel-ink:#4FB3D1;--act1-ink:#A98BEF;--act2-ink:#F2A93B;--con-ink:#E08A74;--mu-ink:#4FBF7F;--zone-short-ink:#E39A5B;--zone-opt-ink:#6BC293;--zone-long-ink:#A98BEF;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
 }}
 :root[data-theme="dark"]{
@@ -58,6 +60,7 @@
   --lat:#A98BEF;--con:#E08A74;--rel:#4FB3D1;
   --so:#C4473F;--fo:#D98C84;--fg:#D8C5B6;--fg-edge:#A08A7E;--cap:#E0675A;--mito:#6E3F2C;--glyc:#8FB1D9;
   --zone-short:#E39A5B;--zone-opt:#6BC293;--zone-long:#A98BEF;
+  --warn-ink:#E39A5B;--on-accent:#0B1A20;--stop-bg:#E39A5B;--rel-ink:#4FB3D1;--act1-ink:#A98BEF;--act2-ink:#F2A93B;--con-ink:#E08A74;--mu-ink:#4FBF7F;--zone-short-ink:#E39A5B;--zone-opt-ink:#6BC293;--zone-long-ink:#A98BEF;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box}
@@ -72,13 +75,13 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
 .tbtn:hover{border-color:var(--accent)}
 .tbtn.on,.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
-.tbtn.go{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
-.tbtn.stop{background:var(--warn);border-color:var(--warn);color:#fff;font-weight:600}
+.tbtn.go{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tbtn.stop{background:var(--stop-bg);border-color:var(--stop-bg);color:var(--on-accent);font-weight:600}
 .wrap{max-width:1240px;margin:0 auto;padding:16px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
 .tab:hover{border-color:var(--accent)}
-.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
 @media (max-width:900px){.grid{grid-template-columns:1fr}}
 .col{display:flex;flex-direction:column;gap:16px;min-width:0}
@@ -103,14 +106,14 @@ canvas{display:block;width:100%}
 .legend i.sq{border-radius:2px}
 .explain{padding:18px 20px}
 .stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+.actchip{padding:2px 8px;border-radius:99px;color:var(--on-accent);font-size:12px}
 .dots{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
 .dot:hover{border-color:var(--accent)}
-.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
 h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
-h3.sec{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px;font-weight:600}
+.sec{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px;font-weight:600}
 .body p{margin:0 0 10px}
 .body ol,.body ul{margin:0 0 10px;padding-left:22px}
 .body li{margin-bottom:4px}
@@ -130,12 +133,14 @@ h3.sec{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transf
 .opt:hover{border-color:var(--accent)}
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.right::before{content:"✓ ";color:var(--good);font-weight:700}
+.opt.wrong::before{content:"✗ ";color:var(--warn-ink);font-weight:700}
 .fb{margin:6px 0 0;font-size:14.5px}
 .fb.ok{color:var(--good)}
-.fb.no{color:var(--warn)}
+.fb.no{color:var(--warn-ink)}
 .calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
 .nav{display:flex;align-items:center;gap:12px;margin-top:14px}
-.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn{background:var(--accent);color:var(--on-accent);border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
 .navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
 .navbtn:disabled{opacity:.4;cursor:default}
 .prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
@@ -171,6 +176,8 @@ table.cmp .sw{display:inline-block;width:12px;height:12px;border-radius:50%;marg
 .bucket:hover{border-color:var(--accent)}
 .bucket.right{border-color:var(--good);background:var(--good-wash)}
 .bucket.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.bucket.right::after{content:"✓ Right";margin-left:auto;color:var(--good);font-weight:700;white-space:nowrap}
+.bucket.wrong::after{content:"✗ Not this one";margin-left:auto;color:var(--warn-ink);font-weight:700;white-space:nowrap}
 .bucket.hinted{box-shadow:0 0 0 3px var(--glow)}
 .why{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
 .why.show{display:block}
@@ -185,6 +192,7 @@ footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
 sub,sup{line-height:0}
 [hidden]{display:none!important}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -199,8 +207,8 @@ sub,sup{line-height:0}
 <div class="wrap">
   <div class="tabs" role="tablist" aria-label="Sections">
     <button class="tab" role="tab" id="t-tw" aria-controls="tab-tw" aria-selected="true" data-tab="tw" type="button">1 &middot; Twitch to Tetanus</button>
-    <button class="tab" role="tab" id="t-lt" aria-controls="tab-lt" aria-selected="false" data-tab="lt" type="button">2 &middot; Length&ndash;Tension</button>
-    <button class="tab" role="tab" id="t-ft" aria-controls="tab-ft" aria-selected="false" data-tab="ft" type="button">3 &middot; Fiber Types</button>
+    <button class="tab" role="tab" id="t-lt" aria-controls="tab-lt" aria-selected="false" data-tab="lt" type="button" tabindex="-1">2 &middot; Length&ndash;Tension</button>
+    <button class="tab" role="tab" id="t-ft" aria-controls="tab-ft" aria-selected="false" data-tab="ft" type="button" tabindex="-1">3 &middot; Fiber Types</button>
   </div>
 
   <!-- ============ TAB 1 ============ -->
@@ -235,7 +243,7 @@ sub,sup{line-height:0}
         </section>
 
         <section class="card pad" aria-label="Treppe mini demo">
-          <h3 class="sec">Mini demo &middot; Treppe (the staircase effect)</h3>
+          <h2 class="sec">Mini demo &middot; Treppe (the staircase effect)</h2>
           <p style="margin:0 0 10px;font-size:15px">A muscle that has been <b>resting</b> gets the same stimulus over and over, slowly enough that it fully relaxes each time. The first few twitches get a little <b>stronger each time</b>, like a staircase. This is <b>treppe</b> (German for "staircase"). The usual explanation: Ca&sup2;&#8314; builds up in the sarcoplasm a bit more with each twitch, so more is available to bind troponin. Treppe is different from summation: here the muscle relaxes completely between twitches.</p>
           <div class="canvas-holder"><canvas id="cvTr" role="img" aria-label="Treppe: ten separate twitches after rest, each a little taller than the last, then leveling off."></canvas></div>
           <div class="row" style="margin-top:10px"><button class="tbtn go" id="trBtn" type="button">Play treppe demo</button><span style="font-size:13.5px;color:var(--ink-soft)">Same stimulus strength every time. Only the twitch height changes.</span></div>
@@ -328,7 +336,7 @@ sub,sup{line-height:0}
         </div>
       </section>
       <section class="card pad" aria-label="Fiber type comparison">
-        <h3 class="sec">Three types of skeletal muscle fibers</h3>
+        <h2 class="sec">Three types of skeletal muscle fibers</h2>
         <p style="margin:0 0 10px;font-size:15px">Fibers differ in two ways: <b>how fast</b> they contract (set by how fast their <b>myosin ATPase</b> splits ATP) and <b>how they make ATP</b> (<b>oxidative</b> = aerobic, with oxygen, in mitochondria; <b>glycolytic</b> = anaerobic glycolysis). Most muscles contain all three types, in different proportions.</p>
         <div class="tablewrap">
         <table class="cmp">
@@ -354,7 +362,7 @@ sub,sup{line-height:0}
 
     <section class="card pad" style="margin-top:16px" aria-label="Fiber type sorting game">
       <div class="row" style="justify-content:space-between">
-        <h3 class="sec" style="margin:0">Sorting game &middot; Which fiber type fits best?</h3>
+        <h2 class="sec" style="margin:0">Sorting game &middot; Which fiber type fits best?</h2>
         <span class="best" id="sBest"></span>
       </div>
       <div class="meter" style="margin-top:8px"><span>Card <b id="sN">1</b> of <b id="sT">12</b></span><span>Right on first try <b id="sOk">0</b></span><span>Streak <b id="sStreak">0</b></span></div>
@@ -413,8 +421,9 @@ function txt(x,y,s,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} $
     ctx.globalAlpha=.9;ctx.fillStyle=C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=1;
     if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
   ctx.fillStyle=o.color||C.ink;ctx.fillText(s,x,y+.5)}
-function chip(x,y,s,col,align){ctx.font='600 11.5px "IBM Plex Mono",monospace';ctx.textBaseline="middle";const w=ctx.measureText(s).width;
-  let x0=align==="right"?x-w-12:(align==="center"?x-w/2-6:x);ctx.fillStyle=col;rr(x0,y-9,w+12,18,9);ctx.fill();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(s,x0+6,y+.5)}
+function chip(x,y,s,col,align){ctx.font='600 12px "IBM Plex Mono",monospace';ctx.textBaseline="middle";const w=ctx.measureText(s).width;
+  let x0=align==="right"?x-w-12:(align==="center"?x-w/2-6:x);ctx.fillStyle=col;rr(x0,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=onCol(col);ctx.textAlign="left";ctx.fillText(s,x0+6,y+.5)}
+function onCol(c){const m=/^#?([0-9a-f]{6})$/i.exec((c||"").trim());if(!m)return "#fff";const v=[0,2,4].map(i=>{let x=parseInt(m[1].substr(i,2),16)/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});const L=.2126*v[0]+.7152*v[1]+.0722*v[2];return L>.18?"#10161A":"#fff"}
 function zdisc(x,y1,y2,col,lw){ctx.beginPath();const n=Math.max(2,Math.round((y2-y1)/10));for(let i=0;i<=n;i++){const y=lerp(y1,y2,i/n);ctx.lineTo(x+(i%2?4:-4),y)}ctx.strokeStyle=col;ctx.lineWidth=lw||3;ctx.lineJoin="round";ctx.stroke()}
 
 /* generic quick-check renderer */
@@ -521,16 +530,16 @@ function drawTw(){const W=800,H=540;ctx=TWC.ctx;ctx.setTransform(TWC.K,0,0,TWC.K
   // plot frame + grid
   ctx.fillStyle=C["panel-2"];ctx.fillRect(X0,YT,X1-X0,YB-YT);
   [0,.25,.5,.75,1].forEach(v=>{const y=yOf(v);line(X0,y,X1,y,C["rule-soft"],1);txt(X0-8,y,Math.round(v*100)+"%",{align:"right",size:11.5,mono:true,color:C["ink-soft"]})});
-  for(let ms=0;ms<=WIN;ms+=100){const x=X0+ms*PXMS;line(x,YT,x,YB,C["rule-soft"],1);txt(x,326,ms+"",{align:"center",size:11,mono:true,color:C["ink-soft"]})}
+  for(let ms=0;ms<=WIN;ms+=100){const x=X0+ms*PXMS;line(x,YT,x,YB,C["rule-soft"],1);txt(x,326,ms+"",{align:"center",size:12,mono:true,color:C["ink-soft"]})}
   txt((X0+X1)/2,342,"time (ms, one sweep)",{align:"center",size:11.5,color:C["ink-soft"]});
   ctx.save();ctx.translate(16,(YT+YB)/2);ctx.rotate(-Math.PI/2);txt(0,0,"Tension (% of maximum)",{align:"center",size:11.5,color:C["ink-soft"]});ctx.restore();
   ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.strokeRect(X0,YT,X1-X0,YB-YT);
   // stimulus row
-  line(X0,306,X1,306,C["rule"],1);txt(X0-8,306,"shocks",{align:"right",size:10.5,color:C["ink-soft"]});
+  line(X0,306,X1,306,C["rule"],1);txt(X0-8,306,"shocks",{align:"right",size:12,color:C["ink-soft"]});
   // phase bands (isolated twitch)
   if(showPhases&&!sim.tone)drawPhases(now,curSw);
   if(!sim.tone&&recruitedN()>0){const wf=UNITS.reduce((a,u)=>a+(sim.str>=u.thr?u.w:0),0)/WSUM;const yr=yOf(TW.pk*wf);
-    line(X0,yr,X1,yr,C.act2,1.2,[6,4]);txt(X1-6,yr-10,"height of one single twitch",{align:"right",size:11,color:C.act2,pill:true})}
+    line(X0,yr,X1,yr,C.act2,1.2,[6,4]);txt(X1-6,yr-10,"height of one single twitch",{align:"right",size:12,color:C.act2,pill:true})}
   // trace: previous sweep faded, current solid
   [[false,.3],[true,1]].forEach(([isCur,a])=>{ctx.globalAlpha=a;ctx.beginPath();let pen=false;
     for(let i=0;i<WIN;i++){const sw=bufSw[i];const ok=isCur?(sw===curSw&&i<=cur):(sw===curSw-1&&i>cur);
@@ -572,7 +581,7 @@ function drawPhases(now,curSw){
     const dur=i===0?TW.ts:(i===1?TW.tpk-TW.ts:TW.te-TW.tpk);
     txt(tx2,yy,b[3]+" ≈ "+Math.round(dur)+" ms",{align:al,size:12.5,weight:600,pill:true,color:C[b[2]],border:C[b[2]]})});
   // peak marker
-  const yp=yOf(peakF);line(xc-14,yp,xc+14,yp,C.ink,1.2);txt(xc,yp-12,"peak",{align:"center",size:11,color:C["ink-soft"]});
+  const yp=yOf(peakF);line(xc-14,yp,xc+14,yp,C.ink,1.2);txt(xc,yp-12,"peak",{align:"center",size:12,color:C["ink-soft"]});
   // stimulus label
   txt(xa,YB+28,"",{});
 }
@@ -589,7 +598,7 @@ function drawUnits(now){
     if(flash)glow(cx,cy,22,C.glow,.9);
     circ(cx,cy,5+u.w*.9,on?C.mu:C.panel,on?C.mu:C["ink-faint"],1.5);
     if(!on){ctx.setLineDash([2,2]);circ(cx,cy,5+u.w*.9,null,C["ink-faint"],1);ctx.setLineDash([])}
-    txt(cx,cy+27,on?"on":"off",{align:"center",size:10.5,mono:true,color:on?C.good:C["ink-faint"]})});
+    txt(cx,cy+27,on?"on":"off",{align:"center",size:12,mono:true,color:on?C.good:C["ink-faint"]})});
   txt(x0+12,y0+h-11,sim.tone?`Taking turns: ${n} firing right now`:`Recruited: ${n} of 10`,{size:12.5,weight:600,color:n?C.good:C.warn});
 }
 function drawCa(){
@@ -603,7 +612,7 @@ function drawCa(){
     const jig=Math.sin(sim.t*.02+i)*1.5;circ(px+jig,py,3.2,C.ca,"rgba(0,0,0,.25)",.8)}
   // bar
   const bx=x0+108,by=ty,bh=th;ctx.fillStyle=C.sunk;rr(bx,by,14,bh,4);ctx.fill();ctx.fillStyle=C.ca;rr(bx,by+bh*(1-lv),14,bh*lv+.01,4);ctx.fill();
-  txt(bx+7,by+bh+10,Math.round(lv*100)+"%",{align:"center",size:11,mono:true,color:C["ink-soft"]});
+  txt(bx+7,by+bh+10,Math.round(lv*100)+"%",{align:"center",size:12,mono:true,color:C["ink-soft"]});
   const word=lv<.06?"resting (low)":lv<.3?"low":lv<.6?"medium":"high";
   txt(x0+12,y0+h-10,"Level: "+word,{size:12,color:C["ink-soft"]});
 }
@@ -641,7 +650,7 @@ function drawTr(dt){const W=800,H=230;ctx=TRC.ctx;ctx.setTransform(TRC.K,0,0,TRC
   const x0=56,x1=786,yt=36,yb=184,px=(x1-x0)/total;
   txt(14,16,"Treppe after rest: same shock, slightly stronger twitches",{weight:600,size:13.5});
   ctx.fillStyle=C["panel-2"];ctx.fillRect(x0,yt,x1-x0,yb-yt);ctx.strokeStyle=C.rule;ctx.strokeRect(x0,yt,x1-x0,yb-yt);
-  [0,.5,1].forEach(v=>{const y=yb-(yb-yt)*v*.95;line(x0,y,x1,y,C["rule-soft"],1);txt(x0-6,y,v===0?"0":v===1?"max":"",{align:"right",size:10.5,mono:true,color:C["ink-soft"]})});
+  [0,.5,1].forEach(v=>{const y=yb-(yb-yt)*v*.95;line(x0,y,x1,y,C["rule-soft"],1);txt(x0-6,y,v===0?"0":v===1?"max":"",{align:"right",size:12,mono:true,color:C["ink-soft"]})});
   const shown=trT<0?total:Math.min(trT,total);
   ctx.beginPath();for(let t=0;t<=shown;t+=1){const i=Math.floor(t/TR_GAP);const u=t-i*TR_GAP;let f=0;if(i<TR_N)f=hill(kern(u))/TW.pk*trAmp(i);
     const x=x0+t*px,y=yb-(yb-yt)*.95*f;t===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
@@ -652,8 +661,8 @@ function drawTr(dt){const W=800,H=230;ctx=TRC.ctx;ctx.setTransform(TRC.K,0,0,TRC
   if(shown>=TR_GAP*4){ctx.beginPath();for(let i=0;i<Math.min(TR_N,Math.floor(shown/TR_GAP)+1);i++){const x=x0+(i*TR_GAP+TW.tpk)*px,y=yb-(yb-yt)*.95*trAmp(i)-8;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}
     ctx.strokeStyle=C.act2;ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);
     txt(x0+(2*TR_GAP)*px,yt+14,"staircase: each peak a bit higher",{size:12,weight:600,color:C.act2,pill:true})}
-  txt(x0,yb+30,"shocks (all the same strength, evenly spaced)",{size:11,color:C["ink-soft"]});
-  txt(x1,yb+30,"muscle relaxes fully between twitches",{size:11,color:C["ink-soft"],align:"right"});
+  txt(x0,yb+30,"shocks (all the same strength, evenly spaced)",{size:12,color:C["ink-soft"]});
+  txt(x1,yb+30,"muscle relaxes fully between twitches",{size:12,color:C["ink-soft"],align:"right"});
   if(trT>=total+600)trT=-1;
 }
 $("#trBtn").onclick=()=>{trT=0};
@@ -780,14 +789,15 @@ document.addEventListener("keydown",e=>{if(activeTab!=="tw")return;const tg=e.ta
   if(e.key==="ArrowRight")goTw(tcur+1);if(e.key==="ArrowLeft")goTw(tcur-1)});
 
 function statusText(){let h;
-  if(sim.tone)h=`<span class="pill" style="color:var(--mu)">Muscle tone</span> Small motor units take turns. Tension stays low and steady.`;
-  else if(sim.running){const fc=FCLASS[sim.freqI],c=CLASSES[fc.c];h=`<span class="pill" style="color:var(--${c.col})">${c.name}</span> ${FREQS[sim.freqI]} shocks per second. ${c.tip}`}
+  if(sim.tone)h=`<span class="pill" style="color:var(--mu-ink)">Muscle tone</span> Small motor units take turns. Tension stays low and steady.`;
+  else if(sim.running){const fc=FCLASS[sim.freqI],c=CLASSES[fc.c];h=`<span class="pill" style="color:var(--${c.col}-ink)">${c.name}</span> ${FREQS[sim.freqI]} shocks per second. ${c.tip}`}
   else h=`<span class="pill" style="color:var(--ink-faint)">Stimulator off</span> Press Start stimulator, or Single shock for one twitch.`;
   const n=recruitedN();if(!sim.tone)h+=` <span style="color:var(--ink-soft)">Strength ${sim.str}%: ${n?n+" of 10 motor units recruited":"below threshold, no motor units fire"}.</span>`;
   return h}
 let lastStatus="";
 function updStatus(){const h=statusText();if(h!==lastStatus){$("#status").innerHTML=h;lastStatus=h;
-  TWC.cv.setAttribute("aria-label","Myogram of muscle tension over time. "+$("#status").textContent)}}
+  TWC.cv.setAttribute("aria-label","Myogram of muscle tension over time. "+$("#status").textContent)}
+  if(activeTab==="tw")describe(twDesc())}
 
 /* =====================================================================
    TAB 2: LENGTH–TENSION
@@ -808,10 +818,10 @@ function zoneOf(L){
   if(L<=2.52)return{k:"Still in the optimal range",col:"zone-opt",txt:"Slightly stretched. A few heads near the middle have lost their thin filament, but overlap is still good. Tension is close to maximum."};
   if(L<3.65)return{k:"Overstretched",col:"zone-long",txt:"The filaments overlap only a little. Only the heads at the ends of the thick filament can reach actin, so few cross-bridges form and tension is low."};
   return{k:"No overlap",col:"zone-long",txt:"The thin filaments have been pulled completely past the thick filaments. No myosin head can reach actin, so no tension can be made."}}
-function updLt(){const L=Lcur;const z=zoneOf(L);const T=tensionAt(L);
+function updLt(){const L=Lcur;const z=zoneOf(L);const T=tensionAt(L);if(activeTab==="lt")describe(ltDesc());
   $("#lenOut").textContent=L.toFixed(2)+" µm · "+Math.round(L/REST*100)+"%";
   $("#len").value=Math.round(L*100);
-  const zb=$("#ltZone");zb.style.borderLeftColor=`var(--${z.col})`;zb.querySelector(".z").textContent=z.k;zb.querySelector(".z").style.color=`var(--${z.col})`;zb.querySelector("p").textContent=z.txt;
+  const zb=$("#ltZone");zb.style.borderLeftColor=`var(--${z.col})`;zb.querySelector(".z").textContent=z.k;zb.querySelector(".z").style.color=`var(--${z.col}-ink)`;zb.querySelector("p").textContent=z.txt;
   $("#roL").textContent=L.toFixed(2)+" µm";$("#roP").textContent=Math.round(L/REST*100)+"%";$("#roT").textContent=Math.round(T*100)+"%";
   LTC.cv.setAttribute("aria-label",`Sarcomere at ${L.toFixed(2)} micrometres (${Math.round(L/REST*100)}% of resting). ${z.k}. Tension about ${Math.round(T*100)}% of maximum.`)}
 $("#len").oninput=e=>{Lcur=+e.target.value/100;sweepOn=false;$("#sweepBtn").setAttribute("aria-pressed","false");Ltarget=null;updLt()};
@@ -871,16 +881,16 @@ function drawLt(dt){const W=800,H=500;ctx=LTC.ctx;ctx.setTransform(LTC.K,0,0,LTC
   txt((gx(.8*REST)+gx(1.2*REST))/2,gy1-12,"Optimal: 80–120% of resting",{align:"center",size:11.5,weight:600,color:C["zone-opt"]});
   txt(gx(1.56),gy(.15),"Too short",{align:"center",size:12,weight:600,color:C["zone-short"]});
   txt(gx(3.15),gy0+40,"Overstretched",{align:"center",size:12,weight:600,color:C["zone-long"]});
-  [0,.5,1].forEach(v=>{line(gx0,gy(v),gx1,gy(v),C["rule-soft"],1);txt(gx0-6,gy(v),Math.round(v*100)+"%",{align:"right",size:11,mono:true,color:C["ink-soft"]})});
-  for(let v=1.5;v<=3.5+1e-6;v+=.5){line(gx(v),gy1,gx(v),gy1+5,C.ink,1);txt(gx(v),gy1+14,v.toFixed(1),{align:"center",size:11,mono:true,color:C["ink-soft"]})}
-  [60,80,100,120,140,160,180].forEach(p=>{const v=p/100*REST;if(v<Lmin||v>Lmax)return;txt(gx(v),gy1+32,p+"%",{align:"center",size:11,mono:true,color:C["ink-faint"]})});
-  txt(gx0-6,gy1+14,"µm",{align:"right",size:11,mono:true,color:C["ink-soft"]});txt(gx0-6,gy1+32,"rest",{align:"right",size:11,mono:true,color:C["ink-faint"]});
+  [0,.5,1].forEach(v=>{line(gx0,gy(v),gx1,gy(v),C["rule-soft"],1);txt(gx0-6,gy(v),Math.round(v*100)+"%",{align:"right",size:12,mono:true,color:C["ink-soft"]})});
+  for(let v=1.5;v<=3.5+1e-6;v+=.5){line(gx(v),gy1,gx(v),gy1+5,C.ink,1);txt(gx(v),gy1+14,v.toFixed(1),{align:"center",size:12,mono:true,color:C["ink-soft"]})}
+  [60,80,100,120,140,160,180].forEach(p=>{const v=p/100*REST;if(v<Lmin||v>Lmax)return;txt(gx(v),gy1+32,p+"%",{align:"center",size:12,mono:true,color:C["ink-faint"]})});
+  txt(gx0-6,gy1+14,"µm",{align:"right",size:12,mono:true,color:C["ink-soft"]});txt(gx0-6,gy1+32,"rest",{align:"right",size:12,mono:true,color:C["ink-faint"]});
   txt(gx1,gy1+50,"sarcomere length",{align:"right",size:11.5,color:C["ink-soft"]});
   ctx.save();ctx.translate(18,(gy0+gy1)/2);ctx.rotate(-Math.PI/2);txt(0,0,"Tension",{align:"center",size:11.5,color:C["ink-soft"]});ctx.restore();
   ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.strokeRect(gx0,gy0,gx1-gx0,gy1-gy0);
   ctx.beginPath();for(let v=Lmin;v<=Lmax;v+=.01){const x=gx(v),y=gy(tensionAt(v));v===Lmin?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.strokeStyle=C.ink;ctx.lineWidth=2.4;ctx.stroke();
   // plateau label
-  line(gx(2.0),gy(1)-6,gx(2.25),gy(1)-6,C["zone-opt"],2);txt(gx(2.125),gy(1)-16,"peak 2.0–2.25 µm",{align:"center",size:11,color:C["zone-opt"],weight:600});
+  line(gx(2.0),gy(1)-6,gx(2.25),gy(1)-6,C["zone-opt"],2);txt(gx(2.125),gy(1)-16,"peak 2.0–2.25 µm",{align:"center",size:12,color:C["zone-opt"],weight:600});
   // current point
   const T=tensionAt(L),px=gx(L),py=gy(T);
   line(px,gy1,px,py,C.accent,1.2,[4,3]);line(gx0,py,px,py,C.accent,1.2,[4,3]);
@@ -942,10 +952,10 @@ function drawFt(dt){const W=800,H=560;ctx=FTC.ctx;ctx.setTransform(FTC.K,0,0,FTC
   const gx0=70,gx1=780,gy0=360,gy1=520;
   txt(16,338,"Fatigue test: repeated contractions over about 2 minutes (simplified)",{weight:600,size:13.5});
   ctx.fillStyle=C["panel-2"];ctx.fillRect(gx0,gy0,gx1-gx0,gy1-gy0);ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.strokeRect(gx0,gy0,gx1-gx0,gy1-gy0);
-  [0,.5,1].forEach(v=>{const y=gy1-(gy1-gy0)*v;line(gx0,y,gx1,y,C["rule-soft"],1);txt(gx0-22,y,v===0?"0":"",{align:"right",size:10.5,mono:true,color:C["ink-soft"]})});
+  [0,.5,1].forEach(v=>{const y=gy1-(gy1-gy0)*v;line(gx0,y,gx1,y,C["rule-soft"],1);txt(gx0-22,y,v===0?"0":"",{align:"right",size:12,mono:true,color:C["ink-soft"]})});
   ctx.save();ctx.translate(16,(gy0+gy1)/2);ctx.rotate(-Math.PI/2);txt(0,0,"Tension",{align:"center",size:11.5,color:C["ink-soft"]});ctx.restore();
   txt(gx1,gy1+16,"time →",{align:"right",size:11.5,color:C["ink-soft"]});
-  if(fatT>=0)fatT=Math.min(1,fatT+dt/7);
+  if(fatT>=0){const was=fatT;fatT=Math.min(1,fatT+dt/7);if(was<1&&fatT>=1)describe(ftDesc())}
   const prog=fatT<0?1:fatT;const px1=640;
   line(px1,gy0,px1,gy1,C.rule,1);
   const ends=[];
@@ -959,11 +969,11 @@ function drawFt(dt){const W=800,H=560;ctx=FTC.ctx;ctx.setTransform(FTC.K,0,0,FTC
   ends.forEach(e=>{const lab=e.k+(e.k==="FG"?": tired out":e.k==="FO"?": drops slowly":": keeps going");
     txt(px1+10,e.y,lab,{size:12,weight:600,pill:true,color:e.k==="FG"?C.ink:e.col,border:e.col})});
   // start labels
-  if(prog>0){[["FG",1],["FO",.62],["SO",.32]].forEach(([k,v])=>txt(gx0+4,gy1-(gy1-gy0)*v*.9,k,{align:"right",size:10.5,mono:true,weight:600,color:C["ink-soft"]}))}
+  if(prog>0){[["FG",1],["FO",.62],["SO",.32]].forEach(([k,v])=>txt(gx0+4,gy1-(gy1-gy0)*v*.9,k,{align:"right",size:12,mono:true,weight:600,color:C["ink-soft"]}))}
   txt(gx0,gy1+16,"Each dot = tension of one contraction",{size:11.5,color:C["ink-soft"]});
   if(fatT<0||prog>=1)txt(px1-10,gy0+12,"FG starts strongest but tires fast. SO is weakest but barely tires.",{align:"right",size:11.5,color:C["ink-soft"]});
 }
-$("#fatBtn").onclick=()=>{fatT=0};
+$("#fatBtn").onclick=()=>{fatT=0;describe(ftDesc())};
 
 /* sorting game */
 const BK={SO:["Slow oxidative (SO)","so","Red, slow, tireless"],FO:["Fast oxidative (FO)","fo","Fast, mostly aerobic"],FG:["Fast glycolytic (FG)","fg","Pale, powerful, tires fast"]};
@@ -1013,8 +1023,32 @@ function sEnd(){$("#sBar").style.width="100%";if(sOk>getBest())setBest(sOk);show
    tabs + loop
    ===================================================================== */
 let activeTab="tw";
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{activeTab=t.dataset.tab;document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
-  ["tw","lt","ft"].forEach(k=>$("#tab-"+k).hidden=k!==activeTab);fitAll()});
+const TABS=[...document.querySelectorAll(".tab")];
+function selTab(t,focus){activeTab=t.dataset.tab;TABS.forEach(x=>{x.setAttribute("aria-selected",x===t);x.tabIndex=x===t?0:-1});
+  ["tw","lt","ft"].forEach(k=>$("#tab-"+k).hidden=k!==activeTab);fitAll();placeDesc();lastDesc="";describe(activeTab==="tw"?twDesc():activeTab==="lt"?ltDesc():ftDesc());if(focus)t.focus()}
+TABS.forEach((t,i)=>{t.onclick=()=>selTab(t);t.onkeydown=e=>{let j=-1;if(e.key==="ArrowRight")j=(i+1)%TABS.length;else if(e.key==="ArrowLeft")j=(i-1+TABS.length)%TABS.length;else if(e.key==="Home")j=0;else if(e.key==="End")j=TABS.length-1;if(j>=0){e.preventDefault();selTab(TABS[j],true)}}});
+/* picture descriptions (Describe the picture panel follows the open tab) */
+let lastDesc="";
+function describe(t){if(t===lastDesc)return;lastDesc=t;if(window.gkDescribe)window.gkDescribe(t)}
+function placeDesc(){const d=document.getElementById("gk-desc");if(!d)return;const cv={tw:"cvTw",lt:"cvLt",ft:"cvFt"}[activeTab];const h=document.getElementById(cv).closest(".canvas-holder");if(h.nextSibling!==d)h.parentNode.insertBefore(d,h.nextSibling)}
+function twDesc(){const f=FREQS[sim.freqI],n=recruitedN();let m;
+  const base="A myogram graph shows muscle tension, from 0 to 100% of maximum, across a 600 millisecond sweep: a blue line is drawn from left to right, and purple tick marks along the bottom show each shock. ";
+  const panels=" Under the graph, three panels show the ten motor units as circles (green and labelled on when recruited, grey and labelled off when not), a tank of orange Ca²⁺ dots with a level bar, and one sarcomere whose Z discs move inward and whose myosin heads turn green as cross-bridges form.";
+  if(sim.tone)m="The muscle tone demo is on: the six smallest motor units flash on in turn, so the line stays low and fairly steady instead of making separate twitches.";
+  else if(n===0)m="The strength is below threshold, so no motor units fire and the line stays flat at 0% even when a shock tick appears.";
+  else if(!sim.running)m="The stimulator is off, so the line is flat at 0% except for a single hump each time you press Single shock.";
+  else{const c=FCLASS[sim.freqI].c;const burst=sim.burst&&f>=5?" Shocks come in bursts, so the line rises at the start of each burst and falls back to zero at the end.":"";
+    m=`The stimulator fires ${f} shocks per second at ${sim.str}% strength, recruiting ${n} of 10 motor units. `+
+    (c===0?"Each shock makes a separate hump that rises and falls back to zero before the next shock"+(showPhases?"; shaded purple, red and blue bands mark the latent, contraction and relaxation phases of one twitch.":"."):
+     c===1?"Each new twitch starts before the last one has relaxed, so the humps stack up and climb above the dashed orange line that marks the height of one single twitch.":
+     c===2?"The line climbs to a high level and stays there with small ripples, one ripple for each shock (unfused tetanus).":
+     "The line rises to a smooth, flat plateau near the top with no ripples (fused tetanus).")+burst}
+  return base+m+panels}
+function ltDesc(){const L=Lcur,z=zoneOf(L),T=Math.round(tensionAt(L)*10)*10;
+  const look={"Too short":"the thick filaments are pushed up against the Z discs and the thin filaments from both sides pile into each other in the middle, so most heads are grey","A bit short":"the thin filaments from the two sides overlap each other in the middle","Optimal (peak)":"every myosin head lies next to a thin filament and is green","Still in the optimal range":"a few heads near the middle have lost their thin filament and turned grey, but most are still green","Overstretched":"the filaments barely overlap, so only the heads at the outer ends of the thick filaments are green","No overlap":"the thin filaments are pulled completely past the thick filaments and every head is grey"}[z.k];
+  return `At the top, one sarcomere is drawn from the side: red-orange thin filaments reach inward from zigzag Z discs at each end, and blue thick filaments sit in the middle with small myosin heads; green heads can grab actin, grey heads have nothing to grab, and the overlap zone is shaded green. The sarcomere is about ${(Math.round(L*10)/10).toFixed(1)} µm long (${z.k.toLowerCase()}): ${look}. Below, the length–tension curve rises from zero at short lengths to a flat peak between 2.0 and 2.25 µm inside a green band marked 80–120% of resting, then slopes down to zero when overstretched; a blue dot on the curve marks the current length at about ${T}% tension.`}
+function ftDesc(){const st=fatT<0?"":fatT<1?" The fatigue test is running, and the three lines are being drawn from left to right.":" The fatigue test has finished: FG is labelled tired out, FO drops slowly, and SO keeps going.";
+  return "Three round fiber cross-sections sit side by side, each ringed by small red capillaries, with tiny brown mitochondria and blue glycogen dots inside: a small dark red SO fiber with many mitochondria and capillaries, a medium pinkish FO fiber with many mitochondria and some glycogen, and a large pale FG fiber with few mitochondria, few capillaries and lots of glycogen. Below, a fatigue graph plots the tension of repeated contractions as dotted lines: FG (greyish tan) starts highest but drops quickly to near the bottom, FO (pink) starts in the middle and falls slowly, and SO (dark red) starts lowest but stays almost level."+st}
 function fitAll(){[TWC,TRC,LTC,FTC].forEach(c=>c.fit())}
 window.addEventListener("resize",fitAll);
 let last=performance.now();
@@ -1031,6 +1065,7 @@ window.__advance=ms=>{advance(ms)};
 window.__sim=sim;window.__setL=v=>{Lcur=v;Ltarget=null;sweepOn=false;updLt()};
 window.__setT=v=>{if(activeTab==="ft")fatT=v;else trT=v};
 buildTwDots();buildLtChecks();fitAll();goTw(0);updLt();sStart();requestAnimationFrame(frame);
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(placeDesc,0));else setTimeout(placeDesc,0);
 })();
 </script>
 </body>

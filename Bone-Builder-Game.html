@@ -11,7 +11,7 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;
+  --warn:#9A5524;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;
   --pI:#7B5CC9;--pE:#1B6E88;--pG:#2F8A57;--pF:#B4462F;--pM:#57666F;
   /* tissue palette */
   --emb:#EFEAF3;--mes:#9C8BB8;--ob:#2A9D8F;--ocl:#7B5CC9;--osteoid:#F3E6C4;
@@ -55,6 +55,8 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .wrap{max-width:1180px;margin:0 auto;padding:16px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+/* a11y: a tab that was selected keeps site-kit's dark-on-light class after it is deselected; give it back its normal text colour */
+.tab[aria-selected="false"].gk-oninv{color:var(--ink)!important}
 .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
 .tbtn:hover{border-color:var(--accent)}
@@ -146,7 +148,12 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
 footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+/* a11y: in dark mode the accent is light, so selected/pressed controls use dark text (this also stops
+   site-kit's contrast fixer from leaving a stale dark-text class behind when the selection moves) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.tab[aria-selected="true"]){color:#0B1A20}}
+:root[data-theme="dark"] :is(.tab[aria-selected="true"]){color:#0B1A20}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -378,12 +385,33 @@ const P={
             ["f4","Remodeling","Osteoclasts trim the extra bone and compact bone replaces spongy bone along the shaft. This takes months."]]}
 };
 const ORDER=["I","E","G","F"];
+/* a11y: plain descriptions of what each picture shows (no stage names, so Game 3 stays fair) */
+const VIS={
+ i1:"Small purple star-shaped cells are scattered over a lilac background. A red line (a capillary) crosses the middle, and a dashed circle surrounds a ring of round teal cells gathered next to it.",
+ i2:"A pale yellow oval sits in a lilac field, ringed by round teal cells. A few small brown cells are trapped inside the oval, which is speckled as it hardens.",
+ i3:"A tangled mesh of tan struts fills the middle, wrapped around wavy red blood vessels. Brown bands with purple star-shaped cells run along the top and bottom edges.",
+ i4:"Two solid tan plates run along the top and bottom. Between them is a tan mesh of struts filled with pink, and thin brown bands cover the outer surfaces.",
+ e1:"A light blue dumbbell shape with rounded ends and a narrow middle, dotted with small blue cells and outlined by a thin darker blue edge.",
+ e2:"The light blue dumbbell has larger, darker blue cells in its middle, and a tan band wraps around the outside of the narrow shaft.",
+ e3:"A red blood vessel enters the middle of the blue dumbbell from above, through a tan band around the shaft. Where it ends, a pink patch holds a tan mesh of struts.",
+ e4:"The shaft is now tan on the outside with pink inside; tan struts spread toward both blue ends, and two purple cells with several nuclei sit in an open space in the middle.",
+ e5:"Red blood vessels enter the two rounded blue ends from the sides, and patches of pink with tan struts grow inside each end. The shaft has an open pink middle with purple cells.",
+ g1:"A tan band of bone runs across the top. Below it, a light blue field holds a few small, scattered blue cells with lots of space between them.",
+ g2:"A light blue field filled with neat vertical columns of small, flat blue cells stacked on top of each other like coins.",
+ g3:"A light blue field with columns of blue cells that get larger and rounder from the top of the picture to the bottom.",
+ g4:"Rows of large, empty-looking oval outlines sit over tan bone at the bottom. Tan pillars rise between the columns with teal cells on them, and red vessels grow up from below.",
+ e6:"The ends of the bone are pink with tan struts and are capped by a thin blue rim and a brown outline. A narrow blue plate separates each end from the tan shaft, which has an open pink middle.",
+ f1:"A tan bone shaft runs across the picture with a break in the middle. A large dark red oval covers the break, and grey X marks show dead cells at the broken ends.",
+ f2:"A pale purple zigzag band fills the break in the tan shaft, with a thin red vessel inside it, and a light blue bulge with small blue cells wraps the outside of the break.",
+ f3:"A pink bulge surrounds the break, and inside it a mesh of tan struts bridges the two ends of the tan shaft.",
+ f4:"A smooth tan bulge surrounds the old break, with a faint dashed line where the break was. Three small purple cells sit on the edge of the bulge."};
+let nDesc="";function gkD(t){if(window.gkDescribe)window.gkDescribe(t)}
 function art(id,labels,aria){return wrap(ART[id](labels),aria||"diagram")}
 
 /* ================= STUDY TAB ================= */
 function buildStudy(){
   $("#study").innerHTML=ORDER.map(k=>{const p=P[k];return `<div class="card proc"><h2><i style="background:var(${p.col})"></i>${p.name}</h2><p class="where">${p.where}</p>
-   <div class="strip">${p.stages.map((s,i)=>`<div class="frame"><div class="n">Stage ${i+1}</div>${art(s[0],true,s[1])}<b>${s[1]}</b><p>${s[2]}</p></div>`).join("")}</div></div>`}).join("");
+   <div class="strip">${p.stages.map((s,i)=>`<div class="frame"><div class="n">Stage ${i+1}</div>${art(s[0],true,s[1]+". "+VIS[s[0]])}<b>${s[1]}</b><p>${s[2]}</p></div>`).join("")}</div></div>`}).join("");
 }
 
 /* ================= GAME 1: ORDER ================= */
@@ -397,9 +425,9 @@ function answer(){return P[ORDER[RI]].stages.map(s=>s[0])}
 function newRound(){const ans=answer();let o;do{o=shuffle(ans)}while(o.filter((c,i)=>c===ans[i]).length>1);
   list.innerHTML="";o.forEach(id=>list.appendChild(makeItem(id)));
   const p=P[ORDER[RI]];$("#instr").innerHTML=`<b>${p.name}.</b> ${p.where} Put the stages in order, first to last.`;
-  checks=0;hints=0;solved=false;setMsg("","");$("#film").innerHTML="";renumber();buildRounds();applyPics()}
+  checks=0;hints=0;solved=false;setMsg("","");filmTimer++;$("#film").innerHTML="";renumber();buildRounds();applyPics()}
 function makeItem(id){const li=document.createElement("li");li.className="item";li.dataset.id=id;const st=stageById[id];
-  li.innerHTML=`<span class="pos"></span><span class="thumb">${art(id,false,"stage picture")}</span><span class="txt">${st.text}</span><span class="mv"><button type="button" aria-label="Move up">▲</button><button type="button" aria-label="Move down">▼</button></span>`;
+  li.innerHTML=`<span class="pos"></span><span class="thumb">${art(id,false,"Picture: "+VIS[id])}</span><span class="txt">${st.text}</span><span class="mv"><button type="button" aria-label="Move up">▲</button><button type="button" aria-label="Move down">▼</button></span>`;
   const [up,dn]=li.querySelectorAll(".mv button");
   up.onclick=()=>{const p=li.previousElementSibling;if(p&&!solved){list.insertBefore(li,p);changed();up.focus()}};
   dn.onclick=()=>{const n=li.nextElementSibling;if(n&&!solved){list.insertBefore(n,li);changed();dn.focus()}};
@@ -430,9 +458,11 @@ function win(){solved=true;const res=store.get("bb-done")||{};res[ORDER[RI]]=1;s
   const stars=hints===0&&checks<=2?3:(hints<=1?2:1);
   setMsg(`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Nice work!</b> Checks used: ${checks}. Hints used: ${hints}. Watch it play out below.`+(RI<ORDER.length-1?` <button class="tbtn" id="nextRound" type="button" style="margin-left:6px">Next round →</button>`:""),"good");
   const nb=$("#nextRound");if(nb)nb.onclick=()=>{RI++;newRound()};buildRounds();film()}
-let filmTimer=null;
-function film(){const p=P[ORDER[RI]];$("#film").innerHTML=`<div class="strip">${p.stages.map((s,i)=>`<div class="frame" data-k="${i}"><div class="n">Stage ${i+1}</div>${art(s[0],true,s[1])}<b>${s[1]}</b></div>`).join("")}</div>`;
-  clearInterval(filmTimer);let k=0;const step=()=>{document.querySelectorAll("#film .frame").forEach((fr,j)=>fr.classList.toggle("on",j===k));k=(k+1)%p.stages.length};step();filmTimer=setInterval(step,1500)}
+let filmTimer=0;
+function film(){const p=P[ORDER[RI]];$("#film").innerHTML=`<div class="strip">${p.stages.map((s,i)=>`<div class="frame" data-k="${i}"><div class="n">Stage ${i+1}</div>${art(s[0],true,s[1]+". "+VIS[s[0]])}<b>${s[1]}</b></div>`).join("")}</div>`;
+  /* the highlight steps every 1.5 s on the site-kit clock (rAF timestamps), so Pause animations freezes it */
+  const my=++filmTimer;let k=-1,t0=null;const step=ts=>{if(my!==filmTimer)return;if(t0===null)t0=ts;const kk=Math.floor((ts-t0)/1500)%p.stages.length;
+    if(kk!==k){k=kk;document.querySelectorAll("#film .frame").forEach((fr,j)=>fr.classList.toggle("on",j===k))}requestAnimationFrame(step)};requestAnimationFrame(step)}
 
 /* ================= GAME 2: CLASSIFY ================= */
 const BK={I:["Intramembranous","--pI"],E:["Endochondral","--pE"],F:["Fracture healing","--pF"],M:["More than one of these","--pM"]};
@@ -478,7 +508,7 @@ let nset=[],ni=0,nScore=0,nStreak=0,nFirst=true;
 function nStart(){const all=Object.keys(stageById);nset=shuffle(all).slice(0,12);ni=0;nScore=0;nStreak=0;$("#nT").textContent=nset.length;nShow()}
 function nShow(){const id=nset[ni],st=stageById[id];nFirst=true;
   $("#nN").textContent=ni+1;$("#nScore").textContent=nScore;$("#nStreak").textContent=nStreak;$("#nBar").style.width=(ni/nset.length*100)+"%";
-  $("#nPic").innerHTML=art(id,false,"Unlabeled diagram to identify");$("#nQ2wrap").hidden=true;$("#nWhy").className="why";$("#nNext").hidden=true;
+  $("#nPic").innerHTML=art(id,false,"Unlabeled diagram to identify. "+VIS[id]);nDesc="Picture "+(ni+1)+" of "+nset.length+", unlabeled. "+VIS[id];if(!$("#tab-nts").hidden)gkD(nDesc);$("#nQ2wrap").hidden=true;$("#nWhy").className="why";$("#nNext").hidden=true;
   const q1=$("#nQ1");q1.innerHTML="";
   ORDER.forEach(k=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=P[k].name;
     b.onclick=()=>{if(q1.dataset.done)return;if(k===st.proc){b.classList.add("right");q1.dataset.done=1;nQ2(id)}else{b.classList.add("wrong");nFirst=false}};q1.appendChild(b)});
@@ -487,7 +517,7 @@ function nQ2(id){const st=stageById[id];$("#nQ2wrap").hidden=false;const q2=$("#
   P[st.proc].stages.forEach((s,i)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=(i+1)+". "+s[1];
     b.onclick=()=>{if(q2.dataset.done)return;if(s[0]===id){b.classList.add("right");q2.dataset.done=1;
         if(nFirst){nScore++;nStreak++}else nStreak=0;$("#nScore").textContent=nScore;$("#nStreak").textContent=nStreak;
-        $("#nPic").innerHTML=art(id,true,s[1]);
+        $("#nPic").innerHTML=art(id,true,s[1]+", labeled. "+VIS[id]);nDesc="Labeled picture of "+s[1]+". "+VIS[id];gkD(nDesc);
         $("#nWhy").innerHTML=(nFirst?"<b>Perfect.</b> ":"<b>Got it.</b> ")+s[2];$("#nWhy").className="why show";
         $("#nNext").hidden=false;$("#nNext").textContent=ni===nset.length-1?"See score":"Next picture →"}
       else{b.classList.add("wrong");nFirst=false}};q2.appendChild(b)})}
@@ -496,7 +526,11 @@ $("#nRestart").onclick=nStart;
 
 /* ================= tabs / theme ================= */
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
-  ["study","sort","class","nts"].forEach(n=>$("#tab-"+n).hidden=t.dataset.tab!==n)});
+  ["study","sort","class","nts"].forEach(n=>$("#tab-"+n).hidden=t.dataset.tab!==n);
+  if(t.dataset.tab==="nts")gkD(nDesc);
+  else if(t.dataset.tab==="sort")gkD("Stage cards for "+P[ORDER[RI]].name+", in a shuffled list. Each card has a small picture and a sentence, with up and down arrow buttons to move it.");
+  else if(t.dataset.tab==="study")gkD("Four rows of labeled pictures, one row for each process: intramembranous ossification, endochondral ossification, growth at the epiphyseal plate and fracture healing.");
+  else gkD("A statement card with four process buttons below it: Intramembranous, Endochondral, Fracture healing, and More than one of these.")});
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark")};
 
 buildStudy();newRound();cStart();nStart();

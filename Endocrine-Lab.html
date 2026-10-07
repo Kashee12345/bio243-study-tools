@@ -146,6 +146,8 @@ canvas{display:block;width:100%;touch-action:manipulation}
 .opt:hover{border-color:var(--accent)}
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.right::before{content:"\2713  ";font-weight:700;color:var(--good)}
+.opt.wrong::before{content:"\2717  ";font-weight:700}
 .opt .mk{font-family:var(--mono);font-weight:600;margin-right:6px}
 .fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
 .fb.show{display:block}
@@ -184,13 +186,17 @@ sub,sup{line-height:0}
 .seg button{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:5px 11px;cursor:pointer;font-size:13.5px}
 .seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
 .readouts{width:100%;border-collapse:collapse;font-size:14px}
-.readouts td{padding:5px 4px;border-top:1px solid var(--rule-soft)}
+.readouts td,.readouts th{padding:5px 4px;border-top:1px solid var(--rule-soft)}
+.readouts th{text-align:left;font-weight:inherit}
 .readouts td:last-child{text-align:right;font-family:var(--mono);font-weight:600;white-space:nowrap}
 .now{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:9px 11px;font-size:14px;min-height:62px}
 .chal{list-style:none;padding:0;margin:0}
 .chal li{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-top:1px solid var(--rule-soft);font-size:14px}
 .chal li .bx{flex:0 0 auto;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:12px;font-family:var(--mono)}
 .chal li.done .bx{background:var(--good);border-color:var(--good);color:#fff}
+/* dark mode: dark text on the light accent, so the shared contrast fixer never has to step in */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) :is(.tab[aria-selected="true"],.btn,.chip.cur,.chip.done.cur,.seg button[aria-pressed="true"],.chal li.done .bx){color:#0B1A20}}
+:root[data-theme=dark] :is(.tab[aria-selected="true"],.btn,.chip.cur,.chip.done.cur,.seg button[aria-pressed="true"],.chal li.done .bx){color:#0B1A20}
 .chal li.done span.t{color:var(--ink-soft)}
 .chart-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--panel);margin-top:8px}
 .clock{font-family:var(--mono);font-size:13.5px;color:var(--ink)}
@@ -206,19 +212,31 @@ sub,sup{line-height:0}
 .ring{fill:transparent;stroke:transparent;stroke-width:2}
 .hs.ok .ring{stroke:var(--good);stroke-width:3.5;opacity:1}
 .hs.bad .ring{stroke:var(--warn);stroke-width:3.5;opacity:1}
-.hs.hint .ring{stroke:var(--gold);stroke-width:4;opacity:1;animation:pulse 1s infinite}
-@keyframes pulse{50%{stroke-width:8}}
-.svglab{font-family:var(--sans);font-size:11px;fill:var(--ink-soft);pointer-events:none}
+.hs.hint .ring{stroke:var(--gold);stroke-width:4;opacity:1}
+.svglab{font-family:var(--sans);font-size:12px;fill:var(--ink-soft);pointer-events:none}
 .namelist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .namelist button{border:1px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:4px 10px;font-size:13px;cursor:pointer}
 .namelist button:hover{border-color:var(--accent)}
 .namelist button.ok{border-color:var(--good);background:var(--good-wash)}
 .namelist button.bad{border-color:var(--warn);background:var(--warn-wash)}
+.namelist button.ok::after{content:" \2713"}.namelist button.bad::after{content:" \2717"}
 details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin-top:8px}
 .legend i.tri{clip-path:polygon(50% 0,100% 100%,0 100%);border-radius:0;width:12px;height:11px}
 .legend i.hex{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0;width:13px;height:12px}
 .legend i.sq{border-radius:2px}
 .legend i.dia{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+</style>
+<script src="site-kit.js"></script>
+<script>
+/* a11y: canvas words are drawn at 12 logical px or larger (labels of 1-2 characters keep their size) */
+(function(){try{const P=CanvasRenderingContext2D.prototype;if(P.__gkMin)return;P.__gkMin=1;
+function big(c,t){const f=c.font,m=/(\d+(?:\.\d+)?)px/.exec(f);if(m&&+m[1]<12&&String(t).length>2){c.font=f.replace(m[0],"12px");return f}return null}
+["fillText","strokeText","measureText"].forEach(k=>{const o=P[k];P[k]=function(t){const f=big(this,t);try{return o.apply(this,arguments)}finally{if(f)this.font=f}}})}catch(e){}})();
+</script>
+<style id="gk-a11y-fix">
+/* Narrow screens: the site kit hides the tool-button labels with display:none, which leaves the buttons
+   without a name. Keep the labels for screen readers but hide them visually. */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -241,6 +259,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
 
   <!-- PART 1 -->
   <section id="tab-axis" role="tabpanel" aria-labelledby="tabbtn-axis">
+    <h2 class="gk-sr">Part 1: Hormone Axis Simulator</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvAxis" role="img" aria-label="Hormone axis simulation"></canvas></div>
@@ -254,7 +273,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
         <div class="chart-holder"><canvas id="cvAxChart" role="img" aria-label="Live chart of hormone levels"></canvas></div>
         <p class="small" style="margin:6px 2px 0">Levels are relative: 1.0&times; is normal, and the green band is the healthy range. Time is sped up a lot.</p>
       </div>
-      <aside class="card side ctl" aria-live="polite">
+      <aside class="card side ctl">
         <h3>Choose an axis</h3>
         <div class="seg" id="axisSeg">
           <button type="button" data-ax="thy" aria-pressed="true">Thyroid: TRH &rarr; TSH &rarr; T3/T4</button>
@@ -270,7 +289,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
           <button type="button" data-tu="gland" aria-pressed="false" id="tuGland">Thyroid</button>
         </div>
         <h3>Live readouts</h3>
-        <table class="readouts" id="axRead"></table>
+        <table class="readouts" id="axRead" aria-label="Live readouts for the hormone axis"><tr><th scope="row">Readouts</th><td>loading</td></tr></table>
         <h3>What is happening</h3>
         <div class="now" id="axNow"></div>
         <h3>Challenges <span class="totstars" id="axStars"></span></h3>
@@ -283,6 +302,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
 
   <!-- PART 2 -->
   <section id="tab-glu" role="tabpanel" aria-labelledby="tabbtn-glu" hidden>
+    <h2 class="gk-sr">Part 2: Blood Glucose Simulator</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvGlu" role="img" aria-label="Blood glucose simulation"></canvas></div>
@@ -295,7 +315,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
         <div class="chart-holder"><canvas id="cvGluChart" role="img" aria-label="Live chart of blood glucose, insulin and glucagon"></canvas></div>
         <p class="small" style="margin:6px 2px 0">Glucose in mg/dL (normal fasting range about 70 to 110). Insulin and glucagon are relative (1.0&times; = normal fasting level). A simplified teaching model; time is sped up.</p>
       </div>
-      <aside class="card side ctl" aria-live="polite">
+      <aside class="card side ctl">
         <h3>Do something</h3>
         <div class="btnrow">
           <button class="btn big" id="gMeal" type="button">Eat a meal</button>
@@ -307,7 +327,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
         <label class="tog" id="tgT2"><input type="checkbox" id="gT2"><span>Type 2 diabetes<small>Insulin resistance: cells respond weakly</small></span></label>
         <div class="btnrow"><button class="tbtn" id="gInj" type="button">Give an insulin injection</button><button class="tbtn" id="gReset" type="button">Reset to healthy</button></div>
         <h3>Live readouts</h3>
-        <table class="readouts" id="gRead"></table>
+        <table class="readouts" id="gRead" aria-label="Live readouts for blood glucose"><tr><th scope="row">Readouts</th><td>loading</td></tr></table>
         <h3>What is happening</h3>
         <div class="now" id="gNow"></div>
         <h3>Try this <span class="totstars" id="gStars"></span></h3>
@@ -359,6 +379,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
 
   <!-- PART 4 -->
   <section id="tab-match" role="tabpanel" aria-labelledby="tabbtn-match" hidden>
+    <h2 class="gk-sr">Part 4: Gland Matcher</h2>
     <div class="rounds" id="mRounds" aria-label="Rounds"></div>
     <div class="grid">
       <div class="card stage">
@@ -671,10 +692,10 @@ function axCheck(){let changed=false;AXCH[AS.ax].forEach(c=>{if(!AS.done.include
 function axReadouts(){
   const s=AS,n=AXES[s.ax].names,thy=s.ax==="thy";
   const rows=[[n[0]+" (hypothalamus)",s.R],[n[1]+" (anterior pituitary)",s.P],[n[2]+(s.pill?" (gland + pill)":""),s.Gt]];
-  let h=rows.map(r=>`<tr><td>${r[0]}</td><td>${fmtX(r[1])} ${arrowWord(r[1])}</td></tr>`).join("");
-  h+=`<tr><td>${AXES[s.ax].gland} size</td><td>${fmtX(s.size)}${s.size>=1.4?(thy?" goiter":" enlarged"):s.size<.75?" shrunken":""}</td></tr>`;
-  if(thy){h+=`<tr><td>Metabolic rate</td><td>${arrowWord(s.Gt)}</td></tr><tr><td>Heart rate</td><td>${Math.round(72*(.8+.2*clamp(s.Gt,.3,3.5)))} bpm</td></tr><tr><td>Body temperature</td><td>${(37+.4*(clamp(s.Gt,.3,3.5)-1)).toFixed(1)} °C</td></tr>`}
-  else{h+=`<tr><td>Blood glucose</td><td>${Math.round(90+18*(clamp(s.Gt,.2,4)-1))} mg/dL</td></tr><tr><td>Inflammation / immune activity</td><td>${s.Gt>1.4?"suppressed":s.Gt<.6?"poorly controlled":"normal"}</td></tr>`}
+  let h=rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${fmtX(r[1])} ${arrowWord(r[1])}</td></tr>`).join("");
+  h+=`<tr><th scope="row">${AXES[s.ax].gland} size</th><td>${fmtX(s.size)}${s.size>=1.4?(thy?" goiter":" enlarged"):s.size<.75?" shrunken":""}</td></tr>`;
+  if(thy){h+=`<tr><th scope="row">Metabolic rate</th><td>${arrowWord(s.Gt)}</td></tr><tr><th scope="row">Heart rate</th><td>${Math.round(72*(.8+.2*clamp(s.Gt,.3,3.5)))} bpm</td></tr><tr><th scope="row">Body temperature</th><td>${(37+.4*(clamp(s.Gt,.3,3.5)-1)).toFixed(1)} °C</td></tr>`}
+  else{h+=`<tr><th scope="row">Blood glucose</th><td>${Math.round(90+18*(clamp(s.Gt,.2,4)-1))} mg/dL</td></tr><tr><th scope="row">Inflammation / immune activity</th><td>${s.Gt>1.4?"suppressed":s.Gt<.6?"poorly controlled":"normal"}</td></tr>`}
   $("#axRead").innerHTML=h;
   // narrative
   const parts=[];
@@ -810,7 +831,7 @@ function gTick(realDt){
 }
 function gReadouts(){const s=GS,f=s.flows;const st=s.G>180?"very high":s.G>110?"high":s.G<70?"low":"normal";
   const fasting=fastLeft>0;
-  $("#gRead").innerHTML=`<tr><td>Blood glucose</td><td>${Math.round(s.G)} mg/dL ${st}</td></tr><tr><td>Insulin</td><td>${fmtX(f.Itot||1)}${GO.type1&&!(s.inj>.05)?" none made":""}</td></tr><tr><td>Glucagon</td><td>${fmtX(s.Gn)}</td></tr><tr><td>Liver glycogen</td><td>${Math.round(s.gly)}%</td></tr><tr><td>Glucose in urine</td><td>${f.renal>0.02?"yes":"no"}</td></tr><tr><td>Since last meal</td><td>${gSince>900?"long ago":Math.floor(gSince/60)+" h "+String(gSince%60).padStart(2,"0")+" min"}</td></tr>`;
+  $("#gRead").innerHTML=`<tr><th scope="row">Blood glucose</th><td>${Math.round(s.G)} mg/dL ${st}</td></tr><tr><th scope="row">Insulin</th><td>${fmtX(f.Itot||1)}${GO.type1&&!(s.inj>.05)?" none made":""}</td></tr><tr><th scope="row">Glucagon</th><td>${fmtX(s.Gn)}</td></tr><tr><th scope="row">Liver glycogen</th><td>${Math.round(s.gly)}%</td></tr><tr><th scope="row">Glucose in urine</th><td>${f.renal>0.02?"yes":"no"}</td></tr><tr><th scope="row">Since last meal</th><td>${gSince>900?"long ago":Math.floor(gSince/60)+" h "+String(gSince%60).padStart(2,"0")+" min"}</td></tr>`;
   const P=[];
   if(fasting)P.push("Fasting: time is running 8× faster.");
   if(f.absorb>.3)P.push("Glucose from the meal is being absorbed into the blood.");
@@ -1132,7 +1153,7 @@ function bodySVG(){
   const lab=(x,y,t,a)=>`<text class="svglab" x="${x}" y="${y}" text-anchor="${a||"middle"}">${t}</text>`;
   const hs=(id,inner)=>`<g class="hs" id="hs-${id}" data-id="${id}" role="button" tabindex="0" aria-label="${SPOTS[id].n}">${inner}</g>`;
   const sk='fill="var(--skin)" stroke="var(--skin-edge)" stroke-width="2"';
-  let s=`<svg viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg" aria-label="Drawn human body with endocrine glands and target organs">`;
+  let s=`<svg viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Drawn human body with endocrine glands and target organs. Each gland or organ is a button.">`;
   s+=`<rect x="0" y="0" width="800" height="640" fill="var(--ecf)"/>`;
   s+=`<g transform="translate(100,0)">`;
   // limbs
@@ -1194,7 +1215,7 @@ const svgEl=$("#bodyHolder svg");
 let MR=0,MI=0,mPhase="src",mMiss=0,mShown=0,mStart=performance.now(),mDoneRound=false;
 const mRes=store.get("endoMatch")||{};
 function mItem(){return ROUNDS[MR].items[MI]}
-function mClearMarks(){document.querySelectorAll(".hs").forEach(h=>h.classList.remove("ok","bad","hint"));document.querySelectorAll("#nameList button").forEach(b=>b.classList.remove("ok","bad"))}
+function mClearMarks(){document.querySelectorAll(".hs").forEach(h=>h.classList.remove("ok","bad","hint"));document.querySelectorAll(".hs .ring").forEach(r=>r.style.strokeWidth="");document.querySelectorAll("#nameList button").forEach(b=>b.classList.remove("ok","bad"))}
 function mRounds(){$("#mRounds").innerHTML="";ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===MR);
   b.innerHTML=r.name+(mRes[i]?`<span class="ok">${"★".repeat(mRes[i])}</span>`:"");b.onclick=()=>{MR=i;MI=0;mStartRound()};$("#mRounds").appendChild(b)});
   const tot=Object.values(mRes).reduce((a,b)=>a+b,0);$("#mTot").innerHTML=`Total stars: <b>${tot}</b> of ${ROUNDS.length*3}`}
@@ -1240,6 +1261,43 @@ document.querySelectorAll("#nameList button").forEach(b=>b.onclick=()=>mPick(b.d
 $("#mNames").onchange=e=>document.querySelectorAll(".svglab").forEach(t=>t.style.display=e.target.checked?"":"none");
 $("#mTimed").onchange=e=>{$("#mTimer").hidden=!e.target.checked;mStart=performance.now()};
 
+/* ================= accessibility: picture descriptions + tab keys ================= */
+function elWord(v){return v>1.3?"high":v<0.7?"low":"normal"}
+function elDesc(){
+  if(activeTab==="axis"){const a=AS,thy=a.ax==="thy",n=AXES[a.ax].names,g=AXES[a.ax].gland;
+    let t=`${g} axis. On the left, the hypothalamus at the top sends a stream of ${n[0]} dots down to the anterior pituitary, which sends ${n[1]} dots down to the ${g.toLowerCase()}${thy?"":" sitting on a kidney"}. Each level has a meter with a green normal band. A blood vessel carries ${n[2]} from the gland to the right, and dashed red feedback arrows curve back up to the hypothalamus and pituitary; they get thicker when ${n[2]} is high. `;
+    t+=thy?"A panel on the right shows four body cells that glow and give off heat waves as the metabolic rate rises. ":"A panel on the right shows the liver making glucose and four spiky immune cells that calm down as cortisol rises. ";
+    t+=`Now: ${n[0]} ${elWord(a.R)}, ${n[1]} ${elWord(a.P)}, ${n[2]} ${elWord(a.Gt)}; the ${g.toLowerCase()} is ${a.size>=1.4?(thy?"enlarged (a goiter)":"enlarged"):a.size<.75?"shrunken":"normal in size"}.`;
+    const ex=[];if(thy&&a.inp.cold)ex.push("a blue snowflake marks cold exposure");if(thy)ex.push(a.inp.iod?"only a trickle of iodine dots comes from the diet":"iodine dots flow in from the diet");
+    if(!thy&&a.inp.stress)ex.push("an orange lightning bolt marks stress");if(!thy&&a.inp.dmg)ex.push("crack lines mark a damaged adrenal cortex");if(a.inp.pill)ex.push("a pill adds hormone to the blood from outside");
+    if(a.tumor!=="none")ex.push("a lumpy tumor sits on the "+(a.tumor==="hyp"?"hypothalamus":a.tumor==="pit"?"pituitary":g.toLowerCase())+(a.tumor!=="gland"?", marked as ignoring feedback":""));
+    if(ex.length)t+=" Also: "+ex.join("; ")+".";return t}
+  if(activeTab==="glu"){const g=GS,f=g.flows;
+    let t=`Blood glucose picture. A wide blood vessel runs across the middle carrying yellow glucose dots; the more glucose, the more dots. Above it are panels for the small intestine, the kidney, a glucose gauge and the brain. Below it are a pancreatic islet with beta cells (β) and alpha cells (α), the liver with its glycogen store, and a muscle or fat cell with GLUT4 doors in its membrane. `;
+    t+=`Now: glucose is ${g.G>180?"very high (above 180 mg/dL)":g.G>110?"high (above 110 mg/dL)":g.G<70?"low (below 70 mg/dL)":"in the normal range (70 to 110 mg/dL)"}. `;
+    const ex=[];if((f.absorb||0)>.3)ex.push("glucose dots rise from the intestine as a meal is absorbed");
+    if(GO.type1)ex.push("the beta cells are crossed out (type 1 diabetes)");else if(g.I>1.5)ex.push("blue insulin dots stream from the beta cells into the blood");
+    if(g.Gn>1.3)ex.push("red glucagon triangles stream from the alpha cells");if(g.inj>.3)ex.push("injected insulin dots flow along the vessel");
+    if((f.store||0)>.4)ex.push("the liver is storing glucose as glycogen");if(((f.glyco||0)+(f.gng||0))>.6)ex.push("the liver is releasing glucose");
+    if(f.renal>.02)ex.push("glucose spills into the urine at the kidney");if(g.ex>0)ex.push("the muscle cell is exercising and taking in glucose");
+    if(GO.type2)ex.push("type 2 diabetes: the GLUT4 doors open only a little");
+    return t+(ex.length?ex.join("; ")+".":"Insulin and glucagon are both quiet.")}
+  if(activeTab==="break"){const c=SC[si];return `Scenario ${si+1}: ${c.t}. The picture has two panels. Left: a healthy person with the related gland and a set of bars for normal values. Right: ${shownT<0?"covered until you answer or press Show me the change.":"the same person with "+c.t+": "+c.cap+" The bars grow or shrink to the new values, with up or down arrows."}`}
+  if(activeTab==="match"){const it=mItem();const base="A drawing of the body from the front shows the endocrine glands and target organs as buttons, with circle insets that zoom in on the brain and on an adrenal gland, and a pill at the lower right for most body cells. ";
+    return base+"Hormone: "+it.h+". "+(mPhase==="src"?"Step 1: tap the gland that releases it.":mPhase==="tgt"?SPOTS[it.src[0]].n+" is marked with a green ring. Step 2: tap its target.":"Done: dots travel along a dashed path from the "+SPOTS[it.src[0]].n.toLowerCase()+" to its target. "+it.note)}
+  return ""}
+let elLast="";
+function elSync(){const cv={axis:SA.cv,glu:SG.cv,break:S3.cv,match:null}[activeTab];const d=document.getElementById("gk-desc");
+  const anchor=cv?(cv.closest(".canvas-holder")||cv):document.getElementById("bodyHolder");
+  if(d&&anchor&&anchor.nextSibling!==d)anchor.parentNode.insertBefore(d,anchor.nextSibling);
+  if(cv)cv.setAttribute("aria-describedby","gk-desc");else{const sv=document.querySelector("#bodyHolder svg");if(sv)sv.setAttribute("aria-describedby","gk-desc")}
+  const t=elDesc();if(t&&t!==elLast){elLast=t;if(window.gkDescribe)window.gkDescribe(t)}}
+setInterval(elSync,500);
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setTimeout(elSync,0)));
+(function(){const tabs=[...document.querySelectorAll(".tab")];tabs.forEach((t,i)=>{t.tabIndex=t.getAttribute("aria-selected")==="true"?0:-1;
+  t.addEventListener("keydown",e=>{let j=null;if(e.key==="ArrowRight")j=(i+1)%tabs.length;else if(e.key==="ArrowLeft")j=(i-1+tabs.length)%tabs.length;else if(e.key==="Home")j=0;else if(e.key==="End")j=tabs.length-1;
+    if(j!=null){e.preventDefault();tabs[j].click();tabs[j].focus()}});
+  t.addEventListener("click",()=>tabs.forEach(x=>x.tabIndex=x===t?0:-1))})})();
 /* ================= loop ================= */
 function fitAll(){[SA,SAC,SG,SGC,S3].forEach(s=>s.fit())}
 window.addEventListener("resize",fitAll);
@@ -1253,7 +1311,7 @@ function frame(now){
       if(!axPaused)axT+=dt*Math.min(2,axSpeed);drawAxis(axT);drawAxChart();if(uiAcc>.25)axReadouts()}
     else if(activeTab==="glu"){gTick(dt);if(!gPaused)gT+=dt;drawGlu(gT);drawGluChart();if(uiAcc>.25)gReadouts()}
     else if(activeTab==="break"){drawSc(TT)}
-    else if(activeTab==="match"){if($("#mTimed").checked&&!mDoneRound){const s=Math.round((now-mStart)/1000);$("#mTimer").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}}
+    else if(activeTab==="match"){document.querySelectorAll(".hs.hint .ring").forEach(r=>r.style.strokeWidth=(6+2*Math.sin(now/1000*Math.PI*2)).toFixed(2));if($("#mTimed").checked&&!mDoneRound){const s=Math.round((now-mStart)/1000);$("#mTimer").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}}
   }catch(e){console.error(e)}
   if(uiAcc>.25)uiAcc=0;
   requestAnimationFrame(frame)}

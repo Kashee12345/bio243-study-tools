@@ -78,6 +78,8 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 16px;font-weight:600;cursor:pointer;font-size:15px}
 .btn:disabled{opacity:.45;cursor:default}
 .btn.acid{background:var(--hp)}.btn.base{background:var(--oh)}
+:root:not([data-theme="dark"]) .btn.base{background:#247AAC}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.base{background:var(--oh)}}
 .card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
@@ -161,7 +163,14 @@ footer a{color:var(--ink-soft)}
 kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
 sub,sup{line-height:0}
 [hidden]{display:none!important}
+
+/* accessibility retrofit: dark text on the light dark-mode accent (WCAG 2.1 AA) */
+:root{--on-accent:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--on-accent:#0B1A20}}
+:root[data-theme="dark"]{--on-accent:#0B1A20}
+.tab[aria-selected="true"],.btn,.btn kbd,.chip.cur,.chip.done.cur{color:var(--on-accent)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -183,7 +192,7 @@ sub,sup{line-height:0}
 
   <!-- PART 1: BOND BUILDER -->
   <section id="tab-bond" role="tabpanel" aria-labelledby="tabbtn-bond">
-    <div class="rounds" id="bRounds" aria-label="Molecules"></div>
+    <div class="rounds" id="bRounds" role="group" aria-label="Molecules"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvBond" role="img" aria-label="Atoms with their valence electrons"></canvas></div>
@@ -233,7 +242,7 @@ sub,sup{line-height:0}
 
   <!-- PART 2: pH & BUFFER -->
   <section id="tab-ph" role="tabpanel" aria-labelledby="tabbtn-ph" hidden>
-    <div class="rounds" id="pRounds" aria-label="Challenges"></div>
+    <div class="rounds" id="pRounds" role="group" aria-label="Challenges"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvPH" role="img" aria-label="A beaker of blood with a live pH graph"></canvas></div>
@@ -276,7 +285,7 @@ sub,sup{line-height:0}
       </aside>
     </div>
     <div class="card cases">
-      <div class="chips" id="cChips" aria-label="Clinical cases"></div>
+      <div class="chips" id="cChips" role="group" aria-label="Clinical cases"></div>
       <div class="grid2" style="margin-top:8px">
         <div>
           <div class="lvl-n">What breaks if…? Clinical case <span id="cNum"></span></div>
@@ -297,7 +306,7 @@ sub,sup{line-height:0}
 
   <!-- PART 3: MACROMOLECULE BUILDER -->
   <section id="tab-mac" role="tabpanel" aria-labelledby="tabbtn-mac" hidden>
-    <div class="rounds" id="mRounds" aria-label="Builds"></div>
+    <div class="rounds" id="mRounds" role="group" aria-label="Builds"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvMac" role="img" aria-label="Workspace for building molecules"></canvas></div>
@@ -327,7 +336,7 @@ sub,sup{line-height:0}
 
   <!-- PART 4: ENZYME LAB -->
   <section id="tab-enz" role="tabpanel" aria-labelledby="tabbtn-enz" hidden>
-    <div class="rounds" id="eRounds" aria-label="Experiments"></div>
+    <div class="rounds" id="eRounds" role="group" aria-label="Experiments"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvEnz" role="img" aria-label="Enzymes working, with three live rate graphs"></canvas></div>
@@ -379,7 +388,7 @@ function readColors(){const s=getComputedStyle(document.documentElement);KEYS.fo
 readColors();
 const STARS=store.get("bc-lab-stars")||{};
 function award(key,n){const prev=STARS[key]||0;if(n>prev){STARS[key]=n;store.set("bc-lab-stars",STARS)}}
-const starStr=n=>`<span class="stars" aria-label="${n} of 3 stars">${"★".repeat(n)}${"☆".repeat(3-n)}</span>`;
+const starStr=n=>`<span class="stars" role="img" aria-label="${n} of 3 stars">${"★".repeat(n)}${"☆".repeat(3-n)}</span>`;
 function totStars(prefix,list){let s=0;list.forEach(r=>s+=STARS[prefix+r.id]||0);return `Stars here: <b>${s}</b> / ${list.length*3}`}
 function setMsg(el,html,kind){el.innerHTML=html;el.className="msg show "+(kind||"info")}
 function clearMsg(el){el.className="msg";el.innerHTML=""}
@@ -390,7 +399,7 @@ function mcq(box,fb,list,onDone){box.innerHTML="";fb.className="fb";fb.textConte
       else{if(!done)wrong++;b.classList.add("wrong");fb.className="fb show no";fb.textContent="Not quite. "+o[2]}};
     box.appendChild(b)})}
 function roundPills(el,list,cur,prefix,onPick){el.innerHTML="";list.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===cur);
-  const st=STARS[prefix+r.id]||0;b.innerHTML=`${i+1} · ${r.name}`+(st?`<span class="ok" aria-label="${st} stars">${"★".repeat(st)}</span>`:"");b.onclick=()=>onPick(i);el.appendChild(b)})}
+  const st=STARS[prefix+r.id]||0;b.innerHTML=`${i+1} · ${r.name}`+(st?`<span class="ok" role="img" aria-label="${st} stars">${"★".repeat(st)}</span>`:"");b.onclick=()=>onPick(i);el.appendChild(b)})}
 
 /* ---------- canvas kit ---------- */
 function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,ctx:cv.getContext("2d"),W,H,K:1};
@@ -881,7 +890,7 @@ function mCheck(){mCap();if(!mGoalMet())return;MS.done=true;const r=MR[mi];
       setMsg($("#mMsg"),`${starStr(st)}<br><b>${r.name} complete.</b>${mi<MR.length-1?' <button class="tbtn" type="button" id="mNext">Next build →</button>':""}`,"good");const nb=$("#mNext");if(nb)nb.onclick=()=>mInit(mi+1);
       roundPills($("#mRounds"),MR,mi,"m-",mInit);$("#mStars").innerHTML=totStars("m-",MR)})})}
 function mActs(){const el=$("#mActs");el.innerHTML="";const r=MR[mi];
-  const add=(txt,fn,lab)=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.textContent=txt;b.setAttribute("aria-label",lab);b.onclick=fn;el.appendChild(b)};
+  const add=(txt,fn,lab)=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.textContent=txt;b.setAttribute("aria-label",txt+": "+lab);b.onclick=fn;el.appendChild(b)};
   if(r.kind==="tri"){MS.fa.forEach((f,k)=>{if(!f)return;if(MS.tb[k])add(`× split ${k+1}`,()=>mSplit(k),`Split fatty acid ${k+1} from glycerol (hydrolysis)`);else add(`+ join ${k+1}`,()=>mJoin(k),`Join fatty acid ${k+1} to glycerol (dehydration synthesis)`)})}
   else MS.bonds.forEach((b,k)=>{if(b)add(`× ${k+1}|${k+2}`,()=>mSplit(k),`Split the bond between ${k+1} and ${k+2} (hydrolysis)`);else add(`+ ${k+1}·${k+2}`,()=>mJoin(k),`Join ${k+1} and ${k+2} (dehydration synthesis)`)});
   if(!el.children.length){const s=document.createElement("span");s.className="small";s.textContent="Add monomers from the tray first.";el.appendChild(s)}}
@@ -1076,6 +1085,26 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   uiT+=dt;if(uiT>.15){uiT=0;if(curTab==="ph")phReadouts();if(curTab==="enz")enzReadout()}
   requestAnimationFrame(frame)}
 /* test hooks */
+/* ---------- accessibility: "Describe the picture" text for the canvas on screen (site-kit) ---------- */
+const GK={last:""};
+function gkCanvas(){const p=[...document.querySelectorAll('[role=tabpanel]')].find(s=>!s.hidden);if(!p)return null;return [...p.querySelectorAll("canvas[role=img]")].find(c=>c.offsetParent!==null)||null}
+function gkPlace(cv){const d=document.getElementById("gk-desc");if(!d||!cv)return;const a=cv.closest(".canvas-holder")||cv;if(a.nextElementSibling!==d)a.parentNode.insertBefore(d,a.nextSibling);
+  document.querySelectorAll('canvas[aria-describedby="gk-desc"]').forEach(c=>{if(c!==cv)c.removeAttribute("aria-describedby")});cv.setAttribute("aria-describedby","gk-desc")}
+function gkTick(){try{const cv=gkCanvas();gkPlace(cv);const t=gkText(cv);if(t&&t!==GK.last){GK.last=t;if(window.gkDescribe)window.gkDescribe(t);gkPlace(cv)}}catch(e){}}
+setInterval(gkTick,400);
+const GK_EL={o:"red",c:"dark grey",h:"white",n:"blue",na:"purple",cl:"green"};
+function gkText(cv){
+  if(curTab==="bond"){
+    if(BS.mode==="hbond")return "A field of water molecules, each a red oxygen with two white hydrogens, jiggling in place. Dashed lines flicker between the hydrogen of one molecule and the oxygen of the next: these are hydrogen bonds, which form and break all the time.";
+    const r=BR[bi];const at=BS.atoms.map((a,k)=>a.name+" ("+(GK_EL[a.el]||"grey")+", "+(a.el==="na"&&a.charge?"8":ecount(k))+" of "+capOf(k)+" outer electrons"+(isFull(k)?", full":"")+")");
+    return r.name+" ("+r.formula+"). Each atom is a coloured circle with its symbol, ringed by small dark dots for its outer (valence) electrons; a counter beside each atom shows how full its outer shell is. "+(r.ionic?"Moving the electron from sodium to chlorine turns them into charged ions that pull together.":"Each shared pair of electrons is drawn as a line between two atoms.")+" Atoms: "+at.join("; ")+"."+(BS.done?" Every shell is full, so the molecule is complete.":"")}
+  if(curTab==="ph"){const ph=phVal();const st=ph<7.35?"too acidic (acidosis)":ph>7.45?"too basic (alkalosis)":"in the normal range";
+    return "A beaker of "+(P.buf?"blood with a bicarbonate buffer":"salt water with no buffer")+" sits on the left with a dropper above it. Inside, pink dots are free hydrogen ions, blue dots are hydroxide ions"+(P.buf?", teal dots are bicarbonate and orange dots are carbonic acid":"")+". A graph on the right tracks pH over time against a green band for normal blood, 7.35 to 7.45. pH is now "+ph.toFixed(2)+", "+st+"."}
+  if(curTab==="mac"){const r=MR[mi];
+    return (r.digest?"Hydrolysis":"Dehydration synthesis")+" workspace: "+r.name+". "+(r.kind==="tri"?"A tall purple bar is glycerol, with up to three gold zigzag fatty acids that can be joined to it.":"Monomers sit in a row; a short line between two of them is a bond, and a gap means they are not joined.")+" Each time a bond forms, a small red-and-white water molecule floats away; each time one is split, a water molecule moves in. "+$("#mCap").textContent}
+  const r=rateOf(E.T,E.pH,E.S);const dead=E.enz.filter(e=>e.dead).length;
+  return "On the left, blue-grey enzymes float in a pale tank among orange substrate dots and green product dots; when an enzyme grabs a substrate it closes around it and releases products. "+(dead?dead+" of "+E.enz.length+" enzymes are denatured, drawn as grey limp strands. ":"")+(E.T<20?"Blue snowflakes along the bottom show the cold. ":E.T>42?"Orange flames along the bottom show the heat. ":"")+"On the right, three graphs show reaction rate against temperature, pH and substrate amount, with a marker at the current setting. Now: "+E.T+" °C, pH "+E.pH.toFixed(1)+", substrate "+E.S+"%, "+(E.kind==="body"?"body enzyme":"pepsin")+"; rate "+Math.round(r*100)+"%."}
+setInterval(()=>{try{const c=CASES[cci];if(c)$("#cSvg").setAttribute("aria-label","Illustration for the case: "+c.t)}catch(e){}},700);
 window.__adv=s=>{for(let i=0;i<Math.round(s/.02);i++){NOW+=.02;stepPH(.02);stepEnz(.02)}};
 window.__tab=showTab;
 window.__state=()=>({tab:curTab,ph:phVal(),B:P.B,n:P.n,buf:P.buf,bondDone:BS.done,macDone:MS.done,rate:rateOf(E.T,E.pH,E.S),intact:intact(),made:E.made});

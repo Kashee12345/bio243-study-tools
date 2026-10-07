@@ -253,7 +253,16 @@ sub,sup{line-height:0}
 .leg2{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--ink-soft);padding:6px 4px 0}
 .leg2 span{display:inline-flex;align-items:center;gap:6px}
 .leg2 i{width:18px;height:4px;border-radius:2px;display:inline-block}
+/* a11y retrofit: selected tab stays readable in dark mode */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#10161A}}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#10161A}
+:root{--ecto-ink:#2B66B1;--meso-ink:#AD3D35;--endo-ink:#87620C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ecto-ink:var(--ecto);--meso-ink:var(--meso);--endo-ink:var(--endo)}}
+:root[data-theme="dark"]{--ecto-ink:var(--ecto);--meso-ink:var(--meso);--endo-ink:var(--endo)}
+.bin .h4{margin:0 0 2px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px;font-weight:700}
+.bin .h4 i{width:11px;height:11px;border-radius:3px;display:inline-block}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -275,6 +284,7 @@ sub,sup{line-height:0}
 
   <!-- PART 1 -->
   <section id="tab-seq" role="tabpanel" aria-labelledby="tabbtn-seq">
+    <h2 class="gk-sr">Part 1: First Two Weeks</h2>
     <div class="rounds" id="sqRounds" aria-label="Rounds"></div>
     <div class="grid">
       <div class="card stage">
@@ -300,20 +310,21 @@ sub,sup{line-height:0}
 
   <!-- PART 2 -->
   <section id="tab-germ" role="tabpanel" aria-labelledby="tabbtn-germ" hidden>
+    <h2 class="gk-sr">Part 2: Germ Layer Sorter</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvGerm" role="img" aria-label="A body diagram. Organs color in with their germ layer color as you sort them."></canvas></div>
         <div class="bins" id="bins">
-          <div class="bin ec" data-l="ecto" role="button" tabindex="0" aria-label="Ectoderm bin"><h4><i style="background:var(--ecto)"></i>Ectoderm</h4><p class="sub2">outer layer</p></div>
-          <div class="bin me" data-l="meso" role="button" tabindex="0" aria-label="Mesoderm bin"><h4><i style="background:var(--meso)"></i>Mesoderm</h4><p class="sub2">middle layer</p></div>
-          <div class="bin en" data-l="endo" role="button" tabindex="0" aria-label="Endoderm bin"><h4><i style="background:var(--endo)"></i>Endoderm</h4><p class="sub2">inner layer</p></div>
+          <div class="bin ec" data-l="ecto" role="button" tabindex="0"><span class="h4"><i style="background:var(--ecto)" aria-hidden="true"></i>Ectoderm<span class="gk-sr"> bin:</span></span><p class="sub2">outer layer</p></div>
+          <div class="bin me" data-l="meso" role="button" tabindex="0"><span class="h4"><i style="background:var(--meso)" aria-hidden="true"></i>Mesoderm<span class="gk-sr"> bin:</span></span><p class="sub2">middle layer</p></div>
+          <div class="bin en" data-l="endo" role="button" tabindex="0"><span class="h4"><i style="background:var(--endo)" aria-hidden="true"></i>Endoderm<span class="gk-sr"> bin:</span></span><p class="sub2">inner layer</p></div>
         </div>
       </div>
       <aside class="card side" aria-live="polite">
         <div class="lvl-n" id="gmN"></div>
         <div class="prog"><i id="gmProg"></i></div>
         <div class="goal"><b class="h">Your job</b>Drag each tissue or organ into the germ layer that builds it. Or tap a chip, then tap a bin. Correct picks color in on the body.</div>
-        <div class="tray" id="tray" aria-label="Tissues to sort"></div>
+        <div class="tray" id="tray" role="group" aria-label="Tissues to sort"></div>
         <div class="bar">
           <button class="tbtn" id="gmHint" type="button">Hint</button>
           <button class="tbtn" id="gmShow" type="button">Show answer</button>
@@ -323,9 +334,9 @@ sub,sup{line-height:0}
         <div class="msg" id="gmMsg" role="status"></div>
         <h3>Memory trick</h3>
         <ul>
-          <li><b style="color:var(--ecto)">Ecto</b>: outside and thinking (skin, nerves).</li>
-          <li><b style="color:var(--meso)">Meso</b>: moving and pumping (muscle, bone, blood, heart, kidneys).</li>
-          <li><b style="color:var(--endo)">Endo</b>: inside linings (gut, airways) and gut glands.</li>
+          <li><b style="color:var(--ecto-ink)">Ecto</b>: outside and thinking (skin, nerves).</li>
+          <li><b style="color:var(--meso-ink)">Meso</b>: moving and pumping (muscle, bone, blood, heart, kidneys).</li>
+          <li><b style="color:var(--endo-ink)">Endo</b>: inside linings (gut, airways) and gut glands.</li>
         </ul>
       </aside>
     </div>
@@ -384,6 +395,7 @@ sub,sup{line-height:0}
 
   <!-- PART 4 -->
   <section id="tab-fetal" role="tabpanel" aria-labelledby="tabbtn-fetal" hidden>
+    <h2 class="gk-sr">Part 4: Fetal Circulation</h2>
     <div class="subtabs" role="group" aria-label="Choose an activity">
       <button class="tbtn" id="subTrace" type="button" aria-pressed="true">Trace a drop</button>
       <button class="tbtn" id="subSim" type="button" aria-pressed="false">Birth simulator</button>
@@ -415,7 +427,7 @@ sub,sup{line-height:0}
           <label class="toggle"><input type="checkbox" id="pfoChk"> Foramen ovale flap does not seal (PFO)</label>
           <label class="toggle"><input type="checkbox" id="lungChk"> Lungs fail to open up (resistance stays high)</label>
           <div class="bar"><button class="tbtn" id="simReset" type="button">Reset to before birth</button><button class="tbtn" id="simPause" type="button">Pause</button></div>
-          <table class="readouts" id="readouts"></table>
+          <table class="readouts" id="readouts"><caption class="gk-sr">Birth simulator readouts</caption><tr><th scope="row">Phase</th><td>before birth</td></tr></table>
           <div class="status" id="simStatus" role="status"></div>
           <h3>Challenges</h3>
           <ul class="chal" id="chal"></ul>
@@ -1154,8 +1166,7 @@ function pheno(m,g){if(m==="dom")return g==="cc"?{t:"Has cystic fibrosis",k:"a"}
   const male=g.includes("Y");if(male)return g[0]==="h"?{t:"Son with hemophilia",k:"a",s:"m"}:{t:"Unaffected son",k:"u",s:"m"};return g==="hh"?{t:"Daughter with hemophilia",k:"a",s:"f"}:g==="Hh"?{t:"Carrier daughter",k:"c",s:"f"}:{t:"Unaffected daughter",k:"u",s:"f"}}
 function pModes(){const box=$("#pModes");box.innerHTML="";Object.keys(MODES).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",k===PM);b.textContent=MODES[k].name;b.onclick=()=>{PM=k;pg1=MODES[k].d1;pg2=MODES[k].d2;pBuild();prNew()};box.appendChild(b)})}
 function pBuild(){const M=MODES[PM];pModes();$("#pTitle").textContent=M.title;$("#pAbout").innerHTML=M.about;$("#p1lab").textContent=M.l1+(PM==="xl"?" (XX)":"");$("#p2lab").textContent=M.l2+(PM==="xl"?" (XY)":"");
-  [["#p1g",M.p1,1],["#p2g",M.p2,2]].forEach(([id,arr,w])=>{const box=$(id);box.innerHTML="";arr.forEach(g=>{const b=document.createElement("button");b.type="button";b.className="gtb";b.innerHTML=gtHTML(PM,g);b.setAttribute("aria-pressed",(w===1?pg1:pg2)===g);
-    b.setAttribute("aria-label",(w===1?M.l1:M.l2)+" genotype "+g);b.onclick=()=>{if(w===1)pg1=g;else pg2=g;pBuild()};box.appendChild(b)})});
+  [["#p1g",M.p1,1],["#p2g",M.p2,2]].forEach(([id,arr,w])=>{const box=$(id);box.innerHTML="";arr.forEach(g=>{const b=document.createElement("button");b.type="button";b.className="gtb";b.innerHTML=gtHTML(PM,g)+`<span class="gk-sr"> (${w===1?M.l1:M.l2} genotype)</span>`;b.setAttribute("aria-pressed",(w===1?pg1:pg2)===g);b.onclick=()=>{if(w===1)pg1=g;else pg2=g;pBuild()};box.appendChild(b)})});
   pCells=[[null,null],[null,null],[null,null],[null,null]];pSel=null;pT0=performance.now();pDoneT=0;pAsked=false;pRender();setMsg("#pMsg","","");$("#pRatios").innerHTML="";$("#pQ").innerHTML="";pStarsTxt()}
 function pStarsTxt(){$("#pStars").textContent=`Crosses completed: ${pScore.crosses}. Ratio questions right on the first try: ${pScore.q}.`}
 function pRender(){const q=$("#pq");q.innerHTML="";const M=MODES[PM];
@@ -1361,7 +1372,7 @@ function chalRender(){$("#chal").innerHTML=CHAL.map(c=>`<li class="${chalDone[c[
 function simUI(){const m=simMetrics();const s=sim;const pda=$("#pdaChk").checked,pfo=$("#pfoChk").checked,lf=$("#lungChk").checked;
   const rows=[["Phase",s.birth?"after birth":"before birth"],["Lung blood flow",Math.round(m.lung)+"%"],["Aortic O₂ saturation",Math.round(m.sat)+"%"],["Heart work load",m.work.toFixed(2)+" ×"],
    ["Ductus venosus",s.dv>.95?"closed":s.dv>.05?"closing":"open"],["Foramen ovale",s.fo>.95?(pfo?"flap shut, not sealed":"sealed"):s.fo>.05?"closing":"open"],["Ductus arteriosus",s.da>.95?"closed":(pda&&s.lungs>.6?"OPEN (aorta → lungs)":s.da>.05?"closing":"open")]];
-  const html=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");if($("#readouts").innerHTML!==html)$("#readouts").innerHTML=html;
+  const html='<caption class="gk-sr">Birth simulator readouts</caption>'+rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join("");const ro=$("#readouts");if(ro.dataset.h!==html){ro.dataset.h=html;ro.innerHTML=html}
   let st,cls;
   if(!s.birth){st="Before birth: the placenta oxygenates the blood. The lungs are fluid-filled, so the shunts send most blood around them.";cls="status"}
   else if(lf){st="The lungs did not open up. Resistance in the lung vessels stays high, so blood keeps using the shunts and skips the lungs. With the cord clamped there is no placenta either: O₂ falls and the baby looks blue (cyanosis).";cls="status bad"}
@@ -1438,7 +1449,45 @@ window.__dv={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),sq:i
   gTry:(id,l)=>gTry(id,l),gShow:()=>$("#gmShow").click(),pMode:k=>{PM=k;pg1=MODES[k].d1;pg2=MODES[k].d2;pBuild();prNew()},pFill:()=>$("#pFill").click(),pAge:s=>{if(pDoneT)pDoneT=performance.now()-s*1000},
   sub:k=>$({prob:"#subProb",build:"#subBuild",trace:"#subTrace",sim:"#subSim",break:"#subBreak"}[k]).click(),tr:i=>{TR=i;trStart()},trShow:()=>$("#trShow").click(),
   sim:(sec)=>{for(let i=0;i<sec*20;i++)simStep(.05)},birth:()=>$("#birthBtn").click(),br:i=>{bi=i;brRender()},prNew:()=>prNew()};
+/* ---------- a11y retrofit: picture descriptions + stale contrast-class cleanup ---------- */
+let gkLast="";
+function gkSay(t){t=String(t||"").replace(/\s+/g," ").trim();if(!t||t===gkLast)return;gkLast=t;if(window.gkDescribe)window.gkDescribe(t)}
+function gkLabel(id,t){const el=document.getElementById(id);if(el&&t&&el.getAttribute("aria-label")!==t)el.setAttribute("aria-label",t)}
+function gkMoveDesc(panelId){const d=document.getElementById("gk-desc");const p=document.getElementById(panelId);if(!d||!p)return;
+  const cvs=[...p.querySelectorAll("canvas")];const cv=cvs.find(c=>c.offsetParent!==null)||cvs[0]||p.querySelector(".svg-holder");if(!cv)return;
+  const a=cv.closest(".canvas-holder")||cv;if(a.nextSibling!==d)a.parentNode.insertBefore(d,a.nextSibling);
+  cvs.forEach(c=>c.setAttribute("aria-describedby","gk-desc"))}
+(function(){const L=c=>{const m=String(c).match(/[\d.]+/g);if(!m)return null;if(m.length>3&&+m[3]===0)return -1;const v=m.slice(0,3).map(x=>{x=x/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*v[0]+.7152*v[1]+.0722*v[2]};
+  const sweep=()=>document.querySelectorAll(".gk-oninv").forEach(el=>{const l=L(getComputedStyle(el).backgroundColor);if(l!==null&&l<=.22)el.classList.remove("gk-oninv")});
+  new MutationObserver(()=>{sweep();setTimeout(sweep,450)}).observe(document.body,{subtree:true,attributes:true,attributeFilter:["aria-selected","aria-pressed","class"]})})();
+function gkDescNow(){
+  if(curTab==="seq"){const r=SQR[R];const now=performance.now();const ss=sqState(now);
+    const scene=["a map of the ovary on the left, the uterine tube curving across, and the uterus on the right, with a day timeline along the bottom","a large oocyte in close-up, surrounded by its zona pellucida and corona cells","the uterine lining in close-up with a maternal capillary, plus a small ovary and a pregnancy test"][R];
+    let st;if(!sqPlayS)st="Nothing is playing yet: arrange the cards, then press Play my order.";
+    else{const sb=stuckBox(now);if(sb)st="Playback stopped. "+sb;else if(ss.done&&sqPlayS.fail<0)st="Playback finished: every step happened in order.";else st="Now playing card "+(ss.i+1)+": "+CARDS[sqPlayS.o[Math.max(0,ss.i)]][0]+".";}
+    gkLabel("cvSeq",`${r.name}. ${st}`);
+    gkSay(`${r.name}. The picture shows ${scene}. When you press Play my order, each card in your list plays in turn as a short animation on this picture, and the animation stops at the first card that is out of order, with an orange box explaining why. ${st}`)}
+  else if(curTab==="germ"){const by=l=>GITEMS.filter(g=>gPlaced[g[0]]===l).map(g=>g[1].toLowerCase());const n=Object.keys(gPlaced).length;
+    gkLabel("cvGerm",`Body diagram: ${n} of ${GITEMS.length} organs sorted and colored by germ layer.`);
+    gkSay(`An outline of a human body with its organs drawn in grey. Each organ you sort correctly colors in with its germ layer color: blue for ectoderm, red for mesoderm, gold for endoderm. ${n?"Colored so far. Ectoderm (blue): "+(by("ecto").join(", ")||"none")+". Mesoderm (red): "+(by("meso").join(", ")||"none")+". Endoderm (gold): "+(by("endo").join(", ")||"none")+".":"Nothing is colored yet."} On the right of the picture, three colored tiles count the sorted items: ectoderm ${by("ecto").length} of ${GITEMS.filter(g=>g[2]==="ecto").length}, mesoderm ${by("meso").length} of ${GITEMS.filter(g=>g[2]==="meso").length}, endoderm ${by("endo").length} of ${GITEMS.filter(g=>g[2]==="endo").length}. A small inset at the lower left zooms in on the skin, showing the epidermis over the dermis. Three bins below the picture take the tissue chips.`)}
+  else if(curTab==="pun"){const M=MODES[PM];
+    if(!$("#buildWrap").hidden){const res=pResults();const done=res.filter(Boolean);
+      gkLabel("cvKids",`Offspring of ${M.l1} ${tokTxt(PM,pg1[0])}${tokTxt(PM,pg1[1])} and ${M.l2} ${tokTxt(PM,pg2[0])}${pg2[1]==="Y"?"Y":tokTxt(PM,pg2[1])}: ${done.length} of 4 boxes filled.`);
+      gkSay(`${M.title}. Below the Punnett square, a row of four child figures stands for the four boxes. ${done.length?res.map((x,i)=>x?`Child ${i+1}: ${x.g.length===2?(PM==="xl"&&x.g[1]==="Y"?tokTxt(PM,x.g[0])+"Y":tokTxt(PM,x.g[0])+tokTxt(PM,x.g[1])):x.g}, ${x.ph.t.toLowerCase()}`:`Child ${i+1}: not filled yet (grey, with a question mark)`).join(". ")+".":"All four are grey outlines until you fill the square."}${pDoneT?" A box on the right shows the phenotype ratio as bars.":""}`)}
+    else if(prCur){gkSay(`${M.title}, family problem: ${prCur.t}. A family tree is drawn with squares for males and circles for females; filled shapes have the trait, a center dot marks a carrier, lines join parents and drop down to their children, and the person the question asks about is a dashed shape with a blue question mark. ${prCur.story}`)}}
+  else{const s=sim;
+    if(fMode==="trace"){const r=ROUTES[TR];const cur=r.stops[Math.min(trStep-1,r.stops.length-1)][0];
+      gkLabel("cvFetal",`${r.name}: the drop is at the ${cur}. ${r.state==="fetal"?"Before birth.":"After birth."}`);
+      gkSay(`A diagram of the ${r.state==="fetal"?"fetal":"newborn"} circulation: the placenta and umbilical cord at the lower left, the liver, the heart chambers in the middle, the lungs, the pulmonary trunk and aorta, with boxes for the head and arms at the top and the lower body at the lower right. Vessels are red for oxygen-rich, purple for mixed and blue for oxygen-poor blood${r.state==="fetal"?", and the three fetal shortcuts (ductus venosus, foramen ovale, ductus arteriosus) are open":""}. A glowing gold drop leaves a gold trail along ${r.name.split("·")[1]?r.name.split("·")[1].trim().toLowerCase():"the route"}; it is now at the ${cur}${trDone?", and the route is complete":""}.`)}
+    else{const m=simMetrics();const sh=(v,n)=>n+" "+(v>.95?"closed":v>.05?"closing":"open");
+      gkLabel("cvFetal",`Circulation ${s.birth?"after":"before"} birth. Lung blood flow ${Math.round(m.lung/5)*5}%, aortic oxygen ${Math.round(m.sat/5)*5}%.`);
+      gkSay(`The circulation diagram ${s.birth?"after birth":"before birth"}${fMode==="break"?", for the scenario "+BR[bi].t:""}. Vessels are coloured red, purple or blue by oxygen, and dots flow along them. ${s.birth?"The cord is clamped and the lungs are "+(s.lungs>.6?"inflated and pink":"still not open")+".":"The placenta oxygenates the blood and the lungs are collapsed."} Shunts: ${sh(s.dv,"ductus venosus")}, ${sh(s.fo,"foramen ovale")}, ${s.da<.5&&$("#pdaChk").checked&&s.lungs>.6?"ductus arteriosus open, with blood flowing backward from the aorta into the lungs":sh(s.da,"ductus arteriosus")}. The graph below tracks lung blood flow (about ${Math.round(m.lung/5)*5}% of right heart output) and aortic oxygen saturation (about ${Math.round(m.sat/5)*5}%).`)}}
+}
+setInterval(gkDescNow,500);
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{gkMoveDesc("tab-"+curTab);gkDescNow()}));
+["#subBuild","#subProb","#subTrace","#subSim","#subBreak"].forEach(id=>{const b=document.querySelector(id);if(b)b.addEventListener("click",()=>{gkMoveDesc("tab-"+curTab);gkDescNow()})});
 gReset();pBuild();prNew();chalRender();sqNew();trStart();simReset();fitAll();requestAnimationFrame(frame);
+gkMoveDesc("tab-seq");gkDescNow();
 })();
 </script>
 </body>

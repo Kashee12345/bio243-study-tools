@@ -232,7 +232,13 @@ ol.list{counter-reset:none}
 #cnList .item{padding:5px 8px 5px 10px}
 .item.right .tag{color:var(--good)}
 @media (max-width:600px){.numgrid{grid-template-columns:repeat(4,1fr)}.tab{font-size:14px;padding:8px 10px}}
+
+/* a11y retrofit: contrast fixes (WCAG 2.1 AA) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"],:root:not([data-theme="light"]) .chip.cur{color:#0B1A20}}
+:root[data-theme="dark"] .tab[aria-selected="true"],:root[data-theme="dark"] .chip.cur{color:#0B1A20}
+.btn.s{background:#2B77B5}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -254,6 +260,7 @@ ol.list{counter-reset:none}
 
   <!-- PART 1 -->
   <section id="tab-map" role="tabpanel" aria-labelledby="tabbtn-map">
+    <h2 class="sr">Part 1 &middot; Brain Region Mapper</h2>
     <div class="subbar"><span class="lbl">View</span><span id="viewPills" class="rounds" style="margin:0"></span></div>
     <div class="subbar"><span class="lbl">Mode</span><span id="modePills" class="rounds" style="margin:0"></span></div>
     <div class="grid">
@@ -263,7 +270,7 @@ ol.list{counter-reset:none}
           <span class="caption" id="mapCap" style="font-family:var(--sans)"></span>
           <label class="mode"><input type="checkbox" id="mapLabels"> Show all labels</label>
         </div>
-        <div class="pick" id="mapPick" aria-label="Or choose a region from this list"></div>
+        <div class="pick" id="mapPick" role="group" aria-label="Or choose a region from this list"></div>
       </div>
       <aside class="card side info" aria-live="polite" id="mapSide"></aside>
     </div>
@@ -271,6 +278,7 @@ ol.list{counter-reset:none}
 
   <!-- PART 2 -->
   <section id="tab-csf" role="tabpanel" aria-labelledby="tabbtn-csf" hidden>
+    <h2 class="sr">Part 2 &middot; CSF Flow</h2>
     <div class="subbar"><span class="lbl">Activity</span><span id="csfPills" class="rounds" style="margin:0"></span></div>
     <div id="csf-sim">
       <div class="grid">
@@ -357,12 +365,13 @@ ol.list{counter-reset:none}
 
   <!-- PART 3 -->
   <section id="tab-cord" role="tabpanel" aria-labelledby="tabbtn-cord" hidden>
+    <h2 class="sr">Part 3 &middot; Spinal Cord Lab</h2>
     <div class="subbar"><span class="lbl">Activity</span><span id="cordPills" class="rounds" style="margin:0"></span></div>
     <div id="cord-label">
       <div class="grid">
         <div class="card stage">
           <div class="canvas-holder"><canvas id="cvLab" role="img" aria-label="Spinal cord cross-section with numbered pins"></canvas></div>
-          <div class="pick" id="pinBtns" aria-label="Pins (keyboard alternative to clicking the picture)"></div>
+          <div class="pick" id="pinBtns" role="group" aria-label="Pins (keyboard alternative to clicking the picture)"></div>
         </div>
         <aside class="card side" aria-live="polite">
           <div class="lvl-n">Label the cross-section</div>
@@ -430,6 +439,7 @@ ol.list{counter-reset:none}
 
   <!-- PART 4 -->
   <section id="tab-cn" role="tabpanel" aria-labelledby="tabbtn-cn" hidden>
+    <h2 class="sr">Part 4 &middot; Cranial Nerve Challenge</h2>
     <div class="subbar"><span class="lbl">Round</span><span id="cnPills" class="rounds" style="margin:0"></span>
       <label class="mode" style="margin-left:auto"><input type="checkbox" id="cnRelaxed" checked> Relaxed mode (no timer)</label><span class="timer" id="cnTimer" style="visibility:hidden">0:00</span></div>
     <div class="grid">
@@ -1650,7 +1660,61 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;
     else if(curTab==="cord"){if(cordSub==="label")drawLab(now);else if(cordSub==="signal"){const m=sigStep(dt);drawSig(m);drawSigChart()}else drawRt()}
     else drawCn(now);
   }catch(err){console.error(err)}
+  if((A11Y.t=(A11Y.t+1)%18)===0)a11yApply();
   requestAnimationFrame(frame)}
+/* ---- accessibility: name and describe the picture that is on screen ---- */
+const A11Y={key:"",t:17};
+const a11yTxt=h=>String(h).replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/\s+/g," ").trim();
+const a11yLvl=v=>v>16?"high":v>13?"raised":"normal";
+function a11yScene(){
+  if(curTab==="map"){const lat=mapView==="lat";
+    let d=lat?"Side view of the left half of the brain, front to the left: the frontal, parietal, temporal and occipital lobes, the cerebellum below the back, and the brainstem and spinal cord at the bottom.":
+      "Middle view of the brain cut down the middle, front to the left: the corpus callosum arching across the center, the thalamus and hypothalamus under it, the pituitary hanging below, the brainstem and cord, and the cerebellum at the back.";
+    let l=(lat?"Side view":"Middle view")+" of the brain";
+    if(mapMode==="explore"){if($("#mapLabels").checked)d+=" Every region has a name label.";
+      if(mapSel){d+=` The ${mapSel.name} is highlighted in yellow-orange with a bold label. Where: ${mapSel.where}`;l+=`, ${mapSel.name} highlighted`}
+      else d+=" Nothing is selected. Choose a region on the picture or from the list of buttons under it."}
+    else if(QZ){const done=QZ.qs.length?[...QZ.found].map(id=>REGIONS.find(r=>r.id===id).short):[];
+      if(QZ.i<QZ.qs.length){d+=` Question ${QZ.i+1} of ${QZ.qs.length}: ${a11yTxt(qText(QZ.qs[QZ.i]))}`;l+=`, question ${QZ.i+1} of ${QZ.qs.length}`;
+        if(QZ.hint&&!QZ.answered)d+=` A gold dashed outline flashes on the hinted region. Hint: ${QZ.qs[QZ.i].hint}`;
+        if(mapSel)d+=` The ${mapSel.name} is highlighted.`}
+      else{d+=" Round complete.";l+=", round complete"}
+      if(done.length)d+=` Shaded green and labelled so far: ${done.join(", ")}.`}
+    return [S1.cv,l,d]}
+  if(curTab==="csf"){
+    if(csfSub==="sim"){const p=press(),sc=csfScale();const st=a11yTxt($("#csfStatus").innerHTML).split(".")[0];
+      let d="A faded side view of the brain with its ventricles in light blue, a light blue halo of subarachnoid space around it and a blue venous sinus along the top. Blue dots of CSF flow from the lateral ventricles down through the third and fourth ventricles, out around the brain and into the sinus.";
+      if(SIM.aq)d+=" A red ✕ marks the blocked cerebral aqueduct.";if(SIM.ap)d+=" Red ✕ marks block the fourth ventricle's openings.";
+      if(sc.fv>1.08)d+=" The lateral and third ventricles are drawn swollen.";if(sc.f4>1.08)d+=" The fourth ventricle is swollen.";
+      d+=` Gauges at the upper right show pressure: ventricles ${a11yLvl(p.v)}, fourth ventricle ${a11yLvl(p.f)}, subarachnoid space ${a11yLvl(p.s)} (green normal, orange raised, red high). The graph below plots the three pressures over the last 40 seconds.`;
+      return [S2.cv,`CSF flow simulator: production ${SIM.prod.toFixed(1)} times normal, reabsorption ${SIM.abs.toFixed(2)} times normal${SIM.aq?", aqueduct blocked":""}${SIM.ap?", apertures blocked":""}. ${st}.`,d]}
+    if(csfSub==="order"){const o=ordCur().map((id,i)=>`${i+1} ${ORD.find(c=>c[0]===id)[1]}`);
+      return [S2o.cv,"Your CSF path on a drawing of the ventricles"+(ordSolved?": correct":""),`A faded side view of the brain and its ventricles, with numbered markers at the spot for each card in your list, joined by arrows in your order. ${ordSolved?"The path is correct: the arrows are green and blue CSF dots flow along it. ":"A correct path flows smoothly; a wrong one jumps back and forth. "}Your order: ${o.join("; ")}.`]}
+    const s=BR[bi];const D={aq:"A faded side view of the brain. The lateral and third ventricles swell larger than their dashed normal outlines, and a red ✕ sits on the cerebral aqueduct. The fourth ventricle below the block stays normal size.",
+      men:"Layers stacked from the top: skull, dura mater, a red-tinged inflamed arachnoid, CSF with red rod-shaped bacteria and white-blood-cell circles drifting in it, and a red inflamed pia on the gray brain surface. An inset at the lower right shows vertebrae T12 to L5 with a needle sliding in below L2.",
+      epi:"A cross-section of the head shows scalp, skull, dura mater, arachnoid with CSF, and the brain. On the left, a crack in the skull and a torn red artery sit over a red, lens-shaped bleed that grows between the skull and the dura.",
+      sub:"A cross-section of the head shows scalp, skull, dura mater, arachnoid with CSF, and the brain. On the left, a torn blue bridging vein leaks a thin red, crescent-shaped bleed that spreads over the brain between the dura and the arachnoid."};
+    return [S2b.cv,`Scenario ${bi+1}: ${s.title}. ${s.cap}`,D[s.draw]]}
+  if(curTab==="cord"){
+    if(cordSub==="label"){const done=XLAB.filter((_,i)=>lab.placed.has(i)).map(l=>l[1]);
+      return [S3a.cv,`Spinal cord cross-section with 12 numbered pins. ${done.length} of 12 labelled.`,`A spinal cord cross-section, back (posterior) at the top and front (anterior) at the bottom: a gray butterfly of gray matter inside cream white matter, with the dorsal root, its ganglion, the ventral root and the spinal nerve on the right. Twelve numbered pins sit on its parts. ${done.length?"Labelled in green so far: "+done.join(", ")+".":"No pins are labelled yet."}${lab.sel!=null&&!lab.done?" Now placing: "+XLAB[lab.sel][1]+".":""}`]}
+    if(cordSub==="signal"){const cuts=CUTS.filter(k=>cut[k[0]]).map(k=>k[1].toLowerCase());const o=sigOutcome(cut);
+      return [S3s.cv,`Spinal cord reflex picture. Damage: ${cuts.length?cuts.join(", "):"none"}. Felt by the brain: ${o.felt?"yes":"no"}. Reflex: ${o.reflex?"yes":"no"}.`,
+        `A spinal cord cross-section in the middle, a block of skin with a blue receptor at the upper right, a red muscle at the lower right, and a small brain at the upper left joined to the cord by a purple dashed tract. When you send a stimulus, a blue dot runs from the skin into the dorsal root, a purple dot crosses the interneuron, a red dot runs out the ventral root to the muscle, and a purple dot rises toward the brain. ${cuts.length?"Damage shown: "+cuts.join("; ")+" (red ✕ marks). ":""}With these settings the brain ${o.felt?"feels the stimulus":"does not feel it"} and the muscle ${o.reflex?"contracts":"does not contract"}. The graph below traces the dorsal root signal, what the brain feels, and muscle contraction over the last 14 seconds.`]}
+    const c=RT[ri];const ans=c.o.find(o=>o[1])[0];
+    return [S3r.cv,`Spinal cord cross-section for case ${ri+1}: ${c.t}${rtRes[ri].done?". Highlighted: "+ans:""}`,`A spinal cord cross-section, back at the top: gray matter horns, white matter columns, the dorsal root labelled sensory in, and the ventral root labelled motor out. ${rtRes[ri].done?"The damaged structure, the "+ans.toLowerCase()+", glows.":"Nothing is highlighted until you pick the right answer."}`]}
+  let d="The underside of the brain, front at the top, with the 12 pairs of cranial nerves attached from front to back.",l="Underside of the brain with the cranial nerves";
+  if(cnRound==="order"){d+=` ${cnOK.size} of 12 nerves are in the right place in your list; they are drawn green with name labels.`;l+=`, ${cnOK.size} of 12 placed`}
+  else if(cnRound==="type"&&TY){if(TY.i<12){const k=TY.q[TY.i];d+=` CN ${CN[k].n}, the nerve you are classifying, glows yellow with a CN ${CN[k].n} tag.`;l+=`, CN ${CN[k].n} highlighted`}
+    if(TY.i>0)d+=" Nerves already classified are coloured by type: blue sensory, red motor, purple both."}
+  else if(cnRound==="match"&&MA){if(MA.i<MA.q.length){d+=` Question ${MA.i+1}: ${MA.q[MA.i][1]}`;l+=`, question ${MA.i+1} of 12`}
+    if(MA.got.size)d+=` Matched so far, in green with labels: ${[...MA.got].sort((a,b)=>a-b).map(k=>"CN "+CN[k].n+" "+CN[k].name).join(", ")}.`;
+    if(MA.hint&&MA.i<MA.q.length)d+=" The hint makes the answer and its neighbors glow gold."}
+  return [S4.cv,l,d]}
+function a11yApply(){let s;try{s=a11yScene()}catch(e){return}if(!s)return;const [cv,l,d]=s;const key=cv.id+"|"+l+"|"+d;if(key===A11Y.key)return;A11Y.key=key;
+  cv.setAttribute("aria-label",l);
+  const box=document.getElementById("gk-desc");if(box){const h=cv.closest(".canvas-holder")||cv;if(h.nextElementSibling!==box)h.parentNode.insertBefore(box,h.nextSibling);cv.setAttribute("aria-describedby","gk-desc")}
+  if(window.gkDescribe)window.gkDescribe(d)}
 /* test hooks */
 window.__lab={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),mapView:v=>{mapView=v;startMode(mapMode)},mapMode:m=>startMode(m),mapPick:id=>mapClick(REGIONS.find(r=>r.id===id)),
   csf:k=>{csfSub=k;["sim","order","break"].forEach(x=>$("#csf-"+x).hidden=x!==k);buildCsfPills();fitAll()},cord:k=>{cordSub=k;["label","signal","root"].forEach(x=>$("#cord-"+x).hidden=x!==k);buildCordPills();fitAll()},

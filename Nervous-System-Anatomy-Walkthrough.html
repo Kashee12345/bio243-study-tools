@@ -152,7 +152,14 @@ body{overflow-x:hidden}
 .canvas-holder{background:var(--stagebg)}
 footer a{color:var(--ink-soft)}
 .legend i.s{border-radius:2px}
+
+/* a11y retrofit: contrast fixes (WCAG 2.1 AA) */
+:root{--chip-act1:#7B5CC9;--chip-act2:#A16513;--chip-act3:#B25B46;--chip-act4:#2A8172;--chip-act5:#A04E8C;--warn-text:#9D5722}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn-text:var(--warn)}:root:not([data-theme="light"]) .dot.cur{color:#0B1A20}}
+:root[data-theme="dark"]{--warn-text:var(--warn)}:root[data-theme="dark"] .dot.cur{color:#0B1A20}
+.fb.no{color:var(--warn-text)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -681,7 +688,8 @@ const ACTS={1:{name:"Part 1 · Big picture",col:"act1"},
             4:{name:"Part 4 · Protection",col:"act4"},
             5:{name:"Part 5 · Cord & nerves",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",title:"The big picture: CNS and PNS",
+{act:0,scene:"map",desc:"An outline of a human body stands in the middle, with a small pink brain at the top and a teal spinal cord running down the back. First the brain and cord glow blue (the CNS), then yellow nerves branch out from the cord to the arms and legs and from the brain near the head (the PNS). A blue dot then travels from the right hand up the arm nerve into the cord and brain, marked \"touch!\", and a red dot runs from the brain down the cord and out a leg nerve to the foot, marked \"muscle moves\". Cards on the right and lower left light up to name each part as it is shown.",
+ title:"The big picture: CNS and PNS",
  body:`<p>The nervous system has two main divisions.</p>
  <ol><li>The <b>central nervous system (CNS)</b> is the <b>brain</b> and the <b>spinal cord</b>. It is the control center. It takes in information, makes decisions and sends out commands.</li>
  <li>The <b>peripheral nervous system (PNS)</b> is everything else: the <b>cranial nerves</b>, the <b>spinal nerves</b>, and the <b>ganglia</b> (clusters of neuron cell bodies outside the CNS).</li></ol>
@@ -697,7 +705,8 @@ const STEPS=[
  caption:"CNS (brain and spinal cord) glows first. Then the PNS nerves branch out. A sensory signal comes in (blue), and a motor command goes out (red).",
  legend:[["accent","CNS: brain and spinal cord"],["nerve","PNS: nerves"],["sens","Sensory signal (in)"],["motor","Motor signal (out)"]]},
 
-{act:1,scene:"graywhite",title:"Gray matter and white matter",
+{act:1,scene:"graywhite",desc:"On the left is a slice of the brain cut from ear to ear; on the right is a cross-section of the spinal cord. First the gray matter glows yellow-orange: the thin outer rim (cortex) and deep islands in the brain, and the butterfly shape in the middle of the cord. Then the white matter glows instead: the inner part of the brain and the outer ring of the cord. Two round close-ups at the bottom show gray matter as round cell bodies with short branches, and white matter as rows of axons wrapped in white myelin with signals sliding along them.",
+ title:"Gray matter and white matter",
  body:`<p>Slice through the brain or spinal cord and you see two kinds of tissue.</p>
  <ol><li><b>Gray matter</b> holds neuron <b>cell bodies</b> and dendrites. It is where information is processed. It looks darker.</li>
  <li><b>White matter</b> is mostly <b>myelinated axons</b>. Myelin is fatty, so it looks white. White matter carries signals from one place to another.</li></ol>
@@ -713,7 +722,8 @@ const STEPS=[
  caption:"Gray matter (cell bodies) glows, then white matter (myelinated axons). Brain: gray outside. Spinal cord: gray inside. Insets show what each looks like up close.",
  legend:[["gm","Gray matter","s"],["wm","White matter","s"],["glow","Highlighted tissue"]]},
 
-{act:1,scene:"tube",title:"Development: the neural tube",
+{act:1,scene:"tube",desc:"The left half is a cross-section of the embryo's back. A flat lavender strip (the neural plate) under a light blue surface layer sinks in the middle, its raised edges (the neural folds) curl up, meet, and close into a round tube with a light blue hollow center that sinks below the surface. Yellow dots (neural crest cells) then drift away from the top of the tube to both sides. The right half shows the embryo from above: the tube closes from the middle toward both ends like a zipper, grows longer, and its front end swells into the future brain.",
+ title:"Development: the neural tube",
  body:`<p>The whole CNS starts as a flat sheet of cells on the back of the early embryo. This sheet is the <b>neural plate</b>, made from the outer layer, the ectoderm.</p>
  <ol><li>The plate sinks in the middle to form the <b>neural groove</b>. Its raised edges are the <b>neural folds</b>.</li>
  <li>The folds rise, meet and fuse. The sheet has rolled into the <b>neural tube</b>, which sinks under the surface.</li>
@@ -729,7 +739,8 @@ const STEPS=[
  caption:"Left: the neural plate folds, the folds meet, and the neural tube pinches off while neural crest cells move away. Right: the tube zips closed and grows longer.",
  legend:[["cbl","Neural plate and tube","s"],["ecto","Surface ectoderm","s"],["gold","Neural crest cells"],["vent","Hollow center (future ventricles)","s"]]},
 
-{act:1,scene:"vesicles",title:"Primary and secondary vesicles",
+{act:1,scene:"vesicles",desc:"A tall lavender tube stands on the left, front end at the top, with a light blue hollow inside. It swells into three colored bulges labelled prosencephalon (blue), mesencephalon (yellow) and rhombencephalon (purple), then two of them split so there are five bands: telencephalon (blue), diencephalon (pink), mesencephalon (yellow), metencephalon (purple) and myelencephalon (green), with the teal spinal cord below. Labels in the middle list each vesicle, and one by one an arrow points from each label to the matching colored part of a small adult brain on the right, such as the cerebrum, the thalamus, the pons and cerebellum, or the medulla.",
+ title:"Primary and secondary vesicles",
  body:`<p>The front end of the neural tube grows fastest. It swells into three bulges, the <b>primary vesicles</b>:</p>
  <ol><li><b>Prosencephalon</b> (forebrain)</li><li><b>Mesencephalon</b> (midbrain)</li><li><b>Rhombencephalon</b> (hindbrain)</li></ol>
  <p>Then two of them split, giving five <b>secondary vesicles</b>. The forebrain splits into the <b>telencephalon</b> and the <b>diencephalon</b>. The midbrain stays the <b>mesencephalon</b>. The hindbrain splits into the <b>metencephalon</b> and the <b>myelencephalon</b>.</p>
@@ -744,7 +755,8 @@ const STEPS=[
  caption:"The tube swells into 3 primary vesicles, then 5 secondary vesicles. Matching colours show what each becomes in the adult brain.",
  legend:[["lobe-f","Telencephalon → cerebrum","s"],["dien","Diencephalon → thalamus, hypothalamus","s"],["lobe-p","Mesencephalon → midbrain","s"],["cbl","Metencephalon → pons, cerebellum","s"],["lobe-t","Myelencephalon → medulla","s"]]},
 
-{act:2,scene:"fissures",title:"Hemispheres, gyri, sulci and fissures",
+{act:2,scene:"fissures",desc:"On the left the brain is seen from above, split into left and right hemispheres, and a blue line down the middle marks the longitudinal fissure. Next a coral-red line traces the central sulcus across each hemisphere, on both the top view and a side view of the brain at the upper right, and then an orange line traces the lateral sulcus along the side. In a box at the lower right a flat strip of gray cortex over white matter crumples into ridges and grooves labelled gyrus, sulcus and fissure (deep), with a note that the folded strip has more surface in the same width.",
+ title:"Hemispheres, gyri, sulci and fissures",
  body:`<p>The <b>cerebrum</b> is the largest part of the brain. It is split into a <b>left</b> and a <b>right hemisphere</b> by a deep groove, the <b>longitudinal fissure</b>.</p>
  <p>Its surface is folded. A ridge is a <b>gyrus</b> (plural gyri). A groove is a <b>sulcus</b> (plural sulci). A very deep groove is a <b>fissure</b>. Folding packs a large sheet of cortex into a skull-sized space.</p>
  <p>Two sulci are landmarks you will use a lot:</p>
@@ -760,7 +772,8 @@ const STEPS=[
  caption:"Top view: the longitudinal fissure splits the hemispheres. Side view: the central and lateral sulci trace in. The strip at the bottom right folds up to show why the cortex has gyri and sulci.",
  legend:[["accent","Longitudinal fissure","l"],["act3","Central sulcus","l"],["act2","Lateral sulcus","l"],["cortex","Cerebral cortex","s"]]},
 
-{act:2,scene:"lobes",title:"The lobes of the cerebrum",
+{act:2,scene:"lobes",desc:"A large side view of the brain, front on the left, fills in one lobe at a time with its name: frontal (blue) at the front, parietal (yellow) at the top toward the back, temporal (green) low on the side, and occipital (pink) at the back. Then the lateral sulcus opens up to reveal the orange insula hidden deep inside. A column of five cards on the right lists each lobe and its main job, and the card for the lobe being shown is outlined.",
+ title:"The lobes of the cerebrum",
  body:`<p>Each hemisphere has lobes, mostly named for the skull bones above them.</p>
  <ol><li><b>Frontal lobe</b>: in front of the central sulcus. Movement, planning, decisions, personality, and speech production.</li>
  <li><b>Parietal lobe</b>: behind the central sulcus. Body sensations such as touch, temperature and pain, plus a sense of where your body is in space.</li>
@@ -777,7 +790,8 @@ const STEPS=[
  caption:"Each lobe fills in with its name and main job. Then the lateral sulcus is pulled apart to reveal the hidden insula.",
  legend:[["lobe-f","Frontal","s"],["lobe-p","Parietal","s"],["lobe-t","Temporal","s"],["lobe-o","Occipital","s"],["lobe-i","Insula","s"]]},
 
-{act:2,scene:"motorsens",title:"Motor and somatosensory cortex",
+{act:2,scene:"motorsens",desc:"A side view of the brain shows two strips beside the central sulcus: a red strip in front (precentral gyrus, motor) and a blue strip behind it (postcentral gyrus, sensory). In the middle the strips are shown straightened into two columns of red and blue boxes, from foot at the top to tongue at the bottom, and the hand and lips boxes are much bigger than the foot box. On the right a cartoon figure with a huge head, lips and hands (the homunculus) is touched on the hand, then the lips, then the foot: each time a blue dot runs from that part to the blue strip, and a red dot comes back from the red strip to make the part wiggle.",
+ title:"Motor and somatosensory cortex",
  body:`<p>The gyri on either side of the central sulcus have special jobs.</p>
  <ol><li>The <b>precentral gyrus</b>, just in front of the central sulcus, is the <b>primary motor cortex</b>. Its neurons send the commands that move your skeletal muscles.</li>
  <li>The <b>postcentral gyrus</b>, just behind it, is the <b>primary somatosensory cortex</b>. It receives touch, pressure, temperature and pain from the body.</li></ol>
@@ -793,7 +807,8 @@ const STEPS=[
  caption:"A touch on a body part goes to its spot on the postcentral gyrus (blue). A command from the matching spot on the precentral gyrus moves it (red). Hands and lips have huge areas.",
  legend:[["motor","Primary motor cortex (precentral)","s"],["sens","Primary somatosensory cortex (postcentral)","s"],["glow","Signal"]]},
 
-{act:2,scene:"senses",title:"Seeing and hearing: visual and auditory cortex",
+{act:2,scene:"senses",desc:"A side view of the brain sits in the middle. On the left a yellow star sends light into an eye, and a pink dot travels along a dashed path to the back of the brain, where the visual area of the occipital lobe glows pink. Below, a speaker sends green sound waves to an ear, and a green dot travels to the temporal lobe, where the auditory area glows green. Dashed outlines then appear around the association areas next to each one, with the notes \"that's a face\" and \"that's my name\", while three numbered cards on the right light up in turn.",
+ title:"Seeing and hearing: visual and auditory cortex",
  body:`<p>The special senses each have their own primary area.</p>
  <ol><li>The <b>primary visual cortex</b> is in the <b>occipital lobe</b>, at the very back. Signals from the eyes travel all the way back here, passing through the thalamus on the way.</li>
  <li>The <b>primary auditory cortex</b> is in the <b>temporal lobe</b>, on the upper edge just below the lateral sulcus. Signals from the ears arrive here.</li></ol>
@@ -808,7 +823,8 @@ const STEPS=[
  caption:"Light enters the eye and the signal travels back to the occipital lobe. Sound reaches the ear and the signal goes to the temporal lobe. Association areas light up next.",
  legend:[["lobe-o","Primary visual cortex","s"],["lobe-t","Primary auditory cortex","s"],["glow","Signal"]]},
 
-{act:2,scene:"language",title:"Language areas and the prefrontal cortex",
+{act:2,scene:"language",desc:"A side view of the left side of the brain, front on the left. A speech bubble asks \"What's your name?\" and sound waves reach an ear below the brain. A yellow dot travels from the ear to the auditory area, then to Wernicke's area at the back of the temporal lobe (green), then along an orange dashed arc of white matter forward to Broca's area in the frontal lobe (blue), and on to a red spot in the motor cortex, and a reply bubble \"I'm Maya.\" appears. The purple prefrontal cortex at the very front glows last, and a numbered list on the right highlights each step.",
+ title:"Language areas and the prefrontal cortex",
  body:`<p>In most people, the language areas are in the <b>left hemisphere</b>. Follow what happens when someone asks you a question.</p>
  <ol><li>The primary auditory cortex hears the sounds.</li>
  <li><b>Wernicke's area</b>, at the back of the temporal lobe, works out the <b>meaning</b> of the words. It is needed to understand language.</li>
@@ -825,7 +841,8 @@ const STEPS=[
  caption:"Hear → auditory cortex → Wernicke's area (meaning) → Broca's area (plan speech) → motor cortex (move the mouth). The prefrontal cortex glows as the planner.",
  legend:[["lobe-t","Wernicke's area","s"],["lobe-f","Broca's area","s"],["motor","Primary motor cortex","s"],["act1","Prefrontal cortex","s"],["glow","Signal"]]},
 
-{act:2,scene:"callosum",title:"Corpus callosum and basal nuclei",
+{act:2,scene:"callosum",desc:"A slice of the brain cut from ear to ear fills the left side, showing the left and right hemispheres. First the corpus callosum, the white band arching across the middle, glows while yellow dots slide back and forth across it between the two sides. Then a green dashed loop appears through the deep basal nuclei (caudate, putamen, globus pallidus) and the pink thalamus, a dot travels around it, and a green tag says \"GO: movement starts\". A small inset at the upper right shows the same band seen from the middle of the brain, and a numbered list tracks the steps.",
+ title:"Corpus callosum and basal nuclei",
  body:`<p>This is a <b>coronal</b> slice, as if you cut the brain from ear to ear.</p>
  <p>The <b>corpus callosum</b> is a thick band of white matter that crosses the midline. Its axons connect the left and right hemispheres, so the two sides can share information.</p>
  <p>Deep in each hemisphere sit the <b>basal nuclei</b>: islands of gray matter including the <b>caudate</b>, <b>putamen</b> and <b>globus pallidus</b>. They help <b>start</b> the movements you want and <b>hold back</b> the ones you do not. They work in a loop: cortex → basal nuclei → thalamus → back to the cortex.</p>
@@ -840,7 +857,8 @@ const STEPS=[
  caption:"Signals cross the corpus callosum between hemispheres. Then a 'go' loop runs from the cortex through the basal nuclei and thalamus and back to the cortex.",
  legend:[["wm","Corpus callosum (white matter)","s"],["bn","Basal nuclei","s"],["dien","Thalamus","s"],["vent","Lateral ventricles","s"]]},
 
-{act:3,scene:"dien",title:"Diencephalon: thalamus and hypothalamus",
+{act:3,scene:"dien",desc:"The brain is shown cut down the middle, front on the left. Blue dots stream up from the spinal cord into the outlined pink thalamus and fan out to many parts of the cortex, while a green dashed path shows smell going straight to the front of the brain and skipping the thalamus. Yellow dots (hormones) run down the stalk from the hypothalamus through the pituitary gland into a red blood vessel. On the right a graph shows body temperature wobbling around a dashed green set point at 37 °C, with a message that switches between \"Too warm\", \"Too cool\" and \"On target\".",
+ title:"Diencephalon: thalamus and hypothalamus",
  body:`<p>The <b>diencephalon</b> sits deep in the brain, under the cerebrum, on top of the brainstem. This is a <b>midsagittal</b> view: the brain cut down the middle, seen from the inside.</p>
  <p>The <b>thalamus</b> is a <b>relay station</b>. Almost all sensory information, every sense except smell, stops in the thalamus before it goes on to the cerebral cortex.</p>
  <p>The <b>hypothalamus</b>, just below it, is the control center for <b>homeostasis</b>. It helps regulate body temperature, thirst, hunger and sleep cycles, and it drives the autonomic nervous system. It is also the link to the endocrine system: it controls the <b>pituitary gland</b>, which hangs from it on a stalk.</p>`,
@@ -854,7 +872,8 @@ const STEPS=[
  caption:"Sensory signals rise into the thalamus and fan out to the cortex. The hypothalamus sends signals down its stalk to the pituitary, and keeps body temperature near its set point.",
  legend:[["dien","Thalamus","s"],["hypo","Hypothalamus","s"],["pit","Pituitary gland","s"],["sens","Sensory signals"]]},
 
-{act:3,scene:"stem",title:"The brainstem: midbrain, pons, medulla",
+{act:3,scene:"stem",desc:"A zoomed-in middle view of the brainstem fills the left side. Blue dots flow upward and red dots flow downward through it, while the midbrain, then the pons, then the medulla glows in turn and its matching card on the left is outlined. On the right, a beating red heart with a heartbeat trace, and a pair of lungs that swell and shrink with a slow breathing wave, show the medulla's cardiovascular and respiratory centers; this panel is outlined when the medulla is highlighted.",
+ title:"The brainstem: midbrain, pons, medulla",
  body:`<p>The <b>brainstem</b> connects the brain to the spinal cord. Every signal between them passes through it. From top to bottom it has three parts.</p>
  <ol><li>The <b>midbrain</b> handles reflexes to sights and sounds, like turning your head toward a loud noise. It also helps control eye movements.</li>
  <li>The <b>pons</b> ("bridge") relays signals between the cerebrum and the cerebellum. It also helps regulate breathing.</li>
@@ -870,7 +889,8 @@ const STEPS=[
  caption:"Signals stream up and down through the brainstem. The midbrain, pons and medulla light up in turn. The medulla's centers keep the heart beating and the lungs breathing.",
  legend:[["stem","Brainstem","s"],["sens","Ascending (sensory)"],["motor","Descending (motor)"],["glow","Highlighted part"]]},
 
-{act:3,scene:"cbl",title:"The cerebellum: comparing plan and result",
+{act:3,scene:"cbl",desc:"A small side view of the brain at the upper left shows a red dashed path from the motor cortex (the plan) to the cerebellum, a blue dashed path of feedback from the body, and a green dashed correction path back up to the cortex, with dots moving along each. A large panel on the right shows an arm reaching from a start point toward a blue cup, with a red dashed straight line for the intended path. In the healthy version the hand drifts a little, green arrows nudge it back, and it lands on the cup. Then the cerebellum turns red and striped (damaged), the correction path disappears, and the reach overshoots and wobbles in a zigzag.",
+ title:"The cerebellum: comparing plan and result",
  body:`<p>The <b>cerebellum</b> ("little brain") sits at the back, under the occipital lobe. Its main job is <b>coordination</b>: making movements smooth, accurate and well timed. It also helps with balance and posture.</p>
  <p>It works like a comparer:</p>
  <ol><li>When the motor cortex sends a command, a copy goes to the cerebellum (through the pons). This is the <b>intended</b> movement.</li>
@@ -887,7 +907,8 @@ const STEPS=[
  caption:"Healthy: the plan (dashed) and the actual reach are compared, small errors are corrected, and the hand lands on target. Damaged: no corrections, so the reach overshoots and wobbles.",
  legend:[["cbl","Cerebellum","s"],["motor","Motor command"],["sens","Feedback from body"],["good","Correction"]]},
 
-{act:4,scene:"meninges",title:"The meninges: three protective layers",
+{act:4,scene:"meninges",desc:"A cut-away of the head shows stacked layers, from top to bottom: skin, the bone of the skull, tan dura mater, thin lavender arachnoid, a light blue fluid-filled space, and the wavy pink pia lying on the folded gray cortex with white matter below. One at a time the top layers peel back from the right side, curling at the end like a rolled-up sheet: skin, then skull, then dura, then arachnoid, and each gets a label as it is revealed. Small blue dots of CSF drift in the subarachnoid space, and labels then point out the epidural, subdural and subarachnoid spaces, a blue dural venous sinus, and an arachnoid granulation.",
+ title:"The meninges: three protective layers",
  body:`<p>The brain and spinal cord are protected by bone (skull and vertebrae) and by three membranes, the <b>meninges</b>. Watch them peel back from the outside in.</p>
  <ol><li><b>Dura mater</b> ("tough mother"): thick and tough, right under the bone. In the skull it has two layers. Where they separate, they form <b>dural venous sinuses</b> that collect blood.</li>
  <li><b>Arachnoid mater</b> ("spider-like"): thin, with web-like strands reaching down.</li>
@@ -903,7 +924,8 @@ const STEPS=[
  caption:"Layers peel back one at a time: skin, skull, dura mater, arachnoid mater. The pia hugs the brain surface. CSF flows in the subarachnoid space.",
  legend:[["bone","Skull","s"],["dura","Dura mater","s"],["arach","Arachnoid mater","s"],["pia","Pia mater","s"],["csf","CSF"]]},
 
-{act:4,scene:"ventricles",title:"The ventricles and the choroid plexus",
+{act:4,scene:"ventricles",desc:"A faded side view of the brain shows the ventricles inside it filling with light blue one after another, each with a numbered label: 1 the C-shaped lateral ventricles, 2 the interventricular foramen, 3 the third ventricle, 4 the cerebral aqueduct, 5 the fourth ventricle, and 6 the central canal running down into the spinal cord. Then red tufts (the choroid plexus) appear inside the ventricles and small blue drops of CSF drip from them.",
+ title:"The ventricles and the choroid plexus",
  body:`<p>The hollow center of the neural tube became a set of connected spaces inside the brain, the <b>ventricles</b>. They are filled with <b>cerebrospinal fluid (CSF)</b>.</p>
  <ol><li>Two <b>lateral ventricles</b>, one in each hemisphere. They are C-shaped.</li>
  <li>The <b>third ventricle</b>, a narrow space in the middle of the diencephalon. The lateral ventricles drain into it through the <b>interventricular foramina</b>.</li>
@@ -920,7 +942,8 @@ const STEPS=[
  caption:"The ventricles fill in order: lateral ventricles, interventricular foramen, third ventricle, cerebral aqueduct, fourth ventricle, central canal. The choroid plexus (red tufts) makes CSF.",
  legend:[["vent","Ventricles","s"],["artery","Choroid plexus","s"],["csf","CSF"]]},
 
-{act:4,scene:"csf",title:"How cerebrospinal fluid flows",
+{act:4,scene:"csf",desc:"A faded side view of the brain is surrounded by a light blue halo (the subarachnoid space), with a dark blue vein (the superior sagittal sinus) arching along the top and small lavender bumps (arachnoid granulations) poking up into it. Many small blue dots flow all the time through the ventricles, out around the brain and down toward the spinal cord. One big yellow dot follows a single drop from the lateral ventricles through the third and fourth ventricles, out into the space around the brain and up into the sinus, while a numbered list on the right highlights each stage.",
+ title:"How cerebrospinal fluid flows",
  body:`<p>CSF is made and reabsorbed all the time. Follow one drop:</p>
  <ol><li><b>Choroid plexus</b> makes it in the <b>lateral ventricles</b>.</li>
  <li>It flows through the <b>interventricular foramina</b> into the <b>third ventricle</b>.</li>
@@ -938,7 +961,8 @@ const STEPS=[
  caption:"Drops of CSF are made by the choroid plexus, flow through the ventricles, leave through the apertures, travel around the brain and cord, and return to the blood through the arachnoid granulations.",
  legend:[["csf","CSF"],["vent","Ventricles","s"],["csf-wash","Subarachnoid space","s"],["vein","Dural venous sinus","s"],["artery","Choroid plexus","s"]]},
 
-{act:4,scene:"bbb",title:"The blood-brain barrier",
+{act:4,scene:"bbb",desc:"A large circle in the middle is a brain capillary cut across: red blood cells circle in its center, its wall is three pink endothelial cells joined by black tight-junction marks, and a purple ring of astrocyte end-feet wraps it, linked to a purple astrocyte at the upper right. Small red O₂ dots pass straight out through the wall to a neuron at the lower right, and yellow diamond-shaped glucose molecules pass out through yellow transporters. Red squares (drugs) and red rods (bacteria) move toward the junctions, bounce back, and show an ✕. An inset at the upper right shows a leaky capillary elsewhere in the body with gaps between its cells, and a key below it lists what crosses and what is blocked.",
+ title:"The blood-brain barrier",
  body:`<p>Most capillaries in the body are a bit leaky. Small gaps between their cells let many substances out. The capillaries of the CNS are different.</p>
  <p>Their endothelial cells are sealed together by <b>tight junctions</b>, and the capillaries are wrapped by the feet of <b>astrocytes</b>, which help create and maintain the seal. Together this forms the <b>blood-brain barrier (BBB)</b>.</p>
  <ol><li><b>Oxygen, carbon dioxide</b> and other small fat-soluble molecules (including alcohol and anesthetics) slip straight through the cell membranes.</li>
@@ -955,7 +979,8 @@ const STEPS=[
  caption:"Oxygen passes straight through. Glucose uses transporters. Large molecules, many drugs and bacteria bounce off the tight junctions. Compare the leaky capillary in the corner.",
  legend:[["artery","O₂"],["gold","Glucose","d"],["bad","Blocked: large molecules, many drugs, bacteria","s"],["act1","Astrocyte end-feet","s"]]},
 
-{act:5,scene:"cord",title:"The spinal cord: length and landmarks",
+{act:5,scene:"cord",desc:"A tall spine seen from behind, with beige blocks for vertebrae and a teal spinal cord inside the canal, grows longer while the cord stays the same length, so the cord ends higher up. Yellow nerve roots leave at each level, and below the cord's tapered end near L1–L2 (marked with a red dashed line) the roots run down as the cauda equina. Colored brackets mark the cervical, thoracic, lumbar and sacral regions, and a bar chart on the right compares the growing spine with the cord. Finally a needle slides in from the right below L2 and blue drops of CSF rise into the syringe.",
+ title:"The spinal cord: length and landmarks",
  body:`<p>The <b>spinal cord</b> runs inside the vertebral canal. In adults it is shorter than the spine. It ends around the <b>L1–L2</b> vertebrae.</p>
  <p>Watch why. Early in development the cord fills the whole canal. Then the vertebral column grows faster than the cord, so the end of the cord ends up higher. The nerve roots that leave the lower cord have to run downward to reach their openings.</p>
  <ol><li>The tapered end of the cord is the <b>conus medullaris</b>.</li>
@@ -972,7 +997,8 @@ const STEPS=[
  caption:"The spine grows longer than the cord, so the cord ends near L1–L2 and the lower nerve roots form the cauda equina. Then a needle reaches CSF safely below L2.",
  legend:[["bone","Vertebrae","s"],["stem","Spinal cord","s"],["nerve","Spinal nerve roots","s"],["csf","CSF"]]},
 
-{act:5,scene:"xs",title:"Inside the cord: horns, columns and roots",
+{act:5,scene:"xs",desc:"A large cross-section of the spinal cord fills the middle, back (posterior) at the top and front (anterior) at the bottom, with a butterfly of gray matter inside cream white matter and yellow nerve roots on the right side. One part at a time glows yellow-orange and gets a label joined to it by a line: the posterior, anterior and lateral horns, the central canal, the posterior, lateral and anterior white columns, the dorsal root and its ganglion, the ventral root, the spinal nerve, and the posterior median sulcus and anterior median fissure. Labels for parts already named stay on screen in plain gray.",
+ title:"Inside the cord: horns, columns and roots",
  body:`<p>Cut across the spinal cord and you see the butterfly of <b>gray matter</b> surrounded by <b>white matter</b>.</p>
  <ol><li>The gray matter has <b>horns</b>. The <b>posterior (dorsal) horns</b> receive sensory input. The <b>anterior (ventral) horns</b> hold the cell bodies of motor neurons. The small <b>lateral horns</b>, found only in some parts of the cord (such as the thoracic region), hold autonomic neurons.</li>
  <li>The white matter is divided into <b>columns</b> (funiculi): <b>posterior</b>, <b>lateral</b> and <b>anterior</b>. They hold tracts going up to the brain and down from it.</li>
@@ -989,7 +1015,8 @@ const STEPS=[
  caption:"Each part lights up as it is named: horns of gray matter, columns of white matter, the dorsal root and its ganglion, the ventral root, and the mixed spinal nerve.",
  legend:[["gm","Gray matter","s"],["wm","White matter","s"],["nerve","Roots and spinal nerve","s"],["glow","Part being named"]]},
 
-{act:5,scene:"reflex",title:"Signals in the back, out the front",
+{act:5,scene:"reflex",desc:"A spinal cord cross-section is on the left, a block of skin with a receptor at the upper right, and a red muscle at the lower right. After a \"sharp touch!\" on the skin, a blue dot travels down the nerve, into the dorsal root past the ganglion and into the back of the gray matter, while another blue dot rises toward the top labelled \"copy goes up to the brain\". A purple dot crosses the purple interneuron, then a red dot leaves the motor neuron in the front of the gray matter, runs out the ventral root and down to the muscle, which thickens and is labelled \"Muscle contracts!\". A numbered list at the lower left tracks the five steps.",
+ title:"Signals in the back, out the front",
  body:`<p>Here is the cord at work. Follow a signal from a sharp touch on the skin.</p>
  <ol><li>A <b>sensory receptor</b> in the skin fires.</li>
  <li>The signal travels along the spinal nerve, then into the <b>dorsal root</b>, past its cell body in the <b>dorsal root ganglion</b>.</li>
@@ -1007,7 +1034,8 @@ const STEPS=[
  caption:"Blue: the sensory signal travels in from the skin through the dorsal root to the posterior horn. Red: the motor command leaves the anterior horn through the ventral root to the muscle.",
  legend:[["sens","Sensory pathway (in)"],["motor","Motor pathway (out)"],["act1","Interneuron"],["muscle","Muscle","s"]]},
 
-{act:5,scene:"plexus",title:"Spinal nerves and plexuses",
+{act:5,scene:"plexus",desc:"A spine seen from behind stands on the left with 31 pairs of nerves leaving it; they light up region by region in purple, orange, teal and pink while a counter on the right adds 8 cervical, 12 thoracic, 5 lumbar, 5 sacral and 1 coccygeal to make 31 pairs. Then each plexus is highlighted in turn: the cervical plexus with its phrenic nerve running to a curved red diaphragm that rises and falls with each breath as a red dot runs down the nerve, the brachial plexus nerves running along an arm, the lumbar plexus with the femoral nerve to the front of the thigh, and the sacral plexus with the thick sciatic nerve down the leg. At the end a red dot runs down the sciatic nerve and the lower leg kicks.",
+ title:"Spinal nerves and plexuses",
  body:`<p>There are <b>31 pairs of spinal nerves</b>, named for where they leave the vertebral column: <b>8 cervical</b>, <b>12 thoracic</b>, <b>5 lumbar</b>, <b>5 sacral</b> and <b>1 coccygeal</b>.</p>
  <p>Outside the spine, many of them join and re-sort their axons in networks called <b>plexuses</b>.</p>
  <ol><li><b>Cervical plexus</b> (C1–C5): neck. Its <b>phrenic nerve</b> (C3–C5) runs down to the <b>diaphragm</b>. Every breath depends on it.</li>
@@ -1025,7 +1053,8 @@ const STEPS=[
  caption:"The 31 pairs light up by region. The plexuses glow next. With each breath a signal runs down the phrenic nerve and the diaphragm contracts. The sciatic nerve carries signals to the leg.",
  legend:[["nerve","Spinal nerves","s"],["act1","Cervical plexus","s"],["act2","Brachial plexus","s"],["act4","Lumbar plexus","s"],["act5","Sacral plexus","s"]]},
 
-{act:5,scene:"cranial",title:"The 12 cranial nerves",
+{act:5,scene:"cranial",desc:"The underside of the brain is drawn in the middle, front at the top, with the 12 pairs of cranial nerves attached. Twelve cards line the edges, I to VI on the left and VII to XII on the right; one at a time a card is outlined and a colored line joins it to its nerve, which brightens on the brain. Nerve colors show the type: blue for sensory, red for motor, and purple for both, and each card gives the nerve's name, type and job.",
+ title:"The 12 cranial nerves",
  body:`<p>The <b>cranial nerves</b> attach directly to the brain. There are <b>12 pairs</b>, numbered with Roman numerals from front to back. This is the underside of the brain, where you can see them.</p>
  <p>Some are <b>sensory</b> only (I, II, VIII), some are <b>motor</b> only (III, IV, VI, XI, XII) and some are <b>both</b> (V, VII, IX, X).</p>
  <ol><li>I olfactory (smell); II optic (vision); III oculomotor, IV trochlear and VI abducens (eye movements).</li>
@@ -1042,7 +1071,8 @@ const STEPS=[
  caption:"Each cranial nerve lights up in order, I to XII, coloured by type: sensory (blue), motor (red), or both (purple).",
  legend:[["sens","Sensory (S)"],["motor","Motor (M)"],["both","Both (B)"],["nerve","Cranial nerve","s"]]},
 
-{act:0,scene:"recap",title:"You made it. Here is the whole map.",
+{act:0,scene:"recap",desc:"A side view of the brain sits at the upper left and a middle view below it, with five numbered summary cards on the right. Every few seconds the next card is outlined and the matching part of the pictures glows: first the brain and cord as the CNS, then the colored lobes of the cerebrum, then the thalamus, hypothalamus, brainstem and cerebellum, then the ventricles, and finally the spinal cord.",
+ title:"You made it. Here is the whole map.",
  body:`<ol class="recap">
  <li class="h">Part 1 · Big picture</li>
  <li>CNS = brain + spinal cord. PNS = cranial nerves, spinal nerves, ganglia.</li><li>Gray matter = cell bodies (outside in the brain, inside in the cord). White matter = myelinated axons.</li><li>Neural tube → 3 primary vesicles → 5 secondary vesicles → adult brain. The tube's hollow becomes the ventricles.</li>
@@ -1090,7 +1120,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--chip-${a.col})">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -1098,6 +1128,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none";$("#opts").innerHTML=""}else{

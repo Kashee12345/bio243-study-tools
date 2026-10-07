@@ -11,8 +11,8 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;
-  --pI:#7B5CC9;--pE:#1B6E88;--pG:#2F8A57;--pF:#B4462F;
+  --warn:#9A5524;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;
+  --pI:#7B5CC9;--pE:#1B6E88;--pG:#2F8A57;--pF:#B4462F;--chip-pG:#2B8050;
   --emb:#EFEAF3;--mes:#9C8BB8;--ob:#2A9D8F;--ocl:#7B5CC9;--osteoid:#F3E6C4;
   --bone:#C9A55A;--bone-dk:#9C7A3C;--compact:#E2C88C;--cart:#C6E0EE;--cart-edge:#5C8FAE;--calc:#9FC2D6;
   --vessel:#C0392B;--marrow:#F2C4C0;--yellowm:#F6E7B8;--hema:#8E1F1F;--fibro:#D3C2EA;--peri:#8A5A2B;--glow:#F2B33B;--phago:#6E7F88;
@@ -27,7 +27,7 @@
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
   --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
-  --pI:#A98BEF;--pE:#4FB3D1;--pG:#4FBF7F;--pF:#E07A62;
+  --pI:#A98BEF;--pE:#4FB3D1;--pG:#4FBF7F;--pF:#E07A62;--chip-pG:var(--pG);
   --emb:#241F2B;--osteoid:#5A4E33;--cart:#2B4656;--cart-edge:#7FB3D1;--calc:#3E6378;
   --marrow:#5A2A2A;--yellowm:#4D4326;--fibro:#3E3354;--compact:#B99A5C;--bone:#D9B66A;--bone-dk:#E2C88C;--phago:#A3B2BA;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
@@ -37,7 +37,7 @@
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
   --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
-  --pI:#A98BEF;--pE:#4FB3D1;--pG:#4FBF7F;--pF:#E07A62;
+  --pI:#A98BEF;--pE:#4FB3D1;--pG:#4FBF7F;--pF:#E07A62;--chip-pG:var(--pG);
   --emb:#241F2B;--osteoid:#5A4E33;--cart:#2B4656;--cart-edge:#7FB3D1;--calc:#3E6378;
   --marrow:#5A2A2A;--yellowm:#4D4326;--fibro:#3E3354;--compact:#B99A5C;--bone:#D9B66A;--bone-dk:#E2C88C;--phago:#A3B2BA;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
@@ -107,7 +107,12 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 .prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
 .recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+/* a11y: in dark mode the accent is light, so selected/pressed controls use dark text (this also stops
+   site-kit's contrast fixer from leaving a stale dark-text class behind when the selection moves) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.dot.cur){color:#0B1A20}}
+:root[data-theme="dark"] :is(.dot.cur){color:#0B1A20}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -159,7 +164,7 @@ footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
 "use strict";
 const TRACKS={I:{name:"Intramembranous ossification",col:"pI"},E:{name:"Endochondral ossification",col:"pE"},G:{name:"Growth at the epiphyseal plate",col:"pG"},F:{name:"Fracture healing",col:"pF"}};
 const STEPS=[
-{tr:0,scene:"map",id:"map",title:"Four stories about bone",
+{tr:0,scene:"map",id:"map",desc:"Four cards sit in a row, joined by small arrows, each with a coloured header: purple Intramembranous, teal Endochondral, green Growth plate and red Fracture healing. Each card has a small picture: gold bone struts on a lilac background, a blue cartilage dumbbell with a tan middle, a blue grid of stacked cells over gold bone, and a cream bone with a patch in the middle. The cards light up one after another with a coloured outline. A line under the cards reads: one rule for all four, bone is always built on something.",title:"Four stories about bone",
  body:`<p>Bone is never made out of nothing. It is always built on top of something else. Keep that one idea in mind and these four stories make sense:</p>
  <ol><li><b>Intramembranous ossification:</b> bone is built directly inside a sheet of embryonic tissue (mesenchyme). It makes flat bones like the skull.</li>
  <li><b>Endochondral ossification:</b> a cartilage model is built first, then replaced by bone. It makes most bones, including all long bones.</li>
@@ -175,7 +180,7 @@ const STEPS=[
  caption:"Four processes: two ways to make bone, one way to grow it longer, one way to repair it."},
 
 /* ---------- Intramembranous ---------- */
-{tr:"I",scene:"im",id:"i1",title:"Mesenchymal cells form an ossification center",
+{tr:"I",scene:"im",id:"i1",desc:"A lilac field is sprinkled with small purple triangle-shaped mesenchymal cells, and a red capillary runs diagonally across it. Near the capillary, a group of cells drifts together into a ring and turns into round teal osteoblasts. A dashed circle appears around the ring, labelled ossification center.",title:"Mesenchymal cells form an ossification center",
  body:`<p>Inside the embryo, a sheet of <b>mesenchyme</b> sits where a flat bone will be. Near a blood vessel, some <b>mesenchymal cells</b> gather into a cluster.</p>
  <p>They change into <b>osteoblasts</b>, the bone-building cells. This cluster is the <b>ossification center</b>, where bone will start.</p>`,
  analogy:"Workers arrive at an empty lot, put on hard hats, and gather where the first wall will go.",
@@ -187,7 +192,7 @@ const STEPS=[
   ["Red blood cells",0,"Red blood cells are made in red marrow later."]]},
  caption:"Mesenchymal cells near a capillary cluster together and become osteoblasts.",
  legend:[["mes","Mesenchymal cell"],["ob","Osteoblast"],["vessel","Capillary"]]},
-{tr:"I",scene:"im",id:"i2",title:"Osteoblasts lay down osteoid, which hardens",
+{tr:"I",scene:"im",id:"i2",desc:"A ring of teal osteoblasts surrounds a pale cream oval of osteoid in the middle of the lilac field. The oval grows larger and fills with small gold specks as it calcifies and hardens. A few osteoblasts end up trapped inside the oval and turn into small osteocytes, marked by a label that says trapped, becomes osteocyte.",title:"Osteoblasts lay down osteoid, which hardens",
  body:`<p>The osteoblasts secrete <b>osteoid</b>: soft, unmineralized bone matrix (mostly collagen). Within days, calcium salts are deposited in it and it <b>calcifies</b> (hardens).</p>
  <p>Some osteoblasts get trapped inside the matrix they made. Once trapped, they are called <b>osteocytes</b>. They stay alive and maintain the bone.</p>`,
  analogy:"Pouring wet cement that hardens. A few workers get cemented in and stay on as caretakers.",
@@ -199,7 +204,7 @@ const STEPS=[
   ["Soft bone matrix.",0,"That's osteoid."]]},
  caption:"Osteoid grows and calcifies. Trapped osteoblasts become osteocytes.",
  legend:[["ob","Osteoblast"],["osteoid","Osteoid"],["bone","Calcium deposits"],["ocy","Osteocyte"]]},
-{tr:"I",scene:"im",id:"i3",title:"Trabeculae form and the periosteum appears",
+{tr:"I",scene:"im",id:"i3",desc:"Wavy red blood vessels run left to right across the field. Gold bone struts, the trabeculae, grow and branch out from the center until they form a tangled gold mesh around the vessels. At the top and bottom edges, the scattered purple cells pack into a brown band labelled periosteum.",title:"Trabeculae form and the periosteum appears",
  body:`<p>Osteoid keeps being laid down around the blood vessels. It forms a web of thin bars called <b>trabeculae</b>. This first bone is spongy (woven) bone.</p>
  <p>Meanwhile, the mesenchyme on the surface packs together and becomes the <b>periosteum</b>, the tough membrane that covers bone.</p>`,
  analogy:"Building a scaffold of beams around the plumbing, then wrapping the outside in a tarp.",
@@ -211,7 +216,7 @@ const STEPS=[
   ["The medullary cavity.",0,"Flat bones don't have a medullary cavity."]]},
  caption:"Trabeculae spread around the blood vessels. Surface mesenchyme condenses into periosteum.",
  legend:[["bone","Trabeculae"],["vessel","Blood vessel"],["peri","Periosteum"]]},
-{tr:"I",scene:"im",id:"i4",title:"Compact bone covers the spongy bone",
+{tr:"I",scene:"im",id:"i4",desc:"A horizontal slab of bone is shown with a brown periosteum along the top and bottom. Solid gold plates labelled compact bone thicken along the upper and lower surfaces. The gold mesh of spongy bone in the middle fills with pink red marrow, labelled spongy bone plus red marrow (diploe).",title:"Compact bone covers the spongy bone",
  body:`<p>Just under the periosteum, the trabeculae fill in and become solid <b>compact bone</b>. The middle stays spongy.</p>
  <p>The blood vessels trapped between the trabeculae become <b>red bone marrow</b>. The result is a sandwich: compact bone, spongy bone, compact bone. In the skull, the spongy middle is called the <b>diploë</b>.</p>
  <p>This is how the <b>flat bones of the skull</b>, the <b>mandible</b> and the <b>clavicles</b> form.</p>`,
@@ -226,7 +231,7 @@ const STEPS=[
  legend:[["compact","Compact bone"],["bone","Spongy bone"],["marrow","Red marrow"],["peri","Periosteum"]]},
 
 /* ---------- Endochondral ---------- */
-{tr:"E",scene:"long",id:"e1",title:"A hyaline cartilage model is built",
+{tr:"E",scene:"long",id:"e1",desc:"Purple triangle mesenchymal cells, scattered across a pale background, gather into the shape of a long bone. The shape fills in as a light blue dumbbell of hyaline cartilage, dotted with small dark blue chondrocytes. A label under it says the perichondrium wraps the model.",title:"A hyaline cartilage model is built",
  body:`<p>In the embryo, mesenchymal cells crowd together in the shape of the future bone. They become <b>chondrocytes</b> (cartilage cells) and build a small <b>hyaline cartilage model</b> of the bone.</p>
  <p>A membrane called the <b>perichondrium</b> wraps around the model.</p>`,
  analogy:"Making a clay model of the bone first. Later, the clay will be swapped for stone.",
@@ -238,7 +243,7 @@ const STEPS=[
   ["Osteoid",0,"Osteoid is bone matrix. Here, the first tissue is cartilage."]]},
  caption:"Mesenchymal cells gather in the bone's shape and become chondrocytes in a cartilage model.",
  legend:[["mes","Mesenchymal cell"],["cart","Hyaline cartilage"],["cartE","Chondrocyte / perichondrium"]]},
-{tr:"E",scene:"long",id:"e2",title:"The middle calcifies and a bone collar forms",
+{tr:"E",scene:"long",id:"e2",desc:"The blue cartilage dumbbell stays in place. In the narrow middle of the shaft, the small blue chondrocytes swell into bigger, darker cells, and then fade to empty outlines as the matrix calcifies. A tan and gold bone collar then forms as a band around the outside of the shaft, labelled bone collar from new periosteum.",title:"The middle calcifies and a bone collar forms",
  body:`<p>In the middle of the shaft, the chondrocytes <b>enlarge</b>. The cartilage matrix around them <b>calcifies</b>. Cartilage has no blood vessels, so once the matrix is calcified, nutrients can't reach the cells and they <b>die</b>.</p>
  <p>At the same time, the perichondrium around the middle becomes <b>periosteum</b>. Its osteoblasts build a thin <b>bone collar</b> around the shaft.</p>`,
  analogy:"The clay in the middle dries and cracks. A stone belt is wrapped around the model's waist.",
@@ -250,7 +255,7 @@ const STEPS=[
   ["Blood vessels crush them.",0,"Vessels haven't arrived yet."]]},
  caption:"Middle chondrocytes enlarge, the matrix calcifies and the cells die. A bone collar forms.",
  legend:[["cart","Cartilage"],["calc","Calcified cartilage"],["compact","Bone collar"],["peri","Periosteum"]]},
-{tr:"E",scene:"long",id:"e3",title:"Blood vessels arrive: the primary ossification center",
+{tr:"E",scene:"long",id:"e3",desc:"A red blood vessel grows down from the top of the picture into the middle of the shaft, inside the gold bone collar. Teal osteoblasts arrive with it and build a mesh of gold spongy bone over a pink background in the center. A label points to this spot as the primary ossification center.",title:"Blood vessels arrive: the primary ossification center",
  body:`<p>Blood vessels grow through the bone collar into the calcified middle. They bring <b>osteoblasts</b> (and cells that clear away the old matrix).</p>
  <p>The osteoblasts lay bone on the leftover calcified cartilage, making <b>spongy bone</b>. This spot is the <b>primary ossification center</b>.</p>`,
  analogy:"A road is built into the middle of the site, and the construction crew drives in.",
@@ -262,7 +267,7 @@ const STEPS=[
   ["Synovial fluid.",0,"That is joint fluid. It doesn't build bone."]]},
  caption:"A blood vessel enters the middle and spongy bone forms: the primary ossification center.",
  legend:[["vessel","Blood vessel"],["ob","Osteoblast"],["bone","Spongy bone"],["marrow","Marrow"]]},
-{tr:"E",scene:"long",id:"e4",title:"The medullary cavity is hollowed out",
+{tr:"E",scene:"long",id:"e4",desc:"The gold spongy bone and pink marrow spread outward from the middle toward both ends of the shaft. Then purple osteoclasts appear in the center and eat away the bone there, leaving an open pink space labelled medullary cavity, while the gold mesh remains near the ends of the shaft.",title:"The medullary cavity is hollowed out",
  body:`<p>Bone spreads from the middle toward both ends of the shaft, and the bone collar thickens along the diaphysis.</p>
  <p>Behind it, <b>osteoclasts</b> break down the spongy bone in the very center. This creates the hollow <b>medullary cavity</b>, which fills with marrow.</p>`,
  analogy:"A demolition crew follows the builders, clearing out the middle to make a long hallway.",
@@ -274,7 +279,7 @@ const STEPS=[
   ["Chondrocytes",0,"Chondrocytes make cartilage."]]},
  caption:"Bone spreads toward the ends. Osteoclasts hollow out the medullary cavity behind it.",
  legend:[["ocl","Osteoclast"],["bone","Spongy bone"],["marrow","Medullary cavity (marrow)"],["compact","Compact bone"]]},
-{tr:"E",scene:"long",id:"e5",title:"Secondary ossification centers form in the ends",
+{tr:"E",scene:"long",id:"e5",desc:"Red blood vessels grow in from the left and right sides into the two rounded blue ends (the epiphyses). Around the tip of each vessel, a gold mesh of spongy bone grows, and both spots are labelled secondary center.",title:"Secondary ossification centers form in the ends",
  body:`<p>Around the time of birth, blood vessels enter the <b>epiphyses</b> (the ends). Bone starts forming there too. These are the <b>secondary ossification centers</b>.</p>
  <p>The epiphyses become spongy bone, but the medullary cavity does not reach into them.</p>`,
  analogy:"Two more crews start work at each end of the building.",
@@ -286,7 +291,7 @@ const STEPS=[
   ["In the periosteum",0,"The periosteum covers bone; it isn't an ossification center."]]},
  caption:"Blood vessels enter the epiphyses and secondary ossification centers form.",
  legend:[["vessel","Blood vessel"],["bone","Spongy bone"],["cart","Cartilage still left"]]},
-{tr:"E",scene:"long",id:"e6",title:"Only two kinds of cartilage remain",
+{tr:"E",scene:"long",id:"e6",desc:"The ends are now mostly gold spongy bone. Only two kinds of blue cartilage are left: a thin rim over each rounded end, labelled articular cartilage, and a narrow blue striped band between each end and the shaft, labelled epiphyseal plates. Green arrows point outward along the bottom, labelled growth in length at the plates.",title:"Only two kinds of cartilage remain",
  body:`<p>Bone replaces almost all of the cartilage. Hyaline cartilage remains in only two places:</p>
  <ul><li><b>Articular cartilage</b> on the joint surfaces, where it stays for life.</li>
  <li>The <b>epiphyseal plates</b> (growth plates) between each epiphysis and the shaft. They let the bone grow longer until early adulthood.</li></ul>`,
@@ -301,7 +306,7 @@ const STEPS=[
  legend:[["cart","Articular cartilage / epiphyseal plate"],["bone","Spongy bone"],["compact","Compact bone"],["marrow","Marrow"]]},
 
 /* ---------- Growth plate ---------- */
-{tr:"G",scene:"plate",id:"g1",title:"Reserve zone",
+{tr:"G",scene:"plate",id:"g1",desc:"A close-up of the growth plate: pink and gold epiphysis bone runs across the top, and pink and gold diaphysis bone with red vessels runs across the bottom. In between, light blue cartilage holds six vertical columns of flat blue cells that stack downward and get bigger toward the bottom. An orange box outlines the scattered small cells at the top, and the matching label on the right, Reserve zone, turns green. A grey arrow on the right points down, showing the plate moves like a conveyor.",title:"Reserve zone",
  body:`<p>Zoom in on an epiphyseal plate. It has layers, or <b>zones</b>. Read them from the epiphysis down toward the shaft.</p>
  <p>The <b>reserve zone</b> is next to the epiphysis. Its small chondrocytes are not dividing much. Their job is to <b>anchor</b> the plate to the bone of the epiphysis.</p>`,
  analogy:"A conveyor belt. The reserve zone is the frame that bolts the belt to the wall.",
@@ -313,7 +318,7 @@ const STEPS=[
   ["Calcifying the matrix.",0,"That happens in the bottom zone."]]},
  caption:"The whole plate is moving like a conveyor. The reserve zone is the anchor at the top.",
  legend:[["bone","Bone"],["cart","Cartilage"],["cartE","Chondrocytes"]]},
-{tr:"G",scene:"plate",id:"g2",title:"Proliferative zone",
+{tr:"G",scene:"plate",id:"g2",desc:"The same growth plate is shown. The orange box and the green label now mark the proliferative zone, where the blue cells split and stack into tall, neat columns. New flat cells keep appearing at the top of each column and push the older cells downward toward the shaft.",title:"Proliferative zone",
  body:`<p>In the <b>proliferative zone</b>, chondrocytes divide quickly and stack up in <b>columns</b>, like a pile of coins.</p>
  <p>The new cells push older cells down toward the shaft. This is what makes the plate add new cartilage on the epiphysis side.</p>`,
  analogy:"New boxes are added to the conveyor belt.",
@@ -325,7 +330,7 @@ const STEPS=[
   ["Zone of calcified matrix",0,"Here the cells die."]]},
  caption:"Cells divide and stack into columns, pushing older cells toward the shaft.",
  legend:[["cartE","Dividing chondrocytes"]]},
-{tr:"G",scene:"plate",id:"g3",title:"Zone of maturation and hypertrophy",
+{tr:"G",scene:"plate",id:"g3",desc:"The orange box and the green label now mark the zone of maturation and hypertrophy, lower in the columns. Here the blue cells stop dividing and swell into larger, rounder cells as they move down each column toward the shaft.",title:"Zone of maturation and hypertrophy",
  body:`<p>Further down, the older chondrocytes stop dividing and <b>grow much larger</b> (hypertrophy means enlargement).</p>
  <p>Their swelling makes the matrix between them thin, getting it ready to calcify.</p>`,
  analogy:"Boxes on the belt puff up as they move along.",
@@ -337,7 +342,7 @@ const STEPS=[
   ["They move back up to the epiphysis.",0,"Cells only move down, toward the shaft."]]},
  caption:"Chondrocytes stop dividing and swell as they move down the column.",
  legend:[["cartE","Enlarging chondrocytes"]]},
-{tr:"G",scene:"plate",id:"g4",title:"Zone of calcified matrix: bone replaces cartilage",
+{tr:"G",scene:"plate",id:"g4",desc:"The orange box and the green label now mark the calcified matrix zone at the bottom of the plate. The largest cells fade to empty outlines, teal osteoblasts and red vessels move in from below, and gold bone replaces the cartilage. A green note at the top says the epiphysis is pushed away and the bone lengthens.",title:"Zone of calcified matrix: bone replaces cartilage",
  body:`<p>At the bottom, the matrix <b>calcifies</b> and the chondrocytes <b>die</b>. Blood vessels from the shaft grow in. Osteoblasts lay <b>bone</b> on the calcified cartilage, and osteoclasts remodel it.</p>
  <p>New cartilage is added at the top while cartilage is turned into bone at the bottom. The plate stays about the same thickness, but it moves the epiphysis away from the shaft. <b>That is how a long bone grows longer.</b></p>
  <p>In early adulthood the plate is fully replaced by bone. What is left is the <b>epiphyseal line</b>, and growth in length stops.</p>`,
@@ -352,7 +357,7 @@ const STEPS=[
  legend:[["calc","Calcified matrix"],["ob","Osteoblast"],["bone","New bone"],["vessel","Blood vessel"]]},
 
 /* ---------- Fracture ---------- */
-{tr:"F",scene:"frac",id:"f1",title:"A fracture hematoma forms",
+{tr:"F",scene:"frac",id:"f1",desc:"A side view of a long bone runs across the picture: cream marrow cavity in the middle with tan compact bone above and below. A zigzag white crack appears across the middle and the two halves separate slightly. Red blood spreads from the torn vessels until a large dark red oval clot covers the break, labelled fracture hematoma, and a note says bone cells at the broken ends die.",title:"A fracture hematoma forms",
  body:`<p>When a bone breaks, blood vessels in the bone and periosteum tear. Blood pools and clots, forming a <b>fracture hematoma</b> within hours.</p>
  <p>Without blood flow, bone cells near the broken ends <b>die</b>. The area swells and becomes painful.</p>`,
  analogy:"An accident scene: the area is blocked off and cleanup can't start until the scene is secured.",
@@ -364,7 +369,7 @@ const STEPS=[
   ["A fibrocartilaginous callus.",0,"That's the next stage."]]},
  caption:"The bone breaks, torn vessels bleed, and a clot fills the gap. Cells at the ends die.",
  legend:[["hema","Hematoma"],["compact","Compact bone"],["yellowm","Marrow cavity"]]},
-{tr:"F",scene:"frac",id:"f2",title:"A soft callus bridges the break",
+{tr:"F",scene:"frac",id:"f2",desc:"Inside the dark red clot, thin red capillaries grow in from the sides, and grey round phagocytes move around clearing debris. The clot is replaced by a light purple band of fibrocartilage filling the crack, labelled internal callus, and a pale blue bulge around the outside of the bone, labelled external callus.",title:"A soft callus bridges the break",
  body:`<p>Over the next days, new <b>capillaries</b> grow into the clot. <b>Phagocytes</b> clean up the clot and dead bone.</p>
  <p>Fibroblasts and chondroblasts move in and build a <b>fibrocartilaginous callus</b> that bridges the broken ends. An <b>external callus</b> of cartilage and bone forms a collar around the outside.</p>`,
  analogy:"Putting a temporary patch on it, like wrapping a broken pipe in strong tape.",
@@ -376,7 +381,7 @@ const STEPS=[
   ["Spongy bone.",0,"That's the next stage."]]},
  caption:"Capillaries grow in, phagocytes clear debris, and a cartilage callus bridges the gap.",
  legend:[["vessel","Capillary"],["phago","Phagocyte"],["fibro","Fibrocartilage"],["cart","External callus"]]},
-{tr:"F",scene:"frac",id:"f3",title:"The bony callus",
+{tr:"F",scene:"frac",id:"f3",desc:"Teal osteoblasts arrive around the pale blue callus. Starting from the edges, a gold and pink mesh of spongy bone grows in and replaces the purple cartilage until the break is bridged by a bulging bony callus, labelled bony callus.",title:"The bony callus",
  body:`<p>Over several weeks, <b>osteoblasts</b> turn the cartilage callus into <b>spongy bone</b>. This is the <b>bony callus</b>. It joins the broken ends firmly.</p>
  <p>Notice the pattern: cartilage first, then bone. That's the same plan as endochondral ossification.</p>`,
  analogy:"The tape patch is rebuilt in concrete.",
@@ -388,7 +393,7 @@ const STEPS=[
   ["Red blood cells",0,"They carry oxygen; they don't build bone."]]},
  caption:"Spongy bone grows in from the edges and replaces the cartilage callus.",
  legend:[["bone","Spongy bone"],["ob","Osteoblast"],["cart","Cartilage being replaced"]]},
-{tr:"F",scene:"frac",id:"f4",title:"Remodeling",
+{tr:"F",scene:"frac",id:"f4",desc:"A large tan bulge of bone surrounds the healed break. Purple osteoclasts move along its outer edge and trim it down until the bulge shrinks and the shaft returns to nearly its original straight shape, with a label that says compact bone is restored along the shaft.",title:"Remodeling",
  body:`<p>Finally, <b>osteoclasts</b> remove the extra bone of the callus, and <b>compact bone</b> replaces spongy bone along the shaft walls.</p>
  <p>Remodeling can take months. The healed bone often looks almost normal, though a slight thickening may remain.</p>`,
  analogy:"Sanding off the extra concrete so the pipe is smooth again.",
@@ -401,7 +406,7 @@ const STEPS=[
  caption:"Osteoclasts trim the callus and compact bone is restored along the shaft.",
  legend:[["ocl","Osteoclast"],["compact","Compact bone"]]},
 
-{tr:0,scene:"map",id:"recap",title:"You made it. Here is the whole picture.",
+{tr:0,scene:"map",id:"recap",desc:"The four process cards return in a row: purple Intramembranous, teal Endochondral, green Growth plate and red Fracture healing, each with its small picture. They light up one after another with a coloured outline, and the line underneath reads: one rule for all four, bone is always built on something.",title:"You made it. Here is the whole picture.",
  body:`<ol>
  <li class="h">Intramembranous</li><li>Mesenchyme → osteoblasts → osteoid → trabeculae and periosteum → compact bone over spongy bone.</li>
  <li class="h">Endochondral</li><li>Cartilage model → middle calcifies, bone collar → primary center → medullary cavity → secondary centers → only articular cartilage and growth plates left.</li>
@@ -422,11 +427,11 @@ function buildChain(){const el=$("#chain");el.innerHTML="";
   groups.forEach((g,gi)=>{const d=document.createElement("div");d.className="actgrp";if(gi===0||gi===groups.length-1)d.style.flex="0 0 auto";
     d.innerHTML=`<div class="an"><i style="background:var(--${g[1]})"></i>${g[0]}</div>`;const dots=document.createElement("div");dots.className="dots";
     g[2].forEach((i,j)=>{const b=document.createElement("button");b.type="button";b.className="dot";b.dataset.i=i;b.textContent=i===0?"★":(i===STEPS.length-1?"✓":j+1);
-      b.setAttribute("aria-label",STEPS[i].title);b.onclick=()=>go(i);dots.appendChild(b)});d.appendChild(dots);el.appendChild(d)})}
+      b.setAttribute("aria-label",(i===0||i===STEPS.length-1)?STEPS[i].title:(j+1)+". "+STEPS[i].title);b.onclick=()=>go(i);dots.appendChild(b)});d.appendChild(dots);el.appendChild(d)})}
 function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
 function render(){const s=STEPS[cur];const t=TRACKS[s.tr];
   const within=s.tr?STEPS.filter(x=>x.tr===s.tr):[];const n=within.indexOf(s)+1;
-  $("#stepno").innerHTML=t?`<span class="actchip" style="background:var(--${t.col})">${t.name}</span><span>Stage ${n} of ${within.length}</span>`:"";
+  $("#stepno").innerHTML=t?`<span class="actchip" style="background:var(--chip-${t.col},var(--${t.col}))">${t.name}</span><span>Stage ${n} of ${within.length}</span>`:"";
   $("#title").textContent=s.title;$("#body").innerHTML=s.body;$("#analogy p").textContent=s.analogy;
   $("#terms").innerHTML=s.terms.map(x=>`<div><dt>${x[0]}</dt><dd>${x[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;cv.setAttribute("aria-label","Animation: "+s.caption);
@@ -434,7 +439,7 @@ function render(){const s=STEPS[cur];const t=TRACKS[s.tr];
   const ck=$("#check");if(!s.check)ck.style.display="none";else{ck.style.display="";$("#q").textContent=s.check.q;const fb=$("#fb");fb.textContent="";fb.className="fb";const box=$("#opts");box.innerHTML="";
     s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
       b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};box.appendChild(b)})}
-  $("#prev").disabled=cur===0;$("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";$("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";refreshDots()}
+  $("#prev").disabled=cur===0;$("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";$("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";refreshDots();if(window.gkDescribe)window.gkDescribe(s.desc)}
 function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render()}
 $("#prev").onclick=()=>go(cur-1);$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
 document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});

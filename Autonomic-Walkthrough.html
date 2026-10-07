@@ -138,7 +138,14 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+
+/* a11y retrofit: contrast fixes (WCAG 2.1 AA) */
+:root{--chip-act1:#4F62B8;--chip-act2:#C4502F;--chip-act3:#28815D;--chip-act4:#7B5CC9;--chip-act5:#8D6D14;--chip-act6:#19817D;--warn-text:#9D5722}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn-text:var(--warn)}:root:not([data-theme="light"]) .dot.cur{color:#0B1A20}}
+:root[data-theme="dark"]{--warn-text:var(--warn)}:root[data-theme="dark"] .dot.cur{color:#0B1A20}
+.fb.no{color:var(--warn-text)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -198,7 +205,8 @@ const ACTS={1:{name:"Part 1 · Two motor systems",col:"act1"},
             6:{name:"Part 6 · Control and drugs",col:"act6"}};
 const NACTS=6;
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: the body's automatic pilot",
+{act:0,scene:"map",id:"map",desc:"A body on the left shows the brain and a pale spinal cord down the middle. For a few seconds the middle stretch of the cord (T1 to L2) glows red-orange and red-orange nerve lines fan out to the eyes, heart, lungs, liver, stomach, adrenal glands, gut, bladder and arm muscles, with yellow pulses running along them; then the brainstem and the bottom of the cord (S2 to S4) glow green and green lines reach the eyes, salivary glands, heart, lungs, gut and bladder. The body changes with each division: the pupils widen and the heart beats faster in the red-orange phase, and the pupils shrink and the gut gets busy in the green phase. On the right, a family-tree diagram highlights Sympathetic or Parasympathetic, a two-neuron chain icon sends pulses through a ganglion to a heart, and a box below lists the current effects.",
+ title:"The big picture: the body's automatic pilot",
  body:`<p>Your <b>autonomic nervous system</b> (ANS) runs the parts of your body you do not consciously control: your <b>heart</b>, the <b>smooth muscle</b> in your gut, airways and blood vessels, and your <b>glands</b>. "Autonomic" means self-governing.</p>
  <p>The ANS is the motor (output) side of the nervous system for these organs. It has two main divisions:</p>
  <ol><li>The <b>sympathetic division</b> gets you ready for action. It is the <b>fight-or-flight</b> system.</li>
@@ -214,7 +222,8 @@ const STEPS=[
  caption:"Sympathetic outflow (thoracolumbar) and parasympathetic outflow (craniosacral) take turns lighting up. Both reach the same organs.",
  legend:[["sym","Sympathetic division"],["para","Parasympathetic division"],["cns","Brain and spinal cord","r"]]},
 
-{act:1,scene:"chains",id:"somatic",title:"Somatic vs autonomic: one neuron or two",
+{act:1,scene:"chains",id:"somatic",desc:"The picture has two lanes. Top lane, in blue: a single long neuron runs from a spinal cord box to a skeletal muscle fiber, a yellow pulse travels along it, blue ACh dots puff out, and the muscle shortens with the word contracts. Bottom lane, in red-orange: a preganglionic neuron runs to a round ganglion, the pulse crosses it, and a second postganglionic neuron carries the pulse on to a target that changes each time: a heart that beats faster, a gut tube that squeezes more, or a gland that secretes. Three tabs at the bottom (Cardiac muscle, Smooth muscle, Glands) show which target is active.",
+ title:"Somatic vs autonomic: one neuron or two",
  body:`<p>Compare the two lanes in the picture.</p>
  <p>In the <b>somatic</b> system (top), <b>one</b> motor neuron runs all the way from the spinal cord to a <b>skeletal muscle</b>. It releases <b>acetylcholine (ACh)</b> and the muscle contracts. You can control this on purpose.</p>
  <p>In the <b>autonomic</b> system (bottom), it takes <b>two neurons in a row</b>. The first neuron starts in the brain or spinal cord and ends in an <b>autonomic ganglion</b>, a cluster of nerve cell bodies outside the CNS. There it hands the signal to the second neuron, which carries it to the effector: <b>cardiac muscle</b>, <b>smooth muscle</b> or a <b>gland</b>.</p>
@@ -229,7 +238,8 @@ const STEPS=[
  caption:"Top: one somatic neuron makes a skeletal muscle twitch. Bottom: two autonomic neurons, meeting at a ganglion, reach cardiac muscle, smooth muscle or a gland.",
  legend:[["soma","Somatic motor neuron"],["sym","Autonomic neurons"],["ganglion","Ganglion"],["ach","ACh"]]},
 
-{act:1,scene:"ganglion",id:"gang",title:"Inside a ganglion: where the two neurons meet",
+{act:1,scene:"ganglion",id:"gang",desc:"On the left a cross-section of the spinal cord shows gray matter with a red-orange glowing lateral horn, where a preganglionic cell body sits. Its red-orange axon runs out through the ventral root to a large tan oval on the right, the ganglion, and inside it branches to five postganglionic cell bodies. A yellow pulse travels down the axon, spreads to all five cells, and then runs out along their axons to a heart that beats faster, a blood vessel that narrows, and an eye whose pupil widens, plus one fiber heading off to other organs.",
+ title:"Inside a ganglion: where the two neurons meet",
  body:`<p>Zoom in on one pathway. The <b>preganglionic</b> cell body sits in the <b>gray matter</b> of the spinal cord. For the sympathetic division it is in a small region called the <b>lateral horn</b>.</p>
  <p>Its axon leaves the cord through the <b>ventral root</b> and travels to a ganglion. Inside the ganglion it releases <b>ACh</b> onto the cell bodies of postganglionic neurons. Those neurons fire and send their axons out to the organs.</p>
  <p>Notice that <b>one preganglionic axon can branch to many postganglionic neurons</b>. In the sympathetic division this spreading out is large, so one signal can reach many organs at once. That is part of why fight-or-flight feels like a whole-body event.</p>`,
@@ -243,7 +253,8 @@ const STEPS=[
  caption:"Preganglionic neuron (lateral horn) → ventral root → ganglion. One axon branches to several postganglionic neurons, which reach the heart, a blood vessel and the eye.",
  legend:[["sym","Preganglionic (thick) and postganglionic (thin) axons","l"],["gray","Gray matter","r"],["ganglion","Ganglion","r"],["ach","ACh"]]},
 
-{act:2,scene:"cord",id:"tl",title:"Sympathetic outflow: thoracolumbar, T1 to L2",
+{act:2,scene:"cord",id:"tl",desc:"A tall pale spinal cord column runs down the left middle with its regions bracketed (cervical, thoracic, lumbar, sacral); the brainstem cap and the S2 to S4 segments are tinted green, and the T1 to L2 segments are tinted red-orange. A line of tan beads beside the cord is the sympathetic chain. One segment at a time from T1 down to L2 glows, with a tag naming it, and a red-orange line carries a yellow pulse from that segment through the chain to one of five targets on the right: eye and head, heart and lungs, stomach and intestines, adrenal medulla, or bladder and lower body. The active target lights up, for example the pupil widens or the heart beats faster.",
+ title:"Sympathetic outflow: thoracolumbar, T1 to L2",
  body:`<p>The sympathetic preganglionic neurons sit in the <b>lateral horns</b> of the spinal cord from the first thoracic segment to the second lumbar segment, <b>T1 to L2</b>. That is why the sympathetic division is called <b>thoracolumbar</b>.</p>
  <p>Watch the highlighted band move down the cord. Each segment from T1 to L2 sends preganglionic axons out. Segments above T1 and below L2 have no lateral horn, so they send no sympathetic outflow.</p>
  <p>Yet sympathetic signals still reach your <b>head</b> and your <b>legs</b>. The next step shows how: the signals travel up and down a chain of ganglia beside the spine.</p>`,
@@ -257,7 +268,8 @@ const STEPS=[
  caption:"Scanning T1 to L2: each segment's lateral horn sends preganglionic axons out to the sympathetic chain.",
  legend:[["sym","Sympathetic outflow (T1 to L2)"],["para","Parasympathetic outflow (later)"],["cns","Spinal cord","r"],["ganglion","Chain ganglia"]]},
 
-{act:2,scene:"symchain",id:"chain",title:"Chain ganglia: short in, long out",
+{act:2,scene:"symchain",id:"chain",desc:"A spinal cord column on the left is labelled C1 to S5, with a row of tan chain ganglia beside it. Three routes take turns: from T3 a short red-orange fiber enters the chain and synapses at the same level, then a long fiber runs to the heart, which speeds up; from T1 the fiber rides up the chain to the superior cervical ganglion and a long fiber runs to the eye, whose pupil dilates; from L1 the fiber rides down the chain and a long fiber runs to a leg blood vessel, which narrows. Labels mark short and long postganglionic, and a list in the middle highlights the current route.",
+ title:"Chain ganglia: short in, long out",
  body:`<p>On each side of the spine runs a string of ganglia called the <b>sympathetic chain</b>. These are the <b>chain ganglia</b>, also called <b>paravertebral ganglia</b> because they sit beside the vertebrae.</p>
  <p>A sympathetic preganglionic axon is <b>short</b>. It only has to reach the chain right next to the cord. Then it can:</p>
  <ol><li><b>synapse at the same level</b> (the path to the heart),</li><li><b>travel up the chain</b> and synapse higher (the path to the eye goes up to the <b>superior cervical ganglion</b> in the neck),</li><li><b>travel down the chain</b> and synapse lower (the path to blood vessels in the leg).</li></ol>
@@ -272,7 +284,8 @@ const STEPS=[
  caption:"Three paths: synapse at the same level (heart), ride up the chain (eye), ride down the chain (leg blood vessel). Short in, long out.",
  legend:[["sym","Preganglionic (short, beaded) and postganglionic (long)","l"],["ganglion","Chain ganglion"],["ne","Norepinephrine","d"],["ach","ACh"]]},
 
-{act:2,scene:"collat",id:"coll",title:"Collateral ganglia: passing through to the gut",
+{act:2,scene:"collat",id:"coll",desc:"A spinal cord column is on the left with the chain beside it, and a tall red aorta runs down the middle with three tan ganglia on its front: celiac, superior mesenteric and inferior mesenteric. Red-orange preganglionic fibers leave the cord, pass straight through the chain without stopping (\"passes through\"), and reach each ganglion, where yellow pulses and blue ACh dots mark the synapse. Long fibers then run on to the stomach, small intestine and large intestine on the right, orange NE dots puff out, and the squeezing waves in each gut tube slow down, with the label slows down.",
+ title:"Collateral ganglia: passing through to the gut",
  body:`<p>Some sympathetic preganglionic axons <b>pass straight through</b> the chain without stopping. They form the <b>splanchnic nerves</b> and travel to ganglia in front of the spine, on the large arteries that feed the gut.</p>
  <p>These are the <b>collateral ganglia</b>, also called <b>prevertebral ganglia</b> (in front of the vertebrae). The three main ones are named for the arteries they sit on:</p>
  <ol><li><b>Celiac ganglion</b>: stomach, liver and nearby organs.</li><li><b>Superior mesenteric ganglion</b>: small intestine.</li><li><b>Inferior mesenteric ganglion</b>: large intestine, bladder and pelvic organs.</li></ol>
@@ -287,7 +300,8 @@ const STEPS=[
  caption:"Preganglionic axons pass through the chain (no stop), synapse in the celiac, superior mesenteric or inferior mesenteric ganglion, and the gut slows down.",
  legend:[["sym","Sympathetic axons","l"],["ganglion","Collateral ganglia"],["blood","Aorta and its branches","r"],["ne","Norepinephrine","d"]]},
 
-{act:2,scene:"adrenal",id:"adr",title:"The adrenal medulla: a ganglion that makes hormones",
+{act:2,scene:"adrenal",id:"adr",desc:"A spinal cord column is on the left, and a brown kidney sits at the lower middle with a yellow adrenal gland capping it, cut open to show a red-orange inner medulla full of chromaffin cells. A red-orange preganglionic axon runs straight from the cord into the medulla with no ganglion on the way, a yellow pulse travels down it, and the cells glow. Magenta triangles (epinephrine) and orange diamonds (norepinephrine) then flow with red blood cells along a vessel that branches to the heart, which speeds up and shows its rate, the liver, which gives off glucose, and an airway, which widens.",
+ title:"The adrenal medulla: a ganglion that makes hormones",
  body:`<p>The <b>adrenal glands</b> sit on top of the kidneys. Their inner part, the <b>adrenal medulla</b>, is a special case.</p>
  <p>A sympathetic preganglionic axon goes <b>straight to the adrenal medulla</b> with no ganglion along the way. It releases ACh onto <b>chromaffin cells</b>. These cells are really <b>modified postganglionic neurons</b> with no axons. So the adrenal medulla works like a sympathetic ganglion.</p>
  <p>Instead of sending signals down an axon, chromaffin cells release <b>epinephrine</b> (mostly) and <b>norepinephrine</b> into the <b>blood</b>. Now they act as <b>hormones</b>. They travel everywhere the blood goes, so their effects are widespread, and they last longer than a nerve signal because they stay in the blood until they are cleared.</p>`,
@@ -301,7 +315,8 @@ const STEPS=[
  caption:"A preganglionic axon goes straight to the adrenal medulla. Chromaffin cells release epinephrine (triangles) and norepinephrine (diamonds) into the blood, which carries them to the heart, liver and airways.",
  legend:[["sym","Sympathetic preganglionic axon","l"],["epi","Epinephrine","t"],["ne","Norepinephrine","d"],["glu","Glucose","h"],["adrenal","Adrenal gland","r"]]},
 
-{act:3,scene:"cranio",id:"cs",title:"Parasympathetic outflow: craniosacral",
+{act:3,scene:"cranio",id:"cs",desc:"A pale brain, brainstem and spinal cord stand on the left, with the brainstem and the S2 to S4 segments tinted green. Green fibers leave from cranial nerves III, VII, IX and X at the brainstem and from S2 to S4 at the bottom of the cord, each reaching a small ganglion right next to its target on the right. One group at a time glows and sends a pulse: III makes the pupil constrict, VII and IX make the tear and salivary glands secrete, X slows the heart, narrows the airway and speeds up the gut, and S2 to S4 empties the bladder, while a tag at the bottom names the active nerve.",
+ title:"Parasympathetic outflow: craniosacral",
  body:`<p>Parasympathetic preganglionic neurons sit in two places, at the two ends of the CNS. That is why this division is called <b>craniosacral</b>.</p>
  <ol><li><b>Cranial</b>: nuclei in the brainstem send axons out in four cranial nerves: <b>III</b> (oculomotor, to the eye), <b>VII</b> (facial, to tear and salivary glands), <b>IX</b> (glossopharyngeal, to the parotid salivary gland) and <b>X</b> (vagus, to the heart, lungs and most abdominal organs).</li>
  <li><b>Sacral</b>: segments <b>S2 to S4</b> of the spinal cord send axons to the bladder, the lower large intestine and the reproductive organs.</li></ol>
@@ -316,7 +331,8 @@ const STEPS=[
  caption:"Cranial nerves III, VII, IX and X leave the brainstem; S2 to S4 leave the sacral cord. Each ganglion sits next to or inside its target.",
  legend:[["para","Parasympathetic preganglionic (long)","l"],["ganglion","Ganglion near the target"],["cns","Brain and spinal cord","r"]]},
 
-{act:3,scene:"vagus",id:"vagus",title:"The vagus nerve does most of the work",
+{act:3,scene:"vagus",id:"vagus",desc:"A body on the left shows a green vagus nerve running down from the brainstem into the chest, with green branches spreading to the heart, both lungs, the stomach, the liver and the intestines, each ending at a tiny tan ganglion. Yellow pulses travel down the trunk and out the branches, and the body responds: the heart slows (a box reads the heart rate dropping from 72 toward 58 beats per minute), the gut moves more and saliva flows. A checklist marks each organ as it is reached, and a round inset at the lower right zooms into the stomach wall to show a ganglion sitting inside the wall with a very short fiber to the muscle.",
+ title:"The vagus nerve does most of the work",
  body:`<p><b>Vagus</b> means "wandering." The vagus nerve (cranial nerve X) leaves the brainstem, runs down the neck, and wanders through the chest and abdomen. It carries <b>most of the body's parasympathetic output</b>.</p>
  <p>It reaches the <b>heart</b>, <b>lungs</b>, <b>stomach</b>, <b>liver</b>, <b>small intestine</b> and the first part of the <b>large intestine</b>.</p>
  <p>Its preganglionic axons are <b>long</b>. They run all the way into the walls of the organs and synapse in <b>terminal ganglia</b>, also called <b>intramural ganglia</b> ("within the wall"). The postganglionic axons are then <b>very short</b>.</p>
@@ -331,7 +347,8 @@ const STEPS=[
  caption:"The vagus wanders from the brainstem to the heart, lungs, stomach and intestines. Inset: a terminal ganglion inside the stomach wall.",
  legend:[["para","Vagus nerve (preganglionic)","l"],["ganglion","Terminal (intramural) ganglion"],["ach","ACh"]]},
 
-{act:3,scene:"lengths",id:"len",title:"Side by side: where the ganglia sit",
+{act:3,scene:"lengths",id:"len",desc:"Two lanes are stacked, red-orange on top and green below. In the sympathetic lane a short preganglionic fiber goes from the spinal cord to a ganglion close by, then three long fibers fan out to an eye, a heart and a blood vessel, labelled One → many: widespread effects. In the parasympathetic lane a long preganglionic fiber runs all the way to a ganglion inside a tan organ wall, then one short fiber reaches a single muscle cell, labelled One → one: local effects. Pulses race along both, and colored bars under each lane compare the short and long segments.",
+ title:"Side by side: where the ganglia sit",
  body:`<p>Here are the two divisions side by side. Watch a signal race down each one at the same time.</p>
  <ol><li><b>Sympathetic</b>: ganglia are <b>close to the spinal cord</b> (chain or collateral). Preganglionic fiber <b>short</b>, postganglionic fiber <b>long</b>.</li>
  <li><b>Parasympathetic</b>: ganglia are <b>close to or inside the organ</b> (terminal ganglia). Preganglionic fiber <b>long</b>, postganglionic fiber <b>short</b>.</li></ol>
@@ -346,7 +363,8 @@ const STEPS=[
  caption:"Same race, different wiring. Sympathetic: short then long, fans out widely. Parasympathetic: long then short, stays local.",
  legend:[["sym","Sympathetic"],["para","Parasympathetic"],["ganglion","Ganglion"]]},
 
-{act:4,scene:"syn",id:"nic",title:"Every ganglion: ACh on nicotinic receptors",
+{act:4,scene:"syn",id:"nic",desc:"A close-up of a synapse on a pale blue background: a red-orange preganglionic axon terminal at the top, full of round vesicles holding blue ACh dots, and a membrane below with purple paired receptors (nicotinic). A yellow pulse comes down the axon, the vesicles drop to the bottom and open, and the ACh dots drift across the gap to the receptors, which open and glow. Small gray-blue Na⁺ dots then pour down through the open channels, yellow glows spread sideways along the cell below, and a label says the postganglionic neuron fires; a box at the bottom lists the other places with the same synapse.",
+ title:"Every ganglion: ACh on nicotinic receptors",
  body:`<p>Now zoom in on a synapse inside a ganglion. This step is the same in <b>both</b> divisions.</p>
  <ol><li>An action potential reaches the end of the preganglionic axon.</li><li>Vesicles release <b>acetylcholine (ACh)</b> into the gap.</li><li>ACh binds <b>nicotinic receptors</b> on the postganglionic neuron.</li><li>Nicotinic receptors are <b>ion channels</b>. They open, Na⁺ rushes in, and the postganglionic neuron fires.</li></ol>
  <p>Rule to remember: <b>all preganglionic neurons release ACh</b>, sympathetic and parasympathetic. Neurons that release ACh are called <b>cholinergic</b>. The chromaffin cells of the adrenal medulla and skeletal muscle (at the neuromuscular junction) also use nicotinic receptors.</p>`,
@@ -360,7 +378,8 @@ const STEPS=[
  caption:"Action potential arrives → ACh released → binds nicotinic receptors (ion channels) → Na⁺ in → the postganglionic neuron fires.",
  legend:[["ach","ACh"],["nic","Nicotinic receptor (ion channel)","r"],["na","Na⁺"],["glow","Action potential"]]},
 
-{act:4,scene:"syn",id:"musc",title:"Parasympathetic targets: ACh on muscarinic receptors",
+{act:4,scene:"syn",id:"musc",desc:"A close-up of a synapse: a green parasympathetic terminal at the top full of vesicles with blue ACh dots, and a membrane below with teal zigzag receptors (muscarinic). The ACh is released, drifts down, and binds; small teal and green balls under each receptor (the G protein) slide apart and glow. In a panel at the bottom three targets respond: a heart whose rate drops from 74 toward 58 beats per minute, a gut tube that squeezes more, and a gland that drips more secretion.",
+ title:"Parasympathetic targets: ACh on muscarinic receptors",
  body:`<p>At the other end of a parasympathetic pathway, the postganglionic neuron also releases <b>ACh</b>. But the receptors on the target organ are a different kind: <b>muscarinic receptors</b>.</p>
  <p>Muscarinic receptors are not ion channels. When ACh binds, the receptor switches on a <b>G protein</b> inside the cell. The G protein then changes what the cell does. That is a little slower, but it lets the same ACh cause different effects in different organs.</p>
  <ol><li>In the <b>heart</b>, it slows the heart rate.</li><li>In the <b>gut</b>, it makes smooth muscle contract more.</li><li>In <b>glands</b>, it increases secretion, like saliva.</li></ol>`,
@@ -374,7 +393,8 @@ const STEPS=[
  caption:"Parasympathetic postganglionic ACh → muscarinic receptor → G protein switches on → the heart slows, the gut contracts, glands secrete.",
  legend:[["ach","ACh"],["musc","Muscarinic receptor","r"],["para","G protein (signal inside the cell)"]]},
 
-{act:4,scene:"syn",id:"ne",title:"Sympathetic targets: norepinephrine on adrenergic receptors",
+{act:4,scene:"syn",id:"ne",desc:"On the left, a red-orange sympathetic axon runs across the top with three swollen beads (varicosities); a yellow pulse travels along it and orange diamond-shaped NE molecules drift down onto a membrane with alternating brown alpha and gold beta receptors, which glow, above a row of pink smooth muscle cells. On the right, a tall panel outlined in orange labelled The exception shows a sympathetic fiber to a sweat gland releasing blue ACh dots onto teal muscarinic receptors, and a coiled gland under the skin surface pushes sweat drops up and out.",
+ title:"Sympathetic targets: norepinephrine on adrenergic receptors",
  body:`<p>Most <b>sympathetic postganglionic</b> neurons release <b>norepinephrine (NE)</b>. Their axons have swellings called <b>varicosities</b> that release NE along the way, right onto the smooth muscle or other target.</p>
  <p>NE binds <b>adrenergic receptors</b>. There are two main families, <b>alpha (α)</b> and <b>beta (β)</b>, each with subtypes. Neurons that release NE are called <b>adrenergic</b>.</p>
  <p><b>The exception:</b> the sympathetic postganglionic neurons that go to <b>sweat glands</b> release <b>ACh</b>, not NE, onto muscarinic receptors. (Some that go to blood vessels in skeletal muscle do too.) They are still sympathetic, because they come from T1 to L2 through the chain. Only the chemical is different.</p>`,
@@ -388,7 +408,8 @@ const STEPS=[
  caption:"Left: NE released from varicosities binds alpha and beta receptors. Right: the exception, a sympathetic fiber releasing ACh onto a sweat gland.",
  legend:[["ne","Norepinephrine","d"],["alpha","Alpha receptor","r"],["beta","Beta receptor","r"],["ach","ACh"],["sweat","Sweat"]]},
 
-{act:4,scene:"receptors",id:"rec",title:"Same chemical, different receptor, different effect",
+{act:4,scene:"receptors",id:"rec",desc:"Three tall tiles stand side by side, each with a receptor on a membrane at the top that a molecule drops onto: β1 on the heart, β2 on a bronchiole, and α1 on a skin blood vessel. In the first tile a large heart beats harder and faster, the rate rises to about 120 beats per minute, and an ECG trace speeds up. In the second, a ring of smooth muscle around an airway relaxes and the opening widens, with a percent width readout rising; in the third, the muscle ring around a vessel tightens and the opening narrows, with its percent width falling.",
+ title:"Same chemical, different receptor, different effect",
  body:`<p>Why can NE speed up the heart but relax the airways? Because each organ has its own <b>receptor subtype</b>. The receptor decides the effect, not the chemical. Watch the three examples:</p>
  <ol><li><b>Beta-1 (β1)</b> receptors on the <b>heart</b>: heart rate and force of contraction go <b>up</b>.</li>
  <li><b>Beta-2 (β2)</b> receptors on <b>bronchiolar smooth muscle</b>: the muscle <b>relaxes</b>, so the airways widen. These respond mainly to epinephrine circulating in the blood.</li>
@@ -404,7 +425,8 @@ const STEPS=[
  caption:"β1 on the heart: faster and stronger. β2 on bronchioles: muscle relaxes, airway widens. α1 on a skin blood vessel: muscle contracts, vessel narrows.",
  legend:[["ne","Norepinephrine","d"],["epi","Epinephrine","t"],["beta","Beta receptor","r"],["alpha","Alpha receptor","r"],["smooth","Smooth muscle","r"]]},
 
-{act:5,scene:"body",id:"fight",title:"Fight or flight: the sympathetic body",
+{act:5,scene:"body",id:"fight",desc:"A full body stands in the middle, the background tints red-orange, and a tag says Sympathetic activity: HIGH, with the note Something startles you. One by one, red-orange labels with lines appear on both sides, pointing at each organ as it changes: pupils dilate, skin pales, bronchioles widen, arm and leg muscles get more blood, the liver releases glucose, the bladder holds urine, sweat appears, the mouth goes dry, the heart speeds and beats harder, the adrenal medulla releases epinephrine, and digestion slows. Boxes at the bottom show the heart rate rising to about 128 beats per minute with a trace, blood glucose rising to about 140, and a zoomed pupil getting wider.",
+ title:"Fight or flight: the sympathetic body",
  body:`<p>Something startles you. Your sympathetic division fires widely and your adrenal medulla adds epinephrine to the blood. Watch the whole body shift into action mode:</p>
  <ol><li><b>Pupils dilate</b>, letting in more light.</li><li><b>Heart rate and force increase</b>, pumping more blood.</li><li><b>Bronchioles dilate</b>, so more air reaches the lungs.</li><li><b>Blood shifts to skeletal muscle</b>: vessels in skin and gut narrow, vessels in working muscle widen.</li><li><b>Digestion slows</b> and the mouth goes dry.</li><li>The <b>liver releases glucose</b> for fuel.</li><li><b>Sweating</b> increases to shed heat, and the bladder holds urine.</li></ol>
  <p>Everything that helps you run or fight goes up. Everything that can wait, like digestion, goes down.</p>`,
@@ -418,7 +440,8 @@ const STEPS=[
  caption:"Sympathetic activity rises: pupils dilate, heart speeds, airways open, blood shifts to muscle, gut slows, glucose rises, sweat appears.",
  legend:[["sym","Sympathetic effect"],["glu","Glucose","h"],["sweat","Sweat"],["epi","Epinephrine","t"]]},
 
-{act:5,scene:"body",id:"rest",title:"Rest and digest: the parasympathetic body",
+{act:5,scene:"body",id:"rest",desc:"A full body stands in the middle, the background tints green, and a tag says Parasympathetic activity: HIGH, with the note Quiet afternoon after a big meal. One by one, green labels with lines appear: pupils constrict, bronchioles narrow a little, intestines move food faster, the bladder wall contracts to empty, more saliva flows, the heart slows, and the stomach churns. Boxes at the bottom show the heart rate falling to about 60 beats per minute with a trace, gut movement rising to about 250 percent, and a zoomed pupil getting smaller.",
+ title:"Rest and digest: the parasympathetic body",
  body:`<p>Now picture yourself after a big meal on a quiet afternoon. The parasympathetic division is in charge, mostly through the vagus nerve. Watch the body switch to maintenance mode:</p>
  <ol><li><b>Pupils constrict</b>.</li><li><b>Heart rate slows</b>.</li><li><b>Bronchioles narrow</b> a little; you don't need extra air.</li><li><b>Digestion speeds up</b>: more stomach churning, more gut movement, more digestive juices.</li><li><b>Salivation</b> increases.</li><li>The <b>bladder empties</b>: its wall muscle contracts.</li></ol>
  <p>The parasympathetic division saves energy and takes care of upkeep. Some people also call it "feed and breed."</p>`,
@@ -432,7 +455,8 @@ const STEPS=[
  caption:"Parasympathetic activity rises: pupils constrict, heart slows, airways narrow a little, gut and salivary glands get busy, bladder empties.",
  legend:[["para","Parasympathetic effect"],["sweat","Saliva and urine drops"],["gut","Gut motility","r"]]},
 
-{act:5,scene:"dual",id:"dual",title:"Dual innervation and autonomic tone",
+{act:5,scene:"dual",id:"dual",desc:"A large heart on the left receives two nerves: a red-orange sympathetic one labelled gas pedal from below and a green vagus labelled brake from above, each getting thicker and sending more pulses when it is more active, with two bar meters (SYM and PARA) showing their levels. On the right a big eye shows a red-orange ring of radial dilator lines and a green circular sphincter around the pupil, and the pupil widens or shrinks as the two compete. A heart-rate trace at the bottom cycles through four labelled phases: resting tone at 72 beats per minute, more sympathetic at about 125 with a wide pupil, more parasympathetic at about 56 with a small pupil, and no autonomic input at about 95.",
+ title:"Dual innervation and autonomic tone",
  body:`<p>Most organs get input from <b>both</b> divisions. This is <b>dual innervation</b>. The two usually have <b>opposite</b> effects, like a gas pedal and a brake.</p>
  <p>Look at the eye: <b>sympathetic</b> fibers contract the <b>radial (dilator) muscle</b> to widen the pupil, while <b>parasympathetic</b> fibers contract the <b>circular (sphincter) muscle</b> to shrink it.</p>
  <p>Both divisions are <b>always a little bit active</b>. This background level is <b>autonomic tone</b>. At rest, the heart is under <b>parasympathetic tone</b>: the vagus keeps a light foot on the brake. The heart's own pacemaker would beat about <b>80 to 100 times a minute</b>, but at rest it beats more like 70.</p>
@@ -447,7 +471,8 @@ const STEPS=[
  caption:"Four phases: resting tone, more sympathetic, more parasympathetic, then no autonomic input. The heart rate and pupil change together.",
  legend:[["sym","Sympathetic: gas pedal, dilator muscle"],["para","Parasympathetic: brake, sphincter muscle"],["heart","Heart rate trace","l"]]},
 
-{act:5,scene:"symponly",id:"only",title:"Sympathetic only: control by turning one dial",
+{act:5,scene:"symponly",id:"only",desc:"A dial at the upper left shows sympathetic activity swinging between low, medium and high. Next to it a long blood vessel with red blood cells flowing through it has one red-orange sympathetic fiber above it dropping orange NE dots; as the dial rises, the pink muscle around the vessel thickens and the channel narrows, and as it falls the vessel widens, with a percent width readout. Three tiles below follow the same single dial: a sweat gland that sweats when activity is high, an adrenal gland that releases magenta epinephrine, and small muscles that pull skin hairs upright into goosebumps.",
+ title:"Sympathetic only: control by turning one dial",
  body:`<p>A few targets get <b>only sympathetic</b> fibers. The main ones are:</p>
  <ol><li><b>Most blood vessels</b> (their smooth muscle),</li><li><b>Sweat glands</b>,</li><li>The <b>adrenal medulla</b>,</li><li>The <b>arrector pili</b> muscles that raise your hairs (goosebumps).</li></ol>
  <p>With no parasympathetic brake, how can these organs be turned down? By changing <b>sympathetic tone</b>. More sympathetic signal makes vessel smooth muscle contract, so the vessel narrows (<b>vasoconstriction</b>). Less signal lets it relax, so the vessel widens (<b>vasodilation</b>). Watch the dial and the vessel together.</p>`,
@@ -461,7 +486,8 @@ const STEPS=[
  caption:"One dial: sympathetic activity low → vessel wide; medium → resting tone; high → vessel narrow. Sweat glands and adrenal medulla follow the same single dial.",
  legend:[["sym","Sympathetic fiber","l"],["smooth","Vessel smooth muscle","r"],["blood","Blood cells"],["sweat","Sweat"]]},
 
-{act:6,scene:"central",id:"brain",title:"Who's in charge? The hypothalamus and brainstem",
+{act:6,scene:"central",id:"brain",desc:"A side view of a pale brain shows four colored spots linked by a red-orange dashed path: the amygdala, the hypothalamus, the medulla in the brainstem, and the T1 to L2 part of the spinal cord. On the far left an eye sees a wriggling green snake (\"You see a snake\"), and a yellow pulse travels from the eye through each spot in order, each glowing as it is reached, then out a red-orange fiber through a ganglion to a heart on the lower right, whose rate climbs to about 120 beats per minute. Blue dashed pulses then run back from the heart to the medulla, labelled Visceral sensory feedback.",
+ title:"Who's in charge? The hypothalamus and brainstem",
  body:`<p>The ANS is not on its own. It takes orders from the brain.</p>
  <ol><li>The <b>hypothalamus</b> is the main control center. It links emotions, body temperature, hunger and stress to autonomic output.</li>
  <li>The <b>brainstem</b>, especially the <b>medulla</b>, holds centers for heart rate, blood pressure and breathing. It sends signals down to the preganglionic neurons.</li>
@@ -477,7 +503,8 @@ const STEPS=[
  caption:"A scary sight → amygdala → hypothalamus → brainstem → spinal cord → sympathetic outflow → the heart speeds up. Visceral sensory signals report back.",
  legend:[["sym","Command signal (down)"],["ach","Sensory feedback (up)"],["cns","Brain and spinal cord","r"]]},
 
-{act:6,scene:"baro",id:"baro",title:"An autonomic reflex: the baroreceptor reflex",
+{act:6,scene:"baro",id:"baro",desc:"On the left a pink aortic arch and carotid artery bulge wider when blood pressure rises, and blue sensor dots on them blink faster, sending blue pulses up the IX and X nerves to a box labelled Medulla. From the medulla a green vagus line to the heart and red-orange sympathetic lines to the heart and to an arteriole on the right change thickness: when pressure rises the vagus line thickens and the sympathetic lines thin, the heart slows and the arteriole widens; when pressure falls (standing up fast) the reverse happens. A banner at the top names the current event, and a small graph at the lower right traces blood pressure in red and heart rate over time.",
+ title:"An autonomic reflex: the baroreceptor reflex",
  body:`<p>An <b>autonomic reflex</b> works like a somatic reflex: a sensor, a sensory neuron, a center in the CNS, motor neurons and an effector. One of the most important is the <b>baroreceptor reflex</b>, which keeps blood pressure steady.</p>
  <ol><li><b>Baroreceptors</b> are stretch sensors in the walls of the <b>carotid sinus</b> and the <b>aortic arch</b>.</li>
  <li>When blood pressure <b>rises</b>, the walls stretch more and the sensors fire faster. Signals travel in cranial nerves <b>IX</b> and <b>X</b> to the <b>medulla</b>.</li>
@@ -494,7 +521,8 @@ const STEPS=[
  caption:"Pressure rises → baroreceptors stretch and fire faster → medulla → more vagus, less sympathetic → heart slows, vessels relax → pressure falls. Then the reverse.",
  legend:[["blood","Blood pressure","l"],["heart","Heart rate","l"],["para","Vagus output"],["sym","Sympathetic output"]]},
 
-{act:6,scene:"drugs",id:"drugs1",title:"Drugs at adrenergic receptors: beta blockers and albuterol",
+{act:6,scene:"drugs",id:"drugs1",desc:"The picture is split in two. Left: three β1 receptors on a heart cell membrane get capped by dark gray BB capsules (the beta blocker), orange NE diamonds then arrive, bounce off and get a red X, and the heart below beats more weakly, with its rate dropping from about 82 to 58 beats per minute on a slowing trace. Right: an inhaler puffs green particles, green A capsules (albuterol) settle onto β2 receptors which glow, and the airway ring below, squeezed narrow at first (\"Asthma\"), relaxes and opens wide.",
+ title:"Drugs at adrenergic receptors: beta blockers and albuterol",
  body:`<p>Because each organ has its own receptor types, drugs can target them. Two common examples:</p>
  <ol><li><b>Beta blockers</b> (such as metoprolol or propranolol) <b>block β receptors</b>. On the heart, they stop NE and epinephrine from binding β1, so <b>heart rate and force go down</b>. They are used for high blood pressure and some heart problems. A drug that blocks a receptor is an <b>antagonist</b>.</li>
  <li><b>Albuterol</b> <b>activates β2 receptors</b>. In the lungs, it relaxes bronchiolar smooth muscle and <b>opens the airways</b>, which is why it is a rescue inhaler for asthma. A drug that activates a receptor is an <b>agonist</b>.</li></ol>
@@ -509,7 +537,8 @@ const STEPS=[
  caption:"Left: beta blocker caps β1 receptors, so NE can't bind and the heart rate drops. Right: albuterol activates β2 receptors and the narrowed airway opens.",
  legend:[["drug","Antagonist (blocker)","s"],["drugok","Agonist (albuterol)","s"],["ne","Norepinephrine","d"],["beta","β receptor","r"]]},
 
-{act:6,scene:"drugs",id:"drugs2",title:"Drugs at cholinergic receptors: atropine and nicotine",
+{act:6,scene:"drugs",id:"drugs2",desc:"The picture is split in two. Left: dark gray At capsules (atropine) cap three muscarinic receptors and blue ACh dots bounce off; below, the pupil widens, the heart rate climbs to about 108 beats per minute, the salivary gland stops dripping (dry mouth), the gut tube slows, and sweating decreases. Right: green N capsules (nicotine) sit on the ganglia of a red-orange sympathetic lane and a green parasympathetic lane and on an adrenal gland, which all glow; pulses run out of both lanes, magenta epinephrine flows from the adrenal gland, the heart speeds up and the gut moves more.",
+ title:"Drugs at cholinergic receptors: atropine and nicotine",
  body:`<p>Drugs can also act where ACh works.</p>
  <ol><li><b>Atropine</b> is a <b>muscarinic antagonist</b>. It blocks ACh at parasympathetic targets, so the sympathetic side wins: <b>pupils dilate</b> (eye doctors use similar drops), the <b>heart speeds up</b>, the <b>mouth goes dry</b> and the gut slows. It also reduces sweating, because sweat glands use muscarinic receptors.</li>
  <li><b>Nicotine</b> is a <b>nicotinic agonist</b>. Nicotinic receptors are in <b>every autonomic ganglion</b> and the adrenal medulla, so nicotine stimulates <b>both divisions at once</b>. The effects are mixed. In most people heart rate and blood pressure rise (sympathetic ganglia plus adrenal epinephrine), while the gut may become more active (parasympathetic ganglia).</li></ol>
@@ -524,7 +553,8 @@ const STEPS=[
  caption:"Left: atropine blocks muscarinic receptors: pupil dilates, heart speeds, saliva stops. Right: nicotine activates nicotinic receptors in both divisions' ganglia and the adrenal medulla.",
  legend:[["drug","Atropine (blocker)","s"],["drugok","Nicotine (activator)","s"],["musc","Muscarinic","r"],["nic","Nicotinic","r"],["ach","ACh"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole autonomic system.",
+{act:0,scene:"recap",id:"recap",desc:"Two small bodies stand side by side: the left one shifts toward fight or flight (wider pupils, faster heart) under a red-orange tag, and the right one shifts toward rest and digest (smaller pupils, slower heart, busier gut) under a green tag. Between them, two neuron chains show red-orange short pre and long post fibers ending in an orange NE diamond, and green long pre and short post fibers ending in a blue ACh dot, with pulses running along both. A table at the bottom fills in row by row, comparing outflow, ganglia, fiber lengths, the ganglion chemical, and the chemical at the target, red-orange for sympathetic and green for parasympathetic.",
+ title:"You made it. Here is the whole autonomic system.",
  body:`<ol class="recap">
  <li class="h">Part 1 · Two motor systems</li>
  <li>Somatic: one neuron, ACh, skeletal muscle. Autonomic: two neurons (preganglionic and postganglionic) meeting in a ganglion, to cardiac muscle, smooth muscle and glands.</li>
@@ -572,7 +602,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--chip-${a.col})">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -580,6 +610,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

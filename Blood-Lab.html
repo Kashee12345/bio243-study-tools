@@ -185,6 +185,8 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 .opt:hover{border-color:var(--accent)}
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.right::before{content:"\2713  ";font-weight:700;color:var(--good)}
+.opt.wrong::before{content:"\2717  ";font-weight:700}
 .fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
 .fb.show{display:block}
 .fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
@@ -196,6 +198,9 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 .chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
 .chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
 .chip.done.cur{background:var(--accent);color:#fff}
+/* dark mode: dark text on the light accent, so the shared contrast fixer never has to step in */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) :is(.tab[aria-selected="true"],.btn,.chal li.done .ck,.chip.cur,.chip.done.cur){color:#0B1A20}}
+:root[data-theme=dark] :is(.tab[aria-selected="true"],.btn,.chal li.done .ck,.chip.cur,.chip.done.cur){color:#0B1A20}
 .calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
 .subtabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
 footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
@@ -203,6 +208,18 @@ footer a{color:var(--ink-soft)}
 kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
 sub,sup{line-height:0}
 [hidden]{display:none!important}
+</style>
+<script src="site-kit.js"></script>
+<script>
+/* a11y: canvas words are drawn at 12 logical px or larger (labels of 1-2 characters keep their size) */
+(function(){try{const P=CanvasRenderingContext2D.prototype;if(P.__gkMin)return;P.__gkMin=1;
+function big(c,t){const f=c.font,m=/(\d+(?:\.\d+)?)px/.exec(f);if(m&&+m[1]<12&&String(t).length>2){c.font=f.replace(m[0],"12px");return f}return null}
+["fillText","strokeText","measureText"].forEach(k=>{const o=P[k];P[k]=function(t){const f=big(this,t);try{return o.apply(this,arguments)}finally{if(f)this.font=f}}})}catch(e){}})();
+</script>
+<style id="gk-a11y-fix">
+/* Narrow screens: the site kit hides the tool-button labels with display:none, which leaves the buttons
+   without a name. Keep the labels for screen readers but hide them visually. */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -308,7 +325,7 @@ sub,sup{line-height:0}
           <span><i class="s" style="background:var(--good-wash);border-color:var(--good)"></i>Normal hematocrit range</span>
         </div>
       </div>
-      <aside class="card side" aria-live="polite">
+      <aside class="card side">
         <div class="ctl"><label for="alt">Altitude <output id="altOut">0 m</output></label><input type="range" id="alt" min="0" max="5000" step="100" value="0"><div class="ticks"><span>sea level</span><span>2,500</span><span>5,000 m</span></div></div>
         <div class="bar">
           <button class="tbtn" id="bleedBtn" type="button">Lose blood (about 20%)</button>
@@ -320,7 +337,7 @@ sub,sup{line-height:0}
           <button class="tbtn" id="simReset" type="button">Reset</button>
           <label class="mode">Speed <select id="simSpeed"><option value="2">2 days/s</option><option value="5" selected>5 days/s</option><option value="10">10 days/s</option></select></label>
         </div>
-        <table class="readouts" id="readouts"></table>
+        <table class="readouts" id="readouts" aria-label="Live readouts"><tr><th scope="row">Readouts</th><td>loading</td></tr></table>
         <div class="status" id="simStatus" role="status"></div>
         <h3>Challenges</h3>
         <ul class="chal" id="chal"></ul>
@@ -612,8 +629,8 @@ function mxBuildRounds(){const box=$("#mxRounds");box.innerHTML="";mxOrder.forEa
   b.innerHTML=`Patient ${i+1} · ${nice(t)}`+(mxRes[t]?`<span class="ok">${"★".repeat(mxRes[t])}</span>`:"");b.onclick=()=>{mxR=i;mxLoad()};box.appendChild(b)})}
 function mxLoad(){mxTested={};mxMist=0;mxHints=0;mxSolved=false;mxAnim=null;mxSel=null;const r=mxOrder[mxR];
   $("#mxN").textContent=`Patient ${mxR+1} of 8`;$("#mxT").textContent=`Recipient: type ${nice(r)}`;
-  const bx=$("#mxBags");bx.innerHTML="";TYPES.forEach(t=>{const b=document.createElement("button");b.type="button";b.className="bag";b.dataset.t=t;b.setAttribute("aria-label","Donor bag type "+nice(t));
-    b.innerHTML=bagSVG(t)+`<span>${nice(t)}</span><span class="mk" aria-hidden="true"></span>`;bagDrag(b);bx.appendChild(b)});
+  const bx=$("#mxBags");bx.innerHTML="";TYPES.forEach(t=>{const b=document.createElement("button");b.type="button";b.className="bag";b.dataset.t=t;b.setAttribute("aria-pressed","false");
+    b.innerHTML=`<span class="gk-sr">Donor bag type </span>`+bagSVG(t)+`<span>${nice(t)}</span><span class="mk" aria-hidden="true"></span><span class="gk-sr mkt"></span>`;bagDrag(b);bx.appendChild(b)});
   $("#mxGive").disabled=true;$("#mxSel").textContent="";setMsg("#mxMsg","","");mxFoundText();mxBuildRounds()}
 function mxSafeList(){return TYPES.filter(d=>compat(d,mxOrder[mxR]))}
 function mxFoundText(){const safe=mxSafeList();const found=safe.filter(d=>mxTested[d]==="ok").length;$("#mxFound").innerHTML=`Safe bags found: <b>${found}</b> of ${safe.length}. Unsafe bags tried: ${mxMist}.`;
@@ -626,7 +643,7 @@ function mxExplain(d,r){const D=[...agOf(d)],ab=abOf(r);const rRh=agOf(r).has("D
   if(D.includes("D")&&!rRh)return {kind:"rh",txt:`<b>Not safe for an Rh⁻ patient.</b> ${dTxt} ${rTxt} Nothing clumps today, but the D antigen will <b>sensitize</b> them: they start making anti-D, so a later Rh⁺ transfusion or pregnancy could be dangerous. Rh⁻ patients get Rh⁻ blood.`};
   return {kind:"ok",txt:`<b>Safe.</b> ${dTxt} ${rTxt} No antibody in the recipient matches an antigen on these cells.`}}
 function mxGive(d){if(mxSolved||!d)return;const r=mxOrder[mxR];const ex=mxExplain(d,r);mxAnim={d,kind:ex.kind,t0:performance.now()};
-  const b=$(`.bag[data-t="${d}"]`);const first=!mxTested[d];mxTested[d]=ex.kind==="ok"?"ok":"no";b.classList.remove("sel");b.classList.add(ex.kind==="ok"?"ok":"no");b.querySelector(".mk").textContent=ex.kind==="ok"?"✓":"✕";
+  const b=$(`.bag[data-t="${d}"]`);const first=!mxTested[d];mxTested[d]=ex.kind==="ok"?"ok":"no";b.classList.remove("sel");b.classList.add(ex.kind==="ok"?"ok":"no");b.querySelector(".mk").textContent=ex.kind==="ok"?"✓":"✕";b.querySelector(".mkt").textContent=ex.kind==="ok"?", safe":", unsafe";b.setAttribute("aria-pressed","false");
   if(ex.kind!=="ok"&&first)mxMist++;mxSel=null;$("#mxGive").disabled=true;$("#mxSel").textContent="";
   const safe=mxSafeList();const found=safe.filter(x=>mxTested[x]==="ok").length;
   let html=ex.txt;
@@ -639,13 +656,13 @@ function bagDrag(b){let sx=0,sy=0,moved=false,ghost=null,down=false;
     if(moved){ghost.style.left=(e.clientX-b.offsetWidth/2)+"px";ghost.style.top=(e.clientY-30)+"px";$("#mxDrop").classList.toggle("droptarget",overDrop(e))}});
   const end=e=>{if(!down)return;down=false;if(ghost){ghost.remove();ghost=null}$("#mxDrop").classList.remove("droptarget");if(moved&&e&&overDrop(e))mxGive(b.dataset.t)};
   b.addEventListener("pointerup",end);b.addEventListener("pointercancel",()=>{down=false;if(ghost){ghost.remove();ghost=null}$("#mxDrop").classList.remove("droptarget")});
-  b.addEventListener("click",e=>{if(moved){moved=false;return}if(mxSolved)return;document.querySelectorAll(".bag").forEach(x=>x.classList.remove("sel"));mxSel=b.dataset.t;b.classList.add("sel");$("#mxGive").disabled=false;$("#mxSel").textContent="Selected: "+nice(mxSel)})}
+  b.addEventListener("click",e=>{if(moved){moved=false;return}if(mxSolved)return;document.querySelectorAll(".bag").forEach(x=>{x.classList.remove("sel");x.setAttribute("aria-pressed","false")});mxSel=b.dataset.t;b.classList.add("sel");b.setAttribute("aria-pressed","true");$("#mxGive").disabled=false;$("#mxSel").textContent="Selected: "+nice(mxSel)})}
 function overDrop(e){const r=$("#mxDrop").getBoundingClientRect();return e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom}
 $("#mxGive").onclick=()=>mxGive(mxSel);
 $("#cvMatch").addEventListener("click",()=>{if(mxSel)mxGive(mxSel)});
 $("#mxHint").onclick=()=>{if(mxSolved)return;mxHints++;const r=mxOrder[mxR];const ab=abOf(r);const rRh=agOf(r).has("D");
   setMsg("#mxMsg",`Hint: this patient's plasma has ${ab.length?listAnd(ab.map(x=>"anti-"+x)):"no anti-A or anti-B"}${rRh?"":", and as an Rh⁻ patient they should not get the D antigen"}. Pick bags whose cells carry none of: ${[...ab,...(rRh?[]:["D"])].map(x=>agName[x]).join(", ")||"(nothing to avoid!)"}.`,"info")};
-$("#mxShow").onclick=()=>{if(mxSolved)return;mxHints++;mxSolved=true;const safe=mxSafeList();document.querySelectorAll(".bag").forEach(b=>{const ok=safe.includes(b.dataset.t);b.classList.add(ok?"ok":"no");b.querySelector(".mk").textContent=ok?"✓":"✕"});
+$("#mxShow").onclick=()=>{if(mxSolved)return;mxHints++;mxSolved=true;const safe=mxSafeList();document.querySelectorAll(".bag").forEach(b=>{const ok=safe.includes(b.dataset.t);b.classList.add(ok?"ok":"no");b.querySelector(".mk").textContent=ok?"✓":"✕";b.querySelector(".mkt").textContent=ok?", safe":", unsafe"});
   setMsg("#mxMsg",`Safe donors for ${nice(mxOrder[mxR])}: <b>${safe.map(nice).join(", ")}</b>. Press <b>Start this patient over</b> to try it yourself.`,"warn")};
 $("#mxReset").onclick=mxLoad;
 function drawMatch(now){use(S2);const r=mxOrder[mxR];const rA=[...agOf(r)];const ab=abOf(r);
@@ -748,7 +765,7 @@ function drawChart(){use(S3c);const s=sim;const h=s.hist;const d1=Math.max(120,s
   s.events.forEach(e=>{if(e[0]<d0)return;const x=xOf(e[0]);line(x,A.y0,x,B.y1,hexA(C.ink,.35),1,[2,3]);ctx.save();ctx.translate(x+3,B.y1-4);ctx.rotate(-Math.PI/2);txt(0,0,e[1],{size:10,color:C["ink-soft"]});ctx.restore()});
   for(let d=Math.ceil(d0/20)*20;d<=d1;d+=20){txt(xOf(d),240,"day "+d,{size:10.5,mono:true,align:"center",color:C["ink-soft"]})}}
 function readouts(){const s=sim;const rows=[["Day",Math.floor(s.day)],["Hematocrit",s.hct.toFixed(1)+"%"],["RBC count",(s.hct/45*5).toFixed(1)+" million/µL"],["O₂ delivery",Math.round(s.D)+"% of normal"],["EPO",s.E.toFixed(1)+"× normal"+(s.dope?" (incl. injected)":"")]];
-  const html=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");if($("#readouts").innerHTML!==html)$("#readouts").innerHTML=html}
+  const html=rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join("");if($("#readouts").innerHTML!==html)$("#readouts").innerHTML=html}
 
 /* =====================================================================
    PART 4 · HEMOSTASIS: shared renderer (local box 400 x 300)
@@ -863,7 +880,7 @@ function drawSeq(now){use(S4);const {st,ci,t}=sqState(now);const T=now/1000;
   const o=sqPlayS?sqPlayS.o:cur();const failed=sqPlayS&&sqPlayS.fail>=0&&t>=sqPlayS.end;
   o.forEach((id,i)=>{const y=48+i*(296/Math.max(o.length,6));let mark="•",col=C["ink-faint"];
     if(sqPlayS){if(i<ci||(i===ci&&t>=sqPlayS.end))[mark,col]=["✓",C.good];else if(i===ci)[mark,col]=["▶",C.accent];if(failed&&i===sqPlayS.fail)[mark,col]=["✕",C.bad]}
-    circ(508,y,10,mark==="•"?null:col,col,1.4);txt(508,y+.5,mark,{size:11,weight:700,align:"center",color:mark==="•"?col:"#fff"});
+    circ(508,y,10,mark==="•"?null:col,col,1.4);txt(508,y+.5,mark,{size:11,weight:700,align:"center",color:mark==="•"?col:onFill()});
     ctx.save();ctx.beginPath();ctx.rect(524,y-16,262,34);ctx.clip();wrapText(CARDS[id][0],524,y-6,258,14,{size:11.5,weight:i===ci?700:500,color:failed&&i===sqPlayS.fail?C.bad:C.ink});ctx.restore()});
   let cap;if(!sqPlayS)cap="Arrange the cards, then press Play my order.";else if(failed){cap=`Stuck at card ${sqPlayS.fail+1}: "${CARDS[sqPlayS.o[sqPlayS.fail]][0]}" can't happen yet. Something else has to come first.`;
     ctx.save();ctx.translate(6,8);ctx.scale(1.15,1.15);rr(60,92,280,58,10);ctx.fillStyle=hexA(C.panel,.94);ctx.fill();ctx.strokeStyle=C.bad;ctx.lineWidth=2;ctx.stroke();txt(200,112,"✕ Stuck: this step can't happen yet",{size:13,weight:700,align:"center",color:C.bad});txt(200,132,"check what must come before it",{size:11.5,align:"center",color:C["ink-soft"]});ctx.restore()}
@@ -946,6 +963,39 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   try{if(curTab==="type")drawType(now);else if(curTab==="match")drawMatch(now);else if(curTab==="epo"){if(!simPaused&&!window.__manual){let n=Math.ceil(dt*simSpeed/.05);const h=dt*simSpeed/n;for(let i=0;i<n;i++)simStep(h)}drawEpo(now);drawChart();readouts()}
     else{if(!$("#seqWrap").hidden)drawSeq(now);else drawBreak(now)}}catch(err){console.error(err)}
   requestAnimationFrame(frame)}
+/* ---------------- accessibility: picture descriptions + tab keys ---------------- */
+const BL_WELL="A glass slide holds three round wells in a row: anti-A serum (tinted blue) on the left, anti-B serum (tinted yellow) in the middle, and anti-Rh (anti-D) serum (clear) on the right, each with a round microscope view below it. ";
+function blDesc(){
+  if(curTab==="type"){const t=(performance.now()-tyT0)/1000,a=tyList[tyI]||"O+";const ags=agOf(a);
+    let d=`Patient ${tyI+1} of ${tyList.length}. `+BL_WELL;
+    if(t<3.5)return d+"A dropper is adding a drop of the patient's blood to each well in turn.";
+    if(t<4.6)return d+"A stirring stick mixes the blood into each well.";
+    if(t<READY)return d+"The blood is spreading out in each well; watch for clumping.";
+    return d+"Result: "+WELLS.map(w=>ags.has(w.ag)?`the ${w.lab} well has clumped into dark red clusters, and under the microscope the cells are stuck together by Y-shaped antibodies`:`the ${w.lab} well stays smooth and evenly red, with the cells floating apart`).join("; ")+"."}
+  if(curTab==="match"){const r=mxOrder[mxR],rA=[...agOf(r)],ab=abOf(r),A=mxAnim;
+    let d=`Recipient: type ${nice(r)}. On the left an IV pole holds ${A?"a donor bag of type "+nice(A.d):"an empty dashed outline that says drop a bag here"}, with a tube running into a large box of the patient's blood on the right. The patient's own red cells float there carrying ${rA.length?rA.map(x=>agName[x]).join(" and ")+" antigens":"no A, B or D antigens"}, along with free Y-shaped antibodies (${ab.length?ab.map(x=>"anti-"+x).join(" and "):"no anti-A, no anti-B"}). `;
+    if(A){const t=(performance.now()-A.t0)/1000;d+="Donor cells of type "+nice(A.d)+" flow in. ";
+      if(A.kind==="ok")d+="They mix in calmly with green outlines: compatible, no reaction.";
+      else if(A.kind==="abo")d+=t<3.6?"The patient's antibodies link the donor cells into a clump (agglutination).":"The clumped donor cells burst and spill hemoglobin (hemolysis).";
+      else d+="There is no clumping now, but a plasma cell appears and starts making anti-D antibodies: the patient is sensitized."}
+    return d}
+  if(curTab==="epo"){const x=sim;const lvl=v=>v>1.3?"high":v<.8?"low":"normal";
+    return `On the left a mountain shows the altitude, ${Math.round(x.alt/500)*500} metres, with oxygen saturation below it. In the middle the kidneys glow when they release EPO, and green EPO dots travel along a line to the red bone marrow, which sends new red cells into a blood vessel running to the tissues on the right. Hematocrit is ${x.hct<38?"low":x.hct>52?"high":"in the normal range"} and EPO is ${lvl(x.E)}${x.kid?"; the kidneys are failing and make little EPO":""}${x.dope?"; extra injected EPO is entering the blood":""}. A chart below plots hematocrit (red), oxygen delivered to tissues (blue) and EPO (green) over the last 120 days, with a green band for the normal hematocrit range.`}
+  if(!$("#seqWrap").hidden){const r=ROUNDS[R];const o=sqPlayS?sqPlayS.o:cur();
+    let d=`${r.name}. On the left an injured blood vessel shows the steps of stopping a bleed as they play. On the right, a panel lists your order: `+o.map((id,i)=>(i+1)+". "+CARDS[id][0]).join("; ")+". ";
+    if(sqPlayS){const t=(performance.now()-sqPlayS.t0)/1000;if(sqPlayS.fail>=0&&t>=sqPlayS.end)d+=`Playback stopped at card ${sqPlayS.fail+1}, which is crossed out in red: it can't happen yet.`;else if(t>=sqPlayS.end)d+="Your order played all the way through, with a check mark beside each card.";else d+="Your order is playing; finished cards get a check mark."}
+    return d}
+  const b=BR[bi];return `${b.t}. Two panels compare a cut blood vessel: on the left a normal clot (green frame), on the right this patient (orange frame). `+(brShown?"Each panel plays the vessel narrowing, platelets forming a plug and fibrin threads sealing the cut. "+b.res:"Press Show me to play both side by side.")}
+let blLast="";
+function blSync(){let cv={type:S1.cv,match:S2.cv,epo:S3.cv,hemo:null}[curTab];if(curTab==="hemo")cv=$("#seqWrap").hidden?S5.cv:S4.cv;
+  const d=document.getElementById("gk-desc");if(d){const a=cv.closest(".canvas-holder")||cv;if(a.nextSibling!==d)a.parentNode.insertBefore(d,a.nextSibling)}cv.setAttribute("aria-describedby","gk-desc");
+  const t=blDesc();if(t&&t!==blLast){blLast=t;if(window.gkDescribe)window.gkDescribe(t)}}
+setInterval(blSync,500);
+document.querySelectorAll(".tab,#subSeq,#subBreak").forEach(t=>t.addEventListener("click",()=>setTimeout(blSync,0)));
+(function(){const tabs=[...document.querySelectorAll(".tab")];tabs.forEach((t,i)=>{t.tabIndex=t.getAttribute("aria-selected")==="true"?0:-1;
+  t.addEventListener("keydown",e=>{let j=null;if(e.key==="ArrowRight")j=(i+1)%tabs.length;else if(e.key==="ArrowLeft")j=(i-1+tabs.length)%tabs.length;else if(e.key==="Home")j=0;else if(e.key==="End")j=tabs.length-1;
+    if(j!=null){e.preventDefault();tabs[j].click();tabs[j].focus()}});
+  t.addEventListener("click",()=>tabs.forEach(x=>x.tabIndex=x===t?0:-1))})})();
 /* test hooks */
 window.__bl={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),tyAge:s=>{tyT0=performance.now()-s*1000},tyType:()=>tyList[tyI],
   mx:d=>mxGive(d),mxRound:i=>{mxR=i;mxLoad()},mxAge:s=>{if(mxAnim)mxAnim.t0=performance.now()-s*1000},

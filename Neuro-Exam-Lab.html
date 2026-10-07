@@ -11,7 +11,7 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --warn:#B4632A;--warn-ink:#985423;--cst-ink:#277349;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
   --gold:#C9A227;--gold-wash:#F6EFD3;
   --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;--act6:#3F7FB5;
   /* exam-room palette */
@@ -32,7 +32,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--cst-ink:#5CC98A;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --gold:#E0BE48;--gold-wash:#352E14;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#7FB3E6;
   --room:#131D23;--floor:#2A363E;--skin:#D9A884;--skin-edge:#7A4E34;--skin-2:#C48F6A;--hair:#3A2A1E;--lip:#9C4F4A;
@@ -48,7 +48,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--cst-ink:#5CC98A;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --gold:#E0BE48;--gold-wash:#352E14;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#7FB3E6;
   --room:#131D23;--floor:#2A363E;--skin:#D9A884;--skin-edge:#7A4E34;--skin-2:#C48F6A;--hair:#3A2A1E;--lip:#9C4F4A;
@@ -123,14 +123,16 @@ table.find th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;
 .nab{display:inline-flex;gap:4px}
 .nab button{border:1.5px solid var(--rule);background:var(--panel);border-radius:var(--r);padding:3px 8px;cursor:pointer;font-size:13px}
 .nab button[aria-pressed="true"].n{background:var(--good-wash);border-color:var(--good);color:var(--good);font-weight:600}
-.nab button[aria-pressed="true"].a{background:var(--warn-wash);border-color:var(--warn);color:var(--warn);font-weight:600}
+.nab button[aria-pressed="true"].a{background:var(--warn-wash);border-color:var(--warn);color:var(--warn-ink);font-weight:600}
 .fbk{font-size:13px;margin-top:3px}
-.fbk.ok{color:var(--good)}.fbk.no{color:var(--warn)}
+.fbk.ok{color:var(--good)}.fbk.no{color:var(--warn-ink)}
 .opts{display:grid;grid-template-columns:1fr;gap:7px}
 .opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
 .opt:hover{border-color:var(--accent)}
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.right::before{content:"\2713  ";font-weight:700;color:var(--good)}
+.opt.wrong::before{content:"\2717  ";font-weight:700}
 .opt.sel{border-color:var(--accent);background:var(--accent-wash)}
 .opt:disabled{cursor:default}
 .fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
@@ -154,7 +156,7 @@ table.find th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;
 .sorter{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
 @media (max-width:700px){.sorter{grid-template-columns:1fr}}
 .bin{border:2px dashed var(--rule);border-radius:var(--r);padding:10px;min-height:150px;background:var(--panel-2);display:flex;flex-direction:column;gap:6px}
-.bin h4{margin:0 0 4px;font-family:var(--mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em}
+.bin h3{margin:0 0 4px;font-family:var(--mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em}
 .bin.over,.bin.target{border-color:var(--accent);background:var(--accent-wash)}
 .bin button.place{margin-top:auto;font-size:13px}
 .pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;min-height:48px;padding:8px;border:1px solid var(--rule-soft);border-radius:var(--r)}
@@ -163,6 +165,11 @@ table.find th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;
 .scard.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
 .scard.good{border-color:var(--good);background:var(--good-wash)}
 .scard.bad{border-color:var(--warn);background:var(--warn-wash)}
+.scard.good::after{content:"\2713";margin-left:auto;font-weight:700;color:var(--good)}
+.scard.bad::after{content:"\2717  wrong box";margin-left:auto;font-weight:700;font-size:12px;white-space:nowrap;color:var(--warn-ink)}
+/* dark mode: dark text on the light accent, so the shared contrast fixer never has to step in */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) :is(.tab[aria-selected="true"],.btn,.tst.cur,.nerves button[aria-pressed="true"]){color:#0B1A20}}
+:root[data-theme=dark] :is(.tab[aria-selected="true"],.btn,.tst.cur,.nerves button[aria-pressed="true"]){color:#0B1A20}
 .scard.ghost{position:fixed;pointer-events:none;z-index:50;opacity:.9;box-shadow:var(--shadow)}
 .mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
 .mode input{accent-color:var(--accent);width:18px;height:18px}
@@ -170,6 +177,18 @@ footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
 footer a{color:var(--ink-soft)}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+<script src="site-kit.js"></script>
+<script>
+/* a11y: canvas words are drawn at 12 logical px or larger (labels of 1-2 characters keep their size) */
+(function(){try{const P=CanvasRenderingContext2D.prototype;if(P.__gkMin)return;P.__gkMin=1;
+function big(c,t){const f=c.font,m=/(\d+(?:\.\d+)?)px/.exec(f);if(m&&+m[1]<12&&String(t).length>2){c.font=f.replace(m[0],"12px");return f}return null}
+["fillText","strokeText","measureText"].forEach(k=>{const o=P[k];P[k]=function(t){const f=big(this,t);try{return o.apply(this,arguments)}finally{if(f)this.font=f}}})}catch(e){}})();
+</script>
+<style id="gk-a11y-fix">
+/* Narrow screens: the site kit hides the tool-button labels with display:none, which leaves the buttons
+   without a name. Keep the labels for screen readers but hide them visually. */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -317,9 +336,9 @@ footer a{color:var(--ink-soft)}
       <p class="small" style="margin:0">Drag each card into a box, or tap a card and then tap a box's "Place here" button.</p>
       <div class="pool" id="pool" aria-label="Cards to sort"></div>
       <div class="sorter">
-        <div class="bin" data-bin="umn"><h4 style="color:var(--cst)">Upper motor neuron</h4><div class="slot"></div><button class="tbtn place" type="button" data-place="umn">Place here</button></div>
-        <div class="bin" data-bin="lmn"><h4 style="color:var(--warn)">Lower motor neuron</h4><div class="slot"></div><button class="tbtn place" type="button" data-place="lmn">Place here</button></div>
-        <div class="bin" data-bin="both"><h4>Both</h4><div class="slot"></div><button class="tbtn place" type="button" data-place="both">Place here</button></div>
+        <div class="bin" data-bin="umn"><h3 style="color:var(--cst-ink)">Upper motor neuron</h3><div class="slot"></div><button class="tbtn place" type="button" data-place="umn">Place here</button></div>
+        <div class="bin" data-bin="lmn"><h3 style="color:var(--warn-ink)">Lower motor neuron</h3><div class="slot"></div><button class="tbtn place" type="button" data-place="lmn">Place here</button></div>
+        <div class="bin" data-bin="both"><h3>Both</h3><div class="slot"></div><button class="tbtn place" type="button" data-place="both">Place here</button></div>
       </div>
       <div class="bar"><button class="btn" id="srtCheck" type="button">Check</button><button class="tbtn" id="srtHint" type="button">Hint</button><button class="tbtn" id="srtShuffle" type="button">Shuffle / restart</button><button class="tbtn" id="srtShow" type="button">Show answer</button></div>
       <div class="msg" id="srtMsg" role="status"></div>
@@ -1276,7 +1295,7 @@ function startDrag(e,i,el){dragMoved=false;const r=el.getBoundingClientRect();dr
 $("#srtCheck").onclick=()=>{const m=$("#srtMsg");const n=Object.keys(place).length;if(n<CARDS.length){m.className="msg info show";m.textContent=`Place all ${CARDS.length} cards first (${n} placed).`;return}
   srtTries++;let ok=0;Object.keys(place).forEach(i=>{const r=place[i].bin===CARDS[i][1];place[i].mark=r?"good":"bad";if(r)ok++});srtRender();
   if(ok===CARDS.length){const st=srtShown?1:srtTries===1?3:2;const best=Math.max(store.get("nel-srt")||0,st);store.set("nel-srt",best);m.className="msg good show";m.innerHTML=`✓ All ${ok} correct. <span class="stars">${starStr(st)}</span> Weakness is the one sign shared by both.`}
-  else{m.className="msg warn show";m.textContent=`${ok} of ${CARDS.length} in the right box. Cards with an orange border are in the wrong box; tap one and move it. Tip: UMN = too much (stiff, brisk, toes up); LMN = too little (floppy, quiet, wasted).`}};
+  else{m.className="msg warn show";m.textContent=`${ok} of ${CARDS.length} in the right box. Cards marked "✗ wrong box" (orange border) are in the wrong box; tap one and move it. Tip: UMN = too much (stiff, brisk, toes up); LMN = too little (floppy, quiet, wasted).`}};
 $("#srtHint").onclick=()=>{const m=$("#srtMsg");m.className="msg info show";m.textContent="Hint: with UMN damage the spinal reflexes lose the brain's brake, so signs are \"too much\". With LMN damage the muscle loses its nerve, so signs are \"too little\" and the muscle wastes and twitches. One card belongs to both."};
 $("#srtShuffle").onclick=srtInit;$("#srtShow").onclick=()=>{srtShown=true;CARDS.forEach((c,i)=>place[i]={bin:c[1],mark:"good"});srtTries=1;srtRender();const m=$("#srtMsg");m.className="msg info show";m.textContent="Answer shown. Press Shuffle / restart to try again on your own."};
 
@@ -1289,6 +1308,53 @@ $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getCompu
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
 let last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;try{if(curTab==="sim")drawSim(dt);else if(curTab==="det")drawDet(now);else if(curTab==="cnm")drawCN(dt);else drawRx(dt)}catch(e){console.error(e)}requestAnimationFrame(frame)}
+/* ======================= accessibility: picture descriptions + tab keys ======================= */
+const NEL_TD={orient:"The patient faces you while the examiner asks who they are, where they are and the date; the answers appear in speech bubbles and a checklist beside them ticks off each item.",
+ speech:"The patient answers a question about how they got here in a speech bubble, closes their eyes on command, and names a pen the examiner holds up.",
+ fields:"The examiner sits facing the patient and wiggles fingers out to the sides in each quarter of vision while the patient looks straight ahead.",
+ pupil:"In a dimmed room a penlight shines into one eye and then the other, so you can watch whether each black pupil shrinks.",
+ eom:"The examiner's gloved finger traces a large letter H in front of the face and the patient's eyes follow it in each direction.",
+ cn5:"With the patient's eyes closed, a cotton wisp touches the forehead, cheek and jaw on each side; then the patient clenches the teeth and the jaw muscles bulge.",
+ cn7:"The face raises the eyebrows, squeezes the eyes shut, smiles and puffs out the cheeks, so you can compare the two sides.",
+ hear:"With eyes closed, the patient listens as the examiner rubs two fingers beside one ear and then the other; small sound arcs ripple out from the fingers.",
+ ahh:"A close-up of the open mouth shows the palate and the uvula as the patient says ahh, then a stick touches the back of the throat to test the gag.",
+ shrug:"The patient shrugs against the examiner's hands pressing down on both shoulders, then turns the head against a hand on each side.",
+ tongue:"A close-up face sticks out the tongue and then moves it from side to side.",
+ touch:"Both feet are seen from above with the patient's eyes closed, and a cotton wisp touches each foot in turn.",
+ pain:"Both feet are seen from above with the patient's eyes closed, and a pin touches each foot in turn while the patient says sharp or dull.",
+ vib:"Both feet are seen from above with the patient's eyes closed, and a buzzing tuning fork is held on each big toe.",
+ prop:"Both feet are seen from above with the patient's eyes closed; the examiner moves a big toe up or down and the patient names the direction.",
+ arms:"The patient lifts both arms out to the sides and holds them up while the examiner pushes down on them.",
+ legs:"The examiner pushes against the patient's lifted knee and then against the foot as it pulls up, on each side.",
+ patellar:"A reflex hammer taps just below each kneecap, and you can see how big the knee kick is.",
+ babinski:"A stick strokes the sole of each foot, and you can see whether the big toe curls down or lifts up.",
+ ftn:"The patient moves a fingertip back and forth between their nose and the examiner's fingertip, first with one arm, then the other.",
+ ram:"Both hands rest on the thighs and flip palm up and palm down as fast as they can, with a rhythm trace drawn for each hand.",
+ romberg:"The patient stands with feet together, first with eyes open and then closed, while the examiner's hands wait on either side and a body sway graph tracks the swaying.",
+ gait:"The patient walks across the floor seen from the side, and their footprints are drawn from above in a strip below."};
+const NEL_PATH={cst:"motor path",warn:"affected nerve",dc:"dorsal column",st:"spinothalamic path",act4:"cerebellar output",nerve:"limb nerve"};
+function nelDesc(){
+  if(curTab==="sim"){if(!simCase)return "";const head="Today's patient: "+simCase.nm+". "+simCase.cc+" ";
+    if(!simTest)return head+"The picture shows the patient in a hospital gown, facing you, with the examiner's gloved hand waiting at the right. The patient's speech bubble says: Hi, I'm ready when you are.";
+    const f=findings[simTest.id];return head+"Test: "+simTest.name+". "+(NEL_TD[simTest.id]||"")+(f&&f.seen?" Result: "+resultOf(simTest.id).txt:"")}
+  if(curTab==="det"){const d=DET[di];let t="Case "+(di+1)+": "+d.t+". A front-view map of the nervous system shows the two brain hemispheres at the top, the brainstem and cerebellum below them, the spinal cord down the middle, and nerves out to the arms and legs; the patient's right side is on your left.";
+    if(dReg&&!dDone2){const g=REG.find(r=>r[0]===dReg);if(g)t+=" Highlighted: "+g[1].toLowerCase()+"."}
+    if(dDone2){const names=d.paths.map(q=>q[0].indexOf("cst")===0?"motor path to the "+(q[0].slice(-1)==="R"?"right ":"left ")+(q[0].indexOf("Arm")>0?"arm":"leg"):NEL_PATH[q[1]]).filter(Boolean);
+      t+=" The lesion is marked with a red circled X"+(names.length?", and moving coloured lines trace the affected pathways: "+names.join(", ")+".":".")}
+    return t}
+  if(curTab==="cnm"){const r=CNR[ci];return "Test "+(ci+1)+" of "+CNR.length+": "+r.cap+" The animation acts this out on a patient. Nerve names are not shown, so you can work them out."}
+  return "Reflex bench. On the left a seated leg is seen from the side with a reflex hammer at the knee. At the top right a graph traces the knee kick over the last 6 seconds, marking each tap's grade. Below it a foot shows the plantar response. "+{normal:"Patient: healthy.",umn:"Patient: upper motor neuron lesion.",lmn:"Patient: lower motor neuron lesion, with a thin, twitching thigh muscle."}[les]+" "+[...document.querySelectorAll("#rxRead span")].map(x=>x.textContent).join(". ")+"."}
+let nelLast="";
+function nelSync(){const cv={sim:S1,det:S2,cnm:S3,umn:S4}[curTab].cv;const d=document.getElementById("gk-desc");
+  if(d){const a=cv.closest(".canvas-holder")||cv;if(a.nextSibling!==d)a.parentNode.insertBefore(d,a.nextSibling)}cv.setAttribute("aria-describedby","gk-desc");
+  const t=nelDesc();if(t&&t!==nelLast){nelLast=t;if(window.gkDescribe)window.gkDescribe(t)}}
+setInterval(nelSync,400);
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setTimeout(nelSync,0)));
+/* arrow keys move between tabs (WAI-ARIA tabs pattern) */
+(function(){const tabs=[...document.querySelectorAll(".tab")];tabs.forEach((t,i)=>{t.tabIndex=t.getAttribute("aria-selected")==="true"?0:-1;
+  t.addEventListener("keydown",e=>{let j=null;if(e.key==="ArrowRight")j=(i+1)%tabs.length;else if(e.key==="ArrowLeft")j=(i-1+tabs.length)%tabs.length;else if(e.key==="Home")j=0;else if(e.key==="End")j=tabs.length-1;
+    if(j!=null){e.preventDefault();tabs[j].click();tabs[j].focus()}});
+  t.addEventListener("click",()=>tabs.forEach(x=>x.tabIndex=x===t?0:-1))})})();
 window.__lab={sim:(c,t)=>{newSimCase(c);if(t)runTest(t)},simT:v=>{simT=v},det:i=>detLoad(i),cn:i=>cnLoad(i),cnT:v=>{cnT=v},tab:k=>document.querySelector(`[data-tab="${k}"]`).click(),rxT:v=>{rxT=v}};
 readColors();newSimCase();detLoad(0);detStars();cnLoad(0);cnStars();showSimStars();rxRead();srtInit();fitAll();requestAnimationFrame(frame);
 

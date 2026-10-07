@@ -209,7 +209,7 @@ sub,sup{line-height:0}
 .ring{fill:transparent;stroke:transparent;stroke-width:2}
 .hs.ok .ring{stroke:var(--good);stroke-width:3.5;opacity:1}
 .hs.bad .ring{stroke:var(--warn);stroke-width:3.5;opacity:1}
-.hs.hint .ring{stroke:var(--gold);stroke-width:4;opacity:1;animation:pulse 1s infinite}
+.hs.hint .ring{stroke:var(--gold);stroke-width:4;opacity:1;animation:pulse 1s 3}
 @keyframes pulse{50%{stroke-width:8}}
 .svglab{font-family:var(--sans);font-size:11px;fill:var(--ink-soft);pointer-events:none}
 .namelist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
@@ -272,7 +272,15 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 .svglab.fl{font-weight:600;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:3px;font-size:12px}
 .svg-holder{background:var(--ecf)}
 .qcard{font-size:19px}
+/* a11y retrofit: selected tab stays readable in dark mode */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#10161A}}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#10161A}
+:root{--gold-ink:#8C6D14;--gold-ink2:#7F6312}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--gold-ink:var(--gold);--gold-ink2:var(--gold)}}
+:root[data-theme="dark"]{--gold-ink:var(--gold);--gold-ink2:var(--gold)}
+.totstars b{color:var(--gold-ink)}.round .ok,.msg .stars{color:var(--gold-ink2)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -294,13 +302,14 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 
   <!-- PART 1 -->
   <section id="tab-cyc" role="tabpanel" aria-labelledby="tabbtn-cyc">
+    <h2 class="gk-sr">Part 1: 28-Day Cycle Simulator</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvCyc" role="img" aria-label="28-day cycle simulation"></canvas></div>
         <div class="stagebar">
           <button class="tbtn" id="cPlay" type="button">Play</button>
-          <button class="tbtn" id="cPrevDay" type="button" aria-label="Previous day">&minus; 1 day</button>
-          <button class="tbtn" id="cNextDay" type="button" aria-label="Next day">+ 1 day</button>
+          <button class="tbtn" id="cPrevDay" type="button">&minus; 1 day<span class="gk-sr"> (previous day)</span></button>
+          <button class="tbtn" id="cNextDay" type="button">+ 1 day<span class="gk-sr"> (next day)</span></button>
           <label class="dayl">Day <input type="range" id="cDay" min="1" max="28" step="0.1" value="1" aria-label="Cycle day"></label>
           <span class="clock" id="cClock">Day 1</span>
           <label>Speed <input type="range" id="cSpeed" min="0.5" max="3" step="0.5" value="1"></label>
@@ -313,7 +322,7 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
         <label class="tog" id="tgPreg"><input type="checkbox" id="cPreg"><span>Pregnancy occurs<small>Embryo implants about day 21 and makes hCG</small></span></label>
         <label class="tog" id="tgPill"><input type="checkbox" id="cPill"><span>Combined hormonal contraceptive<small>Steady estrogen + progestin every day</small></span></label>
         <h3>Today</h3>
-        <table class="readouts" id="cRead"></table>
+        <table class="readouts" id="cRead"><caption class="gk-sr">Today's cycle readouts</caption><tr><th scope="row">Ovary</th><td>follicular phase</td></tr></table>
         <h3>What is happening</h3>
         <div class="now" id="cNow"></div>
         <h3>Day questions <span class="totstars" id="cStars"></span></h3>
@@ -329,6 +338,7 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 
   <!-- PART 2 -->
   <section id="tab-gam" role="tabpanel" aria-labelledby="tabbtn-gam" hidden>
+    <h2 class="gk-sr">Part 2: Gametogenesis Compare</h2>
     <div class="card stage" style="margin-bottom:16px">
       <div class="canvas-holder"><canvas id="cvGam" role="img" aria-label="Spermatogenesis and oogenesis side by side"></canvas></div>
       <div class="stagebar">
@@ -367,6 +377,7 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 
   <!-- PART 3 -->
   <section id="tab-ax" role="tabpanel" aria-labelledby="tabbtn-ax" hidden>
+    <h2 class="gk-sr">Part 3: Hormone Axis Game</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvAx" role="img" aria-label="Hormone axis"></canvas></div>
@@ -402,7 +413,7 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
           <p class="calm">Clinical cases are simplified for learning and are not medical advice.</p>
         </div>
         <h3>Live readouts</h3>
-        <table class="readouts" id="axRead"></table>
+        <table class="readouts" id="axRead"><caption class="gk-sr">Hormone axis readouts</caption><tr><th scope="row">GnRH</th><td>1.0×</td></tr></table>
         <div class="now" id="axNow" style="margin-top:8px"></div>
         <p class="totstars" id="axStars" style="margin-top:8px"></p>
       </aside>
@@ -411,6 +422,7 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 
   <!-- PART 4 -->
   <section id="tab-lab" role="tabpanel" aria-labelledby="tabbtn-lab" hidden>
+    <h2 class="gk-sr">Part 4: Anatomy Labeling</h2>
     <div class="rounds" id="lRounds" aria-label="Rounds"></div>
     <div class="grid">
       <div class="card stage">
@@ -829,8 +841,8 @@ const lvlWord=(k,v)=>k==="lh"&&v>.6?"SURGE":v<.22?"low":v<.5?"moderate":v<.8?"hi
 function cReadouts(){const H=cycleH(cDay,cMode);
   const rows=[["Ovary",ovPhase(cDay,cMode)],["Uterus",utPhase(cDay,cMode)],["FSH",lvlWord("fsh",H.fsh)],["LH",lvlWord("lh",H.lh)],["Estrogen",lvlWord("est",H.est)],["Progesterone",lvlWord("prog",H.prog)]];
   if(cMode==="preg")rows.push(["hCG",H.hcg<.02?"none yet":lvlWord("hcg",H.hcg)]);if(cMode==="pill")rows.push(["Pill hormones","steady"]);
-  $("#cRead").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
-  $("#cNow").innerHTML=cNowText(cDay,cMode)}
+  const h1='<caption class="gk-sr">Today\'s cycle readouts</caption>'+rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join("");const t1=$("#cRead");if(t1.dataset.h!==h1){t1.dataset.h=h1;t1.innerHTML=h1}
+  const n1=cNowText(cDay,cMode);const e1=$("#cNow");if(e1.dataset.h!==n1){e1.dataset.h=n1;e1.innerHTML=n1}}
 function cNowText(d,m){
   if(m==="pill")return "<b>Steady estrogen + progestin</b> give constant negative feedback. FSH and LH stay low, follicles stay small, and estrogen never peaks, so there is <b>no LH surge and no ovulation</b>. The lining stays thin. (Many pill packs include hormone-free days with a lighter withdrawal bleed; not shown here.)";
   if(m==="preg"&&d>=14.7){if(d<21)return "<b>Fertilization</b> happened in the ampulla of the uterine tube. The early embryo is traveling to the uterus. The corpus luteum is making progesterone.";
@@ -1135,8 +1147,8 @@ const word=v=>v>2.5?"↑↑ very high":v>1.25?"↑ high":v<.4?"↓↓ very low":
 function axReadouts(){const v=AX.tgt;let rows;
   if(AX.sex==="m")rows=[["GnRH",fmtX(v.gnrh)+" "+word(v.gnrh)],["LH",fmtX(v.lh)+" "+word(v.lh)],["FSH",fmtX(v.fsh)+" "+word(v.fsh)],["Testosterone in blood",fmtX(v.testo)+" "+word(v.testo)],["Testosterone made by testes",fmtX(v.testoT)+" "+word(v.testoT)],["Inhibin",fmtX(v.inh)+" "+word(v.inh)],["Sperm production",v.sperm>.8?"normal":v.sperm>.4?"reduced":"very low"],["Testis size",v.size>.9?"normal":"smaller (atrophy)"]];
   else rows=[["GnRH",fmtX(v.gnrh)+" "+word(v.gnrh)],["LH",fmtX(v.lh)+" "+(v.surge?"SURGE":word(v.lh))],["FSH",fmtX(v.fsh)+" "+word(v.fsh)],["Estrogen (total)",fmtX(v.est)+" "+word(v.est)],["Progesterone",fmtX(v.prog)+" "+word(v.prog)],["Inhibin",fmtX(v.inh)+" "+word(v.inh)],["Androgens",v.andro>1.6?"high":"normal"],["Ovulation",v.ovul?"yes: LH surge":"no"]];
-  $("#axRead").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
-  $("#axNow").innerHTML=axExplain(v)}
+  const h2='<caption class="gk-sr">Hormone axis readouts</caption>'+rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join("");const t2=$("#axRead");if(t2.dataset.h!==h2){t2.dataset.h=h2;t2.innerHTML=h2}
+  const n2=axExplain(v);const e2=$("#axNow");if(e2.dataset.h!==n2){e2.dataset.h=n2;e2.innerHTML=n2}}
 function axExplain(v){const s=[];
   if(AX.sex==="m"){if(AX.cond.pit)s.push("<b>Pituitary damage:</b> no FSH or LH, so the testes are not stimulated.");
     if(v.testo>1.4)s.push("<b>High blood testosterone</b> gives strong negative feedback: GnRH, LH and FSH fall.");
@@ -1408,7 +1420,40 @@ function frame(now){const dt=clamp((now-last)/1000,0,.05);last=now;TT+=dt;
   requestAnimationFrame(frame)}
 window.__lab={go:t=>document.querySelector(`.tab[data-tab="${t}"]`).click(),setDay:d=>{cDay=d;cSync()},mode:cSetMode,ax:()=>AX,solveMale,solveFemale,gP:v=>{gP=v;gPlaying=false;gUI()},
   setT:v=>{TT=v}};
+/* ---------- a11y retrofit: picture descriptions + stale contrast-class cleanup ---------- */
+let gkLast="";
+function gkSay(t){t=String(t||"").replace(/\s+/g," ").trim();if(!t||t===gkLast)return;gkLast=t;if(window.gkDescribe)window.gkDescribe(t)}
+function gkLabel(id,t){const el=document.getElementById(id);if(el&&t&&el.getAttribute("aria-label")!==t)el.setAttribute("aria-label",t)}
+function gkMoveDesc(panelId){const d=document.getElementById("gk-desc");const p=document.getElementById(panelId);if(!d||!p)return;
+  const cvs=[...p.querySelectorAll("canvas")];const cv=cvs.find(c=>c.offsetParent!==null)||cvs[0]||p.querySelector(".svg-holder");if(!cv)return;
+  const a=cv.closest(".canvas-holder")||cv;if(a.nextSibling!==d)a.parentNode.insertBefore(d,a.nextSibling);
+  cvs.forEach(c=>c.setAttribute("aria-describedby","gk-desc"))}
+(function(){const L=c=>{const m=String(c).match(/[\d.]+/g);if(!m)return null;if(m.length>3&&+m[3]===0)return -1;const v=m.slice(0,3).map(x=>{x=x/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*v[0]+.7152*v[1]+.0722*v[2]};
+  const sweep=()=>document.querySelectorAll(".gk-oninv").forEach(el=>{const l=L(getComputedStyle(el).backgroundColor);if(l!==null&&l<=.22)el.classList.remove("gk-oninv")});
+  new MutationObserver(()=>{sweep();setTimeout(sweep,450)}).observe(document.body,{subtree:true,attributes:true,attributeFilter:["aria-selected","aria-pressed","class"]})})();
+function gkDescNow(){
+  if(activeTab==="cyc"){const d=cDay,m=cMode;const H=cycleH(d,m);const lv=k=>lvlWord(k,H[k]);
+    const day=cPlaying?"The day counter is running.":"Day "+Math.floor(d)+".";
+    const ov=m==="pill"?"follicles stay small":d<7?"several follicles growing":d<13.6?"one dominant follicle":d<14.7?"the follicle bursting at ovulation":(m==="preg"&&d>21.5)?"a yellow corpus luteum kept alive by hCG":d<23?"a yellow corpus luteum":d<27.5?"a fading corpus luteum":"a white corpus albicans";
+    const th=endoTh(d,m);
+    gkLabel("cvCyc",`28-day cycle, ${cPlaying?"playing":"day "+Math.floor(d)}: ovary ${ovPhase(d,m)}, uterus ${utPhase(d,m)}.`);
+    gkSay(`${day} ${m==="preg"?"Scenario: pregnancy. ":m==="pill"?"Scenario: combined hormonal contraceptive. ":""}The top left panel shows the ovary cut open with ${ov} (${ovPhase(d,m)}). The top right panel shows the endometrium from the side: the dark pink functional layer is ${th<.3?"thin":th<.65?"medium":"thick"} (${utPhase(d,m)})${m==="preg"&&d>21?", with an implanted embryo releasing hCG":""}. The graph across the bottom draws FSH (teal, solid), LH (purple, dashed), estrogen (orange, thick) and progesterone (blue, dotted)${m==="preg"?" plus hCG (plum)":m==="pill"?" plus steady pill hormones (grey)":""} over the cycle, with a marker at today: FSH ${lv("fsh")}, LH ${lv("lh")}, estrogen ${lv("est")}, progesterone ${lv("prog")}.`)}
+  else if(activeTab==="gam"){const i=Math.min(4,Math.floor(gP));
+    const male=["one round spermatogonium labelled 2n","the spermatogonium dividing into two 2n cells: one stays as a stem cell, one becomes a larger primary spermatocyte","the primary spermatocyte splitting into two equal secondary spermatocytes labelled n","each secondary spermatocyte splitting again, giving four spermatids labelled n","four spermatids that turn into four swimming sperm"][i];
+    const fem=["one oogonium labelled 2n, before birth","oogonia dividing; one large primary oocyte, labelled 2n, with a pause symbol: paused in prophase I for years","an uneven split: one large secondary oocyte (n) with its ring of corona cells and a tiny first polar body, paused at metaphase II","a sperm swimming into the secondary oocyte, which then finishes meiosis II and pinches off a second polar body","the sperm and egg nuclei side by side, labelled zygote 2n: one egg plus polar bodies"][i];
+    gkLabel("cvGam",`Spermatogenesis and oogenesis side by side, stage: ${GST[i]}.`);
+    gkSay(`Two panels side by side, both at the ${GST[i].toLowerCase()} stage. The left panel, outlined orange, shows spermatogenesis in the testis: ${male}. The right panel, outlined teal, shows oogenesis in the ovary: ${fem}. Dashed lines connect each cell to the cells it divides into, and chips mark diploid cells (2n) in orange and haploid cells (n) in teal.`)}
+  else if(activeTab==="ax"){const v=AX.tgt||{};const male=AX.sex==="m";const f=x=>fmtX(x||0);
+    const cl=Object.entries(AX.cl).filter(e=>e[1]!=="auto").map(e=>e[0].toUpperCase()+(e[1]==="high"?" extra":" blocked"));
+    gkLabel("cvAx",`${male?"Male":"Female"} hormone axis: GnRH ${f(v.gnrh)}, LH ${f(v.lh)}, FSH ${f(v.fsh)}, ${male?"testosterone "+f(v.testo):"estrogen "+f(v.est)+", progesterone "+f(v.prog)}, inhibin ${f(v.inh)}.`);
+    gkSay(`On the left, a brain icon (hypothalamus) sends brown GnRH dots down to the anterior pituitary, which sends teal FSH dots and purple LH dots down dashed arrows to the ${male?"testis, with Sertoli and Leydig cells marked inside it"+(v.size<.85?"; the testis is drawn shrunken":""):"ovary, which shows "+(v.pc?"many small stalled follicles":v.fol>.2?(v.ovul?"a follicle releasing its oocyte (LH surge, ovulation)":v.pill?"follicles staying small":"a growing follicle"):"no follicles left")}. ${male?"Dashed red feedback arrows ending in a bar carry salmon testosterone back to the hypothalamus and pituitary (negative feedback), and an olive inhibin arrow brakes the pituitary.":v.surge?"A green dashed arrow carries estrogen back up as positive feedback, and the LH SURGE label is shown.":"Dashed red feedback arrows ending in a bar carry estrogen"+(v.prog>1.3?" and progesterone":"")+" back up as negative feedback."} The panel on the right shows level bars, with a tick at normal: GnRH ${f(v.gnrh)}, LH ${f(v.lh)}, FSH ${f(v.fsh)}, ${male?"testosterone "+f(v.testo)+", inhibin "+f(v.inh)+"; sperm production is "+(v.sperm>.8?"normal":v.sperm>.4?"reduced":"very low"):"estrogen "+f(v.est)+", progesterone "+f(v.prog)+", inhibin "+f(v.inh)}.${cl.length?" Changes you made: "+cl.join(", ")+".":""}${AX.cond.pit?" The pituitary is crossed out (damaged).":""}${AX.cond.meno?" Menopause is on.":""}${AX.cond.pill||v.pill?" A daily pill icon is shown.":""}`)}
+  else{const r=LROUNDS[LR];const {S}=lSpots();const found=Object.keys(lFound).map(k=>S[k]?S[k][0]:k);
+    gkSay(`A line drawing of the ${r.sex==="m"?"male pelvis in a side (midsagittal) view, facing left, with the bladder, pubic bone, rectum, prostate, seminal vesicle, ducts, penis and testis":"female reproductive organs seen from behind, with the uterus in the middle, a uterine tube and ovary on each side, and the cervix and vagina below"}. Each structure you can choose is a button. ${found.length?"Found so far, outlined in green: "+found.join(", ")+".":"Nothing is found yet."}${lDone?" The round is complete.":""}`)}
+}
+setInterval(gkDescNow,500);
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{gkMoveDesc("tab-"+activeTab);gkDescNow()}));
 readColors();cSetMode("normal");cqRender();gUI();oNew();sBuild();axSetSex("m");axSetMode("free");lStartRound();fitAll();
+gkMoveDesc("tab-cyc");gkDescNow();
 requestAnimationFrame(frame);
 
 

@@ -127,7 +127,17 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+
+/* accessibility retrofit (WCAG 2.1 AA contrast) */
+:root{--chip-ink:#fff;--act1-chip:#7B5CC9;--act2-chip:#B25A47;--act3-chip:#2A8071;--act4-chip:#A06614;--act5-chip:#A04E8C;--warn-ink:#A05825}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--chip-ink:#10161A;--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--warn-ink:var(--warn)}}
+:root[data-theme="dark"]{--chip-ink:#10161A;--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--warn-ink:var(--warn)}
+.actchip{color:var(--chip-ink)}
+.dot.cur{color:var(--chip-ink)}
+.fb.no{color:var(--warn-ink)}
+#body a,footer a{color:var(--accent)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -832,7 +842,8 @@ const ACTS={1:{name:"Part 1 · Origins & epithelium basics",col:"act1"},
             4:{name:"Part 4 · Muscle & nervous tissue",col:"act4"},
             5:{name:"Part 5 · Membranes & repair",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: four tissue types",
+{act:0,desc:"Four columns stand side by side, one per tissue type, each with a cartoon on top and a pink-and-purple microscope view below. Epithelial shows a row of pink cells packed edge to edge, with one cell being replaced, labelled covers and lines. Connective shows wavy pink fibres and a few cells far apart in a matrix, labelled supports and connects. Muscle shows a striped fibre squeezed by two arrows as it contracts and relaxes, and Nervous shows a gold neuron sending a glowing electrical signal along its axon. Each column gets a teal border in turn.",
+ scene:"map",id:"map",title:"The big picture: four tissue types",
  body:`<p>A <b>tissue</b> is a group of similar cells that work together, plus the material around them. The study of tissues is called <b>histology</b>. Your whole body is built from just <b>four basic tissue types</b>:</p>
  <ol><li><b>Epithelial tissue</b> covers surfaces and lines tubes and cavities.</li>
  <li><b>Connective tissue</b> supports, connects, and protects. Bone, fat, and even blood are connective tissues.</li>
@@ -849,7 +860,8 @@ const STEPS=[
  caption:"Four tissue types, each doing its job: epithelium covers, connective tissue supports, muscle moves, nervous tissue signals.",
  legend:[["epi","Epithelial","r"],["coll","Connective","r"],["musc","Muscle","r"],["nerve","Nervous","r"]]},
 
-{act:1,scene:"germ",id:"germ",title:"Where tissues come from: three germ layers",
+{act:1,desc:"A cross section of an early embryo shows two rows of cells: blue on top and orange below. An arrow labelled cells move inward points down, and pink round cells slip between the two rows to form a new middle layer. The three layers are labelled ectoderm (blue), mesoderm (red) and endoderm (orange). Boxes then appear: ectoderm becomes the epidermis of the skin and nervous tissue; mesoderm becomes muscle, bone, cartilage, blood and other connective tissue; and endoderm becomes the lining of the gut and airways.",
+ scene:"germ",id:"germ",title:"Where tissues come from: three germ layers",
  body:`<p>Early in development, the embryo forms <b>three germ layers</b>. Cells move inward and stack into three sheets. Each sheet becomes certain tissues:</p>
  <ul><li><b>Ectoderm</b> (outer layer) becomes the <b>epidermis</b> of the skin and <b>nervous tissue</b>.</li>
  <li><b>Mesoderm</b> (middle layer) becomes <b>muscle</b> and <b>connective tissue</b>, including bone, cartilage, and blood. Embryonic connective tissue is called <b>mesenchyme</b>.</li>
@@ -865,7 +877,8 @@ const STEPS=[
  caption:"Cells move inward to form ectoderm, mesoderm, and endoderm. Each germ layer becomes certain tissues.",
  legend:[["ecto","Ectoderm"],["meso","Mesoderm"],["endo","Endoderm"]]},
 
-{act:1,scene:"feat",id:"feat",title:"Five features of every epithelium",
+{act:1,desc:"A single row of pink epithelial cells with purple nuclei sits on a gold line, the basement membrane, above wavy pink connective tissue with a red capillary at the bottom. A list on the right highlights five features one at a time, ticking each off: cellularity (dots show junctions holding cells tightly together), polarity (labels for the apical free surface at the top and the basal surface at the bottom), basement membrane (a glow along the gold line anchoring the cells), avascular (nutrients drift up from the capillary because the layer has no blood vessels), and regeneration (one cell is lost and cell division replaces it).",
+ scene:"feat",id:"feat",title:"Five features of every epithelium",
  body:`<p>All epithelial tissues share a few traits. Watch them light up one at a time:</p>
  <ol><li><b>Cellularity:</b> cells are packed tightly, joined by <b>cell junctions</b>, with almost nothing in between.</li>
  <li><b>Polarity:</b> each cell has an <b>apical surface</b> (the free top, facing the outside or a cavity) and a <b>basal surface</b> (the bottom, attached).</li>
@@ -882,7 +895,8 @@ const STEPS=[
  caption:"Watch the five features light up in turn: cellularity, polarity, basement membrane, no blood vessels, regeneration.",
  legend:[["epi","Epithelial cells","r"],["bm","Basement membrane","l"],["blood","Capillary in connective tissue"],["nutr","Nutrients diffusing up"]]},
 
-{act:1,scene:"build",id:"build",title:"Naming epithelium: layers + shape",
+{act:1,desc:"A cell builder on the left stacks and reshapes epithelial cells on a gold basement membrane. A panel on the right asks two questions, how many layers (simple, stratified, pseudostratified) and what shape at the surface (squamous, cuboidal, columnar), and highlights the answers in teal and red as the cells change. The cells go from one layer of flat cells, to one layer of cubes, to one layer of tall columns, to many stacked layers, and the name builds up below, such as simple columnar epithelium.",
+ scene:"build",id:"build",title:"Naming epithelium: layers + shape",
  body:`<p>Every epithelium gets a two-part name. Ask two questions:</p>
  <ol><li><b>How many layers?</b> <b>Simple</b> = one layer. <b>Stratified</b> = two or more layers. <b>Pseudostratified</b> = looks layered, but is really one layer (more on that soon).</li>
  <li><b>What shape are the cells?</b> <b>Squamous</b> = flat. <b>Cuboidal</b> = about as tall as wide. <b>Columnar</b> = taller than wide.</li></ol>
@@ -898,7 +912,8 @@ const STEPS=[
  caption:"The builder stacks and reshapes cells. Notice how the name changes with the number of layers and the surface shape.",
  legend:[["epi","Epithelial cell","r"],["nuc","Nucleus"],["bm","Basement membrane","l"]]},
 
-{act:2,scene:"sq",id:"sq",title:"Simple squamous: thin for fast diffusion",
+{act:2,desc:"A light blue oval air sac (alveolus) with a thin pink wall of flat cells sits above a pink capillary with red blood cells flowing to the right. Blue oxygen dots drift down out of the air sac into the blood, and grey carbon dioxide squares drift up from the blood into the air sac. Labels say the alveolar wall is one flat cell thick and the capillary wall is simple squamous endothelium. A round microscope view on the right shows thin pink walls around white air spaces, with labels for flat nuclei and air space.",
+ scene:"sq",id:"sq",title:"Simple squamous: thin for fast diffusion",
  body:`<p><b>Simple squamous epithelium</b> is one layer of flat cells. It is the thinnest epithelium, so things pass through it quickly by <b>diffusion</b> and <b>filtration</b>.</p>
  <p><b>Where:</b> the <b>air sacs (alveoli)</b> of the lungs, the walls of <b>capillaries</b>, and the slick lining of body cavities. Special names: the lining of blood vessels is <b>endothelium</b>; the lining of serous membranes is <b>mesothelium</b>.</p>
  <p>Watch oxygen (blue) cross from the air into the blood, while carbon dioxide (gray) moves the other way. Under the microscope, look for <b>very thin walls</b> and <b>flat nuclei</b> that bulge a little.</p>`,
@@ -912,7 +927,8 @@ const STEPS=[
  caption:"Oxygen diffuses from the air sac into the capillary, and carbon dioxide diffuses out, across two very thin layers of flat cells.",
  legend:[["o2","O₂"],["co2","CO₂"],["blood","Red blood cell"],["epi","Flat squamous cell","r"]]},
 
-{act:2,scene:"cub",id:"cub",title:"Simple cuboidal: cubes that secrete and absorb",
+{act:2,desc:"A ring of pink cube-shaped cells with round purple nuclei surrounds a pale central lumen, like a kidney tubule seen end on, with red capillaries outside the ring. Orange particles move from the lumen through the cells and out toward the capillaries (absorbed), while purple particles move from the cells into the lumen (secreted). A round microscope view on the right shows many small tubules, each one layer of cells in a ring, with labels for tubule lumen and cube cell, round nucleus.",
+ scene:"cub",id:"cub",title:"Simple cuboidal: cubes that secrete and absorb",
  body:`<p><b>Simple cuboidal epithelium</b> is one layer of cube-shaped cells, about as tall as they are wide. Each has a <b>round, central nucleus</b>.</p>
  <p><b>Where:</b> the <b>tubules of the kidney</b> and the ducts and secretory parts of small <b>glands</b>, such as the thyroid.</p>
  <p><b>Job:</b> <b>secretion and absorption</b>. In the kidney, these cells pull useful things back out of the fluid in the tubule and send them toward the blood.</p>
@@ -927,7 +943,8 @@ const STEPS=[
  caption:"Cube-shaped cells around the tubule lumen absorb useful particles (orange) and pass them toward the capillaries.",
  legend:[["epi","Cuboidal cell","r"],["nutr","Absorbed particle"],["hormone","Secreted product"],["blood","Capillary"]]},
 
-{act:2,scene:"col",id:"col",title:"Simple columnar: tall cells for absorption",
+{act:2,desc:"A row of tall pink column cells stands on a gold basement membrane, with purple nuclei lined up near the base and a fringe of microvilli, the brush border, along the top. Orange nutrient dots from digested food in the light blue lumen above pass down through the cells toward a red capillary at the bottom. Green goblet cells fill with mucus and release a green drop onto the surface. A round microscope view on the right labels the brush border, a goblet cell, tall cells and nuclei in one row.",
+ scene:"col",id:"col",title:"Simple columnar: tall cells for absorption",
  body:`<p><b>Simple columnar epithelium</b> is one layer of tall cells. Their <b>oval nuclei line up near the base</b>, like a row of beads.</p>
  <p><b>Where:</b> the lining of the <b>stomach and intestines</b>.</p>
  <p><b>Microvilli</b> are tiny finger-like folds of the apical membrane. Together they look like a fuzzy <b>brush border</b>, and they greatly increase the surface area for <b>absorbing</b> nutrients. <b>Goblet cells</b> are scattered among the columnar cells. They fill with <b>mucus</b> and release it to protect and lubricate the surface.</p>
@@ -942,7 +959,8 @@ const STEPS=[
  caption:"Nutrients (orange) are absorbed through the brush border, while a goblet cell fills with mucus and releases it onto the surface.",
  legend:[["epi","Columnar cell","r"],["mucus","Mucus"],["nutr","Nutrients"],["nuc","Nucleus"]]},
 
-{act:2,scene:"pseudo",id:"pseudo",title:"Pseudostratified ciliated columnar: the mucus escalator",
+{act:2,desc:"Tall pink cells stand on a gold basement membrane, with purple nuclei at many different heights, but every cell touches the base. Purple hair-like cilia on top beat in waves, pushing a green sheet of mucus to the right, labelled mucus moves toward the throat, while grey dust dots fall in from above and get trapped in it. Green goblet cells are scattered among the column cells. A round microscope view on the right labels cilia, a goblet cell and nuclei at many heights.",
+ scene:"pseudo",id:"pseudo",title:"Pseudostratified ciliated columnar: the mucus escalator",
  body:`<p><b>Pseudo-</b> means false. <b>Pseudostratified</b> epithelium looks like it has many layers because its <b>nuclei sit at different heights</b>. But it is really <b>one layer</b>: <b>every cell touches the basement membrane</b>, even though only some cells reach the surface.</p>
  <p><b>Where:</b> the <b>trachea</b> and most of the upper airways. Here it is <b>ciliated</b> and has <b>goblet cells</b>.</p>
  <p>Goblet cells make a sticky sheet of mucus that traps dust and germs. The <b>cilia</b> beat in waves and push the mucus up toward the throat, where it is swallowed or coughed out. Smoking damages these cilia, which is one reason smokers cough.</p>`,
@@ -956,7 +974,8 @@ const STEPS=[
  caption:"Cilia beat in waves and push the mucus sheet, with trapped dust, toward the throat. Nuclei sit at different heights, but every cell touches the base.",
  legend:[["cilia","Cilia"],["mucus","Mucus sheet"],["co2","Trapped dust"],["nuc","Nucleus"]]},
 
-{act:2,scene:"strat",id:"strat",title:"Stratified squamous: keratinized vs nonkeratinized",
+{act:2,desc:"Two stacks of many cell layers stand side by side, each with dividing cells at the base and an upward arrow showing new cells being pushed up. In the left stack, labelled keratinized skin, the cells become flat and tan near the top, dead and full of keratin with no nuclei, and a grey rubbing block scrapes the top cells off. In the right stack, labelled nonkeratinized esophagus, the top cells stay pink, flat and alive with nuclei, under a thin moist layer. Two round microscope views on the right show each kind.",
+ scene:"strat",id:"strat",title:"Stratified squamous: keratinized vs nonkeratinized",
  body:`<p><b>Stratified squamous epithelium</b> has many layers. The surface cells are flat. It is built for <b>protection against rubbing</b>. Cells in the <b>basal layer</b> keep dividing, and the new cells get pushed up, flatten, and are shed from the top.</p>
  <ul><li><b>Keratinized</b> (left): the surface cells die and fill with the tough protein <b>keratin</b>. They have <b>no nuclei</b>. This dry, waterproof layer is the <b>epidermis</b> of the skin.</li>
  <li><b>Nonkeratinized</b> (right): the surface cells stay <b>alive and moist</b> and still have nuclei. It lines the <b>mouth, esophagus, and vagina</b>.</li></ul>`,
@@ -970,7 +989,8 @@ const STEPS=[
  caption:"New cells are made in the basal layer and pushed up. In skin (left) they die and fill with keratin. In the esophagus (right) they stay alive and moist. Rubbing peels off the top cells.",
  legend:[["epi","Living cells","r"],["kera","Keratin-filled dead cells","r"],["nuc","Nucleus"],["mucus","Moist surface"]]},
 
-{act:2,scene:"trans",id:"trans",title:"Transitional epithelium: built to stretch",
+{act:2,desc:"A small drawing of a bladder at the top left fills with yellow urine and empties again, labelled empty, filling and full. Below it, a thick stack of pink cell layers with dome-shaped umbrella cells on top stretches as the bladder fills: the cells flatten, the layer gets thinner and fewer layers show, and an arrow labelled thickness shrinks. When the bladder empties the cells round up and the layer thickens again. A round microscope view on the right switches between the empty and full bladder.",
+ scene:"trans",id:"trans",title:"Transitional epithelium: built to stretch",
  body:`<p><b>Transitional epithelium</b> (also called <b>urothelium</b>) lines the <b>urinary bladder</b>, the ureters, and part of the urethra.</p>
  <p>When the bladder is <b>empty</b>, the epithelium looks thick, with several layers and big, rounded <b>dome-shaped (umbrella) cells</b> on the surface. Some surface cells even have two nuclei.</p>
  <p>When the bladder <b>fills</b> and stretches, the cells slide and <b>flatten</b>. The tissue gets thinner and seems to have fewer layers. This lets the bladder hold more urine without tearing.</p>`,
@@ -984,7 +1004,8 @@ const STEPS=[
  caption:"As the bladder fills, umbrella cells flatten and the epithelium thins. As it empties, the cells round up again.",
  legend:[["epi","Epithelial cell","r"],["kera","Urine","r"],["nuc","Nucleus"]]},
 
-{act:2,scene:"gland",id:"gland",title:"Glands: exocrine, endocrine, and three ways to secrete",
+{act:2,desc:"The top half compares two gland types. On the left, an exocrine gland is a ring of cells below a pink surface, with green product dots travelling up a tube-shaped duct and out onto the surface (sweat, saliva, mucus, oil). On the right, an endocrine gland has no duct, and purple hormone diamonds pass straight into a red blood vessel beside it. The bottom row shows three ways to secrete: merocrine, where green drops leave by exocytosis and the cell stays whole; apocrine, where the top of the cell pinches off with fat droplets; and holocrine, where the whole cell fills and bursts and a new cell takes its place.",
+ scene:"gland",id:"gland",title:"Glands: exocrine, endocrine, and three ways to secrete",
  body:`<p>A <b>gland</b> is one or more epithelial cells that make and release a product.</p>
  <ul><li><b>Endocrine glands</b> have <b>no ducts</b>. They release <b>hormones</b> into the fluid around them, and the hormones enter the blood.</li>
  <li><b>Exocrine glands</b> release their product through a <b>duct</b> onto a surface or into a cavity: sweat, saliva, mucus, oil. A goblet cell is a one-cell exocrine gland.</li></ul>
@@ -1002,7 +1023,8 @@ const STEPS=[
  caption:"Top: exocrine glands use a duct; endocrine glands send hormones into the blood. Bottom: merocrine, apocrine, and holocrine secretion.",
  legend:[["mucus","Exocrine product"],["hormone","Hormone"],["blood","Blood"],["epi","Gland cell","r"]]},
 
-{act:3,scene:"ctc",id:"ctc",title:"Connective tissue: cells, fibers, and ground substance",
+{act:3,desc:"A light blue background holds wavy pink collagen fibres, thin dark elastic fibres and a brown branching reticular net. A pink spindle-shaped fibroblast spins out a new fibre, a green macrophage chases and swallows a dark green bacterium, a purple mast cell releases small purple histamine dots, and a pale round adipocyte stores fat. A list on the right builds up connective tissue as cells, plus protein fibres, plus ground substance, and the background glows when the clear gel of ground substance is named. A round microscope view shows areolar tissue.",
+ scene:"ctc",id:"ctc",title:"Connective tissue: cells, fibers, and ground substance",
  body:`<p>Unlike epithelium, connective tissue has cells <b>spread apart</b> in a lot of material called the <b>extracellular matrix</b>. Every connective tissue has three parts:</p>
  <ol><li><b>Cells.</b> <b>Fibroblasts</b> are the most common; they make the fibers and ground substance. <b>Adipocytes</b> store fat. <b>Macrophages</b> eat bacteria and debris. <b>Mast cells</b> release <b>histamine</b> during inflammation.</li>
  <li><b>Protein fibers.</b> <b>Collagen</b> fibers are thick and very strong. <b>Elastic</b> fibers stretch and recoil. <b>Reticular</b> fibers are thin and branch into a net.</li>
@@ -1018,7 +1040,8 @@ const STEPS=[
  caption:"A fibroblast spins out a collagen fiber, an elastic fiber stretches and recoils, a macrophage eats a bacterium, and a mast cell releases histamine, all in a gel of ground substance.",
  legend:[["coll","Collagen fiber","l"],["elas","Elastic fiber","l"],["retic","Reticular fiber","l"],["gs","Ground substance","r"],["hist","Histamine"],["bact","Bacterium","r"]]},
 
-{act:3,scene:"loose",id:"loose",title:"Loose connective tissue: areolar, adipose, reticular",
+{act:3,desc:"Three tabs at the top switch between three tissues, with the current one in teal. Areolar shows loose wavy pink and dark fibres with scattered cells in lots of gel, and a white blood cell drifting through on patrol. Adipose shows tightly packed pale yellow fat droplets that swell, each cell's purple nucleus pushed to the edge. Reticular shows a brown net of thin fibres holding purple lymphocytes in place. A round microscope view on the right matches each one.",
+ scene:"loose",id:"loose",title:"Loose connective tissue: areolar, adipose, reticular",
  body:`<p><b>Loose connective tissue</b> has fibers spread out, with lots of open space. There are three kinds. Watch each one in turn:</p>
  <ol><li><b>Areolar:</b> all three fiber types loosely woven together, lots of ground substance, many kinds of cells. It sits <b>under epithelia</b> and wraps organs and blood vessels. It holds tissue fluid and is a highway for immune cells.</li>
  <li><b>Adipose (fat):</b> mostly <b>adipocytes</b>, each filled by one big fat droplet that pushes the nucleus to the edge. It <b>stores energy</b>, <b>insulates</b>, and <b>cushions</b>. On a slide the fat dissolves away, so the cells look empty.</li>
@@ -1033,7 +1056,8 @@ const STEPS=[
  caption:"Areolar tissue holds fluid and immune cells. Adipocytes fill and empty their fat droplets. Reticular fibers form a net that holds cells in place.",
  legend:[["coll","Collagen","l"],["elas","Elastic","l"],["retic","Reticular","l"],["fat","Fat droplet"],["neut","White blood cell"]]},
 
-{act:3,scene:"dense",id:"dense",title:"Dense connective tissue: regular, irregular, elastic",
+{act:3,desc:"Three tabs switch between dense connective tissues, with the current one in teal. Dense regular shows a tendon: a pink muscle on the left pulls (red arrow) on rows of wavy parallel collagen fibres attached to a tan bone on the right, and the fibres straighten. Dense irregular shows the dermis as pink bundles running in every direction, which hold when pulled from different sides. Elastic shows the wall of a large artery as a ring of dark wavy elastic fibres that stretches with each pulse and then recoils.",
+ scene:"dense",id:"dense",title:"Dense connective tissue: regular, irregular, elastic",
  body:`<p><b>Dense connective tissue</b> is packed with fibers, mostly collagen, and has fewer cells and less ground substance.</p>
  <ol><li><b>Dense regular:</b> collagen fibers run <b>parallel</b>, with rows of fibroblasts between them. It is very strong when pulled in <b>one direction</b>. It forms <b>tendons</b> (muscle to bone) and <b>ligaments</b> (bone to bone). It has a poor blood supply, so it heals slowly.</li>
  <li><b>Dense irregular:</b> thick collagen bundles run in <b>many directions</b>, so it resists pulling from any side. It forms the <b>dermis</b> of the skin and capsules around organs.</li>
@@ -1048,7 +1072,8 @@ const STEPS=[
  caption:"Tendon: the muscle pulls and the wavy parallel collagen straightens. Dermis: pulled from many directions, it holds. Artery: elastic fibers stretch with each pulse, then recoil.",
  legend:[["coll","Collagen","l"],["elas","Elastic fiber","l"],["nuc","Fibroblast nucleus"],["musc","Muscle","r"],["bone","Bone","r"]]},
 
-{act:3,scene:"cart",id:"cart",title:"Cartilage: cells in little holes",
+{act:3,desc:"Three tabs switch between cartilage types, with the current one in teal. A pale purple matrix holds chondrocytes, small cells sitting in round holes called lacunae, with a pink perichondrium along the top containing red blood vessels. Orange nutrient dots creep slowly down from the vessels, since the cartilage itself has no blood vessels. A box below shows each type at work: hyaline caps the ends of bones in a joint, fibrocartilage discs squash under a load and spring back, and elastic cartilage in the ear bends and springs back.",
+ scene:"cart",id:"cart",title:"Cartilage: cells in little holes",
  body:`<p><b>Cartilage</b> is firm but flexible. Its cells, <b>chondrocytes</b>, sit in small spaces called <b>lacunae</b> ("little lakes"). The matrix is a firm gel with collagen and sometimes elastic fibers.</p>
  <p>Cartilage is <b>avascular</b>. Nutrients must slowly diffuse in from the <b>perichondrium</b>, the dense connective tissue wrapper around it. That is why <b>cartilage heals very slowly</b>.</p>
  <ol><li><b>Hyaline cartilage:</b> the most common kind. Smooth and glassy, with fibers too fine to see. Ends of long bones, ribs, nose, rings of the trachea.</li>
@@ -1064,7 +1089,8 @@ const STEPS=[
  caption:"Chondrocytes sit in lacunae. Nutrients (orange) creep in slowly from vessels in the perichondrium. Then compare hyaline, fibrocartilage, and elastic cartilage at work.",
  legend:[["cart","Cartilage matrix","r"],["nuc","Chondrocyte"],["nutr","Nutrients"],["coll","Collagen","l"],["elas","Elastic fiber","l"]]},
 
-{act:3,scene:"bb",id:"bb",title:"Bone and blood: connective tissues too",
+{act:3,desc:"On the left, an osteon is shown in cross section: a central canal with a red and a blue vessel in the middle, and tan rings of hard matrix, the lamellae, building outward one by one. Purple osteocytes take their places between the rings in small lacunae, and orange nutrient dots travel outward along tiny channels. On the right, a pale yellow tube of blood plasma carries flowing red blood cells, a few purple-nucleated white blood cells and small platelets. Two round microscope views show compact bone and a blood smear.",
+ scene:"bb",id:"bb",title:"Bone and blood: connective tissues too",
  body:`<p><b>Bone</b> (osseous tissue) is the hardest connective tissue. Its matrix is collagen made hard by <b>calcium phosphate</b> crystals. Bone cells called <b>osteocytes</b> sit in lacunae, just like in cartilage. In <b>compact bone</b>, they are arranged in <b>osteons</b>: rings of matrix (<b>lamellae</b>) around a <b>central canal</b> that holds blood vessels and nerves. Tiny channels called <b>canaliculi</b> connect the cells. Unlike cartilage, bone has a good blood supply and heals well.</p>
  <p><b>Blood</b> is a <b>fluid connective tissue</b>. Its matrix is liquid <b>plasma</b>. Its formed elements are <b>red blood cells</b> (carry oxygen), <b>white blood cells</b> (defense), and <b>platelets</b> (clotting). <b>Lymph</b> is another fluid connective tissue.</p>`,
  analogy:"An osteon is a tree trunk cut across: rings around a center. Blood is a river: the water is the plasma, and the boats are the cells it carries.",
@@ -1077,7 +1103,8 @@ const STEPS=[
  caption:"An osteon builds ring by ring as osteocytes take their places; nutrients travel out through canaliculi. Beside it, blood flows: cells carried in liquid plasma.",
  legend:[["bone","Bone matrix","r"],["nuc","Osteocyte"],["blood","Red blood cell"],["neut","White blood cell"],["hormone","Platelet"]]},
 
-{act:4,scene:"skel",id:"skel",title:"Skeletal muscle: striated and voluntary",
+{act:4,desc:"At the top left a yellow brain sends a signal along a gold nerve line to a pink biceps on a tan arm, labelled you decide: voluntary. The biceps bulges and the forearm lifts (biceps contracts), then lowers again (biceps relaxed). Below, one long striped muscle fibre is zoomed in, with purple nuclei along its edges: when it contracts the light and dark stripes slide closer together and the fibre shortens, shown by a red arrow. A round microscope view on the right labels striations and edge nuclei.",
+ scene:"skel",id:"skel",title:"Skeletal muscle: striated and voluntary",
  body:`<p><b>Skeletal muscle</b> moves the skeleton. Its cells, called <b>muscle fibers</b>, are very long and cylindrical. Each fiber has <b>many nuclei</b>, pushed to the <b>edge</b> of the cell.</p>
  <p>It is <b>striated</b>: it has light and dark stripes from the regular pattern of actin and myosin inside. And it is <b>voluntary</b>: you choose when to use it.</p>
  <p>Watch the stripes slide closer together as the fiber shortens and the arm bends.</p>`,
@@ -1091,7 +1118,8 @@ const STEPS=[
  caption:"A signal from the brain makes the biceps contract. Zoomed in, the striations slide closer as each fiber shortens. Nuclei sit at the edges of the fiber.",
  legend:[["musc","Muscle fiber","r"],["musc-d","Dark band (striation)","r"],["nuc","Nucleus"],["glow","Nerve signal"]]},
 
-{act:4,scene:"card",id:"card",title:"Cardiac muscle: branched and linked",
+{act:4,desc:"A red heart at the top left is labelled heart wall only, involuntary. Below, three long pink cardiac muscle cells are linked by branching cross cells, each with one central purple nucleus and faint stripes, joined end to end by dark zigzag intercalated discs. With each heartbeat a gold glow, the electrical signal, passes through the discs from cell to cell, and the cells contract in a wave. A round microscope view on the right labels branching, intercalated discs and central nuclei.",
+ scene:"card",id:"card",title:"Cardiac muscle: branched and linked",
  body:`<p><b>Cardiac muscle</b> is found <b>only in the heart</b>. Its cells are <b>striated</b> like skeletal muscle, but they are short, <b>branched</b>, and usually have <b>one central nucleus</b>.</p>
  <p>The cells are joined end to end by <b>intercalated discs</b>, which look like dark lines across the fibers. The discs contain <b>gap junctions</b> that let the electrical signal pass straight from cell to cell, and <b>desmosomes</b> that hold the cells together while they pull.</p>
  <p>Cardiac muscle is <b>involuntary</b>. Special pacemaker cells set the beat.</p>`,
@@ -1105,7 +1133,8 @@ const STEPS=[
  caption:"Each heartbeat, the electrical signal (gold) passes through intercalated discs from cell to cell, and the branched cells contract in a wave.",
  legend:[["musc","Cardiac cell","r"],["glow","Electrical signal"],["nuc","Nucleus"],["musc-d","Intercalated disc","l"]]},
 
-{act:4,scene:"smooth",id:"smooth",title:"Smooth muscle: no stripes, slow squeeze",
+{act:4,desc:"At the top a pink tube of small intestine wall carries a round yellow ball of food. A narrow squeeze moves along the tube behind the food and pushes it to the right, labelled squeeze: peristalsis. Below, rows of pink spindle-shaped smooth muscle cells, each with one central purple nucleus and no stripes, switch between contracted, shorter and fatter, and relaxed, long and thin. A round microscope view on the right labels spindle-shaped cells, central nuclei and no striations.",
+ scene:"smooth",id:"smooth",title:"Smooth muscle: no stripes, slow squeeze",
  body:`<p><b>Smooth muscle</b> has <b>no striations</b>. Its cells are <b>spindle-shaped</b> (thick in the middle, tapered at the ends) with <b>one central nucleus</b>.</p>
  <p>It is <b>involuntary</b> and lines the walls of <b>hollow organs</b> (stomach, intestines, bladder, uterus), <b>blood vessels</b>, and airways. It contracts slowly and can hold a squeeze for a long time.</p>
  <p>In the intestine, waves of smooth muscle contraction called <b>peristalsis</b> push food along. When the cells contract they get shorter and fatter, and the nucleus can look twisted like a corkscrew.</p>`,
@@ -1119,7 +1148,8 @@ const STEPS=[
  caption:"A wave of smooth muscle contraction (peristalsis) pushes food along the intestine. Zoomed in, spindle cells shorten and thicken.",
  legend:[["musc","Smooth muscle cell","r"],["nuc","Nucleus"],["kera","Food","r"]]},
 
-{act:4,scene:"nerv",id:"nerv",title:"Nervous tissue: neurons and neuroglia",
+{act:4,desc:"A gold neuron sits on the left with branching dendrites, a round cell body with a purple nucleus, and a long axon wrapped in pale myelin segments running to the right. A glowing signal moves from the dendrites through the cell body and along the axon. Teal neuroglia surround it: an oligodendrocyte above making the myelin, a star-shaped astrocyte below reaching down to a red capillary, and a small microglia cell cleaning up. A round microscope view on the right labels the neuron cell body, its nucleus and nucleolus, and neuroglia nuclei.",
+ scene:"nerv",id:"nerv",title:"Nervous tissue: neurons and neuroglia",
  body:`<p><b>Nervous tissue</b> makes up the brain, spinal cord, and nerves. It has two kinds of cells:</p>
  <ul><li><b>Neurons</b> send electrical signals. Each has a <b>cell body</b> with the nucleus, <b>dendrites</b> that receive signals, and one <b>axon</b> that carries signals away to other cells.</li>
  <li><b>Neuroglia</b> (glial cells) support the neurons. For example, <b>astrocytes</b> help control the neuron's surroundings, <b>oligodendrocytes</b> wrap axons in <b>myelin</b> in the brain and spinal cord, and <b>microglia</b> clean up debris.</li></ul>
@@ -1134,7 +1164,8 @@ const STEPS=[
  caption:"A signal travels from the dendrites through the cell body and down the myelinated axon, while neuroglia support the neuron.",
  legend:[["nerve","Neuron","r"],["glow","Signal"],["macro","Neuroglia"],["blood","Capillary"]]},
 
-{act:5,scene:"memb",id:"memb",title:"Tissue membranes: four kinds",
+{act:5,desc:"Four panels show four membranes. Mucous membrane: a row of pink epithelial cells with green goblet cells under a green mucus layer, open to the outside, as in the mouth, gut and airways. Serous membrane: a red heart beating inside a pink sac with light blue serous fluid between the layers. Cutaneous membrane: the skin, with tan keratin cells on top shedding blue water drops. Synovial membrane: a knee joint bending, lined by a pink membrane with blue synovial fluid between the bone ends.",
+ scene:"memb",id:"memb",title:"Tissue membranes: four kinds",
  body:`<p>A <b>tissue membrane</b> is a thin sheet that covers a surface or lines a cavity. Most are <b>epithelial membranes</b> (epithelium on top of connective tissue):</p>
  <ol><li><b>Mucous membranes</b> line tubes that <b>open to the outside</b>: digestive, respiratory, urinary, and reproductive tracts. They are kept moist with mucus.</li>
  <li><b>Serous membranes</b> line <b>closed body cavities</b> and cover the organs inside: the pleura (lungs), pericardium (heart), and peritoneum (abdomen). They make a thin <b>serous fluid</b> so organs slide without friction.</li>
@@ -1150,7 +1181,8 @@ const STEPS=[
  caption:"Mucous membrane secretes mucus; serous fluid lets the beating heart slide; the skin sheds water; synovial fluid lubricates a bending knee.",
  legend:[["mucus","Mucus"],["fluid","Serous / synovial fluid"],["epi","Epithelium","r"],["coll","Connective tissue","r"]]},
 
-{act:5,scene:"infl",id:"infl",title:"Tissue injury: inflammation",
+{act:5,desc:"A cut-through of skin shows a pink surface, connective tissue below and a red capillary at the bottom. A gold splinter pierces the skin and bacteria enter, then purple mast cells release histamine dots. The capillary widens and the tissue turns redder, wavy heat lines rise, blue fluid dots leak out and the surface swells, and a gold nerve fires. Blue neutrophils and then green macrophages arrive and eat the bacteria. A panel on the right ticks off redness, heat, swelling and pain in colour, and bars show the neutrophils and macrophages building up.",
+ scene:"infl",id:"infl",title:"Tissue injury: inflammation",
  body:`<p>When tissue is injured, the body responds right away with <b>inflammation</b>. It brings defenders in and clears out damage. Watch the sequence:</p>
  <ol><li>Damaged cells and <b>mast cells</b> release chemicals, especially <b>histamine</b>.</li>
  <li>Histamine causes <b>vasodilation</b>: nearby blood vessels widen. More blood flows in, causing <b>redness</b> and <b>heat</b>.</li>
@@ -1168,7 +1200,8 @@ const STEPS=[
  caption:"Injury → histamine release → vessels widen (redness, heat) → capillaries leak (swelling) → nerves fire (pain) → neutrophils, then macrophages, clean up.",
  legend:[["hist","Histamine"],["fluid","Leaked fluid"],["bact","Bacteria","r"],["neut","Neutrophil"],["macro","Macrophage"]]},
 
-{act:5,scene:"repair",id:"repair",title:"Repair: regeneration or scar",
+{act:5,desc:"Two cut-throughs of skin stand side by side, each with a brick-like epidermis on top, pink dermis with hair follicles, and yellow fat at the bottom. On the left, a small clean cut fills with a red clot and heals by regeneration until it almost disappears. On the right, a large wound fills with a red clot, then granulation tissue with new capillaries and purple fibroblasts, and finally pale striped scar collagen with no hair or gland, labelled fibrosis. Bars at the bottom rate how well each tissue regenerates, long and green for epithelium and connective tissue, short and red for cardiac muscle and neurons.",
+ scene:"repair",id:"repair",title:"Repair: regeneration or scar",
  body:`<p>After inflammation clears the area, the tissue is repaired in one of two ways:</p>
  <ul><li><b>Regeneration:</b> the lost cells are replaced by the <b>same kind of tissue</b>. This works best for a <b>small, clean wound</b> in tissue whose cells divide easily, like epithelium and most connective tissue.</li>
  <li><b>Fibrosis:</b> the gap fills with <b>scar tissue</b>. First a clot forms. Then <b>granulation tissue</b> (new capillaries and fibroblasts) grows in, and fibroblasts lay down lots of <b>collagen</b>. The scar is strong, but it <b>cannot do the original tissue's job</b>. This happens with <b>large wounds</b> and in tissues that divide very little.</li></ul>
@@ -1183,7 +1216,8 @@ const STEPS=[
  caption:"Left: a clean cut heals by regeneration and almost disappears. Right: a large wound fills with granulation tissue, then collagen: a scar.",
  legend:[["blood","Clot / new capillaries"],["epi","Epidermis","r"],["coll","Normal dermis","r"],["scar","Scar collagen","r"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole chapter.",
+{act:0,desc:"A grid of 23 small square microscope images, all in pink and purple stain colours, shows every tissue from the chapter with its name underneath: simple squamous, cuboidal and columnar, pseudostratified, stratified squamous, transitional, areolar, adipose, reticular, dense regular, dense irregular, elastic, three kinds of cartilage, compact bone, blood, three kinds of muscle and nervous tissue. A gold border moves from tile to tile to highlight one tissue at a time. The last tile says 23 tissues, practice them in the Tissues Lab.",
+ scene:"recap",id:"recap",title:"You made it. Here is the whole chapter.",
  body:`<ol class="recap">
  <li class="h">Epithelium · covers and lines</li>
  <li>Packed cells, polarity, basement membrane, no blood vessels, fast regeneration.</li><li>Name = layers (simple, stratified, pseudostratified) + surface shape (squamous, cuboidal, columnar).</li>
@@ -1228,7 +1262,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";return `<span><i cla
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip)">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -1236,6 +1270,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

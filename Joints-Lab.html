@@ -17,7 +17,7 @@
   --fluid:#D3E9F5;--memb:#8A5FBF;--capsule:#6E7F88;--lig:#A86B2E;--tendon:#C9A57A;--bursa:#A9DCCF;
   --wood:#DDBF92;--wood-dk:#B8976A;--wood-edge:#5E4526;--palm:#2A9D8F;--ghost:#7E8E98;
   --ax1:#C0392B;--ax2:#2F8A57;--ax3:#7B5CC9;--trail:#1B6E88;
-  --sF:#B4632A;--sC:#1B6E88;--sS:#7B5CC9;--f0:#57666F;--f1:#B08A12;--f2:#2F8A57;
+  --sF:#B4632A;--sC:#1B6E88;--sS:#7B5CC9;--f0:#57666F;--f1:#B08A12;--f2:#2F8A57;--f1-ink:#866A0D;--f2-ink:#2A7D4F;
   --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
   --r:6px;
   --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -33,7 +33,7 @@
   --fluid:#1D3A4A;--memb:#B596EA;--capsule:#A3B2BA;--lig:#E0A066;--tendon:#B89567;--bursa:#2F6B5E;
   --wood:#CFB085;--wood-dk:#A88B62;--wood-edge:#20160A;--palm:#3CC2B1;--ghost:#8A9AA4;
   --ax1:#F07A6A;--ax2:#5FCB8C;--ax3:#A98BEF;--trail:#4FB3D1;
-  --sF:#E39A5B;--sC:#4FB3D1;--sS:#A98BEF;--f0:#A3B2BA;--f1:#E0BE48;--f2:#6BC293;
+  --sF:#E39A5B;--sC:#4FB3D1;--sS:#A98BEF;--f0:#A3B2BA;--f1:#E0BE48;--f2:#6BC293;--f1-ink:var(--f1);--f2-ink:var(--f2);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
 }}
 :root[data-theme="dark"]{
@@ -45,7 +45,7 @@
   --fluid:#1D3A4A;--memb:#B596EA;--capsule:#A3B2BA;--lig:#E0A066;--tendon:#B89567;--bursa:#2F6B5E;
   --wood:#CFB085;--wood-dk:#A88B62;--wood-edge:#20160A;--palm:#3CC2B1;--ghost:#8A9AA4;
   --ax1:#F07A6A;--ax2:#5FCB8C;--ax3:#A98BEF;--trail:#4FB3D1;
-  --sF:#E39A5B;--sC:#4FB3D1;--sS:#A98BEF;--f0:#A3B2BA;--f1:#E0BE48;--f2:#6BC293;
+  --sF:#E39A5B;--sC:#4FB3D1;--sS:#A98BEF;--f0:#A3B2BA;--f1:#E0BE48;--f2:#6BC293;--f1-ink:var(--f1);--f2-ink:var(--f2);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box}
@@ -211,7 +211,12 @@ table.mx td.none{color:var(--ink-faint);font-style:italic}
 .result div{border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;font-size:14px;background:var(--panel-2)}
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 @media (max-width:600px){table.mx{font-size:12px}table.mx th,table.mx td{padding:4px}h1{font-size:22px}.mopts{grid-template-columns:1fr}.card{padding:12px}.fscale{grid-template-columns:1fr}}
+/* a11y: in dark mode the accent is light, so selected/pressed controls use dark text (this also stops
+   site-kit's contrast fixer from leaving a stale dark-text class behind when the selection moves) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.tab[aria-selected="true"],.lterm[aria-pressed="true"]){color:#0B1A20}}
+:root[data-theme="dark"] :is(.tab[aria-selected="true"],.lterm[aria-pressed="true"]){color:#0B1A20}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -244,7 +249,7 @@ footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
         <h2 class="sec">Function: how much can it move?</h2>
         <p class="lede">Three functional classes, from locked to free.</p>
         <div id="funcScale"></div>
-        <div style="overflow-x:auto;max-width:100%"><table class="mx" aria-label="Structure and function pairings">
+        <div style="overflow-x:auto;max-width:100%" tabindex="0" role="region" aria-label="Structure and function table (scrolls sideways)"><table class="mx" aria-label="Structure and function pairings">
           <thead><tr><th>Structure</th><th>Synarthrosis<br><small>immovable</small></th><th>Amphiarthrosis<br><small>slightly movable</small></th><th>Diarthrosis<br><small>freely movable</small></th></tr></thead>
           <tbody>
             <tr><th>Fibrous</th><td>Sutures (skull), gomphoses (teeth)</td><td>Syndesmoses (distal tibiofibular joint, interosseous membranes)</td><td class="none">none</td></tr>
@@ -309,8 +314,8 @@ footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
         <p class="instr">Drag each joint card into the right box: <b>rows</b> are structure, <b>columns</b> are function. No dragging? Tap a card, then tap a box. Some boxes stay empty in real life, and that is part of the lesson.</p>
         <div class="board" id="board"></div>
         <p class="instr" style="margin:10px 0 0"><b>Cards to place</b> (tap a placed card and then this tray to send it back)</p>
-        <div class="tray" id="tray" aria-label="Unplaced joint cards"></div>
-        <div class="bar" style="margin-top:12px"><button class="btn" id="bCheck" type="button">Check board</button><button class="tbtn" id="bHint" type="button">Hint</button><button class="tbtn" id="bShow" type="button">Show answer</button><button class="tbtn" id="bReset" type="button">Start over</button></div>
+        <div class="tray" id="tray" role="group" aria-label="Unplaced joint cards"></div>
+        <div class="bar" style="margin-top:12px"><button class="btn" id="bCheck" type="button">Check board</button><button class="tbtn" id="bBack" type="button">Send selected card back</button><button class="tbtn" id="bHint" type="button">Hint</button><button class="tbtn" id="bShow" type="button">Show answer</button><button class="tbtn" id="bReset" type="button">Start over</button></div>
         <div class="msg" id="bMsg" role="status"></div>
         <div class="why" id="bWhy"></div>
       </div>
@@ -371,6 +376,13 @@ footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
 </div>
 <footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Joints (OpenStax Anatomy &amp; Physiology 2e, Chapter 9) &middot; Diagrams and models are simplified and not to scale.</footer>
 <script>
+/* a11y: keep CSS keyframe and SVG <animate> animations in step with the site-kit animation clock (Pause / Reduce motion) */
+(function(){if(!document.getAnimations)return;let lv=0,lr=0,av=0,ar=0,rate=1;
+  function tick(ts){const r=Date.now();if(lv){av+=ts-lv;ar+=r-lr;if(ar>=200){const k=av/ar;rate=k<.15?0:k<.7?.35:1;av=ar=0}}lv=ts;lr=r;
+    document.getAnimations().forEach(a=>{if(typeof CSSAnimation!=="undefined"&&a instanceof CSSAnimation&&a.playbackRate!==rate)a.playbackRate=rate});
+    document.querySelectorAll("svg animate").forEach(an=>{const s=an.ownerSVGElement;if(!s||!s.pauseAnimations)return;const p=s.animationsPaused();if(rate===0&&!p)s.pauseAnimations();else if(rate>0&&p)s.unpauseAnimations()});
+    requestAnimationFrame(tick)}
+  requestAnimationFrame(tick)})();
 (function(){
 "use strict";
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -488,7 +500,7 @@ function buildOverview(){
     if(i===0)return `<svg viewBox="0 0 80 46" aria-hidden="true"><rect x="8" y="12" width="30" height="22" rx="3" fill="var(--bone)" stroke="var(--bone-dk)"/><rect x="42" y="12" width="30" height="22" rx="3" fill="var(--bone)" stroke="var(--bone-dk)"/><path d="M38 12 l4 4 -4 4 4 4 -4 4 4 4" stroke="${c}" stroke-width="2.4" fill="none"/><text x="40" y="44" font-size="8" text-anchor="middle" fill="${c}">no motion</text></svg>`;
     if(i===1)return `<svg viewBox="0 0 80 46" aria-hidden="true"><rect x="8" y="12" width="28" height="22" rx="3" fill="var(--bone)" stroke="var(--bone-dk)"/><rect x="36" y="14" width="8" height="18" rx="3" fill="var(--cart)" stroke="var(--cart-edge)"/><g transform="rotate(8 44 23)"><rect x="44" y="12" width="28" height="22" rx="3" fill="var(--bone)" stroke="var(--bone-dk)"/></g><path d="M66 4 q6 4 4 10" stroke="${c}" stroke-width="2" fill="none"/><text x="40" y="44" font-size="8" text-anchor="middle" fill="${c}">a little</text></svg>`;
     return `<svg viewBox="0 0 80 46" aria-hidden="true"><circle cx="30" cy="22" r="7" fill="var(--cart)" stroke="var(--cart-edge)"/><rect x="4" y="17" width="24" height="10" rx="4" fill="var(--bone)" stroke="var(--bone-dk)"/><g transform="rotate(-35 30 22)"><rect x="34" y="17" width="34" height="10" rx="4" fill="var(--bone)" stroke="var(--bone-dk)"/></g><path d="M58 2 a30 30 0 0 1 12 26" stroke="${c}" stroke-width="2" fill="none"/><text x="40" y="44" font-size="8" text-anchor="middle" fill="${c}">a lot</text></svg>`};
-  $("#funcScale").innerHTML=`<div class="fscale">${F.map((f,i)=>`<div class="fbox" style="border-top:4px solid var(${f[2]})"><span class="tag" style="color:var(${f[2]})">${["syn- = together","amphi- = on both sides","dia- = through"][i]}</span>${icon(i)}<b>${f[0]}</b><span><b style="display:inline;font-size:13px">${f[1]}</b>. ${f[3]}</span></div>`).join("")}</div>`;
+  $("#funcScale").innerHTML=`<div class="fscale">${F.map((f,i)=>`<div class="fbox" style="border-top:4px solid var(${f[2]})"><span class="tag" style="color:var(${f[2]}-ink,var(${f[2]}))">${["syn- = together","amphi- = on both sides","dia- = through"][i]}</span>${icon(i)}<b>${f[0]}</b><span><b style="display:inline;font-size:13px">${f[1]}</b>. ${f[3]}</span></div>`).join("")}</div>`;
 }
 
 /* ================= TAB 1: synovial anatomy ================= */
@@ -530,8 +542,8 @@ function buildAnatomy(){
   $("#parts").innerHTML=PARTS.map(p=>`<button class="part" type="button" data-k="${p[0]}" aria-pressed="false"><i style="background:var(${p[2]})"></i><span><b>${p[1]}</b>${p[3]}</span></button>`).join("");
   const svg=$("#anatSvg");
   $$("#parts .part").forEach(b=>b.onclick=()=>{const k=b.dataset.k,on=b.getAttribute("aria-pressed")!=="true";$$("#parts .part").forEach(x=>x.setAttribute("aria-pressed","false"));
-    svg.classList.toggle("focus",on);svg.querySelectorAll(".pt").forEach(p=>p.classList.toggle("on",on&&p.dataset.p.split(" ").includes(k)));if(on)b.setAttribute("aria-pressed","true")});
-  $("#clearPart").onclick=()=>{svg.classList.remove("focus");$$("#parts .part").forEach(x=>x.setAttribute("aria-pressed","false"))};
+    svg.classList.toggle("focus",on);svg.querySelectorAll(".pt").forEach(p=>p.classList.toggle("on",on&&p.dataset.p.split(" ").includes(k)));if(on)b.setAttribute("aria-pressed","true");svg.setAttribute("aria-label","Labeled diagram of a synovial joint"+(on?", with the "+b.querySelector("b").textContent.toLowerCase()+" highlighted":""))});
+  $("#clearPart").onclick=()=>{svg.classList.remove("focus");svg.setAttribute("aria-label","Labeled diagram of a synovial joint");$$("#parts .part").forEach(x=>x.setAttribute("aria-pressed","false"))};
   $("#labelsBtn").onclick=()=>{const on=svg.classList.toggle("nolabels");$("#labelsBtn").setAttribute("aria-pressed",on);$("#labelsBtn").textContent=on?"Show labels":"Hide labels (test yourself)"};
 }
 
@@ -670,7 +682,7 @@ let sDeck=[],si=0,sOk=0,sStreak=0,sHints=0,sStep=1,sFirst=[true,true,true],sMax=
 function sStart(){sDeck=shuffle(JC);si=0;sOk=0;sStreak=0;sHints=0;sMax=sDeck.length*3;$("#sT").textContent=sDeck.length;$("#sMax").textContent=sMax;$("#sDone").innerHTML="";sShow()}
 function sMeters(){$("#sN").textContent=Math.min(si+1,sDeck.length);$("#sOk").textContent=sOk;$("#sStreak").textContent=sStreak;$("#sHints").textContent=sHints;$("#sBar").style.width=(si/sDeck.length*100)+"%"}
 function sShow(){const c=sDeck[si];sStep=1;sFirst=[true,true,true];sMeters();
-  $("#jName").textContent=c.n;$("#jDesc").textContent=c.d;$("#bodyMap").innerHTML=bodyMap(c.pos,c.n);$("#mapNote").textContent=c.n.split(" (")[0];$("#structPic").innerHTML="";
+  if(typeof curTab!=="undefined"&&curTab==="sort")gkD("A small front-view outline of a body with an orange pulsing marker showing where the joint is: "+c.n+".");$("#jName").textContent=c.n;$("#jDesc").textContent=c.d;$("#bodyMap").innerHTML=bodyMap(c.pos,c.n);$("#mapNote").textContent=c.n.split(" (")[0];$("#structPic").innerHTML="";
   ["#q2","#q3"].forEach(s=>$(s).hidden=true);["#fb1","#fb2","#fb3"].forEach(s=>{$(s).className="fb";$(s).innerHTML=""});$("#sWhy").className="why";$("#sNext").hidden=true;
   buildOpts("#o1",Object.keys(SK).map(k=>({k,t:SK[k].name+" joint",s:{F:"dense connective tissue",C:"cartilage",S:"fluid-filled cavity"}[k]})),1)}
 function buildOpts(sel,list,step){const box=$(sel);box.innerHTML="";delete box.dataset.done;
@@ -705,13 +717,13 @@ let bSel=null,bChecks=0,bHints=0,bSolved=false,dragInfo=null,suppressClick=false
 function buildBoard(){const b=$("#board");bSel=null;bChecks=0;bHints=0;bSolved=false;
   let h=`<div class="bh corner">Structure &darr; / Function &rarr;</div>`+FN.map(f=>`<div class="bh">${f[0]}<small>${f[1]}</small></div>`).join("");
   ["F","C","S"].forEach(r=>{h+=`<div class="bh row" style="border-left-color:var(${SK[r].col})">${SK[r].name}<small>${{F:"fibers",C:"cartilage",S:"fluid cavity"}[r]}</small></div>`;
-    FN.forEach((f,i)=>{h+=`<div class="cell" data-r="${r}" data-c="${i}"><button class="cellbtn" type="button" aria-label="Place selected card in ${SK[r].name} and ${f[0]}">${SK[r].name.slice(0,4)}. &times; ${f[0].slice(0,5)}.</button></div>`})});
+    FN.forEach((f,i)=>{h+=`<div class="cell" data-r="${r}" data-c="${i}"><button class="cellbtn" type="button"><span aria-hidden="true">${SK[r].name.slice(0,4)}. &times; ${f[0].slice(0,5)}.</span><span class="gk-sr">Place selected card in ${SK[r].name} and ${f[0]}</span></button></div>`})});
   b.innerHTML=h;const tray=$("#tray");tray.innerHTML="";shuffle(JC).forEach(c=>tray.appendChild(makeChip(c)));
   $$("#board .cell").forEach(cell=>{cell.addEventListener("click",e=>{if(e.target.closest(".jchip"))return;if(bSel)place(bSel,cell)})});
   tray.addEventListener("click",e=>{if(e.target.closest(".jchip"))return;if(bSel)place(bSel,tray)});
   bMsg("","");$("#bWhy").className="why"}
 function makeChip(c){const el=document.createElement("button");el.type="button";el.className="jchip";el.textContent=c.n.replace(" (glenohumeral joint)","").replace(" (coxal joint)","").replace(" (tibiofemoral joint)","").replace(" (humeroulnar joint)","").replace(" (radiocarpal joint)","").replace(" (coronal suture)","").replace(" (growth plate)","").replace(" (metacarpophalangeal joint)"," (MCP)");
-  el.dataset.i=JC.indexOf(c);
+  el.dataset.i=JC.indexOf(c);el.setAttribute("aria-pressed","false");
   el.addEventListener("pointerdown",e=>{if(bSolved)return;dragInfo={el,x:e.clientX,y:e.clientY,moved:false,id:e.pointerId};try{el.setPointerCapture(e.pointerId)}catch(_){}});
   el.addEventListener("pointermove",e=>{const d=dragInfo;if(!d||d.el!==el)return;const dx=e.clientX-d.x,dy=e.clientY-d.y;if(!d.moved&&Math.hypot(dx,dy)<7)return;
     d.moved=true;el.classList.add("drag");el.style.transform=`translate(${dx}px,${dy}px)`;const t=dropTarget(e.clientX,e.clientY);$$(".cell.over,.tray.over").forEach(x=>x.classList.remove("over"));if(t)t.classList.add("over")});
@@ -720,10 +732,10 @@ function makeChip(c){const el=document.createElement("button");el.type="button";
   el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
   el.addEventListener("click",()=>{if(suppressClick||bSolved&&!el.closest(".cell"))return;
     if(bChecks>0||bSolved)explain(el);if(bSolved)return;
-    if(bSel===el){el.classList.remove("sel");bSel=null;return}if(bSel)bSel.classList.remove("sel");bSel=el;el.classList.add("sel");$$(".cell").forEach(x=>x.classList.add("target"))});
+    if(bSel===el){el.classList.remove("sel");el.setAttribute("aria-pressed","false");bSel=null;return}if(bSel){bSel.classList.remove("sel");bSel.setAttribute("aria-pressed","false")}bSel=el;el.classList.add("sel");el.setAttribute("aria-pressed","true");$$(".cell").forEach(x=>x.classList.add("target"))});
   return el}
 function dropTarget(x,y){const els=document.elementsFromPoint(x,y);for(const e of els){if(e.classList&&(e.classList.contains("cell")||e.classList.contains("tray")))return e}return null}
-function place(el,t){t.appendChild(el);el.classList.remove("sel","ok","bad","hinted");bSel=null;$$(".cell").forEach(x=>x.classList.remove("target"))}
+function place(el,t){t.appendChild(el);el.classList.remove("sel","ok","bad","hinted");el.setAttribute("aria-pressed","false");bSel=null;$$(".cell").forEach(x=>x.classList.remove("target"))}
 $$("#board").forEach(()=>{});
 document.addEventListener("click",e=>{const btn=e.target.closest(".cellbtn");if(btn&&bSel){place(bSel,btn.parentElement)}});
 function bMsg(t,c){const m=$("#bMsg");m.className="msg"+(t?" show "+c:"");m.innerHTML=t}
@@ -741,6 +753,7 @@ $("#bHint").onclick=()=>{if(bSolved)return;const all=[...$$("#board .jchip"),...
 $("#bShow").onclick=()=>{[...$$("#board .jchip"),...$$("#tray .jchip")].forEach(el=>{const c=JC[+el.dataset.i];place(el,$(`#board .cell[data-r="${c.st}"][data-c="${c.fn}"]`));el.classList.add("ok")});bSolved=true;
   bMsg("Here is the finished board. Read it once, then press <b>Start over</b> and try it yourself. Tap any card to see why.","warn")};
 $("#bReset").onclick=buildBoard;
+$("#bBack").onclick=()=>{if(bSel)place(bSel,$("#tray"))};
 $("#modeCards").onclick=()=>{$("#modeCards").setAttribute("aria-pressed","true");$("#modeBoard").setAttribute("aria-pressed","false");$("#cardMode").hidden=false;$("#boardMode").hidden=true};
 $("#modeBoard").onclick=()=>{$("#modeBoard").setAttribute("aria-pressed","true");$("#modeCards").setAttribute("aria-pressed","false");$("#cardMode").hidden=true;$("#boardMode").hidden=false};
 
@@ -1032,7 +1045,7 @@ function gShow(){const m=gset[gi];curMove=m;mT=0;gFirst=true;gDone=false;showPla
   const opts=shuffle([m.t,...shuffle(CONF[m.t]).slice(0,3)]);const box=$("#mOpts");box.innerHTML="";
   opts.forEach(t=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=t;b.onclick=()=>gAnswer(t,b);box.appendChild(b)});
   $("#mFb").className="fb";$("#mWhy").className="why";$("#mBonusBox").hidden=true;$("#mNext").hidden=true;
-  gTimeLeft=TIME;$("#mTimer").hidden=$("#mRelaxed").checked;$("#mTimerBar").style.width="100%"}
+  gTimeLeft=TIME;$("#mTimer").hidden=$("#mRelaxed").checked;$("#mTimerBar").style.width="100%";if(typeof curTab!=="undefined"&&curTab==="mimic")describeTab()}
 function special(ch,m){if(ch==="Extension"&&m.t==="Hyperextension")return "<b>Close.</b> It is extending, but look at the faint figure: the movement goes <b>past</b> anatomical position. That extra part is hyperextension.";
   if(ch==="Hyperextension"&&m.t==="Extension")return "<b>Not quite.</b> The movement stops right at anatomical position (the faint figure). Coming back to straight is plain extension. Hyperextension would keep going past it.";
   if(ch==="Rotation"&&(m.t==="Supination"||m.t==="Pronation"))return `<b>Close in spirit.</b> The forearm does rotate, but this special forearm rotation has its own name. Here ${m.saw}.`;
@@ -1041,7 +1054,7 @@ function special(ch,m){if(ch==="Extension"&&m.t==="Hyperextension")return "<b>Cl
 function gAnswer(t,b){if(gDone)return;const m=gset[gi];const fb=$("#mFb");
   if(t===m.t){b.classList.add("right");gDone=true;if(gFirst){gScore++;gStreak++}else gStreak=0;
     fb.className="fb ok show";fb.innerHTML=`<b>${gFirst?"Yes!":"Got it."} ${m.t}</b>${m.v?" of the "+m.v:""}: ${m.saw}.`;
-    $("#mWhy").innerHTML=`<b>${m.t}:</b> ${TERMS[m.t].d}<br><b>Everyday example:</b> ${m.ex}`;$("#mWhy").className="why show";showJoint=true;finishItem(m)}
+    $("#mWhy").innerHTML=`<b>${m.t}:</b> ${TERMS[m.t].d}<br><b>Everyday example:</b> ${m.ex}`;$("#mWhy").className="why show";showJoint=true;finishItem(m);describeTab()}
   else{b.classList.add("wrong");gFirst=false;gStreak=0;fb.className="fb no show";fb.innerHTML=special(t,m)||`<b>Not quite.</b> ${t} means: ${lc(TERMS[t].d)} Here, ${m.saw}.`}
   gMeters()}
 function finishItem(m){$$("#mOpts .opt").forEach(x=>x.disabled=true);
@@ -1057,7 +1070,7 @@ function bonusJ(t,b,m){const box=$("#bJ");if(box.dataset.done)return;const right
     gMeters()}
   else{b.classList.add("wrong");box.dataset.miss=1;fb.className="fb no show";fb.innerHTML=`<b>Not quite.</b> Look for the joint where the bending or turning actually happens. ${t} (${JT[t]||"a different joint"}) is not the one moving here.`}}
 function bonusP(k,b,m){const pb=$("#bP");if(pb.dataset.done)return;const fb=$("#bPfb");
-  if(k===m.pl){if(!pb.dataset.miss)gBonus++;pb.dataset.done=1;b.classList.add("right");showPlane=true;fb.className="fb ok show";fb.innerHTML=`<b>Yes.</b> The ${PLANES[k][0].toLowerCase()} ${PLANES[k][1]} It is now drawn on the figure.`;gMeters()}
+  if(k===m.pl){if(!pb.dataset.miss)gBonus++;pb.dataset.done=1;b.classList.add("right");showPlane=true;describeTab();fb.className="fb ok show";fb.innerHTML=`<b>Yes.</b> The ${PLANES[k][0].toLowerCase()} ${PLANES[k][1]} It is now drawn on the figure.`;gMeters()}
   else{b.classList.add("wrong");pb.dataset.miss=1;fb.className="fb no show";fb.innerHTML=`<b>Not quite.</b> The ${PLANES[k][0].toLowerCase()} ${PLANES[k][1]} Ask yourself: is this movement forward-back, side to side, or turning?`}}
 function showNext(){$("#mNext").hidden=false;$("#mNext").textContent=gi===gset.length-1?"See results":"Next movement →"}
 $("#mNext").onclick=()=>{if(gi<gset.length-1){gi++;gShow()}else gEnd()};
@@ -1078,22 +1091,40 @@ function libPick(t,id){libTerm=t;$$("#libTerms .lterm").forEach(b=>b.setAttribut
   $$("#lVars .tbtn").forEach(b=>b.onclick=()=>libPick(t,b.dataset.id));
   $("#lDl").innerHTML=`<div><dt>Example</dt><dd>${m.ex}</dd></div><div><dt>Watch for</dt><dd>${cap(m.saw)}.</dd></div><div><dt>Joint</dt><dd>${Jn[m.j]}: ${JT[Jn[m.j]]}.</dd></div><div><dt>Plane</dt><dd>${m.pl?PLANES[m.pl][0]+": "+PLANES[m.pl][1]:m.t==="Circumduction"?"Several planes in a row.":"No single plane."}</dd></div>`;
   $("#lPlane").disabled=!m.pl;$("#lPlane").style.opacity=m.pl?1:.45;
-  $("#mimic").setAttribute("aria-label",`Animated mannequin showing ${t}${m.v?" of the "+m.v:""}: ${m.saw}. ${m.cam[6]}.`)}
-$("#lPlane").onclick=()=>{showPlane=!showPlane;$("#lPlane").setAttribute("aria-pressed",showPlane);$("#lPlane").textContent=showPlane?"Hide the plane":"Show the plane"};
-$("#mmGame").onclick=()=>{libMode=false;$("#mmGame").setAttribute("aria-pressed","true");$("#mmLib").setAttribute("aria-pressed","false");$("#gamePanel").hidden=false;$("#libPanel").hidden=true;gShowKeep()};
+  $("#mimic").setAttribute("aria-label",`Animated mannequin showing ${t}${m.v?" of the "+m.v:""}: ${m.saw}. ${m.cam[6]}.`);if(curTab==="mimic")describeTab()}
+$("#lPlane").onclick=()=>{showPlane=!showPlane;setTimeout(describeTab,0);$("#lPlane").setAttribute("aria-pressed",showPlane);$("#lPlane").textContent=showPlane?"Hide the plane":"Show the plane"};
+$("#mmGame").onclick=()=>{libMode=false;$("#mmGame").setAttribute("aria-pressed","true");$("#mmLib").setAttribute("aria-pressed","false");$("#gamePanel").hidden=false;$("#libPanel").hidden=true;gShowKeep();describeTab()};
 $("#mmLib").onclick=()=>{libMode=true;$("#mmLib").setAttribute("aria-pressed","true");$("#mmGame").setAttribute("aria-pressed","false");$("#gamePanel").hidden=true;$("#libPanel").hidden=false;showPlane=$("#lPlane").getAttribute("aria-pressed")==="true";libPick(libTerm,curMove&&curMove.t===libTerm?curMove.id:null)};
 function gShowKeep(){const m=gset[gi];if(!m)return;curMove=m;mT=0;showJoint=gDone;showPlane=gDone&&$("#bP").dataset.done==="1"}
 /* ---- controls ---- */
 $("#mPause").onclick=()=>{mPaused=!mPaused;$("#mPause").textContent=mPaused?"Play":"Pause"};
 $("#mReplay").onclick=()=>{mT=0};
 $("#mSpeed").oninput=e=>mSpeed=+e.target.value;
+["#mGhost","#mTrail"].forEach(id=>$(id).addEventListener("change",()=>describeTab()));
 /* ---- tabs / theme ---- */
 let curTab="types";
-$$(".tab").forEach(t=>t.onclick=()=>{$$(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;["types","sort","mimic"].forEach(n=>$("#tab-"+n).hidden=curTab!==n);setTimeout(fitAll,0)});
+$$(".tab").forEach(t=>t.onclick=()=>{$$(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;["types","sort","mimic"].forEach(n=>$("#tab-"+n).hidden=curTab!==n);setTimeout(fitAll,0);describeTab()});
 $("#themeBtn").onclick=()=>{const r=document.documentElement;r.setAttribute("data-theme",isDark()?"light":"dark");readColors()};
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
 function fitAll(){galCanv.forEach(c=>c.fit());mc.fit()}
 window.addEventListener("resize",fitAll);
+/* ---- a11y: picture descriptions for the site kit; keep the description panel under the picture of the open tab ---- */
+let gkLast="";
+function gkD(t){if(window.gkDescribe&&t!==gkLast){gkLast=t;window.gkDescribe(t)}}
+function placeDesc(){const d=document.getElementById("gk-desc");if(!d)return;
+  const a=curTab==="mimic"?$("#mimic").parentElement:curTab==="sort"?$(".mapbox"):$("#gallery");
+  if(a&&a.nextElementSibling!==d)a.parentNode.insertBefore(d,a.nextSibling)}
+function mimicDesc(){const m=curMove;if(!m)return "";
+  let t="A wooden mannequin figure, "+m.cam[6].toLowerCase()+", starts in anatomical position, which stays visible as a faint grey copy behind it"+($("#mGhost").checked?"":" (now hidden)")+". Then "+m.saw+". The figure holds the pose, returns to the start, and the movement repeats."+($("#mTrail").checked?" A blue line traces the path of the moving part.":"");
+  if(libMode)t=m.t+(m.v?" of the "+m.v:"")+". "+t;
+  if(showJoint)t+=" A gold ring marks the joint where the movement happens.";
+  if(showPlane&&m.pl)t+=" A see-through panel shows the "+PLANES[m.pl][0].toLowerCase()+".";
+  return t}
+function describeTab(){
+  if(curTab==="mimic"){const t=mimicDesc();$("#mimic").setAttribute("aria-label",(libMode?"":"Name the movement. ")+t);gkD(t)}
+  else if(curTab==="sort"){const c=sDeck[si];if(c)gkD("A small front-view outline of a body with an orange pulsing marker showing where the joint is: "+c.n+".")}
+  else gkD("Six small animated 3D models, one for each synovial joint type: plane, hinge, pivot, condyloid, saddle and ball-and-socket. In each model, tan bones meet at surfaces capped with blue articular cartilage. Dashed lines in red, green and purple mark the axes the joint can turn around, and arrows show the motion. Each model moves around one axis at a time, and the line under it names the motion now showing.");
+  placeDesc()}
 /* ---- main loop ---- */
 function frame(now){const dt=Math.min(.05,(now-mLast)/1000);mLast=now;
   try{if(curTab==="types"){if(!galPaused)galT+=dt*galSpeed;drawGallery()}
@@ -1102,6 +1133,7 @@ function frame(now){const dt=Math.min(.05,(now-mLast)/1000);mLast=now;
       renderMimic()}}catch(e){console.error(e)}
   requestAnimationFrame(frame)}
 readColors();buildOverview();buildAnatomy();buildGallery();sStart();buildBoard();buildLib();gStart();fitAll();requestAnimationFrame(frame);
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(describeTab,0));else setTimeout(describeTab,0);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{}).catch(()=>{});
 })();
 </script>

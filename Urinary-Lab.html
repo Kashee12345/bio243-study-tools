@@ -190,7 +190,14 @@ footer a{color:var(--ink-soft)}
 kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
 sub,sup{line-height:0}
 [hidden]{display:none!important}
+/* a11y retrofit: selected tab stays readable in dark mode */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#10161A}}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#10161A}
+:root{--tx-warn:#A25926;--tx-good:var(--good)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tx-warn:var(--warn)}}
+:root[data-theme="dark"]{--tx-warn:var(--warn)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -212,6 +219,7 @@ sub,sup{line-height:0}
 
   <!-- PART 1 -->
   <section id="tab-sim" role="tabpanel" aria-labelledby="tb-sim">
+    <h2 class="gk-sr">Part 1: Nephron Simulator</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvSim" role="img" aria-label="Animated nephron"></canvas></div>
@@ -243,6 +251,7 @@ sub,sup{line-height:0}
 
   <!-- PART 2 -->
   <section id="tab-filt" role="tabpanel" aria-labelledby="tb-filt" hidden>
+    <h2 class="gk-sr">Part 2: Filtration Pressure</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvF" role="img" aria-label="Glomerulus with three pressures"></canvas></div>
@@ -273,6 +282,7 @@ sub,sup{line-height:0}
 
   <!-- PART 3 -->
   <section id="tab-seq" role="tabpanel" aria-labelledby="tb-seq" hidden>
+    <h2 class="gk-sr">Part 3: Urine's Journey</h2>
     <div class="rounds" id="sRounds" aria-label="Rounds"></div>
     <div id="seqPane">
       <div class="grid2">
@@ -566,10 +576,10 @@ function gluTag(exc){return exc<=0?"Negative":exc<25?"Trace":exc<75?"+":exc<150?
 function simRead(m){const ro=$("#ro");const col=urineCol(m.uo);
   const vTag=m.v<.4?"oliguria":m.v>2.5?"polyuria":"normal";
   const naTag={low:"high (Na⁺ lost)",normal:"normal",high:"low (Na⁺ kept)"}[SIM.ald];
-  ro.innerHTML=`<div class="ro"><small>GFR</small><b>${Math.round(SIM.gfr)} mL/min</b><span class="tag" style="color:var(--${SIM.gfr<90?"warn":"good"})">${SIM.gfr<60?"low":SIM.gfr<90?"below normal":"normal"}</span></div>
-   <div class="ro"><small>Urine volume</small><b>${SIM.v.toFixed(1)} L/day</b><span class="tag" style="color:var(--${vTag==="normal"?"good":"warn"})">${vTag}</span></div>
+  ro.innerHTML=`<div class="ro"><small>GFR</small><b>${Math.round(SIM.gfr)} mL/min</b><span class="tag" style="color:var(--tx-${SIM.gfr<90?"warn":"good"})">${SIM.gfr<60?"low":SIM.gfr<90?"below normal":"normal"}</span></div>
+   <div class="ro"><small>Urine volume</small><b>${SIM.v.toFixed(1)} L/day</b><span class="tag" style="color:var(--tx-${vTag==="normal"?"good":"warn"})">${vTag}</span></div>
    <div class="ro"><small>Urine concentration</small><b>${Math.round(SIM.osm)} mOsm</b><span class="tag"><i style="display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;background:${col};border:1px solid var(--rule)"></i> ${m.uo>800?"dark":m.uo>300?"yellow":"pale"}</span></div>
-   <div class="ro"><small>Urine glucose</small><b>${gluTag(m.exc)}</b><span class="tag" style="color:var(--${m.exc>0?"warn":"good"})">${m.exc>0?"over Tm":"all reabsorbed"}</span></div>
+   <div class="ro"><small>Urine glucose</small><b>${gluTag(m.exc)}</b><span class="tag" style="color:var(--tx-${m.exc>0?"warn":"good"})">${m.exc>0?"over Tm":"all reabsorbed"}</span></div>
    <div class="ro"><small>ADH level</small><b>${SIM.adh>.7?"High":SIM.adh>.3?"Normal":"Low"}</b><span class="tag">${Math.round(SIM.adh*100)}%</span></div>
    <div class="ro"><small>Urine Na⁺</small><b style="font-size:14px">${naTag}</b><span class="tag">K⁺ secreted: ${SIM.ald==="high"?"more":SIM.ald==="low"?"less":"normal"}</span></div>`;
   $("#simCap").textContent=`GFR ${Math.round(SIM.gfr)} mL/min → ${SIM.v.toFixed(1)} L/day of urine at ${Math.round(SIM.osm)} mOsm${m.exc>0?", with glucose":""}.`;
@@ -967,7 +977,40 @@ function frame(now){const dt=clamp((now-last)/1000,0,.05);last=now;TT+=dt;
 window.__tab=k=>document.querySelector(`.tab[data-tab="${k}"]`).click();
 window.__sim=o=>{Object.assign(SIM,o);if(o.bg)$("#bgR").value=o.bg;if(o.map)$("#mapR").value=o.map;simUI()};
 window.__lab={SIM,F,SQ,TS,bState,setRound:i=>{SRi=i;sNew()},setScen:i=>{bi=i;bRender()},setF:i=>{fi=i;fClear();fRender()}};
+/* ---------- a11y retrofit: picture descriptions + stale contrast-class cleanup ---------- */
+let gkLast="";
+function gkSay(t){t=String(t||"").replace(/\s+/g," ").trim();if(!t||t===gkLast)return;gkLast=t;if(window.gkDescribe)window.gkDescribe(t)}
+function gkLabel(id,t){const el=document.getElementById(id);if(el&&t&&el.getAttribute("aria-label")!==t)el.setAttribute("aria-label",t)}
+function gkMoveDesc(panelId){const d=document.getElementById("gk-desc");const p=document.getElementById(panelId);if(!d||!p)return;
+  const cvs=[...p.querySelectorAll("canvas")];const cv=cvs.find(c=>c.offsetParent!==null)||cvs[0];if(!cv)return;
+  const a=cv.closest(".canvas-holder")||cv;if(a.nextSibling!==d)a.parentNode.insertBefore(d,a.nextSibling);
+  cvs.forEach(c=>c.setAttribute("aria-describedby","gk-desc"))}
+(function(){const L=c=>{const m=String(c).match(/[\d.]+/g);if(!m)return null;if(m.length>3&&+m[3]===0)return -1;const v=m.slice(0,3).map(x=>{x=x/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*v[0]+.7152*v[1]+.0722*v[2]};
+  const sweep=()=>document.querySelectorAll(".gk-oninv").forEach(el=>{const l=L(getComputedStyle(el).backgroundColor);if(l!==null&&l<=.22)el.classList.remove("gk-oninv")});
+  new MutationObserver(()=>{sweep();setTimeout(sweep,450)}).observe(document.body,{subtree:true,attributes:true,attributeFilter:["aria-selected","aria-pressed","class"]})})();
+function gkDescNow(){
+  if(TAB==="sim"){const m=simModel();const adh=HYD[SIM.hyd][1];const aq=Math.round(adh*8);const nAl={low:1,normal:3,high:6}[SIM.ald];
+    const col=m.uo>800?"dark amber":m.uo>300?"yellow":"pale";
+    gkSay(`A tan nephron runs over a cortex and medulla background that shades from pale to orange with depth. Red blood cells enter through the afferent arteriole at a mean arterial pressure of ${SIM.map} mmHg, and the GFR label reads about ${Math.round(m.g)} mL/min. Small particles of filtrate (blue water drops, purple Na⁺, orange urea triangles, green glucose hexagons) flow from the capsule down the tubule, and most of them leave sideways back into the blood. Hydration is ${HYD[SIM.hyd][0].toLowerCase()}, so ${aq} of 8 water channels on the collecting duct wall are blue (open); aldosterone is ${SIM.ald}, so ${nAl} of 6 purple Na⁺ channel marks on the DCT are lit. The urine cup at the lower right fills to about ${m.v.toFixed(1)} L/day of ${col} urine at ${Math.round(m.uo)} mOsm${m.exc>0?", with green glucose hexagons floating in it":""}.`);
+    gkLabel("cvSimG",`Live graph over the last minute: urine volume heading to ${m.v.toFixed(1)} L/day, urine concentration to ${Math.round(m.uo)} mOsm, GFR to ${Math.round(m.g)} mL/min.`)}
+  else if(TAB==="filt"){const s=F.tg||F;const gb=Math.round(s.gb),ch=Math.round(s.ch),bc=Math.round(s.bc);const n=gb-ch-bc,g=Math.max(0,n)*12.5;
+    const lab=`Glomerulus with three pressures: GBHP ${gb}, CHP ${ch}, BCOP ${bc} mmHg. Net filtration pressure ${n} mmHg, GFR ${Math.round(g)} mL/min.`;
+    gkLabel("cvF",lab);gkLabel("cvFG",`Live graph of GFR over the last 60 seconds, now heading to ${Math.round(g)} mL/min.`);
+    gkSay(`A U-shaped pink capillary loop sits inside a round tan capsule, with red blood cells and gold protein chains flowing through it. Red arrows (GBHP ${gb} mmHg) point outward from the capillary, yellow arrows (CHP ${ch}) push back in from the capsule wall, and indigo arrows (BCOP ${bc}) pull water back into the capillary; each arrow is longer when its pressure is higher. ${n>0?"Blue filtrate drops fall from the capillary into the capsule and drain down to the PCT"+(g<90?", only a few of them":g>160?", many of them":"")+".":"No filtrate drops fall: filtration has stopped."} The panel on the right shows NFP = ${gb} − (${ch} + ${bc}) = ${n} mmHg and a GFR meter at ${Math.round(g)} mL/min.`)}
+  else if(TAB==="seq"){const r=SR[SRi];
+    if(r.id==="trace"){const tr=TR[TS.mol];const here=LOC[TS.pos===undefined?"aff":TS.path[TS.path.length-1]][2];
+      gkSay(`A nephron map with its blood vessels: a red afferent arteriole at the top right feeding the glomerulus, a red efferent arteriole, red peritubular capillaries draining left to the blue renal vein, and the tan tubule running down to the collecting duct, the renal pelvis, the ureter and the bladder at the lower right. A glowing ${tr.n.toLowerCase()} marker sits at the ${here.toLowerCase()}, and a dashed blue line shows the path so far: ${TS.path.map(p=>LOC[p][2].split(" (")[0]).join(", ")}.${TS.done?" The trace is complete.":" Small grey circles mark the places it could go next."}`)}
+    else{const names={path:"a kidney cut in half, with its ureter running to the bladder",neph:"one nephron on a cortex and medulla background",blood:"the kidney's blood vessels as a chain: red arteries down the left, pink capillaries across the bottom, blue veins up the right"}[r.id];
+      const got=[...SQ.rev].sort((a,b)=>a-b).map(i=>r.items[i]);
+      gkLabel("cvS",`Diagram of ${names}. ${SQ.rev.size} of ${r.items.length} places labeled.`);
+      gkSay(`The diagram shows ${names}, with ${r.items.length} numbered circles marking the places in this round. Circles turn green and show their name as you place them correctly; the rest show a question mark. ${got.length?"Labeled so far: "+got.join(", ")+".":"None are labeled yet."}`)}}
+  else{const s=BK[bi],st=bState[bi];const u=s.u;const pad=v=>["negative","+","++","+++"][v];
+    gkSay(`The top half shows a faded nephron with a pulsing red circle and X marking the problem: ${s.site[2]}. Below are two urine cups. The left cup is normal: about 1.5 L/day at 500 mOsm, yellow, with glucose, protein and blood pads all negative. ${st.show?`The right cup shows this patient: about ${u.v} L/day at ${u.osm} mOsm, ${u.red?"red-brown":u.osm>800?"dark amber":u.osm<200?"very pale":"yellow"}, glucose ${pad(u.glu)}, protein ${pad(u.prot)}, blood ${pad(u.bld)}${u.glu?", with green glucose hexagons in the cup":""}${u.bld?", with red blood cells in the cup":""}.`:"The right cup for this patient is covered until you answer the questions or press Show me."}`)}
+}
+setInterval(gkDescNow,500);
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{gkMoveDesc("tab-"+TAB);gkDescNow()}));
 readColors();simUI();chRender();fSync();fRender();sNew();bRender();fitAll();requestAnimationFrame(frame);
+gkMoveDesc("tab-sim");gkDescNow();
 })();
 </script>
 </body>

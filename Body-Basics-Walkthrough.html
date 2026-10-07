@@ -139,7 +139,17 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+
+/* accessibility retrofit (WCAG 2.1 AA contrast) */
+:root{--chip-ink:#fff;--act1-chip:#7B5CC9;--act2-chip:#A06614;--act3-chip:#B25A47;--act4-chip:#2A8071;--warn-ink:#A05825}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--chip-ink:#10161A;--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--warn-ink:var(--warn)}}
+:root[data-theme="dark"]{--chip-ink:#10161A;--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--warn-ink:var(--warn)}
+.actchip{color:var(--chip-ink)}
+.dot.cur{color:var(--chip-ink)}
+.fb.no{color:var(--warn-ink)}
+#body a,footer a{color:var(--accent)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -196,7 +206,8 @@ const ACTS={1:{name:"Part 1 · Organization & life",col:"act1"},
             3:{name:"Part 3 · Planes & cavities",col:"act3"},
             4:{name:"Part 4 · Homeostasis",col:"act4"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: four parts",
+{act:0,desc:"Four tall cards stand side by side, each with a coloured header: Part 1 in purple, Part 2 in orange, Part 3 in red, Part 4 in teal. Part 1 shows an atom inside rings that grow outward, labelled atom to organism. Part 2 shows a standing body with an orange arrow between superior at the top and inferior at the bottom. Part 3 shows a body with a flat blue plane cutting across the chest and a small round section beside it, and Part 4 shows a dot travelling around a circle above a wavy line labelled set point. Each card glows with a coloured border in turn.",
+ scene:"map",id:"map",title:"The big picture: four parts",
  body:`<p>Chapter 1 gives you the tools you will use for the rest of the course. It has <b>four parts</b>:</p>
  <ol><li><b>Organization and life.</b> The body is built in levels, from atoms up to a whole person. Living things share a short list of functions and needs.</li>
  <li><b>Anatomical language.</b> A shared starting pose and a set of direction words, so everyone describes the body the same way.</li>
@@ -213,7 +224,8 @@ const STEPS=[
  caption:"Four parts: how the body is built, how we describe it, how we look inside, and how it stays steady."},
 
 /* ---------- Part 1 ---------- */
-{act:1,scene:"levels",id:"levels",title:"Levels of organization: zooming out",
+{act:1,desc:"The picture zooms out through eight levels, one at a time. It starts with an oxygen atom (a nucleus with electrons circling it), then a phospholipid molecule with a water-loving head and two water-fearing tails, then a mitochondrion inside a cell, then a cell, a sheet of smooth muscle tissue, an organ, an organ system and a whole person. Each picture shrinks into its place inside the next one. Along the bottom, a row of eight pill-shaped labels from Atom to Organism shows the current level filled in purple; the first two are bracketed as the chemical level.",
+ scene:"levels",id:"levels",title:"Levels of organization: zooming out",
  body:`<p>The body is built in <b>levels</b>. Each level is made of the level below it. Watch the picture zoom out:</p>
  <ol><li><b>Atom</b>: the smallest unit of an element, like oxygen.</li>
  <li><b>Molecule</b>: two or more atoms bonded together.</li>
@@ -234,7 +246,8 @@ const STEPS=[
  caption:"Zooming out: atom → molecule → organelle → cell → tissue → organ → organ system → organism.",
  legend:[["act1","Current level","c"],["ink-faint","Other levels","c"]]},
 
-{act:1,scene:"func",id:"func",title:"Six functions of life",
+{act:1,desc:"Six panels sit in two rows of three, and one panel at a time gets a purple border. Organization shows a round cell with a boundary and dots outside it. Metabolism shows green beads that break apart and release gold sparks (orange label: catabolism), then join into a chain (green label: anabolism). Responsiveness shows a hand moving toward a candle flame and pulling back. Movement shows an arm bending at the elbow beside a red blood vessel with cells flowing along it, Growth shows one cell dividing into four that become different shapes, and Reproduction shows one cell pinching into two.",
+ scene:"func",id:"func",title:"Six functions of life",
  body:`<p>All living things, including you, carry out the same basic <b>functions of life</b>:</p>
  <ol><li><b>Organization</b>: parts are kept in order, with a boundary (like skin or a cell membrane) between inside and outside.</li>
  <li><b>Metabolism</b>: all the chemical reactions in the body. <b>Catabolism</b> breaks things down and releases energy. <b>Anabolism</b> builds things up and uses energy.</li>
@@ -252,7 +265,8 @@ const STEPS=[
  caption:"Six panels, six functions. The highlighted panel matches the list.",
  legend:[["act1","Highlighted function","s"],["atp","Energy released","d"]]},
 
-{act:1,scene:"needs",id:"needs",title:"What the body needs to survive",
+{act:1,desc:"A standing body is in the middle with four boxes around it. Top left, Oxygen (blue header) shows small blue oxygen pairs floating toward the nose, labelled cells use it to release energy. Bottom left, Nutrients (green header) shows a green apple and a blue water drop drifting toward the mouth. Top right, Temperature (red header) shows a thermometer near 37 degrees Celsius, labelled normal range. Bottom right, Air pressure shows a grey mountain: at sea level blue arrows push air in, and high up the label reads low pressure, less oxygen in.",
+ scene:"needs",id:"needs",title:"What the body needs to survive",
  body:`<p>To stay alive, the body needs four things from its surroundings:</p>
  <ol><li><b>Oxygen</b>. Cells use it to release energy from nutrients. Brain cells can be badly damaged after only a few minutes without it.</li>
  <li><b>Nutrients</b>. Substances in food and drink that the body needs. <b>Water</b> is the most important one.</li>
@@ -269,7 +283,8 @@ const STEPS=[
  legend:[["o2","Oxygen","c"],["food","Nutrients and water","c"],["hot","Temperature","s"],["plane","Air pressure","s"]]},
 
 /* ---------- Part 2 ---------- */
-{act:2,scene:"pos",id:"pos",title:"Anatomical position",
+{act:2,desc:"On the left a body stands in a relaxed stance with palms facing the thighs. A checklist on the right fills in green ticks one by one: standing upright, facing forward, feet forward, arms at the sides, palms facing forward. The arms turn so red dots mark the palms facing forward with thumbs out, and the heading changes to Anatomical position. Then two faint lying figures appear below the checklist: supine, lying face up, and prone, lying face down.",
+ scene:"pos",id:"pos",title:"Anatomical position",
  body:`<p>To describe the body the same way every time, anatomists use one standard pose: <b>anatomical position</b>.</p>
  <ul><li>Standing upright, facing forward.</li><li>Feet flat on the floor, about shoulder width apart, toes pointing forward.</li><li>Arms at the sides with the <b>palms facing forward</b>, so the thumbs point away from the body.</li></ul>
  <p>Every direction word assumes this pose, even if the patient is lying down. Lying <b>face up</b> is <b>supine</b>. Lying <b>face down</b> is <b>prone</b>.</p>`,
@@ -283,7 +298,8 @@ const STEPS=[
  caption:"A relaxed stance turns into anatomical position. Then: supine (face up) and prone (face down).",
  legend:[["good","Checklist item met","c"],["dot-a","Palm","c"]]},
 
-{act:2,scene:"dirs1",id:"dirs1",title:"Direction words: up, down, front, back, middle, side",
+{act:2,desc:"A front view of the body is on the left and a faded side view facing right is beside it. Pairs of direction words appear in turn in orange. First, superior (toward the head) at the top and inferior (toward the feet) at the bottom, with an orange arrow running between them. Next, medial toward the midline and lateral on both sides, then the side view lights up with posterior (toward the back) and anterior (toward the front). A red dot labelled A and a blue dot labelled B show two places, and the arrow points from one to the other.",
+ scene:"dirs1",id:"dirs1",title:"Direction words: up, down, front, back, middle, side",
  body:`<p>Direction words always <b>compare two places</b>. Each one has an opposite:</p>
  <ul><li><b>Superior</b> (cranial): toward the head. <b>Inferior</b> (caudal): toward the feet.</li>
  <li><b>Anterior</b> (ventral): toward the front. <b>Posterior</b> (dorsal): toward the back.</li>
@@ -299,7 +315,8 @@ const STEPS=[
  caption:"Each pair appears in turn. Watch the arrow go from one dot to the other.",
  legend:[["dot-a","First place","c"],["dot-b","Second place","c"],["act2","Direction arrow","l"]]},
 
-{act:2,scene:"dirs2",id:"dirs2",title:"Proximal, distal, superficial, deep",
+{act:2,desc:"The left half shows a shoulder and arm. A gold dot slides down a dashed orange line from the shoulder to the fingertips, while a bar fills from proximal (closer to the trunk) to distal (farther away); a red dot marks the wrist and a blue dot the elbow, and the label says the wrist is distal to the elbow. The right half shows layers stacked from the surface down: skin (tan), fat (yellow), muscle (pink with stripes) and bone (cream with spots). A black probe pushes down from the surface, and its tag changes from Skin to Muscle to Bone, with an orange arrow running from superficial at the top to deep at the bottom.",
+ scene:"dirs2",id:"dirs2",title:"Proximal, distal, superficial, deep",
  body:`<p>Two more pairs:</p>
  <ul><li><b>Proximal</b>: closer to where a limb attaches to the trunk. <b>Distal</b>: farther from that attachment. These are used mostly for the arms and legs. The wrist is distal to the elbow.</li>
  <li><b>Superficial</b>: closer to the body surface. <b>Deep</b>: farther from the surface, toward the inside. The skin is superficial to the muscles. The bone is deep to the muscles.</li></ul>
@@ -314,7 +331,8 @@ const STEPS=[
  caption:"Left: a dot slides from the shoulder (proximal) to the fingertips (distal). Right: a probe goes from the surface (superficial) inward (deep).",
  legend:[["dot-a","Wrist / skin","c"],["dot-b","Elbow / bone","c"],["act2","Direction arrow","l"]]},
 
-{act:2,scene:"axial",id:"axial",title:"Axial and appendicular regions",
+{act:2,desc:"A plain body stands facing forward. Teal fills the head, neck and trunk, and a teal label reads axial region: head, neck and trunk, the body's central axis. Then orange fills the arms and legs, with a label reading appendicular region: upper and lower limbs, attached to the axis, and pointers to upper limb and lower limb. The orange labels then fade while the colours stay.",
+ scene:"axial",id:"axial",title:"Axial and appendicular regions",
  body:`<p>The body is split into two main regions:</p>
  <ul><li>The <b>axial</b> region: the head, neck, and trunk. It forms the main <b>axis</b>, the center line, of the body.</li>
  <li>The <b>appendicular</b> region: the limbs, meaning the arms and legs. They are <b>appended</b> (attached) to the axis.</li></ul>
@@ -329,7 +347,8 @@ const STEPS=[
  caption:"Teal fills the axial region (head, neck, trunk). Orange fills the appendicular region (limbs).",
  legend:[["ax","Axial region","s"],["app","Appendicular region","s"]]},
 
-{act:2,scene:"regions",id:"regions",title:"Regional terms",
+{act:2,desc:"Two bodies stand side by side: an anterior (front) view and a posterior (back) view. One region at a time fills with orange and its name appears in a box with a line pointing to it, while the names already shown stay in grey. Examples include cephalic (head), cervical (neck), thoracic (chest), abdominal, brachial (arm), antebrachial (forearm), carpal (wrist), femoral (thigh), patellar (knee), crural (leg) and pedal (foot). A box at the bottom gives the plain meaning, such as Pedal equals foot.",
+ scene:"regions",id:"regions",title:"Regional terms",
  body:`<p>Each body area has a <b>regional term</b>, usually from Latin or Greek. These terms show up again in names of bones, muscles, nerves, and blood vessels. A few to start with:</p>
  <ul><li><b>Cephalic</b>: head. <b>Cervical</b>: neck. <b>Thoracic</b>: chest. <b>Abdominal</b>: belly.</li>
  <li><b>Brachial</b>: upper arm. <b>Antebrachial</b>: forearm. <b>Carpal</b>: wrist.</li>
@@ -347,7 +366,8 @@ const STEPS=[
  legend:[["act2","Highlighted region","s"]]},
 
 /* ---------- Part 3 ---------- */
-{act:3,scene:"sag",id:"sag",title:"Sagittal planes: left and right",
+{act:3,desc:"On the left, a body faces forward with a tall teal see-through plane standing upright through it. The plane slides from side to side; when it sits in the exact middle a green label reads midsagittal: equal halves, and anywhere else a teal label reads parasagittal: unequal parts. On the right, a panel shows the cut surface seen from the side, in pink, with organs labelled. In the middle cut you see the brain, heart, liver, intestines, bladder and spinal cord; off to one side you see a lung, stomach and intestines instead.",
+ scene:"sag",id:"sag",title:"Sagittal planes: left and right",
  body:`<p>A <b>plane</b> is an imaginary flat cut through the body. The flat face you see after the cut is a <b>section</b>.</p>
  <p>A <b>sagittal plane</b> runs straight up and down and front to back. It divides the body into <b>left and right</b> parts.</p>
  <ul><li>Right down the middle, it makes equal halves. That is the <b>midsagittal</b> (or median) plane.</li>
@@ -363,7 +383,8 @@ const STEPS=[
  caption:"The plane slides from side to side. In the exact middle it is midsagittal; anywhere else it is parasagittal.",
  legend:[["plane","Plane","s"],["cut","Cut surface (section)","s"],["bone","Bone","s"]]},
 
-{act:3,scene:"ft",id:"ft",title:"Frontal and transverse planes",
+{act:3,desc:"First a side view of the body has an upright teal plane sweeping from back to front, labelled frontal (coronal) plane. The panel on the right shows the pink cut surface seen from the front, which changes as the plane moves: near the front you see the heart, liver and intestines, near the back the lungs and kidneys, and through the middle most organs and the skeleton. Then a front view appears with a flat teal plane sliding down from head to feet, labelled transverse (horizontal) plane, and the panel shows round cross sections, such as the two thighs.",
+ scene:"ft",id:"ft",title:"Frontal and transverse planes",
  body:`<p>Two more planes:</p>
  <ul><li>A <b>frontal plane</b>, also called a <b>coronal plane</b>, runs up and down and side to side. It divides the body into <b>front (anterior) and back (posterior)</b> parts.</li>
  <li>A <b>transverse plane</b>, also called a <b>horizontal plane</b>, runs flat across. It divides the body into <b>upper (superior) and lower (inferior)</b> parts. The section it makes is a <b>cross-section</b>.</li></ul>
@@ -378,7 +399,8 @@ const STEPS=[
  caption:"First a frontal plane sweeps front to back. Then a transverse plane sweeps from head to feet.",
  legend:[["plane","Plane","s"],["lung","Lungs","c"],["heart","Heart","c"],["liver","Liver","c"],["bone","Bone","s"]]},
 
-{act:3,scene:"cavD",id:"cavD",title:"The dorsal (posterior) cavity",
+{act:3,desc:"A side view cut down the middle shows the skull and the backbone along the back of the body. The brain fills the cranial cavity inside the skull, then the yellow spinal cord fills the vertebral cavity inside the column of bones. Red-outlined labels point to each one in turn: cranial cavity: brain, and vertebral cavity: spinal cord. A box on the right lists dorsal cavity with its two parts and notes bone all around, with meninges wrapping the brain and cord.",
+ scene:"cavD",id:"cavD",title:"The dorsal (posterior) cavity",
  body:`<p>The body has two big, closed spaces that hold organs: <b>body cavities</b>. The first is the <b>dorsal cavity</b>, also called the posterior cavity. It has two parts that connect:</p>
  <ul><li>The <b>cranial cavity</b>, inside the skull. It holds the <b>brain</b>.</li>
  <li>The <b>vertebral cavity</b> (spinal cavity), inside the backbone. It holds the <b>spinal cord</b>.</li></ul>
@@ -393,7 +415,8 @@ const STEPS=[
  caption:"Midsagittal view. The cranial cavity fills with the brain, then the vertebral cavity fills with the spinal cord.",
  legend:[["brain","Brain","c"],["cord","Spinal cord","r"],["bone","Bone","s"],["act3","Dorsal cavity","dl"]]},
 
-{act:3,scene:"cavV",id:"cavV",title:"The ventral (anterior) cavity",
+{act:3,desc:"A side view cut down the middle shows the front body cavity. A curved red line, the diaphragm, separates the chest from the belly and moves as the body breathes: it flattens when breathing in and domes up when breathing out. Organs fill each space in turn: the heart and lungs in the thoracic cavity, the liver and intestines in the abdominal cavity, and the bladder in the pelvic cavity below a dashed imaginary line. Red-outlined labels light up for each cavity, and a list on the left highlights the matching name.",
+ scene:"cavV",id:"cavV",title:"The ventral (anterior) cavity",
  body:`<p>The second big space is the <b>ventral cavity</b>, also called the anterior cavity. It is much larger. A dome-shaped muscle, the <b>diaphragm</b>, splits it in two:</p>
  <ul><li>The <b>thoracic cavity</b>, above the diaphragm, inside the rib cage. It holds the heart and lungs.</li>
  <li>The <b>abdominopelvic cavity</b>, below the diaphragm. Its upper part, the <b>abdominal cavity</b>, holds most digestive organs. Its lower part, the <b>pelvic cavity</b>, holds the urinary bladder, the end of the large intestine, and internal reproductive organs.</li></ul>
@@ -408,7 +431,8 @@ const STEPS=[
  caption:"The diaphragm moves as the body breathes. Organs fill the thoracic, abdominal, and pelvic cavities in turn.",
  legend:[["heart","Heart","c"],["lung","Lung (beside the midline)","c"],["liver","Liver","c"],["gut","Intestines","c"],["bladder","Bladder","c"],["act3","Diaphragm","l"]]},
 
-{act:3,scene:"thor",id:"thor",title:"Inside the thoracic cavity",
+{act:3,desc:"A front view of the chest shows two pink lungs, each wrapped in a light blue outline that is its pleural cavity. Between them is the red heart in its own blue-outlined pericardial cavity, with the windpipe branching above. A curved red diaphragm runs below. Labels light up one at a time: right and left pleural cavity, then mediastinum, the central region between the lungs, then pericardial cavity; the lungs swell and shrink with breathing and the heart beats.",
+ scene:"thor",id:"thor",title:"Inside the thoracic cavity",
  body:`<p>The thoracic cavity is divided further:</p>
  <ul><li>Two <b>pleural cavities</b>, one on each side. Each one surrounds a <b>lung</b>.</li>
  <li>The <b>mediastinum</b>: the central area between the lungs. It holds the heart, the trachea, the esophagus, and large blood vessels.</li>
@@ -424,7 +448,8 @@ const STEPS=[
  caption:"Front view of the chest. The lungs breathe in their pleural cavities; the heart beats in its pericardial cavity inside the mediastinum.",
  legend:[["lung","Lung in pleural cavity","c"],["heart","Heart in pericardial cavity","c"],["act3","Mediastinum","s"],["fluid","Pleural / pericardial space","s"]]},
 
-{act:3,scene:"quad",id:"quad",title:"Abdominopelvic quadrants and regions",
+{act:3,desc:"A front view of the trunk shows faint organs: the brown liver on the viewer's left, the stomach, coiled intestines and the bladder. A banner reminds you the patient's right is on your left. First a red vertical line and a red horizontal line cross at the navel, making four quadrants labelled RUQ, LUQ, RLQ and LLQ; a red spot in the right lower quadrant is labelled appendix pain. Then two vertical and two horizontal lines make a tic-tac-toe grid of nine numbered regions, and each region lights up red in turn while a matching grid on the right shows its name, such as left lumbar.",
+ scene:"quad",id:"quad",title:"Abdominopelvic quadrants and regions",
  body:`<p>The abdomen is big, so we divide its surface to say where pain or an organ is.</p>
  <ul><li>The simple way: <b>four quadrants</b>, made by one vertical and one horizontal line through the navel. Right upper (RUQ), left upper (LUQ), right lower (RLQ), and left lower (LLQ).</li>
  <li>The detailed way: <b>nine regions</b>, like a tic-tac-toe grid. Top row: right hypochondriac, epigastric, left hypochondriac. Middle row: right lumbar, umbilical, left lumbar. Bottom row: right iliac (inguinal), hypogastric (pubic), left iliac (inguinal).</li></ul>
@@ -439,7 +464,8 @@ const STEPS=[
  caption:"Two lines through the navel make four quadrants. Then a tic-tac-toe grid makes nine regions.",
  legend:[["act3","Highlighted area","s"],["liver","Liver","c"],["stomach","Stomach","c"],["gut","Intestines","c"]]},
 
-{act:3,scene:"serous",id:"serous",title:"Serous membranes",
+{act:3,desc:"Under the heading push a fist into a soft balloon, a light blue balloon sits in the middle and a tan fist pushes down into it. The balloon folds around the fist, making two layers with a thin blue fluid gap between them. Labels appear: serous fluid, a thin slippery film; visceral layer (red) on the organ; and parietal layer (blue) lining the wall. On the right, three cards show the real examples: pleura around each lung, pericardium around the heart, and peritoneum around the abdominal organs.",
+ scene:"serous",id:"serous",title:"Serous membranes",
  body:`<p>Organs in the ventral cavity move: the heart beats, the lungs fill, the gut churns. To stop them from rubbing, each organ is wrapped in a <b>serous membrane</b>, a thin sheet with two layers:</p>
  <ul><li>The <b>parietal layer</b> lines the wall of the cavity.</li>
  <li>The <b>visceral layer</b> covers the organ itself.</li></ul>
@@ -455,7 +481,8 @@ const STEPS=[
  legend:[["visceral","Visceral layer","l"],["parietal","Parietal layer","l"],["fluid","Serous fluid","s"]]},
 
 /* ---------- Part 4 ---------- */
-{act:4,scene:"setpt",id:"setpt",title:"Homeostasis: set point and normal range",
+{act:4,desc:"A line graph shows body temperature over time, with a pale green band for the normal range and a dashed line at the set point of 37 degrees Celsius. The line is green while it stays in the band and turns orange when it leaves it. Events marked on the time axis, such as exercise and cold wind, push the line above or below the band, and a label says too high: the body starts cooling itself, or too low: the body starts warming itself, before the line returns. A thermometer on the right shows the current reading, such as 37.6 degrees.",
+ scene:"setpt",id:"setpt",title:"Homeostasis: set point and normal range",
  body:`<p><b>Homeostasis</b> means keeping the inside of the body steady even when the outside changes.</p>
  <p>Each controlled value has a <b>set point</b>, the ideal value. For body temperature it is about <b>37 °C</b>. The value is never perfectly still. It drifts a little above and below the set point, inside a narrow <b>normal range</b>.</p>
  <p>Exercise, weather, and meals push values away. The body notices and pushes them back. Most of the time this happens without you thinking about it.</p>`,
@@ -469,7 +496,8 @@ const STEPS=[
  caption:"Body temperature wobbles around the 37 °C set point. Exercise or cold air pushes it out, and the body brings it back.",
  legend:[["act4","Body temperature","l"],["good","Normal range","s"],["ink-soft","Set point","dl"]]},
 
-{act:4,scene:"loop",id:"loop",title:"The parts of a negative feedback loop",
+{act:4,desc:"Five boxes sit around a grey circle: stimulus at the top, sensor on the right, control center at the bottom and effector on the left, with arrows going clockwise. A glowing teal token travels around the circle, and each box turns solid teal as the token reaches it. In the centre a small gauge shows the value: an orange mark above the set point labelled too high, which slides back to green, labelled in range. A list on the right highlights each matching step for body temperature, and a banner says the response opposes the stimulus, which is negative feedback.",
+ scene:"loop",id:"loop",title:"The parts of a negative feedback loop",
  body:`<p>Most homeostasis uses <b>negative feedback</b>: the body's response pushes the value back the <b>opposite</b> way from the change. A negative feedback loop has these parts:</p>
  <ol><li><b>Stimulus</b>: a change that pushes a value away from its set point.</li>
  <li><b>Sensor</b> (receptor): detects the change.</li>
@@ -486,7 +514,8 @@ const STEPS=[
  caption:"A token travels the loop: stimulus, sensor, control center, effector, response. The value returns to its set point.",
  legend:[["act4","Signal moving around the loop","c"],["warn","Value away from set point","s"],["good","Value back in range","s"]]},
 
-{act:4,scene:"hot",id:"hot",title:"Too hot: how the body cools down",
+{act:4,desc:"A body stands next to a bright sun, labelled hot day and exercise, with a yellow dot marking the hypothalamus in the brain. A cut-through of skin on the right shows a red skin blood vessel and a blue sweat gland. A row of five boxes lights up in teal one at a time: stimulus, sensor, control center, effectors, response. When the effectors light up, the vessel widens, the body turns pinker, blue sweat drops appear and evaporate, and wavy lines show heat leaving the skin; the red line on the temperature graph rises above 37 degrees, then falls back.",
+ scene:"hot",id:"hot",title:"Too hot: how the body cools down",
  body:`<p>Exercise on a hot day raises body temperature. This is the <b>stimulus</b>.</p>
  <ul><li><b>Sensors</b>: temperature receptors in the skin and brain detect the rise.</li>
  <li><b>Control center</b>: the <b>hypothalamus</b> in the brain compares it to the 37 °C set point.</li>
@@ -502,7 +531,8 @@ const STEPS=[
  caption:"Temperature rises. Skin sensors signal the hypothalamus. Sweat glands and widened skin vessels cool the body back toward 37 °C.",
  legend:[["hot","Rising temperature","s"],["nerve","Nerve signal","l"],["sweat","Sweat","c"],["vessel","Skin blood vessel","l"]]},
 
-{act:4,scene:"cold",id:"cold",title:"Too cold: how the body warms up",
+{act:4,desc:"A body stands in cold wind with blue dots blowing past, and a yellow dot marks the hypothalamus. A cut-through of skin on the right shows a red skin blood vessel and skeletal muscle beneath it, with wavy lines showing heat escaping. As the five boxes light up in teal, the vessel narrows to a thin line, the body turns paler, the muscle shivers and a label says shivering, and fewer heat lines escape. The blue line on the temperature graph drops below 37 degrees, then climbs back.",
+ scene:"cold",id:"cold",title:"Too cold: how the body warms up",
  body:`<p>Standing in cold wind lowers body temperature. Same sensors, same control center, different effectors:</p>
  <ul><li><b>Blood vessels in the skin narrow</b> (<b>vasoconstriction</b>). Less warm blood reaches the surface, so less heat escapes. Skin looks pale.</li>
  <li><b>Skeletal muscles shiver</b>. Shivering is fast, small contractions. Muscle contraction makes heat.</li></ul>
@@ -517,7 +547,8 @@ const STEPS=[
  caption:"Temperature falls. The hypothalamus narrows skin vessels and makes muscles shiver until temperature climbs back to 37 °C.",
  legend:[["cold","Falling temperature","s"],["nerve","Nerve signal","l"],["vessel","Skin blood vessel (narrowed)","l"],["act4","Shivering muscle","s"]]},
 
-{act:4,scene:"gluc",id:"gluc",title:"Blood glucose: another negative feedback loop",
+{act:4,desc:"A graph at the top shows blood glucose in milligrams per decilitre, with a green band for the normal range of 70 to 110. Below, a red blood vessel runs across the picture carrying orange glucose dots and red blood cells. Under it sit the intestine, the pancreas, the dark red liver and a round body cell. After a meal, orange glucose dots rise from the intestine and the orange line climbs above range; the pancreas sends green insulin dots and the glucose enters the cells. Later the line drops, and the liver releases glucose (purple label for glucagon) until the reading is back in range.",
+ scene:"gluc",id:"gluc",title:"Blood glucose: another negative feedback loop",
  body:`<p>Your cells need a steady supply of <b>glucose</b>, a sugar. Normal blood glucose is about <b>70 to 110 mg/dL</b>.</p>
  <ul><li><b>After a meal</b>, blood glucose rises. Cells in the <b>pancreas</b> detect it and release the hormone <b>insulin</b>. Insulin helps body cells take glucose in, and the liver stores extra glucose. Blood glucose falls.</li>
  <li><b>Between meals</b>, blood glucose falls. The pancreas releases <b>glucagon</b>. Glucagon tells the liver to release stored glucose. Blood glucose rises.</li></ul>
@@ -532,7 +563,8 @@ const STEPS=[
  caption:"After a meal, insulin moves glucose into cells. Later, glucagon tells the liver to release glucose. Blood glucose stays in range.",
  legend:[["glucose","Glucose","d"],["insulin","Insulin","c"],["glucagon","Glucagon","c"],["good","Normal range","s"]]},
 
-{act:4,scene:"birth",id:"birth",title:"Positive feedback: childbirth",
+{act:4,desc:"On the left, a uterus is drawn as a thick red wall around light blue fluid, with the baby's head pressing down on the cervix at the bottom. A dotted yellow line runs from the cervix up to a pink brain, labelled stretch receptors signal the brain, and purple oxytocin dots travel back down from the pituitary. On the right, teal bars labelled contraction strength appear one per round, each taller than the last. After five rounds the baby moves through the cervix, a banner says the baby is born, stretch stops, and the label says loop ends.",
+ scene:"birth",id:"birth",title:"Positive feedback: childbirth",
  body:`<p>In <b>positive feedback</b>, the response makes the change <b>bigger</b>, not smaller. It is used when the body needs to finish a job quickly.</p>
  <ol><li>The baby's head presses on the <b>cervix</b>, the lower opening of the uterus, and stretches it.</li>
  <li><b>Stretch receptors</b> send nerve signals to the brain.</li>
@@ -549,7 +581,8 @@ const STEPS=[
  caption:"Stretch → oxytocin → stronger contractions → more stretch. Each round is stronger, until the baby is born and the loop stops.",
  legend:[["oxy","Oxytocin","c"],["nerve","Nerve signal","l"],["act4","Contraction strength","r"]]},
 
-{act:4,scene:"clot",id:"clot",title:"Positive feedback: blood clotting, and why it must end",
+{act:4,desc:"A wide red blood vessel runs across the picture, with red blood cells drifting along it. There is a tear in the lower wall and pale red blood leaks out. Purple platelets arrive and stick at the tear, and the counter in the corner climbs from 0 to 4 to 32. A bar chart below grows in purple for each round, doubling: 1, 2, 4, 8, 16, 32. Yellow fibrin threads then seal the tear, and a green banner says tear sealed, signal stops, loop ends.",
+ scene:"clot",id:"clot",title:"Positive feedback: blood clotting, and why it must end",
  body:`<p>Blood clotting is another positive feedback loop. When a blood vessel is torn, <b>platelets</b> stick to the damaged spot. They release chemicals that call in <b>more</b> platelets, which release more chemicals, and so on. Fast teamwork plugs the hole, and a mesh of protein threads (<b>fibrin</b>) holds the clot together.</p>
  <p>Once the hole is sealed, the signal stops and the loop ends.</p>
  <p>Positive feedback is powerful, so it must have an end point. If clotting kept spreading inside healthy vessels, it could block blood flow. That is why positive feedback is used only for short jobs with a clear finish line.</p>`,
@@ -563,7 +596,8 @@ const STEPS=[
  caption:"Platelets call in more platelets: 1, 2, 4, 8… Fibrin seals the tear, and the loop ends.",
  legend:[["platelet","Platelet","c"],["rbc","Red blood cell","c"],["fibrin","Fibrin threads","l"],["glow","Chemical signal","c"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole chapter.",
+{act:0,desc:"Four panels replay the chapter, each one taking a coloured border in turn. Organization and life (purple) has eight pill labels from atom to organism, and one at a time fills purple. Anatomical language (orange) shows front and side views of a body with orange arrows for superior and anterior. Planes and cavities (red) shows a body with a plane sliding down it and matching cross sections beside it, and Homeostasis (teal) shows a dot travelling around a loop next to a wavy temperature line returning to its set point.",
+ scene:"recap",id:"recap",title:"You made it. Here is the whole chapter.",
  body:`<ol class="recap">
  <li class="h">Part 1 · Organization and life</li>
  <li>Atom → molecule → organelle → cell → tissue → organ → organ system → organism.</li><li>Functions of life: organization, metabolism, responsiveness, movement, growth and development, reproduction.</li><li>Needs: oxygen, nutrients, narrow temperature range, narrow air pressure range.</li>
@@ -607,7 +641,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip)">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -615,6 +649,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

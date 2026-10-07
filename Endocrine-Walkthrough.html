@@ -11,7 +11,7 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --warn:#B4632A;--warn-ink:#985423;--act2-chip:#A26714;--act3-chip:#B45C48;--act4-chip:#2B8172;--act6-chip:#3C79AD;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
   --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
   /* endocrine palette */
   --ecf:#EEF2F4;--skin:#F1D9C4;--skin-edge:#B98E6E;--skin-dark:#C99A72;--bodyin:#F7E8DA;
@@ -35,7 +35,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act6-chip:var(--act6);--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
   --ecf:#141E24;--skin:#4A3A2E;--skin-edge:#B48D6C;--skin-dark:#6B4F3A;--bodyin:#33291F;
   --blood:#E0675E;--blood-wash:#3B1E1B;--vessel:#9C4B45;--brain:#4A3533;--brain-edge:#B98A83;
@@ -54,7 +54,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act6-chip:var(--act6);--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
   --ecf:#141E24;--skin:#4A3A2E;--skin-edge:#B48D6C;--skin-dark:#6B4F3A;--bodyin:#33291F;
   --blood:#E0675E;--blood-wash:#3B1E1B;--vessel:#9C4B45;--brain:#4A3533;--brain-edge:#B98A83;
@@ -131,9 +131,13 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 .opt:hover{border-color:var(--accent)}
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.right::before{content:"\2713  ";font-weight:700;color:var(--good)}
+.opt.wrong::before{content:"\2717  ";font-weight:700}
 .fb{margin:6px 0 0;font-size:14.5px}
 .fb.ok{color:var(--good)}
-.fb.no{color:var(--warn)}
+.fb.no{color:var(--warn-ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .dot.cur{color:#0B1A20}}
+:root[data-theme=dark] .dot.cur{color:#0B1A20}
 .calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
 .nav{display:flex;align-items:center;gap:12px;margin-top:14px}
 .navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
@@ -151,6 +155,18 @@ footer a{color:var(--ink-soft)}
 .legend i.tri{clip-path:polygon(50% 0,100% 100%,0 100%);border:0;border-radius:0;width:12px;height:11px}
 .legend i.hex{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border:0;border-radius:0;width:13px;height:12px}
 .body ul{margin:0 0 10px;padding-left:22px}
+</style>
+<script src="site-kit.js"></script>
+<script>
+/* a11y: canvas words are drawn at 12 logical px or larger (labels of 1-2 characters keep their size) */
+(function(){try{const P=CanvasRenderingContext2D.prototype;if(P.__gkMin)return;P.__gkMin=1;
+function big(c,t){const f=c.font,m=/(\d+(?:\.\d+)?)px/.exec(f);if(m&&+m[1]<12&&String(t).length>2){c.font=f.replace(m[0],"12px");return f}return null}
+["fillText","strokeText","measureText"].forEach(k=>{const o=P[k];P[k]=function(t){const f=big(this,t);try{return o.apply(this,arguments)}finally{if(f)this.font=f}}})}catch(e){}})();
+</script>
+<style id="gk-a11y-fix">
+/* Narrow screens: the site kit hides the tool-button labels with display:none, which leaves the buttons
+   without a name. Keep the labels for screen readers but hide them visually. */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -209,7 +225,8 @@ const ACTS={1:{name:"Part 1 · Chemical messages",col:"act1"},
             4:{name:"Part 4 · Blood sugar",col:"act4"},
             5:{name:"Part 5 · More glands",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: glands that talk through the blood",
+{desc:"A tan outline of a body faces us, with the endocrine glands drawn inside and labelled from head to pelvis: hypothalamus, pituitary and pineal in the head, thyroid and parathyroids in the neck, thymus, heart, stomach and small intestine, pancreas, adrenal glands, kidneys and gonads. One gland at a time glows and its label is outlined, while small orange and purple hormone dots drift out of it into the body. A card on the right reads \"Gland 1 of 12\" and so on, with the gland's name and its main hormones, and a row of orange diamonds below shows the idea \"hormone, blood, target cells\".",
+ act:0,scene:"map",id:"map",title:"The big picture: glands that talk through the blood",
  body:`<p>The <b>endocrine system</b> is a set of glands and tissues that release <b>hormones</b>. A hormone is a chemical messenger. It is released into the <b>blood</b>, travels through the body, and changes how certain cells work.</p>
  <p>Watch the glands light up. Each one releases its hormones into the bloodstream:</p>
  <ul><li><b>Hypothalamus</b> and <b>pituitary gland</b>: the control center in the head.</li>
@@ -226,7 +243,8 @@ const STEPS=[
  caption:"Each gland lights up in turn and releases its hormones into the blood, which carries them around the body.",
  legend:[["gland","Endocrine gland","r"],["blood","Blood vessel","l"],["h3","Hormone in the blood"]]},
 
-{act:1,scene:"vs",id:"vs",title:"Endocrine vs nervous signaling",
+{desc:"The canvas has two strips. The top strip, \"Nervous system: wired, one target\", shows a nerve cell with a long axon; a glowing orange signal races along the axon to one cell at a synapse, while two nearby cells marked \"not wired\" get nothing, and a purple tag reads \"Starts in milliseconds, brief\". The bottom strip, \"Endocrine: through the blood\", shows a gland on the left releasing orange diamond hormones into a long pink blood vessel. The hormone flows past four cells: the two with green matching receptors glow and are labelled \"target cell: responding\", and the two with grey receptors ignore it, with a red tag reading \"Starts in seconds to hours, lasts longer\".",
+ act:1,scene:"vs",id:"vs",title:"Endocrine vs nervous signaling",
  body:`<p>Your body has two big communication systems. Both use chemicals, but they deliver them in very different ways.</p>
  <ul><li>The <b>nervous system</b> sends an electrical signal down an axon. At the end, a neurotransmitter crosses a tiny gap to <b>one specific cell</b>. The response starts in <b>milliseconds</b> and is over quickly.</li>
  <li>The <b>endocrine system</b> releases a hormone into the <b>blood</b>. The blood carries it everywhere. The response takes <b>seconds to hours or even days</b> to start, and it usually <b>lasts longer</b>.</li></ul>
@@ -241,7 +259,8 @@ const STEPS=[
  caption:"Top: a nerve signal reaches one cell in milliseconds. Bottom: a hormone rides the blood and only cells with matching receptors respond.",
  legend:[["glow","Nerve signal"],["h3","Hormone","d"],["rec","Matching receptor","r"],["blood","Blood vessel","l"]]},
 
-{act:1,scene:"classes",id:"classes",title:"Three chemical classes of hormones",
+{desc:"Three cards sit side by side. Amine (orange edge): a blue amino acid labelled tyrosine turns into an orange diamond, \"amine hormone\", above a list of epinephrine, norepinephrine, thyroid hormones and melatonin; Peptide or protein (blue edge): blue beads link into a chain (\"9 amino acids = ADH or oxytocin\") and a longer chain folds into a blob for insulin and growth hormone. Steroid (purple edge): purple linked rings of cholesterol are changed into steroids whose names cycle through cortisol, aldosterone, estrogen and testosterone. Below, a pink blood vessel strip shows orange diamonds and blue chains floating free, while purple steroids ride on red \"carrier\" proteins.",
+ act:1,scene:"classes",id:"classes",title:"Three chemical classes of hormones",
  body:`<p>Hormones come in three chemical families. The family decides how the hormone travels in the blood and how it talks to its target cell.</p>
  <ul><li><b>Amine hormones</b> are made from a single amino acid (tyrosine or tryptophan). Examples: <b>epinephrine</b>, <b>norepinephrine</b>, <b>thyroid hormones</b> (T3 and T4) and <b>melatonin</b>.</li>
  <li><b>Peptide and protein hormones</b> are chains of amino acids. Short chains are peptides, like <b>ADH</b> and <b>oxytocin</b>. Long chains are proteins, like <b>insulin</b> and <b>growth hormone</b>.</li>
@@ -257,7 +276,8 @@ const STEPS=[
  caption:"Amines come from one amino acid, peptides and proteins are chains of amino acids, and steroids are built from cholesterol rings.",
  legend:[["amine","Amine hormone","d"],["peptide","Peptide / protein hormone"],["steroid","Steroid hormone","hex"],["blood","Carrier protein in blood","r"]]},
 
-{act:1,scene:"lipid",id:"lipid",title:"Lipid-soluble hormones work inside the cell",
+{desc:"A pink capillary runs across the top, above a yellow dotted cell membrane; below is the inside of the cell with a green intracellular receptor, a brown ribosome on the right and a large purple nucleus containing a twisted DNA strand. A numbered list in the top right highlights each step as it happens. A purple steroid hormone leaves its red carrier in the capillary and slips through the membrane (1), clicks into the green receptor (2), and the pair moves into the nucleus and sits on the DNA (3). A red mRNA strand then grows from the DNA (4) and travels to the ribosome, which releases a cluster of green new proteins labelled \"new protein, cell response\" (5); a purple tag reads \"Slow to start (hours), long-lasting\".",
+ act:1,scene:"lipid",id:"lipid",title:"Lipid-soluble hormones work inside the cell",
  body:`<p>A <b>steroid</b> or <b>thyroid hormone</b> is lipid-soluble. Watch what happens when it reaches a target cell:</p>
  <ol><li>It lets go of its carrier protein and <b>diffuses straight through</b> the lipid bilayer of the cell membrane.</li>
  <li>Inside, it binds an <b>intracellular receptor</b> in the cytoplasm or nucleus.</li>
@@ -275,7 +295,8 @@ const STEPS=[
  caption:"Steroid leaves its carrier → crosses the membrane → binds its receptor → complex binds DNA → mRNA → new protein.",
  legend:[["steroid","Steroid hormone","hex"],["rec","Intracellular receptor","r"],["dna","DNA","l"],["mrna","mRNA","l"],["blood","Carrier protein","r"]]},
 
-{act:1,scene:"camp",id:"camp",title:"Water-soluble hormones use a second messenger",
+{desc:"A yellow dotted cell membrane runs across the upper part, with \"outside the cell\" above and \"inside the cell\" below. A blue hormone (first messenger) lands on a green receptor; an orange G protein next to it swaps its grey GDP tag for an orange GTP tag and slides over to a teal adenylyl cyclase. The cyclase sprays out many small magenta diamonds of cAMP, which reach five white kinase boxes; the kinases turn dark green and glow, and dotted lines link each to grey proteins that get small yellow phosphate tags. An \"Amplification\" counter in the top right climbs, from 1 hormone molecule to dozens of cAMP and proteins switched on, and then a label \"phosphodiesterase breaks down cAMP, signal ends\" appears as the diamonds fade and everything resets.",
+ act:1,scene:"camp",id:"camp",title:"Water-soluble hormones use a second messenger",
  body:`<p>A <b>peptide</b> or <b>protein hormone</b> (and epinephrine) is water-soluble. It can't cross the lipid membrane, so it binds a <b>receptor on the cell surface</b>. The hormone is the <b>first messenger</b>. Inside, a chain of events carries the message on:</p>
  <ol><li>The hormone binds the membrane receptor.</li>
  <li>The receptor activates a <b>G protein</b>, which swaps GDP for <b>GTP</b> and slides over to an enzyme.</li>
@@ -292,7 +313,8 @@ const STEPS=[
  caption:"Hormone binds → G protein (GTP) → adenylyl cyclase makes cAMP → kinases activate many proteins. The counter shows the amplification.",
  legend:[["peptide","Hormone (first messenger)"],["rec","Membrane receptor","r"],["gprot","G protein","r"],["ac","Adenylyl cyclase","r"],["camp","cAMP (second messenger)","d"],["phos","Phosphate added"]]},
 
-{act:2,scene:"neg",id:"neg",title:"Negative feedback keeps hormone levels in range",
+{desc:"At the top, a brown gland sends orange diamond hormones through a pink vessel to tan target cells, and a tall level bar on the right rises and falls past a dashed \"set point\" line. When the level is low a green label reads \"Low level: gland releases more\" and hormone flows; when it is high a dashed red arrow curves back from the bar to the gland, labelled \"High level inhibits the gland (minus)\", and the flow stops. A row of four boxes (Level falls, Gland releases hormone, Level rises, Gland inhibited) outlines each stage in orange as it happens. Below, a graph \"Blood level over time\" draws a blue wave that rises and falls but stays inside a shaded green \"normal range\" band around the set point.",
+ act:2,scene:"neg",id:"neg",title:"Negative feedback keeps hormone levels in range",
  body:`<p>Hormone levels have to stay within a healthy range. Most hormones are controlled by <b>negative feedback</b>: the effect of a hormone <b>turns down</b> its own release.</p>
  <ol><li>A level in the blood drops below normal.</li>
  <li>The gland senses this and releases more hormone.</li>
@@ -310,7 +332,8 @@ const STEPS=[
  caption:"Level drops → gland releases hormone → level rises → high level inhibits the gland. The level stays near the set point.",
  legend:[["h3","Hormone","d"],["inhib","Inhibits (−)","dl"],["stim","Stimulates (+)","l"],["accent","Blood level","l"]]},
 
-{act:2,scene:"stim",id:"stim",title:"Three stimuli that trigger hormone release",
+{desc:"Three cards sit side by side and each one is outlined in orange when it is active. 1 Humoral: yellow glucose dots crowd a pink blood vessel, \"glucose rises after a meal\", and the pancreas below releases blue insulin dots (\"insulin released\"). 2 Hormonal: purple TSH squares arrive in a vessel from the pituitary and drop onto the butterfly-shaped thyroid, which sends out orange T3 and T4 diamonds. 3 Neural: a sympathetic neuron reaches down to a purple adrenal medulla, which darkens and releases orange epinephrine diamonds.",
+ act:2,scene:"stim",id:"stim",title:"Three stimuli that trigger hormone release",
  body:`<p>What tells a gland to release its hormone? There are three kinds of triggers. Watch each one play out:</p>
  <ol><li><b>Humoral stimulus</b>: a change in the level of something in the blood that is <b>not a hormone</b>, like glucose or calcium. Example: blood glucose rises, so the pancreas releases <b>insulin</b>.</li>
  <li><b>Hormonal stimulus</b>: a hormone from one gland tells another gland to release its hormone. Example: <b>TSH</b> from the pituitary tells the thyroid to release <b>T3 and T4</b>.</li>
@@ -325,7 +348,8 @@ const STEPS=[
  caption:"① Humoral: glucose rises → insulin. ② Hormonal: TSH arrives → T3/T4. ③ Neural: a sympathetic neuron fires → epinephrine.",
  legend:[["glu","Glucose","hex"],["ins","Insulin"],["h2","TSH","s"],["h3","T3 / T4","d"],["amine","Epinephrine","d"],["glow","Nerve signal"]]},
 
-{act:2,scene:"post",id:"post",title:"Posterior pituitary: stores hormones made in the brain",
+{desc:"The lower brain is drawn in pink with the hypothalamus at the top, a stalk (infundibulum) leading down to two round lobes: a faded anterior pituitary on the left and a posterior pituitary on the right, with a pink blood vessel passing through it. Two nerve cells in the hypothalamus have long axons running down the stalk; blue ADH dots and purple oxytocin dots slide down the axons and pile up at the ends, labelled \"stored in axon terminals\". A numbered list in the top right highlights each step. When the nerve signal arrives, the dots pour into the blood vessel and travel out: blue ADH rises to a red kidney (\"ADH, kidneys keep water\") and purple oxytocin goes to a uterus and breast drawing (\"Oxytocin, uterus, breasts\"), each glowing as the hormone arrives.",
+ act:2,scene:"post",id:"post",title:"Posterior pituitary: stores hormones made in the brain",
  body:`<p>The <b>hypothalamus</b> sits at the base of the brain. Hanging below it on a stalk (the <b>infundibulum</b>) is the <b>pituitary gland</b>. The pituitary has two parts that work very differently.</p>
  <p>The <b>posterior pituitary</b> is really an extension of the brain. It does <b>not make</b> its own hormones. Instead:</p>
  <ol><li>Neurons in the hypothalamus make <b>ADH</b> (antidiuretic hormone) and <b>oxytocin</b>.</li>
@@ -343,7 +367,8 @@ const STEPS=[
  caption:"Hypothalamic neurons make ADH and oxytocin → carried down axons → stored in the posterior pituitary → released into the blood.",
  legend:[["peptide","ADH"],["act5","Oxytocin"],["glow","Nerve signal"],["blood","Capillary","l"]]},
 
-{act:2,scene:"ant",id:"ant",title:"Anterior pituitary: steered by releasing hormones",
+{desc:"The pink hypothalamus is at the top, with three nerve cells whose axons end on a tangle of red capillaries labelled \"first capillary bed\". Green TRH dots (\"TRH, releasing hormone\") travel down the axons into these capillaries, flow down the portal veins along the stalk, and reach a second capillary bed inside the brown anterior pituitary on the left; the posterior pituitary on the right stays faded. Pituitary cells there turn purple and glow, then release purple TSH squares into a vessel leaving to the lower left, labelled \"TSH to the thyroid\". A numbered list in the corner highlights each of the four steps, and a final pass shows red GHIH dots taking the same path, with the note \"Inhibiting hormones work the same way, but tell pituitary cells to hold back\".",
+ act:2,scene:"ant",id:"ant",title:"Anterior pituitary: steered by releasing hormones",
  body:`<p>The <b>anterior pituitary</b> is real glandular tissue. It <b>makes its own hormones</b>, but the hypothalamus tells it when.</p>
  <ol><li>Neurons in the hypothalamus release small amounts of <b>releasing hormones</b> or <b>inhibiting hormones</b> into a first bed of capillaries.</li>
  <li>Tiny <b>portal veins</b> carry this blood straight down the stalk to a second bed of capillaries in the anterior pituitary. This special shortcut is the <b>hypophyseal portal system</b>.</li>
@@ -360,7 +385,8 @@ const STEPS=[
  caption:"Hypothalamic neurons release TRH → first capillary bed → portal veins → anterior pituitary → TSH released into the blood.",
  legend:[["h1","Releasing hormone (TRH)"],["h2","Pituitary hormone (TSH)","s"],["blood","Portal system","l"],["inhib","Inhibiting hormones can block","dl"]]},
 
-{act:2,scene:"targets",id:"targets",title:"Six anterior pituitary hormones and their targets",
+{desc:"The hypothalamus sits at the top centre with a stalk down to the anterior pituitary. Six targets are placed around it: bone, muscle and liver on the upper left (GH), the thyroid on the upper right (TSH), the adrenal gland on the right (ACTH), the ovary and testis at the lower right (FSH and LH) and the mammary gland at the lower left (prolactin). One hormone at a time travels as a line of purple squares along a dashed path from the pituitary to its target, which is then outlined, and a purple label names the hormone and effect, such as \"ACTH, adrenal cortex, cortisol\". Below the pituitary, the letters F L A T P i G spell a memory trick, and the letter for the current hormone turns purple.",
+ act:2,scene:"targets",id:"targets",title:"Six anterior pituitary hormones and their targets",
  body:`<p>The anterior pituitary releases six major hormones. Several of them are <b>tropic hormones</b>: they tell <b>another endocrine gland</b> to release its hormone.</p>
  <ul><li><b>GH</b> (growth hormone): growth and repair of <b>bones, muscles</b> and other tissues. It also tells the <b>liver</b> to make growth factors and raises blood glucose.</li>
  <li><b>TSH</b> (thyroid-stimulating hormone): tells the <b>thyroid</b> to release T3 and T4.</li>
@@ -378,7 +404,8 @@ const STEPS=[
  caption:"The anterior pituitary sends six hormones out. Each target lights up when its hormone arrives.",
  legend:[["h2","Anterior pituitary hormone","s"],["gland","Target","r"]]},
 
-{act:3,scene:"follicle",id:"follicle",title:"The thyroid gland builds T3 and T4 from iodine",
+{desc:"A close-up of thyroid tissue shows a round follicle: a ring of small follicular cells around a yellow pool of colloid with wavy orange thyroglobulin strands, surrounded by other yellow follicles and pink blood vessels. A small inset at the top left shows the butterfly-shaped thyroid in the neck, and an \"Iodine count\" key shows T4 as an orange diamond with four blue dots and T3 with three blue dots. Blue iodide dots enter from the blood vessel at the bottom and stick onto the thyroglobulin strands. Then purple TSH squares arrive around the follicle (\"TSH binds the cells\"), and orange T3 and T4 diamonds stream out into the blood, labelled \"T3 and T4 released into the blood\"; a small C cell on the right is marked as making calcitonin.",
+ act:3,scene:"follicle",id:"follicle",title:"The thyroid gland builds T3 and T4 from iodine",
  body:`<p>The <b>thyroid gland</b> is a butterfly-shaped gland in the front of the neck. Zoom in and it is full of hollow balls called <b>follicles</b>. Each follicle is a ring of <b>follicular cells</b> around a sticky protein gel called <b>colloid</b>.</p>
  <ol><li>Follicular cells trap <b>iodide</b> from the blood. Iodine comes from your diet (iodized salt, seafood).</li>
  <li>In the colloid, iodine is attached to a large protein called <b>thyroglobulin</b>.</li>
@@ -395,7 +422,8 @@ const STEPS=[
  caption:"Iodide enters follicular cells → attached to thyroglobulin in colloid → TSH arrives → T3 and T4 released into blood.",
  legend:[["h3","T3 / T4","d"],["peptide","Iodide (I⁻)"],["h2","TSH","s"],["colloid","Colloid","r"]]},
 
-{act:3,scene:"thyaxis",id:"thyaxis",title:"The thyroid axis: TRH → TSH → T3/T4",
+{desc:"On the left a column shows the axis: a pink hypothalamus at the top releases green TRH dots down to the anterior pituitary, which releases purple TSH squares down to the butterfly-shaped thyroid, which sends orange T3 and T4 diamonds along a long pink vessel to the right. A blue \"cold!\" tag appears beside a thermometer reading 35.6 degrees C. As T3 and T4 reach four body cells, wavy heat lines rise from them and green ATP tags appear, \"metabolic rate UP\", and the thermometer climbs to 37.0 degrees C. Then dashed red lines curve back from the vessel to the hypothalamus and pituitary, labelled \"T3/T4 inhibit TRH and TSH (minus)\", and three level bars at the lower left (green TRH, purple TSH, orange T3/T4) settle back toward normal.",
+ act:3,scene:"thyaxis",id:"thyaxis",title:"The thyroid axis: TRH → TSH → T3/T4",
  body:`<p>Thyroid hormone release follows a three-step chain, an <b>axis</b>:</p>
  <ol><li>The <b>hypothalamus</b> releases <b>TRH</b>, for example when the body is cold or metabolic rate is low.</li>
  <li>TRH tells the <b>anterior pituitary</b> to release <b>TSH</b>.</li>
@@ -412,7 +440,8 @@ const STEPS=[
  caption:"Cold → TRH → TSH → T3/T4 → cells burn more fuel and make heat. Then T3/T4 feed back (−) to calm the hypothalamus and pituitary.",
  legend:[["h1","TRH"],["h2","TSH","s"],["h3","T3 / T4","d"],["inhib","Negative feedback","dl"],["glow","Heat"]]},
 
-{act:3,scene:"cortex",id:"cortex",title:"The adrenal glands: a cortex with three zones",
+{desc:"On the left is a small orange triangle-shaped adrenal gland sitting on top of a red kidney; dashed lines lead to an enlarged slice on the right. The slice is stacked in layers from top to bottom: a brown capsule, a yellow layer tagged SALT, an orange layer tagged SUGAR, a pinkish layer tagged SEX, and a large purple medulla with round cells at the bottom. Each cortex layer brightens in turn and releases a cluster of purple hormone dots, and the text beside it lights up: Aldosterone, zona glomerulosa, kidneys keep Na+ and water; Cortisol, zona fasciculata, raises glucose and calms inflammation; Androgens, zona reticularis, small amounts of sex hormones. The medulla row lists epinephrine and norepinephrine for fight or flight, and a red tag reads \"Outside in: salt, sugar, sex. Then the medulla.\"",
+ act:3,scene:"cortex",id:"cortex",title:"The adrenal glands: a cortex with three zones",
  body:`<p>One <b>adrenal gland</b> sits on top of each kidney. Each one is really two glands in one: an outer <b>adrenal cortex</b> and an inner <b>adrenal medulla</b>.</p>
  <p>The cortex has three layers, and each makes a different group of steroid hormones:</p>
  <ol><li><b>Zona glomerulosa</b> (outer): <b>mineralocorticoids</b>, mainly <b>aldosterone</b>. It tells the kidneys to keep <b>Na⁺</b> (and water) and get rid of K⁺, which raises blood volume and blood pressure.</li>
@@ -429,7 +458,8 @@ const STEPS=[
  caption:"Each layer releases its hormone in turn: aldosterone (salt), cortisol (sugar), androgens (sex). The medulla is in the middle.",
  legend:[["zg","Zona glomerulosa","r"],["zf","Zona fasciculata","r"],["zr","Zona reticularis","r"],["med","Medulla","r"],["steroid","Steroid hormone","hex"]]},
 
-{act:3,scene:"medulla",id:"medulla",title:"The adrenal medulla: fight or flight in seconds",
+{desc:"A red tag reads \"A sudden scare...\" as a glowing signal runs from the spinal cord along a sympathetic neuron to the orange adrenal gland with its purple medulla. The medulla glows and releases orange diamonds of epinephrine and norepinephrine into branching pink vessels that lead to a red heart, the lungs and airways, and a brown liver, and the tag changes to \"Alarm reaction (seconds)\". The heart rate text climbs from 72 to about 130 bpm, the airways turn light blue and widen (\"airways widen\"), and yellow glucose dots rise out of the liver (\"liver releases glucose\"). A small graph in the corner, \"Epinephrine\", shows a sharp rise, a plateau and a fall over minutes, with a moving line marking the current moment.",
+ act:3,scene:"medulla",id:"medulla",title:"The adrenal medulla: fight or flight in seconds",
  body:`<p>The <b>adrenal medulla</b> works like part of the sympathetic nervous system. Its cells are stimulated directly by <b>sympathetic neurons</b> (a neural stimulus).</p>
  <p>When you are suddenly stressed or scared, the medulla releases <b>epinephrine</b> (adrenaline) and <b>norepinephrine</b> into the blood within seconds. This is the <b>alarm reaction</b>, or <b>fight-or-flight</b> response:</p>
  <ul><li><b>Heart rate</b> and <b>blood pressure</b> go up.</li>
@@ -447,7 +477,8 @@ const STEPS=[
  caption:"A sympathetic nerve fires → the medulla releases epinephrine → heart speeds up, airways widen, the liver releases glucose. All within seconds.",
  legend:[["glow","Nerve signal"],["amine","Epinephrine / norepinephrine","d"],["glu","Glucose","hex"],["blood","Blood vessel","l"]]},
 
-{act:3,scene:"stress",id:"stress",title:"Long-term stress: cortisol takes over",
+{desc:"In the upper left a pink hypothalamus sends green CRH dots to the anterior pituitary, which sends purple ACTH squares to the adrenal cortex, which releases purple cortisol pairs into a long pink vessel. The cortisol reaches a brown liver (\"liver: new glucose, gluconeogenesis\") which gives off glucose dots, and spiky blue immune cells on the right become smooth round dots, labelled \"immune cells quieted\"; a dashed red line marks \"cortisol inhibits CRH, ACTH\". Below, a graph runs through three shaded stages labelled Alarm, Resistance and Exhaustion. An orange epinephrine line jumps up in seconds and falls back, while a purple cortisol line climbs slowly, stays high through the Resistance stage, and falls in Exhaustion.",
+ act:3,scene:"stress",id:"stress",title:"Long-term stress: cortisol takes over",
  body:`<p>If stress goes on for hours or days, a slower system takes over. This is the <b>stage of resistance</b>:</p>
  <ol><li>The hypothalamus releases <b>CRH</b> (corticotropin-releasing hormone).</li>
  <li>CRH tells the anterior pituitary to release <b>ACTH</b>.</li>
@@ -464,7 +495,8 @@ const STEPS=[
  caption:"Fast: epinephrine spikes in seconds and fades. Slow: CRH → ACTH → cortisol builds over hours, raising glucose and calming immune cells.",
  legend:[["amine","Epinephrine","l"],["steroid","Cortisol","l"],["h1","CRH"],["h2","ACTH","s"],["glu","Glucose","hex"],["immune","Immune cell"]]},
 
-{act:4,scene:"islets",id:"islets",title:"The pancreas and its islets",
+{desc:"A small inset shows the pancreas next to the duodenum, with a circle marking one islet; the main picture is the enlarged islet, a large tan circle ringed by clusters of exocrine (acinar) cells, with a pink blood vessel running through it. Inside are small circles with Greek letters: blue beta cells (insulin), red alpha cells (glucagon) and green delta cells (somatostatin). A glucose gauge on the right swings up and down past a green normal band from 70 to 110 mg/dL. When it reads HIGH (an orange bar, for example 150 mg/dL) the beta cells glow and release blue insulin dots into the vessel, labelled \"beta cells: insulin\"; when it reads LOW (for example 43 mg/dL) the alpha cells glow and release red triangles of glucagon; and at NORMAL the green bar label reads \"both quiet\".",
+ act:4,scene:"islets",id:"islets",title:"The pancreas and its islets",
  body:`<p>The <b>pancreas</b> lies behind the stomach. Most of it is <b>exocrine</b>: it makes digestive enzymes that go through a duct into the small intestine. Scattered through it are about a million tiny clusters of endocrine cells called the <b>pancreatic islets</b> (islets of Langerhans).</p>
  <p>Islets contain:</p>
  <ul><li><b>Beta cells</b>, which release <b>insulin</b> when blood glucose is <b>high</b>.</li>
@@ -481,7 +513,8 @@ const STEPS=[
  caption:"Glucose gauge swings high → beta cells release insulin. Swings low → alpha cells release glucagon.",
  legend:[["ins","Insulin (beta cells)"],["gcg","Glucagon (alpha cells)","tri"],["glu","Glucose","hex"],["gland","Exocrine (acinar) cells","r"]]},
 
-{act:4,scene:"insulin",id:"insulin",title:"Insulin lowers blood glucose",
+{desc:"A pink blood vessel crosses the top, full of yellow glucose dots, with a blue beta cell at the top left adding blue insulin dots. Below are two cells: a striped skeletal muscle or fat cell on the left, and a liver cell on the right. Insulin binds a green receptor on the muscle cell (\"insulin binds receptor\"), and green GLUT4 channels that were waiting inside as round vesicles move up into the membrane (\"GLUT4 doors move to the membrane\"), letting yellow glucose dots pour in. Inside the liver cell, glucose links into a growing branching cluster (\"glucose to glycogen, stored\"), and the gauge on the right falls from 165 mg/dL (orange, HIGH) to about 92 mg/dL (green, NORMAL).",
+ act:4,scene:"insulin",id:"insulin",title:"Insulin lowers blood glucose",
  body:`<p>After a meal, glucose from your food floods into the blood. Beta cells release <b>insulin</b>, and insulin brings the level back down in two main ways:</p>
  <ol><li><b>Uptake into cells.</b> Insulin binds receptors on <b>skeletal muscle</b> and <b>fat cells</b>. This moves glucose transporters (<b>GLUT4</b>) up to the cell membrane, like opening extra doors, so glucose can enter.</li>
  <li><b>Storage.</b> Insulin tells the <b>liver</b> and muscles to link glucose together into <b>glycogen</b> for later (glycogenesis). It also helps fat cells store fat.</li></ol>
@@ -496,7 +529,8 @@ const STEPS=[
  caption:"Insulin binds → GLUT4 doors move to the membrane → glucose enters muscle and fat → the liver stores glucose as glycogen. The meter falls.",
  legend:[["ins","Insulin"],["glu","Glucose","hex"],["rec","Insulin receptor","r"],["ac","GLUT4 transporter","r"],["gly","Glycogen","l"]]},
 
-{act:4,scene:"glucagon",id:"glucagon",title:"Glucagon raises blood glucose",
+{desc:"A pink blood vessel crosses the top with a red alpha cell at the top left releasing red triangles of glucagon; there are only a few yellow glucose dots in the blood, and the gauge on the right reads 58 mg/dL with a blue LOW bar. Glucagon binds a green receptor on a large red-brown liver cell below (\"glucagon binds\"). Inside the liver cell, a branching cluster of glycogen breaks apart into single yellow glucose dots (\"1 glycogen to glucose, glycogenolysis\"), and grey amino acid dots turn into new glucose (\"2 amino acids to new glucose, gluconeogenesis\"). The glucose dots float up out of the cell into the blood (\"3 glucose released into the blood\") and the gauge rises to about 92 mg/dL, turning green and reading NORMAL.",
+ act:4,scene:"glucagon",id:"glucagon",title:"Glucagon raises blood glucose",
  body:`<p>Between meals, or during exercise, blood glucose starts to fall. Alpha cells release <b>glucagon</b>. Glucagon mainly targets the <b>liver</b>:</p>
  <ol><li><b>Glycogenolysis</b>: the liver breaks stored glycogen back into glucose.</li>
  <li><b>Gluconeogenesis</b>: the liver builds <b>new glucose</b> from amino acids and glycerol (from fat).</li>
@@ -513,7 +547,8 @@ const STEPS=[
  caption:"Glucagon reaches the liver → glycogen breaks into glucose and new glucose is built → glucose leaves into the blood. The meter rises.",
  legend:[["gcg","Glucagon","tri"],["glu","Glucose","hex"],["gly","Glycogen","l"],["prot","Amino acids (for new glucose)"]]},
 
-{act:4,scene:"diabetes",id:"diabetes",title:"Diabetes mellitus: type 1 and type 2",
+{desc:"Three panels sit side by side, each with blood vessel above a muscle cell and a blood glucose reading and bar below. Healthy: three blue beta cells add blue insulin to the vessel, green insulin receptors open the GLUT4 doors, glucose dots flow into the cell, and the reading stays in the normal range. Type 1: the beta cells are crossed out with red X marks and spiky blue immune cells labelled \"immune attack\" sit beside them; no insulin is made, the doors stay closed, and glucose climbs past 200 mg/dL until the bar turns red with the label \"glucose spills into urine\". Type 2: insulin is present, but the receptors are grey and the doors open only a little (\"doors barely open\"), so glucose also rises into the red range.",
+ act:4,scene:"diabetes",id:"diabetes",title:"Diabetes mellitus: type 1 and type 2",
  body:`<p><b>Diabetes mellitus</b> means blood glucose stays too high (<b>hyperglycemia</b>) because insulin isn't doing its job. There are two main types:</p>
  <ul><li><b>Type 1</b>: the immune system destroys the <b>beta cells</b>, so the pancreas makes <b>little or no insulin</b>. It often starts in childhood. People with type 1 need insulin injections or a pump.</li>
  <li><b>Type 2</b>: insulin is still made, but target cells respond poorly to it. This is <b>insulin resistance</b>. It is by far the more common type and is linked to excess body fat and inactivity. It can often be managed with exercise, diet and medicines, though some people also need insulin.</li></ul>
@@ -528,7 +563,8 @@ const STEPS=[
  caption:"Healthy: the insulin key opens GLUT4 doors. Type 1: no insulin keys. Type 2: keys fit poorly. Glucose piles up in the blood and spills into urine.",
  legend:[["ins","Insulin"],["glu","Glucose","hex"],["immune","Immune cell attacking beta cells"],["ac","GLUT4 door","r"]]},
 
-{act:5,scene:"pineal",id:"pineal",title:"The pineal gland and melatonin",
+{desc:"On the left is a sky window above a clock time: a light blue sky with the sun moving across it during the day, then a dark navy sky with stars and a crescent moon at night. Next to it, a large head shows an eye, a green hypothalamus dot (\"hypothalamus, body clock\") and the pineal gland at the back. In daylight, yellow light rays enter the eye, a signal runs to the hypothalamus, and a dashed red line to the pineal gland is labelled \"light inhibits melatonin\"; at night the pineal gland glows blue and releases blue melatonin dots, labelled \"melatonin, sleepy\". Below, a graph \"Melatonin over 24 hours\" shows a blue curve that is high in the grey night bands at each end and flat all day, with a dotted line moving along to mark the current time.",
+ act:5,scene:"pineal",id:"pineal",title:"The pineal gland and melatonin",
  body:`<p>The <b>pineal gland</b> is a small, pinecone-shaped gland deep in the brain. It releases <b>melatonin</b>, an amine hormone made from tryptophan.</p>
  <ul><li>When light reaches the eyes, signals travel to the hypothalamus and <b>inhibit</b> melatonin release.</li>
  <li>In <b>darkness</b>, the pineal gland releases <b>more melatonin</b>, which makes you sleepy.</li></ul>
@@ -543,7 +579,8 @@ const STEPS=[
  caption:"Day: light reaches the eye and inhibits the pineal gland. Night: the pineal gland releases melatonin. The graph tracks the 24-hour cycle.",
  legend:[["mel","Melatonin"],["sun","Light signal","l"],["inhib","Inhibits","dl"]]},
 
-{act:5,scene:"thymgon",id:"thymgon",title:"The thymus and the gonads",
+{desc:"Two panels sit side by side. The left panel, \"Thymus: thymosins\", shows the chest with the thymus lying on the sternum; white empty circles (immature T cells) enter it and leave as solid blue circles marked T (\"immature T cell to mature T cell\"). A purple age slider moves from child to older adult: at age 6 the thymus is \"large and busy\", and by ages 28 and 60 it shrinks while yellow fat grows around it, labelled \"shrinking, fat moves in\". The right panel, \"Gonads: sex steroids\", shows the pituitary sending purple FSH and LH squares down dashed paths to a testis on the left and an ovary on the right, which release purple steroid dots; labels list testosterone and inhibin, and estrogens, progesterone and inhibin, and a dashed red line marks \"inhibin (minus) FSH\".",
+ act:5,scene:"thymgon",id:"thymgon",title:"The thymus and the gonads",
  body:`<p><b>The thymus</b> sits in the chest behind the sternum. It releases <b>thymosins</b>, hormones that help <b>T cells</b> (a type of white blood cell) mature. The thymus is large and busy in childhood. After puberty it slowly <b>shrinks</b> and is replaced by fat.</p>
  <p><b>The gonads</b> are both reproductive organs and endocrine glands. They are controlled by <b>FSH and LH</b> from the anterior pituitary:</p>
  <ul><li><b>Testes</b> release <b>testosterone</b>, for sperm production and male secondary sex characteristics, and <b>inhibin</b>, which turns FSH down.</li>
@@ -559,7 +596,8 @@ const STEPS=[
  caption:"Left: the thymus releases thymosins as T cells mature, then shrinks with age. Right: FSH and LH reach the gonads, which release sex steroids.",
  legend:[["immune","T cell"],["h2","FSH / LH","s"],["steroid","Sex steroid","hex"],["fat","Fat","r"]]},
 
-{act:5,scene:"other",id:"other",title:"Hormones from other organs",
+{desc:"Three cards sit side by side and each one is outlined in purple when it is active. Heart to ANP: a red heart labelled \"atria stretch\" releases red ANP dots that travel down to a kidney, which sends out blue drops labelled \"more Na+ and water out\", and a bar below goes from \"blood volume and pressure high\" to \"back down\". Kidney to EPO: an oxygen tag reads 45 percent O2, the kidney sends purple EPO squares to red bone marrow, red blood cells appear below (\"more red blood cells, more O2\"), and the tag turns green at 95 percent. Gut: the stomach releases green gastrin (\"more stomach acid\"), and the small intestine releases secretin and CCK to the pancreas and gallbladder, labelled \"bicarbonate, enzymes, bile\".",
+ act:5,scene:"other",id:"other",title:"Hormones from other organs",
  body:`<p>Many organs have a <b>side job</b> making hormones:</p>
  <ul><li><b>Heart</b>: when high blood volume <b>stretches</b> the atria, they release <b>atrial natriuretic peptide (ANP)</b>. ANP makes the kidneys get rid of more <b>Na⁺ and water</b>, which lowers blood volume and blood pressure. It works against aldosterone.</li>
  <li><b>Kidneys</b>: when blood oxygen is <b>low</b>, they release <b>erythropoietin (EPO)</b>. EPO tells the red bone marrow to make more <b>red blood cells</b>. The kidneys also make the active form of vitamin D (calcitriol).</li>
@@ -575,7 +613,8 @@ const STEPS=[
  caption:"Heart stretch → ANP → kidneys release Na⁺ and water. Low O₂ → EPO → bone marrow makes red blood cells. Food → gastrin, secretin, CCK.",
  legend:[["anp","ANP"],["epo","EPO","s"],["rbc","Red blood cell"],["water","Na⁺ and water"],["gi","Gut hormones","d"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole endocrine system.",
+{desc:"The tan body outline with all the glands drawn in sits on the left, and a table on the right lists every gland in rows under the headings Gland, Hormone and Target, from Hypothalamus (releasing hormones, pituitary) down to Gonads (sex steroids, many tissues). One row at a time is outlined in blue while the matching gland glows on the body and orange hormone diamonds travel along a dotted path from it to its target, for example from the posterior pituitary down to the kidneys, or from the thymus to T cells.",
+ act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole endocrine system.",
  body:`<ol class="recap">
  <li class="h">Part 1 · Chemical messages</li>
  <li>Hormones travel in the blood. Slower and longer lasting than nerve signals. Only target cells with receptors respond.</li><li>Classes: amines (epinephrine, T3/T4), peptides and proteins (ADH, insulin), steroids (cortisol, estrogen, testosterone).</li><li>Lipid-soluble: intracellular receptor → gene transcription. Water-soluble: membrane receptor → G protein → cAMP → kinases (amplified).</li>
@@ -621,7 +660,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip,var(--${a.col}))">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -630,6 +669,7 @@ function render(){
   $("#terms").style.display=s.terms.length?"":"none";
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{
@@ -696,8 +736,9 @@ function curveArrow(P,col,lw,dash,head){ctx.beginPath();ctx.moveTo(P[0][0],P[0][
   const h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
 function bez(P,t){if(P.length===3){const u=1-t;return [u*u*P[0][0]+2*u*t*P[1][0]+t*t*P[2][0],u*u*P[0][1]+2*u*t*P[1][1]+t*t*P[2][1]]}
   const u=1-t;return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
+function onC(bg){try{const h=String(bg).trim().replace("#","");if(h.length<6)return"#fff";const c=[0,2,4].map(i=>{const v=parseInt(h.substr(i,2),16)/255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});const L=.2126*c[0]+.7152*c[1]+.0722*c[2];return 1.05/(L+.05)>=(L+.05)/.0575?"#fff":"#10161A"}catch(e){return"#fff"}}
 function chipText(x,y,txt,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
-  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+10}
+  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle=fg||onC(col);ctx.fillText(txt,x,y+.5);return w+10}
 function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
 function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
 function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
@@ -1055,7 +1096,7 @@ function sceneCamp(T){
   const PK=[[240,320],[360,330],[480,320],[600,330],[720,320]];
   const kOn=PK.map((p,i)=>seg(t,4.4+i*.35,5+i*.35)*(t>9.8?1-seg(t,9.8,10.6):1));
   PK.forEach((p,i)=>{rr(p[0]-24,p[1]-12,48,24,10);ctx.fillStyle=kOn[i]>.5?C.pka:C["panel-2"];ctx.fill();ctx.strokeStyle=C.pka;ctx.lineWidth=1.5;ctx.stroke();
-    ctx.font=`600 10.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=kOn[i]>.5?"#fff":C.pka;ctx.fillText("kinase",p[0],p[1]+.5);
+    ctx.font=`600 10.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=kOn[i]>.5?onC(C.pka):C.pka;ctx.fillText("kinase",p[0],p[1]+.5);
     if(kOn[i]>.3)glow(p[0],p[1],30,C.glow,.4*kOn[i])});
   // target proteins being phosphorylated
   let nP=0;
@@ -1157,7 +1198,7 @@ function sceneStim(T){
     ctx.strokeStyle=C["cell-edge"];ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(x+58,116);ctx.bezierCurveTo(x+140,130,x+110,220,x+PW/2,236);ctx.stroke();ctx.strokeStyle=C.cell;ctx.lineWidth=4;ctx.stroke();
     label(x+90,82,"sympathetic neuron",{align:"left",size:11.5,weight:600});
     if(q>.3&&q<1.3){const pos=bez([[x+58,116],[x+140,130],[x+110,220],[x+PW/2,236]],seg(q,.3,1.2));glow(pos[0],pos[1],22,C.glow,1);circ(pos[0],pos[1],4,C.glow)}
-    cellBlob(x+PW/2,276,70,46,C.med,C["gland-edge"],5);label(x+PW/2,276,"adrenal medulla",{align:"center",size:11.5,weight:600,color:"#fff",pill:false});
+    cellBlob(x+PW/2,276,70,46,C.med,C["gland-edge"],5);label(x+PW/2,276,"adrenal medulla",{align:"center",size:11.5,weight:600,color:onC(C.med),pill:false});
     if(q>1.3){const qq=seg(q,1.3,3.2);for(let i=0;i<9;i++){const a=i/9*TAU;const r=40+qq*48;hormone("amine",x+PW/2+Math.cos(a)*r,276+Math.sin(a)*r*.55,(1-qq*.5)*(act===2?1:.5))}}
     label(x+PW/2,350,"→ epinephrine released",{align:"center",size:12,weight:700,color:C.amine});
     label(x+PW/2,420,"Example: stress → epinephrine",{align:"center",size:11.5,color:C["ink-soft"],pill:false});
@@ -1435,7 +1476,7 @@ function sceneCortex(T){
   // slice
   const X0=300,X1=560;
   rr(X0,52,X1-X0,404,6);ctx.fillStyle=C.panel;ctx.fill();
-  ctx.fillStyle=C["gland-edge"];ctx.fillRect(X0,52,X1-X0,24);label(X0+8,64,"capsule",{size:10.5,color:"#fff",pill:false});
+  ctx.fillStyle=C["gland-edge"];ctx.fillRect(X0,52,X1-X0,24);label(X0+8,64,"capsule",{size:10.5,color:onC(C["gland-edge"]),pill:false});
   ZONES.forEach((z,i)=>{const y0=z[5],y1=z[6];ctx.fillStyle=C[z[0]];ctx.globalAlpha=i===idx?1:.55;ctx.fillRect(X0,y0,X1-X0,y1-y0);ctx.globalAlpha=1;
     // cell texture
     ctx.fillStyle="rgba(0,0,0,.14)";
@@ -1772,7 +1813,7 @@ function sceneThymGon(T){
   // T cells maturing
   const flow=1-age*.8;
   for(let k=0;k<8;k++){const q=((T*.35)+k/8)%1;const x=lerp(110,290,q),y=150+Math.sin(k*1.3+q*4)*30;const mature=q>.5;
-    ctx.globalAlpha=Math.min(1,q*5,(1-q)*5)*flow;circ(x,y,8,mature?C.immune:C.panel,C.immune,2);if(mature){ctx.font=`700 9px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText("T",x,y+.5)}ctx.globalAlpha=1}
+    ctx.globalAlpha=Math.min(1,q*5,(1-q)*5)*flow;circ(x,y,8,mature?C.immune:C.panel,C.immune,2);if(mature){ctx.font=`700 9px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onC(C.immune);ctx.fillText("T",x,y+.5)}ctx.globalAlpha=1}
   for(let k=0;k<6;k++){const q=((T*.6)+k/6)%1;dotP(200+Math.cos(k*1.1)*30*q,160+Math.sin(k*1.1)*40*q,2.6,C.act5,(1-q)*flow)}
   label(200,384,"Age "+ageY+(ageY<14?": large and busy":": shrinking, fat moves in"),{align:"center",size:12.5,weight:700,mono:true});
   label(200,410,"immature T cell → mature T cell",{align:"center",size:11.5,color:C.immune});

@@ -11,7 +11,7 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --warn:#9A5524;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
   --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--actR:#1B6E88;--gold:#C9A227;--gold-wash:#F6EFD3;
   --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
   --r:6px;
@@ -66,6 +66,9 @@ h2{font-family:var(--serif);font-weight:600;font-size:21px;margin:0 0 6px;line-h
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
 .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .tab .opt-tag{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;opacity:.8;margin-left:4px}
+.tab[aria-selected="true"] .opt-tag{opacity:1}
+/* a11y: a tab that was selected keeps site-kit's dark-on-light class after it is deselected; give it back its normal text colour */
+.tab[aria-selected="false"].gk-oninv{color:var(--ink)!important}
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
 .tbtn:hover{border-color:var(--accent)}
 .tbtn:disabled{opacity:.45;cursor:default}
@@ -253,7 +256,12 @@ svg{display:block;width:100%;height:auto}
 .work{font-family:var(--mono);font-size:14px;background:var(--panel-2);border-left:4px solid var(--accent);padding:10px 12px;margin-top:8px;border-radius:4px;white-space:pre-wrap;overflow-wrap:anywhere}
 .tl-lab{font:500 12px var(--sans);fill:var(--ink)}
 .tl-mono{font:600 12px var(--mono);fill:var(--ink)}
+/* a11y: in dark mode the accent is light, so selected/pressed controls use dark text (this also stops
+   site-kit's contrast fixer from leaving a stale dark-text class behind when the selection moves) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.tab[aria-selected="true"],.chip.cur){color:#0B1A20}}
+:root[data-theme="dark"] :is(.tab[aria-selected="true"],.chip.cur){color:#0B1A20}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -463,6 +471,14 @@ svg{display:block;width:100%;height:auto}
 <footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Content follows OpenStax Anatomy &amp; Physiology 2e, Chapter 5 (Integumentary System). Diagrams are simplified and not to scale. Nothing here is graded.</footer>
 
 <script>
+/* a11y: send a fuller picture description to the site kit only when it changes */
+let gkLast="";function gkD(t){if(t!==gkLast&&window.gkDescribe){gkLast=t;window.gkDescribe(t)}}
+/* a11y: keep CSS keyframe animations in step with the site-kit animation clock (Pause / Reduce motion) */
+(function(){if(!document.getAnimations)return;let lv=0,lr=0,av=0,ar=0,rate=1;
+  function tick(ts){const r=Date.now();if(lv){av+=ts-lv;ar+=r-lr;if(ar>=200){const k=av/ar;rate=k<.15?0:k<.7?.35:1;av=ar=0}}lv=ts;lr=r;
+    document.getAnimations().forEach(a=>{if(typeof CSSAnimation!=="undefined"&&a instanceof CSSAnimation&&a.playbackRate!==rate)a.playbackRate=rate});
+    requestAnimationFrame(tick)}
+  requestAnimationFrame(tick)})();
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
@@ -620,6 +636,8 @@ function renderLearn(){
   $("#skin").innerHTML=skinSVG(LV,{labels:$("#skinLabels").checked,compact:$("#skin").clientWidth<560,uid:"L",aria:`Skin cross-section. ${d.name}${LV?" ("+d.term+")":""}: damage reaches ${d.layers.toLowerCase()}.`});
   document.querySelectorAll(".dp").forEach((b,i)=>b.setAttribute("aria-pressed",i===LV));
   $("#depthRange").value=LV;
+  $("#depthRange").setAttribute("aria-valuetext",d.name+(LV?", "+d.term:""));
+  if(!$("#tab-learn").hidden)gkD("Skin cross-section showing the epidermis on top, the dermis with its vessels, nerves, hair follicles and glands, then the fatty hypodermis, muscle and bone. "+(LV?d.name+" ("+d.term+"): the shaded burn zone spreads down from the surface and reaches "+d.layers.toLowerCase()+". On the surface: "+d.look.replace(/<[^>]+>/g,""):"No burn is shown: every layer is intact."));
   $("#dcard").innerHTML=`<span class="chip2">${LV?"Depth "+LV+" of 5":"Start here"}</span><h2>${d.name}</h2>${LV?`<div style="color:var(--ink-soft);font-weight:600;margin:-2px 0 6px">${d.term}</div>`:""}<p style="margin:0">${d.body}</p>
    <dl><dt>Layers</dt><dd>${d.layers}</dd><dt>Looks</dt><dd>${d.look}</dd><dt>Pain</dt><dd>${d.pain}</dd><dt>Healing</dt><dd>${d.heal}</dd><dt>Example</dt><dd>${d.ex}</dd><dt>%TBSA</dt><dd>${d.tbsa}</dd></dl>`;
   $("#laylist").innerHTML=d.st.map((x,i)=>`<li><b>${LAYN[i]}</b><span class="st ${STT[x][0]}">${STT[x][1]}</span></li>`).join("");
@@ -768,6 +786,7 @@ function cRender(){
     q2.appendChild(b)});
   const fb2=$("#cFb2");fb2.className="fb"+(st.fb2?" show "+(solved?"good":"warn"):"");fb2.innerHTML=st.fb2;
   const e=$("#cExp");e.classList.toggle("show",solved);e.innerHTML=solved?"<b>Why:</b> "+c.exp:"";
+  if(!$("#tab-class").hidden)gkD("Case "+(ci+1)+": "+c.t+". Surface view drawing of the burn showing: "+c.chips.join(", ")+"."+(st.q1===true?" The cross-section below shows the burn reaching "+DEP[c.lv].layers.toLowerCase()+".":""));
   $("#cPrev").disabled=ci===0;$("#cNext").textContent=ci===CASES.length-1?"Back to case 1":"Next case →";
   $("#cHint").disabled=solved;$("#cShow").disabled=solved;
   cSummary();
@@ -832,7 +851,7 @@ function regEl(id,shape,mirror,lblKey,mx){const r=RG[id];const d=mirror?mir(SH[s
   const rot=lblKey==="armL"?` transform="rotate(${mirror?82:-82} ${lx} ${ly})"`:"";
   return `<g class="reg" data-id="${id}" tabindex="0" role="button" aria-pressed="false" aria-label="${r.name}, ${r.pct} percent"><path d="${d}"/><path class="hz" d="${d}"/><text class="rl" x="${lx}" y="${ly+4}" text-anchor="middle"${rot}>${r.pct}</text></g>`}
 function bodySVG(){
-  let s=`<svg viewBox="0 0 440 458" role="img" aria-label="Adult body outline, front view on the left and back view on the right, divided into Rule of Nines regions"><defs><pattern id="rh" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="var(--tbsa-ink)" stroke-width="1.4" opacity=".35"/></pattern></defs>`;
+  let s=`<svg id="bodySvg" viewBox="0 0 440 458" role="group" aria-label="Adult body outline, front view on the left and back view on the right, divided into Rule of Nines regions. Each region is a button."><defs><pattern id="rh" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="var(--tbsa-ink)" stroke-width="1.4" opacity=".35"/></pattern></defs>`;
   s+=`<text class="b-title" x="110" y="16" text-anchor="middle">FRONT (anterior)</text><text class="b-title" x="330" y="16" text-anchor="middle">BACK (posterior)</text>`;
   // front: viewer's left = patient's right
   s+=`<g transform="translate(10 26)">`;
@@ -872,6 +891,8 @@ function nRender(){
   document.querySelectorAll(".reg").forEach(g=>{const on=sel.has(g.dataset.id);g.classList.toggle("on",on);g.setAttribute("aria-pressed",on);const r=RG[g.dataset.id];g.querySelector(".rl").textContent=(on?"✓":"")+r.pct});
   document.querySelectorAll(".rb").forEach(b=>b.setAttribute("aria-pressed",sel.has(b.dataset.id)));
   const tot=sumSet(sel);$("#nTotal").textContent=nf(tot)+"%";
+  const bs=$("#bodySvg");if(bs)bs.setAttribute("aria-label","Rule of Nines body map, front and back views. Each region is a button. "+(sel.size?sel.size+" region"+(sel.size>1?"s":"")+" shaded, total "+nf(tot)+" percent.":"No regions shaded."));
+  if(!$("#tab-nines").hidden)gkD("Rule of Nines body map: an adult outline seen from the front on the left and from the back on the right, split into regions that are each labelled with their percent of body surface. "+(sel.size?"Shaded in orange: "+[...sel].map(id=>RG[id].name+" "+RG[id].pct+"%").join(", ")+". Total "+nf(tot)+"%.":"No regions are shaded yet.")+(nMode==="case"?" Case "+(nci+1)+": "+NCASES[nci].t+".":""));
   $("#totalRow").hidden=nMode==="case"&&!$("#nShowTotal").checked&&!nState[nci].solved;
   if(nMode==="free"){const m=$("#nMsg");
     if(sel.size===REG.length){m.className="msg show good";m.innerHTML=`All ${REG.length} regions shaded: <b>${nf(tot)}%</b>. The whole adult body adds up to 100%.`}
@@ -939,7 +960,7 @@ $("#nShow").onclick=()=>{const c=NCASES[nci],st=nState[nci];if(st.solved)return;
    ===================================================================== */
 function timeline(total,h){h=h||0;const W=560;const x0=20,x8=x0+(W-40)*8/24,x24=W-20;const hx=x0+(W-40)*h/24;
   const half=total/2,r1=8-h>0?half/(8-h):0,r2=half/16;const mx=Math.max(r1,r2)||1;const H1=70*r1/mx,H2=70*r2/mx;
-  return `<svg viewBox="0 0 ${W} 150" role="img" aria-label="Timeline of the first 24 hours after the burn: half the fluid in the first 8 hours, half over the next 16 hours">
+  return `<svg viewBox="0 0 ${W} 150" role="img" aria-label="Timeline of the first 24 hours after the burn: ${nf(half)} mL ${h>0?"in the "+(8-h)+" hours left of the first 8 hours (after a "+h+" hour delay)":"in the first 8 hours"}, at ${nf(r1)} mL per hour, then ${nf(half)} mL over the next 16 hours at ${nf(r2)} mL per hour">
    <rect x="${hx}" y="${100-H1}" width="${x8-hx}" height="${H1}" fill="var(--accent)" opacity=".75"/><rect x="${x8}" y="${100-H2}" width="${x24-x8}" height="${H2}" fill="var(--accent)" opacity=".4"/>
    ${h>0?`<rect x="${x0}" y="30" width="${hx-x0}" height="70" fill="none" stroke="var(--warn)" stroke-dasharray="4 3" fill-opacity="0"/><text class="tl-lab" x="${(x0+hx)/2}" y="70" text-anchor="middle" style="fill:var(--warn)">delay</text><text class="tl-lab" x="${(x0+hx)/2}" y="85" text-anchor="middle" style="fill:var(--warn)">${h} h</text>`:""}
    <line x1="${x0}" y1="100" x2="${x24}" y2="100" stroke="var(--ink-soft)" stroke-width="1.5"/>
@@ -981,7 +1002,9 @@ PROBS.forEach((p,i)=>{const el=$("#pr"+i);const tot=4*p.w*p.p,r1=tot/2/(8-p.h);c
    ===================================================================== */
 const TABS=["learn","class","nines","nurse"];
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
-  TABS.forEach(k=>$("#tab-"+k).hidden=t.dataset.tab!==k);if(t.dataset.tab==="learn")renderLearn()});
+  TABS.forEach(k=>$("#tab-"+k).hidden=t.dataset.tab!==k);if(t.dataset.tab==="learn")renderLearn();
+  else if(t.dataset.tab==="class")cRender();else if(t.dataset.tab==="nines")nRender();
+  else gkD("Nursing preview: a bar timeline of the first 24 hours after a burn. A tall bar shows half the Parkland fluid given in the first 8 hours, and a lower, longer bar shows the other half spread over the next 16 hours.")});
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark")};
 const rx=store.get("bt-relaxed");if(rx===false)$("#relaxed").checked=false;
 $("#cTimer").style.visibility=$("#relaxed").checked?"hidden":"visible";

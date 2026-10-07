@@ -11,7 +11,7 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --warn:#B4632A;--warn-ink:#985423;--act2-chip:#A26714;--act3-chip:#B45C48;--act4-chip:#2B8172;--act6-chip:#3C79AD;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
   --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
   /* blood palette */
   --ecf:#F4EEE6;--plasma:#E9C96A;--plasma-wash:#F8EDC8;
@@ -35,7 +35,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act6-chip:var(--act6);--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
   --ecf:#1A1A1C;--plasma:#9A8236;--plasma-wash:#3A3220;
   --rbc:#D24C42;--rbc-edge:#F08A80;--rbc-hi:#EE9A90;--deoxy:#9A3A4E;
@@ -54,7 +54,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act6-chip:var(--act6);--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
   --ecf:#1A1A1C;--plasma:#9A8236;--plasma-wash:#3A3220;
   --rbc:#D24C42;--rbc-edge:#F08A80;--rbc-hi:#EE9A90;--deoxy:#9A3A4E;
@@ -133,9 +133,13 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 .opt:hover{border-color:var(--accent)}
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.right::before{content:"\2713  ";font-weight:700;color:var(--good)}
+.opt.wrong::before{content:"\2717  ";font-weight:700}
 .fb{margin:6px 0 0;font-size:14.5px}
 .fb.ok{color:var(--good)}
-.fb.no{color:var(--warn)}
+.fb.no{color:var(--warn-ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .dot.cur{color:#0B1A20}}
+:root[data-theme=dark] .dot.cur{color:#0B1A20}
 .calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
 .nav{display:flex;align-items:center;gap:12px;margin-top:14px}
 .navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
@@ -149,6 +153,18 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+</style>
+<script src="site-kit.js"></script>
+<script>
+/* a11y: canvas words are drawn at 12 logical px or larger (labels of 1-2 characters keep their size) */
+(function(){try{const P=CanvasRenderingContext2D.prototype;if(P.__gkMin)return;P.__gkMin=1;
+function big(c,t){const f=c.font,m=/(\d+(?:\.\d+)?)px/.exec(f);if(m&&+m[1]<12&&String(t).length>2){c.font=f.replace(m[0],"12px");return f}return null}
+["fillText","strokeText","measureText"].forEach(k=>{const o=P[k];P[k]=function(t){const f=big(this,t);try{return o.apply(this,arguments)}finally{if(f)this.font=f}}})}catch(e){}})();
+</script>
+<style id="gk-a11y-fix">
+/* Narrow screens: the site kit hides the tool-button labels with display:none, which leaves the buttons
+   without a name. Keep the labels for screen readers but hide them visually. */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -207,7 +223,8 @@ const ACTS={1:{name:"Part 1 · What blood is",col:"act1"},
             4:{name:"Part 4 · Stopping bleeding",col:"act4"},
             5:{name:"Part 5 · Blood types",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: blood has three jobs",
+{desc:"A thick yellow-orange loop of blood vessel runs between pink lungs on the left and a block of tan body tissue cells on the right. Red blood cells, purple platelets and an occasional white cell travel around the loop; along the top, labelled \"O2, nutrients, hormones to the tissues\", the red cells are bright red, and along the bottom, \"CO2 and wastes back toward the lungs and kidneys\", they are darker. Three cards below light up in turn: Transport (red) shows gases, nutrients and hormones riding in a tube of plasma; Defense (orange) shows a white cell swallowing a green bacterium and Y-shaped antibodies; Regulation (green) shows a pH gauge near 7.4, a thermometer giving off heat, and a blue fluid drop.",
+ act:0,scene:"map",id:"map",title:"The big picture: blood has three jobs",
  body:`<p><b>Blood</b> is a <b>fluid connective tissue</b>. It is made of a liquid called <b>plasma</b> with <b>formed elements</b> floating in it: red blood cells, white blood cells and platelets. An adult has about 4 to 6 liters.</p>
  <p>Blood has three big jobs. Watch the loop and the three cards below it:</p>
  <ol><li><b>Transport.</b> Blood carries O₂ from the lungs to the tissues and CO₂ back to the lungs. It also carries nutrients, hormones, wastes and heat.</li>
@@ -223,7 +240,8 @@ const STEPS=[
  caption:"Blood loops between the lungs and the tissues: bright red with O₂ on the way out, darker with CO₂ on the way back. The cards light up its three jobs.",
  legend:[["rbc","Red blood cell (with O₂)"],["deoxy","Red blood cell (after giving up O₂)"],["o2","O₂"],["co2","CO₂"],["wbc-edge","White blood cell"],["bact","Bacterium","r"]]},
 
-{act:1,scene:"comp",id:"comp",title:"What's in a tube of blood?",
+{desc:"On the left a white centrifuge rotor holds four red tubes, and a large test tube of evenly mixed red blood stands beside it, labelled \"Whole blood: mixed\". The rotor spins, with the label \"Spinning... heavy cells move outward/down\", and the red cells in the big tube sink to the bottom while a clear yellow layer rises to the top. When it stops, brackets mark the layers: yellow plasma about 55 percent on top, a thin white buffy coat under 1 percent in the middle (leukocytes and platelets), and red erythrocytes about 45 percent at the bottom, labelled \"the hematocrit\". A bar chart titled \"Normal hematocrit\" shows the ranges 37 to 47 percent for women and 42 to 52 percent for men, with a dashed line marking \"This tube: 45%\".",
+ act:1,scene:"comp",id:"comp",title:"What's in a tube of blood?",
  body:`<p>If you spin a tube of blood in a <b>centrifuge</b>, the parts separate by weight. The heaviest parts sink to the bottom.</p>
  <ol><li><b>Plasma</b> on top: about <b>55%</b>. A pale yellow (straw-colored) liquid.</li>
  <li>The <b>buffy coat</b> in the middle: <b>less than 1%</b>. A thin whitish layer of <b>leukocytes</b> (white blood cells) and <b>platelets</b>.</li>
@@ -239,7 +257,8 @@ const STEPS=[
  caption:"The centrifuge spins; red cells sink. Result: plasma ≈ 55% on top, a thin buffy coat (<1%), red cells ≈ 45% at the bottom = the hematocrit.",
  legend:[["plasma","Plasma","r"],["wbc-edge","Buffy coat (WBCs + platelets)","r"],["rbc","Erythrocytes","r"]]},
 
-{act:1,scene:"plasma",id:"plasma",title:"Plasma and its proteins",
+{desc:"A tall bar on the left shows what plasma contains: mostly blue water (about 92 percent), an orange band of proteins (about 7 percent) and a thin \"other\" layer; the protein band is then expanded into a second bar of yellow albumin (54 to 60 percent), blue globulins (35 to 38 percent) and a thin gold band of fibrinogen (4 to 7 percent). On the right is a capillary with tissue fluid above and below, full of yellow oval albumin, blue Y-shaped globulins and gold rod-shaped fibrinogen, with small blue water dots. Three cards below highlight one protein at a time: Albumin, with blue water dots moving into the vessel (\"Albumin can't leak out, it pulls water IN\"); Globulins, with antibodies sticking to a green bacterium; and Fibrinogen, \"a clotting protein, waiting for a signal\".",
+ act:1,scene:"plasma",id:"plasma",title:"Plasma and its proteins",
  body:`<p><b>Plasma</b> is about <b>92% water</b>, about <b>7% proteins</b>, and about 1% other solutes (ions, nutrients, gases, hormones and wastes). Most plasma proteins are made by the <b>liver</b>.</p>
  <ol><li><b>Albumin</b> is the most common plasma protein (about 54 to 60%). It is too big to leak out of capillaries, so it creates <b>osmotic pressure</b> that holds water <b>inside</b> the blood vessels. It also carries things like fatty acids and some drugs.</li>
  <li><b>Globulins</b> (about 35 to 38%). Some are <b>antibodies</b> (immunoglobulins) made by plasma cells. Others are <b>transport proteins</b> that carry lipids, iron and hormones.</li>
@@ -255,7 +274,8 @@ const STEPS=[
  caption:"Albumin stays inside the capillary and pulls water back in. Globulins include antibodies and carriers. Fibrinogen waits to become fibrin.",
  legend:[["plasma","Albumin"],["o2","Water"],["agA","Globulin (antibody)","r"],["fibrin","Fibrinogen","l"],["bact","Bacterium","r"]]},
 
-{act:1,scene:"hemo",id:"hemo",title:"Hemopoiesis: where blood cells are made",
+{desc:"The background is the pink inside of red bone marrow, with a yellow blood vessel strip down the right edge labelled \"Blood\". A purple hemopoietic stem cell on the left divides, and one copy stays a stem cell while the other splits into a Myeloid stem cell above and a Lymphoid stem cell below. Dashed branches then grow to the right and fill in solid as each cell matures: the myeloid line makes an erythroblast that becomes a red erythrocyte (green EPO tag, \"nucleus pushed out\"), a megakaryocyte that breaks into platelets (TPO tag), and myeloblasts and a monoblast that become neutrophils, eosinophils, basophils and monocytes (CSF tags); the lymphoid line makes a lymphocyte. The finished cells then move into the blood strip on the right.",
+ act:1,scene:"hemo",id:"hemo",title:"Hemopoiesis: where blood cells are made",
  body:`<p>Blood cells wear out, so the body makes billions of new ones every day. Making blood cells is called <b>hemopoiesis</b>. In adults it happens in <b>red bone marrow</b>, for example in the hip bones, sternum, ribs, vertebrae and the ends of long bones.</p>
  <p>Every blood cell starts as a <b>hemopoietic stem cell</b>. When it divides, one daughter stays a stem cell (so the supply never runs out). The other becomes one of two kinds of stem cell:</p>
  <ol><li><b>Myeloid stem cells</b> make red blood cells, platelets (by way of a giant cell, the <b>megakaryocyte</b>), neutrophils, eosinophils, basophils and monocytes.</li>
@@ -271,7 +291,8 @@ const STEPS=[
  caption:"In red bone marrow, a hemopoietic stem cell divides. The myeloid branch makes RBCs, platelets, granulocytes and monocytes; the lymphoid branch makes lymphocytes.",
  legend:[["rbc","Red blood cell"],["plt","Platelet"],["nuc","Nucleus"],["marrow","Red bone marrow","r"],["epo","Growth factor signal","r"]]},
 
-{act:2,scene:"rbc",id:"rbc",title:"Erythrocytes: built for carrying gases",
+{desc:"Top left, a large red blood cell spins slowly, appearing as a round disc with a pale centre when seen face-on and as a narrow oval when tilted; labels read \"no nucleus\" and \"about 7.5 micrometres across\". Below it, a red cut-in-half shape like a dumbbell shows the thick rim and thin centre, labelled \"biconcave\". Top right, red cells travel left to right through a yellow capillary that narrows in the middle; each cell folds into a thin oval to squeeze through and springs back round. Bottom right, a lifespan timeline from 0 to 120 days shows one red cell moving along with a day counter, and near the end it reaches a grey macrophage, labelled \"older RBC: stiff and fragile, no nucleus to repair it\".",
+ act:2,scene:"rbc",id:"rbc",title:"Erythrocytes: built for carrying gases",
  body:`<p><b>Erythrocytes</b> (red blood cells, RBCs) are the most common cells in blood, about 4.8 million per µL in women and 5.4 million per µL in men. Their shape fits their job:</p>
  <ol><li>A <b>biconcave disc</b>: thick at the rim, thin in the middle. This gives a lot of <b>surface area</b> for O₂ and CO₂ to move in and out, and no part of the cell is far from the surface.</li>
  <li><b>No nucleus and no mitochondria</b> when mature. That leaves more room for <b>hemoglobin</b>. Without mitochondria, they make ATP without using oxygen, so they don't use up the O₂ they carry.</li>
@@ -287,7 +308,8 @@ const STEPS=[
  caption:"Left: a spinning RBC shows its biconcave shape. Right: RBCs fold to squeeze through a narrow capillary. Bottom: one RBC ages for about 120 days.",
  legend:[["rbc","Erythrocyte (RBC)"],["vessel","Capillary wall","r"],["deoxy","Old, stiff RBC"]]},
 
-{act:2,scene:"hb",id:"hb",title:"Hemoglobin: the oxygen carrier",
+{desc:"The background is blue with \"In the lungs, O2 high\" and later orange with \"In the tissues, O2 low\". In the centre is a hemoglobin molecule made of four pink blob subunits labelled alpha and beta, each with a dark red diamond heme holding an iron (Fe) dot. In the lungs, blue O2 pairs drift in and lock onto the hemes one by one, the counter reads \"O2 bound: 0 of 4\" up to \"4 of 4\", and the molecule turns from dark red (deoxyhemoglobin) to bright red (oxyhemoglobin); in the tissues the O2 pairs leave and it turns dark again, with a note that some CO2 rides on the globin. A side panel says each red cell holds about 300 million hemoglobin molecules, and a small diagram shows a red cell moving between a blue alveolus (O2 high) and tan tissue cells (O2 low).",
+ act:2,scene:"hb",id:"hb",title:"Hemoglobin: the oxygen carrier",
  body:`<p>Each RBC is packed with <b>hemoglobin</b>, about <b>300 million</b> molecules per cell. One hemoglobin molecule has:</p>
  <ol><li><b>Four globin</b> protein chains (two alpha, two beta).</li>
  <li><b>Four heme</b> groups, one tucked into each globin chain. Each heme holds one <b>iron ion (Fe²⁺)</b>.</li>
@@ -303,7 +325,8 @@ const STEPS=[
  caption:"In the lungs, O₂ binds the iron in each of the 4 hemes (bright red). In the tissues, the O₂ lets go (dark red).",
  legend:[["glob-a","Alpha globin","r"],["glob-b","Beta globin","r"],["iron","Heme iron (Fe²⁺)"],["o2","O₂"],["co2","CO₂"]]},
 
-{act:2,scene:"epo",id:"epo",title:"Erythropoiesis is controlled by EPO",
+{desc:"A red kidney sits at the top left and a cream bone marrow oval at the top right, joined by dashed arrows in a loop labelled \"Negative feedback\" that runs down to a yellow blood vessel full of red cells along the bottom. A gauge at the lower left shows O2 delivery. On day 2, grey mountains appear (\"move to high altitude, less O2 in the air\"), the gauge falls to about 80 percent and turns orange, the kidney glows green (\"senses low O2, releases EPO\"), and green EPO dots travel to the marrow, which sends extra red cells into the blood (\"erythropoiesis speeds up\"). Over the 30 days shown by a day counter, the RBC count climbs to about 113 percent of normal, O2 delivery recovers to 95 percent and the kidney eases off EPO; three line graphs below trace O2 delivery (blue), EPO (green) and RBC count (red).",
+ act:2,scene:"epo",id:"epo",title:"Erythropoiesis is controlled by EPO",
  body:`<p>Making red blood cells is <b>erythropoiesis</b>. The body keeps RBC numbers steady with a <b>negative feedback</b> loop:</p>
  <ol><li><b>Stimulus:</b> O₂ delivery to the tissues drops (for example, moving to high altitude, losing blood, or having anemia).</li>
  <li>Cells in the <b>kidneys</b> sense the low O₂ and release the hormone <b>erythropoietin (EPO)</b> into the blood.</li>
@@ -320,7 +343,8 @@ const STEPS=[
  caption:"O₂ drops → kidneys release EPO → marrow makes more RBCs (after a few days) → O₂ recovers → EPO falls. The graph tracks it over about a month.",
  legend:[["o2","O₂ delivered to tissues","l"],["epo","EPO level","l"],["rbc","RBC count","l"],["kidney","Kidney","r"],["marrow","Red marrow","r"]]},
 
-{act:2,scene:"recycle",id:"recycle",title:"Recycling old red blood cells",
+{desc:"A tan macrophage labelled \"Macrophage (spleen, liver)\" sits beside a yellow vessel; an old, spiky red cell labelled \"old, stiff RBC\" comes out of the vessel and the macrophage wraps around and swallows it. Inside, the cell breaks into a pink globin piece and a dark red heme diamond. Three dotted paths then lead away: pink dots of globin go up to \"Amino acids, build new proteins\"; orange iron dots are \"carried by transferrin\" either to \"Red marrow: new hemoglobin\" or to \"Stored as ferritin (liver)\"; and the heme turns into green biliverdin, then yellow bilirubin carried on albumin to the liver, then \"Bile to intestine\", ending at \"Feces (brown), urine (yellow)\".",
+ act:2,scene:"recycle",id:"recycle",title:"Recycling old red blood cells",
  body:`<p>Worn-out RBCs are removed by <b>macrophages</b>, mostly in the <b>spleen</b> and <b>liver</b>. The macrophage swallows the old cell and takes its hemoglobin apart. Almost nothing is wasted:</p>
  <ol><li><b>Globin</b> is broken down into <b>amino acids</b>, which are reused to build new proteins.</li>
  <li><b>Iron</b> is saved. It travels in the blood on a carrier protein called <b>transferrin</b> to the red marrow to build new hemoglobin, or it is stored (as <b>ferritin</b>) in the liver.</li>
@@ -336,7 +360,8 @@ const STEPS=[
  caption:"A macrophage swallows an old RBC. Globin → amino acids. Iron → transferrin → marrow (or stored). Heme → biliverdin → bilirubin → liver → bile.",
  legend:[["macro","Macrophage","r"],["glob-a","Globin → amino acids"],["iron","Iron (Fe)"],["biliv","Biliverdin (green)"],["bili","Bilirubin (yellow)"]]},
 
-{act:2,scene:"anemia",id:"anemia",title:"Anemia: when blood can't carry enough O₂",
+{desc:"Three horizontal yellow capillaries are stacked, each with red cells flowing from left to right and a \"tissue O2\" box at the right end showing a bar and status. Normal: plump red cells carrying blue O2 pairs, a full green bar labelled \"healthy\". Iron deficiency: small, pale pink cells carrying fewer O2, a half orange bar labelled \"tired, weak, pale\". Sickle cell: dark red crescent-shaped cells get stuck where the vessel narrows (\"stiff sickled cells stuck here\"), other cells back up behind them (\"cells back up behind the block\"), and the bar is short and red, labelled \"pain, tissue damage\".",
+ act:2,scene:"anemia",id:"anemia",title:"Anemia: when blood can't carry enough O₂",
  body:`<p><b>Anemia</b> means the blood can't carry enough O₂ to the tissues. People with anemia often feel tired and weak and may look pale. OpenStax groups causes into three kinds: <b>blood loss</b>, <b>not making enough</b> good RBCs, and <b>destroying</b> RBCs too fast.</p>
  <ol><li><b>Iron-deficiency anemia</b> is the most common. Without enough iron, the marrow can't make enough hemoglobin. RBCs come out <b>small and pale</b>, and each carries less O₂.</li>
  <li><b>Sickle cell disease</b> is inherited. One change in the beta globin gene makes an abnormal hemoglobin (HbS). When O₂ is low, the RBCs bend into a stiff <b>sickle (crescent) shape</b>. They get stuck in small vessels, causing pain and tissue damage, and they break apart early.</li></ol>
@@ -351,7 +376,8 @@ const STEPS=[
  caption:"Three capillaries feeding tissue. Normal RBCs deliver plenty of O₂. Small, pale iron-deficient cells carry less. Sickled cells jam the narrow spot.",
  legend:[["rbc","Normal RBC"],["rbc-hi","Small, pale RBC (iron deficiency)"],["deoxy","Sickled RBC"],["o2","O₂"]]},
 
-{act:3,scene:"wbcmix",id:"wbcmix",title:"Leukocytes: Never Let Monkeys Eat Bananas",
+{desc:"Across the top, the words \"Never Let Monkeys Eat Bananas\" are written with the first letters in bold red. Below, a 10 by 10 grid of empty circles fills up one cell at a time as 100 white blood cells are sorted, with a counter \"0 of 100 white cells sorted\". On the right, five rows show a cell picture, name, normal percentage and a growing bar: Neutrophils 50 to 70 percent (lilac), Lymphocytes 20 to 30 percent (blue), Monocytes 2 to 8 percent, Eosinophils 2 to 4 percent (orange) and Basophils under 1 percent. When the grid is full the bars read about 60, 30, 6, 3 and 1 percent, each row and word of the phrase lights up in turn, and labels separate granulocytes (visible granules) from agranulocytes.",
+ act:3,scene:"wbcmix",id:"wbcmix",title:"Leukocytes: Never Let Monkeys Eat Bananas",
  body:`<p><b>Leukocytes</b> (white blood cells, WBCs) defend the body. There are only about <b>5,000 to 10,000 per µL</b> of blood, far fewer than RBCs. Unlike RBCs, they have a <b>nucleus</b>, and most of their work happens <b>outside</b> the blood, in the tissues.</p>
  <p>There are five kinds. From most to least common, remember <b>"Never Let Monkeys Eat Bananas"</b>:</p>
  <ol><li><b>N</b>eutrophils, about 50 to 70%</li><li><b>L</b>ymphocytes, about 20 to 30%</li><li><b>M</b>onocytes, about 2 to 8%</li><li><b>E</b>osinophils, about 2 to 4%</li><li><b>B</b>asophils, less than 1%</li></ol>
@@ -366,7 +392,8 @@ const STEPS=[
  caption:"A differential count: 100 white cells fill the grid in their normal proportions. Neutrophils win easily; basophils are rare.",
  legend:[["ngran","Neutrophil"],["lymc","Lymphocyte"],["monoc","Monocyte"],["eos","Eosinophil"],["baso","Basophil"]]},
 
-{act:3,scene:"gran",id:"gran",title:"Granulocytes: neutrophils, eosinophils, basophils",
+{desc:"Three tall cards sit side by side, each topped by a picture of the cell and its key features. Neutrophil (pale lilac granules, 2 to 5 lobes), \"Job: eat bacteria\": the cell moves toward green rod-shaped bacteria and swallows them one by one. Eosinophil (red-orange granules, 2 lobes), \"Job: parasites, allergy\": two eosinophils move up to a long brown parasitic worm, far bigger than any cell, and spray orange granule contents onto it until it fades, labelled \"worm damaged\". Basophil (dark purple granules), \"Job: histamine, heparin\": it releases orange histamine dots that make a small blood vessel above it widen (\"vessel widens and gets leaky\") and purple heparin dots labelled \"heparin: slows clotting\".",
+ act:3,scene:"gran",id:"gran",title:"Granulocytes: neutrophils, eosinophils, basophils",
  body:`<p>Each granulocyte has a recognizable look and job:</p>
  <ol><li><b>Neutrophils</b>: a nucleus with 2 to 5 lobes and pale lilac granules. They are the <b>first responders</b> to infection and are excellent <b>phagocytes</b>, swallowing bacteria. Pus is mostly dead neutrophils.</li>
  <li><b>Eosinophils</b>: usually a two-lobed nucleus and big <b>red-orange</b> granules. They attack <b>parasitic worms</b> by releasing their granule contents, and they help control <b>allergic</b> reactions.</li>
@@ -381,7 +408,8 @@ const STEPS=[
  caption:"Neutrophil swallows bacteria. Eosinophils release granules onto a parasitic worm. Basophil releases histamine (vessel widens) and heparin.",
  legend:[["ngran","Neutrophil granules"],["eos","Eosinophil granules"],["baso","Basophil granules"],["chem","Histamine"],["plt","Heparin"],["bact","Bacterium","r"]]},
 
-{act:3,scene:"agran",id:"agran",title:"Agranulocytes: lymphocytes and monocytes",
+{desc:"Two cards sit side by side. Lymphocyte (big round nucleus): in the top half, \"B cell, plasma cell, antibodies\", a small purple B cell grows into a larger plasma cell that fires purple Y-shaped antibodies at green bacteria, which become coated (\"antibodies tag the bacteria\"); in the bottom half, \"T cell attacks an infected cell\", a T cell touches a pink virus-infected cell, which bursts apart (\"infected cell destroyed\"). Monocyte (largest white cell, kidney-shaped nucleus), \"Monocyte leaves the blood, macrophage\": a monocyte travels in a yellow vessel with red cells, squeezes out through the wall (\"squeezes out\"), and grows into a big grey macrophage, \"now a macrophage: bigger, a heavy eater\", that eats bacteria, debris and old cells.",
+ act:3,scene:"agran",id:"agran",title:"Agranulocytes: lymphocytes and monocytes",
  body:`<p><b>Lymphocytes</b> have a big round nucleus with just a thin rim of pale blue cytoplasm. They are the cells of <b>specific (adaptive) immunity</b>:</p>
  <ol><li><b>B cells</b> turn into <b>plasma cells</b> that make <b>antibodies</b>. Antibodies stick to a specific invader and mark it for destruction.</li>
  <li><b>T cells</b> attack infected cells directly or direct other immune cells.</li>
@@ -397,7 +425,8 @@ const STEPS=[
  caption:"Left: a B cell becomes a plasma cell and fires antibodies; a T cell kills an infected cell. Right: a monocyte leaves the vessel and grows into a macrophage.",
  legend:[["lymc","Lymphocyte"],["monoc","Monocyte / macrophage"],["agA","Antibody","r"],["bact","Bacterium","r"],["tf","Infected cell"]]},
 
-{act:3,scene:"diaped",id:"diaped",title:"Leaving the bloodstream: emigration (diapedesis)",
+{desc:"The top half is a yellow blood vessel with red cells flowing to the right; the bottom half is pale tissue, separated by a wall of pink lining cells. A target pattern of orange rings in the tissue marks an infection, labelled \"infection: bacteria release chemicals\", with green bacteria in the centre. A lilac neutrophil rolls along the vessel wall, sticks, stretches thin and squeezes through a gap between wall cells, then crawls across the tissue toward the bacteria and swallows them. A numbered list on the left lights up each stage in red: 1 Rolling along the wall, 2 Sticking, 3 Diapedesis: squeezing out, 4 Chemotaxis: following the signal, 5 Phagocytosis.",
+ act:3,scene:"diaped",id:"diaped",title:"Leaving the bloodstream: emigration (diapedesis)",
  body:`<p>Blood is mostly the <b>highway</b> leukocytes use. Their real work is in the tissues. Watch a neutrophil get from the blood to an infection:</p>
  <ol><li><b>Slowing and rolling.</b> Near an infection, the vessel lining becomes sticky. The WBC slows and rolls along the wall.</li>
  <li><b>Sticking.</b> It grabs on tightly at one spot.</li>
@@ -414,7 +443,8 @@ const STEPS=[
  caption:"A neutrophil rolls along the wall, sticks, squeezes between wall cells (diapedesis), follows the chemical signal (chemotaxis) and eats the bacteria.",
  legend:[["ngran","Neutrophil"],["endo","Vessel wall cells","r"],["chem","Chemical signal"],["bact","Bacterium","r"],["rbc","RBC"]]},
 
-{act:3,scene:"plt",id:"plt",title:"Platelets: pieces of a giant cell",
+{desc:"On the pink background of red bone marrow, a huge lilac megakaryocyte with a dark purple many-lobed nucleus sits beside a yellow marrow blood vessel on the right. The cell pushes long beaded extensions through the vessel wall (\"extensions push through the wall\"), and small purple fragments break off and are carried away down the vessel with the red cells. A counter at the top climbs, \"platelets released: 0\" to over 2,000. On the right a card shows a single platelet changing between a resting smooth purple disc and an activated spiky star, with fact cards: 150,000 to 400,000 per microlitre, about 10 days, no nucleus, and TPO, the hormone that boosts production.",
+ act:3,scene:"plt",id:"plt",title:"Platelets: pieces of a giant cell",
  body:`<p><b>Platelets</b> (also called <b>thrombocytes</b>) aren't whole cells. They are <b>fragments</b> of a huge cell in the red marrow called a <b>megakaryocyte</b>.</p>
  <ol><li>The megakaryocyte pushes long extensions through the wall of a marrow blood vessel.</li>
  <li>The extensions break into pieces. Each megakaryocyte releases <b>2,000 to 3,000</b> platelets.</li>
@@ -430,7 +460,8 @@ const STEPS=[
  caption:"A giant megakaryocyte pushes extensions into a marrow blood vessel; the pieces break off as platelets and are carried away.",
  legend:[["plt","Platelet / megakaryocyte"],["nuc","Megakaryocyte nucleus"],["vessel","Marrow blood vessel","r"],["rbc","RBC"]]},
 
-{act:4,scene:"spasm",id:"spasm",title:"Hemostasis step 1: vascular spasm",
+{desc:"A blood vessel runs across the canvas, with striped red-pink smooth muscle walls above and below, a cream lumen labelled \"lumen\", and red blood cells flowing along it. A cut opens in the lower wall and red cells spill out into the tissue below, labelled \"Cut! Blood escapes\", while a \"Blood escaping\" bar in the top right fills with red. Red arrows then press in from above and below as the smooth muscle contracts and the vessel narrows (\"Smooth muscle contracts, the vessel narrows\"), and fewer cells leak out as the bar shrinks. A green-edged note reads \"Less blood escapes. A spasm can last up to about 30 minutes.\"",
+ act:4,scene:"spasm",id:"spasm",title:"Hemostasis step 1: vascular spasm",
  body:`<p><b>Hemostasis</b> means stopping bleeding. It happens in three overlapping steps: <b>vascular spasm</b>, the <b>platelet plug</b>, and <b>coagulation</b> (clotting).</p>
  <p>The first response is the fastest. When a vessel is cut, the <b>smooth muscle</b> in its wall <b>contracts</b>. This <b>vascular spasm</b> narrows the vessel, so less blood escapes. It is triggered by direct damage to the muscle, chemicals released by the vessel lining and platelets, and pain reflexes.</p>
  <p>A spasm can last up to about <b>30 minutes</b>. That buys time for the next two steps to seal the hole.</p>`,
@@ -444,7 +475,8 @@ const STEPS=[
  caption:"A cut opens in the vessel wall and blood escapes. The smooth muscle contracts (vascular spasm), the vessel narrows, and the leak slows.",
  legend:[["muscle","Smooth muscle","r"],["rbc","RBCs"],["vessel-edge","Vessel wall","r"]]},
 
-{act:4,scene:"plug",id:"plug",title:"Step 2: the platelet plug",
+{desc:"A yellow blood vessel with red cells and small purple oval platelets sits above a pink lining, with wavy brown collagen fibres in the tissue below; a gap opens in the lining (\"a break in the vessel lining\") and exposes the collagen. Four tabs at the top light up green in turn. In 1 Adhesion, platelets stick to the exposed collagen (\"von Willebrand factor helps\"); in 2 Activation, the stuck platelets swell and grow spiky arms; in 3 Release, they give off orange dots, \"releasing ADP, serotonin, thromboxane A2\". In 4 Aggregation, more platelets arrive and pile on into a purple plug, labelled \"more platelets arrive and pile on: positive feedback\".",
+ act:4,scene:"plug",id:"plug",title:"Step 2: the platelet plug",
  body:`<p>A cut in a vessel's lining exposes the <b>collagen</b> fibers underneath. Platelets react to collagen right away:</p>
  <ol><li><b>Adhesion.</b> Platelets stick to the exposed collagen, helped by a plasma protein called <b>von Willebrand factor</b>.</li>
  <li><b>Activation.</b> The stuck platelets change shape. They swell and grow spiky arms.</li>
@@ -461,7 +493,8 @@ const STEPS=[
  caption:"① Adhesion to collagen ② Activation (spiky) ③ Release of ADP, serotonin, thromboxane A₂ ④ Aggregation builds the plug (positive feedback).",
  legend:[["plt","Platelet"],["collagen","Collagen fibers","l"],["chem","Released chemicals"],["vitk","von Willebrand factor","l"]]},
 
-{act:4,scene:"cascade",id:"cascade",title:"Step 3: coagulation, a cascade",
+{desc:"A flow chart fills the centre: top left, the extrinsic pathway (magenta, \"faster\") goes from Tissue factor (III) to VII to VIIa, and top right, the intrinsic pathway (purple, \"slower\") goes from XII (contact) to XIa to IX + VIII. Both feed into the common pathway (red-orange): Factor X to Xa, Prothrombin activator (Xa + V), Prothrombin (II) to Thrombin, Fibrinogen (I) to Fibrin, and XIII cross-links the fibrin. Each box fills with colour and glows as it switches on, and a dashed line notes \"thrombin speeds earlier steps\". An \"Amplification\" panel on the left shows dots multiplying from one trigger to many Xa, more thrombin and tons of fibrin, and \"The clot\" panel on the right shows gold fibrin threads weaving a mesh around red cells and platelets.",
+ act:4,scene:"cascade",id:"cascade",title:"Step 3: coagulation, a cascade",
  body:`<p><b>Coagulation</b> turns liquid blood into a gel, a <b>clot</b>. It runs on a chain of <b>clotting factors</b> (mostly plasma proteins, numbered with Roman numerals). Each activated factor turns on the next, so a small start becomes a huge response. This is a <b>cascade</b>.</p>
  <ol><li><b>Extrinsic pathway</b> (faster, fewer steps): damaged tissue outside the blood releases <b>tissue factor</b> (factor III). With factor VII, it activates factor X.</li>
  <li><b>Intrinsic pathway</b> (slower, more steps): starts inside the blood, when factor XII touches collagen or activated platelets. It runs XII → XI → IX (with VIII) and also activates factor X.</li>
@@ -476,7 +509,8 @@ const STEPS=[
  caption:"Extrinsic (tissue factor, fast) and intrinsic (XII → XI → IX, slower) both activate factor X → prothrombin activator → thrombin → fibrin mesh. Each step multiplies the signal.",
  legend:[["tf","Extrinsic pathway","r"],["act1","Intrinsic pathway","r"],["thrombin","Common pathway","r"],["fibrin","Fibrin","l"],["ca","Ca²⁺","d"]]},
 
-{act:4,scene:"cavk",id:"cavk",title:"Calcium and vitamin K: the cascade's must-haves",
+{desc:"A banner across the top names each run: green \"NORMAL: vitamin K + Ca2+, clot forms\", then red \"NO VITAMIN K: liver makes faulty II, VII, IX, X, no clot\", then \"NO Ca2+: the cascade can't run, no clot\". On the left, green vitamin K squares enter a hexagonal liver cell, which releases red circles labelled II, VII, IX and X into a yellow blood strip, along with orange Ca2+ rings (\"Ca2+ is clotting factor IV\"). On the right a short cascade (Trigger, Factor X to Xa, Prothrombin to Thrombin, Fibrinogen to Fibrin) lights up red step by step, with an orange Ca2+ ring docking at each step, and a \"Result\" box shows fibrin forming around red cells. Without vitamin K the factors are grey and crossed out, and the cascade stops at a step marked \"stuck here\", with the result \"no fibrin: bleeding continues\".",
+ act:4,scene:"cavk",id:"cavk",title:"Calcium and vitamin K: the cascade's must-haves",
  body:`<p>Two things must be present for the cascade to work:</p>
  <ol><li><b>Calcium ions (Ca²⁺).</b> Ca²⁺ is actually counted as a clotting factor (<b>factor IV</b>). It is needed at many steps in all three pathways. Without it, the cascade stalls. Blood collection tubes that keep blood liquid work by binding up the Ca²⁺.</li>
  <li><b>Vitamin K.</b> The <b>liver</b> needs vitamin K to make working versions of <b>factors II (prothrombin), VII, IX and X</b>. Vitamin K comes from leafy green foods and is also made by bacteria in the large intestine.</li></ol>
@@ -491,7 +525,8 @@ const STEPS=[
  caption:"Normal: vitamin K lets the liver make factors II, VII, IX, X, and Ca²⁺ docks at each step → fibrin. Then watch the cascade stall without vitamin K, and again without Ca²⁺.",
  legend:[["vitk","Vitamin K","s"],["liver","Liver cell","r"],["ca","Ca²⁺","d"],["fibrin","Fibrin","l"]]},
 
-{act:4,scene:"lysis",id:"lysis",title:"Clot retraction and fibrinolysis",
+{desc:"A finished clot sits in a gap in the pink vessel lining: a tangle of gold fibrin threads holding red cells and purple spiky platelets, with the yellow blood vessel above and tissue below. Three tabs at the top light up green in turn. In 1 Clot retraction, green arrows point inward as the platelets contract, the clot tightens, and pale yellow drops of serum drip out. In 2 Repair, new grey lining cells grow across the break (\"platelet PDGF helps\"), and in 3 Fibrinolysis, green plasmin dots cut the fibrin threads and the clot dissolves away.",
+ act:4,scene:"lysis",id:"lysis",title:"Clot retraction and fibrinolysis",
  body:`<p>A clot isn't the end of the story.</p>
  <ol><li><b>Clot retraction.</b> Within about 30 to 60 minutes, platelets in the clot <b>contract</b>, like tiny muscles. This pulls the edges of the wound closer and squeezes fluid (<b>serum</b>) out of the clot, making it smaller and tighter.</li>
  <li><b>Repair.</b> Chemicals from platelets (such as PDGF) help the vessel wall and its lining grow back.</li>
@@ -507,7 +542,8 @@ const STEPS=[
  caption:"Platelets contract and squeeze out serum (retraction). New lining grows. Then plasmin snips the fibrin threads and the clot dissolves.",
  legend:[["fibrin","Fibrin","l"],["plt","Platelet"],["plasma","Serum","r"],["plasmin","Plasmin"],["endo","New lining cells","r"]]},
 
-{act:5,scene:"abo",id:"abo",title:"ABO blood groups: antigens and antibodies",
+{desc:"Four columns show blood types A, B, AB and O. Each has a red blood cell on top and a yellow \"plasma\" box below. The cells gain surface antigens: blue triangles for A, gold circles for B, both on AB, and none on O. Then Y-shaped antibodies fill the plasma boxes: gold anti-B in type A, blue anti-A in type B, no antibodies in AB (\"no anti-A, no anti-B\"), and both blue and gold in type O. A note at the bottom reads \"Your plasma has antibodies against the antigens your cells DON'T have.\"",
+ act:5,scene:"abo",id:"abo",title:"ABO blood groups: antigens and antibodies",
  body:`<p>The surface of every RBC carries markers called <b>antigens</b>. Blood type is named for which antigens are there. In the <b>ABO</b> system:</p>
  <ol><li><b>Type A</b> RBCs carry <b>A antigens</b>. <b>Type B</b> carry <b>B antigens</b>. <b>Type AB</b> carry <b>both</b>. <b>Type O</b> carry <b>neither</b>.</li>
  <li>The plasma carries <b>antibodies</b> against the antigens your cells <b>don't</b> have. Type A has <b>anti-B</b>. Type B has <b>anti-A</b>. Type AB has <b>neither</b>. Type O has <b>both anti-A and anti-B</b>.</li></ol>
@@ -522,7 +558,8 @@ const STEPS=[
  caption:"Each type: antigens on the RBC (top) and antibodies in the plasma (bottom). You carry antibodies only against the antigens you don't have.",
  legend:[["agA","A antigen / anti-A","t"],["agB","B antigen / anti-B"],["rbc","RBC"],["plasma","Plasma","r"]]},
 
-{act:5,scene:"rh",id:"rh",title:"The Rh factor",
+{desc:"At the top left, an Rh-positive red cell ringed with teal square D antigens (\"about 85 percent of people in the US\") sits beside a plain Rh-negative cell, and a box at the top right explains that anti-A and anti-B are present from early childhood but teal anti-D is made only after an Rh-negative person is exposed to Rh-positive blood. Below, three panels light up in turn. 1 Before any exposure: plain red cells, no anti-D; 2 First exposure: teal-studded Rh-positive cells get in and a pale B cell starts making a few anti-D (\"takes time\"). 3 Second exposure: anti-D is ready and links the Rh-positive cells into clumps (\"agglutinate\").",
+ act:5,scene:"rh",id:"rh",title:"The Rh factor",
  body:`<p>The second important blood group is the <b>Rh</b> system. Its main antigen is called <b>D</b>.</p>
  <ol><li>If your RBCs have the D antigen, you are <b>Rh positive (Rh⁺)</b>. Most people are, about 85% in the United States.</li>
  <li>If they don't, you are <b>Rh negative (Rh⁻)</b>.</li></ol>
@@ -537,7 +574,8 @@ const STEPS=[
  caption:"Rh⁺ cells carry D antigens; Rh⁻ cells don't. An Rh⁻ person makes anti-D only after a first exposure. The second exposure causes clumping.",
  legend:[["agD","D (Rh) antigen / anti-D","s"],["rbc","RBC"],["lymc","B cell / plasma cell"],["plasma","Plasma","r"]]},
 
-{act:5,scene:"transf",id:"transf",title:"Transfusion reactions and universal donors",
+{desc:"A red blood bag at the top left, labelled \"Type B\" donor red cells, drips through a tube into a large yellow box, \"Recipient's blood: type A (plasma has anti-B)\". The recipient's own cells have blue triangle A antigens, and gold Y-shaped anti-B antibodies float around. The donor cells with gold B antigens enter, and the antibodies link them into a clump (\"AGGLUTINATION: anti-B links the donor cells\"), then the clumped cells turn pale and burst (\"HEMOLYSIS: the cells burst and spill hemoglobin\"). On the right a chart \"Who can give red cells to whom?\" lists eight blood types for donors and recipients: green lines fan out from O-negative to every recipient (\"universal donor\"), then purple lines converge from every donor to AB-positive (\"universal recipient\").",
+ act:5,scene:"transf",id:"transf",title:"Transfusion reactions and universal donors",
  body:`<p>If a person gets blood with an antigen their plasma has antibodies against, the antibodies bind the donor RBCs. Each antibody can grab more than one cell, so the cells stick together in clumps. This clumping is <b>agglutination</b>.</p>
  <p>The clumped cells can block small vessels, and they <b>burst</b> (<b>hemolysis</b>). Free hemoglobin pours into the plasma and can damage the kidneys. This <b>transfusion reaction</b> can be deadly. That's why blood is typed and cross-matched.</p>
  <p>For a red cell transfusion, ask: does the <b>donor's RBC</b> carry any antigen the <b>recipient</b> has antibodies against?</p>
@@ -553,7 +591,8 @@ const STEPS=[
  caption:"Type B donor cells enter type A blood. Anti-B antibodies link them into clumps (agglutination), then they burst (hemolysis). Right: O⁻ gives to all; AB⁺ takes from all.",
  legend:[["agA","A antigen","t"],["agB","B antigen / anti-B"],["agD","D antigen","s"],["rbc","RBC"]]},
 
-{act:5,scene:"hdn",id:"hdn",title:"Hemolytic disease of the newborn",
+{desc:"Two boxes sit side by side, separated by a wavy brown line labelled \"placenta\": \"Mother's blood, Rh negative\" with plain red cells on the left, and \"Baby's blood, Rh positive\" with cells studded with teal D antigens on the right. Three tabs at the top light up in turn while a purple caption bar below explains each moment. In 1 First pregnancy, the bloods stay mostly separate, then at delivery some baby cells cross into the mother, a B cell appears and teal anti-D antibodies form (\"Baby number 1 is usually fine\"); in 2 Next Rh-positive baby, the anti-D crosses the placenta, sticks to the baby's red cells, and they turn pale and break apart (\"anemia and jaundice, HDN\"). In 3 Prevention, RhoGAM (anti-D) is given, coats any baby cells that get in, and they are cleared before her immune system notices, so she makes no anti-D of her own.",
+ act:5,scene:"hdn",id:"hdn",title:"Hemolytic disease of the newborn",
  body:`<p>Rh matters most in pregnancy. Picture an <b>Rh⁻ mother</b> carrying an <b>Rh⁺ baby</b> (the baby got the D antigen gene from the father).</p>
  <ol><li><b>First pregnancy.</b> The mother's and baby's blood mostly stay separate across the <b>placenta</b>. But at <b>delivery</b>, some of the baby's Rh⁺ cells get into the mother's blood. She becomes <b>sensitized</b> and starts making anti-D. The first baby is usually fine; the antibodies come too late to matter.</li>
  <li><b>Next pregnancy with an Rh⁺ baby.</b> The mother's anti-D antibodies are small enough to <b>cross the placenta</b>. They attack the baby's RBCs, causing hemolysis, anemia and jaundice. This is <b>hemolytic disease of the newborn (HDN)</b>, also called erythroblastosis fetalis.</li>
@@ -568,7 +607,8 @@ const STEPS=[
  caption:"① Delivery: baby's Rh⁺ cells enter the Rh⁻ mother and she makes anti-D. ② Next Rh⁺ baby: anti-D crosses the placenta and destroys its RBCs. ③ RhoGAM prevents this.",
  legend:[["agD","D antigen / anti-D","s"],["rbc","RBC"],["plasmin","RhoGAM (anti-D shot)","r"],["vessel-edge","Placenta","r"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is blood in one view.",
+{desc:"A wide yellow blood vessel across the top, labelled \"plasma + red cells + white cells + platelets\", carries red blood cells, small purple platelets and a few white cells flowing to the right. Below it, five cards stand for the five parts of the chapter: What blood is (a test tube with yellow plasma over red cells), Red blood cells, White cells and platelets, Stopping bleeding (a fibrin mesh), and Blood types (a red cell with antigens). The cards light up one at a time from left to right, each gaining a coloured border (purple, orange, red, green, magenta) and a brighter picture, until all five are lit.",
+ act:0,scene:"recap",id:"recap",title:"You made it. Here is blood in one view.",
  body:`<ol class="recap">
  <li class="h">Part 1 · What blood is</li>
  <li>Blood = plasma (≈55%) + formed elements. Hematocrit ≈ 45% (women 37–47%, men 42–52%).</li><li>Plasma proteins: albumin (osmotic pressure), globulins (antibodies, transport), fibrinogen (clotting).</li><li>Hemopoiesis in red marrow: hemopoietic stem cell → myeloid and lymphoid lines.</li>
@@ -615,7 +655,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip,var(--${a.col}))">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -623,6 +663,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

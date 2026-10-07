@@ -222,7 +222,11 @@ sub,sup{line-height:0}
 .mbtn.hinted{box-shadow:0 0 0 3px var(--gold)}
 .mbtn .tag{font-family:var(--mono);font-size:12px;color:var(--good);margin-left:auto;font-weight:700}
 .mbtn svg{flex:0 0 auto}
+/* a11y retrofit: selected tab stays readable in dark mode */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#10161A}}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#10161A}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -244,6 +248,7 @@ sub,sup{line-height:0}
 
   <!-- PART 1: ABG detective -->
   <section id="tab-abg" role="tabpanel" aria-labelledby="tabbtn-abg">
+    <h2 class="gk-sr">Part 1: ABG Detective</h2>
     <div class="bar" style="margin:0 0 10px">
       <div class="seg" role="group" aria-label="Mode"><button type="button" id="mPractice" aria-pressed="true">Practice (all cases, hints)</button><button type="button" id="mChallenge" aria-pressed="false">Challenge (10 random cases)</button></div>
       <span class="small" id="abgBest"></span>
@@ -289,6 +294,7 @@ sub,sup{line-height:0}
 
   <!-- PART 2: acid-base simulator -->
   <section id="tab-sim" role="tabpanel" aria-labelledby="tabbtn-sim" hidden>
+    <h2 class="gk-sr">Part 2: Acid-Base Simulator</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvSim" role="img" aria-label="Lungs, kidney and blood with a pH gauge and seesaw responding to the settings."></canvas></div>
@@ -313,7 +319,7 @@ sub,sup{line-height:0}
           <button class="tbtn" id="simPause" type="button">Pause</button>
           <button class="tbtn" id="simReset" type="button">Reset to healthy</button>
         </div>
-        <table class="readouts" id="simRead"></table>
+        <table class="readouts" id="simRead"><caption class="gk-sr">Live acid-base readouts</caption><tr><th scope="row">pH</th><td>7.40</td></tr></table>
         <div class="status" id="simStatus" role="status"></div>
         <h3>Challenges</h3>
         <ul class="chal" id="simChal"></ul>
@@ -324,6 +330,7 @@ sub,sup{line-height:0}
 
   <!-- PART 3: fluid shift simulator -->
   <section id="tab-fluid" role="tabpanel" aria-labelledby="tabbtn-fluid" hidden>
+    <h2 class="gk-sr">Part 3: Fluid Shift Simulator</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvFluid" role="img" aria-label="Intracellular, interstitial and plasma compartments with cells that swell or shrink."></canvas></div>
@@ -344,7 +351,7 @@ sub,sup{line-height:0}
         <div class="bar"><label class="mode"><input type="checkbox" id="predOn" checked> Predict first</label><button class="tbtn" id="flReset" type="button">Reset to normal</button></div>
         <div class="predict" id="predBox" hidden><p id="predQ"></p><div class="bar" id="predBtns"></div></div>
         <div class="msg" id="flMsg" role="status"></div>
-        <table class="readouts" id="flRead"></table>
+        <table class="readouts" id="flRead"><caption class="gk-sr">Fluid compartment readouts</caption><tr><th scope="row">ICF</th><td>28.00 L</td></tr></table>
         <div class="status" id="flStatus"></div>
         <p class="small" id="flStars"></p>
       </aside>
@@ -662,7 +669,8 @@ $("#abgHint").onclick=()=>{const k=CASES[abgList[abgI]];const c=classify(k.ph,k.
 $("#abgShow").onclick=()=>{if(abgStep>3)return;const k=CASES[abgList[abgI]];const right=optsFor(abgStep,k).find(o=>o[1]);abgTries=1;
   const btn=[...$("#abgOpts").querySelectorAll(".opt")].find(b=>b.textContent===right[0]);if(btn)abgAnswer(btn,right)};
 function drawAbg(now){use(S1);const T=now/1000;const k=CASES[abgList[abgI]];
-  ["ph","p","b"].forEach(key=>{abgVis[key]+=(k[key]-abgVis[key])*.08});
+  const dtA=Math.min(.05,Math.max(0,(now-(drawAbg.l||now))/1000));drawAbg.l=now;const kA=1-Math.pow(.92,dtA*60);
+  ["ph","p","b"].forEach(key=>{abgVis[key]+=(k[key]-abgVis[key])*kA});
   ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,400);
   // lab slip
   panelBox(16,16,350,368,{fill:C["panel-2"]});txt(30,36,"ARTERIAL BLOOD GAS",{size:12,mono:true,weight:700,color:C["ink-soft"]});txt(352,36,"Case "+(abgI+1),{size:12,mono:true,align:"right",color:C["ink-soft"]});
@@ -754,8 +762,8 @@ function simStatus(){const pH=pHof(sim.B,sim.P);const c=classify(Math.round(pH*1
     if(pH<7.2)txt_+=" pH is dangerously low.";if(pH>7.6)txt_+=" pH is dangerously high."}
   const el=$("#simStatus");if(el.textContent!==txt_){el.textContent=txt_;el.className="status "+cls}
   const rows=[["pH",pH.toFixed(2),pH<7.35||pH>7.45],["PaCO₂",Math.round(sim.P)+" mmHg",sim.P<35||sim.P>45],["HCO₃⁻",sim.B.toFixed(1)+" mEq/L",sim.B<22||sim.B>26],["Breathing",Math.round(sim.rate)+" /min "+(sim.rateAuto?"(auto)":"(you)"),false],["Kidneys",(sim.kid>.15?"keeping HCO₃⁻":sim.kid<-.15?"excreting HCO₃⁻":"balanced")+(sim.kidAuto?" (auto)":" (you)"),false],["Time",fmtH(sim.h),false]];
-  const html=rows.map(r=>`<tr><th>${r[0]}</th><td style="${r[2]?"color:var(--bad);font-weight:700":""}">${r[1]}${r[2]?" !":""}</td></tr>`).join("");
-  const tb=$("#simRead");if(tb.innerHTML!==html)tb.innerHTML=html;
+  const html='<caption class="gk-sr">Live acid-base readouts</caption>'+rows.map(r=>`<tr><th scope="row">${r[0]}</th><td style="${r[2]?"color:var(--bad);font-weight:700":""}">${r[1]}${r[2]?" !":""}</td></tr>`).join("");
+  const tb=$("#simRead");if(tb.dataset.h!==html){tb.dataset.h=html;tb.innerHTML=html}
   if(sim.rateAuto){$("#rateSl").value=Math.round(sim.rate)}$("#rateOut").textContent=Math.round(sim.rate)+" /min";
   if(sim.kidAuto){$("#kidSl").value=Math.round(sim.kid*20)/20}$("#kidOut").textContent=sim.kid>.15?"keep / make":sim.kid<-.15?"excrete":"balanced";
   $("#warpOut").textContent="Time warp now: "+fmtRate(warpRate())+".";}
@@ -857,7 +865,7 @@ $("#flReset").onclick=()=>{Object.assign(fl,{Vc:28,Vi:11,Vp:3,Se:14*285,G:0,task
 function flReadouts(){const Ve=fl.Vp+fl.Vi;const osm=(fl.Sc+fl.Se+fl.G)/(Ve+fl.Vc);const ecfOsm=(fl.Se+fl.G)/Ve;const na=Math.round(fl.Se/Ve/2.04);
   const d=v=>(v>=0?"+":"−")+Math.abs(v).toFixed(2)+" L";
   const rows=[["ICF",fl.Vc.toFixed(2)+" L ("+d(fl.Vc-28)+")"],["Interstitial",fl.Vi.toFixed(2)+" L ("+d(fl.Vi-11)+")"],["Plasma",fl.Vp.toFixed(2)+" L ("+d(fl.Vp-3)+")"],["Osmolality",Math.round(osm)+" mOsm/L"],["Serum Na⁺ (approx.)",na+" mEq/L"]];
-  const html=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");if($("#flRead").innerHTML!==html)$("#flRead").innerHTML=html;
+  const html='<caption class="gk-sr">Fluid compartment readouts</caption>'+rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join("");const fr=$("#flRead");if(fr.dataset.h!==html){fr.dataset.h=html;fr.innerHTML=html}
   let s="Normal fluid balance.",cls="good";const msgs=[];
   if(na<135){msgs.push("Hyponatremia: cells are swollen (brain risk)");cls="bad"}else if(na>145){msgs.push("Hypernatremia: cells are shrunken");cls="bad"}
   if(fl.Vp<2.6){msgs.push("Low plasma volume: blood pressure may fall");cls="bad"}else if(fl.Vp>3.5){msgs.push("High plasma volume: watch for fluid overload");if(cls!=="bad")cls="warn"}
@@ -1044,7 +1052,38 @@ window.__fab={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),cas
   simReset:()=>simReset(),
   fl:(id,sec)=>{flRun(itemOf(id));for(let i=0;i<sec*20;i++)flStep(.05);flReadouts();return {Vc:fl.Vc,Vi:fl.Vi,Vp:fl.Vp,G:fl.G}},
   em:r=>{emR=r;emLoad()},emShow:()=>$("#emShow").click(),emMatch:(l,r)=>{emSelL=l;emSelR=r;emTry()}};
+/* ---------- a11y retrofit: picture descriptions + stale contrast-class cleanup ---------- */
+let gkLast="";
+function gkSay(t){t=String(t||"").replace(/\s+/g," ").trim();if(!t||t===gkLast)return;gkLast=t;if(window.gkDescribe)window.gkDescribe(t)}
+function gkLabel(id,t){const el=document.getElementById(id);if(el&&t&&el.getAttribute("aria-label")!==t)el.setAttribute("aria-label",t)}
+function gkMoveDesc(panelId){const d=document.getElementById("gk-desc");const p=document.getElementById(panelId);if(!d||!p)return;
+  const cvs=[...p.querySelectorAll("canvas")];const cv=cvs.find(c=>c.offsetParent!==null)||cvs[0];if(!cv)return;
+  const a=cv.closest(".canvas-holder")||cv;if(a.nextSibling!==d)a.parentNode.insertBefore(d,a.nextSibling);
+  cvs.forEach(c=>c.setAttribute("aria-describedby","gk-desc"))}
+(function(){const L=c=>{const m=String(c).match(/[\d.]+/g);if(!m)return null;if(m.length>3&&+m[3]===0)return -1;const v=m.slice(0,3).map(x=>{x=x/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*v[0]+.7152*v[1]+.0722*v[2]};
+  const sweep=()=>document.querySelectorAll(".gk-oninv").forEach(el=>{const l=L(getComputedStyle(el).backgroundColor);if(l!==null&&l<=.22)el.classList.remove("gk-oninv")});
+  new MutationObserver(()=>{sweep();setTimeout(sweep,450)}).observe(document.body,{subtree:true,attributes:true,attributeFilter:["aria-selected","aria-pressed","class"]})})();
+function gkDescNow(){
+  const hl=(v,lo,hi)=>v<lo?"low":v>hi?"high":"normal";
+  if(curTab==="abg"){const k=CASES[abgList[abgI]];const c=classify(k.ph,k.p,k.b);
+    gkSay(`A lab slip on the left lists case ${abgI+1}: pH ${k.ph.toFixed(2)} (${hl(k.ph,7.35,7.45)}), PaCO₂ ${k.p} mmHg (${hl(k.p,35,45)}) and HCO₃⁻ ${k.b} mEq/L (${hl(k.b,22,26)}). Each value has a bar with a green normal band and a black pointer; abnormal values are red. On the right, a pH gauge with red acid, green normal and blue base zones points to ${k.ph.toFixed(2)}, and below it a seesaw holds a blue HCO₃⁻ pan on the base side and a grey CO₂ pan on the acid side, tipped ${k.ph<7.38?"down toward the acid side":k.ph>7.42?"down toward the base side":"about level"}. Small lungs are marked "lungs set CO₂" and a kidney "kidneys set HCO₃⁻".${abgStep>3?" The answer label reads: "+dxName(k)+".":abgStep>=2&&c.prim!=="none"?" A label names the primary change: "+(c.prim==="resp"?"PaCO₂ (respiratory)":"HCO₃⁻ (metabolic)")+".":""}`)}
+  else if(curTab==="sim"){const pH=pHof(sim.B,sim.P);const act=EVENTS.filter(e=>sim.ev.has(e.id)).map(e=>e.n.toLowerCase());const st=$("#simStatus").textContent;
+    const r2=x=>Math.round(x/2)*2;
+    gkLabel("cvSim",`Acid-base simulator: pH about ${(Math.round(pH*20)/20).toFixed(2)}, PaCO₂ about ${r2(sim.P)} mmHg, HCO₃⁻ about ${r2(sim.B)} mEq/L. ${st}`);
+    gkSay(`Pink lungs on the upper left breathe at about ${r2(sim.rate)} breaths per minute (${sim.rateAuto?"automatic":"set by you"}), breathing out grey CO₂ molecules. A kidney below them is ${sim.kid>.15?"keeping and making blue HCO₃⁻, which flows into the blood":sim.kid<-.15?"excreting blue HCO₃⁻ into the urine":"balanced"} (${sim.kidAuto?"automatic":"set by you"}). An arterial blood vessel in the middle carries grey CO₂ and blue HCO₃⁻ particles${pH<7.35?", plus red H⁺ ions":""}. On the right, a pH gauge points to about ${(Math.round(pH*20)/20).toFixed(2)} and a seesaw tips ${pH<7.38?"toward the acid side":pH>7.42?"toward the base side":"about level"}. ${act.length?"Active events: "+act.join(", ")+".":"No events are on: healthy."} ${st}`);
+    gkLabel("cvSimChart",`Live traces of pH, PaCO₂ and HCO₃⁻ over time; now pH about ${(Math.round(pH*20)/20).toFixed(2)}.`)}
+  else if(curTab==="fluid"){const r1=x=>(Math.round(x*2)/2).toFixed(1);const sc=1+(fl.Vc/28-1)*6;const it=fl.task?fl.lastItem:null;
+    gkSay(`Three tanks stand side by side with dashed lines at their starting levels: a wide pink ICF tank (inside cells) holding about ${r1(fl.Vc)} L, a light blue interstitial tank about ${r1(fl.Vi)} L, and a narrow yellow plasma tank about ${r1(fl.Vp)} L. Six cells drawn in the ICF tank are ${sc>1.04?"swelling":sc<.96?"shrinking, with crinkled edges":"normal size"}. ${it?(BAGS.find(b=>b.id===it.id)?`An IV bag of ${it.n} hangs on the pole on the right and drips into the plasma tank.`:`${it.n} is happening: drops ${it.id==="drink"?"enter":"leave"} the body on the right.`):"The IV pole on the right is empty; pick a bag or an event."} ${Math.abs(fl.flowC)>.02?"Blue water drops move "+(fl.flowC>0?"into":"out of")+" the cells across the membranes.":""} ${$("#flStatus").textContent}`)}
+  else{const R=ROUNDS[emR];const l=emPicL();
+    gkSay(emR===0?`A large pink cell sits in light blue fluid. Ions you have placed correctly circle inside the cell (ICF) or outside it (ECF): ${R.L.filter(x=>emDone.has(x.id)).map(x=>x.t.split(" (")[0]+(x.r==="ICF"?" inside":" outside")).join(", ")||"none placed yet"}.${l?" The banner reads "+l.t+" → "+(l.r==="ICF"?"inside cells":"outside cells")+".":""}`
+      :!l?(emR===1?"Match a hormone to see it in action. For now the picture shows a kidney, a beating heart and a head.":"Match an imbalance to see what it looks like.")
+      :emR===1?`The banner reads ${l.t}. Coloured hormone dots travel along a dashed arrow from the gland that makes it on the left to its target on the right, where ions move to show the effect: ${R.R.find(x=>x.id===l.r).t}.`
+      :`The banner reads ${l.t}. The picture shows what it looks like: ${R.R.find(x=>x.id===l.r).t.toLowerCase()}${l.id==="hyperk"?", drawn as a green ECG trace with tall peaked T waves and an irregular rhythm":l.id==="hypok"?", drawn as a green ECG trace with flat T waves and an extra U wave":l.id==="hypoca"?", drawn as a twitching hand in spasm next to a normal hand":l.id==="hyperca"?", drawn as a kidney with a spiky calcium stone and many calcium ions in the blood":l.id==="hypona"?", drawn as a brain cell surrounded by few Na⁺ ions, swelling as water drops rush in":l.id==="hyperna"?", drawn as a brain cell surrounded by many Na⁺ ions, shrinking as water drops leave":", drawn as a stomach losing H⁺ and Cl⁻ ions upward through vomiting"}.`)}
+}
+setInterval(gkDescNow,500);
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{gkMoveDesc("tab-"+curTab);gkDescNow()}));
 readColors();abgStart("practice");simReset();renderEvBtns();renderChal();renderFlBtns();emLoad();fitAll();requestAnimationFrame(frame);
+gkMoveDesc("tab-abg");gkDescNow();
 })();
 </script>
 </body>

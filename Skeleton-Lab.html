@@ -11,11 +11,11 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --warn:#9A5524;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;--gold-wash:#F6EFD3;
   /* skeleton palette */
   --bf:#EEDFC0;--bf2:#E6D2AA;--bf3:#F3E8D0;--bfB:#D9C59C;--be:#6B5432;--deep:#9C8762;--hole:#4A3B28;
   --tooth:#FBF8EF;--cart:#C4DEEC;--cart-edge:#5C8FAE;--hl:#E3A51C;--hl-wash:#FCEFC9;
-  --ax:#2E6FA8;--ap:#B85C2E;
+  --ax:#2E6FA8;--ap:#AB552A;
   --rC:#7B5CC9;--rT:#2F8A57;--rL:#1B6E88;--rS:#B4632A;--rX:#A9372F;
   --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
   --r:6px;
@@ -57,6 +57,8 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .wrap{max-width:1180px;margin:0 auto;padding:16px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+/* a11y: a tab that was selected keeps site-kit's dark-on-light class after it is deselected; give it back its normal text colour */
+.tab[aria-selected="false"].gk-oninv{color:var(--ink)!important}
 .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
 .tbtn:hover{border-color:var(--accent)}
@@ -177,6 +179,8 @@ svg{display:block;width:100%;height:auto}
 .mbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
 .mbin{border:2px dashed var(--rule);border-radius:var(--r);background:var(--panel);padding:8px;min-height:110px;cursor:pointer;display:flex;flex-direction:column;gap:6px;text-align:left}
 .mbin h4{margin:0;font-size:14.5px;display:flex;align-items:center;gap:8px}
+.mbin .mbtn{all:unset;display:flex;align-items:center;gap:8px;cursor:pointer;font:inherit;font-weight:600;color:var(--ink);width:100%;border-radius:4px}
+.mbin .mbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .mbin h4 i{width:12px;height:12px;border-radius:3px}
 .mbin h4 small{font-weight:400;color:var(--ink-soft);font-family:var(--mono);font-size:12px}
 .mbin.over,.armed .mbin{border-color:var(--accent)}
@@ -241,7 +245,12 @@ svg{display:block;width:100%;height:auto}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
 @media (max-width:600px){h1{font-size:22px}.prompt{font-size:20px}.clue{font-size:18px}.card{padding:12px}}
+/* a11y: in dark mode the accent is light, so selected/pressed controls use dark text (this also stops
+   site-kit's contrast fixer from leaving a stale dark-text class behind when the selection moves) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.tab[aria-selected="true"],.chip.sel,.chip.ghost,.seg button[aria-pressed="true"]){color:#0B1A20}}
+:root[data-theme="dark"] :is(.tab[aria-selected="true"],.chip.sel,.chip.ghost,.seg button[aria-pressed="true"]){color:#0B1A20}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -280,7 +289,7 @@ svg{display:block;width:100%;height:auto}
     <div class="card">
       <div class="rounds" id="lRounds"></div>
       <p class="instr" id="lInstr"></p>
-      <div class="bank" id="lBank" aria-label="Word bank"></div>
+      <div class="bank" id="lBank" role="group" aria-label="Word bank"></div>
       <div class="lgrid" id="lRoot">
         <div class="diag" id="lDiag"></div>
         <div>
@@ -323,7 +332,7 @@ svg{display:block;width:100%;height:auto}
       </div>
       <div id="vMatch" hidden>
         <p class="instr">Match each feature to its region. Drag a feature into a bin, or tap a feature and then tap a bin. Tap a placed feature to send it back.</p>
-        <div class="bank" id="mBank" aria-label="Features to sort"></div>
+        <div class="bank" id="mBank" role="group" aria-label="Features to sort"></div>
         <div class="mbins" id="mBins"></div>
         <div class="bar" style="margin-top:14px">
           <button class="btn" id="mCheck" type="button">Check</button>
@@ -368,6 +377,12 @@ svg{display:block;width:100%;height:auto}
 </footer>
 
 <script>
+/* a11y: keep CSS keyframe animations in step with the site-kit animation clock (Pause / Reduce motion) */
+(function(){if(!document.getAnimations)return;let lv=0,lr=0,av=0,ar=0,rate=1;
+  function tick(ts){const r=Date.now();if(lv){av+=ts-lv;ar+=r-lr;if(ar>=200){const k=av/ar;rate=k<.15?0:k<.7?.35:1;av=ar=0}}lv=ts;lr=r;
+    document.getAnimations().forEach(a=>{if(typeof CSSAnimation!=="undefined"&&a instanceof CSSAnimation&&a.playbackRate!==rate)a.playbackRate=rate});
+    requestAnimationFrame(tick)}
+  requestAnimationFrame(tick)})();
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
@@ -570,11 +585,11 @@ DIAGRAMS.forEach(D=>{const pos=t=>t[3]==="l"?[D.L,t[4]]:t[3]==="r"?[D.R,t[4]]:t[
 
 function diagramSVG(D,mode){/* mode: "play" | "study" */
   const VB=mode==="play"?D.pvb:D.vb,vb=VB.split(" ").map(Number);
-  let s=`<svg viewBox="${VB}" role="img" aria-label="${D.name}${mode==="study"?" with all labels":" with numbered targets"}"><rect class="bgp" x="${vb[0]}" y="${vb[1]}" width="${vb[2]}" height="${vb[3]}"/>`;
+  let s=`<svg viewBox="${VB}" ${mode==="play"?'role="group"':'role="img"'} aria-label="${D.name}${mode==="study"?" with all labels: "+D.targets.map(t=>t.n+" "+t.name).join(", "):". "+D.blurb+" Numbered target buttons: "+D.targets.length}"><rect class="bgp" x="${vb[0]}" y="${vb[1]}" width="${vb[2]}" height="${vb[3]}"/>`;
   s+=D.draw();
   s+=`<g>`+D.targets.map(t=>`<line class="lead" x1="${t.d[0]}" y1="${t.d[1]}" x2="${t.a[0]}" y2="${t.a[1]}"/><circle class="anc" cx="${t.a[0]}" cy="${t.a[1]}" r="2.8"/>`).join("")+`</g>`;
   D.targets.forEach(t=>{
-    s+=`<g class="dot" data-drop="${t.id}" data-n="${t.n}" ${mode==="play"?`role="button" tabindex="0" aria-label="Target ${t.n}"`:""}><circle cx="${t.d[0]}" cy="${t.d[1]}" r="12"/><text x="${t.d[0]}" y="${t.d[1]+4.2}">${t.n}</text></g>`;
+    s+=`<g class="dot" data-drop="${t.id}" data-n="${t.n}" ${mode==="play"?`role="button" tabindex="0" aria-label="${t.n}: empty target"`:""}><circle cx="${t.d[0]}" cy="${t.d[1]}" r="12"/><text x="${t.d[0]}" y="${t.d[1]+4.2}">${t.n}</text></g>`;
     if(mode==="study"){const [x,y]=t.d;let tx=x,ty=y+4.5,an="middle";
       if(t.side==="l"){tx=x-17;an="end"}else if(t.side==="r"){tx=x+17;an="start"}else if(t.side==="t"){ty=y-18}else{ty=y+30}
       s+=`<text class="slab" x="${tx}" y="${ty}" text-anchor="${an}">${t.name}</text>`}});
@@ -618,7 +633,7 @@ function lNew(){const D=DIAGRAMS[LG.d];LG.placed={};LG.marks={};LG.checks=0;LG.h
   $$("#lDiag .dot").forEach(el=>bindTarget(lctx,el));
   const ol=$("#lSlots");ol.innerHTML="";
   D.targets.forEach(t=>{const li=document.createElement("li");const b=document.createElement("button");b.type="button";b.className="slot";b.dataset.drop=t.id;
-    b.innerHTML=`<span class="num">${t.n}</span><span class="val"></span><span class="mk" aria-hidden="true"></span>`;bindTarget(lctx,b);li.appendChild(b);ol.appendChild(li)});
+    b.innerHTML=`<span class="num">${t.n}</span><span class="gk-sr">: </span><span class="val"></span><span class="mk" aria-hidden="true"></span><span class="gk-sr st"></span>`;bindTarget(lctx,b);li.appendChild(b);ol.appendChild(li)});
   lRounds();lRender();setLMsg("");lStudy()}
 function lStudy(){const D=DIAGRAMS[LG.d];$("#lStudyIn").innerHTML=`<p class="instr">${D.blurb}</p><div class="diag" style="max-width:${D.maxw}px">${diagramSVG(D,"study")}</div><ol class="keylist">${D.targets.map(t=>`<li>${t.name}</li>`).join("")}</ol>`}
 function lDrop(cid,tid){if(LG.done)return;for(const k in LG.placed)if(LG.placed[k]===cid)delete LG.placed[k];LG.placed[tid]=cid;LG.marks={};lRender();setLMsg("")}
@@ -628,9 +643,10 @@ function lRender(){const D=DIAGRAMS[LG.d];const name=id=>D.targets.find(t=>t.id=
   D.targets.forEach(t=>{const sl=$(`#lSlots [data-drop="${t.id}"]`),dt=$(`#lDiag .dot[data-drop="${t.id}"]`);const p=LG.placed[t.id],m=LG.marks[t.id];
     sl.className="slot"+(p?" filled":"")+(m?" "+m:"");sl.querySelector(".val").textContent=p?name(p):"drop a label here";
     sl.querySelector(".mk").textContent=m==="right"?"✓":m==="wrong"?"✗":"";
-    sl.setAttribute("aria-label",`Target ${t.n}: ${p?name(p):"empty"}${m==="right"?", correct":m==="wrong"?", not correct":""}`);
+    sl.querySelector(".st").textContent=m==="right"?", correct":m==="wrong"?", not correct":"";
     dt.setAttribute("class","dot"+(p?" filled":"")+(m&&m!=="hinted"?" "+m:"")+(m==="hinted"?" hinted":""));
-    dt.setAttribute("aria-label",`Target ${t.n}: ${p?name(p):"empty"}`)});
+    dt.setAttribute("aria-label",`${t.n}: ${p?name(p):"empty target"}${m==="right"?", correct":m==="wrong"?", not correct":""}`)});
+  gkD("Label it: "+D.name+". "+D.blurb+" "+D.targets.length+" numbered circles sit around the drawing, each joined by a thin line to a point on the bone. "+(Object.keys(LG.placed).length?Object.keys(LG.placed).length+" of them hold a label"+(Object.keys(LG.marks).length?"; correct ones turn green and wrong ones orange":"")+".":"None has a label yet."),"label");
   const n=Object.keys(LG.placed).length;$("#lScore").innerHTML=`Placed <b>${n}</b> of <b>${D.targets.length}</b>`+(LG.checks?` &middot; checks <b>${LG.checks}</b>`:"")+(LG.hints?` &middot; hints <b>${LG.hints}</b>`:"")}
 function setLMsg(t,c){const m=$("#lMsg");m.className="msg"+(t?" show "+(c||"info"):"");m.innerHTML=t||""}
 $("#lCheck").onclick=()=>{if(LG.done)return;const D=DIAGRAMS[LG.d];LG.checks++;let ok=0;
@@ -859,6 +875,14 @@ const VINFO={
  L:{name:"Lumbar vertebra",reg:"L",give:["body","spine","foramen"],text:"The <b>largest, thickest body</b> (kidney shaped) because it carries the most weight, a triangular foramen, and a <b>short, thick, hatchet-shaped spinous process</b> that points straight back. No costal facets, no transverse foramina."},
  S:{name:"Sacrum",reg:"S",give:["foramina","ridges","crest","auricular","promontory"],text:"<b>Five vertebrae fused</b> into one triangle. Four pairs of <b>sacral foramina</b>, a median sacral crest on the back, and <b>auricular surfaces</b> that form the sacroiliac joints with the ilium."},
  X:{name:"Coccyx",reg:"X",give:["all"],text:"The tailbone: <b>3 to 5 tiny fused vertebrae, usually 4</b>, below the sacrum. Several pelvic floor muscles and ligaments attach here."}};
+/* a11y: what each vertebra drawing shows, without naming it */
+const VDESC={C:"Seen from above, front at the bottom: a small oval body, a large triangular hole in the middle, a small round hole in each side process, and a short spine at the back that splits into two tips. A side view shows a small body and a short forked spine.",
+ A1:"Seen from above, front at the bottom: a ring of bone with no solid body at the front and no long spine at the back, only small bumps. Two large kidney-shaped flat surfaces sit on the sides of the ring.",
+ A2:"Two views. From above: a body with a round peg drawn on it, a triangular hole and a forked spine. From the side: a tall tooth-like peg sticks straight up from the top of the body.",
+ T:"Seen from above: a heart-shaped body, a small round hole, long side processes with small oval facets near their tips, small facets on the sides of the body, and a long spine. A side view shows the long thin spine slanting steeply downward.",
+ L:"Seen from above: a very large, wide, kidney-shaped body, a small triangular hole, short thick side processes and a short broad spine. A side view shows a tall body and a short, thick, square-ended spine pointing straight back like a hatchet.",
+ S:"Two views of one triangular bone, wide at the top and pointed at the bottom. The front view shows horizontal ridges and four pairs of small holes; the back view shows a ridge of bumps down the middle, four pairs of holes and ear-shaped surfaces on the upper sides.",
+ X:"Front view: a short stack of about four tiny bones that get smaller toward the bottom, with a dashed outline above showing where the larger bone above sits."};
 const PICS=[["C","sup",["tf","bifid"]],["C","lat",["bifid"]],["A1","sup",["noBody","noSpine"]],["A2","both",["dens"]],["T","sup",["costal","tcf"]],["T","lat",["spine","costal"]],["L","sup",["body","spine"]],["L","lat",["spine","body"]],["S","both",["foramina","auricular"]],["X","sup",["all"]]];
 const CLUES=[
  ["C","Holes in both transverse processes (transverse foramina) that carry the vertebral arteries.","C","sup",["tf"]],
@@ -888,15 +912,15 @@ function vStart(){vRounds();clearSel();$("#vPlay").hidden=VR===2;$("#vMatch").hi
 function vShow(){vFirst=true;vAnswered=false;const c=vdeck[vi];$("#vN").textContent=vi+1;$("#vOk").textContent=vOk;$("#vStreak").textContent=vStreak;$("#vBar").style.width=(vi/vdeck.length*100)+"%";
   $("#vWhy").className="why";$("#vNext").hidden=true;$("#vQ2wrap").hidden=true;
   if(VR===0){$("#vAsk").textContent="Which region of the column does this vertebra come from?";$("#vClue").innerHTML="";$("#vClue").style.minHeight="0";
-    $("#vPic").innerHTML=vSVG(c[0],c[1],[],false,"Unlabeled vertebra drawing to identify")}
+    $("#vPic").innerHTML=vSVG(c[0],c[1],[],false,"Unlabeled vertebra drawing to identify. "+VDESC[c[0]]);gkD("Card "+(vi+1)+": unlabeled vertebra drawing. "+VDESC[c[0]],"vert")}
   else{$("#vAsk").textContent="Clue only. Which region has this feature?";$("#vClue").style.minHeight="";$("#vClue").textContent=c[1];
-    $("#vPic").innerHTML=`<div style="aspect-ratio:460/250;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:15px;text-align:center;padding:20px">The drawing appears after you answer.<br>Picture the vertebra in your head first.</div>`}
+    gkD("Card "+(vi+1)+": clue only, no drawing yet. The clue reads: "+c[1],"vert");$("#vPic").innerHTML=`<div style="aspect-ratio:460/250;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:15px;text-align:center;padding:20px">The drawing appears after you answer.<br>Picture the vertebra in your head first.</div>`}
   const bins=$("#vBins");bins.innerHTML="";
   Object.keys(REG).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="bin";b.innerHTML=`<i style="background:var(${REG[k].col})"></i>${REG[k].name}<span class="mk"></span><small>${REG[k].count}</small>`;
     b.onclick=()=>vAnswer(k,b);bins.appendChild(b)})}
 function vAnswer(k,b){if(vAnswered)return;const c=vdeck[vi];const key=VR===0?c[0]:c[2],reg=VR===0?VINFO[key].reg:c[0];const hl=VR===0?c[2]:c[4],view=VR===0?(c[1]==="sup"||c[1]==="lat"?c[1]:"both"):c[3];
   if(k===reg){vAnswered=true;b.classList.add("right");b.querySelector(".mk").textContent="✓";if(vFirst){vOk++;vStreak++}else vStreak=0;$("#vOk").textContent=vOk;$("#vStreak").textContent=vStreak;
-    $("#vPic").innerHTML=vSVG(key,view==="sup"&&key==="T"&&VR===1?"both":view,hl,true,VINFO[key].name+" with the giveaway features highlighted");
+    $("#vPic").innerHTML=vSVG(key,view==="sup"&&key==="T"&&VR===1?"both":view,hl,true,VINFO[key].name+" with the giveaway features highlighted in gold. "+VDESC[key]);gkD(VINFO[key].name+", with the giveaway features outlined in gold and labeled. "+VDESC[key],"vert");
     const w=$("#vWhy");w.className="why show";w.innerHTML=`${vFirst?"<b>Yes!</b>":"<b>Got it.</b>"} The answer: <b>${VINFO[key].name}</b>. The giveaway is glowing gold on the drawing. ${VINFO[key].text}`;
     if(VR===0&&reg==="C"){vQ2(key)}else{vShowNext()}}
   else{b.classList.add("wrong");b.querySelector(".mk").textContent="✗";vFirst=false;vStreak=0;$("#vStreak").textContent=0;
@@ -920,8 +944,8 @@ const mctx={root:$("#vMatch"),drop:(cid,bin)=>{MG.placed[cid]=bin;MG.marks={};mR
 function mNew(){const byR={};FEATS.forEach((x,i)=>(byR[x[1]]=byR[x[1]]||[]).push(i));
   let pick=[];Object.keys(byR).forEach(r=>pick=pick.concat(shuffle(byR[r]).slice(0,2)));pick=pick.concat(shuffle(FEATS.map((_,i)=>i).filter(i=>!pick.includes(i))).slice(0,2));
   MG.set=shuffle(pick);MG.placed={};MG.marks={};MG.hints=0;MG.checks=0;clearSel();
-  const mb=$("#mBins");mb.innerHTML="";Object.keys(REG).forEach(k=>{const d=document.createElement("div");d.className="mbin";d.dataset.drop=k;d.setAttribute("role","button");d.tabIndex=0;d.setAttribute("aria-label",REG[k].name+" bin");
-    d.innerHTML=`<h4><i style="background:var(${REG[k].col})"></i>${REG[k].name} <small>${REG[k].count.split(",")[0]}</small></h4><div class="mlist"></div>`;bindTarget(mctx,d);mb.appendChild(d)});
+  const mb=$("#mBins");mb.innerHTML="";Object.keys(REG).forEach(k=>{const d=document.createElement("div");d.className="mbin";d.dataset.drop=k;d.setAttribute("role","group");d.setAttribute("aria-label",REG[k].name+" bin");
+    d.innerHTML=`<h4><button type="button" class="mbtn"><i style="background:var(${REG[k].col})" aria-hidden="true"></i>${REG[k].name} <small>${REG[k].count.split(",")[0]}</small><span class="gk-sr">: put the chosen feature here</span></button></h4><div class="mlist"></div>`;bindTarget(mctx,d);mb.appendChild(d)});
   mRender();mMsg("")}
 function mRender(){const bank=$("#mBank");bank.innerHTML="";MG.set.filter(i=>!MG.placed[i]).forEach(i=>bank.appendChild(makeChip(mctx,i,FEATS[i][0])));
   $$("#mBins .mbin").forEach(bin=>{const L=bin.querySelector(".mlist");L.innerHTML="";MG.set.filter(i=>MG.placed[i]===bin.dataset.drop).forEach(i=>{const b=document.createElement("button");b.type="button";const m=MG.marks[i];
@@ -940,6 +964,18 @@ function vStudy(){const cards=[["C","both","Typical cervical (C3 to C7)",VINFO.C
    cards.map(([k,v,t,info])=>`<div class="vcard"><h4><i style="background:var(${REG[info.reg].col})"></i>${t}</h4>${vSVG(k,v,info.give,true,t+" with giveaway features labeled",true)}<p>${info.text}</p></div>`).join("")+`</div></div>`}
 
 /* ================= SKELETON (BONE CHASE) ================= */
+/* a11y: where each bone is, without naming it (used as the button name on the playable skeleton,
+   so "Name it, find it" still tests the skill for screen reader users, and to describe the highlighted bone) */
+const WHERE={skull:"Bone at the very top: the head",mandible:"Bone at the bottom of the face: the lower jaw",hyoid:"Small U-shaped bone in the upper neck, under the jaw",
+ vertebrae:"Stack of bones down the midline from the neck to the lower back",sternum:"Flat bone down the middle of the chest",ribs:"Curved bones that wrap around the chest",
+ sacrum:"Triangular bone at the back of the pelvis, at the base of the spine",coccyx:"Tiny bones at the very bottom tip of the spine",clavicle:"S-shaped bone across the top of the chest, from the neck to the shoulder",
+ scapula:"Flat triangular bone at the back of the shoulder",humerus:"Long bone of the upper arm, from shoulder to elbow",radius:"Forearm bone on the thumb side",
+ ulna:"Forearm bone on the little-finger side",carpals:"Small bones of the wrist",metacarpals:"Five long bones of the palm",phalH:"Small bones of the fingers",
+ coxa:"Large bone forming the hip, on each side of the pelvis",femur:"Long bone of the thigh, from hip to knee",patella:"Small round bone at the front of the knee",
+ tibia:"Large bone of the lower leg, on the big-toe side",fibula:"Thin bone of the lower leg, on the little-toe side",tarsals:"Bones of the ankle and heel",
+ metatarsals:"Five long bones in the middle of the foot",phalF:"Small bones of the toes"};
+function gkD(t,tab){if(window.gkDescribe&&(!tab||!$("#tab-"+tab).hidden))window.gkDescribe(t)}
+function skAria(t){SK.setAttribute("aria-label","Anterior view of the whole skeleton; each bone is a button. "+t)}
 const BONES={
  skull:{name:"Skull (cranium and face)",ax:1,fact:"The skull has 22 bones: 8 cranial bones around the brain and 14 facial bones. All but the mandible are locked together by sutures."},
  mandible:{name:"Mandible",ax:1,fact:"The mandible (lower jaw) is the only skull bone that moves, at the temporomandibular joint."},
@@ -1021,11 +1057,11 @@ const ORDERZ=["vertebrae","scapula","ribs","sternum","clavicle","humerus","radiu
 const MID=new Set(["skull","mandible","hyoid","vertebrae","sternum","sacrum","coccyx"]);
 const NEEDHIT=new Set(["hyoid","carpals","metacarpals","phalH","tarsals","metatarsals","phalF","patella","coccyx","clavicle"]);
 function skeletonSVG(id,study){const pad=study?200:0;const vb=study?`-${pad} 0 ${420+2*pad} 910`:"20 0 380 910";
-  let s=`<svg viewBox="${vb}" class="sk" id="${id}" role="img" aria-label="Anterior view of the whole skeleton${study?" with labels":"; each bone can be clicked"}"><rect class="bgp" x="${-pad}" y="0" width="${420+2*pad}" height="910"/>`;
+  let s=`<svg viewBox="${vb}" class="sk" id="${id}" ${study?'role="img"':'role="group"'} aria-label="Anterior view of the whole skeleton${study?" with labels":"; each bone is a button"}"><rect class="bgp" x="${-pad}" y="0" width="${420+2*pad}" height="910"/>`;
   s+=`<path class="dl" d="M188,440 L232,440" style="opacity:.25"/>`;
   ORDERZ.forEach(b=>{const lab=BONES[b].name;
-    if(MID.has(b))s+=`<g data-bone="${b}"${study?"":` role="button" aria-label="${lab}"`}><g class="half">${skMid(b)}</g></g>`;
-    else{const h=skHalf(b);s+=`<g data-bone="${b}"${study?"":` role="button" aria-label="${lab}"`}><g class="half">${h}</g><g class="half" transform="translate(420 0) scale(-1 1)">${h}</g></g>`}});
+    if(MID.has(b))s+=`<g data-bone="${b}"${study?"":` role="button" aria-label="${WHERE[b]}"`}><g class="half">${skMid(b)}</g></g>`;
+    else{const h=skHalf(b);s+=`<g data-bone="${b}"${study?"":` role="button" aria-label="${WHERE[b]}"`}><g class="half">${h}</g><g class="half" transform="translate(420 0) scale(-1 1)">${h}</g></g>`}});
   s+=`<rect x="203" y="444" width="14" height="14" rx="3" class="facet" style="pointer-events:none"/>`;
   if(study)s+=studyLabels();
   return s+`</svg>`}
@@ -1047,7 +1083,7 @@ function segBind(id,key,after){$$(`#${id} button`).forEach(b=>b.onclick=()=>{if(
 segBind("cMode","mode",reset);segBind("cFilter","filter",reset);segBind("cPace","pace",reset);
 function clearMarks(){SK.querySelectorAll("[data-bone]").forEach(g=>g.classList.remove("on","ok","bad"))}
 function dimFilter(){const p=new Set(pool());SK.querySelectorAll("[data-bone]").forEach(g=>g.classList.toggle("dim",CG.filter!=="all"&&!p.has(g.dataset.bone)))}
-function reset(){clearMarks();dimFilter();CG.score=0;CG.streak=0;CG.t=60;$("#cScore").textContent=0;$("#cStreak").textContent=0;$("#cTime").textContent=60;$("#cTime").classList.remove("low");
+function reset(){clearMarks();dimFilter();skAria(CG.mode==="see"?"Press Start: a bone will be highlighted.":"Press Start: a bone name will appear.");CG.score=0;CG.streak=0;CG.t=60;$("#cScore").textContent=0;$("#cStreak").textContent=0;$("#cTime").textContent=60;$("#cTime").classList.remove("low");
   $("#cTimeWrap").hidden=CG.pace!=="timed";$("#cOpts").innerHTML="";$("#cWhy").className="why";$("#cBonus").hidden=true;$("#cSum").innerHTML="";
   $("#cPrompt").innerHTML=CG.mode==="see"?"A bone will light up. Pick its name. Press <b>Start</b>.":"A bone name will appear. Click that bone on the skeleton. Press <b>Start</b>.";
   $("#cStart").hidden=false;$("#cNext").hidden=true;$("#cSkip").hidden=true;$("#cStop").hidden=true;showBest()}
@@ -1065,6 +1101,8 @@ $("#cStart").onclick=startRound;$("#cStop").onclick=()=>stopRound();
 function pickBone(){const p=pool();let b;do{b=p[Math.floor(Math.random()*p.length)]}while(p.length>1&&b===CG.last);CG.last=b;return b}
 function nextQ(){if(!CG.running)return;clearMarks();CG.locked=false;CG.first=true;CG.asked++;$("#cWhy").className="why";$("#cBonus").hidden=true;$("#cNext").hidden=true;$("#cSkip").hidden=CG.pace==="timed";
   const b=pickBone();CG.cur=b;
+  if(CG.mode==="see"){skAria("Highlighted bone: "+WHERE[b].toLowerCase()+".");gkD("A front view of the whole skeleton. One bone is highlighted in gold: "+WHERE[b].toLowerCase()+". Pick its name from the buttons.","chase");}
+  else{skAria("Find the "+BONES[b].name.toLowerCase()+".");gkD("A front view of the whole skeleton. No bone is highlighted. Find the "+BONES[b].name.toLowerCase()+" and click it, or Tab to it and press Enter.","chase")}
   if(CG.mode==="see"){const hg=SK.querySelector(`[data-bone="${b}"]`);hg.classList.add("on");{const r=hg.getBoundingClientRect();if(r.bottom>innerHeight||r.top<0)hg.scrollIntoView({block:"nearest"})}$("#cPrompt").innerHTML="Which bone is <b>highlighted</b>?";
     const p=pool().filter(x=>x!==b);let opts=[];(CONFUSE[b]||[]).forEach(c=>{if(p.includes(c)&&Math.random()<.75&&opts.length<2)opts.push(c)});
     shuffle(p).forEach(x=>{if(opts.length<3&&!opts.includes(x))opts.push(x)});opts=shuffle(opts.concat([b]));
@@ -1099,7 +1137,9 @@ function cStudy(){$("#cStudyIn").innerHTML=`<p class="instr">Blue names are <b s
 
 /* ================= tabs / theme / init ================= */
 $$(".tab").forEach(t=>t.onclick=()=>{$$(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));["label","vert","chase"].forEach(n=>$("#tab-"+n).hidden=t.dataset.tab!==n);clearSel();
-  if(t.dataset.tab==="chase"&&!SK.dataset.hits){addHits(SK);SK.dataset.hits=1}});
+  if(t.dataset.tab==="chase"&&!SK.dataset.hits){addHits(SK);SK.dataset.hits=1}
+  if(t.dataset.tab==="label")lRender();else if(t.dataset.tab==="vert"){if(VR===2)gkD("Feature match: feature chips to sort into bins for cervical, thoracic, lumbar, sacrum and coccyx.");else if(vdeck[vi]){const c=vdeck[vi];gkD(VR===0?"Card "+(vi+1)+": unlabeled vertebra drawing. "+VDESC[c[0]]:"Card "+(vi+1)+": clue only. The clue reads: "+c[1])}}
+  else if(!CG.running)gkD("A front view of the whole skeleton, from the skull at the top to the toes at the bottom, with paired bones drawn on both sides. Press Start to play.")});
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark")};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")clearSel()});
 lNew();vStudy();vStart();cStudy();reset();

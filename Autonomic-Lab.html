@@ -217,7 +217,21 @@ kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border
 sub,sup{line-height:0}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* a11y retrofit: contrast fixes (WCAG 2.1 AA) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"],:root:not([data-theme="light"]) .chip.cur{color:#0B1A20}}
+:root[data-theme="dark"] .tab[aria-selected="true"],:root[data-theme="dark"] .chip.cur{color:#0B1A20}
+:root{--sym-ink:#B24729;--para-ink:#247957;--drugok-chip:#297D4E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sym-ink:var(--sym);--para-ink:var(--para);--drugok-chip:var(--drugok)}}
+:root[data-theme="dark"]{--sym-ink:var(--sym);--para-ink:var(--para);--drugok-chip:var(--drugok)}
+.bin.sym .bt,.slider.sym label{color:var(--sym-ink)}.bin.para .bt,.slider.para label{color:var(--para-ink)}
+.readouts th{padding:4px 2px;border-top:1px solid var(--rule-soft);text-align:left;font-weight:400}
+.readouts thead th{font-family:var(--mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);border-top:0}
+.readouts thead th:nth-child(n+2){text-align:right}
+.readouts tbody td:nth-child(2){font-family:var(--mono);text-align:right;white-space:nowrap}
+.readouts tbody td:nth-child(3){font-family:var(--mono);text-align:right;width:62px;color:var(--ink-soft);white-space:nowrap}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -239,7 +253,7 @@ sub,sup{line-height:0}
 
   <!-- PART 1: SORTER -->
   <section id="tab-sort" role="tabpanel" aria-labelledby="tabbtn-sort">
-    <div class="rounds" id="sRounds" aria-label="Rounds"></div>
+    <div class="rounds" id="sRounds" role="group" aria-label="Rounds"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvSort" role="img" aria-label="Two bodies: fight or flight and rest and digest"></canvas></div>
@@ -259,7 +273,7 @@ sub,sup{line-height:0}
         <h2 class="lvl-t" id="sT"></h2>
         <div class="goal"><b class="h">How to play</b>Drag each card into the right box. Or tap a card, then tap <b>Place selected card here</b>. Every correct card changes the matching body.</div>
         <h3>Cards to sort</h3>
-        <div class="tray" id="sTray" aria-label="Cards to sort"></div>
+        <div class="tray" id="sTray" role="group" aria-label="Cards to sort"></div>
         <div class="bar" style="margin-top:12px">
           <button class="tbtn" id="sHint" type="button">Hint</button>
           <button class="tbtn" id="sShow" type="button">Show answer</button>
@@ -299,7 +313,7 @@ sub,sup{line-height:0}
         <h3>What is happening right now</h3>
         <div class="now" id="swNow" aria-live="polite"></div>
         <h3>Live readouts <span class="small" style="text-transform:none;letter-spacing:0">(change from rest)</span></h3>
-        <table class="readouts" id="swRead"></table>
+        <table class="readouts"><thead><tr><th scope="col">Measure</th><th scope="col">Now</th><th scope="col">Change</th></tr></thead><tbody id="swRead"></tbody></table>
         <p class="calm">Teaching model: values are rounded and time is sped up. Epinephrine and glucose change more slowly than nerve signals, just like in a real body.</p>
       </aside>
     </div>
@@ -366,7 +380,7 @@ sub,sup{line-height:0}
 
   <!-- PART 4: PATHWAY BUILDER -->
   <section id="tab-path" role="tabpanel" aria-labelledby="tabbtn-path" hidden>
-    <div class="rounds" id="pRounds" aria-label="Pathways to build"></div>
+    <div class="rounds" id="pRounds" role="group" aria-label="Pathways to build"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvPath" role="img" aria-label="The pathway you are building"></canvas></div>
@@ -819,7 +833,7 @@ function swText(o){const now=performance.now();if(now-swLastTxt<400)return;swLas
   const rows=[["Heart rate",Math.round(o.hr)+" bpm",o.hr,BASE.hr],["Pupil",o.pupil.toFixed(1)+" mm",o.pupil,BASE.pupil],["Airway width",fmtPct(o.air/BASE.air*100),o.air,BASE.air],
    ["Gut movement",fmtPct(o.gut/BASE.gut*100),o.gut,BASE.gut],["Saliva",fmtPct(o.sal/BASE.sal*100),o.sal,BASE.sal],["Skin and gut vessels",fmtPct(o.ves/BASE.ves*100),o.ves,BASE.ves],
    ["Sweating",o.sweat>.5?"heavy":o.sweat>.15?"light":"none",o.sweat>.15?2:1,1],["Blood glucose",Math.round(SW.G)+" mg/dL",SW.G,BASE.gluT],["Blood epinephrine",Math.round(SW.E/.95*100)+"% of max",SW.E,E0]];
-  $("#swRead").innerHTML=rows.map(r=>{const d=Math.round((r[2]/r[3]-1)*100);let w=Math.abs(d)<5?"·":(d>0?"↑ "+d+"%":"↓ "+(-d)+"%");if(r[0]==="Sweating")w=d>0?"↑":"·";if(r[0]==="Blood epinephrine")w=d>25?"↑":"·";return `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${w}</td></tr>`}).join("");
+  $("#swRead").innerHTML=rows.map(r=>{const d=Math.round((r[2]/r[3]-1)*100);let w=Math.abs(d)<5?"·":(d>0?"↑ "+d+"%":"↓ "+(-d)+"%");if(r[0]==="Sweating")w=d>0?"↑":"·";if(r[0]==="Blood epinephrine")w=d>25?"↑":"·";return `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td>${w}</td></tr>`}).join("");
   let t;const d=SW.S-SW.P;
   if(d>.3)t="<b>Sympathetic is in charge.</b> Fight or flight: heart faster and stronger, pupils wide, airways open, gut and saliva turned down, glucose rising.";
   else if(d<-.3)t="<b>Parasympathetic is in charge.</b> Rest and digest: heart slower, pupils small, gut and salivary glands busy.";
@@ -834,7 +848,7 @@ const D={bb:0,alb:0,atr:0,epi:0,nic:0,bbSel:false,cond:null};
 const DRUGS=[["bb","BB","Beta blocker","blocks β receptors",C=>C.drug],["alb","A","Albuterol","activates β2 receptors",C=>C.drugok],["atr","At","Atropine","blocks muscarinic receptors",C=>C.drug],
   ["epi","Epi","Epinephrine (EpiPen dose)","activates α and β receptors",C=>C.drugok],["nic","N","Nicotine","activates nicotinic receptors",C=>C.drugok]];
 function dBuild(){const box=$("#drugBtns");box.innerHTML="";DRUGS.forEach(d=>{const b=document.createElement("button");b.type="button";b.className="tbtn drug";b.dataset.d=d[0];b.setAttribute("aria-pressed",String(!!D[d[0]]));
-  b.innerHTML=`<span class="dk" style="background:var(--${d[4](C)===C.drug?"drug":"drugok"})">${d[1]}</span><span><b>${d[2]}</b><span class="dd">${d[3]}</span></span>`;
+  b.innerHTML=`<span class="dk" style="background:var(--${d[4](C)===C.drug?"drug":"drugok-chip"})">${d[1]}</span><span><b>${d[2]}</b><span class="dd">${d[3]}</span></span>`;
   b.onclick=()=>{D[d[0]]=D[d[0]]?0:1;dBuild();dInfo()};box.appendChild(b)})}
 $("#bbType").onchange=()=>{D.bbSel=$("#bbType").value==="sel";dInfo()};
 $("#dClear").onclick=()=>{["bb","alb","atr","epi","nic"].forEach(k=>D[k]=0);D.cond=null;dBuild();dInfo()};
@@ -1004,8 +1018,7 @@ function pRenderTray(){const box=$("#pTray");box.innerHTML="";[["origin","Cell b
     tr.appendChild(b)});box.appendChild(tr)})}
 function pRenderSlots(){const box=$("#slots");box.innerHTML="";SLOTS.forEach(([k,lab])=>{const b=document.createElement("button");b.type="button";const v=pFill[k];const mk=pMarks[k];
   b.className="slot"+(v?" filled":"")+(mk==="ok"?" ok":mk==="no"?" no":"");b.dataset.s=k;
-  b.innerHTML=`<span class="sl">${lab}</span><span class="sv">${v?TNAME[v]:"empty"}</span>${mk?`<span class="mk">${mk==="ok"?"✓ right":"✗ not this"}</span>`:""}`;
-  b.setAttribute("aria-label",lab+": "+(v?TNAME[v]:"empty")+(mk?(mk==="ok"?", correct":", incorrect"):""));
+  b.innerHTML=`<span class="sl">${lab}</span> <span class="sv">${v?TNAME[v]:"empty"}</span>${mk?` <span class="mk">${mk==="ok"?"✓ right":"✗ not this"}</span>`:""}`;
   b.onclick=()=>{if(pSel)pPut(k,pSel);else if(v){delete pFill[k];delete pMarks[k];pRenderSlots()}else pMsg("Pick a piece from the shelf first, then tap this slot.","info")};box.appendChild(b)})}
 function pPut(slot,t){if(pSolved)return;const want=SLOTS.find(s=>s[0]===slot)[2];if(TCAT[t]!==want){pMsg(`That piece is ${CATN[TCAT[t]]}. This slot needs ${CATN[want]}.`,"warn");return}
   pFill[slot]=t;delete pMarks[slot];pSel=null;pMsg("","");pRenderSlots();pRenderTray()}
@@ -1064,6 +1077,37 @@ function drawPath(T){use(pStage);bg();const r=PR[pR];const F=pFill;const col=r.d
     puff(tx-48,ty,seg(c,2.1,2.6),F.sig2==="neA"?"ne":F.sig2==="epiB"?"epi":"ach",6,18,5,-1.5,1.5)}
   chipT(400,16,SW_T[r.div]+" pathway to the "+({heart:"heart",stomach:"stomach",bladder:"bladder",sweat:"sweat gland",adrenal:"adrenal medulla",eye:"pupil"})[r.tg],col,"#fff",{size:11})}
 
+/* ---- accessibility: name and describe the picture that is on screen ---- */
+const A11Y={key:"",n:17};
+const A11Y_ART={asthma:"Two pink lungs with narrowed airways and a cross-section of a squeezed bronchiole labelled narrow, a gray Propranolol pill, and wavy marks for wheezing.",
+  eye:"A large eye: drops fall in, then the pupil slowly widens, labelled muscarinic receptors blocked.",
+  bee:"A buzzing bee, a blood vessel cross-section that starts wide and leaky and then tightens as an orange auto-injector releases magenta epinephrine.",
+  inhaler:"A blue inhaler puffing green particles, a heart beating at about 110 beats per minute, and a shaking hand labelled tremor.",
+  transplant:"A heart beating at 95 beats per minute with its sympathetic (red-orange) and vagus (green) nerves both cut by red X marks, while magenta epinephrine still arrives by blood.",
+  cig:"A smoldering cigarette with rising smoke, a sympathetic and a parasympathetic ganglion both glowing with green N (nicotine) capsules, and an adrenal gland."};
+function a11yScene(){
+  if(TAB==="sort"){const R=SROUNDS[sR];const side=b=>{const st=SB[b];const n=R.cards.filter(c=>c[1]===b).length,done=sPlaced.filter(k=>R.cards[k][1]===b).map(k=>R.cards[k][0]);
+      return `${done.length} of ${n} cards sorted, heart ${Math.round(st.hr/5)*5} beats per minute, pupil ${st.pupil>.65?"wide":st.pupil<.25?"small":"medium"}${done.length?". Changes shown: "+done.join("; "):""}`};
+    return [sStage.cv,`Two bodies, round ${sR+1}: fight or flight ${sPlaced.filter(k=>R.cards[k][1]==="F").length} sorted, rest and digest ${sPlaced.filter(k=>R.cards[k][1]==="R").length} sorted.`,
+      `Two bodies side by side. The left half is tinted red-orange and labelled Fight or flight; the right half is tinted green and labelled Rest and digest. Each body shows its heart rate and a zoomed pupil, and every card you sort changes the matching body${R.wire?", adding a red-orange or green nerve path from the spinal cord to an organ":""}. Left body: ${side("F")}. Right body: ${side("R")}.`]}
+  if(TAB==="sw"){const o=SW.o||physio(SW.S,SW.P,SW.E);const lead=SW.S>SW.P+.25?"tinted red-orange (sympathetic leads)":SW.P>SW.S+.25?"tinted green (parasympathetic leads)":"untinted (both near resting tone)";
+    const now=($("#swNow").textContent||"").split(".")[0];
+    return [swStage.cv,`Autonomic switchboard: sympathetic ${Math.round(SW.S*10)*10}%, parasympathetic ${Math.round(SW.P*10)*10}%. ${now}.`,
+      `A body on the left, its background ${lead}, with SYM and PARA bars at the bottom showing the two dial settings (about ${Math.round(SW.S*10)*10}% and ${Math.round(SW.P*10)*10}%). Organ tiles on the right report each effect. The body beats at about ${Math.round(o.hr/10)*10} beats per minute, its pupils are ${o.pupil>BASE.pupil*1.2?"wide":o.pupil<BASE.pupil*.8?"small":"medium"}, its airways ${o.air>BASE.air*1.15?"widened":o.air<BASE.air*.87?"narrowed":"normal"}, its gut ${o.gut>BASE.gut*1.3?"busy":o.gut<BASE.gut*.7?"slowed":"at its normal pace"}${o.sweat>.4?", and it is sweating":""}${SW.E>.35?"; magenta epinephrine circulates in the blood":""}. The chart below plots heart rate, blood glucose and epinephrine over the last 60 seconds.`]}
+  if(TAB==="drug"){const o=dState();const b1blk=!!D.bb,b2blk=!!(D.bb&&!D.bbSel);
+    const st=(nm,blk,v)=>nm+" "+(blk?"blocked":v>1.15?"activated":v<.85?"reduced":"normal");
+    const rec=[st("nicotinic",false,1+.8*D.nic),st("muscarinic",!!D.atr,o.m/BASE.m),st("alpha-1",false,o.a1/BASE.a1),st("beta-1",b1blk,o.b1/BASE.b1),st("beta-2",b2blk,o.b2/BASE.b2)];
+    return [dStage.cv,"Receptors and organ effects. "+$("#dCap").textContent,
+      `Five receptor panels run across the top, each with a receptor in a membrane and its chemical (blue ACh dots, orange NE diamonds or magenta epinephrine triangles) binding and letting go. A drug that blocks a receptor sits on it as a gray capsule with a red X and the chemical bounces off; an activating drug sits on it as a green capsule. Status now: ${rec.join(", ")}. Below, a small body and an Organ effects table with bars that grow red-orange (above normal) or green (below normal) from a black 100% tick. ${$("#dCap").textContent}${D.cond?" "+COND[D.cond]+".":""}`]}
+  const r=PR[pR];const fill=SLOTS.map(([k,l])=>`${l.replace(/^\d · /,"")}: ${pFill[k]?TNAME[pFill[k]]+(pMarks[k]==="ok"?" (right)":pMarks[k]==="no"?" (not this)":""):"empty"}`);
+  const tg={heart:"heart",stomach:"stomach",bladder:"bladder",sweat:"sweat gland in the skin",adrenal:"adrenal gland",eye:"eye"}[r.tg];
+  return [pStage.cv,`Pathway builder, ${r.name}: ${Object.keys(pFill).length} of ${SLOTS.length} slots filled${pSolved?", complete":""}.`,
+    `On the left, the brain and spinal cord with the brainstem and S2 to S4 tinted green and T1 to L2 tinted red-orange; beside the cord a column of tan chain ganglia, a faint red aorta in the middle, and the ${tg} on the right. Your wiring is drawn between them in ${r.div==="sym"?"red-orange":"green"}, with numbered question marks for empty slots. ${fill.join("; ")}.${pSolved?" The pathway is complete: yellow pulses run along it, the chemical puffs out at the target, and the "+tg+" responds.":""}`]}
+function a11yApply(){if(TAB==="drug"){const c=CASES[cI];const l="Illustration: "+c.t+". "+(A11Y_ART[c.art]||"");if(caStage.cv.getAttribute("aria-label")!==l)caStage.cv.setAttribute("aria-label",l)}
+  let s;try{s=a11yScene()}catch(e){return}if(!s)return;const [cv,l,d]=s;const key=cv.id+"|"+l+"|"+d;if(key===A11Y.key)return;A11Y.key=key;
+  cv.setAttribute("aria-label",l);
+  const box=document.getElementById("gk-desc");if(box){const h=cv.closest(".canvas-holder")||cv;if(h.nextElementSibling!==box)h.parentNode.insertBefore(box,h.nextSibling);cv.setAttribute("aria-describedby","gk-desc")}
+  if(window.gkDescribe)window.gkDescribe(d)}
 /* ---------------- loop ---------------- */
 const STAGES=[sStage,swStage,chStage,dStage,caStage,pStage];
 function fitAll(){STAGES.forEach(s=>s.fit())}
@@ -1072,6 +1116,7 @@ let T=0,last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;
   try{if(TAB==="sort")drawSort(T,dt);else if(TAB==="sw")drawSw(T,dt);else if(TAB==="drug"){drawDrug(T,dt);drawCase(T)}else drawPath(T)}catch(e){console.error(e)}
   if(TAB!=="sw"){swStep(dt)}
+  if((A11Y.n=(A11Y.n+1)%18)===0)a11yApply();
   requestAnimationFrame(frame)}
 window.__lab={setTab,sStart,sPlace:(k,b)=>sPlace(k,b),pStart,cGo,D,dInfo,dBuild,SW,SCN,state:()=>({sR,sPlaced:sPlaced.length,pR,pSolved,cI})};
 sBuildRounds();sStart(0);swBuild();swSetSliders();$("#swCap").textContent="Free play: drag the two dials, or pick a scenario.";dBuild();dInfo();cGo(0);pStart(0);fitAll();requestAnimationFrame(frame);

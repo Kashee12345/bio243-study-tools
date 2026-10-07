@@ -11,8 +11,8 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
-  --act1:#7B5CC9;--act2:#C4644F;--act3:#8A5A3B;--act4:#B7790F;
+  --warn:#9A5524;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#C4644F;--act3:#8A5A3B;--act4:#B7790F;--chip-act2:#B25B47;--chip-act4:#9E680C;
   /* skin palette */
   --ecf:#EAF1F5;--glow:#F2B33B;
   --kera:#F3DCCB;--kera-edge:#B98468;--nuc:#5B4A8A;--kgran:#2E2340;--lamellar:#E0A91F;
@@ -34,7 +34,7 @@
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
   --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
-  --act1:#A98BEF;--act2:#E08A74;--act3:#C99470;--act4:#F2B33B;
+  --act1:#A98BEF;--act2:#E08A74;--act3:#C99470;--act4:#F2B33B;--chip-act2:var(--act2);--chip-act4:var(--act4);
   --ecf:#14222A;--glow:#F2B33B;
   --kera:#4E3A30;--kera-edge:#C99A7E;--nuc:#A996DA;--kgran:#E4D6FF;--lamellar:#F2C14E;
   --corn:#5E5238;--corn-edge:#C8B07A;--lucid:#3A3A36;
@@ -51,7 +51,7 @@
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
   --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
-  --act1:#A98BEF;--act2:#E08A74;--act3:#C99470;--act4:#F2B33B;
+  --act1:#A98BEF;--act2:#E08A74;--act3:#C99470;--act4:#F2B33B;--chip-act2:var(--act2);--chip-act4:var(--act4);
   --ecf:#14222A;--glow:#F2B33B;
   --kera:#4E3A30;--kera-edge:#C99A7E;--nuc:#A996DA;--kgran:#E4D6FF;--lamellar:#F2C14E;
   --corn:#5E5238;--corn-edge:#C8B07A;--lucid:#3A3A36;
@@ -134,7 +134,12 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 .recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 sub,sup{line-height:0}
+/* a11y: in dark mode the accent is light, so selected/pressed controls use dark text (this also stops
+   site-kit's contrast fixer from leaving a stale dark-text class behind when the selection moves) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.dot.cur){color:#0B1A20}}
+:root[data-theme="dark"] :is(.dot.cur){color:#0B1A20}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -191,7 +196,7 @@ const ACTS={1:{name:"Part 1 · The journey up",col:"act1"},
             3:{name:"Part 3 · Melanin",col:"act3"},
             4:{name:"Part 4 · Vitamin D",col:"act4"}};
 const STEPS=[
-{act:0,scene:"dermis",id:"map",title:"The big picture: three layers",
+{act:0,scene:"dermis",id:"map",desc:"A cross-section of skin fills the left side, in layers from top to bottom: a thin tan epidermis made of cells with purple nuclei, a thick pink dermis with wavy fibers and red blood vessels, a pale yellow hypodermis packed with round fat cells, and red-brown muscle at the bottom. A brown hair follicle slants down through the layers and a blue coiled sweat gland sits in the dermis. The bracket labels on the right light up one layer at a time, and when the epidermis lights up a note says there are no blood vessels in it. A zoom-in card on the right shows a red capillary loop inside a dermal papilla, with small green dots (oxygen and nutrients) drifting up from it into the tan cells above.",title:"The big picture: three layers",
  body:`<p>Your skin and the layer under it stack up like this, from the outside in:</p>
  <ol><li><b>Epidermis</b>: the thin outer layer. It is <b>keratinized stratified squamous epithelium</b>. That means many layers of cells (stratified), flat cells on top (squamous), filled with a tough protein called <b>keratin</b>.</li>
  <li><b>Dermis</b>: the thick layer of connective tissue below. It holds the blood vessels, nerves, hair follicles and glands.</li>
@@ -207,7 +212,7 @@ const STEPS=[
  caption:"Epidermis on top, dermis in the middle, hypodermis below. Supplies diffuse up from dermal capillaries.",
  legend:[["kera","Epidermis"],["dermis","Dermis"],["adipo","Hypodermis (fat)"],["blood","Capillaries"],["good","Oxygen and nutrients"]]},
 
-{act:1,scene:"journey",id:"basale",title:"Meet Kerry: born in the stratum basale",
+{act:1,scene:"journey",id:"basale",desc:"A close-up of the epidermis: rows of tan cells with purple nuclei sit on a wavy line, the basement membrane, with pink dermis and red capillary loops below. In the middle of the bottom row, one stem cell stretches tall and splits in two; the lower daughter stays put and the upper one, outlined in blue and tagged Kerry, lifts off and starts upward. A brown, branching melanocyte sits on the left, and a green Merkel cell with a yellow nerve ending sits on the right. The list of layers on the right highlights Stratum basale in purple, and a Trip bar at the top shows the journey has just begun.",title:"Meet Kerry: born in the stratum basale",
  body:`<p>The deepest layer of the epidermis is the <b>stratum basale</b>. It is a <b>single layer</b> of cuboidal to columnar cells. They sit on the <b>basement membrane</b>, which attaches the epidermis to the dermis.</p>
  <p>Many of these cells are <b>stem cells</b>. They divide by mitosis to make new <b>keratinocytes</b>, the cells that will make keratin. Let's follow one new keratinocyte. We will call her <b>Kerry</b>.</p>
  <p>Two other cell types live here. <b>Melanocytes</b> make the pigment melanin. <b>Merkel cells</b> sense light touch, working with a nerve ending right under them.</p>
@@ -222,7 +227,7 @@ const STEPS=[
  caption:"A stem cell divides. One daughter stays on the basement membrane; the other, Kerry, starts moving up.",
  legend:[["accent","Kerry"],["nuc","Nucleus"],["melano","Melanocyte"],["merkel","Merkel cell"],["nerve","Nerve ending"],["blood","Capillary"]]},
 
-{act:1,scene:"journey",id:"spinosum",title:"Stratum spinosum: the spiny layer",
+{act:1,scene:"journey",id:"spinosum",desc:"Kerry, outlined in blue, rises from the bottom row into the thicker middle band of the epidermis. Partway through, the cells around her shrink apart while staying joined by thin lines, the desmosomes, which then look like spines between the cells; a label explains this happens on a prepared slide. A teal, star-shaped Langerhans cell (an immune cell) pulses on the left, and a small note says keratin starts to form. The right-hand list highlights Stratum spinosum, and the Trip bar has moved a little further.",title:"Stratum spinosum: the spiny layer",
  body:`<p>New cells keep forming below, so Kerry gets pushed up into the <b>stratum spinosum</b>. This layer is about <b>8 to 10 cell layers</b> thick.</p>
  <p>The cells here are tied to their neighbors by <b>desmosomes</b>, strong cell-to-cell anchors. When skin is prepared for the microscope, the cells shrink a little but stay attached at the desmosomes. The stretched connections look like spines. That is where the name comes from (<i>spinosum</i> means spiny).</p>
  <p>Kerry also <b>begins making keratin</b>. And watch for <b>Langerhans cells</b> (dendritic cells). They are immune cells that engulf bacteria, foreign particles and damaged cells.</p>`,
@@ -236,7 +241,7 @@ const STEPS=[
  caption:"Kerry rises into the spinosum. Desmosomes hold cells together and look like spines when cells shrink on a slide.",
  legend:[["accent","Kerry"],["kera-edge","Desmosome 'spines'"],["langer","Langerhans cell"],["nuc","Nucleus"]]},
 
-{act:1,scene:"journey",id:"granulosum",title:"Stratum granulosum: flattening and granules",
+{act:1,scene:"journey",id:"granulosum",desc:"Kerry moves up into a band of flatter cells near the top of the epidermis. Her cell becomes wide and thin, dark specks (keratohyalin granules) appear inside it, and her purple nucleus shrinks. Small golden dots spray out sideways from her into the gaps between cells, with an orange label saying lamellar granules release lipids to form a water barrier. The right-hand list highlights Stratum granulosum, and the Trip bar is about a third full.",title:"Stratum granulosum: flattening and granules",
  body:`<p>Next Kerry reaches the <b>stratum granulosum</b>, about <b>3 to 5 cell layers</b> thick. The name means "grainy layer."</p>
  <p>The cells here flatten and fill with two kinds of granules:</p>
  <ol><li><b>Keratohyalin granules</b> help bundle keratin into tough fibers.</li>
@@ -252,7 +257,7 @@ const STEPS=[
  caption:"Kerry flattens, fills with dark keratohyalin granules, releases lipids, and her nucleus starts to break down.",
  legend:[["accent","Kerry"],["kgran","Keratohyalin granules"],["lamellar","Lipids from lamellar granules"],["nuc","Nucleus (shrinking)"]]},
 
-{act:1,scene:"journey",id:"lucidum",title:"Stratum lucidum: the clear layer (thick skin only)",
+{act:1,scene:"journey",id:"lucidum",desc:"Kerry, now a flat cell with no nucleus, slides up into a thin, pale band just under the surface layers. A white shine sweeps from left to right across this band to show it is clear, and a label says she has no nucleus and eleidin makes the cell clear. A banner at the top says this layer is found only in thick skin: palms, soles and fingertips. The right-hand list highlights Stratum lucidum.",title:"Stratum lucidum: the clear layer (thick skin only)",
  body:`<p>In <b>thick skin</b> only (the palms, the soles of the feet and the fingertips), Kerry passes through a thin, clear band: the <b>stratum lucidum</b>.</p>
  <p>The cells here are <b>dead and flattened</b>, with no nucleus. They are packed with <b>eleidin</b>, a clear protein that comes from keratohyalin. Eleidin gives the layer its glassy, light look under the microscope. (<i>Lucidum</i> means clear or bright.)</p>
  <p>Most of your body is covered in <b>thin skin</b>, which does not have this layer.</p>`,
@@ -266,7 +271,7 @@ const STEPS=[
  caption:"In thick skin, Kerry passes through the clear stratum lucidum. No nucleus now; the cell is filled with eleidin.",
  legend:[["accent","Kerry"],["lucid","Clear cells with eleidin"],["lamellar","Lipids"]]},
 
-{act:1,scene:"journey",id:"corneum",title:"Stratum corneum: dead, flat, and shed",
+{act:1,scene:"journey",id:"corneum",desc:"Kerry, now a flat, tan keratin shell, climbs through the stack of flat dead cells at the top of the epidermis. Orange-labelled lipid mortar fills the spaces between these flat shells. At the very top she tilts, drifts up and to the right, and fades away as she is shed, while a label notes the trip from basale to here takes roughly four weeks. The right-hand list highlights Stratum corneum, and the Trip bar fills to the end.",title:"Stratum corneum: dead, flat, and shed",
  body:`<p>Kerry's last stop is the <b>stratum corneum</b>, the surface layer. It is <b>15 to 30 layers</b> of dead, flat cells packed with keratin. Kerry is now just a thin, tough shell of keratin.</p>
  <p>This dry, dead layer keeps out germs, keeps the tissues below from drying out, and protects against rubbing and scrapes.</p>
  <p>These dead cells are <b>shed constantly</b> from the surface and replaced by cells from below. Finally Kerry reaches the top and flakes off.</p>
@@ -281,7 +286,7 @@ const STEPS=[
  caption:"Kerry, now a flat keratin shell, moves up through the stratum corneum and flakes off. The trip takes roughly four weeks.",
  legend:[["accent","Kerry"],["corn","Dead keratin-filled cells"],["lamellar","Lipid 'mortar'"]]},
 
-{act:1,scene:"thickthin",id:"thickthin",title:"Thick skin vs. thin skin",
+{act:1,scene:"thickthin",id:"thickthin",desc:"Two skin columns stand side by side. On the left, thick skin (palms, soles, fingertips) shows five bands from top to bottom: a tall stratum corneum, a thin clear stratum lucidum, then granulosum, spinosum and basale over red dermal capillaries. On the right, thin skin has a much thinner corneum, a hair running through it, and a red tag saying there is no stratum lucidum here. A mnemonic card on the far right lists Come, Let's, Get, Sun, Burned, and a purple circle steps down the list one word at a time while the matching layer is outlined in purple in the columns.",title:"Thick skin vs. thin skin",
  body:`<p><b>Thick skin</b> has <b>five</b> strata. It covers the palms, soles and fingertips, where rubbing is greatest. Its stratum corneum is much thicker. It has no hair.</p>
  <p><b>Thin skin</b> has <b>four</b> strata. It covers most of the body. It has <b>no stratum lucidum</b>.</p>
  <p>To remember the order from the surface down, say <b>"Come, Let's Get Sun Burned."</b></p>
@@ -296,7 +301,7 @@ const STEPS=[
  caption:"Thick skin has five strata, including the clear lucidum. Thin skin has four. Read the mnemonic from top to bottom.",
  legend:[["corn","Corneum"],["lucid","Lucidum"],["kgran","Granulosum"],["kera","Spinosum"],["nuc","Basale"]]},
 
-{act:2,scene:"dermis",id:"papillary",title:"The papillary layer of the dermis",
+{act:2,scene:"dermis",id:"papillary",desc:"The skin cross-section returns with the dermis split into an upper papillary layer and a deeper reticular layer, and the papillary label on the right is highlighted in red. Small bumps of dermis (the dermal papillae) push up into the tan epidermis, each with a red capillary loop, and a touch receptor labelled Tactile (Meissner) corpuscle sits in one bump. A card on the right draws a fingertip whose whorl of ridges sweeps in, circle by circle, and below it a side view shows the skin surface rising into ridges over the papillae, with the note that ridges help you grip.",title:"The papillary layer of the dermis",
  body:`<p>Below the epidermis is the <b>dermis</b>. It has two layers. The top one is the <b>papillary layer</b>.</p>
  <p>It is made of <b>areolar (loose) connective tissue</b>, a loose mesh of thin fibers. It holds:</p>
  <ol><li><b>Capillaries</b> that feed the epidermis by diffusion.</li><li><b>Tactile (Meissner) corpuscles</b>, touch receptors that sense light touch.</li><li>Nerve endings and immune cells.</li></ol>
@@ -311,7 +316,7 @@ const STEPS=[
  caption:"Papillary layer: loose tissue, capillary loops, and touch receptors in the dermal papillae.",
  legend:[["papillary","Papillary layer"],["blood","Capillary loop"],["nerve","Tactile corpuscle and nerve"]]},
 
-{act:2,scene:"dermis",id:"reticular",title:"The reticular layer: strength and stretch",
+{act:2,scene:"dermis",id:"reticular",desc:"The cross-section highlights the deeper reticular layer of the dermis in red. This thick layer is filled with crisscrossing pink collagen fibers and dark wavy elastin fibers, and holds a hair follicle with a sebaceous (oil) gland, a blue sweat gland and red blood vessels. A card on the right shows a block of dermis being pulled wider by orange arrows until its wavy pink collagen lines go straight (Stretched), then green arrows push it back as it recoils to its resting size. A key explains that collagen gives strength and elastin gives stretch and recoil.",title:"The reticular layer: strength and stretch",
  body:`<p>The deeper and much thicker layer of the dermis is the <b>reticular layer</b>. It is <b>dense irregular connective tissue</b>: thick bundles of fibers running in many directions.</p>
  <ol><li><b>Collagen fibers</b> give strength and resist tearing. Collagen also binds water, which keeps skin hydrated.</li>
  <li><b>Elastin fibers</b> let skin stretch and then snap back (recoil).</li></ol>
@@ -326,7 +331,7 @@ const STEPS=[
  caption:"Reticular layer: dense irregular tissue. Collagen for strength, elastin for stretch and recoil.",
  legend:[["dermis","Reticular layer"],["collagen","Collagen"],["elastin","Elastin"],["hair","Hair follicle"],["sweat","Sweat gland"],["lamellar","Sebaceous gland"]]},
 
-{act:2,scene:"dermis",id:"hypo",title:"The hypodermis: anchor, fuel tank, insulation",
+{act:2,scene:"dermis",id:"hypo",desc:"The cross-section highlights the hypodermis in red: a layer of large, pale yellow round fat cells (adipocytes) between the dermis above and red skeletal muscle below. A card on the right shows its three jobs. First, a tan skin strip slides gently side to side above a red muscle strip, held by fibers (anchoring). Second, a fat cell's golden center swells and shrinks (fat storage). Third, orange arrows of heat rise from a red warm-body strip and are turned back down by a yellow fat layer (insulation).",title:"The hypodermis: anchor, fuel tank, insulation",
  body:`<p>Under the dermis is the <b>hypodermis</b>, also called the <b>subcutaneous layer</b>. It is made of <b>areolar</b> and <b>adipose (fat) tissue</b>.</p>
  <p>It has three main jobs:</p>
  <ol><li><b>Anchors</b> the skin to the muscle underneath, while still letting it slide a little.</li><li><b>Stores fat</b> as an energy reserve.</li><li><b>Insulates</b> the body and cushions it from bumps.</li></ol>
@@ -341,7 +346,7 @@ const STEPS=[
  caption:"Hypodermis: fat cells and loose tissue that anchor, store energy and insulate.",
  legend:[["adipo","Adipocytes (fat cells)"],["muscle","Skeletal muscle below"],["warn","Body heat"]]},
 
-{act:3,scene:"mel",id:"mel",title:"Melanin: a sun umbrella over the nucleus",
+{act:3,scene:"mel",id:"mel",desc:"Two rows of large tan keratinocytes with purple nuclei fill the picture, over a pink dermis with a red blood vessel. Purple UV rays first zigzag down from the top and strike the nuclei, which flash, while a red banner warns that DNA is at risk. Then a brown, spidery melanocyte at the bottom center makes dark melanosome dots and passes them out along its arms to every keratinocyte, where they gather as a dark cap on top of each nucleus. When the purple rays come again they stop at these caps, and a green banner says the melanin caps absorb the UV and the DNA is shielded.",title:"Melanin: a sun umbrella over the nucleus",
  body:`<p><b>Melanocytes</b> sit in the stratum basale. They make the pigment <b>melanin</b> and pack it into small sacs called <b>melanosomes</b>.</p>
  <p>Melanocytes have long arms that reach between nearby keratinocytes. They pass melanosomes into those keratinocytes.</p>
  <p>Inside each keratinocyte, the melanin gathers into a <b>cap over the nucleus</b>, on the side that faces the skin surface. There it absorbs <b>UV light</b> and shields the cell's <b>DNA</b> from damage.</p>`,
@@ -355,7 +360,7 @@ const STEPS=[
  caption:"UV hits unprotected nuclei. Melanocytes pass melanosomes to keratinocytes, and melanin caps shade the DNA.",
  legend:[["melano","Melanocyte"],["eumel","Melanin (in melanosomes)"],["uv","UV light"],["nuc","Nucleus (DNA)"]]},
 
-{act:3,scene:"colour",id:"colour",title:"Why skin colors differ, and how tanning works",
+{act:3,scene:"colour",id:"colour",desc:"Across the top, three skin samples sit side by side, each with exactly three brown melanocytes numbered 1, 2 and 3. From left to right the colour swatch goes from light peach to medium tan to dark brown, and the caps of melanin over the cell nuclei go from small and orange-red (more pheomelanin) to large and dark brown (eumelanin). Below, a yellow sun sends purple rays onto one skin sample while a marker slides along a timeline from day 0 to day 10. As the days pass, the brown 'melanin made' bar fills and the melanin caps in the sample grow darker.",title:"Why skin colors differ, and how tanning works",
  body:`<p>Here is a surprise: people with very different skin colors have <b>about the same number of melanocytes</b>. The difference is <b>how much</b> melanin they make and <b>which type</b>:</p>
  <ol><li><b>Eumelanin</b>: brown to black.</li><li><b>Pheomelanin</b>: red to yellow.</li></ol>
  <p>Two other pigments add to skin color: <b>carotene</b> (yellow-orange, from foods like carrots) and <b>hemoglobin</b> (the red of blood in the dermis, which shows through lighter skin as pink).</p>
@@ -370,7 +375,7 @@ const STEPS=[
  caption:"Same number of melanocytes, different amount and type of melanin. UV boosts melanin over about 10 days.",
  legend:[["melano","Melanocyte"],["eumel","Eumelanin"],["pheo","Pheomelanin"],["uv","UV light"]]},
 
-{act:4,scene:"uvb",id:"uvb",title:"Vitamin D starts in the skin",
+{act:4,scene:"uvb",id:"uvb",desc:"On the left is a cross-section of epidermis with a red dermis capillary running along the bottom. Purple UVB rays zigzag down into the deep cells of the spinosum and basale, where small blue hexagons (7-dehydrocholesterol) flash and turn into gold circles marked D (vitamin D3). The gold circles sink down into the red capillary and flow away to the right, while a label says vitamin D3 enters the blood. A panel on the right shows the molecule as rings: a purple ray strikes it, one ring breaks open, and the name changes from 7-dehydrocholesterol in blue to cholecalciferol (vitamin D3) in gold, with a note that it is not active yet.",title:"Vitamin D starts in the skin",
  body:`<p>Skin does more than protect. It also starts making <b>vitamin D</b>.</p>
  <p>Cells in the deeper epidermis, the <b>strata basale and spinosum</b>, contain a cholesterol-like molecule called <b>7-dehydrocholesterol</b>. When <b>UVB</b> light reaches it, the light changes it into <b>cholecalciferol</b>, also called <b>vitamin D<sub>3</sub></b>.</p>
  <p>Vitamin D<sub>3</sub> then moves into the blood in the dermis. It is <b>not active yet</b>. It still has two more stops to make.</p>`,
@@ -384,7 +389,7 @@ const STEPS=[
  caption:"UVB converts 7-dehydrocholesterol into cholecalciferol (vitamin D₃), which enters the blood.",
  legend:[["uv","UVB light"],["dhc","7-dehydrocholesterol"],["vitd","Vitamin D₃"],["blood","Capillary"]]},
 
-{act:4,scene:"relay",id:"relay",title:"The vitamin D relay: skin, liver, kidney, gut, bone",
+{act:4,scene:"relay",id:"relay",desc:"Five numbered cards stand in a row: Skin, Liver, Kidneys, Small intestine and Bone, each with a small drawing of the organ. A gold tag slides along a track under the cards from one stop to the next, changing its name from Vitamin D3 to Calcidiol to Calcitriol and finally to an orange Ca2+ tag, and the card it reaches gets a gold outline. At the intestine, orange calcium dots drop into a red blood vessel, and at the bone they settle into the bone. A box at the bottom, headed in red, says that with too little vitamin D, bones become soft; it shows a straight normal leg bone next to a bowed one.",title:"The vitamin D relay: skin, liver, kidney, gut, bone",
  body:`<ol><li><b>Skin:</b> UVB makes cholecalciferol (vitamin D<sub>3</sub>).</li>
  <li><b>Liver:</b> converts it to <b>calcidiol</b>.</li>
  <li><b>Kidneys:</b> convert calcidiol to <b>calcitriol</b>, the <b>active form</b> of vitamin D.</li>
@@ -402,7 +407,7 @@ const STEPS=[
  caption:"Skin makes D₃ → liver makes calcidiol → kidneys make calcitriol → intestine absorbs Ca²⁺ → bones.",
  legend:[["vitd","Vitamin D forms"],["ca","Calcium (Ca²⁺)"],["liver","Liver"],["kidney","Kidney"],["bone","Bone"]]},
 
-{act:4,scene:"trade",id:"trade",title:"The trade-off: shade versus vitamin D",
+{act:4,scene:"trade",id:"trade",desc:"Two panels compare skin under the same sun. On the left, Less melanin, the nuclei have only tiny melanin caps; some purple UVB rays reach the nuclei and flash red, but many rays reach the deep cells, turning blue hexagons into gold vitamin D circles. On the right, More melanin, dark caps cover every nucleus and absorb most rays, so only one deep molecule turns gold. Under each panel two bars grow: on the left the green DNA protection bar is short and the gold vitamin D bar is long; on the right it is the other way around.",title:"The trade-off: shade versus vitamin D",
  body:`<p>Melanin and vitamin D both depend on UV light. That creates a trade-off.</p>
  <p><b>More melanin</b> absorbs more UV before it reaches the deeper cells. That protects DNA well. But less UVB reaches the 7-dehydrocholesterol, so <b>less vitamin D is made</b> in the same time in the sun.</p>
  <p><b>Less melanin</b> lets more UVB through. More vitamin D is made, but DNA is less protected, so sunburn and UV damage happen more easily.</p>
@@ -417,7 +422,7 @@ const STEPS=[
  caption:"Same sun, different result: more melanin means more DNA protection but less vitamin D made.",
  legend:[["uv","UVB light"],["eumel","Melanin cap"],["vitd","Vitamin D₃ made"],["bad","DNA hit by UV"]]},
 
-{act:0,scene:"journey",id:"recap",title:"You made it. Here is the whole story.",
+{act:0,scene:"journey",id:"recap",desc:"The epidermis close-up returns and plays Kerry's whole trip on a loop. Kerry, outlined in blue, starts in the bottom row and rises steadily through the spinosum, granulosum, lucidum and corneum, flattening and losing her purple nucleus on the way, while the matching layer name lights up in purple on the right. At the top she drifts off the surface and fades away, the Trip bar fills to about four weeks, and then the loop starts again.",title:"You made it. Here is the whole story.",
  body:`<ol class="recap">
  <li class="h">The big picture</li>
  <li>Epidermis (avascular, fed by diffusion), dermis, hypodermis (not skin).</li>
@@ -462,7 +467,7 @@ function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--chip-${a.col},var(--${a.col}))">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -487,6 +492,7 @@ function render(){
   $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
   $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
   refreshDots();
+  if(window.gkDescribe)window.gkDescribe(s.desc);
 }
 function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
 $("#prev").onclick=()=>go(cur-1);

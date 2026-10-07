@@ -19,6 +19,7 @@
   --trace:#1B6E88;--normal:#57666F;--alt:#C4644F;--thresh:#B4632A;--glow:#F2B33B;
   --na:#2F7FC1;--k:#7B5CC9;--ca:#D98A1C;--lipid:#E7D4B5;--lipid-edge:#B79A6E;
   --ph-rest:#8A99A2;--ph-dep:#D98A1C;--ph-rep:#7B5CC9;--ph-hyp:#1B8A86;
+  --on-accent:#fff;--thresh-ink:#9A5524;--alt-ink:#A65443;--warn-ink:#9A5524;
   --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
   --r:6px;
   --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -36,6 +37,7 @@
   --trace:#4FB3D1;--normal:#A3B2BA;--alt:#F08F74;--thresh:#E39A5B;--glow:#F2B33B;
   --na:#5AA9E6;--k:#A98BEF;--ca:#F2A93B;--lipid:#4A3F2E;--lipid-edge:#9C8466;
   --ph-rest:#6E7F88;--ph-dep:#F2A93B;--ph-rep:#A98BEF;--ph-hyp:#4CC2BD;
+  --on-accent:#0B1A20;--thresh-ink:#E39A5B;--alt-ink:#F08F74;--warn-ink:#E39A5B;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
 }}
 :root[data-theme="dark"]{
@@ -49,6 +51,7 @@
   --trace:#4FB3D1;--normal:#A3B2BA;--alt:#F08F74;--thresh:#E39A5B;--glow:#F2B33B;
   --na:#5AA9E6;--k:#A98BEF;--ca:#F2A93B;--lipid:#4A3F2E;--lipid-edge:#9C8466;
   --ph-rest:#6E7F88;--ph-dep:#F2A93B;--ph-rep:#A98BEF;--ph-hyp:#4CC2BD;
+  --on-accent:#0B1A20;--thresh-ink:#E39A5B;--alt-ink:#F08F74;--warn-ink:#E39A5B;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box}
@@ -64,11 +67,11 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .wrap{max-width:1180px;margin:0 auto;padding:16px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
-.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
 .tbtn:hover{border-color:var(--accent)}
 .tbtn:disabled{opacity:.45;cursor:default}
-.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
 .btn:disabled{opacity:.45;cursor:default}
 .card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
@@ -138,9 +141,9 @@ canvas{display:block;width:100%;touch-action:manipulation}
 .score{font-family:var(--mono);font-size:14px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
-.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:var(--on-accent)}
 .chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
-.chip.done.cur{background:var(--accent);color:#fff}
+.chip.done.cur{background:var(--accent);color:var(--on-accent)}
 .calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
 .tracecap{font-size:13.5px;color:var(--ink-soft);margin:6px 2px 0}
 /* channel match */
@@ -157,6 +160,7 @@ sub,sup{line-height:0}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -169,10 +173,10 @@ sub,sup{line-height:0}
 </div></header>
 
 <div class="wrap">
-  <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" data-tab="sum" id="tabbtn-sum" type="button">Part 1 &middot; Summation Game</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="break" id="tabbtn-break" type="button">Part 2 &middot; What breaks if…?</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="match" id="tabbtn-match" type="button">Part 3 &middot; Channel Match</button>
+  <div class="tabs" role="tablist" aria-label="Lab parts">
+    <button class="tab" role="tab" aria-selected="true" data-tab="sum" id="tabbtn-sum" aria-controls="tab-sum" type="button">Part 1 &middot; Summation Game</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="break" id="tabbtn-break" aria-controls="tab-break" tabindex="-1" type="button">Part 2 &middot; What breaks if…?</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="match" id="tabbtn-match" aria-controls="tab-match" tabindex="-1" type="button">Part 3 &middot; Channel Match</button>
   </div>
 
   <!-- PART 1 -->
@@ -306,7 +310,7 @@ const sm=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};
 const TAU=Math.PI*2;
 const C={};
 function readColors(){const s=getComputedStyle(document.documentElement);
-  ["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","gold","ecf","neuron","neuron-edge","nucleus","myelin","myelin-edge","exc","exc-wash","inh","inh-wash","trace","normal","alt","thresh","glow","na","k","ca","lipid","lipid-edge","ph-rest","ph-dep","ph-rep","ph-hyp"]
+  ["on-accent","thresh-ink","alt-ink","warn-ink","ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","gold","ecf","neuron","neuron-edge","nucleus","myelin","myelin-edge","exc","exc-wash","inh","inh-wash","trace","normal","alt","thresh","glow","na","k","ca","lipid","lipid-edge","ph-rest","ph-dep","ph-rep","ph-hyp"]
   .forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
 readColors();
 
@@ -563,7 +567,7 @@ function renderLevel(){
     lab.innerHTML=`<input type="checkbox" data-i="${i}"> ${t.name} ${t.type==="E"?"+":"−"}`;
     const cb=lab.querySelector("input");cb.checked=armed.has(i);cb.onchange=()=>{cb.checked?armed.add(i):armed.delete(i)};tc.appendChild(lab)});
   const fb=$("#fbtns");fb.innerHTML="";
-  LV.T.forEach((t,i)=>{const b=document.createElement("button");b.type="button";b.className="tchk "+t.type;b.textContent=`${t.name} ${t.type==="E"?"+":"−"}${t.auto?" (auto)":""}`;b.setAttribute("aria-label",`Fire ${t.name}, ${t.type==="E"?"excitatory":"inhibitory"} synapse (key ${i+1})`);b.onclick=()=>fireTerm(i,"btn");fb.appendChild(b)});
+  LV.T.forEach((t,i)=>{const b=document.createElement("button");b.type="button";b.className="tchk "+t.type;b.textContent=`${t.name} ${t.type==="E"?"+":"−"}${t.auto?" (auto)":""}`;b.setAttribute("aria-label",`${b.textContent}: fire ${t.name}, ${t.type==="E"?"excitatory":"inhibitory"} synapse (key ${i+1})`);b.onclick=()=>fireTerm(i,"btn");fb.appendChild(b)});
   $("#together").hidden=L<2&&LV.T.length<2;
   updateBudget();timeNote();
   S1.cv.setAttribute("aria-label",`Level ${L+1}: ${LV.name}. A neuron with dendrites, cell body, axon hillock and axon. Synapses: ${LV.T.map(t=>t.name+(t.type==="E"?" excitatory":" inhibitory")+(t.auto?" (firing on its own)":"")+", "+Math.round(t.site.len)+" units from the hillock").join("; ")}. A voltage trace of the axon hillock runs along the bottom.`);
@@ -643,7 +647,7 @@ function drawNeuron(now){
     for(let v=0;v<4;v++){const a=v*1.7+.4;circ(s.bulb[0]+Math.cos(a)*5,s.bulb[1]+Math.sin(a)*5,2,col)}
     if(armed.has(i)&&state!=="demo"){ctx.setLineDash([3,3]);circ(s.bulb[0],s.bulb[1],16,null,C.accent,1.5);ctx.setLineDash([])}
     label(s.lab[0],s.lab[1],`${t.name} ${t.type==="E"?"+":"−"}${t.auto?" auto":""}`,{size:13,weight:700,align:"center",border:col,color:C.ink,blw:2});
-    mono(s.lab[0],s.lab[1]+15,`[${i+1}]`,{size:10,align:"center",color:C["ink-faint"]});
+    mono(s.lab[0],s.lab[1]+15,`[${i+1}]`,{size:12,align:"center",color:C["ink-faint"]});
     ctx.globalAlpha=1;
   });
   // signals in flight
@@ -652,15 +656,15 @@ function drawNeuron(now){
   // readout
   rr(560,10,226,62,6);ctx.fillStyle=C.panel;ctx.globalAlpha=.94;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
   const lastAp=aps.length?aps[aps.length-1]:-1e9,inAP=simT-lastAp<2;
-  mono(570,26,"AXON HILLOCK",{size:10.5,weight:600});
-  mono(776,26,inAP?"FIRING":(vNow>=-58?"almost!":vNow<REST-.3?"inhibited":"below threshold"),{size:10.5,align:"right",color:inAP?C.warn:(vNow<REST-.3?C.inh:C["ink-soft"])});
+  mono(570,26,"AXON HILLOCK",{size:12,weight:600});
+  mono(776,26,inAP?"FIRING":(vNow>=-58?"almost!":vNow<REST-.3?"inhibited":"below threshold"),{size:12,align:"right",color:inAP?C["warn-ink"]:(vNow<REST-.3?C.inh:C["ink-soft"])});
   ctx.font=`600 19px "IBM Plex Mono",monospace`;ctx.textAlign="left";ctx.fillStyle=C.ink;ctx.fillText((vNow>=0?"+":"")+vNow.toFixed(1)+" mV",570,46);
   // meter
   const mx=v=>672+(clamp(v,-80,-45)+80)/35*106;
   rr(672,40,106,10,4);ctx.fillStyle=C.sunk;ctx.fill();
   rr(672,40,Math.max(2,mx(vNow)-672),10,4);ctx.fillStyle=vNow<REST?C.inh:(inAP?C.glow:C.exc);ctx.fill();
   line(mx(-55),36,mx(-55),54,C.thresh,2);line(mx(-70),38,mx(-70),52,C["ink-faint"],1.2);
-  mono(mx(-70),62,"-70",{size:9.5,align:"center"});mono(mx(-55),62,"-55",{size:9.5,align:"center",color:C.thresh});
+  mono(mx(-70),62,"-70",{size:12,align:"center"});mono(mx(-55),62,"-55",{size:12,align:"center",color:C["thresh-ink"]});
   // AP banner
   const ma=(now-apMsgT)/1600;
   if(ma>=0&&ma<1){ctx.globalAlpha=ma<.8?1:(1-ma)*5;label(590,246,"Action potential fired!",{size:15,weight:700,align:"center",border:C.glow,blw:2.5});ctx.globalAlpha=1}
@@ -668,15 +672,15 @@ function drawNeuron(now){
 function drawTrace(){
   rr(8,290,784,184,6);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C["rule-soft"];ctx.lineWidth=1;ctx.stroke();
   // grid
-  [[-80,"-80"],[-70,"-70 rest"],[-60,"-60"],[-50,"-50"],[0,"0"],[30,"+30"]].forEach(([v,t])=>{const y=VY(v);line(TX0,y,TX1,y,C["rule-soft"],1);mono(TX0-6,y,t.split(" ")[0],{size:10.5,align:"right"})});
+  [[-80,"-80"],[-70,"-70 rest"],[-60,"-60"],[-50,"-50"],[0,"0"],[30,"+30"]].forEach(([v,t])=>{const y=VY(v);line(TX0,y,TX1,y,C["rule-soft"],1);mono(TX0-6,y,t.split(" ")[0],{size:12,align:"right"})});
   const yT=VY(THR);line(TX0,yT,TX1,yT,C.thresh,1.6,[6,5]);
-  label(TX0+6,yT-9,"threshold -55 mV",{size:11,color:C.thresh,bga:.85});
-  label(TX0+6,VY(REST)+10,"rest -70 mV",{size:11,color:C["ink-soft"],bga:.85});
+  label(TX0+6,yT-9,"threshold -55 mV",{size:12,color:C["thresh-ink"],bga:.85});
+  label(TX0+6,VY(REST)+10,"rest -70 mV",{size:12,color:C["ink-soft"],bga:.85});
   // axis break mark
   ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(TX0-4,349);ctx.lineTo(TX0+4,345);ctx.moveTo(TX0-4,344);ctx.lineTo(TX0+4,340);ctx.stroke();
-  mono(TX1,300,"scale squeezed above -45 mV",{size:9.5,align:"right",color:C["ink-faint"]});
-  mono(TX0,465,`last ${WIN} ms`,{size:10,color:C["ink-faint"]});mono(TX1,465,"now",{size:10,align:"right",color:C["ink-faint"]});
-  mono(16,300,"mV",{size:10});
+  mono(TX1,300,"scale squeezed above -45 mV",{size:12,align:"right",color:C["ink-faint"]});
+  mono(TX0,465,`last ${WIN} ms`,{size:12,color:C["ink-faint"]});mono(TX1,465,"now",{size:12,align:"right",color:C["ink-faint"]});
+  mono(16,300,"mV",{size:12});
   const tx=t=>TX1-(simT-t)/WIN*(TX1-TX0);
   // psp arrival markers
   for(const p of psps){if(simT-p.ta>WIN)continue;const x=tx(p.ta);ctx.fillStyle=p.amp>0?C.exc:C.inh;ctx.beginPath();
@@ -685,7 +689,7 @@ function drawTrace(){
   ctx.beginPath();const N=500;
   for(let k=0;k<=N;k++){const t=simT-WIN+WIN*k/N;const x=TX0+(TX1-TX0)*k/N;const y=VY(Vat(t));k?ctx.lineTo(x,y):ctx.moveTo(x,y)}
   ctx.strokeStyle=C.trace;ctx.lineWidth=2.2;ctx.lineJoin="round";ctx.stroke();
-  for(const a of aps){if(simT-a>WIN)continue;const x=tx(a+.35);label(x,VY(30)-0,"AP",{size:10.5,weight:700,align:"center",border:C.glow})}
+  for(const a of aps){if(simT-a>WIN)continue;const x=tx(a+.35);label(x,VY(30)-0,"AP",{size:12,weight:700,align:"center",border:C.glow})}
   circ(TX1,VY(Vat(simT)),3.5,C.trace);
 }
 function drawSum(now){
@@ -816,7 +820,7 @@ function drawSchematic(s,now,prog){
     // two axons: normal (top) and damaged (bottom)
     const rows=[[34,"Normal",false],[72,tr.cns?"MS (CNS)":"Guillain-Barré (PNS)",true]];
     rows.forEach(([y,name,dam])=>{
-      mono(16,y,name,{size:10.5,weight:600,color:dam?C.alt:C["ink-soft"]});
+      mono(16,y,name,{size:12,weight:600,color:dam?C["alt-ink"]:C["ink-soft"]});
       const x0=dam?(tr.cns?92:180):92,x1=540;
       ctx.fillStyle=C["neuron-edge"];ctx.fillRect(x0,y-4,x1-x0,8);ctx.fillStyle=C.neuron;ctx.fillRect(x0,y-2.5,x1-x0,5);
       const segs=[];for(let x=x0+8;x<x1-40;x+=60)segs.push(x);
@@ -829,38 +833,38 @@ function drawSchematic(s,now,prog){
       else{const a=x0+8+60*2-4,b=x0+8+60*5-4;const T1=.25,T2=.8;if(tt<T1)xp=x0+8+Math.floor(tt/T1*2)*60-4;else if(tt<T2)xp=a+(b-a)*(tt-T1)/(T2-T1);else xp=b+Math.floor((tt-T2)/(1-T2)*(segs.length-5))*60}
       if(dam&&!prog){}else glow(xp,y,16,C.glow,.95);
     });
-    mono(540,88,tr.cns?"oligodendrocyte myelin, dashed = lost":"Schwann cell myelin, dashed = lost",{size:9.5,align:"right",color:C["ink-faint"]});
+    mono(540,88,tr.cns?"oligodendrocyte myelin, dashed = lost":"Schwann cell myelin, dashed = lost",{size:12,align:"right",color:C["ink-faint"]});
   }else if(typ==="sensory"){
-    const y=52;mono(16,30,"Pain fiber (sensory axon)",{size:10.5,weight:600});
+    const y=52;mono(16,30,"Pain fiber (sensory axon)",{size:12,weight:600});
     ctx.fillStyle=C["neuron-edge"];ctx.fillRect(40,y-4,480,8);ctx.fillStyle=C.neuron;ctx.fillRect(40,y-2.5,480,5);
     rr(210,y-26,110,52,8);ctx.fillStyle=C["inh-wash"];ctx.globalAlpha=prog?.9:.35;ctx.fill();ctx.globalAlpha=1;ctx.setLineDash([4,3]);ctx.strokeStyle=C.alt;ctx.lineWidth=1.2;ctx.stroke();ctx.setLineDash([]);
-    mono(265,y+34,"numbed zone",{size:10,align:"center",color:C.alt});
-    mono(40,y+34,"injury",{size:10,color:C["ink-soft"]});mono(520,y+34,"to spinal cord",{size:10,align:"right",color:C["ink-soft"]});
-    line(440,y-18,440,y-6,C.ink,1.5);mono(440,y-24,"record here",{size:9.5,align:"center"});
+    mono(265,y+34,"numbed zone",{size:12,align:"center",color:C["alt-ink"]});
+    mono(40,y+34,"injury",{size:12,color:C["ink-soft"]});mono(520,y+34,"to spinal cord",{size:12,align:"right",color:C["ink-soft"]});
+    line(440,y-18,440,y-6,C.ink,1.5);mono(440,y-24,"record here",{size:12,align:"center"});
     const tt=((now/1000)%1.6)/1.6;let xp=40+tt*480;if(prog&&xp>214){xp=214;glow(xp,y,14,C.glow,1-(tt-.36)*2)}else glow(xp,y,14,C.glow,.95);
   }else{
     // membrane strip
-    const y0=44,y1=60;mono(16,22,"Outside (extracellular fluid)",{size:10});mono(16,82,"Inside (cytoplasm)",{size:10});
+    const y0=44,y1=60;mono(16,22,"Outside (extracellular fluid)",{size:12});mono(16,82,"Inside (cytoplasm)",{size:12});
     ctx.fillStyle=C.lipid;ctx.fillRect(16,y0,528,y1-y0);ctx.strokeStyle=C["lipid-edge"];ctx.lineWidth=1;ctx.strokeRect(16,y0,528,y1-y0);
     const chan=(x,col,lab,open,plug)=>{rr(x-14,y0-8,10,y1-y0+16,3);ctx.fillStyle=col;ctx.fill();rr(x+4,y0-8,10,y1-y0+16,3);ctx.fill();
       if(!open)line(x-4,y0-4,x+4,y0-4,C.ink,2.5);
-      if(plug){circ(x,y0+2,7,C.alt,C.ink,1);mono(x+18,y0-14,plug,{size:9.5,weight:600,align:"center",color:C.alt})}
-      mono(x,y1+18,lab,{size:10,align:"center",weight:600})};
+      if(plug){circ(x,y0+2,7,C.alt,C.ink,1);mono(x+18,y0-14,plug,{size:12,weight:600,align:"center",color:C["alt-ink"]})}
+      mono(x,y1+18,lab,{size:12,align:"center",weight:600})};
     if(typ==="naBlock"){chan(260,C.na,"Na⁺ channel",true,prog?tr.schTxt:null);
       [170,194,218,302,326,350].forEach(xx=>circ(xx,30,4.5,C.na));
       if(!prog){const tt=((now/700)%1);circ(260,y0+tt*30,4.5,C.na)}
-      mono(470,30,prog?"Na⁺ can't get in":"Na⁺ flows in",{size:11,align:"center",color:prog?C.alt:C.ink,weight:600})}
+      mono(470,30,prog?"Na⁺ can't get in":"Na⁺ flows in",{size:12,align:"center",color:prog?C["alt-ink"]:C.ink,weight:600})}
     else if(typ==="kOut"){const n=prog?(tr.more?16:3):8;for(let j=0;j<n;j++){circ(225+((j*61)%170),26+((j*37)%12),4.5,C.k)}
       for(let j=0;j<12;j++){circ(180+((j*53)%220),70+((j*29)%10),4.5,C.k)}
-      chan(470,C.k,"K⁺ leak",true);mono(540,20,prog?(tr.more?"lots of K⁺ outside":"very little K⁺ outside"):"normal K⁺ outside",{size:11,align:"right",color:prog?C.alt:C.ink,weight:600})}
+      chan(470,C.k,"K⁺ leak",true);mono(540,20,prog?(tr.more?"lots of K⁺ outside":"very little K⁺ outside"):"normal K⁺ outside",{size:12,align:"right",color:prog?C["alt-ink"]:C.ink,weight:600})}
     else if(typ==="kBlock"){chan(200,C.na,"Na⁺ channel",true);chan(330,C.k,"K⁺ channel",true,prog?"TEA":null);
       const tt=(now/700)%1;circ(200,y0-8+tt*36,4.5,C.na);if(!prog)circ(330,y1+8-tt*36,4.5,C.k);
-      mono(470,30,prog?"K⁺ can't get out":"K⁺ flows out",{size:11,align:"center",color:prog?C.alt:C.ink,weight:600})}
+      mono(470,30,prog?"K⁺ can't get out":"K⁺ flows out",{size:12,align:"center",color:prog?C["alt-ink"]:C.ink,weight:600})}
     else if(typ==="ca"){chan(260,C.na,"Na⁺ channel",!!prog);const n=prog?3:12;for(let j=0;j<n;j++){circ(150+((j*47)%240),28+((j*13)%10),4,C.ca)}
-      mono(470,26,prog?"few Ca²⁺ outside":"normal Ca²⁺ outside",{size:11,align:"center",color:prog?C.alt:C.ink,weight:600});mono(470,40,"(orange dots = Ca²⁺)",{size:9.5,align:"center"})}
-    else if(typ==="pump"){circ(250,52,16,C.accent);mono(250,52,"pump",{size:9,align:"center",color:"#fff",weight:600});
+      mono(470,26,prog?"few Ca²⁺ outside":"normal Ca²⁺ outside",{size:12,align:"center",color:prog?C["alt-ink"]:C.ink,weight:600});mono(470,40,"(orange dots = Ca²⁺)",{size:12,align:"center"})}
+    else if(typ==="pump"){circ(250,52,16,C.accent);mono(250,52,"pump",{size:10,align:"center",color:C.panel,weight:600});
       if(prog){line(232,34,268,70,C.alt,3);line(268,34,232,70,C.alt,3)}else{const tt=(now/900)%1;circ(230,y1+6-tt*40,4.5,C.na);circ(270,y0-6+tt*40,4.5,C.k)}
-      mono(320,30,"3 Na⁺ out, 2 K⁺ in, uses ATP",{size:10.5});mono(320,74,prog?"no ATP: pump stopped":"ATP → ADP",{size:10.5,color:prog?C.alt:C["ink-soft"],weight:600})}
+      mono(320,30,"3 Na⁺ out, 2 K⁺ in, uses ATP",{size:12});mono(320,74,prog?"no ATP: pump stopped":"ATP → ADP",{size:12,color:prog?C["alt-ink"]:C["ink-soft"],weight:600})}
   }
   ctx.restore();
 }
@@ -873,13 +877,13 @@ function drawSc(now){
   const X0=56,X1=544,Y0=112,Y1=290;
   const xv=t=>X0+(t/tr.tmax)*(X1-X0),yv=v=>Y1-(v+95)/135*(Y1-Y0);
   rr(8,102,544,220,6);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C["rule-soft"];ctx.lineWidth=1;ctx.stroke();
-  [-80,-70,0,30].forEach(v=>{line(X0,yv(v),X1,yv(v),C["rule-soft"],1);mono(X0-6,yv(v),(v>0?"+":"")+v,{size:10,align:"right"})});
-  line(X0,yv(-55),X1,yv(-55),C.thresh,1.4,[6,5]);mono(X0-6,yv(-55),"-55",{size:10,align:"right",color:C.thresh});
-  mono(20,112,"mV",{size:10});
-  mono((X0+X1)/2,312,tr.xl,{size:10.5,align:"center"});
-  if(tr.brk){const x=xv(tr.brk);line(x,Y0,x,Y1,C["ink-faint"],1,[2,4]);label(x,Y0+2,"later",{size:10,align:"center",color:C["ink-soft"]})}
-  (tr.sec||[]).forEach(([t,txt])=>mono(xv(t),Y0+4,txt,{size:10,align:"center",weight:600,color:C["ink-soft"]}));
-  tr.marks.forEach(([t,txt])=>{const x=xv(t);ctx.fillStyle=C.ink;ctx.beginPath();ctx.moveTo(x,Y1-2);ctx.lineTo(x-5,Y1+8);ctx.lineTo(x+5,Y1+8);ctx.fill();mono(x+8,Y1+4,txt,{size:10})});
+  [-80,-70,0,30].forEach(v=>{line(X0,yv(v),X1,yv(v),C["rule-soft"],1);mono(X0-6,yv(v),(v>0?"+":"")+v,{size:12,align:"right"})});
+  line(X0,yv(-55),X1,yv(-55),C.thresh,1.4,[6,5]);mono(X0-6,yv(-55),"-55",{size:12,align:"right",color:C["thresh-ink"]});
+  mono(20,112,"mV",{size:12});
+  mono((X0+X1)/2,312,tr.xl,{size:12,align:"center"});
+  if(tr.brk){const x=xv(tr.brk);line(x,Y0,x,Y1,C["ink-faint"],1,[2,4]);label(x,Y0+2,"later",{size:12,align:"center",color:C["ink-soft"]})}
+  (tr.sec||[]).forEach(([t,txt])=>mono(xv(t),Y0+4,txt,{size:12,align:"center",weight:600,color:C["ink-soft"]}));
+  tr.marks.forEach(([t,txt])=>{const x=xv(t);ctx.fillStyle=C.ink;ctx.beginPath();ctx.moveTo(x,Y1-2);ctx.lineTo(x-5,Y1+8);ctx.lineTo(x+5,Y1+8);ctx.fill();mono(x+8,Y1+4,txt,{size:12})});
   const plot=(f,col,dash,upto,lw)=>{ctx.beginPath();const N=500;for(let k=0;k<=N;k++){const t=tr.tmax*k/N;if(t>upto)break;const x=xv(t),y=yv(f(t));k?ctx.lineTo(x,y):ctx.moveTo(x,y)}
     ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.setLineDash(dash);ctx.lineJoin="round";ctx.stroke();ctx.setLineDash([])};
   plot(tr.norm,C.normal,[6,4],tr.tmax,2);
@@ -985,10 +989,10 @@ function drawAP(now){
     ctx.globalAlpha=showL?.13:.0;ctx.fillStyle=C[PH[k].col];ctx.fillRect(x0,AY0-14,x1-x0,AY1-AY0+22);ctx.globalAlpha=1;
     if(hl===k){ctx.globalAlpha=.28;ctx.fillStyle=C.good;ctx.fillRect(x0,AY0-14,x1-x0,AY1-AY0+22);ctx.globalAlpha=1;ctx.strokeStyle=C.good;ctx.lineWidth=2;ctx.strokeRect(x0,AY0-14,x1-x0,AY1-AY0+22)}})});
   // grid
-  [-90,-70,-55,0,30].forEach(v=>{line(AX0,ayv(v),AX1,ayv(v),v===-55?C.thresh:C["rule-soft"],v===-55?1.4:1,v===-55?[6,5]:[]);mono(AX0-8,ayv(v),(v>0?"+":"")+v,{size:11,align:"right",color:v===-55?C.thresh:C["ink-soft"]})});
-  mono(18,26,"mV",{size:11});mono(AX1,ayv(-55)-10,"threshold",{size:10.5,align:"right",color:C.thresh});
-  for(let t=0;t<=8;t++){mono(axv(t),AY1+12,t+"",{size:10,align:"center",color:C["ink-faint"]})}
-  mono(AX1,AY1+24,"time (ms)",{size:10,align:"right",color:C["ink-faint"]});
+  [-90,-70,-55,0,30].forEach(v=>{line(AX0,ayv(v),AX1,ayv(v),v===-55?C.thresh:C["rule-soft"],v===-55?1.4:1,v===-55?[6,5]:[]);mono(AX0-8,ayv(v),(v>0?"+":"")+v,{size:12,align:"right",color:v===-55?C["thresh-ink"]:C["ink-soft"]})});
+  mono(18,26,"mV",{size:12});mono(AX1,ayv(-55)-10,"threshold",{size:12,align:"right",color:C["thresh-ink"]});
+  for(let t=0;t<=8;t++){mono(axv(t),AY1+12,t+"",{size:12,align:"center",color:C["ink-faint"]})}
+  mono(AX1,AY1+24,"time (ms)",{size:12,align:"right",color:C["ink-faint"]});
   // curve
   ctx.beginPath();for(let k=0;k<=600;k++){const t=8*k/600;const x=axv(t),y=ayv(apCurve(t));k?ctx.lineTo(x,y):ctx.moveTo(x,y)}
   ctx.strokeStyle=C.trace;ctx.lineWidth=3.2;ctx.lineJoin="round";ctx.stroke();
@@ -1006,14 +1010,14 @@ function drawAP(now){
     rr(x0,BARY,x1-x0,BARH,5);ctx.fillStyle=k==="abs"?C.bad:C.warn;ctx.globalAlpha=.22;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=k==="abs"?C.bad:C.warn;ctx.lineWidth=hl===k?3:1.5;ctx.stroke();
     if(hl===k){ctx.strokeStyle=C.good;ctx.lineWidth=3;ctx.stroke()}
     label((x0+x1)/2,BARY+BARH/2,k==="abs"?"Absolute":t,{size:k==="abs"?11:12,align:"center",weight:600,pill:false,color:C.ink})});
-  mono(AX0,BARY+BARH/2-6,"Refractory",{size:10,color:C["ink-soft"]});mono(AX0,BARY+BARH/2+6,"periods:",{size:10,color:C["ink-soft"]});
-  mono(400,BARY+BARH+16,"click a bar for the refractory questions",{size:10,align:"center",color:C["ink-faint"]});
+  mono(AX0,BARY+BARH/2-6,"Refractory",{size:12,color:C["ink-soft"]});mono(AX0,BARY+BARH/2+6,"periods:",{size:12,color:C["ink-soft"]});
+  mono(400,BARY+BARH+16,"click a bar for the refractory questions",{size:12,align:"center",color:C["ink-faint"]});
   if(qClick){circ(qClick[0],qClick[1],7,null,C.accent,2);circ(qClick[0],qClick[1],2.5,C.accent)}
 }
 function drawCh(now){
   ctx=S4.ctx;ctx.setTransform(S4.K,0,0,S4.K,0,0);ctx.clearRect(0,0,360,200);ctx.fillStyle=C.ecf;ctx.fillRect(0,0,360,200);
   const p=PH[chPhase];const y0=88,y1=122;
-  mono(10,14,"OUTSIDE",{size:10,weight:600});mono(10,188,"INSIDE (cytoplasm)",{size:10,weight:600});
+  mono(10,14,"OUTSIDE",{size:12,weight:600});mono(10,188,"INSIDE (cytoplasm)",{size:12,weight:600});
   // charge signs
   const insidePos=chPhase==="dep";
   mono(350,14,insidePos?"− − − −":"+ + + +",{size:12,align:"right",color:C["ink-soft"]});mono(350,188,insidePos?"+ + + +":"− − − −",{size:12,align:"right",color:C["ink-soft"]});
@@ -1027,16 +1031,16 @@ function drawCh(now){
   else{line(nx-8,y0-8,nx-14,y0-20,C.ink,3)}
   // inactivation ball and chain
   if(p.na==="inact"){line(nx+16,y1+10,nx+4,y1+6,C.ink,1.5);circ(nx,y1+2,7,C.ink)}else{line(nx+16,y1+10,nx+20,y1+22,C.ink,1.5);circ(nx+22,y1+28,6,C.ink)}
-  mono(nx,y0-30,"Na⁺ channel",{size:10.5,weight:600,align:"center",color:C.ink});
-  mono(nx,y1+46,{closed:"closed",open:"OPEN",inact:"inactivated"}[p.na],{size:11,weight:600,align:"center",color:p.na==="open"?C.na:C["ink-soft"]});
+  mono(nx,y0-30,"Na⁺ channel",{size:12,weight:600,align:"center",color:C.ink});
+  mono(nx,y1+46,{closed:"closed",open:"OPEN",inact:"inactivated"}[p.na],{size:12,weight:600,align:"center",color:p.na==="open"?C.na:C["ink-soft"]});
   // K channel
   const kx=250;ctx.fillStyle=C.ecf;ctx.fillRect(kx-22,y0-2,44,y1-y0+4);
   rr(kx-22,y0-10,14,y1-y0+20,4);ctx.fillStyle=C.k;ctx.fill();rr(kx+8,y0-10,14,y1-y0+20,4);ctx.fill();
   if(p.k==="closed"){rr(kx-8,y1,16,8,2);ctx.fillStyle=C.ink;ctx.fill()}
-  mono(kx,y0-30,"K⁺ channel",{size:10.5,weight:600,align:"center",color:C.ink});
-  mono(kx,y1+46,p.k==="open"?"OPEN":"closed",{size:11,weight:600,align:"center",color:p.k==="open"?C.k:C["ink-soft"]});
+  mono(kx,y0-30,"K⁺ channel",{size:12,weight:600,align:"center",color:C.ink});
+  mono(kx,y1+46,p.k==="open"?"OPEN":"closed",{size:12,weight:600,align:"center",color:p.k==="open"?C.k:C["ink-soft"]});
   // ions
-  const ion=(x,y,col,t)=>{circ(x,y,5,col,C.panel,1);mono(x+9,y,t,{size:9,color:C.ink})};
+  const ion=(x,y,col,t)=>{circ(x,y,5,col,C.panel,1);mono(x+9,y,t,{size:12,color:C.ink})};
   [[30,30],[60,24],[170,30],[300,32],[330,22]].forEach(([x,y],j)=>ion(x,y,C.na,j===0?"Na⁺":""));
   [[40,150],[180,158],[300,150],[330,160]].forEach(([x,y],j)=>ion(x,y,C.k,j===0?"K⁺":""));
   if(p.flow.includes("na")&&p.na!=="closed"&&chPhase!=="abs"||chPhase==="abs"&&tt<.5){for(let j=0;j<2;j++){const f=(tt+j*.5)%1;ion(nx,y0-26+f*(y1-y0+52),C.na,"")}}
@@ -1045,10 +1049,35 @@ function drawCh(now){
 
 /* ---------- tabs / theme / loop ---------- */
 let curTab="sum";
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;
+const TABS=[...document.querySelectorAll(".tab")];
+function selTab(t,focus){TABS.forEach(x=>{x.setAttribute("aria-selected",x===t);x.tabIndex=x===t?0:-1});curTab=t.dataset.tab;
   ["sum","break","match"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);
   if(curTab==="match"&&!mRunning&&!qDone&&qi===0)mStart=performance.now()-mElapsed*1000;
-  fitAll()});
+  fitAll();placeDesc();lastDesc="";describeNow();if(focus)t.focus()}
+TABS.forEach((t,i)=>{t.onclick=()=>selTab(t);t.onkeydown=e=>{let j=-1;if(e.key==="ArrowRight")j=(i+1)%TABS.length;else if(e.key==="ArrowLeft")j=(i-1+TABS.length)%TABS.length;else if(e.key==="Home")j=0;else if(e.key==="End")j=TABS.length-1;if(j>=0){e.preventDefault();selTab(TABS[j],true)}}});
+/* picture descriptions for the Describe the picture panel (follows the open tab) */
+let lastDesc="";
+function describe(t){if(t===lastDesc)return;lastDesc=t;if(window.gkDescribe)window.gkDescribe(t)}
+function placeDesc(){const d=document.getElementById("gk-desc");if(!d)return;const id={sum:"cvSum",break:"cvSc",match:"cvAP"}[curTab];const h=document.getElementById(id).closest(".canvas-holder");if(h.nextSibling!==d)h.parentNode.insertBefore(d,h.nextSibling)}
+function describeNow(){describe(curTab==="sum"?sumDesc():curTab==="break"?scDescText():matchDesc())}
+function sumDesc(){const near=l=>l<60?"right next to the axon hillock":l<140?"on or near the cell body":l<260?"partway out on a dendrite":"far out on a dendrite";
+  const list=LV.T.map((t,i)=>`${t.name} (${t.type==="E"?"excitatory":"inhibitory"}, ${near(t.site.len)}${t.auto?", firing on its own":""}, key ${i+1})`).join("; ");
+  let st="";if(state==="won")st=LV.kind==="single"?" The level is complete: the single EPSP made a small bump on the trace that stayed below the threshold line.":" The level is complete: the hillock reached threshold, an AP tag appeared on the trace, and a yellow glow jumped along the axon.";
+  else if(state==="lost")st=" This try is over: the trace never reached the threshold line and there are no taps left.";
+  else if(state==="demo"||state==="demodone")st=" The computer is firing the synapses to show one solution.";
+  return `Level ${L+1}, ${LV.name}. A tan neuron fills the top of the picture: branching dendrites on the left, a round cell body with a nucleus, the axon hillock (trigger zone) just right of the cell body, and a myelinated axon running right to three axon terminals. Synapse knobs sit on the neuron: ${list}. Excitatory knobs have a green border and a plus sign, inhibitory knobs a red border and a minus sign. When a synapse fires, a glowing dot travels along the dendrite to the hillock, which glows yellow as it depolarizes, and a readout at the top right shows the hillock voltage. Along the bottom, a blue voltage trace scrolls from right to left under a dashed orange threshold line at −55 mV; small up or down triangles mark each EPSP or IPSP as it arrives.${st}`}
+function scDescText(){const s=SC[si],tr=s.tr,p=shown;let sch;
+  switch(tr.sch){
+   case "axon":sch=`two axons with cream myelin segments: a normal one on top, where a yellow glow jumps quickly from gap to gap, and a damaged one below (${tr.cns?"MS, in the CNS":"Guillain-Barré, in the PNS"}) with three myelin segments missing, drawn as dashed outlines, where the glow slows down as it crosses the bare patch`;break;
+   case "sensory":sch="a pain fiber running from the injury on the left toward the spinal cord on the right, with a shaded numbed zone in the middle and a recording point past it; a yellow signal travels along the fiber"+(p?" and stops at the edge of the numbed zone":" all the way to the right");break;
+   case "naBlock":sch="a tan membrane with a blue Na⁺ channel and blue Na⁺ dots outside"+(p?"; a red-orange TTX plug sits in the channel and the label says Na⁺ can't get in":"; Na⁺ dots flow in through the channel");break;
+   case "kOut":sch="a membrane with a purple K⁺ leak channel and purple K⁺ dots inside, with "+(p?(tr.more?"many extra K⁺ dots outside (lots of K⁺ outside)":"very few K⁺ dots outside"):"a normal number of K⁺ dots outside");break;
+   case "kBlock":sch="a membrane with a blue Na⁺ channel letting Na⁺ in and a purple K⁺ channel"+(p?" plugged by TEA, so K⁺ can't get out":" letting K⁺ out");break;
+   case "ca":sch="a membrane with a blue Na⁺ channel and orange Ca²⁺ dots outside"+(p?"; only a few Ca²⁺ dots remain and the Na⁺ channel gate is open":"; there is a normal amount of Ca²⁺ and the channel gate is closed");break;
+   default:sch="a membrane with a round blue Na⁺/K⁺ pump"+(p?" crossed out with a red-orange X: no ATP, pump stopped":" moving Na⁺ out and K⁺ in, using ATP")}
+  return `${s.t}. The top strip shows ${sch}. Below, a voltage graph (−80 to +30 mV, with a dashed orange threshold line at −55 mV) shows the normal neuron as a dashed grey line`+(p?` and the trace labelled ${tr.alt} as a solid red-orange line. ${tr.note.replace(/&minus;/g,"−")}`:". Press Show me to draw the altered trace on top.")}
+function matchDesc(){const p=PH[chPhase];const nas={closed:"closed and ready",open:"open",inact:"inactivated"}[p.na],ks=p.k==="open"?"open":"closed";
+  return "A large graph shows one action potential as a thick blue line over 8 ms: flat at −70 mV, rising steeply past the dashed orange threshold line at −55 mV to a peak near +30 mV, falling back, dipping to about −77 mV, then returning to rest; a small dot rides along the curve. "+($("#phLabels").checked?"Shaded bands and labels mark Rest, Depolarization, Repolarization and Hyperpolarization. ":"")+"Under the graph, two bars mark the absolute refractory period (red, under the spike) and the relative refractory period (orange, under the undershoot)."+(qShowPh?` The ${PH[qShowPh].name} region is outlined in green as the answer.`:"")+` The small membrane picture below shows the ${p.name}: the Na⁺ channel is ${nas} and the K⁺ channel is ${ks}`+(p.flow.length?", with "+p.flow.map(f=>f==="na"?"Na⁺ flowing in":"K⁺ flowing out").join(" and "):"")+"."}
 function fitAll(){[S1,S2,S3,S4].forEach(s=>s.fit())}
 window.addEventListener("resize",fitAll);
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
@@ -1068,6 +1097,7 @@ function frame(now){
   try{
     if(!paused&&!window.__manual)advance(dt*simRate);
     if(curTab==="sum")drawSum(now);else if(curTab==="break")drawSc(now);else{drawAP(now);drawCh(now)}
+    describeNow();
   }catch(err){console.error(err)}
   requestAnimationFrame(frame);
 }
@@ -1078,6 +1108,7 @@ window.__nl={level:i=>{setupLevel(i)},fire:i=>fireTerm(i,"key"),group:a=>{armed=
 window.__sc=i=>{si=i;shown=true;showT=-1e9;scRender()};
 
 setupLevel(0);scRender();newQuiz();setChState();fitAll();requestAnimationFrame(frame);
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{placeDesc();lastDesc="";describeNow()},0));else setTimeout(placeDesc,0);
 })();
 </script>
 </body>

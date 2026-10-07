@@ -11,7 +11,7 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --warn:#B4632A;--warn-ink:#985423;--act2-chip:#A26714;--act3-chip:#B45C48;--act4-chip:#2B8172;--act6-chip:#3C79AD;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
   --gold:#C9A227;--gold-wash:#F6EFD3;
   --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;--act6:#3F7FB5;
   /* exam-room palette */
@@ -32,7 +32,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act6-chip:var(--act6);--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --gold:#E0BE48;--gold-wash:#352E14;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#7FB3E6;
   --room:#131D23;--floor:#2A363E;--skin:#D9A884;--skin-edge:#7A4E34;--skin-2:#C48F6A;--hair:#3A2A1E;--lip:#9C4F4A;
@@ -48,7 +48,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act6-chip:var(--act6);--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --gold:#E0BE48;--gold-wash:#352E14;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#7FB3E6;
   --room:#131D23;--floor:#2A363E;--skin:#D9A884;--skin-edge:#7A4E34;--skin-2:#C48F6A;--hair:#3A2A1E;--lip:#9C4F4A;
@@ -122,9 +122,13 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 .opt:hover{border-color:var(--accent)}
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.right::before{content:"\2713  ";font-weight:700;color:var(--good)}
+.opt.wrong::before{content:"\2717  ";font-weight:700}
 .fb{margin:6px 0 0;font-size:14.5px}
 .fb.ok{color:var(--good)}
-.fb.no{color:var(--warn)}
+.fb.no{color:var(--warn-ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .dot.cur{color:#0B1A20}}
+:root[data-theme=dark] .dot.cur{color:#0B1A20}
 .calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
 .nav{display:flex;align-items:center;gap:12px;margin-top:14px}
 .navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
@@ -138,6 +142,18 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+</style>
+<script src="site-kit.js"></script>
+<script>
+/* a11y: canvas words are drawn at 12 logical px or larger (labels of 1-2 characters keep their size) */
+(function(){try{const P=CanvasRenderingContext2D.prototype;if(P.__gkMin)return;P.__gkMin=1;
+function big(c,t){const f=c.font,m=/(\d+(?:\.\d+)?)px/.exec(f);if(m&&+m[1]<12&&String(t).length>2){c.font=f.replace(m[0],"12px");return f}return null}
+["fillText","strokeText","measureText"].forEach(k=>{const o=P[k];P[k]=function(t){const f=big(this,t);try{return o.apply(this,arguments)}finally{if(f)this.font=f}}})}catch(e){}})();
+</script>
+<style id="gk-a11y-fix">
+/* Narrow screens: the site kit hides the tool-button labels with display:none, which leaves the buttons
+   without a name. Keep the labels for screen readers but hide them visually. */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -217,8 +233,9 @@ function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||50
 function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
 function poly(P,col,lw,dash,close){ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));if(close)ctx.closePath();ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
 function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function onC(bg){try{const h=String(bg).trim().replace("#","");if(h.length<6)return"#fff";const c=[0,2,4].map(i=>{const v=parseInt(h.substr(i,2),16)/255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});const L=.2126*c[0]+.7152*c[1]+.0722*c[2];return 1.05/(L+.05)>=(L+.05)/.0575?"#fff":"#10161A"}catch(e){return"#fff"}}
 function chipText(x,y,txt,col,fg,size){size=size||11;ctx.font=`600 ${size}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
-  ctx.fillStyle=col;rr(x-w/2-6,y-size*.8,w+12,size*1.6,size*.8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+12}
+  ctx.fillStyle=col;rr(x-w/2-6,y-size*.8,w+12,size*1.6,size*.8);ctx.fill();ctx.fillStyle=fg||onC(col);ctx.fillText(txt,x,y+.5);return w+12}
 function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
 function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
 function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
@@ -865,7 +882,8 @@ SCN.gait=(t,p,B,opt)=>{opt=opt||{};const {bx,by,W,H,bd}=boxOf(B);const mode=opt.
 const ACTS={1:{name:"Part 1 · Mental status",col:"act1"},2:{name:"Part 2 · Cranial nerves",col:"act2"},3:{name:"Part 3 · Sensory",col:"act6"},
  4:{name:"Part 4 · Motor",col:"act3"},5:{name:"Part 5 · Coordination & gait",col:"act4"},6:{name:"Part 6 · Putting it together",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",title:"The big picture: test functions to find the problem",
+{desc:"On the left is an outline of a body seen from the front, with the brain, brainstem, spinal cord and yellow nerves running out to the arms and legs. On the right is a stack of five cards: 1 Mental status (purple), 2 Cranial nerves (orange), 3 Sensory (blue), 4 Motor (red-orange) and 5 Coordination and gait (green). Each card fills with its colour in turn while the matching part of the body map lights up: the brain, then the brainstem and cranial nerves, then a blue signal climbing from the right foot, then a green signal travelling down to the right leg, then the cerebellum. At the end a red circled X marks one spot on the map and the bottom box turns red, reading \"Put the findings together, one place: the lesion\".",
+ act:0,scene:"map",title:"The big picture: test functions to find the problem",
  body:`<p>A <b>neurological exam</b> is a set of quick bedside tests. Each test checks one job of the nervous system, such as seeing, smiling, feeling a pinprick or walking a straight line.</p>
  <p>Why do it? To <b>localize</b> a problem. Every function depends on a known path through the brain, brainstem, spinal cord and nerves. If a test is abnormal, the problem must lie somewhere along that path. Put several findings together and the paths cross at one spot: the <b>lesion</b> (the damaged area).</p>
  <p>The exam has five major sections. The animation steps through them:</p>
@@ -880,7 +898,8 @@ const STEPS=[
  caption:"Each section tests a different part of the nervous system. Findings together point to one spot: the lesion.",
  legend:[["accent","Region being tested"],["nerve","Nerves","l"],["lesion","Lesion (damage)","x"]]},
 
-{act:1,scene:"orient",title:"Mental status: orientation, attention and memory",
+{desc:"A patient in a blue hospital gown faces us, with a checklist to the right headed \"Oriented x3 + attention\". Speech bubbles appear in turn: the examiner (square box) asks his name, where they are and the date, and the patient (rounded bubble above the head) answers \"Jordan Reyes\", \"At the hospital, in the clinic\" and \"Tuesday, October 7th\". A green tick appears beside Person, Place, Time and then Attention. Then the examiner gives three words (apple, table, penny), a clock face sweeps to show \"5 minutes later\", the patient repeats the three words, and Short-term memory is ticked.",
+ act:1,scene:"orient",title:"Mental status: orientation, attention and memory",
  body:`<p>The exam starts by simply talking with the patient. This tests the <b>cerebrum</b>, especially the cerebral cortex.</p>
  <ol><li><b>Orientation</b>: Does the patient know <b>who</b> they are, <b>where</b> they are and <b>when</b> it is? A patient who gets all three is often charted as "alert and oriented ×3".</li>
  <li><b>Attention</b>: Can they focus on a task? Examples: spell WORLD backward, or repeat a list of numbers (the <b>digit span</b> test).</li>
@@ -896,7 +915,8 @@ const STEPS=[
  caption:"Who, where, when, then attention (WORLD backward) and short-term memory (three words, five minutes later).",
  legend:[["accent","Examiner","s"],["ink-soft","Patient","s"],["good","Correct answer","✓"]]},
 
-{act:1,scene:"lang",title:"Language: Broca and Wernicke aphasia",
+{desc:"A large pink side view of the left hemisphere fills the left side, front of the brain to the left. An orange oval near the front is labelled \"Broca's area: makes speech\" and a purple oval further back is labelled \"Wernicke's area: understands\", joined by a dotted line. A patient on the right speaks in a bubble, and a checklist below scores Fluent speech, Understands others and Repeats a sentence. The scene runs three times: Normal language (green title, all three ticked, \"I drove here this morning with my son\"); Broca aphasia with a red X over the orange area (halting \"Drove... son... here. Car.\", fluency and repetition marked abnormal); and Wernicke aphasia with a red X over the purple area (fluent nonsense, \"The morning drove a tabler into the blue\").",
+ act:1,scene:"lang",title:"Language: Broca and Wernicke aphasia",
  body:`<p>In most people, language lives in the <b>left hemisphere</b>. Two areas matter most:</p>
  <ol><li><b>Wernicke's area</b> (back of the temporal lobe) <b>understands</b> spoken and written words.</li>
  <li><b>Broca's area</b> (lower frontal lobe) <b>plans the movements</b> that produce speech.</li></ol>
@@ -914,7 +934,8 @@ const STEPS=[
  caption:"Normal: words travel from Wernicke's area to Broca's area. Then each area is damaged in turn.",
  legend:[["act1","Wernicke's area (understanding)"],["act2","Broca's area (speech production)"],["gold","Connecting fibers","l"],["lesion","Damaged area","h"]]},
 
-{act:2,scene:"cn12",title:"CN I and CN II: smell, acuity and visual fields",
+{desc:"Three short scenes, each with an orange tag in the top left corner. CN I, olfactory: the patient sits with eyes closed while a gloved examiner's hand presses one nostril shut and holds a small coffee jar under the nose; the patient says \"Coffee\", then the other nostril is tested. CN II, acuity: the patient covers one eye with a black paddle and reads a Snellen eye chart on the right, which has a large E at the top and smaller rows below; a box outlines the row being read, first for the right eye, then the left. CN II, visual fields: the examiner holds up wiggling fingers out to the sides while the patient looks straight ahead and reports what they see.",
+ act:2,scene:"cn12",title:"CN I and CN II: smell, acuity and visual fields",
  body:`<p>The <b>cranial nerves</b> are 12 pairs of nerves that leave the brain and brainstem. They are numbered I to XII. The exam tests them one by one.</p>
  <ol><li><b>CN I, olfactory nerve (smell)</b>: with eyes closed, the patient smells something familiar, like coffee, one nostril at a time.</li>
  <li><b>CN II, optic nerve (vision)</b>, part 1: <b>visual acuity</b>, how sharp vision is. The patient covers one eye and reads a <b>Snellen chart</b>. "20/20" means they read at 20 feet what a typical eye reads at 20 feet.</li>
@@ -929,7 +950,8 @@ const STEPS=[
  caption:"CN I: one nostril at a time. CN II: a Snellen chart (acuity), then wiggling fingers in each quarter (fields).",
  legend:[["odor","Smell","l"],["accent","Row being read","r"],["good","Seen","✓"]]},
 
-{act:2,scene:"pupil",title:"Pupillary light reflex: direct and consensual",
+{desc:"On the left is a large face in a dimmed grey room; a penlight swings in and shines a yellow beam into one eye, and both black pupils shrink, with labels \"Direct: constricts\" over the lit eye and \"Consensual: constricts\" over the other. On the right a wiring panel shows both eyes at the top: blue lines labelled \"CN II in\" run from each eye to an oval \"midbrain center\", and green lines labelled \"CN III out to both pupils\" run from two green dots (CN III nuclei) back up to both eyes. Glowing dots travel in along the blue line and out along the green lines. In the second half the orange title reads \"Right optic nerve (CN II) damaged\": the blue line from the right eye becomes dashed orange with a red X, and light in the right eye no longer makes either pupil shrink.",
+ act:2,scene:"pupil",title:"Pupillary light reflex: direct and consensual",
  body:`<p>In a dim room, the examiner shines a penlight into one eye. Normally <b>both</b> pupils get smaller (constrict):</p>
  <ol><li>The lit eye constricts: the <b>direct</b> response.</li><li>The other eye constricts too: the <b>consensual</b> response.</li></ol>
  <p>Two nerves make this reflex. <b>CN II</b> (optic) carries the light signal in. It reaches a center in the <b>midbrain</b> that sends signals to <b>both</b> sides. <b>CN III</b> (oculomotor) carries the command out to the muscle that shrinks each pupil. That bilateral wiring is why both pupils respond.</p>
@@ -944,7 +966,8 @@ const STEPS=[
  caption:"Light in one eye → CN II → midbrain → both CN III → both pupils constrict. Then: what a damaged right CN II looks like.",
  legend:[["beam","Light"],["dc","Signal in (CN II)","l"],["cst","Signal out (CN III)","l"],["good","Constricts","✓"]]},
 
-{act:2,scene:"eom",title:"Eye movements: CN III, IV and VI",
+{desc:"On the left a large face watches the examiner's gloved finger, which traces a big letter H in front of the face: out to the patient's right, up and down, across to the left, and up and down again, with both eyes following it. On the right a panel titled \"Patient's right eye\" draws the same H with six end points labelled LR VI, SR III, IR III, MR III, IO III and SO IV. As the eye reaches each corner, that point turns orange and the text below names the muscle and nerve, such as \"Now: Lateral rectus (CN VI)\". A box at the bottom reads \"LR6 SO4, the rest are 3\".",
+ act:2,scene:"eom",title:"Eye movements: CN III, IV and VI",
  body:`<p>Six muscles move each eye. Three cranial nerves control them. To test them, the examiner holds up a finger and traces a big <b>H</b> in the air. The patient follows the finger with their eyes, keeping the head still.</p>
  <ol><li><b>CN VI, abducens</b>: the <b>lateral rectus</b>, which turns the eye <b>outward</b>.</li>
  <li><b>CN IV, trochlear</b>: the <b>superior oblique</b>, which turns the eye <b>down</b> when it is looking toward the nose.</li>
@@ -960,7 +983,8 @@ const STEPS=[
  caption:"The eyes follow the finger in an H. The chart names the muscle and nerve for each direction (patient's right eye).",
  legend:[["accent","H path of the finger","dl"],["act2","Muscle in use now","r"]]},
 
-{act:2,scene:"cn5",title:"CN V: facial sensation and chewing",
+{desc:"A large face with closed eyes fills the left side, and a key on the right shows three coloured zones: V1 ophthalmic (purple), V2 maxillary (teal green) and V3 mandibular (orange). A gloved hand with a cotton wisp touches the forehead, then the cheek, then the jaw on the patient's right side, and then on the left; each touched zone is shaded in its colour and the patient says \"Yes\". A label in the corner names the spot, such as \"Touch: V1 (right)\". Then the eyes open, the examiner says \"Clench your teeth\", and two fingers press on both jaw angles as the masseter muscles bulge out, labelled \"masseter bulges\".",
+ act:2,scene:"cn5",title:"CN V: facial sensation and chewing",
  body:`<p>The <b>trigeminal nerve (CN V)</b> is the main <b>sensory</b> nerve of the face. It has three branches, which cover three zones:</p>
  <ol><li><b>V1, ophthalmic</b>: forehead, upper eyelid and the top of the nose.</li><li><b>V2, maxillary</b>: cheek, upper lip and the side of the nose.</li><li><b>V3, mandibular</b>: lower lip, chin and jaw.</li></ol>
  <p>With the patient's eyes closed, the examiner touches each zone on both sides with a wisp of cotton and asks, "Does it feel the same on both sides?"</p>
@@ -975,7 +999,8 @@ const STEPS=[
  caption:"Cotton touches V1, V2 and V3 on each side with eyes closed. Then the masseters bulge as the teeth clench.",
  legend:[["zone1","V1 ophthalmic","s"],["zone2","V2 maxillary","s"],["zone3","V3 mandibular","s"]]},
 
-{act:2,scene:"cn7",title:"CN VII: facial expression and the forehead clue",
+{desc:"A large face fills the canvas, tagged \"CN VII facial\", and acts out the examiner's commands one at a time: wrinkle lines appear as the eyebrows rise, the eyes squeeze shut, the lips pull back in a smile showing teeth, and the cheeks puff out. Then two faces appear side by side. The left face, \"Stroke in the LEFT brain (UMN)\", wrinkles both sides of the forehead (green label) but the lower right face droops when smiling. The right face, \"Bell's palsy, RIGHT CN VII (LMN)\", shows no wrinkles on the right forehead (orange label) and the whole right side stays weak.",
+ act:2,scene:"cn7",title:"CN VII: facial expression and the forehead clue",
  body:`<p>The <b>facial nerve (CN VII)</b> moves the muscles of <b>facial expression</b>. The patient is asked to raise the eyebrows, close the eyes tightly, smile and puff out the cheeks. Look for one side that lags.</p>
  <p>The pattern of weakness tells you where the damage is:</p>
  <ol><li><b>Damage to the facial nerve itself</b>, as in <b>Bell's palsy</b>, weakens the <b>whole side</b> of the face, forehead included. The eye may not close, and the forehead does not wrinkle on that side.</li>
@@ -991,7 +1016,8 @@ const STEPS=[
  caption:"Eyebrows, eyes, smile, cheeks. Then a stroke (forehead spared) beside Bell's palsy (whole side weak), both on the right.",
  legend:[["warn","Weak side","r"],["good","Forehead wrinkles present","✓"]]},
 
-{act:2,scene:"cn8",title:"CN VIII: hearing and balance",
+{desc:"A patient in a gown sits with eyes closed while a gloved hand rubs two fingers beside one ear; small purple sound arcs ripple out from the fingers. A label reads \"Right ear\", then \"Left ear\", and the patient answers \"Yes, I hear it.\" In the second scene, a smaller patient on the left has a tuning fork pressed on top of the head with sound arcs coming out of both ears, labelled \"Weber test: fork on top of the head\", and the patient says \"I hear it the same in both ears.\" On the right a diagram of the inner ear shows pink looped semicircular canals (balance) and a pink spiral cochlea (hearing); a green vestibular branch and an orange cochlear branch join and run to the right as \"CN VIII to brainstem\", with glowing dots travelling along them.",
+ act:2,scene:"cn8",title:"CN VIII: hearing and balance",
  body:`<p>The <b>vestibulocochlear nerve (CN VIII)</b> has two branches from the inner ear:</p>
  <ol><li>The <b>cochlear</b> branch carries <b>hearing</b> from the cochlea.</li><li>The <b>vestibular</b> branch carries <b>balance</b> and head-position information from the semicircular canals and nearby sensors.</li></ol>
  <p>A quick hearing check: the examiner rubs fingers or whispers beside each ear while the patient's eyes are closed.</p>
@@ -1007,7 +1033,8 @@ const STEPS=[
  caption:"Finger rub at each ear, then the Weber test. The inner ear sends hearing and balance signals along CN VIII.",
  legend:[["sound","Sound","l"],["act2","Cochlear branch (hearing)","l"],["act4","Vestibular branch (balance)","l"]]},
 
-{act:2,scene:"cn910",title:"CN IX and X: \"say ahh\" and the gag reflex",
+{desc:"A close-up of a wide open mouth fills the canvas: white upper teeth, a pink palate arching over a dark throat, a teardrop-shaped uvula hanging in the middle and the tongue below, with Patient's R marked on the left and Patient's L on the right. When the patient says \"Ahhh\", small green arrows show both sides of the palate rising evenly while the uvula stays centred. A wooden stick then touches the back of the throat, with labels \"IX carries the touch IN\" (blue) and \"X sends the gag OUT\" (green). In the final scene, tagged \"Right CN X weak\", only the left side rises (green arrow) while the right side has a small orange arrow, and the uvula tilts toward the left, labelled \"Uvula pulled toward the left (strong) side\".",
+ act:2,scene:"cn910",title:"CN IX and X: \"say ahh\" and the gag reflex",
  body:`<p>The <b>glossopharyngeal (CN IX)</b> and <b>vagus (CN X)</b> nerves work together in the throat.</p>
  <ol><li><b>Say "ahh"</b>: the <b>soft palate</b> should rise evenly on both sides and the <b>uvula</b> should stay in the middle. Lifting the palate is a CN X job.</li>
  <li><b>Gag reflex</b>: touching the back of the throat with a tongue depressor triggers a gag. <b>CN IX</b> carries the touch signal <b>in</b> (the sensory side), and <b>CN X</b> carries the command <b>out</b> to the throat muscles (the motor side).</li></ol>
@@ -1022,7 +1049,8 @@ const STEPS=[
  caption:"\"Ahh\": the palate lifts evenly. Gag: IX in, X out. Then a weak right side: the uvula is pulled to the left.",
  legend:[["good","Palate lifts","r"],["warn","Palate does not lift","r"],["wood","Tongue depressor","r"]]},
 
-{act:2,scene:"cn1112",title:"CN XI and XII: shoulders, head turn and tongue",
+{desc:"First, CN XI: two gloved hands press down on the patient's shoulders while the patient shrugs up against them, labelled \"trapezius lifts both shoulders\". Then a hand presses on the side of the face as the patient turns the head against it; an orange-brown band on the neck shows the sternocleidomastoid working, labelled \"left SCM working\". Next, CN XII: a large face sticks out a pink tongue straight down the middle, then moves it from side to side. In the last scene, tagged \"Left CN XII damaged\" in orange, the tongue points toward the patient's left side when it is stuck out.",
+ act:2,scene:"cn1112",title:"CN XI and XII: shoulders, head turn and tongue",
  body:`<p><b>CN XI, accessory nerve</b>: runs two neck muscles.</p>
  <ol><li>The <b>trapezius</b> shrugs the shoulder. The patient shrugs while the examiner pushes down.</li>
  <li>The <b>sternocleidomastoid (SCM)</b> turns the head. Notice the direction: the <b>right SCM turns the head to the left</b>. The patient turns against the examiner's hand.</li></ol>
@@ -1038,7 +1066,8 @@ const STEPS=[
  caption:"Shrug (trapezius), turn the head (SCM), then the tongue: straight when normal, toward the weak side with left CN XII damage.",
  legend:[["act3","Muscle working","r"],["warn","Weak side","r"]]},
 
-{act:3,scene:"sens",title:"The sensory exam: five ways to feel",
+{desc:"Two bare feet are seen from above, toes at the bottom, with a small face in the corner marked \"Eyes closed\". A gloved hand touches each foot in turn: a cotton wisp for light touch, a pin for sharp versus dull pain, a vibrating tuning fork on the big toe (shown with a blue glow), and then the big toe is moved up or down for position sense. A label at the bottom names each test and foot, the patient answers in a speech bubble, and a coloured tag in the top right names the pathway: blue for the dorsal column, red for the spinothalamic pathway. The last scene shows a fingertip with a two-pronged caliper, labelled with how many millimetres apart the points are, and the patient says \"Two\" or \"One\".",
+ act:3,scene:"sens",title:"The sensory exam: five ways to feel",
  body:`<p>The patient keeps their <b>eyes closed</b> so they can't watch. The examiner compares left with right and hands with feet.</p>
  <ol><li><b>Light touch</b>: a cotton wisp. "Tell me when you feel it."</li>
  <li><b>Pain</b>: a clean pin, alternating sharp and dull ends. "Sharp or dull?" (It is a light tap, not a jab.)</li>
@@ -1056,7 +1085,8 @@ const STEPS=[
  caption:"Eyes closed: cotton, pin, tuning fork, toe position, then one point or two on a fingertip.",
  legend:[["accent","Spot being tested"],["warn","Area with loss","h"],["sound","Vibration","l"]]},
 
-{act:3,scene:"tracts",title:"Two sensory highways: dorsal column vs spinothalamic",
+{desc:"On the left is the body map with brain, spinal cord and nerves; on the right is a spinal cord cross-section (back side up) with two blue dorsal columns at the top, green corticospinal tracts at the sides and red spinothalamic tracts at the lower corners. First a blue line climbs from the right foot up the right side of the cord, then crosses in the medulla (label \"crosses in the medulla\") and goes up to the left cortex, while a blue box lists \"Vibration, position sense, fine touch; same side up the cord; crosses in the medulla; thalamus to opposite cortex\". Then a red line starts at the right foot but crosses to the left side right away in the cord (label \"crosses right away in the cord\") and climbs to the left cortex, with a red box listing pain, temperature and crude touch. The matching tracts in the cross-section fill in blue or red.",
+ act:3,scene:"tracts",title:"Two sensory highways: dorsal column vs spinothalamic",
  body:`<p>The tests in the last step travel to the brain on <b>two different pathways</b>. Knowing where each one <b>crosses</b> to the other side is the key to localizing.</p>
  <ol><li><b>Dorsal column (dorsal column–medial lemniscus) pathway</b>: fine touch, <b>vibration</b>, <b>proprioception</b> and two-point discrimination. It climbs the spinal cord on the <b>same side</b> it entered, and <b>crosses in the medulla</b>.</li>
  <li><b>Spinothalamic pathway</b>: <b>pain</b>, <b>temperature</b> and crude touch. It <b>crosses right away</b> in the spinal cord, then climbs on the opposite side.</li></ol>
@@ -1072,7 +1102,8 @@ const STEPS=[
  caption:"From the right foot: dorsal column (blue) climbs the same side, crosses in the medulla. Spinothalamic (red) crosses at once.",
  legend:[["dc","Dorsal column: vibration, position","l"],["st","Spinothalamic: pain, temperature","l"],["cst","Corticospinal (motor)","r"]]},
 
-{act:4,scene:"strength",title:"Muscle strength: the 0 to 5 scale",
+{desc:"On the left a person seen from the side has the arm hanging down, labelled \"Elbow flexion, side view\". On the right is a \"Muscle strength scale\" with six rows from 0 No contraction to 5 Normal strength; the current grade fills in red-orange. The arm acts out each grade in turn: 0, nothing happens; 1, a dark flicker in the biceps but no movement; 2, the forearm slides along a table (\"arm resting on a table, sliding\"); 3, it lifts against gravity; 4, it pushes against some resistance; and 5, it holds firm while the examiner's gloved hand pushes against it.",
+ act:4,scene:"strength",title:"Muscle strength: the 0 to 5 scale",
  body:`<p>Strength is tested by asking the patient to push or pull while the examiner resists. Each side is compared with the other. Strength is graded on a <b>0 to 5 scale</b>:</p>
  <ol start="0"><li><b>0</b>: no contraction at all.</li><li><b>1</b>: a flicker of contraction, but no movement.</li><li><b>2</b>: moves only when gravity is removed (for example, sliding along a table).</li><li><b>3</b>: moves against gravity, but not against any resistance.</li><li><b>4</b>: moves against some resistance, but less than normal.</li><li><b>5</b>: normal strength.</li></ol>
  <p>Grade 3 is the key dividing line: can the muscle lift the body part against gravity by itself? Results are written like "right elbow flexion 4/5".</p>`,
@@ -1086,7 +1117,8 @@ const STEPS=[
  caption:"Grades 0 to 5 in turn: nothing, a flicker, gravity removed, against gravity, some resistance, full strength.",
  legend:[["act3","Biceps contracting","r"],["glove","Examiner's hand","r"]]},
 
-{act:4,scene:"tone",title:"Tone, bulk and involuntary movements",
+{desc:"The canvas has three panels. Left, \"Tone: examiner moves the relaxed arm\": gloved hands bend and straighten the patient's forearm while a vertical \"resistance\" bar shows how stiff it feels, cycling from \"Normal tone\" (green, medium teal bar, \"smooth, light resistance\") to \"Spasticity (UMN)\" (orange, tall brown bar, \"resistance builds, then gives way\") to \"Flaccid (LMN)\" (orange, nearly empty bar, \"floppy, almost no resistance\"). Top right, \"Bulk\" compares a normal calf with a thinner calf labelled atrophy in orange. Bottom right, \"Involuntary movements\" shows small ripples under the skin of a muscle (fasciculations, twitches) and a finger shaking side to side with pink arcs (tremor, rhythmic).",
+ act:4,scene:"tone",title:"Tone, bulk and involuntary movements",
  body:`<p><b>Muscle tone</b> is the slight tension a relaxed muscle has. The examiner moves the patient's relaxed arm and feels the resistance.</p>
  <ol><li><b>Normal</b>: smooth, light resistance.</li><li><b>Spasticity</b>: resistance that builds with faster movement, often with a "catch". A sign of <b>upper motor neuron</b> damage.</li><li><b>Flaccidity</b>: floppy, almost no resistance. A sign of <b>lower motor neuron</b> damage.</li></ol>
  <p><b>Bulk</b> is muscle size. The examiner looks for <b>atrophy</b> (wasting) by comparing sides. Severe atrophy suggests a muscle has lost its nerve supply.</p>
@@ -1101,7 +1133,8 @@ const STEPS=[
  caption:"Left: the examiner moves the arm (normal, spastic, flaccid). Right: muscle bulk, then fasciculations and tremor.",
  legend:[["accent","Resistance felt","l"],["warn","Abnormal","r"]]},
 
-{act:4,scene:"dtr",title:"Deep tendon reflexes and how they are graded",
+{desc:"A leg lies over the edge of a table, seen from the side, and a gloved hand swings a red reflex hammer to tap just below the kneecap. A blue line labelled \"sensory neuron in\" runs from a blue muscle spindle in the thigh to a spinal cord cross-section marked \"spinal cord about L4\", and a green line labelled \"motor neuron out\" runs back to the thigh muscle, which makes the lower leg kick forward. A \"Reflex grades\" box lists 0 absent, 1+ diminished, 2+ normal, 3+ brisk and 4+ very brisk with clonus. The highlighted grade cycles (2+ in green, then 0, 1+, 3+ and 4+ in orange) and the kick changes to match, from none to a large repeated jerk.",
+ act:4,scene:"dtr",title:"Deep tendon reflexes and how they are graded",
  body:`<p>A tap with a <b>reflex hammer</b> on a tendon stretches the muscle. Stretch sensors (<b>muscle spindles</b>) send a signal into the spinal cord, which sends a signal straight back out to the same muscle. It contracts and the limb jerks. This is a <b>reflex arc</b>: it works without the brain deciding.</p>
  <p>Common reflexes and their spinal levels: <b>biceps</b> (C5–C6), <b>triceps</b> (C7), <b>patellar</b> or knee jerk (about L4), and <b>Achilles</b> or ankle jerk (S1).</p>
  <p>Reflexes are graded on a <b>0 to 4+</b> scale:</p>
@@ -1117,7 +1150,8 @@ const STEPS=[
  caption:"Tap → spindle → sensory neuron → spinal cord (about L4) → motor neuron → quadriceps → kick. Grades cycle 2+, 0, 1+, 3+, 4+.",
  legend:[["dc","Sensory neuron","l"],["cst","Motor neuron","l"],["act3","Quadriceps contracting","r"]]},
 
-{act:4,scene:"umnlmn",title:"Upper vs lower motor neuron signs",
+{desc:"A panel on the left shows the motor pathway: a green line, labelled UMN, runs from a pink oval \"motor cortex\" down to a spinal cord cross-section, and a yellow line, labelled LMN, runs from the cord out to a red-brown muscle. In the first half, titled \"Upper motor neuron lesion\", a red X sits on the green UMN line; a list appears (weakness, spastic tone, hyperreflexia and clonus, positive Babinski, little wasting), and a tool strokes the sole of a foot on the right so the big toe lifts and the toes fan out, labelled \"positive Babinski\" in orange. In the second half, \"Lower motor neuron lesion\", the red X moves to the yellow LMN line, the list changes to flaccid tone, weak or absent reflexes, marked atrophy and fasciculations, and the toes curl down, labelled \"Toes curl down: normal adult response\" in green.",
+ act:4,scene:"umnlmn",title:"Upper vs lower motor neuron signs",
  body:`<p>Movement uses two neurons in a row:</p>
  <ol><li>The <b>upper motor neuron (UMN)</b> starts in the motor cortex and travels down the <b>corticospinal tract</b> to the spinal cord.</li>
  <li>The <b>lower motor neuron (LMN)</b> starts in the spinal cord's anterior (ventral) horn, or a brainstem nucleus, and travels in a nerve to the muscle.</li></ol>
@@ -1135,7 +1169,8 @@ const STEPS=[
  caption:"UMN damage: stiff, brisk reflexes, toes fan up. LMN damage: floppy, weak reflexes, wasting and twitches.",
  legend:[["cst","Upper motor neuron","l"],["nerve","Lower motor neuron","l"],["lesion","Lesion","x"]]},
 
-{act:5,scene:"ftn",title:"Finger-to-nose and heel-to-shin",
+{desc:"A patient faces us with arms at the sides while the examiner holds a gloved finger out to one side; a green tag reads \"Normal\" and a label names the arm being tested. The patient's hand moves back and forth between their nose and the examiner's fingertip in a smooth straight path, first with the right arm, then the left. Then the tag turns orange, \"Cerebellar problem\": the hand path wobbles and overshoots the target, with a wavy orange trace and the label \"overshoots + tremor near the target\". A final scene shows the heel sliding down the opposite shin.",
+ act:5,scene:"ftn",title:"Finger-to-nose and heel-to-shin",
  body:`<p><b>Coordination</b> depends mostly on the <b>cerebellum</b>. It compares what you meant to do with what your body is doing and fixes errors smoothly.</p>
  <ol><li><b>Finger-to-nose</b>: the patient touches the examiner's finger, then their own nose, back and forth. Normally the path is smooth and lands on target.</li>
  <li><b>Heel-to-shin</b>: lying down, the patient runs one heel down the opposite shin from knee to ankle.</li></ol>
@@ -1151,7 +1186,8 @@ const STEPS=[
  caption:"Smooth finger-to-nose, then a cerebellar patient: overshoot and tremor near the target. Then heel-to-shin.",
  legend:[["accent","Path of the fingertip","l"],["warn","Wobbly path","l"]]},
 
-{act:5,scene:"ram",title:"Rapid alternating movements",
+{desc:"Two forearms are seen from above, resting on blue thighs, labelled \"Right hand\" and \"Left hand\" with whether each palm is up or down. Both hands flip between palm up and palm down at the same time. Below, a graph titled \"Rhythm, last 3 seconds (up = palm down)\" draws a trace for each hand: the right hand's blue trace is a fast, even zigzag labelled \"fast, even\", and the left hand's orange trace is a slower, irregular wave labelled \"slow, uneven\". An orange tag in the corner reads \"Left cerebellar problem\".",
+ act:5,scene:"ram",title:"Rapid alternating movements",
  body:`<p>The patient pats one thigh, flipping the hand <b>palm up, palm down</b>, as fast and evenly as possible.</p>
  <p>Normally the rhythm is quick and even. With a <b>cerebellar</b> problem, the movements become slow, clumsy and irregular. This is called <b>dysdiadochokinesia</b> (dis-dye-ADD-oh-ko-kin-EE-zha), the inability to perform rapid alternating movements.</p>
  <p>Like the other cerebellar signs, it shows up on the <b>same side</b> as the cerebellar damage. Weakness can also slow these movements, so the examiner checks strength first.</p>`,
@@ -1165,7 +1201,8 @@ const STEPS=[
  caption:"Both hands flip at once. The right is fast and even; the left (cerebellar problem) is slow and uneven.",
  legend:[["accent","Normal rhythm","l"],["warn","Irregular rhythm","l"]]},
 
-{act:5,scene:"romberg",title:"The Romberg test: eyes open, then closed",
+{desc:"A standing patient faces us with feet together and arms at the sides, while the examiner's two gloved hands are held out on either side ready to catch. A title reads \"Eyes OPEN, feet together\" and later \"Eyes CLOSED, feet together\", and a \"Body sway\" graph on the right draws a green line across an \"open\" section and a shaded \"closed\" section. In the normal case (green tag) the line stays nearly flat in both halves; with a proprioception problem (orange tag, \"POSITIVE Romberg\") it stays flat with eyes open but swings widely once the eyes close and the patient sways. With a cerebellar problem (orange tag) the patient is unsteady and the line wobbles even with eyes open.",
+ act:5,scene:"romberg",title:"The Romberg test: eyes open, then closed",
  body:`<p>Standing balance uses three inputs: <b>vision</b>, <b>proprioception</b> (from the dorsal columns) and the <b>vestibular system</b>. The cerebellum puts them together. You can usually balance with any two.</p>
  <p>In the <b>Romberg test</b>, the patient stands with feet together, first with eyes <b>open</b>, then <b>closed</b>. The examiner stands close to catch them.</p>
  <ol><li><b>Normal</b>: steady both ways.</li><li><b>Proprioception problem</b> (such as dorsal column damage): steady with eyes open, because vision makes up for it, but sways or falls with eyes closed. This is a <b>positive Romberg sign</b>.</li><li><b>Cerebellar problem</b>: unsteady even with eyes <b>open</b>. Closing the eyes doesn't change much. That is not a positive Romberg; it points to the cerebellum instead.</li></ol>`,
@@ -1179,7 +1216,8 @@ const STEPS=[
  caption:"Normal, then a proprioception problem (sways only with eyes closed), then a cerebellar problem (unsteady with eyes open).",
  legend:[["act4","Body sway","l"],["accent","Eyes closed period","r"]]},
 
-{act:5,scene:"gait",title:"Gait: watching the patient walk",
+{desc:"A person walks from left to right across the canvas, seen from the side, above a floor line. Below, a strip titled \"Footprints from above\" lays down a mark for each step: purple ovals for the right foot in the bottom row and green ovals for the left foot in the top row. A title names each gait in turn: normal gait (even steps, narrow base, arms swing); tandem walk (heel to toe, all prints in one straight line); ataxic gait (wide, uneven, scattered prints, staggering); hemiparetic gait (the stiff right leg swings out in an arc); and steppage gait (the right knee lifts high and the foot slaps down).",
+ act:5,scene:"gait",title:"Gait: watching the patient walk",
  body:`<p><b>Gait</b> means the way someone walks. It needs strength, sensation, balance and coordination all at once, so it is a great summary test.</p>
  <ol><li><b>Normal gait</b>: smooth steps, a narrow base, arms swinging.</li><li><b>Tandem walk</b>: heel touching toe along a line. It is hard to do with any balance problem.</li><li><b>Ataxic (cerebellar) gait</b>: a wide base and staggering, like walking on a moving boat.</li><li><b>Hemiparetic gait</b>, after a stroke: the weak leg is stiff, so it swings out in an arc (<b>circumduction</b>), and the arm on that side is held bent.</li><li><b>Steppage gait</b>: with <b>foot drop</b> (often a peripheral nerve problem), the knee lifts high so the toes clear the floor, and the foot slaps down.</li></ol>
  <p>For nursing, an abnormal gait means a <b>fall risk</b>.</p>`,
@@ -1193,7 +1231,8 @@ const STEPS=[
  caption:"Normal, tandem, ataxic, hemiparetic and steppage gaits, with the footprints seen from above.",
  legend:[["act1","Right footprint","s"],["act4","Left footprint","s"],["warn","Swing path (circumduction)","dl"]]},
 
-{act:6,scene:"local",title:"Putting it together: where is the lesion?",
+{desc:"The body map is on the left, and a red-bordered box on the right is headed \"LESION:\" with four chips at the bottom: Cortex, Brainstem, Spinal cord and Peripheral nerve. Each case in turn places a red circled X on the map, highlights the damaged region in red, shades the affected body parts in tan, and lists the findings. Cerebral cortex (left): the right face, arm and leg are shaded; brainstem (left midbrain): the left eye is circled and the right arm and leg are shaded, labelled \"crossed findings\". Spinal cord (thoracic): the cord is red with both legs shaded; peripheral nerve (right fibular): only the right foot is shaded, for foot drop.",
+ act:6,scene:"local",title:"Putting it together: where is the lesion?",
  body:`<p>Now combine the findings. A few patterns do most of the work:</p>
  <ol><li><b>Cerebral cortex</b>: problems on the <b>opposite</b> side of the body. Face and arm are often both involved. Look for <b>cortex-only</b> clues such as aphasia or a visual field loss.</li>
  <li><b>Brainstem</b>: <b>crossed</b> findings. A cranial nerve problem on <b>one</b> side, plus weakness or numbness of the body on the <b>other</b> side. The cranial nerve tells you the level.</li>
@@ -1210,7 +1249,8 @@ const STEPS=[
  caption:"Four lesion sites in turn: cortex, brainstem, spinal cord and peripheral nerve. Shading shows which body areas are affected.",
  legend:[["lesion","Lesion","x"],["warn","Affected area","r"],["cst","Motor path","l"]]},
 
-{act:6,scene:"mca",title:"A worked example: left MCA stroke",
+{desc:"On the left is a pink side view of the left hemisphere with red branching arteries and a grey-green strip over the motor area. A dark dot appears on the main artery, labelled \"clot blocks the left MCA\", and then a large red patch spreads over the side of the brain, labelled \"MCA territory: face + arm motor and sensory cortex, language\". On the right the patient lifts both arms straight out; the right arm (on the viewer's left) slowly drifts down, the lower right side of the face droops, and the patient struggles to speak: \"I... the... word... hard.\" Orange findings appear at the bottom: aphasia, right lower face droop with the forehead spared, and right arm drift.",
+ act:6,scene:"mca",title:"A worked example: left MCA stroke",
  body:`<p>The <b>middle cerebral artery (MCA)</b> supplies most of the <b>outer side</b> of each hemisphere: the face and arm parts of the motor and sensory cortex, and, on the left, the language areas.</p>
  <p>A clot blocks the <b>left</b> MCA. The exam shows:</p>
  <ol><li><b>Aphasia</b> (left hemisphere language areas).</li><li><b>Right lower face droop</b> with <b>forehead sparing</b>.</li><li><b>Right arm weakness</b> greater than leg weakness. Over time: spasticity, brisk reflexes and a positive Babinski sign on the right.</li><li>Often <b>reduced sensation</b> on the right, and sometimes loss of the right side of the visual field.</li></ol>
@@ -1225,7 +1265,8 @@ const STEPS=[
  caption:"A clot blocks the left MCA. Its territory loses blood flow, and the patient shows aphasia, right face droop and right arm weakness.",
  legend:[["lesion","MCA territory without blood flow","r"],["cst","Corticospinal path to the right arm","l"],["warn","Findings","r"]]},
 
-{act:0,scene:"recap",title:"You made it. Here is the whole neurological exam.",
+{desc:"The body map is on the left and the five exam sections are listed on the right as cards: Mental status, Cranial nerves, Sensory, Motor, and Coordination and gait. Each card fills with its colour in turn (purple, orange, blue, red-orange, green) while its part of the nervous system lights up on the map, and a green check mark appears in its circle once it has been reviewed. A blue signal climbs from the foot during Sensory and a green signal runs down the cord during Motor.",
+ act:0,scene:"recap",title:"You made it. Here is the whole neurological exam.",
  body:`<ol class="recap">
  <li class="h">Part 1 · Mental status</li><li>Orientation (person, place, time), attention, memory. Language: Broca = halting speech, good understanding; Wernicke = fluent nonsense, poor understanding.</li>
  <li class="h">Part 2 · Cranial nerves</li><li>I smell · II acuity and fields · II in / III out for the pupil reflex (direct + consensual) · III, IV, VI eye movements in an H (LR6 SO4) · V face sensation and chewing · VII expression (forehead spared in a stroke, not in Bell's palsy) · VIII hearing and balance · IX/X "ahh" and gag (uvula pulls toward the strong side) · XI shrug and head turn · XII tongue points to the weak side.</li>
@@ -1242,7 +1283,7 @@ const STEPS=[
 /* ================= walkthrough scenes (logical 800 x 500) ================= */
 const W=800,H=500;const FULL={x:0,y:0,w:W,h:H};
 function bg(){ctx.fillStyle=C.room;ctx.fillRect(0,0,W,H)}
-function chipTL(txt,col){ctx.font=`600 12px ${MONO}`;const w=ctx.measureText(txt).width;ctx.fillStyle=col;rr(10,10,w+16,24,12);ctx.fill();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(txt,18,22.5)}
+function chipTL(txt,col){ctx.font=`600 12px ${MONO}`;const w=ctx.measureText(txt).width;ctx.fillStyle=col;rr(10,10,w+16,24,12);ctx.fill();ctx.fillStyle=onC(col);ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(txt,18,22.5)}
 function titleTop(txt,col){label(W/2,22,txt,{align:"center",size:14,weight:700,color:col||C.ink,border:col||C.rule})}
 function sub(fn,t,p,B){ctx.save();ctx.beginPath();ctx.rect(B.x,B.y,B.w,B.h);ctx.clip();fn(t,p||{},B);ctx.restore()}
 function seq(t,parts){/* parts: [[dur, fn(localT)]...]; loops */let tot=0;parts.forEach(q=>tot+=q[0]);let u=((t%tot)+tot)%tot;for(const q of parts){if(u<q[0]){q[1](u);return}u-=q[0]}}
@@ -1256,10 +1297,10 @@ function sceneMap(T){bg();const ph=Math.floor((T%16)/2.7),u=(T%16)%2.7;const fin
   if(fin){const q=es((T%16)-13.5,0,.6);const p=P(27,40);lesionMark(p[0],p[1],10+12*(1-q),q,"lesion");}
   SECS.forEach((s,i)=>{const y=40+i*74,x=330;const on=i===ph&&!fin;rr(x,y,450,60,8);ctx.fillStyle=on?C[s[2]]:C.panel;ctx.fill();ctx.strokeStyle=on?C[s[2]]:C.rule;ctx.lineWidth=1.5;ctx.stroke();
     badge(x+26,y+30,i+1,on?C.panel:C[s[2]]);if(on){ctx.font=`700 11.5px ${MONO}`;ctx.fillStyle=C[s[2]];ctx.textAlign="center";ctx.fillText(String(i+1),x+26,y+30.5)}
-    ctx.textAlign="left";ctx.textBaseline="middle";ctx.font=`600 15px ${FONT}`;ctx.fillStyle=on?"#fff":C.ink;ctx.fillText(s[0],x+48,y+21);ctx.font=`400 13px ${FONT}`;ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.fillText(s[1],x+48,y+41);
+    ctx.textAlign="left";ctx.textBaseline="middle";ctx.font=`600 15px ${FONT}`;ctx.fillStyle=on?onC(C[s[2]]):C.ink;ctx.fillText(s[0],x+48,y+21);ctx.font=`400 13px ${FONT}`;ctx.fillStyle=on?onC(C[s[2]]):C["ink-soft"];ctx.fillText(s[1],x+48,y+41);
     if(on){/* mini examiner tool */const tl=["","light","cotton","hammer","point"][i];if(i===0)bubble(x+390,y+30,"Where are we?",{who:"ex",tag:false,maxW:100,size:12});else exHand(x+400+Math.sin(T*4)*4,y+30,Math.PI,{tool:tl||null,s:.6,on:true,beam:20,beamW:8})}});
   const y=420;rr(330,y,450,54,8);ctx.fillStyle=fin?C.lesion:C["panel-2"];ctx.fill();ctx.strokeStyle=fin?C.lesion:C.rule;ctx.stroke();
-  ctx.font=`600 14px ${FONT}`;ctx.fillStyle=fin?"#fff":C["ink-soft"];ctx.textAlign="center";ctx.fillText("Put the findings together → one place: the lesion",555,y+27);
+  ctx.font=`600 14px ${FONT}`;ctx.fillStyle=fin?onC(C.lesion):C["ink-soft"];ctx.textAlign="center";ctx.fillText("Put the findings together → one place: the lesion",555,y+27);
   STATE={ph}}
 
 /* ---- Mental status ---- */
@@ -1392,7 +1433,7 @@ function sceneStrength(T){bg();const g=Math.floor((T%15.6)/2.6),u=(T%15.6)%2.6;
   if(g===1&&u>.4)label(270,215,"flicker",{size:12,weight:600,color:C.act3,border:C.act3});
   /* scale */
   rr(440,40,345,420,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();label(458,64,"MUSCLE STRENGTH SCALE",{size:12,mono:true,weight:600,color:C["ink-soft"],pill:false});
-  GTXT.forEach((s,i)=>{const y=100+i*58,on=i===g;rr(452,y-20,322,44,6);ctx.fillStyle=on?C.act3:C["panel-2"];ctx.fill();ctx.font=`${on?700:500} 14px ${FONT}`;ctx.fillStyle=on?"#fff":C.ink;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(s,466,y+2)});
+  GTXT.forEach((s,i)=>{const y=100+i*58,on=i===g;rr(452,y-20,322,44,6);ctx.fillStyle=on?C.act3:C["panel-2"];ctx.fill();ctx.font=`${on?700:500} 14px ${FONT}`;ctx.fillStyle=on?onC(C.act3):C.ink;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(s,466,y+2)});
   label(220,470,"Elbow flexion, side view",{align:"center",size:12,color:C["ink-soft"]});STATE={g}}
 function sceneTone(T){bg();const m=Math.floor((T%15)/5),u=(T%15)%5;
   rr(10,40,440,440,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
@@ -1435,7 +1476,7 @@ function sceneDTR(T){bg();const k=Math.floor((T%18)/3.6),u=(T%18)%3.6;const g=DS
   label(sp[0]-10,sp[1]-26,"muscle spindle",{align:"center",size:11.5,color:C.dc});label(cz[0]-150,cz[1]-46,"sensory neuron in",{align:"center",size:11.5,weight:600,color:C.dc});label(cz[0]-130,cz[1]+92,"motor neuron out",{align:"center",size:11.5,weight:600,color:C.cst});
   /* grade scale */
   rr(470,250,320,220,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();label(484,270,"REFLEX GRADES",{size:12,mono:true,weight:600,color:C["ink-soft"],pill:false});
-  RFX_TXT.forEach((s,i)=>{const y=300+i*34,on=i===g;rr(482,y-14,296,28,5);ctx.fillStyle=on?(i===2?C.good:C.warn):C["panel-2"];ctx.fill();ctx.font=`${on?700:500} 13.5px ${FONT}`;ctx.fillStyle=on?"#fff":C.ink;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(s,494,y+1)});
+  RFX_TXT.forEach((s,i)=>{const y=300+i*34,on=i===g;rr(482,y-14,296,28,5);ctx.fillStyle=on?(i===2?C.good:C.warn):C["panel-2"];ctx.fill();ctx.font=`${on?700:500} 13.5px ${FONT}`;ctx.fillStyle=on?onC(i===2?C.good:C.warn):C.ink;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(s,494,y+1)});
   label(150,470,"Patellar reflex: biceps C5–6 · triceps C7 · patellar ≈L4 · Achilles S1",{size:11.5,color:C["ink-soft"]});STATE={g}}
 function sceneUMN(T){bg();const m=(T%16)<8?"UMN":"LMN",u=(T%16)%8;
   /* schematic */
@@ -1487,7 +1528,7 @@ function sceneLocal(T){bg();const k=Math.floor((T%22)/5.5),u=(T%22)%5.5;const L=
   rr(440,60,350,340,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.lesion;ctx.lineWidth=2;ctx.stroke();
   label(458,86,"LESION: "+L[0],{size:13.5,weight:700,color:C.lesion,pill:false});
   L[3].forEach((s,i)=>label(458,130+i*36,"• "+s,{size:13.5,pill:false,a:seg(u,1+i*.7,1.3+i*.7)}));
-  ["Cortex","Brainstem","Spinal cord","Peripheral nerve"].forEach((s,i)=>{const on=i===k;chipText(500+i*0+((i%2)*170),300+Math.floor(i/2)*40,s,on?C.lesion:C["panel-2"],on?"#fff":C["ink-soft"],12)});
+  ["Cortex","Brainstem","Spinal cord","Peripheral nerve"].forEach((s,i)=>{const on=i===k;chipText(500+i*0+((i%2)*170),300+Math.floor(i/2)*40,s,on?C.lesion:C["panel-2"],on?onC(C.lesion):C["ink-soft"],12)});
   STATE={k}}
 function sceneMCA(T){bg();const t=T%15;const clot=seg(t,.5,2.5),isch=es(t,2.5,4);
   const P=brainLat(215,180,1.12,{mca:isch,broca:isch*.0,motor:.35});
@@ -1508,7 +1549,7 @@ function sceneMCA(T){bg();const t=T%15;const clot=seg(t,.5,2.5),isch=es(t,2.5,4)
 function sceneRecap(T){bg();const ph=Math.floor((T%15)/3);const P=nsMap(150,16,.98,{hl:[{hemiR:1,hemiL:1},{stem:1},{},{},{cbl:1}][ph],labels:true});
   if(ph===2)nsFlow("dcL",((T%3)/3),C.dc,{P});if(ph===3)nsFlow("cstArmL",((T%3)/3),C.cst,{P});
   SECS.forEach((s,i)=>{const y=60+i*76,x=340;const on=i===ph;rr(x,y,440,60,8);ctx.fillStyle=on?C[s[2]]:C.panel;ctx.fill();ctx.strokeStyle=on?C[s[2]]:C.rule;ctx.lineWidth=1.5;ctx.stroke();
-    ctx.textAlign="left";ctx.textBaseline="middle";ctx.font=`600 15px ${FONT}`;ctx.fillStyle=on?"#fff":C.ink;ctx.fillText(s[0],x+48,y+21);ctx.font=`400 13px ${FONT}`;ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.fillText(s[1],x+48,y+41);
+    ctx.textAlign="left";ctx.textBaseline="middle";ctx.font=`600 15px ${FONT}`;ctx.fillStyle=on?onC(C[s[2]]):C.ink;ctx.fillText(s[0],x+48,y+21);ctx.font=`400 13px ${FONT}`;ctx.fillStyle=on?onC(C[s[2]]):C["ink-soft"];ctx.fillText(s[1],x+48,y+41);
     if(i<ph||(i===ph&&(T%3)>1.5)){circ(x+24,y+30,12,C.panel,C.good,2);check(x+24,y+30,true,.8)}else circ(x+24,y+30,12,C.panel,C.rule,2)})}
 const SCENES={map:sceneMap,orient:sceneOrient,lang:sceneLang,cn12:sceneCN12,pupil:sceneUpil,eom:sceneEOM,cn5:sceneCN5,cn7:sceneCN7,cn8:sceneCN8,cn910:sceneCN910,cn1112:sceneCN1112,
  sens:sceneSens,tracts:sceneTracts,strength:sceneStrength,tone:sceneTone,dtr:sceneDTR,umnlmn:sceneUMN,ftn:sceneFTN,ram:sceneRAM,romberg:sceneRomberg,gait:sceneGait,local:sceneLocal,mca:sceneMCA,recap:sceneRecap};
@@ -1530,10 +1571,11 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
   if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
   return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
 function render(){const s=STEPS[cur];const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+(cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip,var(--${a.col}))">${a.name}</span>`:"")+(cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;$("#body").innerHTML=s.body;$("#analogy p").textContent=s.analogy;
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");if(!s.check){ck.style.display="none";$("#opts").innerHTML=""}else{ck.style.display="";$("#q").textContent=s.check.q;const fb=$("#fb");fb.textContent="";fb.className="fb";const box=$("#opts");box.innerHTML="";
     s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];

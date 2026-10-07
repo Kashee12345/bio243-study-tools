@@ -4,7 +4,7 @@ Interactive walkthroughs and games for BIOL 243 Human Anatomy & Physiology, by D
 
 **Live site:** https://kashee12345.github.io/bio243-study-tools/
 
-## What's here (54 resources, Chapters 1–28)
+## What's here (57 resources, Chapters 1–28)
 
 | Chapter | File | Type |
 |---|---|---|
@@ -21,12 +21,15 @@ Interactive walkthroughs and games for BIOL 243 Human Anatomy & Physiology, by D
 | Ch 6 Bone tissue | `Bone-Formation-Walkthrough.html` | Animated walkthrough |
 | Ch 6 Bone tissue | `Bone-Builder-Game.html` | Game |
 | Ch 6 Bone tissue | `Calcium-Balance-Sim.html` | Simulator |
+| Ch 7–8 The skeleton | `Skeleton-Walkthrough.html` | Animated walkthrough |
 | Ch 7–8 The skeleton | `Skeleton-Lab.html` | Games |
+| Ch 9 Joints | `Joints-Walkthrough.html` | Animated walkthrough |
 | Ch 9 Joints | `Joints-Lab.html` | Animations + games |
 | Ch 10 Muscle tissue | `Contraction-Walkthrough.html` | Animated walkthrough |
 | Ch 10 Muscle tissue | `Contraction-Chain-Game.html` | Game |
 | Ch 10 Muscle tissue | `Muscle-Tension-Sim.html` | Simulator |
 | Ch 10 Muscle tissue | `Muscle-Contraction-Without-the-Panic.pdf` | Printable study guide (PDF) |
+| Ch 11 The muscular system | `Muscular-System-Walkthrough.html` | Animated walkthrough |
 | Ch 11 The muscular system | `Muscle-System-Lab.html` | Games |
 | Ch 12 Nervous tissue | `Action-Potential-Walkthrough.html` | Animated walkthrough |
 | Ch 12 Nervous tissue | `Neuron-Lab.html` | Games |
@@ -63,7 +66,7 @@ Interactive walkthroughs and games for BIOL 243 Human Anatomy & Physiology, by D
 | Ch 28 Development and inheritance | `Development-Walkthrough.html` | Animated walkthrough |
 | Ch 28 Development and inheritance | `Development-Lab.html` | Games + simulator |
 
-Every page is a single self-contained HTML file. No login, no tracking, no student data. Best scores are kept only in the student's own browser.
+Every page is a self-contained HTML file plus the shared `site-kit.js`, which adds the chapter navigation bar and the accessibility tools (pause animations, reduce motion, read aloud, describe the picture). Pages target WCAG 2.1 AA. No login, no tracking, no student data. Best scores are kept only in the student's own browser.
 
 ## License
 CC BY-NC-SA 4.0. See LICENSE.

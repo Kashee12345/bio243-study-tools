@@ -135,7 +135,14 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 sub,sup{line-height:0}
 footer a{color:var(--ink-soft)}
+
+/* a11y retrofit: contrast fixes (WCAG 2.1 AA) */
+:root{--chip-act1:#7B5CC9;--chip-act2:#A16513;--chip-act3:#B25B46;--chip-act4:#2A8172;--chip-act5:#A04E8C;--chip-act6:#3F6FB5;--warn-text:#9D5722}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn-text:var(--warn)}:root:not([data-theme="light"]) .dot.cur{color:#0B1A20}}
+:root[data-theme="dark"]{--warn-text:var(--warn)}:root[data-theme="dark"] .dot.cur{color:#0B1A20}
+.fb.no{color:var(--warn-text)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -195,7 +202,8 @@ const ACTS={1:{name:"Part 1 · Sensing",col:"act1"},
             6:{name:"Part 6 · Reflexes",col:"act6"}};
 const NACTS=6;
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: sense, process, respond",
+{act:0,scene:"map",id:"map",desc:"A person stands on the left with a small pink brain in the head and a pale spinal cord down the back; their right hand rests beside a steaming coral-colored mug. The hand glows orange from the heat, a blue dot runs up the arm and the cord to the brain, the brain glows and says \"Hot!\", and then a crimson dot runs back down the cord and out the arm, which jerks up and away from the mug. On the right, three boxes labelled SENSE, PROCESS and RESPOND light up in turn, and a strip of six colored tags below lists the topics of this walkthrough.",
+ title:"The big picture: sense, process, respond",
  body:`<p>The <b>somatic nervous system</b> is the part of your nervous system you are aware of and can control on purpose. It does three jobs, in this order:</p>
  <ol><li><b>Sense.</b> <b>Sensory receptors</b> detect a stimulus, such as heat on your fingertip.</li>
  <li><b>Process.</b> The signal travels up <b>sensory pathways</b> into the spinal cord and brain. The brain figures out what it means ("that mug is hot").</li>
@@ -211,7 +219,8 @@ const STEPS=[
  caption:"Heat on a fingertip → sensory signal up to the brain → the brain perceives \"hot\" → a motor signal comes back down → the hand pulls away.",
  legend:[["sens","Sensory signal (in)","l"],["motor","Motor signal (out)","l"],["glow","Processing in the CNS"]]},
 
-{act:1,scene:"sp",id:"sp",title:"Sensation vs. perception",
+{act:1,scene:"sp",id:"sp",desc:"The picture has two lanes separated by a dashed line. Top lane: a feather brushes a patch of skin, and a blue dot travels from a receptor through the spinal cord and thalamus to a brain that glows, with the note PERCEPTION: \"something is touching my arm\". Bottom lane: a pulsing coral artery has a receptor on it, and a blue dot travels only to the brainstem (medulla), which adjusts heart rate and vessel size, while a faded brain above is marked \"cortex: not informed\" and NO PERCEPTION. A purple bracket under each receptor is labelled SENSATION.",
+ title:"Sensation vs. perception",
  body:`<p>These two words sound alike but mean different things.</p>
  <ol><li><b>Sensation</b> is a receptor being activated by a stimulus. It happens out at the receptor.</li>
  <li><b>Perception</b> is the brain turning those signals into a meaningful experience, like "something soft is touching my arm." It happens in the <b>cerebral cortex</b>.</li></ol>
@@ -226,7 +235,8 @@ const STEPS=[
  caption:"Top: touch → receptor → spinal cord → thalamus → cortex: perceived. Bottom: blood pressure → receptor → brainstem: sensed, never perceived.",
  legend:[["sens","Sensory signal","l"],["glow","Reaches awareness"],["ink-faint","Handled automatically","r"]]},
 
-{act:1,scene:"stim",id:"stim",title:"Receptors sorted by the stimulus they detect",
+{act:1,scene:"stim",id:"stim",desc:"Six boxes in two rows each show one kind of receptor: chemoreceptor (green molecules dropping into binding sites), mechanoreceptor (a blue onion-like capsule being squeezed by a press), thermoreceptor (orange heat waves and a rising thermometer), nociceptor (a tack pushing into skin, with red zigzag pain marks), photoreceptor (wavy gold light hitting a rod), and osmoreceptor (a teal cell shrinking in salty fluid as water leaves). One box at a time is outlined and its picture animates. At the bottom of the active box, a row of spikes appears on a line labelled nerve signal.",
+ title:"Receptors sorted by the stimulus they detect",
  body:`<p>Each kind of receptor responds best to one kind of stimulus. Watch each one fire:</p>
  <ol><li><b>Chemoreceptors</b> detect chemicals (taste, smell, blood CO₂).</li>
  <li><b>Mechanoreceptors</b> detect physical force: touch, pressure, vibration, stretch, sound.</li>
@@ -245,7 +255,8 @@ const STEPS=[
  caption:"Six receptor types, each answering to its own stimulus. Each fires action potentials (spikes) on its nerve when its stimulus arrives.",
  legend:[["mol","Chemical"],["sens","Mechanical","r"],["pain","Heat"],["bad","Damage","d"],["ray","Light"],["fluid","Solute/water","r"]]},
 
-{act:1,scene:"loc",id:"loc",title:"Receptors sorted by where they are",
+{act:1,scene:"loc",id:"loc",desc:"A person stands in the middle with small colored dots marking receptors. First the blue dots on the skin, eyes, ears and foot glow, with a sun shining at the upper left (exteroceptors). Next the coral dots on the stomach and the red aorta glow as the stomach and vessel pulse (interoceptors). Last the teal dots in the left arm's muscle and joints glow as the elbow bends (proprioceptors); each time, dashed lines join the dots to a matching labelled box.",
+ title:"Receptors sorted by where they are",
  body:`<p>Receptors can also be grouped by <b>location</b>:</p>
  <ol><li><b>Exteroceptors</b> sit near the body surface and sense the outside world: touch, temperature and pain receptors in the skin, plus the eyes, ears, nose and tongue.</li>
  <li><b>Interoceptors</b> sense conditions inside the body, in organs and blood vessels. Examples: stretch receptors in the stomach and pressure receptors in the walls of the aorta and carotid arteries.</li>
@@ -260,7 +271,8 @@ const STEPS=[
  caption:"Exteroceptors light up at the skin and face, interoceptors in organs and vessels, proprioceptors in the moving arm's muscle and joint.",
  legend:[["sens","Exteroceptors"],["act3","Interoceptors"],["act4","Proprioceptors"]]},
 
-{act:1,scene:"trans",id:"trans",title:"Transduction: from stimulus to action potentials",
+{act:1,scene:"trans",id:"trans",desc:"At the top, a gray presser pushes down on an onion-like receptor in a band of skin three times: a weak, a medium, and a strong press, and the receptor squashes more each time. Under it, a blue line graph labelled RECEPTOR POTENTIAL rises to a different height with each press, compared with a red dashed threshold line; the weak press stays below the threshold. A second graph labelled ACTION POTENTIALS shows equal-sized coral spikes: none for the weak press, a few for the medium press and many for the strong press, while yellow dots run along the nerve fiber to the right, and labels give the spike count for each press.",
+ title:"Transduction: from stimulus to action potentials",
  body:`<p>A receptor has to change a stimulus into the nervous system's language: electrical signals. This is <b>transduction</b>.</p>
  <ol><li>The stimulus opens ion channels in the receptor's membrane, often letting <b>Na⁺</b> in.</li>
  <li>This makes a <b>receptor potential</b>, a <b>graded potential</b>. A stronger stimulus makes a bigger receptor potential.</li>
@@ -276,7 +288,8 @@ const STEPS=[
  caption:"Weak, medium and strong presses. Bigger press → bigger receptor potential → more action potentials per second. Each spike is the same size.",
  legend:[["sens","Receptor potential","l"],["bad","Threshold","dl"],["glow","Action potential"]]},
 
-{act:2,scene:"taste",id:"taste",title:"Taste (gustation): chemicals on the tongue",
+{act:2,scene:"taste",id:"taste",desc:"On the left is a pink tongue covered with small bumps, with one spot circled and zoomed in on the right. The zoom shows a light blue band of saliva on top, a taste pore, and a bud of five orange gustatory cells fanning out below it. Small colored molecules drop from the saliva into the pore, one receptor cell glows, and yellow dots travel out along a yellow nerve fiber toward the brain. Five tabs across the top (Salty, Sour, Sweet, Bitter, Umami) take turns, each with its own molecule shape and color.",
+ title:"Taste (gustation): chemicals on the tongue",
  body:`<p><b>Gustation</b> is the sense of taste. The tongue's bumps are <b>papillae</b>, and many of them hold <b>taste buds</b>. Each taste bud is a cluster of <b>gustatory receptor cells</b> with tiny hairs that poke into a <b>taste pore</b>.</p>
  <p>Food molecules must <b>dissolve in saliva</b> to reach the pore. Then they act on the receptor cells. There are <b>five basic tastes</b>:</p>
  <ol><li><b>Salty</b>: Na⁺ ions flow into the cell.</li><li><b>Sour</b>: H⁺ ions from acids.</li><li><b>Sweet</b>: sugars bind receptor proteins.</li><li><b>Bitter</b>: many compounds, often from plants. Bitterness warns of possible poisons.</li><li><b>Umami</b>: a savory taste from the amino acid glutamate.</li></ol>
@@ -291,7 +304,8 @@ const STEPS=[
  caption:"Molecules dissolve in saliva, enter the taste pore and act on gustatory receptor cells. The cell fires its sensory neuron. Each of the five tastes takes a turn.",
  legend:[["mol","Taste molecule (tastant)"],["act2","Gustatory receptor cell","r"],["glow","Signal to the brain"]]},
 
-{act:2,scene:"smell",id:"smell",title:"Smell (olfaction): from nose to olfactory bulb",
+{act:2,scene:"smell",id:"smell",desc:"A small inset at the top left shows a head in profile with a box around the zoomed area at the roof of the nose. The main picture shows layers from top to bottom: the pink brain with a gray olfactory bulb, a beige bony plate with holes (cribriform plate), the olfactory epithelium with orange receptor neurons, and a light blue mucus layer with hair-like cilia. Green odorant molecules drift up from the air below; two of them bind the cilia, those two neurons glow, and yellow dots travel up their axons through the holes in the bone to the bulb, while a numbered list on the left highlights each step.",
+ title:"Smell (olfaction): from nose to olfactory bulb",
  body:`<p><b>Olfaction</b> is the sense of smell. At the roof of the nasal cavity is the <b>olfactory epithelium</b>, covered in mucus.</p>
  <ol><li>You breathe in <b>odorant</b> molecules. They dissolve in the mucus.</li>
  <li>They bind receptors on the <b>cilia</b> of <b>olfactory receptor neurons</b>. Each neuron has one type of receptor, and there are hundreds of types.</li>
@@ -307,7 +321,8 @@ const STEPS=[
  caption:"Odorants drift up, dissolve in mucus and bind cilia. The neuron fires; its axon crosses the cribriform plate to the olfactory bulb and tract.",
  legend:[["mol","Odorant molecule"],["act2","Olfactory receptor neuron","r"],["bone","Cribriform plate","r"],["glow","Signal"]]},
 
-{act:3,scene:"ear1",id:"ear1",title:"Hearing, part 1: outer and middle ear",
+{act:3,scene:"ear1",id:"ear1",desc:"A cut-away of the side of the head shows the ear: the skin-colored auricle on the left, the ear canal, the eardrum, three small beige bones (malleus, incus, stapes) in the middle ear, and the light blue fluid-filled cochlea and semicircular canals on the right with a yellow nerve leaving them. Blue curved sound waves travel in from the left through the canal. The eardrum and the three bones then vibrate, and ripples spread from the oval window into the inner ear, while each part's label is outlined in turn and a numbered list at the lower right tracks the five steps.",
+ title:"Hearing, part 1: outer and middle ear",
  body:`<p>Sound is waves of pressure in the air. Follow them in:</p>
  <ol><li>The <b>auricle</b> (the outer ear you can see) funnels sound into the <b>ear canal</b>.</li>
  <li>Sound hits the <b>tympanic membrane</b> (eardrum) and makes it vibrate.</li>
@@ -324,7 +339,8 @@ const STEPS=[
  caption:"Sound waves → ear canal → eardrum vibrates → malleus, incus, stapes rock → stapes pushes the oval window.",
  legend:[["sens","Sound wave","l"],["bone","Ossicles","r"],["fluid","Inner ear fluid","r"]]},
 
-{act:3,scene:"ear2",id:"ear2",title:"Hearing, part 2: the cochlea and hair cells",
+{act:3,scene:"ear2",id:"ear2",desc:"The top shows the cochlea unrolled into a long light blue tube with the stapes at the left end pushing on the oval window and the round window below it bulging out. Small blue particles stream along the upper and lower chambers, and a purple line in the middle (the basilar membrane) ripples in a wave, with purple hair cells along it glowing where the wave is largest. A zoomed box at the lower right shows four hair cells sitting on the moving membrane, their tiny stereocilia bending against the tectorial membrane above, and yellow dots then run along the yellow cochlear nerve toward the brainstem.",
+ title:"Hearing, part 2: the cochlea and hair cells",
  body:`<p>The <b>cochlea</b> is a snail-shaped tube in the inner ear. Here it is shown unrolled. It has fluid-filled chambers above and below a strip of tissue called the <b>basilar membrane</b>.</p>
  <ol><li>The stapes pushes the oval window, which sends <b>pressure waves through the fluid</b>.</li>
  <li>The waves make the basilar membrane <b>move up and down</b>. The <b>round window</b> bulges out to make room.</li>
@@ -340,7 +356,8 @@ const STEPS=[
  caption:"Stapes pushes the oval window → fluid waves → basilar membrane moves → stereocilia bend against the tectorial membrane → cochlear nerve fires. Round window bulges out.",
  legend:[["fluid","Cochlear fluid","r"],["hair","Hair cells","r"],["glow","Cochlear nerve signal"]]},
 
-{act:3,scene:"pitch",id:"pitch",title:"Pitch: where on the basilar membrane",
+{act:3,scene:"pitch",id:"pitch",desc:"On the left is a coiled cochlea; on the right the same basilar membrane is drawn unrolled, narrow at the base on the left and wide at the apex on the right, with a row of hair cells and a frequency scale below it. Three tones play in turn: a high 8,000 Hz tone in orange-red, a middle 1,000 Hz tone in teal, and a low 125 Hz tone in blue, each shown as a wavy line at the top. For each tone a wave travels along the membrane and peaks at a different place, near the base for high, in the middle for middle, near the apex for low; the hair cells at the peak turn yellow, and a dot on the coiled cochlea marks the same spot.",
+ title:"Pitch: where on the basilar membrane",
  body:`<p>How does the cochlea tell a high note from a low one? By <b>place</b>.</p>
  <ol><li>Near the <b>base</b> (by the oval window), the basilar membrane is <b>narrow and stiff</b>. It vibrates most for <b>high-pitched</b> sounds.</li>
  <li>Near the <b>apex</b> (the tip of the spiral), it is <b>wider and more flexible</b>. It vibrates most for <b>low-pitched</b> sounds.</li></ol>
@@ -356,7 +373,8 @@ const STEPS=[
  caption:"A high, a middle and a low tone. Each wave peaks at a different place: high near the base, low near the apex.",
  legend:[["rfield","High pitch"],["act4","Middle pitch"],["lfield","Low pitch"],["hair","Hair cells bending","r"]]},
 
-{act:3,scene:"bal",id:"bal",title:"Balance: the vestibule and semicircular canals",
+{act:3,scene:"bal",id:"bal",desc:"The picture is split down the middle. Left: a head rocks back and forth, and a zoomed box below shows a gel layer topped with small diamond-shaped crystals (otoliths) sliding sideways over a row of purple hair cells, whose hairs bend and glow when the head tilts. Right: a head seen from above starts to spin, spins steadily, then stops; below it a ring-shaped canal full of fluid has a coral flap (the cupula), and the flap bends one way when the spin starts because the fluid lags behind, then the other way when the spin stops, with a note saying which way the fluid is moving.",
+ title:"Balance: the vestibule and semicircular canals",
  body:`<p>Next to the cochlea is the <b>vestibular system</b>, also built on hair cells.</p>
  <ol><li>The <b>vestibule</b> holds the <b>utricle</b> and <b>saccule</b>. Their hair cells are covered by a gel layer topped with tiny calcium crystals called <b>otoliths</b>. When you <b>tilt your head</b> or <b>speed up in a straight line</b>, gravity and inertia make the heavy gel slide, and the hair cells bend.</li>
  <li>The three <b>semicircular canals</b> sit at roughly right angles to each other. They detect <b>rotation</b>. When you turn your head, the fluid inside (endolymph) lags behind and pushes on a gel cap called the <b>cupula</b>, bending the hair cells under it.</li></ol>
@@ -371,7 +389,8 @@ const STEPS=[
  caption:"Left: the head tilts, the otolith gel slides and hair cells bend. Right: the head turns, endolymph lags and bends the cupula.",
  legend:[["hair","Hair cells","r"],["bone","Otoliths","d"],["fluid","Endolymph","r"],["act3","Cupula","r"]]},
 
-{act:4,scene:"eye1",id:"eye1",title:"The eye and the path of light",
+{act:4,scene:"eye1",id:"eye1",desc:"A large side view of an eye faces left, with a green triangle tree standing on the left as the object. Gold light rays run from the top of the tree into the clear curved cornea, bend through the lens, cross the jelly-like vitreous humor and land on the back of the eye, where a small upside-down copy of the tree appears on the retina near the fovea. Small gold dots travel along the rays, and the labels Cornea, Aqueous humor, Iris and pupil, Lens, Vitreous humor and Retina are outlined in turn as the light reaches each part; the optic disc and yellow optic nerve are labelled at the back.",
+ title:"The eye and the path of light",
  body:`<p>Light must reach the <b>retina</b> at the back of the eye, the layer that holds the photoreceptors. On the way, it passes through:</p>
  <ol><li>the <b>cornea</b>, the clear front window, which does most of the bending (refraction) of light,</li>
  <li>the <b>aqueous humor</b>, a watery fluid in front of the lens,</li>
@@ -390,7 +409,8 @@ const STEPS=[
  caption:"Light from the tree bends at the cornea and lens and lands upside down on the retina, centered on the fovea.",
  legend:[["ray","Light rays","l"],["lens","Cornea and lens","r"],["retina","Retina","r"],["iris","Iris","r"]]},
 
-{act:4,scene:"acc",id:"acc",title:"Accommodation: focusing on near objects",
+{act:4,scene:"acc",id:"acc",desc:"A side view of an eye faces left, with a green tree on the left that moves closer to the eye and then back far away. When the tree is far, the gold light rays arrive almost parallel, the reddish ciliary muscles stay small, the zonule fibers are pulled straight and the lens is thin. When the tree is near, the rays spread out, the ciliary muscles bulge, the zonule fibers go slack and curve, the lens becomes rounder and the pupil gets a little smaller. A box at the lower left reads NEAR OBJECT or FAR OBJECT and lists the state of the muscle, the fibers and the lens shape.",
+ title:"Accommodation: focusing on near objects",
  body:`<p>Light from a far object arrives almost parallel. Light from a near object spreads out more, so it must be bent <b>more</b> to land on the retina. The lens changes shape to do this. This is <b>accommodation</b>.</p>
  <ol><li><b>Far object</b>: the <b>ciliary muscle</b> is relaxed. The <b>zonule fibers</b> (suspensory ligaments) are pulled tight and stretch the lens <b>flat</b>.</li>
  <li><b>Near object</b>: the ciliary muscle <b>contracts</b>. That loosens the zonule fibers, and the elastic lens <b>rounds up</b>. A rounder lens bends light more.</li></ol>
@@ -405,7 +425,8 @@ const STEPS=[
  caption:"The tree moves near and far. Near: ciliary muscle contracts, zonules slacken, lens rounds. Far: muscle relaxes, zonules pull, lens flattens.",
  legend:[["ray","Light rays","l"],["muscle","Ciliary muscle","r"],["ink-soft","Zonule fibers","l"],["lens","Lens","r"]]},
 
-{act:4,scene:"retina",id:"retina",title:"Rods, cones and the retina's wiring",
+{act:4,scene:"retina",id:"retina",desc:"Light enters from the left, shown by a gold arrow, and passes through layers of the retina: purple ganglion cells, then teal bipolar cells, then a column of rods (indigo bars) and cones (pointed bars tinted blue, green and red), with a brown pigmented layer at the far right. The scene alternates between DIM LIGHT, where a few gold light waves arrive and only the rods glow, and BRIGHT LIGHT, where colored light waves arrive and only the cones glow. In both, yellow dots then travel backward from the glowing receptors through the bipolar and ganglion cells to the purple optic nerve fibers on the left, shown by an arrow labelled signal travels this way.",
+ title:"Rods, cones and the retina's wiring",
  body:`<p>The retina has two kinds of <b>photoreceptors</b>:</p>
  <ol><li><b>Rods</b> work in <b>dim light</b>. They don't see color. They are most common in the edges (periphery) of the retina.</li>
  <li><b>Cones</b> need <b>bright light</b> and give <b>color</b> and <b>sharp detail</b>. There are three types, most sensitive to blue, green or red light. The <b>fovea</b> is packed with cones.</li></ol>
@@ -421,7 +442,8 @@ const STEPS=[
  caption:"Light passes through ganglion and bipolar cells to the rods and cones at the back. The signal comes forward: photoreceptor → bipolar → ganglion → optic nerve.",
  legend:[["rod","Rod","r"],["cone","Cone","r"],["act4","Bipolar cell"],["act5","Ganglion cell"],["ray","Light","l"],["glow","Signal"]]},
 
-{act:4,scene:"vpath",id:"vpath",title:"The visual pathway: eyes to occipital lobe",
+{act:4,scene:"vpath",id:"vpath",desc:"At the top a circle is split into a blue left half (left visual field) and an orange right half (right visual field). Below, two eyes sit above a pink brain seen from above; dashed blue and orange rays enter each eye and land on opposite halves of the retina. From each eye, blue and orange fibers run back toward an X-shaped crossing (the optic chiasm), which flashes as the inner (nasal) fibers cross over, then on to a gray relay spot in the thalamus on each side and to the back of the brain. Moving dots follow the fibers, and the back of the brain fills in: the left occipital area turns orange, marked \"sees the RIGHT field\", and the right occipital area turns blue, marked \"sees the LEFT field\".",
+ title:"The visual pathway: eyes to occipital lobe",
  body:`<p>Each eye sees both the left and right <b>visual fields</b>. The wiring sorts them so each side of the brain handles the <b>opposite</b> field.</p>
  <ol><li>Ganglion cell axons leave each eye in the <b>optic nerve</b>.</li>
  <li>At the <b>optic chiasm</b>, the fibers from the <b>nasal (inner) half</b> of each retina <b>cross</b>. Fibers from the <b>temporal (outer) half</b> stay on the same side. This is a <b>partial crossing</b>.</li>
@@ -438,7 +460,8 @@ const STEPS=[
  caption:"The blue left field lands on the right half of each retina and ends in the right occipital lobe. Nasal fibers cross at the chiasm.",
  legend:[["lfield","Left visual field","l"],["rfield","Right visual field","l"],["glow","Crossing at the optic chiasm"]]},
 
-{act:5,scene:"cns",id:"dcml",title:"Fine touch: the dorsal column pathway",
+{act:5,scene:"cns",id:"dcml",desc:"A diagram of the brain and spinal cord seen from behind shows two hemispheres at the top, the thalamus, a pink brainstem, a long cord with two cross-section slices, and hands and feet on both sides. A feather brushes the left hand, and a blue dot labelled 1 travels into the left side of the cord and up the back of the cord on the same side to the medulla. There a ring flashes with the note crosses in the medulla, and dot 2 crosses to the right side and rises to the right thalamus; then dot 3 runs to the S1 spot on the right hemisphere, which glows. A box on the right lists neurons 1, 2 and 3 and highlights the one that is moving.",
+ title:"Fine touch: the dorsal column pathway",
  body:`<p>Signals from the body reach the cortex through a relay of <b>three neurons</b>. For <b>fine touch</b>, <b>vibration</b> and <b>proprioception</b>, the route is the <b>dorsal column–medial lemniscus</b> pathway. Follow light touch on the <b>left hand</b>:</p>
  <ol><li><b>Neuron 1</b> runs from the receptor through the <b>dorsal root</b> (its cell body is in the dorsal root ganglion) and goes straight up the <b>dorsal column</b> on the <b>same side</b>. It synapses in the <b>medulla</b>.</li>
  <li><b>Neuron 2</b> <b>crosses to the other side in the medulla</b> and rises in the <b>medial lemniscus</b> to the <b>thalamus</b>.</li>
@@ -454,7 +477,8 @@ const STEPS=[
  caption:"Light touch on the left hand: neuron 1 rises on the left, neuron 2 crosses in the medulla, neuron 3 reaches the right somatosensory cortex.",
  legend:[["sens","Fine touch pathway","l"],["glow","Crossing point"],["gm","Gray matter","r"]]},
 
-{act:5,scene:"cns",id:"stt",title:"Pain and temperature: the spinothalamic tract",
+{act:5,scene:"cns",id:"stt",desc:"The same behind-view diagram of the brain and spinal cord is shown, with a tack under the right foot that glows orange. An orange dot labelled 1 runs from the foot into the right side of the lower cord and stops in the dorsal horn. A ring flashes in the cord with the note crosses in the spinal cord, then dot 2 crosses to the left side right there and rises all the way up the left side of the cord and brainstem to the left thalamus. Dot 3 then runs to the S1 spot on the left hemisphere, which glows, while a box on the right highlights each neuron in turn.",
+ title:"Pain and temperature: the spinothalamic tract",
  body:`<p><b>Pain</b> and <b>temperature</b> (plus crude touch) use a different route, the <b>spinothalamic tract</b>. It is also a three-neuron relay, but it crosses at a different place. Follow pain from the <b>right foot</b>:</p>
  <ol><li><b>Neuron 1</b> enters through the dorsal root and synapses <b>right away</b> in the <b>dorsal horn</b> of the spinal cord.</li>
  <li><b>Neuron 2</b> <b>crosses in the spinal cord</b>, at about the level it entered, then rises on the other side to the <b>thalamus</b>.</li>
@@ -470,7 +494,8 @@ const STEPS=[
  caption:"Pain on the right foot: neuron 1 synapses in the dorsal horn, neuron 2 crosses right there in the cord and rises on the left, neuron 3 reaches the left cortex.",
  legend:[["pain","Pain and temperature pathway","l"],["glow","Crossing point"],["gm","Gray matter","r"]]},
 
-{act:5,scene:"s1",id:"s1",title:"The primary somatosensory cortex: a map of the body",
+{act:5,scene:"s1",id:"s1",desc:"On the left a small person is touched with a feather on the foot, then the hand, then the lips, then the trunk, and each touched spot glows blue. A blue dot runs from the touched spot to a side view of the brain in the middle, where a blue strip (postcentral gyrus, S1) sits behind a crimson strip (precentral gyrus, M1); the matching point on the blue strip glows, with a bigger glow for the hand and lips. On the right a bar chart shows how much cortex each body part gets, from foot at the top to tongue at the bottom, with the hand and lips bars the longest and the current part's bar highlighted in yellow.",
+ title:"The primary somatosensory cortex: a map of the body",
  body:`<p>Touch and pain signals end in the <b>primary somatosensory cortex</b>, on the <b>postcentral gyrus</b> of the parietal lobe, just behind the <b>central sulcus</b>.</p>
  <ol><li>The body is laid out in order along this strip, a <b>somatotopic map</b>. The legs are near the top and middle; the face is low on the side.</li>
  <li>The map is <b>not to scale</b>. Body parts with many receptors, like the <b>hands, lips and tongue</b>, get huge areas. The back and legs get small ones. Drawn as a body, this map is called the <b>sensory homunculus</b>.</li>
@@ -486,7 +511,8 @@ const STEPS=[
  caption:"Touches on the foot, hand, lips and back light up their spots on the postcentral gyrus. The hand and lips claim big areas.",
  legend:[["sens","Somatosensory cortex (postcentral)","r"],["motor","Motor cortex (precentral)","r"],["glow","Active area"]]},
 
-{act:5,scene:"cns",id:"cst",title:"Voluntary movement: the corticospinal tract",
+{act:5,scene:"cns",id:"cst",desc:"The behind-view diagram of the brain and spinal cord is shown, and the left hemisphere's M1 spot says \"Move my right hand\". A crimson dot labelled 1 (the upper motor neuron) runs down from the left cortex through the brainstem to the pyramids at the bottom of the medulla, where a ring flashes with the note crosses at the pyramids, and the dot continues down the right side of the cord to the anterior horn. A coral dot labelled 2 (the lower motor neuron) then leaves through the ventral root to the right hand, which squeezes. A box on the right lists the two neurons and highlights the active one.",
+ title:"Voluntary movement: the corticospinal tract",
  body:`<p>Now the way down. To move your <b>right hand</b> on purpose, the command uses <b>two motor neurons</b>:</p>
  <ol><li>The <b>upper motor neuron</b> starts in the <b>precentral gyrus</b> (primary motor cortex) on the <b>left</b> side. Its axon runs down through the brainstem in the <b>corticospinal tract</b>.</li>
  <li>In the lower medulla, the tract forms bumps called the <b>pyramids</b>. There, most fibers <b>cross</b> to the other side (the <b>pyramidal decussation</b>) and continue down as the <b>lateral corticospinal tract</b>.</li>
@@ -503,7 +529,8 @@ const STEPS=[
  caption:"Left precentral gyrus → down the brainstem → crosses at the pyramids → right lateral corticospinal tract → anterior horn → right hand muscles.",
  legend:[["motor","Upper motor neuron","l"],["act3","Lower motor neuron","l"],["glow","Crossing point"]]},
 
-{act:5,scene:"bgcb",id:"bgcb",title:"Basal nuclei and cerebellum: smooth, correct movement",
+{act:5,scene:"bgcb",id:"bgcb",desc:"A side view of the brain sits at the upper left, with a teal oval deep inside for the basal nuclei and an orange cerebellum at the back. A box labelled BASAL NUCLEI GATE shows a teal bar that lifts open and the words GO: reach. An arm on the right then reaches toward a coral cup: crimson dots carry the command from the motor cortex to the arm and a copy to the cerebellum, a blue dot carries feedback from the hand back to the cerebellum, and an orange dot carries a correction back to the motor cortex. The hand's red path first wobbles off the dashed planned line, then smooths out and reaches the cup, with labels changing from wobbly to corrected: smooth reach.",
+ title:"Basal nuclei and cerebellum: smooth, correct movement",
  body:`<p>The motor cortex sends the command, but two other regions make movement work well:</p>
  <ol><li>The <b>basal nuclei</b> (basal ganglia), deep in the cerebrum, help <b>start</b> the movements you choose and <b>hold back</b> the ones you don't want. In <b>Parkinson's disease</b>, loss of dopamine-releasing neurons makes starting movements hard and causes tremor.</li>
  <li>The <b>cerebellum</b> is a <b>comparator</b>. It gets a copy of the motor command and compares it with feedback from proprioceptors about what the body is actually doing. If they don't match, it sends <b>corrections</b>. It also helps with <b>balance</b> and <b>coordination</b>.</li></ol>
@@ -518,7 +545,8 @@ const STEPS=[
  caption:"Gate: the basal nuclei release the chosen movement. GPS: the cerebellum compares planned and actual paths and corrects the wobbling reach.",
  legend:[["motor","Motor command","l"],["act4","Basal nuclei","r"],["act2","Cerebellum","r"],["sens","Proprioceptive feedback","l"]]},
 
-{act:6,scene:"arc",id:"arc",title:"The reflex arc: five parts",
+{act:6,scene:"arc",id:"arc",desc:"A large spinal cord cross-section sits at the top, with a skin patch and receptor at the lower left and an oval muscle at the bottom. Orange heat waves rise from the skin; a blue dot travels from the receptor up the nerve into the dorsal root ganglion and into the back of the gray matter, a purple dot crosses the purple interneuron to the front, and a crimson dot leaves through the ventral root down to the muscle, which thickens and glows. Numbered badges 1 to 5 appear along the way, and a list on the right highlights receptor, sensory neuron, integration center, motor neuron and effector in turn.",
+ title:"The reflex arc: five parts",
  body:`<p>A <b>reflex</b> is a fast, automatic response that doesn't wait for the brain to decide. Every reflex runs through a <b>reflex arc</b> with five parts:</p>
  <ol><li><b>Receptor</b>: detects the stimulus.</li>
  <li><b>Sensory neuron</b>: carries the signal into the spinal cord through the <b>dorsal root</b>.</li>
@@ -536,7 +564,8 @@ const STEPS=[
  caption:"① receptor → ② sensory neuron (dorsal root) → ③ integration center (interneuron) → ④ motor neuron (ventral root) → ⑤ effector muscle.",
  legend:[["sens","Sensory neuron","l"],["inhib","Interneuron","l"],["motor","Motor neuron","l"],["muscle","Effector (muscle)","r"]]},
 
-{act:6,scene:"stretch",id:"stretch",title:"The stretch reflex: the knee jerk",
+{act:6,scene:"stretch",id:"stretch",desc:"A seated leg is shown from the side with the knee bent over a chair edge, the reddish quadriceps on top of the thigh and the hamstrings underneath, and a small spinal cord slice above. A reflex hammer with a red head swings and taps the tendon below the kneecap (\"tap!\"); the blue muscle spindle in the quadriceps stretches, and a blue dot travels up to the cord and makes one synapse on the motor neuron, which glows. A crimson dot comes back down to the quadriceps, which glows as the lower leg kicks forward, while a purple dot through an inhibitory interneuron marks the hamstrings as inhibited and relaxed.",
+ title:"The stretch reflex: the knee jerk",
  body:`<p>Tap the <b>patellar tendon</b> below the kneecap and the leg kicks. This is the <b>patellar (knee-jerk) reflex</b>, a <b>stretch reflex</b>.</p>
  <ol><li>The tap stretches the <b>quadriceps</b>. Stretch receptors inside it, called <b>muscle spindles</b>, are stretched too.</li>
  <li>A sensory neuron carries the signal to the spinal cord and synapses <b>directly</b> on a motor neuron. Only one synapse: a <b>monosynaptic reflex</b>.</li>
@@ -553,7 +582,8 @@ const STEPS=[
  caption:"Hammer taps the tendon → spindle stretches → sensory neuron → one synapse → quadriceps contracts → leg kicks. An inhibitory interneuron relaxes the hamstrings.",
  legend:[["sens","Sensory neuron (from spindle)","l"],["motor","Motor neuron (quadriceps)","l"],["inhib","Inhibitory interneuron","l"],["muscle","Muscle","r"]]},
 
-{act:6,scene:"wd",id:"wd",title:"Withdrawal and crossed extensor reflexes",
+{act:6,scene:"wd",id:"wd",desc:"Two legs stand on a floor, seen from behind, with a tack on the floor under the right foot and a spinal cord slice above. The tack glows orange with red pain marks, and an orange dot runs up from the right foot into the cord. Purple dots spread through interneurons, one on the right side and one crossing to the left side (\"interneurons cross to the other side\"), and then crimson dots run out to both thighs. The right thigh's flexors glow and the right foot lifts off the tack, while the left thigh's extensors glow and the left leg straightens to hold up the body.",
+ title:"Withdrawal and crossed extensor reflexes",
  body:`<p>Step on a tack with your right foot and two things happen almost at once:</p>
  <ol><li><b>Withdrawal (flexor) reflex</b>: nociceptors fire. The sensory neuron excites <b>interneurons</b>, which activate motor neurons to the <b>flexor</b> muscles of the right leg. The foot lifts away. Because interneurons are involved, this is a <b>polysynaptic reflex</b>.</li>
  <li><b>Crossed extensor reflex</b>: other interneurons <b>cross</b> to the other side of the spinal cord. They activate the <b>extensor</b> muscles of the <b>left leg</b>, which straightens and takes your weight so you don't fall.</li></ol>
@@ -568,7 +598,8 @@ const STEPS=[
  caption:"Tack → nociceptors → interneurons → right flexors pull the foot up. Crossing interneurons → left extensors straighten the left leg.",
  legend:[["pain","Pain signal in","l"],["inhib","Interneurons","l"],["motor","Motor neurons out","l"],["glow","Contracting muscle"]]},
 
-{act:7,scene:"recap",id:"recap",title:"Recap: the whole loop",
+{act:7,scene:"recap",id:"recap",desc:"Six labelled boxes form a loop: Receptors at the lower left, Ascending pathways at the upper left, Cerebral cortex at the top, Descending pathways at the upper right, Skeletal muscle at the lower right, and Spinal cord reflex at the bottom middle on a dashed shortcut. A blue dot travels from Receptors up to the Cortex, then a crimson dot travels down to Skeletal muscle, and each box is outlined as the dot reaches it. Finally a blue dot takes the dashed shortcut from Receptors through the Spinal cord reflex box straight to the muscle.",
+ title:"Recap: the whole loop",
  body:`<p>You followed a signal all the way around the somatic nervous system:</p>
  <ol class="recap">
  <li class="h">Sensing</li>
@@ -618,7 +649,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(a?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(a?`<span class="actchip" style="background:var(--chip-${a.col})">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -626,6 +657,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

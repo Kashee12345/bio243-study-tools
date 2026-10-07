@@ -157,7 +157,14 @@ footer a{color:var(--ink-soft)}
 .legend i.pent{clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%);border:0;border-radius:0;width:12px;height:12px}
 .legend i.tdn{clip-path:polygon(0 0,100% 0,50% 100%);border:0;border-radius:0;width:12px;height:11px}
 .legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+
+/* a11y retrofit: act chips readable at 11px; current-step dot readable in dark mode */
+:root{--act1-chip:#7B5CC9;--act2-chip:#A36715;--act3-chip:#B25B48;--act4-chip:#2B8273;--act5-chip:#A04E8C;--act6-chip:#3D77B6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--act6-chip:var(--act6)}:root:not([data-theme="light"]) .actchip,:root:not([data-theme="light"]) .dot.cur{color:#10161A}}
+:root[data-theme="dark"]{--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--act6-chip:var(--act6)}:root[data-theme="dark"] .actchip,:root[data-theme="dark"] .dot.cur{color:#10161A}
+.dot.done.gk-oninv:not(.cur){color:var(--good)!important}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -558,7 +565,7 @@ const STEPS=[
   ["The uterus and the prostate.",0,"Both are reproductive organs, but neither makes gametes. Gonads are the testes and ovaries."],
   ["The pituitary and the hypothalamus.",0,"These control the gonads with hormones, but they are in the brain. They are not gonads."],
   ["The seminal vesicles and the uterine tubes.",0,"These carry or support gametes. They do not make them."]]},
- caption:"Two systems: the testes make sperm, the ovaries make oocytes. Gametes meet in the uterine tube.",
+ desc:"Two panels sit side by side at the top. The left panel, purple, shows a side view of the male pelvis with the testis glowing, and small blue sperm travel from the testis up through the ducts and out the urethra. The right panel, teal, shows the female uterus, uterine tubes and ovaries from behind, with the ovary glowing and a pale pink oocyte moving along a uterine tube toward the uterus. Below are six cards for the six parts (male anatomy, making sperm, male hormones, female anatomy and eggs, the monthly cycle, beyond the cycle), each with a coloured stripe; they light up one at a time.",caption:"Two systems: the testes make sperm, the ovaries make oocytes. Gametes meet in the uterine tube.",
  legend:[["sperm","Sperm"],["oocyte-edge","Oocyte"]]},
 
 /* ---------- PART 1 ---------- */
@@ -573,7 +580,7 @@ const STEPS=[
   ["So the testes can be closer to the bladder.",0,"The bladder is inside the pelvis. The testes are outside it on purpose, for temperature."],
   ["Because sperm need extra warmth to develop.",0,"It is the opposite. Sperm develop best when the testes are cooler than the body core."],
   ["To keep testosterone out of the blood.",0,"Testosterone does enter the blood. Location is about temperature, not hormones."]]},
- caption:"Midsagittal section, front on the left. Labels appear one by one. Inset: cold vs warm.",
+ desc:"A side view (midsagittal section) of the male pelvis faces left, showing the bladder, pubic bone, rectum, prostate, seminal vesicle, the ducts, the penis, and the testis inside the scrotum. Labels appear one by one on the right with lines pointing to each structure, and the current structure glows and its label is outlined. A box at the lower right titled Temperature control shows a testis in the scrotum hanging from the body wall: when it is cold, blue snowflake marks appear, the cremaster muscle cord tightens and pulls the testis up; when it is warm, red heat waves appear and the testis hangs lower. Two small thermometers read core 37 °C and testes about 35 °C.",caption:"Midsagittal section, front on the left. Labels appear one by one. Inset: cold vs warm.",
  legend:[["testis","Testis"],["duct","Ductus deferens"],["urethra","Urethra"],["prostate","Prostate"],["sv","Seminal vesicle"],["bulbo","Bulbourethral gland"]]},
 
 {act:1,scene:"path",title:"The path of sperm",
@@ -587,7 +594,7 @@ const STEPS=[
   ["In the urethra.",0,"The urethra is the last stop, the exit. Sperm are already mature by then."],
   ["In the prostate.",0,"The prostate adds fluid to semen. It does not mature sperm."],
   ["In the bladder.",0,"The bladder stores urine. Sperm never enter it."]]},
- caption:"Sperm travel: seminiferous tubules → epididymis → ductus deferens → ejaculatory duct → urethra.",
+ desc:"The male side view is shown faded, with one structure at a time glowing gold. A short line of small blue sperm travels the full route: out of the seminiferous tubules in the testis, through the coiled epididymis on the back of the testis, up the ductus deferens and over the bladder, down through the ejaculatory duct in the prostate, and out along the urethra through the penis. A list of five numbered steps on the right highlights the current step in blue, and finished steps turn to green ticks.",caption:"Sperm travel: seminiferous tubules → epididymis → ductus deferens → ejaculatory duct → urethra.",
  legend:[["sperm","Sperm"],["glow","Current segment"]]},
 
 {act:1,scene:"glands",title:"Three glands add the fluid: semen",
@@ -603,7 +610,7 @@ const STEPS=[
   ["The testes.",0,"The testes make sperm, but sperm are only a small part of semen's volume."],
   ["The bulbourethral glands.",0,"These add only a small amount of lubricating mucus."],
   ["The bladder.",0,"The bladder stores urine. It is not a gland and adds nothing to semen."]]},
- caption:"Fluids join the sperm: seminal vesicles, then prostate, with bulbourethral mucus in the urethra.",
+ desc:"The male side view is shown faded, with the three glands coloured: the seminal vesicle in lavender behind the bladder, the prostate in pink below it, and the small bulbourethral glands in green further down. Blue sperm travel down the ducts, and lavender, pink and green dots flow from each gland into the duct and join the sperm on the way out through the urethra. A tall tube on the right fills from the bottom with coloured layers showing what semen is made of: about 60% lavender from the seminal vesicles (with fructose), about 27% pink prostate fluid, a thin green layer of mucus from the bulbourethral glands, and a small blue layer of sperm at the top.",caption:"Fluids join the sperm: seminal vesicles, then prostate, with bulbourethral mucus in the urethra.",
  legend:[["sv","Seminal vesicle fluid"],["prostate","Prostate fluid"],["bulbo","Bulbourethral mucus"],["sperm","Sperm"]]},
 
 /* ---------- PART 2 ---------- */
@@ -618,7 +625,7 @@ const STEPS=[
   ["From the lumen outward to the basement membrane.",0,"It is the other way around. The stem cells sit on the basement membrane."],
   ["They do not move; they develop in place.",0,"They do move. Each stage sits a little closer to the lumen."],
   ["Out of the tubule into the Leydig cells.",0,"Leydig cells are outside the tubule and make testosterone. Sperm go into the lumen."]]},
- caption:"Cells develop from the basement membrane toward the lumen. Released sperm leave through the lumen.",
+ desc:"On the upper left is a testis cut open, filled with coiled tan seminiferous tubules, with the epididymis on its side. A small circle zooms into one tubule's round cross-section below it, showing rings of cells around a pale central lumen, with blue sperm tails in the middle. A larger strip on the right shows a slice of the tubule wall: the basement membrane runs along the bottom with a red capillary and orange Leydig cells below it, cream-coloured Sertoli cells stretch up like columns, and developing cells move upward between them, changing as they go from spermatogonia to spermatocytes to spermatids to sperm released into the lumen at the top. An orange arrow on the right points inward, and labels name each stage.",caption:"Cells develop from the basement membrane toward the lumen. Released sperm leave through the lumen.",
  legend:[["basement","Basement membrane"],["sertoli","Sertoli cell"],["leydig","Leydig cell"],["sperm","Sperm"]]},
 
 {act:2,scene:"mitosis",title:"Spermatogonia divide by mitosis",
@@ -632,7 +639,7 @@ const STEPS=[
   ["Because it is haploid and cannot move.",0,"Both daughters are diploid. Staying behind keeps a stem cell in place."],
   ["To become a Leydig cell.",0,"Leydig cells are a separate cell type outside the tubule."],
   ["To make testosterone.",0,"Testosterone comes from Leydig cells, not spermatogonia."]]},
- caption:"Mitosis: one spermatogonium (2n) → two 2n cells. One stays; one becomes a primary spermatocyte.",
+ desc:"A narrow strip on the left shows the tubule wall with the bottom stages highlighted. The main area shows one round spermatogonium sitting on the basement membrane, holding two pairs of chromosomes drawn as salmon and blue rods (one of each pair faded). The chromosomes copy themselves into X shapes, line up across the middle with spindle lines, and are pulled apart as the cell splits into two cells, one above the other, each labelled 2n = 46. The lower cell stays on the membrane as a stem cell, and the upper cell grows and moves inward, labelled primary spermatocyte. A title at the top names each phase.",caption:"Mitosis: one spermatogonium (2n) → two 2n cells. One stays; one becomes a primary spermatocyte.",
  legend:[["chromA","Chromosome pair 1"],["chromB","Chromosome pair 2"],["basement","Basement membrane"]]},
 
 {act:2,scene:"meiosis",title:"Meiosis: one cell becomes four",
@@ -647,7 +654,7 @@ const STEPS=[
   ["One",0,"That is closer to oogenesis, where one primary oocyte gives one egg. Spermatogenesis gives four."],
   ["Two",0,"Two is the number after meiosis I only. Meiosis II doubles it to four."],
   ["Forty-six",0,"46 is the diploid chromosome number, not a number of cells."]]},
- caption:"Meiosis I: 1 primary (2n) → 2 secondary spermatocytes (n). Meiosis II: → 4 spermatids (n).",
+ desc:"A narrow strip on the left shows the tubule wall with the middle stages highlighted. On the right, one large primary spermatocyte holds two copied chromosome pairs, salmon and blue, lined up side by side. In meiosis I the pairs pull apart and the cell splits into two secondary spermatocytes, labelled n, that move up and down. In meiosis II each of those splits again, giving four small spermatids, each labelled n, arranged in a column on the right. Dashed arrows show each division, and a counter at the bottom reads 1, then 1 → 2, then 1 → 2 → 4 cells.",caption:"Meiosis I: 1 primary (2n) → 2 secondary spermatocytes (n). Meiosis II: → 4 spermatids (n).",
  legend:[["chromA","Chromosome pair 1"],["chromB","Chromosome pair 2"]]},
 
 {act:2,scene:"spermio",title:"Spermiogenesis: a round cell becomes a swimmer",
@@ -663,7 +670,7 @@ const STEPS=[
   ["Hold enzymes to get through the egg's outer layers.",0,"That is the acrosome, the cap on the head."],
   ["Carry the 23 chromosomes.",0,"The chromosomes are in the nucleus in the head."],
   ["Make testosterone.",0,"Testosterone comes from Leydig cells in the testis."]]},
- caption:"Spermiogenesis: acrosome forms, nucleus condenses, mitochondria wrap the midpiece, tail grows.",
+ desc:"A filmstrip of five small frames runs across the top, showing the stages in order: round spermatid, acrosome forms, tail grows and nucleus condenses, mitochondria wrap the midpiece, and extra cytoplasm pinched off; each frame lights up as it is reached. Below, one large cell changes in real time: a round cell with a purple nucleus gets a gold cap (the acrosome) on its front, the nucleus becomes smaller and more oval, a blue tail grows out the back and starts to wave, orange mitochondria line up behind the head to form the midpiece, and the leftover cytoplasm shrinks away. At the end, labels and brackets mark the head, midpiece and tail.",caption:"Spermiogenesis: acrosome forms, nucleus condenses, mitochondria wrap the midpiece, tail grows.",
  legend:[["glow","Acrosome"],["nucl","Nucleus (head)"],["leydig","Mitochondria (midpiece)"],["sperm","Tail"]]},
 
 {act:2,scene:"sertoli",title:"Sertoli cells and the blood–testis barrier",
@@ -677,7 +684,7 @@ const STEPS=[
   ["To keep testosterone from reaching them.",0,"Developing sperm need testosterone. ABP actually keeps it high in the tubule."],
   ["To stop them from dividing too fast.",0,"The barrier is about immune protection, not division speed."],
   ["To keep them warm.",0,"Temperature is controlled by the scrotum, not the barrier."]]},
- caption:"Tight junctions between Sertoli cells block immune cells; a spermatocyte is passed through.",
+ desc:"A wide slice of the tubule wall fills the left side, with cream-coloured Sertoli cells rising like columns from the basement membrane. A row of gold dashed lines between the Sertoli cells marks the tight junctions, the blood–testis barrier, which splits the wall into a lower basal compartment and an upper adluminal compartment. Blue Y-shaped antibodies rise from the blood at the bottom, hit the barrier with a gold flash and bounce back down. Meanwhile, a developing cell passes through the barrier as the junctions open above and close below it, with a soft purple glow. A list on the right adds Sertoli jobs one at a time: feed developing cells, eat leftover cytoplasm, release ABP and inhibin, and form the barrier.",caption:"Tight junctions between Sertoli cells block immune cells; a spermatocyte is passed through.",
  legend:[["sertoli","Sertoli cell"],["glow","Tight junction (barrier)"],["immune","Immune cell / antibody"]]},
 
 /* ---------- PART 3 ---------- */
@@ -692,7 +699,7 @@ const STEPS=[
   ["FSH (follicle-stimulating hormone)",0,"FSH acts mainly on Sertoli cells, not Leydig cells."],
   ["Inhibin",0,"Inhibin is made by Sertoli cells and lowers FSH."],
   ["Estrogen",0,"Estrogen is not the signal for testosterone production."]]},
- caption:"LH leaves the capillary and binds Leydig cells. Testosterone flows into the tubule and the blood.",
+ desc:"Two large round seminiferous tubules sit at the upper left and lower right corners, and a red capillary runs diagonally between them with blood cells flowing. In the space between, a small cluster of orange Leydig cells sits next to the capillary. Purple LH marks leave the capillary and travel to the Leydig cells, which glow purple when they arrive. Salmon testosterone marks then flow out of the Leydig cells in three directions: into each tubule and into the blood. A panel on the right lists what testosterone does: supports sperm production in the tubules, and in the blood, male sex organs, facial and body hair, a deeper voice, muscle and bone mass, and sex drive.",caption:"LH leaves the capillary and binds Leydig cells. Testosterone flows into the tubule and the blood.",
  legend:[["lh","LH"],["testo","Testosterone"],["leydig","Leydig cell"],["blood","Capillary"]]},
 
 {act:3,scene:"axisM",title:"The male HPG axis: GnRH, FSH and LH",
@@ -707,7 +714,7 @@ const STEPS=[
   ["Leydig cells",0,"Leydig cells respond to LH."],
   ["Spermatozoa in the epididymis",0,"Mature sperm are not the target. FSH acts in the tubule, on Sertoli cells."],
   ["The hypothalamus",0,"The hypothalamus sends GnRH down. FSH travels from the pituitary to the testes."]]},
- caption:"Hypothalamus → GnRH → anterior pituitary → FSH (to Sertoli cells) and LH (to Leydig cells).",
+ desc:"On the left, a brain icon labelled Hypothalamus sits above a small anterior pituitary. Brown GnRH dots flow down from the hypothalamus to the pituitary. From the pituitary, a teal dashed line carries FSH dots down to a cream Sertoli cell, and a purple dashed line carries LH dots down to orange Leydig cells, both inside a box labelled Testis. Salmon testosterone dots flow from the Leydig cells to the Sertoli cell and out into the blood. Four cards on the right light up in order, and the matching target cell glows: 1 GnRH, 2 FSH and LH, 3 FSH to Sertoli cells, 4 LH to Leydig cells making testosterone.",caption:"Hypothalamus → GnRH → anterior pituitary → FSH (to Sertoli cells) and LH (to Leydig cells).",
  legend:[["gnrh","GnRH"],["fsh","FSH"],["lh","LH"],["testo","Testosterone"]]},
 
 {act:3,scene:"feedbackM",title:"Negative feedback: testosterone and inhibin",
@@ -722,7 +729,7 @@ const STEPS=[
   ["They rise, to keep up with the extra testosterone.",0,"Feedback is negative. More testosterone means the pituitary releases less LH and FSH."],
   ["They stay exactly the same.",0,"The hypothalamus and pituitary sense testosterone, so they change their output."],
   ["Only inhibin changes.",0,"Testosterone directly lowers GnRH and LH (and FSH)."]]},
- caption:"Testosterone (−) on hypothalamus and pituitary; inhibin (−) on FSH. Gauges rise and fall together.",
+ desc:"The same hormone axis is shown on the left: hypothalamus, pituitary, and the testis with its Sertoli and Leydig cells. Dashed salmon arrows ending in a flat bar run from the testis back up to the hypothalamus and pituitary, labelled (−) testosterone, and an olive arrow with a bar runs from the Sertoli cell to the pituitary, labelled (−) inhibin. A Live levels panel on the right shows five bars, GnRH, LH, FSH, testosterone and inhibin, that rise and fall in a slow cycle around a normal mark: when testosterone climbs high, the feedback arrows thicken, and GnRH and LH drop shortly after; as testosterone falls, they rise again. A text box explains whether the brake is on or easing.",caption:"Testosterone (−) on hypothalamus and pituitary; inhibin (−) on FSH. Gauges rise and fall together.",
  legend:[["testo","Testosterone feedback (−)"],["inh","Inhibin feedback (−)"],["gnrh","GnRH"],["lh","LH"],["fsh","FSH"]]},
 
 /* ---------- PART 4 ---------- */
@@ -737,7 +744,7 @@ const STEPS=[
   ["In the ovary.",0,"The ovary releases the oocyte. Fertilization happens after it enters the tube."],
   ["In the cervix.",0,"Sperm pass through the cervix, but fertilization happens farther up, in the tube."],
   ["In the vagina.",0,"Sperm are deposited there, but they must travel up to the uterine tube."]]},
- caption:"Frontal section, posterior view. Structures light up one at a time; the fimbriae sweep gently.",
+ desc:"A frontal section of the female reproductive organs, seen from behind, shows the pear-shaped uterus in the middle, with a uterine tube curving out to each side and ending in finger-like fimbriae near an oval ovary, and the cervix and vagina below. Labels appear one by one on the right with lines pointing to each part: ovary, ovarian ligament, fimbriae, infundibulum, ampulla, isthmus, fundus, body of the uterus, endometrium, cervix and vagina. The current part glows and its label is outlined, and the fimbriae sweep gently.",caption:"Frontal section, posterior view. Structures light up one at a time; the fimbriae sweep gently.",
  legend:[["ovary","Ovary"],["tube","Uterine tube"],["uterus","Uterus (myometrium)"],["endo","Endometrium"],["vagina","Vagina"]]},
 
 {act:4,scene:"tube",title:"Catching the oocyte, and the layers of the uterus",
@@ -751,7 +758,7 @@ const STEPS=[
   ["The myometrium.",0,"The myometrium is muscle. It stays, and it contracts during labor."],
   ["The perimetrium.",0,"The perimetrium is the thin outer covering. It is not shed."],
   ["The basal layer of the endometrium.",0,"The basal layer stays put so it can regrow the functional layer."]]},
- caption:"Left: fimbriae sweep; ciliary currents carry the oocyte into the tube. Right: layers of the uterine wall.",
+ desc:"The left half zooms in on the right ovary and its uterine tube. A mature follicle on the ovary bursts and releases a pale pink oocyte with a ring of cells around it; the fringed fimbriae sweep over it, and small blue arrows along the tube show the cilia current carrying the oocyte along the tube toward the uterus. A small circle at the lower left zooms in on the tube lining, where blue hair-like cilia wave in a ripple. The right half shows a slice of the uterine wall in layers from top to bottom: the uterine cavity, a thick dark pink functional layer with wavy glands, a thin basal layer, a thick myometrium of muscle lines that ripple, and a thin perimetrium, with brackets naming each layer.",caption:"Left: fimbriae sweep; ciliary currents carry the oocyte into the tube. Right: layers of the uterine wall.",
  legend:[["oocyte-edge","Oocyte"],["cilia","Cilia"],["peri","Perimetrium"],["uterus","Myometrium"],["endo","Endometrium"]]},
 
 {act:4,scene:"oogen",title:"Oogenesis: paused for years",
@@ -765,7 +772,7 @@ const STEPS=[
   ["Before birth.",0,"Before birth, primary oocytes stop in prophase I. Meiosis II is much later."],
   ["At puberty.",0,"Puberty starts the cycles. Meiosis II finishes only at fertilization."],
   ["Just before ovulation.",0,"Meiosis I finishes just before ovulation. Meiosis II waits for a sperm."]]},
- caption:"Before birth: oogonia → primary oocytes, paused. Each cycle: meiosis I → secondary oocyte + polar body. Meiosis II only if fertilized.",
+ desc:"Four columns form a timeline: before birth, birth to puberty, each cycle after puberty, and only if fertilized; each column lights up in turn. In the first column, oogonia divide into four cells, which become primary oocytes surrounded by flat cells, then a pause symbol appears: paused in prophase I, 2n = 46. In the second, one primary oocyte waits while a clock spins and the age counts up to 12 years. In the third, the oocyte splits unevenly into a large secondary oocyte and a small first polar body, pauses at metaphase II and is ovulated. In the fourth, a blue sperm swims in, a second polar body pinches off, and the two nuclei meet to form a 2n zygote.",caption:"Before birth: oogonia → primary oocytes, paused. Each cycle: meiosis I → secondary oocyte + polar body. Meiosis II only if fertilized.",
  legend:[["oocyte-edge","Oocyte"],["polar","Polar body"],["sperm","Sperm"]]},
 
 {act:4,scene:"follicle",title:"Follicles grow, release the oocyte, and become a corpus luteum",
@@ -779,7 +786,7 @@ const STEPS=[
   ["FSH.",0,"FSH comes from the anterior pituitary."],
   ["Testosterone.",0,"Testosterone comes mainly from Leydig cells in males."],
   ["hCG.",0,"hCG comes from an implanted embryo. It keeps the corpus luteum alive."]]},
- caption:"Primordial → primary → secondary → antral → mature (Graafian) → ovulation → corpus luteum → corpus albicans.",
+ desc:"One large follicle is drawn in the middle and changes through eight stages, about every two seconds: primordial, with a pink oocyte and one layer of flat cells; primary, with gold cuboidal granulosa cells and a clear zona pellucida; secondary, with many layers and outer theca cells; antral, with a pale blue fluid-filled space; mature (Graafian), large with the oocyte pushed to one side; ovulation, where the oocyte and its corona radiata are released; corpus luteum, a yellow body; and corpus albicans, a white scar. Labels with lines name the parts of each stage, and a row of eight boxes along the bottom highlights the current stage in teal.",caption:"Primordial → primary → secondary → antral → mature (Graafian) → ovulation → corpus luteum → corpus albicans.",
  legend:[["granulosa","Granulosa cells"],["antrum","Antrum"],["cl","Corpus luteum"],["calb","Corpus albicans"]]},
 
 /* ---------- PART 5 ---------- */
@@ -796,7 +803,7 @@ const STEPS=[
   ["Day 1.",0,"Day 1 is the first day of menstrual bleeding."],
   ["Day 28.",0,"Day 28 is the end of the luteal phase, right before the next menses."],
   ["Every day of the cycle.",0,"Usually only one oocyte is released per cycle, around day 14."]]},
- caption:"Day counter loops 1 → 28. Follicles grow, one ovulates, the corpus luteum forms and fades.",
+ desc:"A cut-open ovary on the left shows follicles changing as a day counter loops from 1 to 28: on days 1 to 7 several follicles start growing, then one dominant follicle grows large while the others stop, it bursts at ovulation around day 14, a yellow corpus luteum forms, and later it fades. A timeline bar below the ovary has a teal follicular phase, a narrow purple ovulation band and a yellow luteal phase, with a black marker sliding along it. On the right, a round day dial with the same three coloured arcs shows the current day in large numbers and the phase name.",caption:"Day counter loops 1 → 28. Follicles grow, one ovulates, the corpus luteum forms and fades.",
  legend:[["granulosa","Growing follicle"],["cl","Corpus luteum"],["calb","Corpus albicans"]]},
 
 {act:5,scene:"surge",title:"Before ovulation: estrogen rises and triggers the LH surge",
@@ -810,7 +817,7 @@ const STEPS=[
   ["Progesterone from the corpus luteum.",0,"The corpus luteum forms after ovulation, so it can't trigger the surge."],
   ["hCG from an embryo.",0,"hCG appears only after implantation, about a week after ovulation."],
   ["Low estrogen.",0,"Low estrogen gives negative feedback. It takes high estrogen to cause the surge."]]},
- caption:"Days 1 → 15: FSH grows follicles, estrogen climbs, feedback flips to (+), LH surges, ovulation.",
+ desc:"A hormone graph on the left draws four lines across days 1 to about 15, revealing them day by day: teal FSH, purple LH, orange estrogen and blue progesterone, over coloured bands for menses and the proliferative phase. On the right, a small hormone axis shows the hypothalamus, pituitary and an ovary with one dominant follicle that grows larger. While estrogen is low to moderate, a red dashed feedback arrow ending in a bar shows (−) estrogen. When estrogen stays high for about two days, the arrow turns green and becomes (+) estrogen, LH dots pour out of the pituitary in a surge, the purple LH line spikes on the graph, and the follicle ruptures. A small ovary below the graph shows the follicle being released, and a caption names each stage.",caption:"Days 1 → 15: FSH grows follicles, estrogen climbs, feedback flips to (+), LH surges, ovulation.",
  legend:[["fsh","FSH"],["lh","LH"],["est","Estrogen"],["prog","Progesterone"]]},
 
 {act:5,scene:"luteal",title:"After ovulation: the corpus luteum, then the fall",
@@ -824,7 +831,7 @@ const STEPS=[
   ["The LH surge.",0,"The LH surge causes ovulation, mid-cycle."],
   ["A rise in progesterone.",0,"Progesterone maintains the lining. Its fall triggers menses."],
   ["hCG from the embryo.",0,"hCG does the opposite: it keeps the corpus luteum alive, so menses does not happen."]]},
- caption:"Days 14 → 28: corpus luteum makes progesterone (−), then fades; hormones fall; FSH starts rising.",
+ desc:"The hormone graph on the left continues from day 14 to day 28: blue progesterone and orange estrogen rise, while teal FSH and purple LH stay low, then all fall near the end. On the right, the hormone axis shows the ovary holding a yellow corpus luteum, with red dashed (−) progesterone feedback arrows ending in bars at the hypothalamus and pituitary, so few FSH and LH dots flow. Later the corpus luteum shrinks and fades to white, the hormones fall, and FSH dots start to increase again. A caption walks through each stage, ending with menses starting and FSH rising.",caption:"Days 14 → 28: corpus luteum makes progesterone (−), then fades; hormones fall; FSH starts rising.",
  legend:[["prog","Progesterone"],["est","Estrogen"],["fsh","FSH"],["lh","LH"],["cl","Corpus luteum"]]},
 
 {act:5,scene:"uterine",title:"The uterine (menstrual) cycle",
@@ -840,7 +847,7 @@ const STEPS=[
   ["Progesterone from the corpus luteum.",0,"Progesterone drives the secretory phase, after ovulation."],
   ["LH.",0,"LH acts on the ovary, not directly on the endometrium."],
   ["hCG.",0,"hCG appears only in pregnancy."]]},
- caption:"Endometrium over 28 days: shed (menses), rebuilt by estrogen, thickened by progesterone.",
+ desc:"The top left shows a side view of the endometrium over a 28-day loop, with the day number shown at the right. During days 1 to 5 the dark pink functional layer breaks away and is shed (menses), leaving only the thin basal layer. During days 6 to 14 the functional layer grows back thicker as estrogen rises (proliferative phase). During days 15 to 28 it becomes thickest, with coiled glands and blood vessels (secretory phase). Below it, a graph shows the orange estrogen and blue progesterone lines with a marker for today. Three cards on the right, red for menses, green for proliferative and blue for secretory, light up in turn.",caption:"Endometrium over 28 days: shed (menses), rebuilt by estrogen, thickened by progesterone.",
  legend:[["endo","Functional layer"],["endo-2","Basal layer"],["blood","Spiral arteries"],["est","Estrogen"],["prog","Progesterone"]]},
 
 {act:5,scene:"hcg",title:"If pregnancy happens: hCG rescues the corpus luteum",
@@ -854,7 +861,7 @@ const STEPS=[
   ["The LH surge keeps happening every day.",0,"LH stays low in pregnancy because progesterone gives negative feedback."],
   ["The ovary releases more oocytes.",0,"No new follicles mature while progesterone is high."],
   ["FSH rises and holds the lining in place.",0,"FSH acts on follicles, not the endometrium, and it stays low."]]},
- caption:"Embryo implants and releases hCG. The corpus luteum stays bright; progesterone stays high; no menses.",
+ desc:"On the left, the female organs are drawn with a corpus luteum on the ovary. Around day 21 a small embryo appears implanted in the top of the uterus, and plum hCG marks travel from it up and over to the corpus luteum, which glows plum and stays bright. The endometrium stays thick. On the right, a hormone graph runs from day 14 to day 35: the plum hCG line rises, blue progesterone and orange estrogen stay high instead of falling, and a gold band after day 28 reads No menses. A pregnancy test strip below shows a control line and then a second line once hCG is detected: positive (2 lines).",caption:"Embryo implants and releases hCG. The corpus luteum stays bright; progesterone stays high; no menses.",
  legend:[["hcg","hCG"],["prog","Progesterone"],["cl","Corpus luteum"]]},
 
 /* ---------- PART 6 ---------- */
@@ -869,7 +876,7 @@ const STEPS=[
   ["Prolactin",0,"Prolactin stimulates production. Ejection is oxytocin."],
   ["FSH",0,"FSH acts on the gonads, not the breast."],
   ["Testosterone",0,"Testosterone has no role in milk ejection."]]},
- caption:"Sagittal section of the breast. During lactation, milk flows from alveoli through ducts to the nipple.",
+ desc:"A side view (sagittal section) of a lactating breast faces left, with the chest wall and ribs on the right. The breast is filled with yellow fat lobules. Five lobes, each a branching dark pink duct ending in clusters of small round alveoli, fan out from behind the nipple. Small cream-coloured milk drops travel from the alveoli down the lactiferous ducts to the lactiferous sinus and out of the nipple on the left. Dashed suspensory ligaments run to the chest wall, and labels with lines name each part. A small box at the lower right says the pituitary makes prolactin to make milk and oxytocin to eject it.",caption:"Sagittal section of the breast. During lactation, milk flows from alveoli through ducts to the nipple.",
  legend:[["milk-edge","Milk"],["fat","Adipose tissue"],["endo-2","Alveoli and ducts"]]},
 
 {act:6,scene:"offon",title:"Turning the cycle off: the pill and menopause",
@@ -883,7 +890,7 @@ const STEPS=[
   ["The ovaries are making too much estrogen.",0,"After menopause, estrogen from the ovaries is low, not high."],
   ["The corpus luteum is making extra progesterone.",0,"No follicles means no ovulation and no corpus luteum."],
   ["hCG is stimulating the pituitary.",0,"hCG comes from an embryo in pregnancy. It has nothing to do with menopause."]]},
- caption:"Left: steady pill hormones flatten FSH and LH, no surge. Right: in menopause, follicles run out and FSH and LH climb.",
+ desc:"Two panels sit side by side. The left panel, Combined hormonal contraceptive, shows a grey pill releasing steady hormones, with red dashed (−) constant feedback arrows ending in bars at the hypothalamus and pituitary; only a few FSH and LH dots trickle down, and the follicles on the ovary stay small. A graph below shows flat, steady hormone lines with no LH spike: no surge, no ovulation. The right panel, Menopause, shows an age counter running from 45 to 57: the follicles on the ovary disappear one by one, a feedback arrow is crossed out with a red X (no (−) feedback), more and more FSH and LH dots pour from the pituitary, and a graph shows estrogen falling while FSH and LH rise.",caption:"Left: steady pill hormones flatten FSH and LH, no surge. Right: in menopause, follicles run out and FSH and LH climb.",
  legend:[["pill","Pill hormones"],["fsh","FSH"],["lh","LH"],["est","Estrogen"]]},
 
 {act:0,scene:"recap",title:"You made it. Here is the whole chapter.",
@@ -902,7 +909,7 @@ const STEPS=[
  <li>Prolactin makes milk; oxytocin ejects it. The pill blocks the LH surge; menopause brings high FSH and LH.</li></ol>
  <p>Next: try it hands-on in the <a href="Reproductive-Lab.html">Reproductive System Lab</a>.</p>`,
  analogy:"Two factories, one control center in the brain, and feedback loops that keep everything on schedule.",
- terms:[],check:null,caption:"Side by side: spermatogenesis vs oogenesis, and the male vs female hormone axes.",legend:[["sperm","Sperm"],["oocyte-edge","Oocyte"],["polar","Polar body"]]}
+ terms:[],check:null,desc:"Two panels compare gamete making side by side. The left panel, Spermatogenesis (orange), starts with one 2n cell at the top that splits into two n cells, each of which gives two blue swimming sperm: 1 → 4 sperm, made nonstop from puberty in about 64 days. The right panel, Oogenesis (teal), starts with one 2n oocyte that splits into one large n oocyte and a small polar body, then the oocyte gives one egg with its ring of corona cells plus a second polar body: 1 → 1 egg, starting before birth with pauses in prophase I and metaphase II.",caption:"Side by side: spermatogenesis vs oogenesis, and the male vs female hormone axes.",legend:[["sperm","Sperm"],["oocyte-edge","Oocyte"],["polar","Polar body"]]}
 ];
 
 /* ---------------- DOM ---------------- */
@@ -934,7 +941,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||LSH[l[0]]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip,var(--${a.col}))">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -943,6 +950,7 @@ function render(){
   $("#terms").style.display=s.terms.length?"":"none";
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

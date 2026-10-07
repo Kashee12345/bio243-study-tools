@@ -269,7 +269,20 @@ ol.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .cellbtns button:hover{border-color:var(--accent)}
 .cellbtns button.found{background:var(--good-wash);border-color:var(--good)}
 .subtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+
+/* accessibility retrofit: dark text on the light dark-mode accent (WCAG 2.1 AA) */
+:root{--on-accent:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--on-accent:#0B1A20}}
+:root[data-theme="dark"]{--on-accent:#0B1A20}
+.tab[aria-selected="true"],.btn,.chip.cur,.chip.done.cur,.stage-pill.on{color:var(--on-accent)}
+
+:root{--warn-ink:#9A5422;--pep-bg:#297A6C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn-ink:var(--warn);--pep-bg:var(--act4)}}
+:root[data-theme="dark"]{--warn-ink:var(--warn);--pep-bg:var(--act4)}
+.pep span{background:var(--pep-bg);color:var(--on-accent)}
+.pep span.stop{background:var(--bad)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -300,7 +313,7 @@ ol.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
           <output id="naclOut" for="nacl">0.90%</output>
           <span class="tonchip" id="tonChip"></span>
         </div>
-        <div class="presets" aria-label="Quick choices">
+        <div class="presets" role="group" aria-label="Quick choices">
           <button class="tbtn" type="button" data-p="0">Distilled water (0%)</button>
           <button class="tbtn" type="button" data-p="0.45">0.45% NaCl</button>
           <button class="tbtn" type="button" data-p="0.9">0.9% NaCl</button>
@@ -345,7 +358,7 @@ ol.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
         <div><div class="sc-n">Prediction game · IV fluids</div><h2 class="sc-title" style="margin:2px 0 0">Predict, then watch it happen</h2></div>
         <div class="score" id="ivScore"></div>
       </div>
-      <div class="chips" id="ivChips" aria-label="Fluids"></div>
+      <div class="chips" id="ivChips" role="group" aria-label="Fluids"></div>
       <div class="ivwrap" style="margin-top:12px">
         <div id="ivBag" aria-hidden="true"></div>
         <div>
@@ -370,7 +383,7 @@ ol.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 
   <!-- PART 2: TRANSPORT SORTER -->
   <section id="tab-sort" role="tabpanel" aria-labelledby="tabbtn-sort" hidden>
-    <div class="rounds" id="sortRounds" aria-label="Rounds"></div>
+    <div class="rounds" id="sortRounds" role="group" aria-label="Rounds"></div>
     <div class="grid">
       <div class="card">
         <p class="small" style="margin:0 0 8px">Drag the card onto the right box, or tap that box. Keyboard: focus the card and press 1 to 7. Each box shows its process in action.</p>
@@ -405,7 +418,7 @@ ol.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 
   <!-- PART 3: CODON DECODER -->
   <section id="tab-codon" role="tabpanel" aria-labelledby="tabbtn-codon" hidden>
-    <div class="rounds" id="geneRounds" aria-label="Genes"></div>
+    <div class="rounds" id="geneRounds" role="group" aria-label="Genes"></div>
     <div class="stages" id="stagePills"></div>
     <div class="grid">
       <div class="card stage">
@@ -439,7 +452,7 @@ ol.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
     <div class="card gcard">
       <h3 style="margin:0 0 6px;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)">The genetic code (mRNA codons)</h3>
       <p class="small" style="margin:0 0 8px">Find the first base on the left, the second base across the top, then the third base inside the box. In the translate step, tap the codon you are decoding.</p>
-      <div class="tablewrap"><table class="ctable" id="ctable"></table></div>
+      <div class="tablewrap"><table class="ctable" id="ctable"><thead><tr><th scope="col">The genetic code table loads here</th></tr></thead></table></div>
     </div>
   </section>
 
@@ -487,7 +500,7 @@ ol.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
             <label class="mode"><input type="checkbox" id="fRelaxed" checked> Relaxed mode (no timer)</label>
             <span class="timer" id="fTimer" hidden>0:00</span>
           </div>
-          <div class="cellbtns" id="cellBtns" aria-label="Choose a cell by number"></div>
+          <div class="cellbtns" id="cellBtns" role="group" aria-label="Choose a cell by number"></div>
         </div>
         <aside class="card side" aria-live="polite">
           <div class="lvl-n" id="fN"></div>
@@ -600,7 +613,7 @@ function setPct(p,fromSlider){ton.pct=clamp(Math.round(p*100)/100,0,3);if(!fromS
 function newCell(){ton.V=1;ton.lysed=false;ton.lyseT=0;ton.parts=[];ton.hist=[];ton.simT=0}
 function tonUI(){const p=ton.pct;$("#naclOut").textContent=p.toFixed(2)+"%";
   const c=tonClass(p);const chip=$("#tonChip");
-  const L={hypo:["Hypotonic","↓ less solute than the cell","var(--bad)"],iso:["Isotonic","= same as the cell","var(--accent)"],hyper:["Hypertonic","↑ more solute than the cell","var(--warn)"]}[c];
+  const L={hypo:["Hypotonic","↓ less solute than the cell","var(--bad)"],iso:["Isotonic","= same as the cell","var(--accent)"],hyper:["Hypertonic","↑ more solute than the cell","var(--warn-ink)"]}[c];
   chip.innerHTML=`<b>${L[0]}</b> <span style="font-weight:500">${L[1]}</span>`;chip.style.borderColor=L[2];chip.style.color=L[2];
   $("#roOsm").textContent="≈"+Math.round(osmOf(p))+" mOsm";
   $("#nacl").setAttribute("aria-valuetext",p.toFixed(2)+"% NaCl, "+L[0]);}
@@ -924,7 +937,7 @@ function codonRender(){const g=GENES[gI];geneRoundsUI();stagePillsUI();setMsg($(
   if(stage===0){$("#cdT").textContent="Transcribe the template strand";$("#cdGoal").textContent="Build the mRNA. Each mRNA base pairs with the DNA base above it: A→U, T→A, G→C, C→G.";
     body.innerHTML=`<div class="strand"><span class="lab">DNA template strand (3' → 5')</span>${gs.tpl.map((b,i)=>tile(b,(i%3===2?" gap":""))).join("")}</div>
       <div class="strand" id="slots"><span class="lab">mRNA (5' → 3'): tap a box, then a base</span>${gs.slots.map((b,i)=>`<button type="button" class="bt slot${i===gs.sel?" sel":""}${b?" b"+b:""}${i%3===2?" gap":""}" data-i="${i}" aria-label="mRNA position ${i+1}${b?": "+b:""}">${b||"·"}</button>`).join("")}</div>
-      <div class="keys" aria-label="Bases">${["A","U","G","C"].map(b=>`<button type="button" class="bt b${b}" data-b="${b}" aria-label="Base ${b}">${b}</button>`).join("")}<button type="button" class="tbtn" id="bk">⌫ Back</button><button type="button" class="tbtn" data-b="T">T</button></div>
+      <div class="keys" role="group" aria-label="Bases">${["A","U","G","C"].map(b=>`<button type="button" class="bt b${b}" data-b="${b}" aria-label="Base ${b}">${b}</button>`).join("")}<button type="button" class="tbtn" id="bk">⌫ Back</button><button type="button" class="tbtn" data-b="T">T</button></div>
       <p class="small" style="margin:4px 0 0">${g.note} You can also type A, U, G, C on your keyboard.</p>`;
     $$("#slots .slot").forEach(s=>s.onclick=()=>{gs.sel=+s.dataset.i;codonRender()});
     $$(".keys [data-b]").forEach(k=>k.onclick=()=>typeBase(k.dataset.b));$("#bk").onclick=backBase;
@@ -1083,7 +1096,7 @@ function drawPhase(ph,cx,cy,s,t,seed){seed=seed||0;const R=40*s;
 let mOrder=[],mSolved=false,mChecks=0,mHints=0;
 const mStages=[];
 function mMakeItem(ph){const li=document.createElement("li");li.className="mitem";li.dataset.ph=ph;
-  li.innerHTML=`<span class="pos"></span><canvas width="150" height="96" aria-label="Drawing of a cell in one phase"></canvas>
+  li.innerHTML=`<span class="pos"></span><canvas width="150" height="96" role="img" aria-label="Drawing of a cell: ${FCLUE[ph]}"></canvas>
    <select aria-label="Name this phase"><option value="">Name this phase…</option>${PH.map(p=>`<option value="${p}">${p}</option>`).join("")}</select><span class="mk"></span>
    <span class="mv"><button type="button" class="tbtn" style="padding:2px 9px" aria-label="Move up">▲</button><button type="button" class="tbtn" style="padding:2px 9px" aria-label="Move down">▼</button></span>`;
   const cv=li.querySelector("canvas");cv.dataset.fixedh="1";const st=makeStage(cv,150,96);st.ph=ph;st.seed=Math.random()*10;mStages.push(st);
@@ -1177,6 +1190,30 @@ function frame(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
     else if(curTab==="mit"){if(!$("#mitPaneA").hidden)mStages.forEach(st=>{st.begin();ctx.fillStyle=C.ecf;ctx.fillRect(0,0,150,96);drawPhase(st.ph,75,48,.98,now/1000,st.seed)});else drawField(now)}
   }catch(err){console.error(err)}
   requestAnimationFrame(frame)}
+/* ---------- accessibility: "Describe the picture" text for the canvas on screen (site-kit) ---------- */
+const GK={last:""};
+function gkCanvas(){const p=[...document.querySelectorAll('[role=tabpanel]')].find(s=>!s.hidden);if(!p)return null;return [...p.querySelectorAll("canvas[role=img]")].find(c=>c.offsetParent!==null)||null}
+function gkPlace(cv){const d=document.getElementById("gk-desc");if(!d||!cv)return;const a=cv.closest(".canvas-holder")||cv;if(a.nextElementSibling!==d)a.parentNode.insertBefore(d,a.nextSibling);
+  document.querySelectorAll('canvas[aria-describedby="gk-desc"]').forEach(c=>{if(c!==cv)c.removeAttribute("aria-describedby")});cv.setAttribute("aria-describedby","gk-desc")}
+function gkTick(){try{const cv=gkCanvas();const t=gkText(cv);if(t)gkPlace(cv);if(t&&t!==GK.last){GK.last=t;if(window.gkDescribe)window.gkDescribe(t);gkPlace(cv)}}catch(e){}}
+setInterval(gkTick,400);
+function gkText(cv){
+  if(curTab==="ton"){const V=ton.V,c=tonClass(ton.pct);const cls=c==="iso"?"isotonic":c==="hyper"?"hypertonic":"hypotonic";
+    const shape=ton.lysed?"has burst: its outline is pale and faded, red hemoglobin dots spread outward, and a red label reads Burst (lysis)":V<.85?"has shrunk and its edge has turned spiky (crenation)":V>1.3?"has swollen into a round sphere with no dimple in the middle":V>1.05?"is swelling":V<.95?"is shrinking":"is a normal dimpled disc";
+    const d=ton.lastDV;const flow=ton.lysed?"":Math.abs(d)>.012?" A blue arrow labelled net water "+(d>0?"IN points into":"OUT points away from")+" the cell, and small blue water dots cross the membrane mostly "+(d>0?"inward":"outward")+".":" Small blue water dots cross the membrane in both directions at about the same rate.";
+    return "A large beaker of "+ton.pct.toFixed(2)+"% salt solution ("+cls+") with small sodium and chloride ion dots (the solute) scattered through it; more salt means more dots. In the middle, a red blood cell "+shape+"."+flow+" A line graph below tracks the cell's volume over time; it is now "+(ton.lysed?"gone":Math.round(V*100)+"% of normal")+"."}
+  if(curTab==="codon"){const g=GENES[gI];if(!gs)return "";
+    if(stage===0){const f=gs.slots.filter(Boolean).length;return "In the nucleus: a row of coloured DNA template bases runs across the top (A green, T red, G orange, C blue, and U purple in RNA), and the mRNA is built underneath, one coloured tile per base, with empty dashed boxes still to fill ("+f+" of "+gs.slots.length+" filled). A grey oval, RNA polymerase, sits over the position being filled, and loose RNA bases drift below."+(gs.txDone?" The mRNA is finished and slides away toward a nuclear pore.":"")}
+    if(stage===1)return "In the cytoplasm: the mRNA lies across the picture as coloured base tiles grouped in codons, with the amino acid for each decoded codon written under it. A grey ribosome sits over the codon being read"+(gs.tlDone?"":" (codon "+(Math.min(gs.codon,g.mrna.length-1)+1)+" of "+g.mrna.length+": "+g.mrna[Math.min(gs.codon,g.mrna.length-1)]+"), with a tRNA carrying the matching anticodon")+". The growing peptide chain of coloured beads trails up and to the left: "+(gs.pep.filter(a=>a!=="Stop").join(", ")||"empty so far")+"."+(gs.tlDone?" The stop codon has been reached and the chain is released.":"");
+    const info=mutInfo(g,g.muts[gs.mi]);const done=gs.mRes[gs.mi].done;
+    return "The mutated gene: the mRNA codons lie across the picture with one base outlined in gold, in codon "+(info.ci+1)+". A gold label above it reads "+(done?info.oc+" ("+info.oa+") becomes "+info.nc+" ("+info.na+"), and a banner names the mutation type.":info.oc+" becomes what? Decide what the change does to the protein.")}
+  if(curTab==="mit"&&!$("#mitPaneB").hidden){const want=fQi<fQs.length?fQs[fQi]:null;
+    return "A field of "+field.length+" numbered cells in rows, drawn in different stages of the cell cycle. "+(want?"Find a cell in "+want.toLowerCase()+". ":"")+"What each cell shows: "+field.map((f,i)=>"cell "+(i+1)+", "+FCLUE[f.ph]).join("; ")+"."}
+  return ""}
+function gkLabels(){if(curTab==="ton")$("#cvVol").setAttribute("aria-label","Graph of cell volume over time. Volume now: "+(ton.lysed?"the cell has burst":Math.round(ton.V*100)+"% of normal")+".");
+  if(curTab==="ton")$("#cvTon").setAttribute("aria-label","A red blood cell in "+ton.pct.toFixed(2)+"% NaCl, "+(ton.lysed?"burst (lysis)":"volume "+Math.round(ton.V*100)+"%")+".");
+  if(curTab==="codon")$("#cvRib").setAttribute("aria-label",["Transcription in the nucleus","Translation on a ribosome","A point mutation in the mRNA"][stage]+": "+GENES[gI].name+".")}
+setInterval(gkLabels,700);
 /* test hooks */
 window.__lab={tab:k=>{$(`.tab[data-tab="${k}"]`).click()},ton:()=>({V:ton.V,lysed:ton.lysed,pct:ton.pct}),step:s=>{for(let i=0;i<s*20;i++)tonStep(.05)},
   sortAns:()=>CARDS[sQueue[sPos]]&&CARDS[sQueue[sPos]].ans,codon:()=>({gI,stage,gs}),genes:GENES,mutInfo:(g,m)=>mutInfo(GENES[g],GENES[g].muts[m]),codonAA,

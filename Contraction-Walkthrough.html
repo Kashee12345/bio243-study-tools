@@ -11,7 +11,7 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --warn:#B4632A;--warn-ink:#9E5723;--on-accent:#fff;--act1-chip:#7B5CC9;--act2-chip:#A26714;--act3-chip:#B45C48;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
   --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;
   /* stage palette */
   --ecf:#EAF1F5;--neuron:#EADCC8;--neuron-edge:#9C8466;--myelin:#F7F1E6;
@@ -30,7 +30,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--on-accent:#0B1A20;--act1-chip:#A98BEF;--act2-chip:#F2A93B;--act3-chip:#E08A74;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;
   --ecf:#14222A;--neuron:#3A3226;--neuron-edge:#B39773;--myelin:#4A4234;
   --fiber:#3A2522;--fiber-edge:#C07F72;--cyto:#2A1D1B;
@@ -44,7 +44,7 @@
   --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
-  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --warn:#E39A5B;--warn-ink:#E39A5B;--on-accent:#0B1A20;--act1-chip:#A98BEF;--act2-chip:#F2A93B;--act3-chip:#E08A74;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
   --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;
   --ecf:#14222A;--neuron:#3A3226;--neuron-edge:#B39773;--myelin:#4A4234;
   --fiber:#3A2522;--fiber-edge:#C07F72;--cyto:#2A1D1B;
@@ -74,7 +74,7 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .dots{display:flex;gap:6px;flex-wrap:wrap}
 .dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
 .dot:hover{border-color:var(--accent)}
-.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
 /* main grid */
 .grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
@@ -91,7 +91,7 @@ canvas{display:block;width:100%}
 .legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
 .explain{padding:18px 20px}
 .stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+.actchip{padding:2px 8px;border-radius:99px;color:var(--on-accent);font-size:12px}
 h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
 .body p{margin:0 0 10px}
 .body ol{margin:0 0 10px;padding-left:22px}
@@ -112,10 +112,10 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
 .fb{margin:6px 0 0;font-size:14.5px}
 .fb.ok{color:var(--good)}
-.fb.no{color:var(--warn)}
+.fb.no{color:var(--warn-ink)}
 .calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
 .nav{display:flex;align-items:center;gap:12px;margin-top:14px}
-.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn{background:var(--accent);color:var(--on-accent);border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
 .navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
 .navbtn:disabled{opacity:.4;cursor:default}
 .prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
@@ -126,6 +126,7 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 sub,sup{line-height:0}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -181,7 +182,7 @@ const ACTS={1:{name:"Act 1 · Nerve talks to muscle",short:"Neuromuscular juncti
             2:{name:"Act 2 · Signal releases calcium",short:"Excitation–contraction coupling",col:"act2"},
             3:{name:"Act 3 · Filaments slide",short:"Sliding filament / cross-bridge cycle",col:"act3"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: three acts",
+{act:0,scene:"map",id:"map",desc:"Three tall cards sit side by side, each with a coloured header: purple Act 1, orange Act 2 and brick-red Act 3, joined by grey arrows pointing left to right. Act 1 shows a tan nerve ending above a pink strip of muscle, with small purple ACh dots dropping down between them. Act 2 shows a green calcium storage sac with a yellow lightning bolt above it and orange calcium dots spreading outward. Act 3 shows red-orange thin filaments sliding inward over a blue thick filament, and a thick coloured border highlights each card in turn.",title:"The big picture: three acts",
  body:`<p>A muscle contraction is a chain reaction. Each step causes the next one. It looks like a lot, but it is really just <b>three acts</b>:</p>
  <ol><li><b>Act 1 – Nerve talks to muscle.</b> A nerve sends a chemical message (ACh) across a tiny gap. This happens at the <b>neuromuscular junction</b>.</li>
  <li><b>Act 2 – The signal releases calcium.</b> An electrical signal spreads through the muscle cell and opens the cell's calcium storage tanks. This is <b>excitation–contraction coupling</b>.</li>
@@ -196,7 +197,7 @@ const STEPS=[
   ["It makes the filaments shorter.",0,"The filaments never get shorter. They slide past each other."]]},
  caption:"Three acts: nerve to muscle, signal to calcium, calcium to movement."},
 
-{act:1,scene:"nmj",id:"ap",title:"A signal travels down the motor neuron",
+{act:1,scene:"nmj",id:"ap",desc:"A tan motor neuron axon comes down from the top centre, wrapped near the top in a pale myelin sheath, and widens into a large rounded axon terminal filled with small round vesicles. Below a thin light-blue gap, the synaptic cleft, a pink muscle fiber fills the bottom of the picture, its top edge folded into small dips. A glowing yellow dot labelled Action potential travels down the axon, and when it reaches the terminal the terminal's outline flashes yellow.",title:"A signal travels down the motor neuron",
  body:`<p>A <b>motor neuron</b> controls skeletal muscle fibers. An <b>action potential</b> (a fast electrical signal) races down its axon to the end, called the <b>axon terminal</b>.</p>
  <p>The axon terminal sits very close to the muscle fiber, but they <b>do not touch</b>. The tiny gap between them is the <b>synaptic cleft</b>. The whole meeting point is the <b>neuromuscular junction (NMJ)</b>.</p>`,
  analogy:"A text message traveling to your friend's phone. It has to arrive before anything else can happen.",
@@ -208,7 +209,7 @@ const STEPS=[
  caption:"The action potential travels down the axon to the axon terminal.",
  legend:[["glow","Action potential"]]},
 
-{act:1,scene:"nmj",id:"ca-in",title:"Calcium enters the axon terminal",
+{act:1,scene:"nmj",id:"ca-in",desc:"The tan axon terminal sits above the pink muscle fiber with a thin light-blue gap between them. Two pairs of small channels on the bottom edge of the terminal turn orange and spread apart to open. Orange calcium dots float in the fluid on the left and right, labelled Ca²⁺ outside, and streams of orange dots move upward through the open channels into the terminal.",title:"Calcium enters the axon terminal",
  body:`<p>When the action potential reaches the axon terminal, <b>voltage-gated calcium channels</b> open. <b>Calcium ions (Ca²⁺)</b> rush into the terminal from the fluid outside, because there is much more Ca²⁺ outside the cell than inside.</p>
  <p>This calcium is the "go" signal that tells the terminal to release its chemical messenger.</p>
  <p><i>Heads up:</i> calcium shows up twice in this story. Here it is inside the <b>nerve</b>. In Act 2 it will come from storage inside the <b>muscle</b>.</p>`,
@@ -222,7 +223,7 @@ const STEPS=[
  caption:"Voltage-gated Ca²⁺ channels open. Ca²⁺ flows into the axon terminal.",
  legend:[["ca","Ca²⁺"]]},
 
-{act:1,scene:"nmj",id:"ach-release",title:"Vesicles release acetylcholine (ACh)",
+{act:1,scene:"nmj",id:"ach-release",desc:"Inside the tan axon terminal, two of the round vesicles, each holding small purple ACh dots, move down to the bottom edge. They merge with the membrane and disappear, and a spray of purple ACh dots spreads sideways and downward into the light-blue gap above the muscle fiber. A few orange calcium dots sit inside the terminal, and the label reads Vesicles fuse and release ACh (exocytosis).",title:"Vesicles release acetylcholine (ACh)",
  body:`<p>The axon terminal is packed with <b>synaptic vesicles</b>, tiny bubbles full of the neurotransmitter <b>acetylcholine (ACh)</b>.</p>
  <p>Calcium makes the vesicles fuse with the terminal's membrane and spill ACh into the synaptic cleft. This is called <b>exocytosis</b>. ACh drifts across the narrow cleft almost instantly.</p>`,
  analogy:"Ringing a doorbell. ACh is the ring the muscle hears.",
@@ -234,7 +235,7 @@ const STEPS=[
  caption:"Vesicles fuse with the membrane and release ACh into the synaptic cleft.",
  legend:[["ach","ACh"],["ca","Ca²⁺"]]},
 
-{act:1,scene:"nmj",id:"ach-bind",title:"ACh opens channels on the muscle fiber",
+{act:1,scene:"nmj",id:"ach-bind",desc:"Purple ACh dots drift down onto six pairs of grey receptor gates along the folded top edge of the pink muscle fiber. The gates turn green and open, and streams of blue sodium dots flow down through them into the muscle fiber. A yellow glow then appears just under the end plate with the label end-plate potential, while more blue dots labelled Na⁺ outside wait at the left.",title:"ACh opens channels on the muscle fiber",
  body:`<p>The part of the muscle fiber's membrane at the junction is the <b>motor end plate</b>. It is covered with <b>ACh receptors</b>.</p>
  <p>When ACh binds, the receptor opens like a gate. <b>Sodium ions (Na⁺)</b> rush into the muscle fiber (a few K⁺ leak out). The inside of the fiber right under the end plate becomes less negative. This local change is the <b>end-plate potential</b>.</p>`,
  analogy:"The doorbell rings and the door opens a crack.",
@@ -247,7 +248,7 @@ const STEPS=[
  caption:"ACh binds receptors on the motor end plate. Na⁺ flows in: the end-plate potential.",
  legend:[["ach","ACh"],["na","Na⁺"]]},
 
-{act:1,scene:"nmj",id:"muscle-ap",title:"An action potential spreads across the muscle",
+{act:1,scene:"nmj",id:"muscle-ap",desc:"ACh sits on the open green receptor gates, and a faint yellow glow lies under the end plate. From the middle, two bright yellow pulses race outward along the top edge of the muscle fiber, one to the left and one to the right. Small channel pairs near each end turn from grey to green and open as a pulse reaches them, and orange arrows below point left and right to show the signal spreading both ways.",title:"An action potential spreads across the muscle",
  body:`<p>The end-plate potential opens <b>voltage-gated sodium channels</b> in the nearby <b>sarcolemma</b> (the muscle fiber's plasma membrane). That starts a <b>muscle action potential</b>, which spreads in both directions along the whole fiber.</p>
  <p><b>Act 1 is done.</b> The nerve has passed its message to the muscle.</p>`,
  analogy:"A stadium wave. It starts in one section and travels all the way around.",
@@ -260,7 +261,7 @@ const STEPS=[
  caption:"A muscle action potential spreads both ways along the sarcolemma.",
  legend:[["glow","Muscle action potential"]]},
 
-{act:2,scene:"triad",id:"ttubule",title:"The signal dives down the T-tubules",
+{act:2,scene:"triad",id:"ttubule",desc:"This is a close-up inside the pink muscle fiber. The sarcolemma runs along the top, and a narrow light-blue tube, the T-tubule, dives straight down from it in the middle. Two tall green sacs of sarcoplasmic reticulum packed with orange calcium dots sit on either side of the tube. A glowing yellow line travels in from both edges along the top and then runs down the T-tubule; a label says Triad = SR + T-tubule + SR.",title:"The signal dives down the T-tubules",
  body:`<p>A muscle fiber is thick. To reach the middle fast, the sarcolemma has tunnels called <b>transverse tubules (T-tubules)</b> that dip deep into the cell. The action potential travels down them.</p>
  <p>Each T-tubule is sandwiched between two sacs of <b>sarcoplasmic reticulum (SR)</b>, the cell's <b>calcium storage tanks</b>. One T-tubule plus the two sacs beside it is a <b>triad</b>.</p>`,
  analogy:"A fire alarm running down the hallways into every room of a building.",
@@ -273,7 +274,7 @@ const STEPS=[
  caption:"The action potential travels along the sarcolemma and down the T-tubule.",
  legend:[["glow","Action potential"],["ca","Ca²⁺ stored in SR"]]},
 
-{act:2,scene:"triad",id:"ca-release",title:"Calcium floods out of the SR",
+{act:2,scene:"triad",id:"ca-release",desc:"In the same close-up, the walls of the light-blue T-tubule flash yellow, and small purple voltage sensors in the tubule wall tilt. Right next to them, small green release channels on the SR sacs pull apart to open. Orange calcium dots then stream out of the green sacs, up and down through the pink cytosol toward the striped myofibrils at the top and bottom, and fewer dots remain inside the sacs.",title:"Calcium floods out of the SR",
  body:`<p>The T-tubule wall holds <b>voltage sensors</b> (DHP receptors). When the action potential passes, they change shape and pull open <b>calcium-release channels</b> (ryanodine receptors) on the SR right next to them.</p>
  <p>Ca²⁺ pours out of the SR into the <b>cytosol</b>, around the filaments.</p>
  <p>This is the heart of <b>excitation–contraction coupling</b>: an electrical signal (excitation) is turned into a chemical signal, calcium, that leads to contraction.</p>`,
@@ -287,7 +288,7 @@ const STEPS=[
  caption:"Voltage sensors pull open SR channels. Ca²⁺ floods into the cytosol.",
  legend:[["dhpr","Voltage sensor (DHPR)"],["ryr","SR release channel (RyR)"],["ca","Ca²⁺"]]},
 
-{act:3,scene:"fil",id:"troponin",title:"Calcium uncovers the binding sites",
+{act:3,scene:"fil",id:"troponin",desc:"A thin filament runs across the upper part of the picture as a double row of red-orange beads (actin), with a long tropomyosin strand lying over small binding spots and yellow troponin clusters attached along it. A blue thick filament with a large myosin head runs along the bottom. Orange calcium dots fall from the top and stick to the yellow troponin, then the tropomyosin strand lifts upward and the binding spots turn green and glow, labelled Binding sites exposed.",title:"Calcium uncovers the binding sites",
  body:`<p><b>Thin filaments</b> are made mostly of <b>actin</b>. Actin has spots where myosin can grab on: the <b>myosin-binding sites</b>.</p>
  <p>At rest, a long protein called <b>tropomyosin</b> lies over those spots and blocks them. <b>Troponin</b> holds tropomyosin in place.</p>
  <p>When <b>Ca²⁺ binds to troponin</b>, troponin changes shape and pulls tropomyosin away. Now the binding sites are open.</p>`,
@@ -301,7 +302,7 @@ const STEPS=[
  caption:"Ca²⁺ binds troponin. Tropomyosin slides away and uncovers the binding sites.",
  legend:[["actin","Actin"],["tropo","Tropomyosin"],["troponin","Troponin"],["ca","Ca²⁺"]],cyc:-1},
 
-{act:3,scene:"fil",id:"bind",title:"Myosin grabs actin: a cross-bridge forms",
+{act:3,scene:"fil",id:"bind",desc:"The tropomyosin strand is lifted off the red-orange actin beads, and the binding spots glow green. The large blue myosin head, carrying a small orange ADP·Pi tag, stretches up from the blue thick filament and reaches the actin. A green glow and the words Cross-bridge! appear where it attaches, and a row of four step boxes along the bottom highlights 1 Attach.",title:"Myosin grabs actin: a cross-bridge forms",
  body:`<p><b>Myosin heads</b> stick out from the <b>thick filament</b>. Each head is already "cocked" (energized). It is still holding the ADP and phosphate (P<sub>i</sub>) left from an ATP it split earlier.</p>
  <p>Once the binding sites are open, the head attaches to actin. This connection is a <b>cross-bridge</b>.</p>`,
  analogy:"In a tug-of-war, a hand reaches out and grabs the rope.",
@@ -314,7 +315,7 @@ const STEPS=[
  caption:"The cocked myosin head (holding ADP + Pᵢ) attaches to actin: a cross-bridge.",
  legend:[["head","Myosin head"],["actin","Actin"],["pi","ADP + Pᵢ"]],cyc:0},
 
-{act:3,scene:"fil",id:"power",title:"The power stroke",
+{act:3,scene:"fil",id:"power",desc:"The blue myosin head, attached to actin, swings from leaning right to leaning left. As it pivots, the whole red-orange thin filament slides to the left, and an arrow at the top points left under the label Thin filament pulled toward the M line. A small orange Pᵢ dot floats away at the start and the ADP tag drops off at the end. The step bar at the bottom highlights 2 Power stroke.",title:"The power stroke",
  body:`<p>The phosphate (P<sub>i</sub>) is released and the myosin head <b>pivots</b>. The pivot pulls the thin filament toward the <b>center of the sarcomere (the M line)</b>. ADP is released at the end.</p>
  <p>This pull is the <b>power stroke</b>. It is the moment force is made.</p>`,
  analogy:"The hand pulls the rope toward the middle of the team.",
@@ -327,7 +328,7 @@ const STEPS=[
  caption:"Pᵢ leaves, the head pivots, and the thin filament slides toward the M line.",
  legend:[["head","Myosin head"],["pi","Pᵢ / ADP released"]],cyc:1},
 
-{act:3,scene:"fil",id:"detach",title:"ATP makes myosin let go",
+{act:3,scene:"fil",id:"detach",desc:"The blue myosin head leans left, still attached to the red-orange actin. A green ATP tag travels up from the lower right and docks on the head, and then the head pulls back down away from the thin filament while the green word Released appears above it. The step bar at the bottom highlights 3 Release (ATP).",title:"ATP makes myosin let go",
  body:`<p>A new <b>ATP</b> binds to the myosin head. This makes the head <b>let go</b> of actin.</p>
  <p>Important: ATP is needed to <b>release</b>, not just to pull. With no ATP, myosin stays stuck to actin. That is why a body becomes stiff after death (<b>rigor mortis</b>).</p>`,
  analogy:"The hand opens to let go of the rope.",
@@ -340,7 +341,7 @@ const STEPS=[
  caption:"ATP binds the myosin head, and the head releases actin.",
  legend:[["atp","ATP"],["head","Myosin head"]],cyc:2},
 
-{act:3,scene:"fil",id:"recock",title:"Myosin re-cocks",
+{act:3,scene:"fil",id:"recock",desc:"The blue myosin head starts out leaning left and carries a green ATP tag. The head flashes yellow as the tag changes to an orange ADP·Pi tag, showing ATP being split. The head then swings back to the right into its cocked position, labelled Cocked and ready, and the step bar highlights 4 Re-cock.",title:"Myosin re-cocks",
  body:`<p>Myosin splits the ATP into ADP + P<sub>i</sub> (<b>ATP hydrolysis</b>). The energy released swings the head back into the cocked, high-energy position.</p>
  <p>It is now ready to grab again, farther along the thin filament.</p>`,
  analogy:"Reaching forward for a new grip on the rope.",
@@ -353,7 +354,7 @@ const STEPS=[
  caption:"ATP is split into ADP + Pᵢ. The head swings back to the cocked position.",
  legend:[["atp","ATP"],["pi","ADP + Pᵢ"]],cyc:3},
 
-{act:3,scene:"fil",id:"cycle",title:"The cycle repeats",
+{act:3,scene:"fil",id:"cycle",desc:"The blue myosin head runs the full loop again and again: it reaches up and attaches, swings left while the red-orange thin filament slides left, picks up a green ATP tag and lets go, then swings back to the right. A counter at the top reads Cycles completed and goes up by one each loop. The step bar at the bottom lights up 1, 2, 3 and 4 in turn.",title:"The cycle repeats",
  body:`<p>As long as <b>Ca²⁺ and ATP</b> are present, the cycle repeats: <b>attach → pull → release → re-cock</b>.</p>
  <p>Each step forward, the head grabs a site farther along. Hundreds of heads work at slightly different times, so some are always holding on and the filament never slips back.</p>`,
  analogy:"A tug-of-war team pulling hand over hand. Grab, pull, let go, reach forward. Over and over.",
@@ -366,7 +367,7 @@ const STEPS=[
  caption:"Attach → power stroke → release → re-cock, again and again.",
  legend:[["head","Myosin head"],["atp","ATP"]],cyc:"all"},
 
-{act:3,scene:"sarc",id:"sarc",title:"Sliding filaments shorten the sarcomere",
+{act:3,scene:"sarc",id:"sarc",desc:"A sarcomere is drawn between two zigzag Z disc lines at the left and right, with a dashed M line down the middle. Red-orange thin filaments reach inward from each Z disc, and blue thick filaments with small bristle-like heads sit in the centre. As the muscle contracts, the Z discs move toward the middle: the orange H zone bracket at the top shrinks until it reads H zone gone, the red-orange I band brackets at the bottom narrow, and the blue A band bracket stays the same. The sarcomere then relaxes back, and a readout at the top left shows its length as a percent of resting.",title:"Sliding filaments shorten the sarcomere",
  body:`<p>The <b>sarcomere</b> is the repeating unit of a myofibril, from one <b>Z disc</b> to the next. As thin filaments slide toward the M line, the Z discs are pulled closer together.</p>
  <p>The filaments themselves do <b>not</b> get shorter. They just overlap more. Watch the bands:</p>
  <ol><li><b>I band</b> gets narrower (thin filaments only).</li><li><b>H zone</b> gets narrower (thick filaments only).</li><li><b>A band</b> stays the same (it is the length of the thick filaments).</li></ol>
@@ -381,7 +382,7 @@ const STEPS=[
  caption:"Z discs move closer. I band and H zone shrink. A band stays the same.",
  legend:[["actin","Thin filament"],["myosin","Thick filament"]]},
 
-{act:3,scene:"relax",id:"relax",title:"Relaxation: everything resets",
+{act:3,scene:"relax",id:"relax",desc:"Three panels sit side by side. Panel 1, AChE clears ACh, shows purple pac-man shaped enzymes in the gap under the tan nerve ending chopping purple ACh dots into smaller pieces. Panel 2, Pumps return Ca²⁺, shows green ATP-powered pumps on top of a green SR sac pulling orange calcium dots down into it. Panel 3, Sites covered, shows orange calcium leaving the yellow troponin while the tropomyosin strand slides down over the binding spots on the red-orange actin, so the blue myosin head below cannot grab them.",title:"Relaxation: everything resets",
  body:`<ol><li>Nerve signals stop, and the enzyme <b>acetylcholinesterase (AChE)</b> in the synaptic cleft breaks down ACh. No more muscle action potentials.</li>
  <li><b>Calcium pumps</b> in the SR membrane use <b>ATP</b> to pump Ca²⁺ back into the SR.</li>
  <li>Ca²⁺ leaves troponin, and <b>tropomyosin slides back</b> over the binding sites. Myosin can't grab actin, and the muscle relaxes.</li></ol>`,
@@ -395,7 +396,7 @@ const STEPS=[
  caption:"AChE clears ACh, pumps return Ca²⁺ to the SR, tropomyosin covers the sites.",
  legend:[["ach","ACh"],["ca","Ca²⁺"],["atp","ATP"],["tropo","Tropomyosin"]]},
 
-{act:0,scene:"map",id:"recap",title:"You made it. Here is the whole chain.",
+{act:0,scene:"map",id:"recap",desc:"The three-card summary returns: purple Act 1 with a nerve ending dropping ACh onto muscle, orange Act 2 with calcium spreading out of a green SR sac, and brick-red Act 3 with thin filaments sliding inward over a thick filament. Each card is highlighted in turn with a thick coloured border, and grey arrows point from left to right. The line underneath reads: Each act causes the next. Then relaxation runs it all backwards.",title:"You made it. Here is the whole chain.",
  body:`<ol class="recap">
  <li class="h">Act 1 · Nerve talks to muscle</li>
  <li>Action potential travels down the motor neuron.</li><li>Ca²⁺ enters the axon terminal.</li><li>Vesicles release ACh into the synaptic cleft.</li><li>ACh binds receptors; Na⁺ flows in (end-plate potential).</li><li>A muscle action potential spreads along the sarcolemma.</li>
@@ -434,7 +435,7 @@ const LEG={glow:"--glow",ca:"--ca",ach:"--ach",na:"--na",atp:"--atp",pi:"--pi",a
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip)">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -442,6 +443,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(l=>`<span><i style="background:var(${LEG[l[0]]})"></i>${l[1]}</span>`).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{
@@ -480,7 +482,7 @@ function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixel
 window.addEventListener("resize",fit);
 const C={};
 function readColors(){const s=getComputedStyle(document.documentElement);
-  ["ground","panel","panel-2","ink","ink-soft","ink-faint","rule","accent","good","warn","bad","act1","act2","act3","ecf","neuron","neuron-edge","myelin","fiber","fiber-edge","cyto","sr","sr-edge","dhpr","ryr","ca","ach","na","atp","pi","actin","actin-2","myosin","head","tropo","troponin","glow","zdisc"]
+  ["on-accent","act1-chip","act2-chip","act3-chip","ground","panel","panel-2","ink","ink-soft","ink-faint","rule","accent","good","warn","bad","act1","act2","act3","ecf","neuron","neuron-edge","myelin","fiber","fiber-edge","cyto","sr","sr-edge","dhpr","ryr","ca","ach","na","atp","pi","actin","actin-2","myosin","head","tropo","troponin","glow","zdisc"]
   .forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
@@ -499,8 +501,8 @@ function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||50
   ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5)}
 function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
 function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=9;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
-function chipText(x,y,txt,col){ctx.font='600 11px "IBM Plex Mono",monospace';ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
-  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle="#fff";ctx.fillText(txt,x,y+.5)}
+function chipText(x,y,txt,col){ctx.font='600 12px "IBM Plex Mono",monospace';ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-5,y-9,w+10,18,9);ctx.fill();ctx.fillStyle=C["on-accent"];ctx.fillText(txt,x,y+.5)}
 // pseudo-random but stable
 function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
 
@@ -513,8 +515,8 @@ function sceneMap(t){
     const on=i===act;
     ctx.fillStyle=C["panel-2"];rr(b[0],90,220,270,10);ctx.fill();
     ctx.strokeStyle=on?C[b[1]]:C.rule;ctx.lineWidth=on?4:1.5;ctx.stroke();
-    ctx.fillStyle=C[b[1]];rr(b[0],90,220,36,10);ctx.fill();ctx.fillRect(b[0],110,220,16);
-    ctx.font='600 14px "IBM Plex Mono",monospace';ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(b[2].toUpperCase(),b[0]+110,108);
+    ctx.fillStyle=C[b[1]+"-chip"];rr(b[0],90,220,36,10);ctx.fill();ctx.fillRect(b[0],110,220,16);
+    ctx.font='600 14px "IBM Plex Mono",monospace';ctx.fillStyle=C["on-accent"];ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(b[2].toUpperCase(),b[0]+110,108);
     ctx.font='600 15px "IBM Plex Sans",sans-serif';ctx.fillStyle=C.ink;ctx.fillText(b[3],b[0]+110,335);
     const cx=b[0]+110,cy=225;
     const ph=(t%2.2)/2.2;
@@ -628,7 +630,7 @@ function sceneNMJ(t,id){
         if(x>0&&x<W)circ(x,300,6,C.glow)}});
     nmjLabels(()=>{label(400,85,"Muscle action potential spreads both ways along the sarcolemma",{align:"center",weight:600});
       if(d>40){arrow(300,395,140,395,C.warn,2.5);arrow(500,395,660,395,C.warn,2.5)}
-      label(90,330,"voltage-gated Na⁺ channels",{size:11.5,align:"center"});});
+      label(90,330,"voltage-gated Na⁺ channels",{size:12,align:"center"});});
   }
 }
 
@@ -724,8 +726,8 @@ function filBase(s,trop,caBound,headA,headL,nuc,extra){
   if(extra)extra(tx,ty2);
 }
 const CYC=["1 Attach","2 Power stroke","3 Release (ATP)","4 Re-cock"];
-function cycleBar(k){CYC.forEach((c,i)=>{const x=110+i*190;const on=i===k;ctx.fillStyle=on?C.act3:C["panel-2"];rr(x-80,402,160,32,16);ctx.fill();ctx.strokeStyle=on?C.act3:C.rule;ctx.lineWidth=1.5;ctx.stroke();
-  ctx.font=`${on?600:500} 13px "IBM Plex Sans",sans-serif`;ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(c,x,418.5);
+function cycleBar(k){CYC.forEach((c,i)=>{const x=110+i*190;const on=i===k;ctx.fillStyle=on?C["act3-chip"]:C["panel-2"];rr(x-80,402,160,32,16);ctx.fill();ctx.strokeStyle=on?C.act3:C.rule;ctx.lineWidth=1.5;ctx.stroke();
+  ctx.font=`${on?600:500} 13px "IBM Plex Sans",sans-serif`;ctx.fillStyle=on?C["on-accent"]:C["ink-soft"];ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(c,x,418.5);
   if(i<3)arrow(x+82,418,x+106,418,C["ink-faint"],1.5)})}
 let cycleBase=0;
 function sceneFil(t,id){
@@ -749,7 +751,7 @@ function sceneFil(t,id){
     const p=(t%3.4)/3.4;const m=ease(seg(p,.25,.7));const a=lerp(-60,-120,m);const s=-150*m;
     const nuc=p<.08?"ADP·Pi":(p<.75?"ADP":"");
     filBase(s,1,true,a,150,nuc,(tx,ty)=>{
-      const q=seg(p,.06,.3);if(q>0&&q<1){ion(tx+20+q*60,ty+20-q*70,C.pi,5,1-q);label(tx+30+q*60,ty-q*70,"Pᵢ",{size:11,pill:false,color:C.pi})}
+      const q=seg(p,.06,.3);if(q>0&&q<1){ion(tx+20+q*60,ty+20-q*70,C.pi,5,1-q);label(tx+30+q*60,ty-q*70,"Pᵢ",{size:12,pill:false,color:C.pi})}
       const r=seg(p,.72,.95);if(r>0&&r<1){ion(tx-30-r*50,ty+30+r*40,C.pi,6,1-r)}
       if(m>0&&m<1)arrow(PX+40,64,PX-60,64,C.act3,3);
       label(PX,92,"Thin filament pulled toward the M line ←",{align:"center",weight:600});

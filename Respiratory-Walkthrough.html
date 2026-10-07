@@ -119,7 +119,23 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+/* a11y: text contrast for act chips and "not quite" feedback (WCAG 2.1 AA) */
+:root{--warn-ink:#9A5220}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn-ink:var(--warn)}}
+:root[data-theme="dark"]{--warn-ink:var(--warn)}
+.fb.no{color:var(--warn-ink)}
+.actchip[data-act="act2"],.actchip[data-act="act3"]{color:#10161A}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .actchip[data-act="act4"]{background:#26786A!important}}
+:root[data-theme="light"] .actchip[data-act="act4"]{background:#26786A!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .actchip{color:#10161A}}
+:root[data-theme="dark"] .actchip{color:#10161A}
+.dot.done:not(.cur){border-width:3px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dot.cur{color:#0B1A20}}
+:root[data-theme="dark"] .dot.cur{color:#0B1A20}
+/* keep the site-kit tool button names available to screen readers when their labels are hidden on narrow screens */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -177,7 +193,7 @@ const ACTS={1:{name:"Part 1 · The airways",col:"act1"},
             4:{name:"Part 4 · Carrying the gases",col:"act4"},
             5:{name:"Part 5 · Control of breathing",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: follow one breath of air",
+{desc:"A side view of a person shows the head, neck and chest, with the airway drawn in pale blue inside the body and the lungs inside the rib cage. A small outlined circle (the air particle) travels from the nostril, through the nasal cavity, down the throat and trachea, and into one lung. On the right, a numbered list of 11 airway parts lights up one at a time as the particle passes each part: numbers 1 to 8 are bracketed in blue as the conducting zone, and 9 to 11 are bracketed in red as the respiratory zone. A round zoom bubble beside the chest shows the end of the airway, and when the particle reaches the alveoli a label says \"Gas exchange happens here\".",act:0,scene:"map",id:"map",title:"The big picture: follow one breath of air",
  body:`<p>The <b>respiratory system</b> has one main job: get <b>oxygen (O₂)</b> into the blood and get <b>carbon dioxide (CO₂)</b> out. Watch one bit of air travel from your nose all the way to the tiny air sacs called <b>alveoli</b>.</p>
  <p>The airways are split into two zones:</p>
  <ol><li>The <b>conducting zone</b> (nose to the <b>terminal bronchioles</b>) only moves, cleans, warms and moistens air. No gas exchange happens here.</li>
@@ -193,7 +209,7 @@ const STEPS=[
  caption:"One bit of air travels the whole route. Blue labels are the conducting zone. Red labels are the respiratory zone, where gas exchange happens.",
  legend:[["accent","Conducting zone"],["bad","Respiratory zone"],["air","Air particle"]]},
 
-{act:1,scene:"upper",id:"upper",title:"Nose, pharynx and larynx",
+{desc:"A side view of the head shows the nostril, the nasal cavity with three curled conchae, the pharynx, the larynx, the trachea and the esophagus behind it. Air particles stream in through the nose: they start blue (cool and dry) and turn orange (warm and moist) as they pass the conchae, while small brown dust specks get stuck in the mucus. A panel on the right shows bars for warmth and humidity filling up to 37 °C and 100% humid. Then a swallow plays: a dark food ball moves back, the label changes from \"Epiglottis: open\" to \"Epiglottis: CLOSED\", and the five swallowing steps in the panel light up in order.",act:1,scene:"upper",id:"upper",title:"Nose, pharynx and larynx",
  body:`<p>Air enters through the <b>nostrils</b> into the <b>nasal cavity</b>. Three curled shelves of bone, the <b>nasal conchae</b>, make the air swirl. The swirling air rubs against a warm, wet <b>mucous membrane</b>. That does three jobs:</p>
  <ol><li><b>Warms</b> the air toward body temperature (blood vessels sit just under the lining).</li><li><b>Humidifies</b> (moistens) it.</li><li><b>Filters</b> it. Dust and germs stick to the mucus.</li></ol>
  <p>Air then passes through the <b>pharynx</b> (throat), which is shared with food, and into the <b>larynx</b> (voice box). When you <b>swallow</b>, the larynx moves up and a flap called the <b>epiglottis</b> folds down over the opening of the larynx. Food is sent into the <b>esophagus</b> instead of the airway.</p>`,
@@ -207,7 +223,7 @@ const STEPS=[
  caption:"Air swirls past the conchae: it warms (color shifts), picks up water and drops dust in the mucus. Then a swallow: the epiglottis folds down and food goes to the esophagus.",
  legend:[["cold","Cool, dry air"],["warm","Warmed, moist air"],["dust","Dust trapped in mucus","s"],["mucus","Mucus"]]},
 
-{act:1,scene:"trachea",id:"trachea",title:"The trachea and the mucus escalator",
+{desc:"Three drawings sit side by side. On the left, a front view of the trachea shows a stack of pale C-shaped cartilage rings running from the larynx down to the right and left bronchi. In the middle, a cross section shows the C-shaped ring open at the back, where a red band of trachealis muscle faces the esophagus; the esophagus swells when food passes, bulging into the open side. On the right, a zoomed view of the lining shows tall pink ciliated cells and yellow goblet cells; the hair-like cilia beat in waves and carry a tan mucus layer with brown dust specks to the right, under an arrow that says \"mucus moves UP toward the pharynx\".",act:1,scene:"trachea",id:"trachea",title:"The trachea and the mucus escalator",
  body:`<p>The <b>trachea</b> (windpipe) runs from the larynx down into the chest. It is held open by about 16 to 20 <b>C-shaped rings of hyaline cartilage</b>. The open part of the C faces the back, where the <b>esophagus</b> sits. A band of smooth muscle, the <b>trachealis</b>, spans the gap so the esophagus can bulge forward when you swallow food.</p>
  <p>The trachea is lined by <b>pseudostratified ciliated columnar epithelium</b> with <b>goblet cells</b>. Goblet cells make sticky <b>mucus</b> that traps particles. The <b>cilia</b> beat in waves and push the mucus <b>up</b> toward the pharynx, where it is swallowed or coughed out. This is called the <b>mucociliary escalator</b>.</p>`,
  analogy:"A vacuum hose with stiff rings to keep it from kinking, lined with a moving walkway that carries trash back out the way it came in.",
@@ -220,7 +236,7 @@ const STEPS=[
  caption:"Front view: C-shaped cartilage rings. Cross section: the open side of the C faces the esophagus. Zoom: cilia beat in waves and carry mucus and dust upward.",
  legend:[["cart","Hyaline cartilage"],["muscle","Trachealis (smooth muscle)"],["mucus","Mucus"],["dust","Trapped dust","s"]]},
 
-{act:1,scene:"tree",id:"tree",title:"The bronchial tree, down to the alveoli",
+{desc:"On the left, the bronchial tree branches from the trachea into primary bronchi, smaller bronchi and many tiny bronchioles. Gray-blue tubes with cartilage rings and plates fade into red-orange tubes with no cartilage, only smooth muscle, as the branches get smaller. An outlined air particle travels down the tree to one bronchiole. On the right, a zoom panel shows the end of that bronchiole, split by a red dashed line into \"Conducting\" on the left and \"Respiratory zone\" on the right; the particle moves from the terminal bronchiole into the respiratory bronchiole and alveolar duct and reaches a grape-like cluster labelled \"Alveolar sac\".",act:1,scene:"tree",id:"tree",title:"The bronchial tree, down to the alveoli",
  body:`<p>The trachea splits into the right and left <b>primary bronchi</b>. They keep branching into smaller and smaller tubes: secondary and tertiary bronchi, then <b>bronchioles</b> (less than about 1 mm across). There are about 23 levels of branching, so it is called the <b>bronchial tree</b>.</p>
  <p>As the tubes get smaller, <b>cartilage</b> goes from rings, to plates, to none at all. <b>Smooth muscle</b> becomes more important, so bronchioles can widen or narrow.</p>
  <p>The last tubes of the conducting zone are the <b>terminal bronchioles</b>. After them come the <b>respiratory bronchioles</b> (with a few alveoli in their walls), the <b>alveolar ducts</b>, and finally clusters of alveoli called <b>alveolar sacs</b>.</p>`,
@@ -234,7 +250,7 @@ const STEPS=[
  caption:"An air particle travels down the branching tree. Cartilage fades out as the tubes shrink. It crosses from the conducting zone into the respiratory zone and reaches an alveolar sac.",
  legend:[["cart","Cartilage"],["muscle","Smooth muscle"],["air","Air particle"],["bad","Respiratory zone starts here","dl"]]},
 
-{act:1,scene:"alveoli",id:"alveoli",title:"Inside the alveoli: three kinds of cells",
+{desc:"Three large round alveoli, filled with pale blue air, are ringed by small red capillaries holding red blood cells. Thin flat purple nuclei in the walls mark type I cells, and plump orange cube-shaped cells are type II cells, which release a gold film of surfactant that spreads around the inside of each alveolus. A tan alveolar macrophage with a purple nucleus crawls across the floor of one alveolus toward a brown dust speck and swallows it. A side panel compares two small alveoli: the one \"With surfactant\" stays open, while the one \"Without surfactant\" has red arrows pressing inward and shrinks shut.",act:1,scene:"alveoli",id:"alveoli",title:"Inside the alveoli: three kinds of cells",
  body:`<p>You have about 300 million alveoli. Each one is wrapped in a net of <b>capillaries</b>. Three kinds of cells live here:</p>
  <ol><li><b>Type I alveolar cells</b> are very thin, flat squamous cells. They make up about 97% of the alveolar surface. Their thinness is what makes gas exchange fast.</li>
  <li><b>Type II alveolar cells</b> are scattered among them. They secrete <b>surfactant</b>, a mix of phospholipids and proteins. Surfactant lowers the <b>surface tension</b> of the thin water layer lining each alveolus. Without it, the water would pull the alveolus shut and it would <b>collapse</b>.</li>
@@ -249,7 +265,7 @@ const STEPS=[
  caption:"Type I cells form the thin wall. Type II cells release surfactant (gold film). A macrophage crawls over and eats a dust particle. Inset: without surfactant, an alveolus is pulled shut.",
  legend:[["type1","Type I cell"],["type2","Type II cell"],["surf","Surfactant","s"],["macro","Alveolar macrophage"],["o2","O₂"]]},
 
-{act:1,scene:"membrane",id:"membrane",title:"The respiratory membrane",
+{desc:"A close-up shows alveolar air (pale blue) at the top and blood (pink) at the bottom, separated by a very thin layered wall labelled from top to bottom as surfactant and fluid film, alveolar wall (type I cell), fused basement membranes and capillary wall; a bracket marks it as about 0.5 micrometres thick. Blue O2 molecules drift down through the wall into the blood, while dark gray CO2 molecules drift up into the air. Red blood cells slide from left to right through the capillary and turn from dark red to bright red as they pick up oxygen. Labels say \"O2: high in air → low in blood\" and \"CO2: high in blood → low in air\".",act:1,scene:"membrane",id:"membrane",title:"The respiratory membrane",
  body:`<p>Between the air in an alveolus and the blood in a capillary is the <b>respiratory membrane</b>. It is only about <b>0.5 micrometers</b> thick, much thinner than a sheet of tissue paper.</p>
  <p>It has three layers: the <b>alveolar wall</b> (type I cells), the <b>fused basement membranes</b>, and the <b>capillary wall</b> (endothelium). O₂ and CO₂ cross it by <b>simple diffusion</b>, each moving from where its pressure is higher to where it is lower.</p>
  <p>Diffusion is fastest when the membrane is <b>thin</b>, its <b>surface area</b> is large (your alveoli together cover about 70 square meters), and the pressure difference is big. Anything that thickens the membrane, like fluid or scarring, slows exchange.</p>`,
@@ -263,7 +279,7 @@ const STEPS=[
  caption:"Zoomed in on the respiratory membrane. O₂ diffuses down into the blood, CO₂ diffuses up into the alveolus. Red blood cells turn brighter red as they load O₂.",
  legend:[["air","Alveolar air"],["type1","Alveolar wall (type I cell)"],["rule","Fused basement membranes","s"],["vessel-edge","Capillary wall"],["o2","O₂"],["co2","CO₂"]]},
 
-{act:2,scene:"pressures",id:"pleura",title:"Pleura and the pressures that keep lungs open",
+{desc:"A front view of the chest shows both lungs inside the rib cage, each wrapped in two thin layers of pleura with a blue film of pleural fluid between them. Purple arrows on the lungs point inward (lungs recoil inward) and gray arrows on the chest wall point outward (chest wall pulls outward). On the right, three dial gauges read atmospheric pressure at 760, intra-alveolar pressure swinging around 759 to 761, and intrapleural pressure staying lower, near 754 to 756 mm Hg. A green bar shows the transpulmonary pressure as a positive number, and a graph below traces the green alveolar line and the purple intrapleural line rising and falling with each breath, with the purple line always below.",act:2,scene:"pressures",id:"pleura",title:"Pleura and the pressures that keep lungs open",
  body:`<p>Each lung sits in its own <b>pleural cavity</b>. The <b>visceral pleura</b> covers the lung. The <b>parietal pleura</b> lines the chest wall and diaphragm. Between them is a thin film of <b>pleural fluid</b>. It lets the layers slide without friction and makes them stick together, like two wet glass slides.</p>
  <p>Four pressures matter (OpenStax uses mm Hg):</p>
  <ol><li><b>Atmospheric pressure</b>: the air around you, about <b>760 mm Hg</b> at sea level.</li>
@@ -280,7 +296,7 @@ const STEPS=[
  caption:"Pleural fluid (blue) between the pleurae. Gauges: atmospheric 760, intra-alveolar near 760, intrapleural always lower. Arrows: lungs recoil inward, chest wall pulls outward.",
  legend:[["pleura","Pleura (two layers)"],["pfluid","Pleural fluid","s"],["palv","Intra-alveolar pressure"],["ppl","Intrapleural pressure"]]},
 
-{act:2,scene:"boyle",id:"boyle",title:"Boyle's law: bigger space, lower pressure",
+{desc:"A cylinder on the left holds gray gas particles bouncing around, with a dark piston on its right side. As the piston slides out to the right, the space gets bigger, the particles hit the walls less often and the pressure dial at the top falls (for example from 994 to about 580 mm Hg); as the piston pushes back in, the dial rises again. A label under the cylinder switches between \"Volume up, pressure down\" in green and \"Volume down, pressure up\" in orange. On the right, a graph of pressure versus volume shows a curve that slopes down, and a dot slides along it as the piston moves, with the formula P1V1 = P2V2 underneath.",act:2,scene:"boyle",id:"boyle",title:"Boyle's law: bigger space, lower pressure",
  body:`<p>Air moves by <b>pressure differences</b>. It always flows from higher pressure to lower pressure.</p>
  <p><b>Boyle's law</b> says that in a closed container, gas <b>pressure and volume are inversely related</b>. If the volume goes up, the gas molecules are more spread out and hit the walls less often, so <b>pressure goes down</b>. If the volume goes down, pressure goes up.</p>
  <p>Your lungs use exactly this rule. You never "suck" air in. You make your chest bigger, the pressure inside falls a little below atmospheric pressure, and air flows in by itself.</p>`,
@@ -294,7 +310,7 @@ const STEPS=[
  caption:"Gas particles bounce inside a cylinder. As the piston moves out, they hit the walls less often and the gauge falls. The point slides along the P–V curve.",
  legend:[["co2","Gas particle"],["accent","Pressure"]]},
 
-{act:2,scene:"inspire",id:"inspire",title:"Inspiration: breathing in",
+{desc:"A front view of the chest shows the lungs, rib cage and dome-shaped diaphragm. The diaphragm glows orange, flattens and moves down, and the ribs lift up and out, so the chest and lungs get bigger; small air particles then flow down the trachea under an \"air in\" arrow. A panel on the right lights up five numbered steps of inspiration in order, and a green dial for intra-alveolar pressure drops to about 759 next to the atmospheric dial at 760, with the words \"lower, air flows IN\". A graph at the bottom draws lung volume rising and falling by about 500 mL with each breath.",act:2,scene:"inspire",id:"inspire",title:"Inspiration: breathing in",
  body:`<p>Quiet <b>inspiration</b> is an <b>active</b> process. It needs muscle contraction:</p>
  <ol><li>The <b>diaphragm</b> contracts. Its dome <b>flattens</b> and moves down. This does most of the work.</li>
  <li>The <b>external intercostal muscles</b> contract and lift the ribs up and out.</li>
@@ -312,7 +328,7 @@ const STEPS=[
  caption:"Diaphragm flattens and moves down, external intercostals lift the ribs. Chest and lungs get bigger, alveolar pressure dips to about 759 mm Hg, and air flows in.",
  legend:[["muscle","Diaphragm (contracting)"],["glow","External intercostals"],["air","Air flowing in"],["palv","Intra-alveolar pressure"]]},
 
-{act:2,scene:"expire",id:"expire",title:"Expiration, quiet and forced",
+{desc:"The chest view first shows a quiet breath in, then a quiet breath out: the muscles relax, the lungs spring back with wavy purple recoil marks, and air particles move up and out under an \"air out\" arrow while the intra-alveolar dial rises to about 761. Next, for forced inspiration, red neck muscles (scalenes and sternocleidomastoid) pull the ribs higher and the dial dips lower, near 758. Then, for forced expiration, red dashed internal intercostal lines pull the ribs down and a red abdominal muscle band pushes the diaphragm up, and the dial jumps to about 766. A graph on the right traces lung volume with a big peak near +3,600 mL and a deep dip near -1,200 mL.",act:2,scene:"expire",id:"expire",title:"Expiration, quiet and forced",
  body:`<p>Quiet <b>expiration</b> is <b>passive</b>. The diaphragm and external intercostals simply <b>relax</b>. The stretched elastic fibers in the lungs <b>recoil</b>, like a stretched rubber band snapping back. The chest gets smaller, intra-alveolar pressure rises to about 761 mm Hg, just above atmospheric, and air flows out.</p>
  <p><b>Forced breathing</b> (exercise, blowing out candles) adds more muscles:</p>
  <ol><li><b>Forced inspiration</b>: accessory muscles in the neck and chest, such as the <b>scalenes</b>, <b>sternocleidomastoid</b> and <b>pectoralis minor</b>, lift the ribs even higher.</li>
@@ -327,7 +343,7 @@ const STEPS=[
  caption:"Quiet breath out: muscles relax and the lungs recoil, alveolar pressure rises to about 761 mm Hg. Then a forced breath: neck muscles lift the ribs, then abdominal muscles push the diaphragm up.",
  legend:[["muscle","Muscle working"],["air","Air flowing out"],["palv","Intra-alveolar pressure"]]},
 
-{act:2,scene:"pneumo",id:"pneumo",title:"Pneumothorax: when the seal breaks",
+{desc:"A front view of the chest is labelled right lung and left lung, with a panel of two intrapleural pressure dials and a graph. At first both sides read about 755 and both lungs are inflated; then a red puncture line then pierces the right side of the chest and air bubbles flow in; the right dial climbs to 760, the right transpulmonary pressure falls to 0 in red text, and the right lung shrinks into a small \"Collapsed lung\" while the left one is labelled \"Still inflated\". Finally a dark chest tube enters from the side and draws the air out, the right dial falls back toward 756 and the right lung grows back to full size. In the graph, the solid red line for the right side rises to 760 and then drops again, while the dashed purple line for the left side keeps its normal wave.",act:2,scene:"pneumo",id:"pneumo",title:"Pneumothorax: when the seal breaks",
  body:`<p>The lung stays inflated only because intrapleural pressure is lower than intra-alveolar pressure. If air gets into the pleural cavity, from a stab wound, a broken rib, or a weak spot that bursts, intrapleural pressure rises to <b>atmospheric pressure</b>.</p>
  <p>Now transpulmonary pressure is <b>zero</b>. Nothing holds that lung open, and its elastic recoil makes it <b>collapse</b>. This is a <b>pneumothorax</b> ("air in the chest").</p>
  <p>Each lung has its own pleural cavity, so usually only one lung collapses. Treatment often uses a <b>chest tube</b> to remove the air, so the low pressure returns and the lung re-expands.</p>`,
@@ -341,7 +357,7 @@ const STEPS=[
  caption:"A puncture lets air into the right pleural cavity. Its pressure rises to 760, the seal breaks and that lung recoils and collapses. A chest tube removes the air and the lung re-expands.",
  legend:[["ppl","Intrapleural pressure"],["pfluid","Pleural fluid","s"],["panel","Air in the pleural cavity","s"]]},
 
-{act:2,scene:"rc",id:"rc",title:"Airway resistance and lung compliance",
+{desc:"On the left, two bronchioles are drawn as long tubes. The top one is wide and many blue-outlined air particles move through it quickly (\"airflow: HIGH\" in green). The bottom one is narrow, squeezed by smooth muscle and lined with yellow mucus bumps, and fewer particles crawl through (\"airflow: LOW\" in red). On the right, three balloon-like lungs get the same push each breath: the normal lung swells a medium amount (bar up to 250 mL, green), the stiff lung with red fibrosis lines barely grows (about 100 mL, red), and the floppy emphysema lung with broken air spaces balloons the most (about 550 mL, brown) but springs back weakly.",act:2,scene:"rc",id:"rc",title:"Airway resistance and lung compliance",
  body:`<p>Two things decide how easy breathing is:</p>
  <ol><li><b>Airway resistance</b>: how hard it is for air to flow through the tubes. The main factor is the <b>diameter</b> of the airways. In <b>asthma</b>, bronchiole smooth muscle tightens (bronchoconstriction) and mucus builds up, so resistance rises and air moves slowly, especially out.</li>
  <li><b>Compliance</b>: how easily the lungs <b>stretch</b>. High compliance means a small push gives a big volume change. Scar tissue (fibrosis) or <b>too little surfactant</b> lowers compliance, so the lungs are stiff and each breath is hard work.</li></ol>
@@ -356,7 +372,7 @@ const STEPS=[
  caption:"Left: air particles squeeze through a narrowed bronchiole (high resistance) versus a wide one. Right: the same push stretches a compliant lung a lot and a stiff lung only a little.",
  legend:[["air","Air particles"],["muscle","Bronchiole smooth muscle"],["mucus","Mucus"],["surf","Surfactant","s"]]},
 
-{act:2,scene:"spiro",id:"spiro",title:"Respiratory volumes and capacities",
+{desc:"A graph of lung volume (0 to 6,000 mL) over time is drawn by an orange pen, like a spirometer. First it draws small waves of quiet breathing, and a purple bracket marks the tidal volume, 500 mL, and then it draws one huge breath in up to 6,000 mL (bracket: IRV 3,100 mL), returns to quiet breathing, then draws a maximal breath out down to 1,200 mL (bracket: ERV 1,200 mL). The gray striped band along the bottom, from 0 to 1,200 mL, is labelled residual volume, air that can never be breathed out. At the end, four blue brackets appear at the right side for the capacities: IC 3,600, FRC 2,400, VC 4,800 and TLC 6,000 mL.",act:2,scene:"spiro",id:"spiro",title:"Respiratory volumes and capacities",
  body:`<p>A <b>spirometer</b> measures how much air moves in and out. The trace is a <b>spirogram</b>. OpenStax values for a young adult male:</p>
  <ol><li><b>Tidal volume (TV)</b>: a normal quiet breath, about <b>500 mL</b>.</li>
  <li><b>Inspiratory reserve volume (IRV)</b>: the extra you can force in after a normal breath, about <b>3,100 mL</b>.</li>
@@ -373,7 +389,7 @@ const STEPS=[
  caption:"The pen draws quiet breaths, then a maximal breath in and a maximal breath out. Brackets mark each volume, then the capacities. The shaded band at the bottom is residual volume.",
  legend:[["vol","Spirogram trace"],["act1","Tidal volume"],["act2","Reserve volumes"],["co2","Residual volume","s"]]},
 
-{act:3,scene:"gaslaws",id:"gaslaws",title:"Dalton's law and Henry's law",
+{desc:"Two panels sit side by side. The Dalton's law panel shows a box of air with many light gray nitrogen molecules, some blue oxygen molecules and a few dark gray CO2 molecules; a bar below fills with a gray segment for N2 at 597 and a blue segment for O2 at 159, with the total written as 760 mm Hg, and at one point the oxygen molecules are highlighted alone with the sum PO2 = 0.209 × 760 ≈ 159 mm Hg. The Henry's law panel shows a container with gas above a darker blue liquid, and when a piston pushes down (red arrow), more molecules move into the liquid, and the count below rises, for example from CO2 × 6 to CO2 × 13. Far more dark gray CO2 molecules dissolve than blue O2 molecules, showing CO2 is about 20 times more soluble.",act:3,scene:"gaslaws",id:"gaslaws",title:"Dalton's law and Henry's law",
  body:`<p><b>Dalton's law</b>: in a mixture of gases, each gas pushes with its own <b>partial pressure</b>, and they add up to the total pressure. Air at sea level is 760 mm Hg. It is about 78.6% nitrogen and 20.9% oxygen, so the partial pressure of O₂ (<b>PO₂</b>) is about <b>160 mm Hg</b> (0.209 × 760).</p>
  <p><b>Henry's law</b>: the amount of a gas that <b>dissolves in a liquid</b> depends on its partial pressure and how <b>soluble</b> it is. Raise the partial pressure, and more gas dissolves. CO₂ is about <b>20 times more soluble</b> than O₂ in water and blood.</p>
  <p>Together these explain gas exchange: each gas moves on its own, from where its partial pressure is higher to where it is lower.</p>`,
@@ -387,7 +403,7 @@ const STEPS=[
  caption:"Left: a sample of air. Each gas adds its own partial pressure to the 760 mm Hg total. Right: pressing the piston raises partial pressure, and more gas dissolves. CO₂ dissolves much more than O₂.",
  legend:[["n2","Nitrogen (N₂)"],["o2","Oxygen (O₂)"],["co2","Carbon dioxide (CO₂)"],["h2o","Water"]]},
 
-{act:3,scene:"external",id:"external",title:"External respiration: in the lungs",
+{desc:"A rectangle is split into alveolar air on top (pale blue, labelled PO2 104 and PCO2 40) and a capillary below (pink), with red blood cells flowing from left to right. Blue O2 molecules drift down from the air into the blood, and gray CO2 molecules drift up from the blood into the air. The blood cells start dark red at the left, labelled \"Blood in: PO2 40, PCO2 45\", and become bright red by the right, labelled \"Blood out: PO2 about 100 to 104, PCO2 40\". A side panel shows the gradients (64 mm Hg for O2, 5 mm Hg for CO2) and a blue curve of blood PO2 that climbs fast from 40 to 100 in the first third of the capillary and then levels off.",act:3,scene:"external",id:"external",title:"External respiration: in the lungs",
  body:`<p><b>External respiration</b> is gas exchange between the <b>alveoli</b> and the <b>pulmonary capillaries</b>.</p>
  <ol><li>Alveolar air has a PO₂ of about <b>104 mm Hg</b>. Blood arriving from the body has a PO₂ of only about <b>40 mm Hg</b>. O₂ diffuses <b>into the blood</b>.</li>
  <li>Arriving blood has a PCO₂ of about <b>45 mm Hg</b>. Alveolar air has about <b>40 mm Hg</b>. CO₂ diffuses <b>out of the blood</b> into the alveoli.</li></ol>
@@ -402,7 +418,7 @@ const STEPS=[
  caption:"Blood enters at PO₂ 40 / PCO₂ 45 (dark red). O₂ diffuses in, CO₂ diffuses out. Blood leaves near the alveolar values, bright red. The graph shows PO₂ rising fast along the capillary.",
  legend:[["o2","O₂"],["co2","CO₂"],["deoxy","Blood low in O₂"],["rbc","Blood rich in O₂"]]},
 
-{act:3,scene:"internal",id:"internal",title:"Internal respiration: in the tissues",
+{desc:"The top of the picture shows tissue cells (tan boxes with small red mitochondria and a warm glow) labelled PO2 40 and PCO2 45, and the bottom shows a capillary with red blood cells flowing left to right. Blue O2 molecules leave the blood and move up into the cells, and gray CO2 molecules made by the cells move down into the blood. The blood cells enter bright red, labelled \"Blood in: PO2 100, PCO2 40\", and leave dark red, labelled \"Blood out: PO2 40, PCO2 45\". A side panel shows the gradients (60 mm Hg for O2, 5 mm Hg for CO2) and a blue curve of blood PO2 that falls quickly from 100 to 40 along the capillary.",act:3,scene:"internal",id:"internal",title:"Internal respiration: in the tissues",
  body:`<p><b>Internal respiration</b> is gas exchange between <b>systemic capillaries</b> and the <b>body's cells</b>. Cells constantly use O₂ and make CO₂ in cellular respiration, so the gradients run the other way:</p>
  <ol><li>Arriving blood: PO₂ about <b>100 mm Hg</b>. Tissue: PO₂ about <b>40 mm Hg</b>. O₂ diffuses <b>out of the blood</b> into the cells.</li>
  <li>Tissue PCO₂ is about <b>45 mm Hg</b>, higher than the arriving blood's <b>40 mm Hg</b>. CO₂ diffuses <b>into the blood</b>.</li></ol>
@@ -417,7 +433,7 @@ const STEPS=[
  caption:"Blood arrives at PO₂ 100 / PCO₂ 40. Muscle cells use O₂ and make CO₂. O₂ diffuses out of blood, CO₂ diffuses in. Blood leaves at about 40 / 45, darker red.",
  legend:[["o2","O₂"],["co2","CO₂"],["muscle-lite","Tissue cell","s"],["muscle","Mitochondria"]]},
 
-{act:3,scene:"vq",id:"vq",title:"Matching air to blood (ventilation–perfusion)",
+{desc:"Two round alveoli hang from a Y-shaped airway, each wrapped in a red capillary ring, with a Y-shaped arteriole below bringing red blood dots to both. At first both alveoli are pale blue, read PO2 104 and get 50% of the blood. Then a yellow-brown mucus plug blocks the airway to the right alveolus; it turns gray-blue, its PO2 falls to 40 in red, and the arteriole feeding it narrows with the label \"Arteriole constricts\". The blood flow bars change to 82% for the left (green) and 18% for the right (red), so more blood goes to the alveolus that still gets air.",act:3,scene:"vq",id:"vq",title:"Matching air to blood (ventilation–perfusion)",
  body:`<p>Gas exchange works best when the <b>air reaching an alveolus</b> (ventilation) matches the <b>blood flowing past it</b> (perfusion). The lungs adjust both automatically:</p>
  <ol><li>If an alveolus gets <b>too little air</b>, its PO₂ falls. The small pulmonary arterioles feeding it <b>constrict</b>, sending blood to better-ventilated alveoli. (This is the opposite of the rest of the body, where low O₂ makes arterioles dilate.)</li>
  <li>If CO₂ builds up in an airway, the <b>bronchioles dilate</b> so more air can reach that area and flush the CO₂ out.</li></ol>`,
@@ -431,7 +447,7 @@ const STEPS=[
  caption:"Left alveolus gets air; right one is blocked by mucus. Its PO₂ drops, its arteriole squeezes down, and more blood (red dots) is sent to the alveolus that has air.",
  legend:[["air","Fresh air"],["mucus","Mucus plug"],["rbc","Blood flow"],["muscle","Arteriole smooth muscle"]]},
 
-{act:4,scene:"o2trans",id:"o2trans",title:"How blood carries oxygen",
+{desc:"A big oval red blood cell, zoomed far in, sits in a pink capillary under a strip of alveolar air with PO2 104. Inside it are nine hemoglobin molecules, each drawn as four round subunits with a diamond-shaped heme in the middle; the hemes start dark maroon and turn bright red one by one as blue O2 molecules attach, with the label \"Each O2 that binds makes the next bind more easily\". On the right, a tall saturation bar fills from 75% \"arriving from body\" up to about 98% \"loading in the lungs\", and its colour changes from dark maroon to bright red. A pie chart below shows 98.5% of oxygen carried on hemoglobin and only 1.5% dissolved in plasma.",act:4,scene:"o2trans",id:"o2trans",title:"How blood carries oxygen",
  body:`<p>O₂ does not dissolve well in plasma. Only about <b>1.5%</b> of the O₂ in blood is dissolved. About <b>98.5%</b> is bound to <b>hemoglobin (Hb)</b> inside red blood cells.</p>
  <p>Each hemoglobin molecule has <b>four heme groups</b>, each with an <b>iron</b> atom that can hold one O₂. So one Hb can carry up to four O₂. Hb with O₂ bound is <b>oxyhemoglobin</b>. Each red blood cell holds about 250 million Hb molecules.</p>
  <p><b>Percent saturation</b> tells how many of the binding sites are full. Blood leaving the lungs is about <b>98% saturated</b>. Binding is <b>cooperative</b>: once one O₂ binds, the next ones bind more easily.</p>`,
@@ -445,7 +461,7 @@ const STEPS=[
  caption:"A red blood cell passes through a lung capillary. O₂ binds the four hemes of each hemoglobin, one after another. The meter shows saturation rising to about 98%.",
  legend:[["deoxy","Deoxyhemoglobin"],["rbc","Oxyhemoglobin"],["o2","O₂"],["glob-a","Globin subunit"]]},
 
-{act:4,scene:"ohdc",id:"ohdc",title:"The oxygen–hemoglobin dissociation curve",
+{desc:"A graph shows an S-shaped blue curve of percent hemoglobin saturation (up to 100) against PO2 (0 to 100 mm Hg), with notes for the flat top (\"safety margin\") and the steep middle (\"big release\"). A red dot starts at the lungs, about 97%, and slides down the curve to the tissue point at PO2 40, about 75%. Then the four right-shift factors in the side panel are ticked one by one (temperature up, pH down, CO2 up, BPG up), and the solid curve slides to the right, leaving the normal curve as a gray dashed line. At PO2 40 the dot drops lower, to about 53%, a green bracket labelled \"O2 unloaded\" grows from 25% to 44%, and the green \"shifted\" bar grows longer than the gray \"normal\" bar.",act:4,scene:"ohdc",id:"ohdc",title:"The oxygen–hemoglobin dissociation curve",
  body:`<p>This S-shaped curve shows how saturated hemoglobin is at each PO₂.</p>
  <ol><li><b>Flat top</b>: in the lungs (PO₂ about 100), Hb is about 98% full. Even if PO₂ drops a bit, saturation barely changes. That is a safety margin.</li>
  <li><b>Steep middle</b>: in tissues (PO₂ about 40), Hb is about 75% full, so it has unloaded some O₂. A small drop in PO₂ here releases a lot more O₂.</li></ol>
@@ -460,7 +476,7 @@ const STEPS=[
  caption:"The dot moves from lungs (about 98%) to resting tissue (about 75%). Then the curve shifts right with heat, acid, CO₂ and BPG. At the same tissue PO₂, Hb now holds less, so more O₂ is unloaded.",
  legend:[["ink-faint","Normal curve","dl"],["o2","Shifted curve"],["good","O₂ unloaded"]]},
 
-{act:4,scene:"co2",id:"co2",title:"How blood carries carbon dioxide",
+{desc:"A large oval red blood cell sits in plasma beside a column of tissue cells on the left, with a bar across the top showing how CO2 is carried: about 70% as bicarbonate (teal), about 20% on hemoglobin (gray) and 7 to 10% dissolved (blue). Dark gray CO2 molecules drift from the tissue into the cell, and inside, a purple diamond labelled CA (carbonic anhydrase) combines CO2 with water into H2CO3, which splits into small red H+ ions and teal HCO3- tags. The H+ ions travel to hemoglobin (\"Hb buffers H+\"), some CO2 attaches to globin at the top, and at the right edge a green exchanger sends HCO3- out of the cell while green Cl- ions come in, marked \"chloride shift\". The equation CO2 + H2O ⇌ H2CO3 ⇌ H+ + HCO3- is written at the bottom.",act:4,scene:"co2",id:"co2",title:"How blood carries carbon dioxide",
  body:`<p>CO₂ travels in blood three ways:</p>
  <ol><li><b>Dissolved in plasma</b>: about <b>7 to 10%</b>.</li>
  <li>Bound to hemoglobin as <b>carbaminohemoglobin</b>: about <b>20%</b>. CO₂ binds to the globin part, not the heme, so it does not compete with O₂.</li>
@@ -476,7 +492,7 @@ const STEPS=[
  caption:"In the tissues, CO₂ enters a red blood cell. Some stays dissolved, some binds hemoglobin, and most is turned into H⁺ + HCO₃⁻ by carbonic anhydrase. HCO₃⁻ leaves as Cl⁻ enters (chloride shift).",
  legend:[["co2","CO₂"],["hco3","Bicarbonate (HCO₃⁻)","r"],["hplus","H⁺"],["cl","Cl⁻"],["enzyme","Carbonic anhydrase","d"]]},
 
-{act:5,scene:"centers",id:"centers",title:"The brainstem sets the rhythm",
+{desc:"A side view of the brain and brainstem shows a purple dot in the pons (pontine group), a magenta dot labelled DRG (rhythm) and a lighter VRG (forced breathing) dot in the medulla. A yellow phrenic nerve runs down from the medulla to a curved diaphragm. When the DRG fires a burst, glowing yellow signals travel down the nerve, the diaphragm turns orange with the label \"Diaphragm contracts\", and a purple spike chart fills with dense nerve impulses; then the signals stop and the label reads \"Diaphragm relaxes\". An orange lung volume graph rises during each burst and falls during each pause, and a text box switches between \"Burst of signals: inspiration\" and \"Signals stop: quiet expiration is passive recoil\".",act:5,scene:"centers",id:"centers",title:"The brainstem sets the rhythm",
  body:`<p>Breathing is controlled by <b>respiratory centers</b> in the brainstem. You can override them for a while (holding your breath, talking), but they run on their own when you are not thinking about it.</p>
  <ol><li>In the <b>medulla oblongata</b>, the <b>dorsal respiratory group (DRG)</b> sets the basic rhythm. It sends bursts of signals down the <b>phrenic nerve</b> to the diaphragm and the intercostal nerves to the external intercostals. Burst = inspiration. Pause = passive expiration.</li>
  <li>The <b>ventral respiratory group (VRG)</b> in the medulla helps drive <b>forced breathing</b>, signaling the accessory and expiratory muscles.</li>
@@ -491,7 +507,7 @@ const STEPS=[
  caption:"DRG neurons fire a burst (inspiration), then pause (expiration). Signals travel down the phrenic nerve and the diaphragm contracts in step. The pons adjusts the pace.",
  legend:[["nerve","Nerve signals"],["act5","DRG / VRG (medulla)"],["act1","Pontine group (pons)"],["muscle","Diaphragm"]]},
 
-{act:5,scene:"chemo",id:"chemo",title:"Chemoreceptors: sensing CO₂, H⁺ and O₂",
+{desc:"The central chemoreceptor panel shows three columns: blood (pink), CSF (light blue) and medulla (lilac), with a barrier line between blood and CSF. Gray CO2 molecules cross the barrier into the CSF, where they make red H+ ions, while the H+ ions in the blood are labelled \"H+ can't cross\", and the purple receptor in the medulla glows and sends a yellow arrow \"to DRG\". The peripheral panel shows the red aorta and carotid arteries with green dots for the carotid and aortic bodies. At the bottom, a PCO2 dial rises from 40 to about 48 mm Hg, a breaths per minute dial rises from 12 to 20, and a five-box negative feedback loop highlights each step in turn until CO2 returns to normal.",act:5,scene:"chemo",id:"chemo",title:"Chemoreceptors: sensing CO₂, H⁺ and O₂",
  body:`<p>The respiratory centers change breathing based on blood chemistry. The <b>main driver is CO₂</b>, not O₂.</p>
  <ol><li><b>Central chemoreceptors</b> are in the medulla. CO₂ crosses the blood–brain barrier easily into the <b>cerebrospinal fluid (CSF)</b>, where it forms H⁺. The receptors sense that <b>H⁺</b>. More CO₂ means more H⁺, which means faster, deeper breathing.</li>
  <li><b>Peripheral chemoreceptors</b> are in the <b>aortic bodies</b> (aortic arch) and <b>carotid bodies</b> (carotid arteries). They respond to <b>CO₂</b>, <b>H⁺</b>, and <b>low O₂</b>, but O₂ only becomes a strong signal when arterial PO₂ falls <b>below about 60 mm Hg</b>.</li></ol>
@@ -506,7 +522,7 @@ const STEPS=[
  caption:"Blood CO₂ rises. CO₂ crosses into the CSF and makes H⁺. Central chemoreceptors fire, breathing speeds up, CO₂ is blown off, and the level returns to normal. Peripheral sensors in the carotid and aortic bodies report too.",
  legend:[["co2","CO₂"],["hplus","H⁺"],["csf","Cerebrospinal fluid","s"],["nerve","Sensor signals"]]},
 
-{act:5,scene:"hyper",id:"hyper",title:"Too fast, too slow, and too high",
+{desc:"Three cards compare breathing patterns: Normal shows medium lungs at 15 breaths per minute, a moderate number of gray CO2 molecules in a pink blood box, PCO2 40 and a pointer in the middle of an acid-to-base colour bar, pH 7.40 in green. Hyperventilation shows bigger, faster lungs at 25 breaths per minute, fewer CO2 molecules, PCO2 28 and the pointer toward base, pH 7.55 in orange. Hypoventilation shows small lungs at 9 breaths per minute, many CO2 molecules, PCO2 58 and the pointer toward acid, pH 7.28 in red. The scene then changes to compare air at sea level (total 760 mm Hg, PO2 about 159) with a high mountain (total 380, PO2 about 79, with fewer molecules), beside an acclimatization timeline of minutes, days, and days to weeks, ending with red blood cells appearing.",act:5,scene:"hyper",id:"hyper",title:"Too fast, too slow, and too high",
  body:`<p><b>Hyperventilation</b> is breathing faster or deeper than the body needs. It blows off too much CO₂, so blood PCO₂ falls and <b>pH rises</b> (respiratory alkalosis). People may feel dizzy or tingly. Blood O₂ barely changes, because hemoglobin is already about 98% saturated.</p>
  <p><b>Hypoventilation</b> is breathing too little. CO₂ builds up, so PCO₂ rises and <b>pH falls</b> (respiratory acidosis). Causes include drug overdose (opioids) and severe lung disease.</p>
  <p>At <b>high altitude</b>, air pressure is lower, so PO₂ is lower. At first, you breathe faster (peripheral chemoreceptors). Over days to weeks, the body <b>acclimatizes</b>: kidneys release more <b>erythropoietin (EPO)</b>, which makes more red blood cells, and red cells make more <b>BPG</b>, which helps unload O₂.</p>`,
@@ -520,7 +536,7 @@ const STEPS=[
  caption:"Normal breathing keeps CO₂ and pH steady. Hyperventilation blows CO₂ off (pH up). Hypoventilation lets CO₂ build up (pH down). At altitude, fewer O₂ molecules per breath, and the body adapts.",
  legend:[["co2","CO₂"],["o2","O₂"],["good","Normal pH range","s"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole story.",
+{desc:"Five coloured cards in a row sum up the chapter: Airways (purple) with a branching tube and alveoli, Moving air (orange) with the chest and lungs, Gas exchange (red) with air above and red blood cells below, Transport (teal) with a hemoglobin molecule and a red blood cell, and Control (magenta) with the brain and brainstem. Each card has a small running animation, such as an air particle moving down the airway, and a highlight frame moves from card to card. The heading across the top reads \"Air in, gases swapped, carried by blood, controlled by the brainstem\".",act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole story.",
  body:`<ol class="recap">
  <li class="h">Part 1 · The airways</li>
  <li>Conducting zone (nose to terminal bronchioles) warms, moistens, filters and moves air.</li><li>The epiglottis covers the larynx when you swallow. C-shaped cartilage holds the trachea open; cilia move mucus up.</li><li>Respiratory zone: respiratory bronchioles, alveolar ducts, alveoli. Type I cells (thin wall), type II cells (surfactant), macrophages.</li>
@@ -558,7 +574,7 @@ function buildChain(){
     d.appendChild(dots);chainEl.appendChild(d);
   });
 }
-function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.remove("gk-oninv");b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i));if(i===cur)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current");b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title+(done.has(i)?" (answered)":""))})}
 function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
   if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
   if(sh==="t")return `<span><i class="t" style="border-bottom-color:var(${v})"></i>${l[1]}</span>`;
@@ -566,7 +582,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" data-act="${a.col}" style="background:var(--${a.col})">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -574,6 +590,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{
@@ -1223,7 +1240,7 @@ function sceneBoyle(t){
   gauge(200,62,44,Pv,500,1200,"Pressure",C.accent,{text:Math.round(Pv)+" mm Hg"});
   hbracket(x0,x0+Lc,y0+hC+22,C.vol,2);txt(x0+Lc/2,y0+hC+38,"Volume",{size:12,weight:600,align:"center",color:C.vol});
   const dir=Math.sin(TAU*t/8);
-  label(x0+Lc/2,y0+hC+64,dir>0?"Volume ↑  →  pressure ↓  (fewer hits on the walls)":"Volume ↓  →  pressure ↑  (more hits on the walls)",{size:12.5,weight:700,align:"center",border:dir>0?C.good:C.warn});
+  label(Math.max(x0+Lc/2,176),y0+hC+64,dir>0?"Volume ↑  →  pressure ↓  (fewer hits on the walls)":"Volume ↓  →  pressure ↑  (more hits on the walls)",{size:12.5,weight:700,align:"center",border:dir>0?C.good:C.warn});
   arrow(x0+Lc+90,y0+hC/2+26,x0+Lc+90+(dir>0?30:-30),y0+hC/2+26,C.ink,2);
   // P-V graph
   const gx=470,gy=60,gw=300,gh=280;axes(gx,gy,gw,gh,{title:"Pressure vs volume"});

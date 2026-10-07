@@ -134,7 +134,17 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+
+/* accessibility retrofit (WCAG 2.1 AA contrast) */
+:root{--chip-ink:#fff;--act1-chip:#7B5CC9;--act2-chip:#A06614;--act3-chip:#B25A47;--act4-chip:#2A8071;--act5-chip:#A04E8C;--warn-ink:#A05825}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--chip-ink:#10161A;--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--warn-ink:var(--warn)}}
+:root[data-theme="dark"]{--chip-ink:#10161A;--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--warn-ink:var(--warn)}
+.actchip{color:var(--chip-ink)}
+.dot.cur{color:var(--chip-ink)}
+.fb.no{color:var(--warn-ink)}
+#body a,footer a{color:var(--accent)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -191,7 +201,8 @@ const ACTS={1:{name:"Part 1 · Atoms",col:"act1"},
             4:{name:"Part 4 · Acids, bases & pH",col:"act4"},
             5:{name:"Part 5 · Molecules of life",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: from atoms to you",
+{act:0,desc:"Five cards sit in a row under the heading From single atoms to the molecules of life, joined by small arrows. Part 1 (purple) shows an atom with electrons circling, Part 2 (orange) shows two hydrogen atoms moving together to share electrons, Part 3 (red) shows two gold sugar rings joining, Part 4 (teal) shows a rainbow pH bar with a moving pointer beside a beaker of pink dots, and Part 5 (magenta) shows a turning DNA double helix. Each card gets a bold coloured border in turn.",
+ scene:"map",id:"map",title:"The big picture: from atoms to you",
  body:`<p>Your body is made of chemicals. That sounds scary, but the whole chapter is one idea: <b>small pieces join to make bigger pieces</b>.</p>
  <ol><li><b>Atoms</b> are the smallest pieces of an element.</li>
  <li>Atoms join with <b>chemical bonds</b> to make molecules.</li>
@@ -209,7 +220,8 @@ const STEPS=[
  caption:"Five parts: atoms, bonds, water and reactions, pH, and the molecules of life."},
 
 /* ---------- PART 1 ---------- */
-{act:1,scene:"elements",id:"elements",title:"The elements that make up your body",
+{act:1,desc:"An outline of a body stands on the left, with five bars on the right for oxygen (red), carbon (dark grey), hydrogen (white), nitrogen (blue) and other elements such as calcium and phosphorus (purple). Coloured dots fly into the body and stack up from the bottom, one dot for about 1 percent of body mass, while each bar fills: oxygen reaches 65 percent, carbon 18.5, hydrogen 9.5, nitrogen 3.2 and the others 3.7. A bracket then groups oxygen, carbon, hydrogen and nitrogen as about 96 percent.",
+ scene:"elements",id:"elements",title:"The elements that make up your body",
  body:`<p>An <b>element</b> is a pure substance made of one kind of atom. There are 92 natural elements, but your body is built mostly from just four.</p>
  <p><b>Oxygen (O), carbon (C), hydrogen (H) and nitrogen (N)</b> make up about <b>96%</b> of your body mass. Oxygen alone is about 65%, mostly because you are full of water (H<sub>2</sub>O).</p>
  <p>Calcium, phosphorus, potassium, sulfur, sodium, chlorine and magnesium make up most of the rest. <b>Trace elements</b>, like iron and iodine, are needed in tiny amounts but are still essential.</p>`,
@@ -223,7 +235,8 @@ const STEPS=[
  caption:"Each dot is about 1% of body mass. O, C, H and N fill about 96% of the body.",
  legend:[["o","Oxygen"],["c","Carbon"],["h","Hydrogen"],["n","Nitrogen"],["na","Other elements"]]},
 
-{act:1,scene:"atom",id:"atom",title:"Inside an atom",
+{act:1,desc:"A carbon atom sits on the left: a nucleus of red protons and grey neutrons with dark blue electrons circling in two rings, labelled shell 1: 2 electrons and shell 2: 4 electrons. A periodic table tile for carbon with the number 6 is at the top right. A list builds up one line at a time, with each line highlighted as it appears: protons 6, neutrons 6, electrons 6, and atomic number equals protons, 6.",
+ scene:"atom",id:"atom",title:"Inside an atom",
  body:`<p>An <b>atom</b> is the smallest unit of an element that still acts like that element. It has a dense center, the <b>nucleus</b>, with two kinds of particles:</p>
  <ul><li><b>Protons</b> have a positive (+) charge.</li><li><b>Neutrons</b> have no charge.</li></ul>
  <p><b>Electrons</b> have a negative (−) charge and move around the nucleus in <b>electron shells</b>. An atom has the same number of protons and electrons, so it is neutral overall.</p>
@@ -238,7 +251,8 @@ const STEPS=[
  caption:"Carbon: 6 protons and 6 neutrons in the nucleus, 6 electrons in two shells (2 + 4).",
  legend:[["p","Proton (+)"],["nu","Neutron (no charge)"],["e","Electron (−)"]]},
 
-{act:1,scene:"isotopes",id:"isotopes",title:"Isotopes and radioisotopes",
+{act:1,desc:"Three hydrogen atoms stand side by side, each with one red proton in the centre and one electron circling. Hydrogen-1 has no neutrons, hydrogen-2 (deuterium) has one grey neutron, and hydrogen-3 (tritium) has two. The first two carry green labels reading stable. Tritium carries an orange label reading radioisotope, unstable, and wavy rings pulse out from it labelled radiation.",
+ scene:"isotopes",id:"isotopes",title:"Isotopes and radioisotopes",
  body:`<p>Every atom of an element has the <b>same number of protons</b>. But the number of <b>neutrons</b> can vary. Atoms of one element with different numbers of neutrons are called <b>isotopes</b>.</p>
  <p>Hydrogen is the classic example. Most hydrogen has 1 proton and no neutrons. <b>Deuterium</b> has 1 neutron. <b>Tritium</b> has 2.</p>
  <p>Some isotopes are unstable. They break down and give off energy as <b>radiation</b>. These are <b>radioisotopes</b>. Tritium is one. In medicine, radioisotopes are used to make images (like PET scans) and to treat some cancers.</p>`,
@@ -253,7 +267,8 @@ const STEPS=[
  legend:[["p","Proton"],["nu","Neutron"],["e","Electron"],["warn","Radiation"]]},
 
 /* ---------- PART 2 ---------- */
-{act:2,scene:"valence",id:"valence",title:"Why atoms bond: the valence shell",
+{act:2,desc:"Three atoms are shown: sodium (purple centre), chlorine (green centre) and neon (dark grey centre). Dark blue electrons drop into their shells one by one, filling from the inside out, until sodium shows 2, 8, 1, chlorine 2, 8, 7, and neon 2, 8. Then the outer valence shell of each glows gold: an orange tag says sodium has 1 valence electron and tends to lose it, a teal tag says chlorine has 7 and tends to gain 1 (an arrow points to its empty spot), and a green tag says neon has 8 and is full and stable.",
+ scene:"valence",id:"valence",title:"Why atoms bond: the valence shell",
  body:`<p>Electrons fill shells from the inside out. The first shell holds 2. The next shells hold up to 8 (for the elements in your body).</p>
  <p>The outermost shell is the <b>valence shell</b>. It decides how an atom behaves. Atoms are most stable when the valence shell is full. For most atoms that means 8 electrons. This is the <b>octet rule</b>.</p>
  <p><b>Neon</b> already has a full shell, so it does not react. <b>Sodium</b> has just 1 valence electron and tends to lose it. <b>Chlorine</b> has 7 and tends to grab 1 more. Atoms lose, gain or share electrons to fill that shell. That is what a <b>chemical bond</b> is.</p>`,
@@ -267,7 +282,8 @@ const STEPS=[
  caption:"Electrons fill shells inside out. The outer (valence) shell glows. Chlorine has one empty spot.",
  legend:[["e","Electron"],["energy","Valence shell"]]},
 
-{act:2,scene:"ionic",id:"ionic",title:"Ions and ionic bonds",
+{act:2,desc:"A sodium atom (purple) and a chlorine atom (green) sit side by side; sodium has one electron in its outer shell and chlorine has one empty spot. The single electron jumps from sodium to chlorine. Both become charged balls: a smaller purple Na with a plus sign (cation) and a larger green Cl with a minus sign (anion), and they pull together. Then red and white water molecules crowd in around each ion and pull them apart.",
+ scene:"ionic",id:"ionic",title:"Ions and ionic bonds",
  body:`<p>Sodium (Na) has 1 valence electron. Chlorine (Cl) has 7. Sodium <b>gives its electron to chlorine</b>. Now both have full shells.</p>
  <p>But the charges no longer balance. Sodium has one more proton than electrons, so it becomes <b>Na⁺</b>, a positive ion (<b>cation</b>). Chlorine has one extra electron, so it becomes <b>Cl⁻</b>, a negative ion (<b>anion</b>).</p>
  <p>Opposite charges attract. That attraction is an <b>ionic bond</b>, and it makes sodium chloride (table salt). In water, the ions pull apart and spread out. Ions dissolved in body fluids are called <b>electrolytes</b>, because they can carry electrical current. Your nerves and heart depend on them.</p>`,
@@ -281,7 +297,8 @@ const STEPS=[
  caption:"Na gives its electron to Cl. Na⁺ and Cl⁻ attract (ionic bond). Water pulls them apart into electrolytes.",
  legend:[["na","Sodium"],["cl","Chlorine"],["e","Electron"],["o","Water (O)"]]},
 
-{act:2,scene:"covalent",id:"covalent",title:"Covalent bonds: sharing electrons",
+{act:2,desc:"Three panels show molecules forming. In the left panel two white hydrogen atoms move together until their dashed shells overlap and they share one pair of electrons: H-H, a single bond. In the middle two red oxygen atoms share two pairs: O=O, a double bond. On the right a dark grey carbon in the centre pulls in four white hydrogens and shares four pairs, making methane; a banner says nonpolar covalent, the atoms pull on the shared electrons equally.",
+ scene:"covalent",id:"covalent",title:"Covalent bonds: sharing electrons",
  body:`<p>Many atoms fill their valence shells by <b>sharing</b> electrons instead of giving them away. A shared pair of electrons is a <b>covalent bond</b>. These are the strongest bonds in the body.</p>
  <ul><li>One shared pair is a <b>single bond</b> (H–H).</li><li>Two shared pairs is a <b>double bond</b> (O=O).</li></ul>
  <p>When the two atoms pull on the shared electrons <b>equally</b>, the bond is <b>nonpolar</b>. This is true when the atoms are the same (H<sub>2</sub>, O<sub>2</sub>), and close to true for carbon and hydrogen in methane (CH<sub>4</sub>). Fats are built mostly from these nonpolar C–H bonds.</p>`,
@@ -295,7 +312,8 @@ const STEPS=[
  caption:"Atoms move close and share pairs of electrons. Single bond in H₂, double bond in O₂, four single bonds in CH₄.",
  legend:[["h","Hydrogen"],["o","Oxygen"],["c","Carbon"],["e","Shared electrons"]]},
 
-{act:2,scene:"polar",id:"polar",title:"Polar covalent bonds: water",
+{act:2,desc:"A large red oxygen atom has two smaller white hydrogen atoms attached below it in a bent shape. Red arrows show the shared electrons being pulled toward the oxygen. A red tag above the oxygen reads delta minus, and teal tags beside each hydrogen read delta plus. A side box compares H2, where electrons stay in the middle, and a banner says polar covalent: unequal sharing makes partial charges.",
+ scene:"polar",id:"polar",title:"Polar covalent bonds: water",
  body:`<p>Sometimes one atom pulls on the shared electrons harder than the other. The electrons spend more time near that atom. This is a <b>polar covalent bond</b>.</p>
  <p>In water (H<sub>2</sub>O), oxygen pulls much harder than hydrogen. So the oxygen end gets a <b>partial negative charge (δ−)</b>, and each hydrogen gets a <b>partial positive charge (δ+)</b>. No electron fully leaves, so these are only partial charges, not ions.</p>
  <p>Water is also bent, like a boomerang, so it has a clear negative end and a positive end. That makes water a <b>polar molecule</b>. Almost everything special about water comes from this.</p>`,
@@ -309,7 +327,8 @@ const STEPS=[
  caption:"Shared electrons drift toward oxygen. Oxygen becomes δ−, and the hydrogens become δ+.",
  legend:[["o","Oxygen (δ−)"],["h","Hydrogen (δ+)"],["e","Shared electrons"]]},
 
-{act:2,scene:"hbond",id:"hbond",title:"Hydrogen bonds",
+{act:2,desc:"The left side is crowded with water molecules, each a red oxygen with two white hydrogens, jiggling in place. Short dashed teal lines flicker on and off between the hydrogen of one molecule and the oxygen of another; a counter at the top shows how many hydrogen bonds exist right now, around 58. On the right a DNA ladder shows coloured base pairs A and T, G and C, joined across the middle by dashed lines: two between A and T, three between G and C, and the strands unzip and close again.",
+ scene:"hbond",id:"hbond",title:"Hydrogen bonds",
  body:`<p>The δ+ hydrogen of one water molecule is attracted to the δ− oxygen of a neighbor. This weak attraction is a <b>hydrogen bond</b>. It is not a true sharing of electrons, so it is much weaker than a covalent bond.</p>
  <p>In liquid water, hydrogen bonds form and break all the time. Together, millions of them make water "sticky". This is why water has surface tension and why it takes a lot of heat to warm up.</p>
  <p>Hydrogen bonds also act <b>inside</b> big molecules. They hold the two strands of <b>DNA</b> together, and they help <b>proteins</b> keep their folded shape.</p>`,
@@ -324,7 +343,8 @@ const STEPS=[
  legend:[["accent","Hydrogen bond","dl"],["o","Oxygen"],["h","Hydrogen"]]},
 
 /* ---------- PART 3 ---------- */
-{act:3,scene:"waterprops",id:"waterprops",title:"Why water matters so much",
+{act:3,desc:"Four small panels show four jobs of water. 1, Solvent: a block of purple and green salt ions breaks apart and each ion gets wrapped in red-and-white water molecules. 2, High heat capacity: two beakers sit over flames; the water warms slowly while the sand warms fast, shown by thermometers. 3, Lubricant and cushion: one bone end presses down on another with a thin blue layer of synovial fluid between them. 4, Reactant: a water molecule moves into the bond between two gold sugar rings and splits them.",
+ scene:"waterprops",id:"waterprops",title:"Why water matters so much",
  body:`<p>Water makes up about 60% of an adult's body. Because it is polar, it does four big jobs:</p>
  <ol><li><b>Solvent.</b> Water dissolves ions and polar molecules. A mix of water and dissolved substances is a <b>solution</b>.</li>
  <li><b>High heat capacity.</b> Water soaks up a lot of heat before its temperature rises. This keeps your body temperature steady. Sweat that evaporates carries heat away.</li>
@@ -340,7 +360,8 @@ const STEPS=[
  caption:"Four jobs at once: dissolving salt, warming slowly, cushioning a joint, and splitting a bond.",
  legend:[["na","Na⁺"],["cl","Cl⁻"],["o","Water"],["heat","Heat"]]},
 
-{act:3,scene:"rxn",id:"rxn",title:"Three kinds of chemical reactions",
+{act:3,desc:"Three rows show three kinds of reactions with letters on shapes. Synthesis: a purple square A and an orange circle B move along an arrow and join as AB. Decomposition: AB moves along an arrow, a starburst marked energy out flashes, and it splits into A and B. Exchange: AB and a teal diamond D bonded to a red triangle C swap partners to make AD and BC.",
+ scene:"rxn",id:"rxn",title:"Three kinds of chemical reactions",
  body:`<p>A <b>chemical reaction</b> makes or breaks bonds. The starting substances are <b>reactants</b>. The new substances are <b>products</b>.</p>
  <ul><li><b>Synthesis</b>: A + B → AB. Small pieces join into something bigger. This uses energy. Building reactions are called <b>anabolic</b>.</li>
  <li><b>Decomposition</b>: AB → A + B. A bigger molecule breaks into smaller ones. This releases energy. Breaking-down reactions are called <b>catabolic</b>.</li>
@@ -356,7 +377,8 @@ const STEPS=[
  caption:"Synthesis joins, decomposition splits, exchange swaps partners.",
  legend:[["act1","A","s"],["act2","B"],["act3","C","s"],["act4","D"]]},
 
-{act:3,scene:"dehyd",id:"dehyd",title:"Dehydration synthesis and hydrolysis",
+{act:3,desc:"Two gold hexagons labelled glucose sit side by side, one with a red-and-white OH group and the other with an H. Under a red label reading dehydration synthesis, the OH and H leave together as a water molecule that drifts down, labelled water leaves, and the two rings join through one oxygen to form maltose. Then a teal label reads hydrolysis, water added: a water molecule moves back in, splits into OH and H, and the two glucose rings come apart.",
+ scene:"dehyd",id:"dehyd",title:"Dehydration synthesis and hydrolysis",
  body:`<p>The body builds and breaks its big molecules with two mirror-image reactions. Both involve water.</p>
  <p><b>Dehydration synthesis</b> joins two small molecules (<b>monomers</b>). One monomer gives up an –OH and the other gives up an –H. Those leave together as <b>a water molecule</b>. "Dehydration" means water is removed.</p>
  <p><b>Hydrolysis</b> is the reverse. A water molecule is <b>added</b> and splits the bond. The –H goes to one piece and the –OH to the other. "Hydro-lysis" means "water-splitting". Digestion is mostly hydrolysis.</p>`,
@@ -370,7 +392,8 @@ const STEPS=[
  caption:"Top: water leaves as two glucose molecules join. Then water goes back in and splits them.",
  legend:[["sugar","Glucose"],["o","Oxygen"],["h","Hydrogen"]]},
 
-{act:3,scene:"actE",id:"actE",title:"Activation energy and catalysts",
+{act:3,desc:"An energy graph shows a curve from reactants on the left to products, which sit lower, on the right. A tall orange solid hill is labelled activation energy without a catalyst, and a lower green dashed hill is labelled lower activation energy with an enzyme. An orange ball rolls up the tall hill, stalls with the note not enough energy, rolls back, and only gets over on a later try. A green ball crosses the low dashed hill easily and rolls down to the products.",
+ scene:"actE",id:"actE",title:"Activation energy and catalysts",
  body:`<p>Even reactions that release energy need a push to get started. That starting push is the <b>activation energy</b>. Think of it as a hill the reactants must get over.</p>
  <p>Heat helps, because faster-moving molecules collide harder. But the body cannot just heat itself up. Instead, it uses <b>catalysts</b>: substances that <b>lower the activation energy</b> so a reaction goes faster.</p>
  <p>A catalyst is <b>not changed or used up</b> by the reaction. The body's catalysts are mostly proteins called <b>enzymes</b>. You will see how they work in Part 5.</p>`,
@@ -384,7 +407,8 @@ const STEPS=[
  caption:"Without a catalyst the reactant keeps rolling back. With an enzyme the hill is lower and it gets over easily.",
  legend:[["warn","No catalyst"],["good","With enzyme (catalyst)"]]},
 
-{act:3,scene:"atp",id:"atp",title:"Energy and ATP",
+{act:3,desc:"An ATP molecule lies across the middle: a red adenine, a brown ribose sugar pentagon, and three gold phosphate circles in a chain, with a grey gear labelled cell work below. A water molecule attacks the last bond, the third phosphate breaks off with a flash of energy, the molecule becomes ADP, and the gear turns. Then a gold glucose from food sends energy dots up, the loose phosphate rejoins, and ATP is rebuilt; coloured labels name each stage.",
+ scene:"atp",id:"atp",title:"Energy and ATP",
  body:`<p>Cells need energy all the time. They keep it ready in a molecule called <b>ATP (adenosine triphosphate)</b>. ATP has adenine, the sugar ribose, and a tail of <b>three phosphate groups</b>.</p>
  <p>The bonds between the phosphates hold a lot of energy. When water splits off the last phosphate (hydrolysis), energy is released:</p>
  <p style="font-family:var(--mono);font-size:14.5px">ATP + H₂O → ADP + Pᵢ + energy</p>
@@ -400,7 +424,8 @@ const STEPS=[
  legend:[["ba","Adenine"],["rib","Ribose"],["phos","Phosphate"],["energy","Energy"]]},
 
 /* ---------- PART 4 ---------- */
-{act:4,scene:"acidbase",id:"acidbase",title:"Acids and bases",
+{act:4,desc:"Two beakers of water sit side by side. In the left beaker, labelled acid HCl, green chlorine atoms let go of small pink plus signs, the hydrogen ions; a counter of free hydrogen ions climbs from 0 to 6, and the caption says H plus goes up, more acidic. In the right beaker, labelled base NaOH, purple sodium atoms release red-and-white OH groups that grab the free hydrogen ions and become water, so the counter falls to 0: H plus goes down, more basic.",
+ scene:"acidbase",id:"acidbase",title:"Acids and bases",
  body:`<p>Some substances release <b>hydrogen ions (H⁺)</b> when they dissolve in water. These are <b>acids</b>. Hydrochloric acid (HCl) in your stomach splits into H⁺ and Cl⁻.</p>
  <p>A <b>base</b> does the opposite job: it <b>takes up H⁺</b>, lowering how many are free. Many bases release <b>hydroxide ions (OH⁻)</b>. For example, sodium hydroxide (NaOH) splits into Na⁺ and OH⁻, and each OH⁻ grabs an H⁺ to make water (H₂O).</p>
  <p>So acids push the H⁺ level <b>up</b>. Bases pull it <b>down</b>.</p>`,
@@ -414,7 +439,8 @@ const STEPS=[
  caption:"Left: HCl releases H⁺ (acid). Right: NaOH releases OH⁻, which grabs H⁺ to make water (base).",
  legend:[["hp","H⁺"],["cl","Cl⁻"],["oh","OH⁻"],["na","Na⁺"]]},
 
-{act:4,scene:"ph",id:"ph",title:"The pH scale",
+{act:4,desc:"A rainbow bar runs from pH 0 (red, more acidic) to pH 14 (purple, more basic), with markers for stomach acid near 2, pure water at 7 and baking soda near 9. A pointer moves along it. Above, a grid of squares fills pink to show hydrogen ion amount: at pH 7 one square, at pH 6 ten squares, labelled ten times. Then a zoomed scale shows blood held in a narrow green OK band between 7.35 and 7.45, with acidosis in red below it and alkalosis in blue above it, and a marker at 7.39 normal.",
+ scene:"ph",id:"ph",title:"The pH scale",
  body:`<p>The <b>pH scale</b> runs from 0 to 14 and tells you how many H⁺ are in a solution. <b>pH 7 is neutral</b> (pure water). Below 7 is <b>acidic</b>. Above 7 is <b>basic</b> (alkaline).</p>
  <p>Careful: the scale is backwards and <b>logarithmic</b>. A <b>lower</b> pH means <b>more</b> H⁺. And each step is <b>10 times</b>. pH 6 has 10× the H⁺ of pH 7. pH 5 has 100× as much.</p>
  <p>Blood must stay between <b>pH 7.35 and 7.45</b>, slightly basic. Below 7.35 is <b>acidosis</b>. Above 7.45 is <b>alkalosis</b>. Both are dangerous, because proteins (including enzymes) change shape when pH drifts.</p>`,
@@ -428,7 +454,8 @@ const STEPS=[
  caption:"Each step down the scale is 10× more H⁺. Blood stays in a tight band, 7.35 to 7.45.",
  legend:[["hp","H⁺ (relative amount)","s"],["good","Normal blood pH","s"]]},
 
-{act:4,scene:"buffer",id:"buffer",title:"Buffers keep blood pH steady",
+{act:4,desc:"The chemical equation carbonic acid, hydrogen ion and bicarbonate sits at the top. Below, a pink box labelled blood plasma holds teal bicarbonate balls with minus signs and orange carbonic acid balls. When acid is added, a red hydrogen ion drops in and a bicarbonate catches it, and a red arrow points left; when base is added, a blue OH appears and a carbonic acid gives up a hydrogen, with a blue arrow pointing right. Two gauges compare the pH: with a buffer it stays near 7.4, without a buffer it swings down to about 6.9.",
+ scene:"buffer",id:"buffer",title:"Buffers keep blood pH steady",
  body:`<p>Your cells make acids all day long. So how does blood stay at 7.35 to 7.45? With <b>buffers</b>: chemicals that soak up extra H⁺ or release H⁺ when needed, so pH barely changes.</p>
  <p>The main blood buffer is the <b>carbonic acid–bicarbonate</b> system:</p>
  <p style="font-family:var(--mono);font-size:14.5px">H₂CO₃ ⇌ H⁺ + HCO₃⁻</p>
@@ -446,7 +473,8 @@ const STEPS=[
  legend:[["hp","H⁺"],["hco3","HCO₃⁻ (bicarbonate)"],["h2co3","H₂CO₃ (carbonic acid)"],["oh","OH⁻"]]},
 
 /* ---------- PART 5 ---------- */
-{act:5,scene:"carbs",id:"carbs",title:"Carbohydrates",
+{act:5,desc:"Three columns build up sugars. Monosaccharide shows a large gold hexagon labelled glucose and an orange pentagon labelled fructose. Disaccharide shows a glucose and a fructose sliding together and joining as sucrose, with a small water molecule leaving. Polysaccharide shows many gold hexagons linking into a long chain that branches, labelled glycogen, with straight starch and stacked cellulose chains below it.",
+ scene:"carbs",id:"carbs",title:"Carbohydrates",
  body:`<p><b>Carbohydrates</b> are sugars and starches, made of carbon, hydrogen and oxygen. They are the body's main fuel.</p>
  <ul><li><b>Monosaccharides</b> are single sugars, like <b>glucose</b>, fructose and galactose. Glucose is the sugar in your blood.</li>
  <li><b>Disaccharides</b> are two sugars joined by dehydration synthesis: <b>sucrose</b> (table sugar), <b>lactose</b> (milk sugar), maltose.</li>
@@ -461,7 +489,8 @@ const STEPS=[
  caption:"One glucose, then two sugars joined (sucrose), then a branched glycogen chain grows.",
  legend:[["sugar","Glucose"],["fru","Fructose"],["o","Water released"]]},
 
-{act:5,scene:"lipids",id:"lipids",title:"Lipids: triglycerides and fats",
+{act:5,desc:"On the left, a tall purple bar labelled glycerol has three attachment points. Three brown zigzag fatty acid chains, each with a red end, slide in one by one and attach, and a small water molecule leaves at each join, making a triglyceride. On the right, five straight zigzag tails labelled saturated pack tightly together, solid like butter, while three bent tails with a kink labelled unsaturated spread apart, liquid like olive oil.",
+ scene:"lipids",id:"lipids",title:"Lipids: triglycerides and fats",
  body:`<p><b>Lipids</b> are mostly made of nonpolar C–H bonds, so they do not mix with water (they are <b>hydrophobic</b>).</p>
  <p>The most common lipid is the <b>triglyceride</b>: one <b>glycerol</b> plus <b>three fatty acids</b>, joined by dehydration synthesis (3 waters leave). Triglycerides store energy in fat tissue, insulate and cushion.</p>
  <p>A fatty acid is a chain of carbons. If every carbon has as many hydrogens as it can hold (no double bonds), it is <b>saturated</b>. The chains are straight and pack tightly, so the fat is solid at room temperature, like butter. If there is at least one C=C double bond, it is <b>unsaturated</b>. The double bond puts a <b>kink</b> in the chain, so the chains pack loosely and stay liquid, like olive oil.</p>`,
@@ -475,7 +504,8 @@ const STEPS=[
  caption:"Glycerol + 3 fatty acids join (3 waters leave). Right: straight saturated tails pack tight, kinked unsaturated tails do not.",
  legend:[["gly","Glycerol"],["fa","Fatty acid"],["o","Water released"]]},
 
-{act:5,scene:"phospho",id:"phospho",title:"Phospholipids, steroids and prostaglandins",
+{act:5,desc:"A light blue area labelled water is filled with phospholipids, each a gold round head with two wavy tails, scattered in all directions. They drift together and line up into two rows, heads facing outward toward the water and tails pointing inward, forming a phospholipid bilayer. Then they scatter again. A side box shows a phospholipid, cholesterol as four fused orange rings, and a prostaglandin made from a fatty acid.",
+ scene:"phospho",id:"phospho",title:"Phospholipids, steroids and prostaglandins",
  body:`<p>A <b>phospholipid</b> is like a triglyceride with one fatty acid swapped for a <b>phosphate group</b>. Now it has two personalities: a <b>hydrophilic</b> (water-loving) head and two <b>hydrophobic</b> (water-fearing) tails.</p>
  <p>In water, phospholipids line up on their own into a <b>bilayer</b>: heads face the water, tails hide inside. This is the basic structure of every cell membrane.</p>
  <p><b>Steroids</b> are lipids built from <b>four fused carbon rings</b>. <b>Cholesterol</b> is the main one. It stiffens membranes and is used to make steroid hormones (like estrogen, testosterone and cortisol), bile salts and vitamin D.</p>
@@ -490,7 +520,8 @@ const STEPS=[
  caption:"Scattered phospholipids self-assemble into a bilayer: heads out to the water, tails in.",
  legend:[["phos","Phosphate head"],["fa","Fatty acid tails"],["sea","Water","s"]]},
 
-{act:5,scene:"protein",id:"protein",title:"Proteins: from chain to shape",
+{act:5,desc:"A small box at the top left shows one amino acid: a blue amino group, a centre carbon with a magenta R group side chain, and a red carboxyl group. Coloured beads join into a straight chain while small water molecules float away at each new peptide bond. The chain then coils into a wave-shaped helix held by dashed lines, folds into a ball, and finally four folded balls in different colours sit together, labelled quaternary structure, like hemoglobin; heat then makes the shape unfold.",
+ scene:"protein",id:"protein",title:"Proteins: from chain to shape",
  body:`<p><b>Proteins</b> are chains of <b>amino acids</b>. There are 20 kinds. Each has an <b>amino group</b> (–NH₂), a <b>carboxyl group</b> (–COOH), and a side chain called the <b>R group</b> that makes it different.</p>
  <p>Amino acids join by dehydration synthesis. The bond is a <b>peptide bond</b>. Then the chain folds in levels:</p>
  <ol><li><b>Primary</b>: the order of amino acids.</li><li><b>Secondary</b>: coils (α-helix) or folds (pleated sheet), held by hydrogen bonds.</li><li><b>Tertiary</b>: the whole chain folds into a 3D shape.</li><li><b>Quaternary</b>: two or more chains join, like the 4 chains of hemoglobin.</li></ol>
@@ -505,7 +536,8 @@ const STEPS=[
  caption:"Amino acids link (water leaves), then coil, fold, and join other chains. Heat unfolds it: denaturation.",
  legend:[["n","Amino group"],["o","Carboxyl group"],["act5","R group"],["heat","Heat"]]},
 
-{act:5,scene:"enzyme",id:"enzyme",title:"Enzymes at work",
+{act:5,desc:"A large dark blue enzyme shape labelled sucrase has a notch on top, the active site. A substrate made of a gold glucose and an orange fructose joined together drops into the notch, the enzyme closes around it, and the bond splits. The glucose and fructose float away, labelled products released, and a counter at the top right reads sucrose split, going up by one each time. A note says the enzyme is unchanged and ready for the next one.",
+ scene:"enzyme",id:"enzyme",title:"Enzymes at work",
  body:`<p><b>Enzymes</b> are protein catalysts. Each one works on a specific <b>substrate</b>, the molecule it acts on. Many enzyme names end in <b>-ase</b>, like sucrase, which splits sucrose.</p>
  <ol><li>The substrate fits into a pocket on the enzyme, the <b>active site</b>.</li>
  <li>The enzyme changes shape slightly to grip it more tightly. This is <b>induced fit</b>. Together they form the <b>enzyme–substrate complex</b>.</li>
@@ -522,7 +554,8 @@ const STEPS=[
  caption:"Substrate enters the active site, the enzyme grips it (induced fit), water splits it, products leave.",
  legend:[["enz","Enzyme (sucrase)"],["sugar","Glucose"],["fru","Fructose"],["o","Water"]]},
 
-{act:5,scene:"dna",id:"dna",title:"Nucleic acids: DNA, RNA and ATP",
+{act:5,desc:"A twisting DNA double helix in the middle has tan sugar-phosphate sides and coloured rungs: A in red pairs with T in blue, and G in green pairs with C in yellow. A box moves down the ladder highlighting one pair at a time, with a label such as A pairs with T: 2 hydrogen bonds, or C pairs with G: 3 hydrogen bonds. On the left one nucleotide is drawn as a phosphate, sugar and base, with ATP below it; on the right a single RNA strand uses a purple U, uracil, in place of T.",
+ scene:"dna",id:"dna",title:"Nucleic acids: DNA, RNA and ATP",
  body:`<p><b>Nucleic acids</b> store and use genetic information. Their monomers are <b>nucleotides</b>. Each nucleotide has three parts: a <b>phosphate group</b>, a five-carbon <b>sugar</b>, and a <b>nitrogen-containing base</b>.</p>
  <p><b>DNA</b> is a <b>double helix</b>: two strands twisted like a spiral ladder. The sugar (deoxyribose) and phosphates make the sides. The bases make the rungs, and they always pair the same way: <b>A with T</b>, and <b>G with C</b>. This is <b>complementary base pairing</b>, held by hydrogen bonds.</p>
  <p><b>RNA</b> is usually a single strand, uses the sugar ribose, and has <b>uracil (U)</b> instead of thymine (T).</p>
@@ -537,7 +570,8 @@ const STEPS=[
  caption:"The DNA ladder turns. A pairs with T, G with C. RNA is one strand and uses U. ATP is a nucleotide.",
  legend:[["ba","A adenine"],["bt","T thymine"],["bg","G guanine"],["bc","C cytosine"],["bu","U uracil"],["phos","Phosphate"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole chapter.",
+{act:0,desc:"The five cards from the start of the chapter appear again in a row: purple Atoms, orange Chemical bonds, red Water and reactions, teal Acids, bases, pH, and magenta Molecules of life. Each card plays its small animation, the atom spinning, the hydrogens joining, the sugars linking, the pH pointer moving and the DNA turning, and each card takes a bold border in turn. The text says every part of you is built from these pieces, from the bottom up.",
+ scene:"recap",id:"recap",title:"You made it. Here is the whole chapter.",
  body:`<ol class="recap">
  <li class="h">Part 1 · Atoms</li>
  <li>O, C, H and N make up about 96% of body mass.</li><li>Atoms: protons (+) and neutrons in the nucleus, electrons (−) in shells. Atomic number = protons. Mass number = protons + neutrons.</li><li>Isotopes differ in neutrons. Radioisotopes give off radiation.</li>
@@ -582,7 +616,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip)">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -590,6 +624,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

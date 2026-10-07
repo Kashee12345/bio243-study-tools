@@ -183,7 +183,20 @@ kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border
 sub,sup{line-height:0}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* accessibility retrofit: dark text on the light dark-mode accent (WCAG 2.1 AA) */
+:root{--on-accent:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--on-accent:#0B1A20}}
+:root[data-theme="dark"]{--on-accent:#0B1A20}
+.tab[aria-selected="true"],.btn,.seg button[aria-pressed="true"],.pin.ok{color:var(--on-accent)}
+
+:root{--warn-ink:#A05825;--grp-epi-chip:#B25A47;--grp-ct-chip:#2A8071;--grp-cart-chip:#7B5CC9;--grp-bb-chip:#AC5F28;--grp-mus-chip:#A04E8C;--grp-nerv-chip:#1B6E88}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn-ink:var(--warn);--grp-epi-chip:var(--grp-epi);--grp-ct-chip:var(--grp-ct);--grp-cart-chip:var(--grp-cart);--grp-bb-chip:var(--grp-bb);--grp-mus-chip:var(--grp-mus);--grp-nerv-chip:var(--grp-nerv)}}
+:root[data-theme="dark"]{--warn-ink:var(--warn);--grp-epi-chip:var(--grp-epi);--grp-ct-chip:var(--grp-ct);--grp-cart-chip:var(--grp-cart);--grp-bb-chip:var(--grp-bb);--grp-mus-chip:var(--grp-mus);--grp-nerv-chip:var(--grp-nerv)}
+.chipg{color:var(--on-accent)}
+html.gk-frozen *{animation-play-state:paused!important}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -1013,7 +1026,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rint(i+1);
 const dpr=()=>Math.min(2,Math.max(1,window.devicePixelRatio||1));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const GRPCOL={"Epithelium":"grp-epi","Connective tissue proper":"grp-ct","Cartilage":"grp-cart","Bone and blood":"grp-bb","Muscle":"grp-mus","Nervous":"grp-nerv"};
-const chip=k=>`<span class="chipg" style="background:var(--${GRPCOL[M[k].grp]})">${M[k].grp}</span>`;
+const chip=k=>`<span class="chipg" style="background:var(--${GRPCOL[M[k].grp]}-chip)">${M[k].grp}</span>`;
 const SHORT={simpleSquamous:"Simple squamous",simpleCuboidal:"Simple cuboidal",simpleColumnar:"Simple columnar",pseudostratified:"Pseudostratified ciliated columnar",stratSqNK:"Stratified squamous, nonkeratinized",stratSqK:"Stratified squamous, keratinized",stratCuboidal:"Stratified cuboidal",transitional:"Transitional",
  areolar:"Areolar CT",adipose:"Adipose",reticular:"Reticular CT",denseRegular:"Dense regular CT",denseIrregular:"Dense irregular CT",elasticCT:"Elastic CT",hyaline:"Hyaline cartilage",fibrocartilage:"Fibrocartilage",elasticCart:"Elastic cartilage",bone:"Compact bone",blood:"Blood",skeletal:"Skeletal muscle",cardiac:"Cardiac muscle",smooth:"Smooth muscle",nervous:"Nervous tissue"};
 const GIVE={
@@ -1074,7 +1087,7 @@ const S1=makeStage("cvName",600,450);
 const NQ={set:"all",queue:[],i:0,n:10,key:null,seed:1,img:null,sc:null,answered:false,tries:0,hint:false,labels:false,sch:false,first:0,t0:0,tLeft:25,showT:0};
 const best1=store.get("tissuesLab.best1")||{};
 function setButtons(holder,cur,onPick,showStars,bestMap){holder.innerHTML="";Object.keys(SETS).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",k===cur);
-  b.innerHTML=esc(SETS[k].n)+(showStars&&bestMap[k]?`<span class="ok" aria-label="best ${bestMap[k]} stars">${"★".repeat(bestMap[k])}</span>`:"");b.onclick=()=>onPick(k);holder.appendChild(b)})}
+  b.innerHTML=esc(SETS[k].n)+(showStars&&bestMap[k]?`<span class="ok" role="img" aria-label="best ${bestMap[k]} stars">${"★".repeat(bestMap[k])}</span>`:"");b.onclick=()=>onPick(k);holder.appendChild(b)})}
 function nSets(){setButtons($("#setBtns"),NQ.set,k=>{NQ.set=k;nSets();if(studyMode)buildGallery();else nNewRound()},true,best1)}
 function nNewRound(){const keys=SETS[NQ.set].k;let q=[];while(q.length<NQ.n){q=q.concat(shuffle(keys))}NQ.queue=q.slice(0,NQ.n);NQ.i=0;NQ.first=0;nLoad()}
 function nLoad(){const k=NQ.queue[NQ.i];NQ.key=k;NQ.seed=1+rint(1e6);NQ.img=HISTO.render(k,{seed:NQ.seed,w:600,h:450,dpr:dpr(),param:PARAM(k)});NQ.sc=null;
@@ -1100,7 +1113,7 @@ function nAnswer(k,btn){if(NQ.answered)return;NQ.tries++;
     $("#nMsg").innerHTML=`<b>Not quite.</b> ${esc(SHORT[k])} would show: ${esc(GIVE[k][0].toLowerCase())}. In this image, look for: <b>${esc(GIVE[NQ.key][0].toLowerCase())}</b>.`+(NQ.tries>=2?" A clue is now marked on the image.":" Try again.");
     if(NQ.tries>=2)NQ.hint=true}}
 function nResults(){const n=NQ.first;const stars=n>=9?3:n>=7?2:1;if(!best1[NQ.set]||stars>best1[NQ.set]){best1[NQ.set]=stars;store.set("tissuesLab.best1",best1);nSets()}
-  $("#nMsg").className="msg show good";$("#nMsg").innerHTML=`<div class="stars" aria-label="${stars} of 3 stars">${starStr(stars)}</div><b>Round done: ${n} of ${NQ.n} right on the first try.</b> 3 stars = 9 or more, 2 stars = 7 or more. Every round uses brand-new images.<div class="bar"><button class="btn" type="button" id="nAgain">Play another round</button></div>`;
+  $("#nMsg").className="msg show good";$("#nMsg").innerHTML=`<div class="stars" role="img" aria-label="${stars} of 3 stars">${starStr(stars)}</div><b>Round done: ${n} of ${NQ.n} right on the first try.</b> 3 stars = 9 or more, 2 stars = 7 or more. Every round uses brand-new images.<div class="bar"><button class="btn" type="button" id="nAgain">Play another round</button></div>`;
   $("#nAgain").onclick=nNewRound;$("#nNext").hidden=true;$("#nProg").style.width="100%"}
 $("#nNext").onclick=()=>{if(NQ.i>=NQ.n-1){nResults();return}NQ.i++;nLoad()};
 $("#nHint").onclick=()=>{NQ.hint=true;$("#nMsg").className="msg show info";$("#nMsg").innerHTML=`<b>Hint:</b> ${esc(GIVE[NQ.key][0])}. One clue is circled on the image.`};
@@ -1119,8 +1132,8 @@ function drawName(now){ctx=S1.ctx;ctx.setTransform(S1.K,0,0,S1.K,0,0);ctx.clearR
 /* ---- study gallery ---- */
 let studyMode=false,galToken=0;const GAL={};
 function buildGallery(){const g=$("#gal");g.innerHTML="";const tok=++galToken;const keys=SETS[NQ.set].k;
-  keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="gcard";b.setAttribute("aria-label","Enlarge "+M[k].name);
-    b.innerHTML=`<canvas width="320" height="240" aria-hidden="true"></canvas><div class="gb"><div class="gn">${esc(M[k].name)}</div><div class="gl">${chip(k)}</div><div class="gl">Look for: ${esc(GIVE[k].slice(0,2).join("; "))}</div></div>`;
+  keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="gcard";
+    b.innerHTML=`<canvas width="320" height="240" aria-hidden="true"></canvas><div class="gb"><div class="gn"><span class="gk-sr">Enlarge </span>${esc(M[k].name)}</div><div class="gl">${chip(k)}</div><div class="gl">Look for: ${esc(GIVE[k].slice(0,2).join("; "))}</div></div>`;
     b.onclick=()=>openDetail(k);g.appendChild(b);
     setTimeout(()=>{if(tok!==galToken)return;const seed=GAL[k]||(GAL[k]=1+rint(1e6));const r=HISTO.render(k,{seed,w:320,h:240,dpr:1,param:PARAM(k)});b.querySelector("canvas").getContext("2d").drawImage(r.canvas,0,0)},30+i*40)})}
 const D={key:null,seed:1,img:null,sc:null,lbl:true,sch:false,t:0};
@@ -1191,7 +1204,7 @@ function tNew(){const keys=SETS[TQ.set].k;let k;do{k=keys[rint(keys.length)]}whi
   TQ.count++;$("#tN").textContent=`Image ${TQ.count} · ${SETS[TQ.set].n}`;S2.cv.setAttribute("aria-label","Microscope image to identify. Answer the questions on the right.");renderFlow();drawTreeMap()}
 function renderFlow(){const f=$("#flow");let h="";
   TQ.trail.forEach(t=>{const n=TREE[t[0]];h+=`<div class="fnode done"><p class="fq">${esc(n.q)}</p><div class="fa">✓ <b>${esc(n.a[t[1]][0])}</b></div></div><div class="flink" aria-hidden="true"></div>`});
-  if(TQ.done){const k=TQ.key;h+=`<div class="fleaf">It is ${esc(M[k].name)}! <span class="stars" aria-label="${TQ.stars} of 3 stars" style="font-size:18px">${starStr(TQ.stars)}</span><ul style="font-weight:400;font-size:14px;margin:6px 0 0;padding-left:18px">${GIVE[k].map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`}
+  if(TQ.done){const k=TQ.key;h+=`<div class="fleaf">It is ${esc(M[k].name)}! <span class="stars" role="img" aria-label="${TQ.stars} of 3 stars" style="font-size:18px">${starStr(TQ.stars)}</span><ul style="font-weight:400;font-size:14px;margin:6px 0 0;padding-left:18px">${GIVE[k].map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`}
   else{const n=TREE[TQ.node];h+=`<div class="fnode cur" id="curNode"><p class="fq">${esc(n.q)}</p><div class="answers">${n.a.map((a,i)=>`<button type="button" class="opt" data-i="${i}">${esc(a[0])}</button>`).join("")}</div></div>`}
   f.innerHTML=h;f.querySelectorAll("#curNode .opt").forEach(b=>b.onclick=()=>tPick(+b.dataset.i,b))}
 function tPick(i,btn){const n=TREE[TQ.node];const want=TQ.path.find(p=>p[0]===TQ.node);if(!want)return;
@@ -1290,7 +1303,7 @@ function bodySVG(){const V=c=>`var(--${c})`;let s="";
   s+=`</g><line x1="186" y1="380" x2="344" y2="330" stroke="${V("ink-faint")}" stroke-dasharray="4 4"/>`;
   return s}
 function mRounds(){const h=$("#mRounds");h.innerHTML='<span class="small">Round:</span>';ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===MQ.r);
-  b.innerHTML=esc(r.n)+(best3[i]?`<span class="ok" aria-label="best ${best3[i]} stars">${"★".repeat(best3[i])}</span>`:"");b.onclick=()=>{MQ.r=i;mStart()};h.appendChild(b)})}
+  b.innerHTML=esc(r.n)+(best3[i]?`<span class="ok" role="img" aria-label="best ${best3[i]} stars">${"★".repeat(best3[i])}</span>`:"");b.onclick=()=>{MQ.r=i;mStart()};h.appendChild(b)})}
 function mStart(){MQ.sel=null;MQ.done={};MQ.loc={};MQ.mist=0;MQ.hint=null;mRounds();const R=ROUNDS[MQ.r];$("#mN").textContent=`Round ${MQ.r+1} of 3 · ${R.n}`;
   $("#bodySvg").innerHTML=bodySVG();const wrap=$("#mapwrap");wrap.querySelectorAll(".pin").forEach(p=>p.remove());
   const order=shuffle(R.k);order.forEach((k,i)=>{const p=PINS[k];const b=document.createElement("button");b.type="button";b.className="pin";b.dataset.k=k;b.textContent=i+1;b.style.left=(p[0]/520*100)+"%";b.style.top=(p[1]/640*100)+"%";
@@ -1315,7 +1328,7 @@ function mJob(k,card){const R=ROUNDS[MQ.r].k;const opts=shuffle([k].concat(shuff
       card.querySelector("[data-st]").textContent="✓ "+PINS[k][2];$("#mMsg").className="msg show good";$("#mMsg").innerHTML=`<b>Right.</b> ${esc(SHORT[k])}: ${esc(M[k].fn.toLowerCase())}.`;mCheckEnd()}
     else{MQ.mist++;b.classList.add("wrong");b.disabled=true;$("#mMsg").className="msg show warn";$("#mMsg").innerHTML=`<b>Not quite.</b> That job belongs to ${esc(SHORT[b.dataset.o].toLowerCase())}. Remember: ${esc(SHORT[k])} shows ${esc(GIVE[k][0].toLowerCase())}. What would that structure be good for?`}})}
 function mCheckEnd(){const R=ROUNDS[MQ.r].k;if(!R.every(k=>MQ.done[k]))return;const stars=MQ.mist===0?3:MQ.mist<=3?2:1;if(!best3[MQ.r]||stars>best3[MQ.r]){best3[MQ.r]=stars;store.set("tissuesLab.best3",best3);mRounds()}
-  $("#mMsg").className="msg show good";$("#mMsg").innerHTML=`<div class="stars" aria-label="${stars} of 3 stars">${starStr(stars)}</div><b>Round complete.</b> Mistakes: ${MQ.mist}. 3 stars = no mistakes, 2 stars = 3 or fewer.`+(MQ.r<2?` <div class="bar"><button class="btn" type="button" id="mNextR">Next round &rarr;</button></div>`:"");
+  $("#mMsg").className="msg show good";$("#mMsg").innerHTML=`<div class="stars" role="img" aria-label="${stars} of 3 stars">${starStr(stars)}</div><b>Round complete.</b> Mistakes: ${MQ.mist}. 3 stars = no mistakes, 2 stars = 3 or fewer.`+(MQ.r<2?` <div class="bar"><button class="btn" type="button" id="mNextR">Next round &rarr;</button></div>`:"");
   const nb=$("#mNextR");if(nb)nb.onclick=()=>{MQ.r++;mStart()}}
 $("#mHint").onclick=()=>{const k=MQ.sel||ROUNDS[MQ.r].k.find(x=>!MQ.done[x]);if(!k)return;if(!MQ.sel){document.querySelector(`.mcard[data-k="${k}"]`).click()}
   if(!MQ.loc[k]){document.querySelectorAll(".pin").forEach(p=>p.classList.toggle("hint",p.dataset.k===k));$("#mMsg").className="msg show info";$("#mMsg").innerHTML=`<b>Hint:</b> ${esc(SHORT[k])} is found in: ${esc(M[k].loc.split(";")[0])}. The matching spot is pulsing.`}
@@ -1362,7 +1375,7 @@ const CHAL=[{q:"Run a clean cut, then a large wound. Which one ends with a scar?
  {q:"Add bacteria. What happens to the neutrophil curve?",o:[["It rises higher and lasts longer",1,"Right. More bacteria call in more neutrophils, for longer, and healing starts a bit later."],["It disappears",0,"Bacteria are exactly what neutrophils are called in to eat."],["It stays exactly the same",0,"Compare with the dashed line: the peak is higher and wider."],["Neutrophils turn into scar tissue",0,"Scar collagen is made by fibroblasts, not neutrophils."]]}];
 function buildChal(){const c=$("#chals");c.innerHTML="";CHAL.forEach((ch,i)=>{const d=document.createElement("div");d.className="chal";d.innerHTML=`<p class="q">${i+1}. ${esc(ch.q)}</p><div class="opts"></div><p class="small" data-fb></p>`;
   const box=d.querySelector(".opts");ch.o.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));const fb=d.querySelector("[data-fb]");
-    if(o[1]){b.classList.add("right");fb.style.color="var(--good)";fb.textContent="✓ "+o[2]}else{b.classList.add("wrong");fb.style.color="var(--warn)";fb.textContent="Not quite. "+o[2]}};box.appendChild(b)});c.appendChild(d)})}
+    if(o[1]){b.classList.add("right");fb.style.color="var(--good)";fb.textContent="✓ "+o[2]}else{b.classList.add("wrong");fb.style.color="var(--warn-ink)";fb.textContent="Not quite. "+o[2]}};box.appendChild(b)});c.appendChild(d)})}
 function updSide(){const t=SIM.t,m=model(t,SIM.p);$("#sPhase").textContent=phaseOf(t,SIM.p);const on=SIM.on;
   const S=[["Redness","more blood flow",m.flow],["Heat","warm blood",m.flow],["Swelling","fluid in tissue",m.swell],["Pain","nerves irritated",m.pain]];
   $("#signs").innerHTML=S.map(s=>{const v=on?s[2]:0;return `<div class="sign${v>.25?" on":""}"><b>${s[0]}${v>.25?" ✓":""}</b>${s[1]} · ${v>.6?"strong":v>.25?"some":"none"}</div>`}).join("");
@@ -1454,6 +1467,37 @@ let last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   try{if(curTab==="name"){if(studyMode)drawDetail(now);else drawName(now)}else if(curTab==="tree")drawTree(now);else if(curTab==="sim"){if(!window.__manual)advanceSim(dt);drawSim(now);drawGraph();if(Math.floor(now/250)!==Math.floor((now-dt*1000)/250))updSide()}}catch(e){console.error(e)}
   requestAnimationFrame(frame)}
+/* ---------- accessibility: "Describe the picture" text for the canvas on screen (site-kit) ---------- */
+const GK={last:""};
+function gkCanvas(){const p=[...document.querySelectorAll('[role=tabpanel]')].find(s=>!s.hidden);if(!p)return null;return [...p.querySelectorAll("canvas[role=img]")].find(c=>c.offsetParent!==null)||null}
+function gkPlace(cv){const d=document.getElementById("gk-desc");if(!d||!cv)return;const a=cv.closest(".canvas-holder")||cv;if(a.nextElementSibling!==d)a.parentNode.insertBefore(d,a.nextSibling);
+  document.querySelectorAll('canvas[aria-describedby="gk-desc"]').forEach(c=>{if(c!==cv)c.removeAttribute("aria-describedby")});cv.setAttribute("aria-describedby","gk-desc")}
+function gkTick(){try{const cv=gkCanvas();const t=gkText(cv);if(t)gkPlace(cv);if(t&&t!==GK.last){GK.last=t;if(window.gkDescribe)window.gkDescribe(t);gkPlace(cv)}}catch(e){}}
+setInterval(gkTick,400);
+function gkFeat(k){return (GIVE[k]||[]).map(s=>s.charAt(0).toLowerCase()+s.slice(1)).join("; ")}
+function gkText(cv){
+  if(curTab==="name"){
+    if(studyMode){if($("#detail").hidden||!D.key)return "";return "An enlarged "+(D.sch?"schematic diagram":"microscope image")+" of "+M[D.key].name+" ("+M[D.key].grp.toLowerCase()+"), with numbered labels on its key features: "+D.img.feats.map((f,i)=>(i+1)+", "+f.t).join("; ")+"."}
+    if(!NQ.key)return "";const k=NQ.key;
+    return (NQ.answered?"Microscope image of "+M[k].name+". ":"A "+(NQ.sch?"clean schematic drawing":"stained microscope image")+" of an unknown tissue, image "+(NQ.i+1)+" of "+NQ.n+". ")+"What you can see: "+gkFeat(k)+"."+(NQ.answered||NQ.labels?" Numbered labels mark the giveaway features.":"")}
+  if(curTab==="tree"){if(!TQ.key)return "";const k=TQ.key;
+    return (TQ.done?"Microscope image of "+M[k].name+", identified with the decision tree. ":"A "+(TQ.sch?"schematic drawing":"stained microscope image")+" of a tissue to identify with the decision tree. ")+"What you can see: "+gkFeat(k)+". Below it, a map of the whole tree highlights the path of answers so far."}
+  if(curTab==="sim"){const t=SIM.t,p=SIM.p,on=SIM.on;
+    let s="A cross section of skin: a pink surface layer of epidermis, paler dermis below, and a red blood vessel running across near the bottom. ";
+    if(!on)return s+"Nothing has happened yet. Press Injure the tissue to make a "+(SIM.next.L?"large wound":"clean cut")+".";
+    const m=model(t,p);const bits=[];
+    if(m.cover>.8)bits.push(p.L?"The wide wound has closed, filled with pale scar collagen that has no hair follicles or glands":"The narrow cut has closed with the same tissue and is almost invisible");else if(m.gran>.3)bits.push("The wide wound is filled with red granulation tissue: new capillaries and fibroblasts");else bits.push(p.L?"A wide wound cuts deep into the skin, filled with a red clot":"A narrow cut runs down into the skin");
+    if(p.B)bits.push("small green bacteria sit in the wound");
+    if(m.flow>.25)bits.push("the area is flushed red and the vessel is wider");
+    if(m.swell>.25)bits.push("blue fluid dots leak out and the surface bulges up");
+    if(m.neut>.15)bits.push("slate-blue neutrophils crawl in from the vessel");
+    if(m.mac>.15)bits.push("larger teal macrophages clean up");
+    return s+bits.join("; ")+". Stage now: "+phaseOf(t,p)+". A graph below plots each part of the response over time, from minutes to weeks."}
+  return ""}
+function gkLabels(){if(curTab==="sim")$("#cvGraph").setAttribute("aria-label","Graph of the inflammation and repair response over time, from minutes to weeks. Now at: "+phaseOf(SIM.t,SIM.p)+".")}
+setInterval(gkLabels,700);
+/* freeze CSS animations (pulsing hint pins) while the site-kit "Pause animations" button has stopped the clock */
+(function(){let pv=performance.now(),rv=Date.now();setInterval(()=>{const p=performance.now(),r=Date.now();const frozen=r-rv>200&&p===pv;document.documentElement.classList.toggle("gk-frozen",frozen);pv=p;rv=r},300)})();
 window.__sim=(t,o)=>{if(o)Object.assign(SIM.next,o);simStart();window.__manual=true;SIM.t=0;const steps=Math.round(t/0.25);for(let i=0;i<steps;i++){SIM.t=Math.min(100,SIM.t+.25);advanceSim(0)}updSide()};
 window.__lab={NQ,TQ,MQ,SIM,tPick,nAnswer:(k)=>{const b=[...document.querySelectorAll("#nOpts .opt")].find(x=>x.dataset.k===k);if(b)b.click()},pathTo,TREE,mPlace,PINS,ROUNDS};
 nSets();tSets();buildChal();legendSim();updSide();fitAll();nNewRound();requestAnimationFrame(frame);

@@ -13,6 +13,7 @@
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
   --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
   --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--actR:#1B6E88;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --warn-ink:#8F4E1F;--on-accent:#fff;
   --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
   --r:6px;
   --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -24,7 +25,7 @@
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
   --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
-  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--actR:#4FB3D1;--gold:#E0BE48;--gold-wash:#352E14;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--actR:#4FB3D1;--gold:#E0BE48;--gold-wash:#352E14;--warn-ink:#E39A5B;--on-accent:#0B1A20;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
 }}
 :root[data-theme="dark"]{
@@ -32,7 +33,7 @@
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
   --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
-  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--actR:#4FB3D1;--gold:#E0BE48;--gold-wash:#352E14;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--actR:#4FB3D1;--gold:#E0BE48;--gold-wash:#352E14;--warn-ink:#E39A5B;--on-accent:#0B1A20;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box}
@@ -47,10 +48,10 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .wrap{max-width:1100px;margin:0 auto;padding:16px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
-.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
 .tbtn:hover{border-color:var(--accent)}
-.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
 .btn:disabled{opacity:.45;cursor:default}
 .card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
@@ -67,7 +68,7 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 .item{display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--rule);border-left:6px solid var(--ink-faint);border-radius:var(--r);padding:8px 8px 8px 10px;touch-action:none;user-select:none;cursor:grab;transition:background .15s,border-color .15s}
 .item.drag{box-shadow:0 10px 24px -8px rgba(0,0,0,.4);cursor:grabbing;border-color:var(--accent);z-index:2;position:relative}
-.item .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);width:22px;text-align:right;flex:0 0 auto}
+.item .pos{font-family:var(--mono);font-size:13px;color:var(--ink-soft);width:36px;white-space:nowrap;text-align:right;flex:0 0 auto}
 .item .grip{color:var(--ink-faint);font-size:18px;line-height:1;flex:0 0 auto}
 .item .txt{flex:1;font-size:15px}
 .item .mv{display:flex;flex-direction:column;gap:2px}
@@ -75,14 +76,17 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 .mv button:hover{border-color:var(--accent)}
 .item.right{background:var(--good-wash);border-color:var(--good)}
 .item.off{background:var(--warn-wash);border-color:var(--warn)}
+.item.right .pos::after{content:" ✓";color:var(--good);font-weight:700}
+.item.off .pos::after{content:" ✗";color:var(--warn-ink);font-weight:700}
+.item.hinted .pos::before{content:"★ ";color:var(--warn-ink)}
 .item.hinted{box-shadow:0 0 0 3px var(--gold)}
 .a1{border-left-color:var(--act1)!important}.a2{border-left-color:var(--act2)!important}.a3{border-left-color:var(--act3)!important}.aR{border-left-color:var(--actR)!important}
 .hidecol .item{border-left-color:var(--ink-faint)!important}
 .msg{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
 .msg.show{display:block}
 .msg.good{background:var(--good-wash);color:var(--good);border:1px solid var(--good)}
-.msg.warn{background:var(--warn-wash);color:var(--warn);border:1px solid var(--warn)}
-.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.msg.warn{background:var(--warn-wash);color:var(--warn-ink);border:1px solid var(--warn)}
+.side h2{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
 .side p,.side li{font-size:14.5px}
 .side ul{padding-left:18px;margin:6px 0}
 .key{display:flex;flex-direction:column;gap:5px;font-size:14px}
@@ -101,18 +105,21 @@ ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;ga
 .opt:hover{border-color:var(--accent)}
 .opt.right{border-color:var(--good);background:var(--good-wash)}
 .opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.right::before{content:"✓ ";color:var(--good);font-weight:700}
+.opt.wrong::before{content:"✗ ";color:var(--warn-ink);font-weight:700}
 .opt:disabled{cursor:default}
 .explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
 .explain.show{display:block}
 .score{font-family:var(--mono);font-size:14px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .chip{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
-.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:var(--on-accent)}
 .chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
-.chip.done.cur{background:var(--accent);color:#fff}
+.chip.done.cur{background:var(--accent);color:var(--on-accent)}
 footer{max-width:1100px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 [hidden]{display:none!important}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -125,13 +132,13 @@ footer{max-width:1100px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
 </div></header>
 
 <div class="wrap">
-  <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" data-tab="sort" type="button">Part 1 &middot; Build the chain</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="break" type="button">Part 2 &middot; What breaks if…?</button>
+  <div class="tabs" role="tablist" aria-label="Game parts">
+    <button class="tab" role="tab" aria-selected="true" data-tab="sort" type="button" id="tabbtn-sort" aria-controls="tab-sort">Part 1 &middot; Build the chain</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="break" type="button" id="tabbtn-break" aria-controls="tab-break" tabindex="-1">Part 2 &middot; What breaks if…?</button>
   </div>
 
   <!-- PART 1 -->
-  <section id="tab-sort">
+  <section id="tab-sort" role="tabpanel" aria-labelledby="tabbtn-sort">
     <div class="grid">
       <div class="card">
         <div class="rounds" id="rounds"></div>
@@ -151,14 +158,14 @@ footer{max-width:1100px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
         <div class="msg" id="msg" role="status"></div>
       </div>
       <aside class="card side">
-        <h3>How to play</h3>
+        <h2>How to play</h2>
         <ul>
           <li>Drag a card up or down, or use the &#9650; &#9660; buttons.</li>
           <li>Press <b>Check my order</b> as often as you like. Green cards are in the right spot.</li>
           <li><b>Hint</b> moves one card to its correct spot.</li>
           <li>Start with Act 1. Build up to the full chain.</li>
         </ul>
-        <h3 style="margin-top:14px">Card colors</h3>
+        <h2 style="margin-top:14px">Card colors</h2>
         <div class="key">
           <span><i style="background:var(--act1)"></i>Act 1 · Nerve talks to muscle</span>
           <span><i style="background:var(--act2)"></i>Act 2 · Signal releases calcium</span>
@@ -166,14 +173,14 @@ footer{max-width:1100px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
           <span><i style="background:var(--actR)"></i>Relaxation</span>
         </div>
         <p style="margin-top:10px;color:var(--ink-soft)">Turn colors off when you are ready for a challenge.</p>
-        <h3 style="margin-top:14px">Your results</h3>
+        <h2 style="margin-top:14px">Your results</h2>
         <div class="best" id="bests"></div>
       </aside>
     </div>
   </section>
 
   <!-- PART 2 -->
-  <section id="tab-break" hidden>
+  <section id="tab-break" role="tabpanel" aria-labelledby="tabbtn-break" hidden>
     <div class="card">
       <div class="sc-top">
         <div class="chips" id="scChips"></div>
@@ -261,7 +268,7 @@ function newRound(){
 function makeItem(id){
   const li=document.createElement("li");li.className="item "+CARDS[id][0];li.dataset.id=id;
   li.innerHTML=`<span class="pos"></span><span class="grip" aria-hidden="true">⋮⋮</span><span class="txt">${CARDS[id][1]}</span>
-   <span class="mv"><button type="button" aria-label="Move up">▲</button><button type="button" aria-label="Move down">▼</button></span>`;
+   <span class="mv"><button type="button" aria-label="Move up: ${CARDS[id][1]}">▲</button><button type="button" aria-label="Move down: ${CARDS[id][1]}">▼</button></span>`;
   const [up,dn]=li.querySelectorAll(".mv button");
   up.onclick=()=>{const p=li.previousElementSibling;if(p){list.insertBefore(li,p);changed();up.focus()}};
   dn.onclick=()=>{const n=li.nextElementSibling;if(n){list.insertBefore(n,li);changed();dn.focus()}};
@@ -370,8 +377,10 @@ $("#scPrev").onclick=()=>{si=Math.max(0,si-1);scRender()};
 $("#scNext").onclick=()=>{si=(si+1)%SC.length;scRender()};
 
 /* ---------- tabs / theme ---------- */
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
-  $("#tab-sort").hidden=t.dataset.tab!=="sort";$("#tab-break").hidden=t.dataset.tab!=="break"});
+const TABS=[...document.querySelectorAll(".tab")];
+function selTab(t,focus){TABS.forEach(x=>{x.setAttribute("aria-selected",x===t);x.tabIndex=x===t?0:-1});
+  $("#tab-sort").hidden=t.dataset.tab!=="sort";$("#tab-break").hidden=t.dataset.tab!=="break";if(focus)t.focus()}
+TABS.forEach((t,i)=>{t.onclick=()=>selTab(t);t.onkeydown=e=>{let j=-1;if(e.key==="ArrowRight")j=(i+1)%TABS.length;else if(e.key==="ArrowLeft")j=(i-1+TABS.length)%TABS.length;else if(e.key==="Home")j=0;else if(e.key==="End")j=TABS.length-1;if(j>=0){e.preventDefault();selTab(TABS[j],true)}}});
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark")};
 
 const rx=store.get("cc-relaxed");if(rx===false)$("#relaxed").checked=false;

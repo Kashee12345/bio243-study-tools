@@ -77,6 +77,11 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
 .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab:not([aria-selected="true"]){color:var(--ink)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#0B1A20}}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#0B1A20}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.chip.done{border-width:3px}
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
 .tbtn:hover{border-color:var(--accent)}
 .tbtn:disabled{opacity:.45;cursor:default}
@@ -200,7 +205,7 @@ sub,sup{line-height:0}
 .ring{fill:transparent;stroke:transparent;stroke-width:2}
 .hs.ok .ring{stroke:var(--good);stroke-width:3.5;opacity:1}
 .hs.bad .ring{stroke:var(--warn);stroke-width:3.5;opacity:1}
-.hs.hint .ring{stroke:var(--gold);stroke-width:4;opacity:1;animation:pulse 1s infinite}
+.hs.hint .ring{stroke:var(--gold);stroke-width:4;opacity:1;animation:pulse 1s 3}
 @keyframes pulse{50%{stroke-width:8}}
 .svglab{font-family:var(--sans);font-size:11px;fill:var(--ink-soft);pointer-events:none}
 .namelist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
@@ -245,14 +250,14 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
 .mtable{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:14px}
 .mtable th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;font-weight:500;padding:0 4px}
 .mtable td{padding:0 3px;vertical-align:middle}
-.mtable td.en{font-weight:600;padding-right:6px}
-.mtable td.en small{display:block;font-weight:400;color:var(--ink-soft);font-size:12px}
+.mtable td.en,.mtable th.en{font-weight:600;padding:0 6px 0 3px;vertical-align:middle;font-family:var(--sans);font-size:14px;text-transform:none;letter-spacing:0;color:var(--ink)}
+.mtable .en small{display:block;font-weight:400;color:var(--ink-soft);font-size:12px}
 .slot{width:100%;min-height:44px;border:1.5px dashed var(--rule);border-radius:var(--r);background:var(--panel-2);cursor:pointer;font-size:13px;padding:4px 6px;text-align:center;line-height:1.2}
 .slot.sel{border-color:var(--accent);border-style:solid;background:var(--accent-wash)}
 .slot.filled{border-style:solid;background:var(--panel)}
 .slot.ok{border-color:var(--good);background:var(--good-wash)}
 .slot.bad{border-color:var(--warn);background:var(--warn-wash)}
-.slot.hint{border-color:var(--gold);border-style:solid;animation:pulse2 1s infinite}
+.slot.hint{border-color:var(--gold);border-style:solid;animation:pulse2 1s 3}
 @keyframes pulse2{50%{box-shadow:0 0 0 4px var(--gold-wash)}}
 .slot.over{border-color:var(--accent);border-style:solid}
 .bank h4{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin:10px 0 6px;font-weight:500}
@@ -262,10 +267,13 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
 .chipb[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .ghost{position:fixed;z-index:50;pointer-events:none;border:1.5px solid var(--accent);background:var(--accent-wash);border-radius:99px;padding:6px 11px;font-size:13px;box-shadow:var(--shadow);transform:translate(-50%,-50%)}
 .rxn{display:block;width:100%;height:auto}
-.mtable tr.rowok td.en{color:var(--good)}
-@media (max-width:640px){.mtable td.en{font-size:13px}.slot{font-size:12px;min-height:40px}}
+.mtable tr.rowok .en{color:var(--good)}
+@media (max-width:640px){.mtable .en{font-size:13px}.slot{font-size:12px;min-height:40px}}
 .wide{overflow-x:auto}
+/* keep the site-kit tool button names available to screen readers when their labels are hidden on narrow screens */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -287,6 +295,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
 
   <!-- PART 1 -->
   <section id="tab-meal" role="tabpanel" aria-labelledby="tabbtn-meal">
+    <h2 class="sr-only">Part 1: Meal journey</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvMeal" role="img" aria-label="Meal journey animation"></canvas></div>
@@ -322,10 +331,11 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
 
   <!-- PART 2 -->
   <section id="tab-match" role="tabpanel" aria-labelledby="tabbtn-match" hidden>
+    <h2 class="sr-only">Part 2: Enzyme matcher</h2>
     <div class="rounds" id="mxRounds" aria-label="Rounds"></div>
     <div class="grid">
       <div class="card">
-        <div class="wide"><table class="mtable" id="mxTable"><thead><tr><th>Enzyme</th><th>Source</th><th>Substrate</th><th>Product</th></tr></thead><tbody></tbody></table></div>
+        <div class="wide"><table class="mtable" id="mxTable"><caption class="sr-only">Enzyme matcher: fill in the source, substrate and product for each enzyme</caption><thead><tr><th scope="col">Enzyme</th><th scope="col">Source</th><th scope="col">Substrate</th><th scope="col">Product</th></tr></thead><tbody></tbody></table></div>
         <div class="bank" id="mxBank"></div>
         <div class="bar" style="margin-top:12px">
           <button class="btn" id="mxCheck" type="button">Check</button>
@@ -356,6 +366,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
 
   <!-- PART 3 -->
   <section id="tab-horm" role="tabpanel" aria-labelledby="tabbtn-horm" hidden>
+    <h2 class="sr-only">Part 3: Hormone control</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvHorm" role="img" aria-label="Hormone control simulation"></canvas></div>
@@ -380,7 +391,7 @@ details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin
         <label class="tog" id="tgStone"><input type="checkbox" id="hStone"><span>Gallstone in the bile duct<small>Bile cannot get from the gallbladder to the duodenum</small></span></label>
         <div class="btnrow"><button class="tbtn" id="hReset" type="button">Reset</button></div>
         <h3>Live readouts</h3>
-        <table class="readouts" id="hRead"></table>
+        <table class="readouts" id="hRead"><caption class="sr-only">Live readouts</caption><thead class="sr-only"><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead><tbody></tbody></table>
         <h3>What is happening</h3>
         <div class="now" id="hNow"></div>
         <h3>Challenges <span class="totstars" id="hStars"></span></h3>
@@ -592,7 +603,7 @@ let activeTab="meal";
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;
   document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===b));
   document.querySelectorAll("[role=tabpanel]").forEach(p=>p.hidden=p.id!=="tab-"+activeTab);
-  fitAll();if(activeTab==="match")mxDrawSvg()});
+  fitAll();if(activeTab==="match")mxDrawSvg();axUpdate()});
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
   r.setAttribute("data-theme",dark?"light":"dark");readColors()};
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
@@ -669,7 +680,7 @@ function mlRender(){
   const m=MEALS[ML.meal];
   $("#mlMeals").innerHTML=Object.entries(MEALS).map(([k,v])=>`<button type="button" data-m="${k}" aria-pressed="${k===ML.meal}">${v.n}${mlBest[k]?`<span class="ok">${"★".repeat(mlBest[k])}</span>`:""}<small>${["Starch","Lactose","Sucrose","Protein","Fat","Fiber"].filter((n,i)=>m&&v[["starch","lactose","sucrose","protein","fat","fiber"][i]]>0).join(" · ")}</small></button>`).join("");
   document.querySelectorAll("#mlMeals button").forEach(b=>b.onclick=()=>mlReset(b.dataset.m));
-  $("#mlStations").innerHTML=STN.map((s,i)=>`<span class="${i===ML.st&&!ML.done?"cur":(i<ML.st||ML.done?"done":"")}">${i+1} ${s.n}</span>`).join("");
+  $("#mlStations").innerHTML=STN.map((s,i)=>`<span class="${i===ML.st&&!ML.done?"cur":(i<ML.st||ML.done?"done":"")}"${i===ML.st&&!ML.done?' aria-current="step"':""}>${i<ML.st||ML.done?"✓ ":""}${i+1} ${s.n}</span>`).join("");
   const s=STN[ML.st];
   if(ML.done){$("#mlN").textContent="Journey complete";$("#mlT").textContent=m.n+": all the way through";$("#mlD").textContent="Pick another meal to try a new journey, or replay this one.";$("#mlPicks").innerHTML="";
     $("#mlApply").hidden=$("#mlHint").hidden=$("#mlShow").hidden=true;$("#mlNext").hidden=false;$("#mlNext").textContent="Replay this meal";}
@@ -804,9 +815,9 @@ function mxRounds(){$("#mxRounds").innerHTML=ROUNDS.map((R,i)=>`<button type="bu
 function mxRender(){
   const tb=$("#mxTable tbody");
   tb.innerHTML=MX.items.map(id=>{const e=ENZ[id];const ok=COLS.every(c=>MX.state[id+"."+c[0]]==="ok");
-    return `<tr data-e="${id}" class="${ok?"rowok":""}"><td class="en">${ok?"✓ ":""}${e.n}</td>${COLS.map(c=>{const key=id+"."+c[0];const v=MX.fill[key];const st=MX.state[key]||"";
+    return `<tr data-e="${id}" class="${ok?"rowok":""}"><th scope="row" class="en">${ok?"✓ ":""}${e.n}</th>${COLS.map(c=>{const key=id+"."+c[0];const v=MX.fill[key];const st=MX.state[key]||"";
       return `<td><button type="button" class="slot ${v?"filled":""} ${st} ${MX.selSlot===key?"sel":""}" data-key="${key}" aria-label="${e.n} ${c[2]}: ${v?c[1][v]:"empty"}">${v?c[1][v]:"<span style='color:var(--ink-faint)'>"+c[2]+"?</span>"}</button></td>`}).join("")}</tr>`}).join("");
-  $("#mxBank").innerHTML=COLS.map(c=>`<h4>${c[2]}</h4><div class="cl">${Object.entries(c[1]).map(([k,v])=>`<button type="button" class="chipb" data-col="${c[0]}" data-v="${k}" aria-pressed="${MX.sel&&MX.sel[0]===c[0]&&MX.sel[1]===k}">${v}</button>`).join("")}</div>`).join("");
+  $("#mxBank").innerHTML=COLS.map(c=>`<h4>${c[2]}</h4><div class="cl">${Object.entries(c[1]).map(([k,v])=>`<button type="button" class="chipb" data-col="${c[0]}" data-v="${k}" aria-pressed="${!!(MX.sel&&MX.sel[0]===c[0]&&MX.sel[1]===k)}">${v}</button>`).join("")}</div>`).join("");
   document.querySelectorAll("#mxTable .slot").forEach(b=>{b.onclick=()=>mxSlot(b.dataset.key)});
   document.querySelectorAll("#mxBank .chipb").forEach(b=>{b.addEventListener("pointerdown",e=>mxDragStart(e,b));b.onclick=e=>{if(MX.dragMoved){MX.dragMoved=false;return}mxChip(b.dataset.col,b.dataset.v)}});
   mxDrawSvg();
@@ -950,7 +961,7 @@ function hChal(){$("#hChal").innerHTML=HCH.map(c=>`<li class="${hDone.has(c.id)?
 function hCheck(){HCH.forEach(c=>{if(!hDone.has(c.id)&&c.test(HS)){hDone.add(c.id);store.set("digHorm",[...hDone]);hChal();hMsg("good","Challenge done: "+c.t)}})}
 function hReadouts(){const s=HS;const st=x=>x>1.4?"↑ high":(x<.7?"↓ low":"resting");
   const gb=s.stone?(s.P>.3?"blocked, squeezing (pain)":"blocked"):(s.K>1.2?"contracting":"filling, storing");
-  $("#hRead").innerHTML=[["Gastrin",s.G.toFixed(1)+"× "+st(s.G)],["Secretin",s.S.toFixed(1)+"× "+st(s.S)],["CCK",s.K.toFixed(1)+"× "+st(s.K)],["Duodenal pH",s.pH.toFixed(1)],["Bicarbonate flow",s.h>.8?"high":(s.h>.4?"some":"low")],["Pancreatic enzymes",s.e>.9?"high":(s.e>.45?"some":"low")],["Bile into duodenum",s.b>.6?"high":(s.b>.2?"some":"very low")],["Gallbladder",gb],["Stomach emptying",s.F<.02?"empty":((s.S>1.3||s.K>1.3)?"slowed":"steady")]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
+  $("#hRead tbody").innerHTML=[["Gastrin",s.G.toFixed(1)+"× "+st(s.G)],["Secretin",s.S.toFixed(1)+"× "+st(s.S)],["CCK",s.K.toFixed(1)+"× "+st(s.K)],["Duodenal pH",s.pH.toFixed(1)],["Bicarbonate flow",s.h>.8?"high":(s.h>.4?"some":"low")],["Pancreatic enzymes",s.e>.9?"high":(s.e>.45?"some":"low")],["Bile into duodenum",s.b>.6?"high":(s.b>.2?"some":"very low")],["Gallbladder",gb],["Stomach emptying",s.F<.02?"empty":((s.S>1.3||s.K>1.3)?"slowed":"steady")]].map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join("");
   let now=hNowText;
   if(s.a>.3&&s.S>1.5)now="Acid in the duodenum → secretin → the pancreas sends bicarbonate. "+(s.pH>6?"The pH is recovering.":"");
   else if(s.f>.3&&s.stone)now="Fat triggers CCK, the gallbladder squeezes, but the stone blocks the bile. The fat is not emulsified, so it digests slowly.";
@@ -1050,7 +1061,7 @@ const SC=[
   ex:"In gastroesophageal reflux disease (GERD), the lower esophageal sphincter does not close well, so acidic chyme splashes back up. The esophagus lacks the stomach's mucus shield, so the acid irritates it (heartburn). Lying down after a large meal makes reflux easier.",cap:["LES closed: acid stays in the stomach","Weak LES: acid splashes up (heartburn)"]}];
 let SCI=0,scAfter=0,scTarget=0;const scRes=store.get("digBreak")||{};const scAns={};
 function scRender(){const s=SC[SCI];$("#scN").textContent=`Case ${SCI+1} of ${SC.length}`;$("#scTitle").textContent=s.t;$("#scDesc").textContent=s.d;
-  $("#scChips").innerHTML=SC.map((x,i)=>`<button type="button" class="chip ${i===SCI?"cur":""} ${scRes[i]?"done":""}" data-i="${i}" aria-label="Case ${i+1}: ${x.t}">${i+1}</button>`).join("");
+  $("#scChips").innerHTML=SC.map((x,i)=>`<button type="button" class="chip ${i===SCI?"cur":""} ${scRes[i]?"done":""}" data-i="${i}" aria-label="Case ${i+1}: ${x.t}${scRes[i]?" (solved)":""}"${i===SCI?' aria-current="true"':""}>${i+1}</button>`).join("");
   document.querySelectorAll("#scChips .chip").forEach(b=>b.onclick=()=>{SCI=+b.dataset.i;scTarget=0;scAfter=0;scRender()});
   const solved=Object.keys(scRes).length;$("#scScore").textContent=`Solved: ${solved} / ${SC.length}`;
   const mk=(box,fb,q,qi)=>{$(box).innerHTML=q[1].map((o,i)=>`<button type="button" class="opt" data-i="${i}"><span class="mk">${"ABCD"[i]}</span>${o[0]}</button>`).join("");$(fb).className="fb";
@@ -1061,7 +1072,7 @@ function scRender(){const s=SC[SCI];$("#scN").textContent=`Case ${SCI+1} of ${SC
   $("#showBtn").textContent=scTarget?"Show me the healthy version":"Show me the change";scRender2()}
 function scRender2(){const s=SC[SCI];$("#scCap").textContent=(scTarget?"After: ":"Healthy: ")+s.cap[scTarget];$("#scNote").textContent="Press the button to switch between the healthy picture and the problem.";
   const solved=Object.keys(scRes).length;$("#scScore").textContent=`Solved: ${solved} / ${SC.length}`;document.querySelectorAll("#scChips .chip").forEach((b,i)=>b.classList.toggle("done",!!scRes[i]));$("#showBtn").textContent=scTarget?"Show me the healthy version":"Show me the change";
-  S4.cv.setAttribute("aria-label",s.t+": "+(scTarget?"after: ":"healthy: ")+s.cap[scTarget])}
+  axUpdate()}
 $("#showBtn").onclick=()=>{scTarget=scTarget?0:1;scRender2()};
 $("#scPrev").onclick=()=>{SCI=(SCI+SC.length-1)%SC.length;scTarget=0;scAfter=0;scRender()};
 $("#scNext").onclick=()=>{SCI=(SCI+1)%SC.length;scTarget=0;scAfter=0;scRender()};
@@ -1128,23 +1139,74 @@ function drawSc(T){S4.begin();ctx.fillStyle=C.panel;ctx.fillRect(0,0,600,400);sc
   }
 }
 
+/* ================= accessibility: canvas labels and picture descriptions ================= */
+const AX={lab:{},desc:""};
+function axSet(el,label,desc){if(AX.lab[el.id]!==label){AX.lab[el.id]=label;el.setAttribute("aria-label",label)}
+  if(desc&&AX.desc!==desc){AX.desc=desc;if(window.gkDescribe)window.gkDescribe(desc)}}
+function axMoveDesc(el){const d=document.getElementById("gk-desc");if(!d||!el)return;const h=el.closest(".canvas-holder,.svg-holder")||el;if(h.nextSibling!==d)h.parentNode.insertBefore(d,h.nextSibling);el.setAttribute("aria-describedby","gk-desc")}
+const AXSHAPE={starch:"chains of yellow hexagons (starch)",lactose:"yellow-and-pink hexagon pairs (lactose)",sucrose:"pairs of a yellow hexagon and an orange pentagon (sucrose)",protein:"tangled clusters of purple and teal beads (protein)",fat:"orange fat spheres",fiber:"green wavy strands (fiber)"};
+const AXNAME={starch:"starch",lactose:"lactose",sucrose:"sucrose",protein:"protein",fat:"fat",fiber:"fiber"};
+const AXBG={mouth:"A row of teeth runs along the top and blue saliva drops fall through the food.",stomach:"Wavy stomach folds line the bottom and small red H+ acid dots rise through the food.",duo:"Two ducts at the top drip yellow bile (left) and bicarbonate from pancreatic juice (right) into the food.",bb:"Intestinal cells with microvilli line the bottom, above a red blood capillary on the left and a lacteal on the right.",large:"Green bacteria drift through the contents and blue water drops leave through the bottom."};
+function axMealState(){const m=MEALS[ML.meal];const out=[];Object.keys(AXSHAPE).forEach(k=>{if(!(m[k]>0))return;const a=ML.S[k];const p=x=>Math.round(x*100);
+  const parts=[];if(a[0]>.005)parts.push(p(a[0])+"% intact");if(a[1]>.005)parts.push(p(a[1])+"% partly digested");if(a[2]>.005)parts.push(p(a[2])+"% ready to absorb");if(a[3]>.005)parts.push(p(a[3])+"% absorbed");out.push(AXNAME[k]+" "+parts.join(", "))});return out.join("; ")}
+function axMeal(){const m=MEALS[ML.meal];const k=ML.done?"large":STN[ML.st].k;const stn=ML.done?"the end of the journey":STN[ML.st].n;
+  const lab=ML.done?`Meal journey: ${m.n}, journey complete.`:`Meal journey: ${m.n} at station ${ML.st+1} of 5, ${STN[ML.st].n}${ML.applied?", being digested":", waiting for your picks"}.`;
+  const shapes=Object.keys(AXSHAPE).filter(n=>m[n]>0).map(n=>AXSHAPE[n]);
+  let d=`On the left, a small body map shows the whole digestive tract with a glowing food ball at ${ML.done?"the end of the large intestine":"the "+STN[ML.st].n.toLowerCase()}. On the right, a zoom panel titled "${ML.done?"Done: what is left in the large intestine":"Zoom: "+STN[ML.st].n}" shows the ${m.n.toLowerCase()} as ${shapes.join(", ")}. ${AXBG[k]}`;
+  if(ML.applied&&!ML.done){const opts=OPTS[k];d+=` Tags along the edge name what acts here (${ML.active.map(id=>opts.find(q=>q[0]===id)[1]).join(", ")}), and the shapes break apart: chains are cut into shorter pieces and single units, fat breaks into droplets, and absorbed units drop out of the panel.`}
+  if(ML.done)d+=" A brown lump of feces made of fiber, bacteria, water and cells forms in the corner.";
+  d+=` Nutrients now: ${axMealState()}.`;
+  axSet(SMC.cv,`Nutrient breakdown chart for ${m.n}: ${axMealState()}.`);
+  return [SM.cv,lab,d]}
+function axMatch(){const svg=document.querySelector("#mxSvg svg");if(!svg)return null;const id=MX.focus||MX.items[0];const e=ENZ[id];
+  const row=COLS.map(c=>MX.state[id+"."+c[0]]==="ok");
+  const lab=row.every(Boolean)?`${e.n}: made by ${SRC[e.src].toLowerCase()}, turns ${SUB[e.sub].toLowerCase()} into ${PROD[e.prod].toLowerCase()}.`:`${e.n}: source and reaction, ${row.filter(Boolean).length} of 3 parts matched so far.`;
+  const d=`A simple body outline shows the head with two blue salivary glands and a pink tongue, the esophagus, the stomach, the tan pancreas and the coiled small intestine, with labels for salivary, stomach, pancreas and small intestine. ${row[0]?`Pulsing green circles mark where ${e.n.toLowerCase()} is made: ${SRC[e.src].toLowerCase()}.`:"The source is not marked yet."} A strip at the bottom names ${e.n} and shows a pac-man shaped enzyme biting, with ${row[1]?SUB[e.sub].toLowerCase()+" on the left":"\"substrate ?\" on the left"} and ${row[2]?PROD[e.prod].toLowerCase()+" on the right":"\"product ?\" on the right"} of an arrow. Correct boxes in the table fill in this picture.`;
+  return [svg,lab,d]}
+function axLvl(x){return x>1.4?"high":x<.7?"low":"resting"}
+function axHorm(){const h=HS;const gb=h.stone?(h.P>.3?"blocked by a stone and squeezing":"blocked by a stone"):(h.K>1.2?"contracting":"filling and storing bile");
+  const lab=`Hormone control: gastrin ${axLvl(h.G)}, secretin ${axLvl(h.S)}, CCK ${axLvl(h.K)}, duodenal pH ${h.pH.toFixed(1)}, gallbladder ${gb}${hPaused?", paused":""}.`;
+  const d=`The liver, green gallbladder, stomach, duodenum and tan pancreas are drawn inside a pink loop of blood vessel. Hormones travel around the loop as shapes: orange diamonds for gastrin (now ${axLvl(h.G)}), blue squares for secretin (${axLvl(h.S)}) and purple triangles for CCK (${axLvl(h.K)}); the more hormone, the more shapes. ${h.F>.1?"Food fills the stomach, and red acid dots and chyme pass into the duodenum. ":"The stomach is nearly empty. "}The gallbladder is ${gb}${h.stone?", and a dark stone sits in the bile duct so little bile reaches the duodenum":""}. A side panel shows three bars for the hormone levels against a dashed resting line and a duodenal pH bar that is now ${h.pH<5?"acidic":h.pH<6.8?"slightly acidic":"near neutral"}.`;
+  axSet(SHC.cv,`Chart of the last minutes: gastrin ${h.G.toFixed(1)} times resting, secretin ${h.S.toFixed(1)}, CCK ${h.K.toFixed(1)}, duodenal pH ${h.pH.toFixed(1)}.`);
+  return [SH.cv,lab,d]}
+const AXSC=[
+ ["Two panels show the small intestine (left) and the colon (right). Green lactase enzymes sit on the intestinal lining and split yellow-and-pink lactose pairs into single sugars, which pass into the cells and the red blood vessel below; the colon holds only a few green bacteria. The label reads \"lactase splits lactose\".",
+  "Two panels show the small intestine (left) and the colon (right). The lactase enzymes on the lining are faded, so yellow-and-pink lactose pairs pass through uncut into the colon, where green bacteria multiply, hollow gas bubbles form and blue water drops are pulled in. The label reads \"gas + water pulled in\"."],
+ ["The dark red liver sends bile down a duct; the green gallbladder squeezes bile drops into the duodenum when purple CCK triangles arrive. In the duodenum, fat is broken into many small orange droplets, labelled \"fat emulsified into droplets\".",
+  "A round stone blocks the duct leading from the green gallbladder, which glows red with the word \"pain\", and bile backs up behind the stone. The liver is tinted a yellow-brown colour. In the duodenum, the orange fat stays as big round globules, labelled \"fat stays in big globules\"."],
+ ["A cross section of the stomach wall shows the lumen at the top with red acid dots and purple pepsin enzymes, a thick blue mucus layer labelled \"thick mucus\", the pink lining, and the tissue below with red and blue blood vessels. The acid and pepsin stay above the mucus.",
+  "The mucus layer is thin, an orange pill labelled NSAID sits in the corner and green rod-shaped bacteria lie on the surface. A dip in the pink lining labelled \"ulcer crater\" lets acid dots sink into the wall, and small red blood dots leak from it."],
+ ["The pink duodenum stands on the left and the tan pancreas lies on the right with a duct between them. Purple trypsinogen enzymes with a lock travel down the duct and only become active (green) inside the duodenum, labelled \"trypsin is unlocked only in the duodenum\".",
+  "A red glow fills the pancreas, where unlocked purple trypsin enzymes are active inside the gland itself, labelled \"trypsin active inside the pancreas: self-digestion\". Less juice arrives in the duodenum, where undigested orange fat drops remain."],
+ ["Tall pink finger-like villi with red capillaries stand along the intestinal wall, and yellow, purple and teal nutrient dots move down between them into the blood. A surface bar at the bottom is long, labelled \"tall villi: lots of absorption\".",
+  "The villi are flattened into short bumps, blue immune cells sit in the wall below, and only a few nutrient dots are absorbed. The label reads \"gluten triggers an immune attack\" and the surface bar is short, labelled \"flat villi: little absorption\"."],
+ ["The esophagus comes down through a dashed line labelled diaphragm into the stomach, which holds red acid dots behind a blue mucus lining. A red ring at the junction is labelled \"LES (closed)\", so the acid stays in the stomach.",
+  "The ring at the junction is labelled \"LES (open)\", and red acid dots rise up the esophagus into a red glow labelled \"heartburn (no mucus shield here)\"."]];
+function axSc(){const c=SC[SCI];const lab=`${c.t}, ${scTarget?"problem":"healthy"} picture: ${c.cap[scTarget]}.`;
+  const d=`${scTarget?"PROBLEM":"HEALTHY"} picture for ${c.t}. `+((AXSC[SCI]||[])[scTarget]||c.cap[scTarget]+".");return [S4.cv,lab,d]}
+function axUpdate(){try{let r=null;if(activeTab==="meal")r=axMeal();else if(activeTab==="match")r=axMatch();else if(activeTab==="horm")r=axHorm();else r=axSc();
+  if(r){axSet(r[0],r[1],r[2]);axMoveDesc(r[0])}}catch(e){console.error(e)}}
+/* the site kit marks white-on-light text for dark mode but never unmarks it when a toggle turns off: unmark on toggle, the kit re-marks if still needed */
+new MutationObserver(ms=>ms.forEach(m=>{const t=m.target;if(t.classList&&t.classList.contains("gk-oninv"))t.classList.remove("gk-oninv")})).observe(document.body,{subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-selected"]});
+
 /* ================= loop ================= */
 function fitAll(){[SM,SMC,SH,SHC,S4].forEach(s=>s.fit())}
 window.addEventListener("resize",fitAll);
 let last=performance.now(),TT=0,uiAcc=0,hT=0;
+let axAcc=0;
 function frame(now){
-  const dt=clamp((now-last)/1000,0,.05);last=now;TT+=dt;uiAcc+=dt;
+  const dt=clamp((now-last)/1000,0,.05);last=now;TT+=dt;uiAcc+=dt;axAcc+=dt;if(axAcc>.4){axAcc=0;axUpdate()}
   try{
     if(activeTab==="meal"){drawMeal(TT);drawMealChart()}
     else if(activeTab==="horm"){if(!hPaused){const sd=dt*6*hSpeed;const n=Math.ceil(sd/.1);for(let i=0;i<n;i++)hStep(HS,sd/n);hT+=dt;
         if(!HS.hist.length||HS.t-HS.hist[HS.hist.length-1][0]>=.5){HS.hist.push([HS.t,HS.G,HS.S,HS.K,HS.pH]);if(HS.hist.length>600)HS.hist.shift()}hCheck()}
       drawHorm(hT);drawHormChart();if(uiAcc>.25)hReadouts()}
     else if(activeTab==="break"){drawSc(TT)}
-    else if(activeTab==="match"){if($("#mxTimed").checked&&!MX.done){const s=Math.round((now-MX.start)/1000);$("#mxTimer").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}}
+    else if(activeTab==="match"){const sv=document.querySelector("#mxSvg svg");if(sv&&sv.pauseAnimations){sv.pauseAnimations();sv.setCurrentTime(TT)}if($("#mxTimed").checked&&!MX.done){const s=Math.round((now-MX.start)/1000);$("#mxTimer").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}}
   }catch(e){console.error(e)}
   if(uiAcc>.25)uiAcc=0;
   requestAnimationFrame(frame)}
-readColors();mlReset("pizza");mxRounds();mxStart(0);hBuildSliders();hChal();hReadouts();scRender();fitAll();
+readColors();mlReset("pizza");mxRounds();mxStart(0);hBuildSliders();hChal();hReadouts();scRender();fitAll();axUpdate();if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(axUpdate,0));
 $("#hLegend").innerHTML=[["gastrin","Gastrin","dia"],["secretin","Secretin","sq"],["cck","CCK","tri"],["acid","Acid (H⁺)"],["base","Bicarbonate"],["bile","Bile"],["fat","Fat"]].map(legendHTML).join("");
 requestAnimationFrame(frame);
 window.__lab={ML:()=>ML,HS:()=>HS,MX:()=>MX,run:(sec)=>{for(let i=0;i<sec*10;i++)hStep(HS,.1);HS.hist=[];for(let t=0;t<=120;t+=.5)HS.hist.push([HS.t-120+t,HS.G,HS.S,HS.K,HS.pH])},drop:hDrop,eat:hEat,fit:fitAll,sc:(i,k)=>{SCI=i;scTarget=k;scAfter=k;scRender()}};

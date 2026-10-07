@@ -164,7 +164,14 @@ sub,sup{line-height:0}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--rule);border-radius:var(--r);background:var(--panel);color:var(--ink);max-width:100%}
+
+/* accessibility retrofit: dark text on the light dark-mode accent (WCAG 2.1 AA) */
+:root{--on-accent:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--on-accent:#0B1A20}}
+:root[data-theme="dark"]{--on-accent:#0B1A20}
+.tab[aria-selected="true"],.btn,.seg button[aria-pressed="true"]{color:var(--on-accent)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -186,7 +193,7 @@ select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--rule);
 
   <!-- PART 1: ATLAS -->
   <section id="tab-atlas" role="tabpanel" aria-labelledby="tabbtn-atlas">
-    <div class="rounds" id="atModes" aria-label="Game modes"></div>
+    <div class="rounds" id="atModes" role="group" aria-label="Game modes"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvAtlas" role="img" aria-label="Body figures: anterior view, posterior view, and side view"></canvas></div>
@@ -194,6 +201,7 @@ select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--rule);
         <div class="zbtns" id="atAlt" hidden><label class="zl" for="atSelect">Can't click the picture? Choose an area:</label><select id="atSelect"></select><button class="tbtn" id="atSelGo" type="button">Choose</button></div>
       </div>
       <aside class="card side" aria-live="polite">
+        <h2 class="gk-sr">Body Atlas</h2>
         <div class="lvl-n" id="atN"></div>
         <div class="qprog"><i id="atProg"></i></div>
         <p class="qbox" id="atQ"></p>
@@ -259,7 +267,7 @@ select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--rule);
 
   <!-- PART 3: SORTER -->
   <section id="tab-sort" role="tabpanel" aria-labelledby="tabbtn-sort" hidden>
-    <div class="rounds" id="soRounds" aria-label="Rounds"></div>
+    <div class="rounds" id="soRounds" role="group" aria-label="Rounds"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder" id="soHolder"><canvas id="cvSort" role="img" aria-label="Body diagram with places to drop organs"></canvas><div class="zones" id="soZones"></div></div>
@@ -270,7 +278,7 @@ select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--rule);
         <div class="lvl-n" id="soN"></div>
         <h2 class="lvl-t" id="soT"></h2>
         <div class="goal"><b class="h">Your goal</b><span id="soGoal"></span></div>
-        <div class="tray" id="soTray" aria-label="Items to sort"></div>
+        <div class="tray" id="soTray" role="group" aria-label="Items to sort"></div>
         <div class="bar">
           <button class="tbtn" id="soHint" type="button">Hint</button>
           <button class="tbtn" id="soShow" type="button">Show answer</button>
@@ -299,10 +307,10 @@ select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--rule);
         <div class="zbtns" id="lbZBtns"></div>
       </div>
       <aside class="card side" aria-live="polite">
-        <div class="rounds" id="lbRounds" aria-label="Loops to build"></div>
+        <div class="rounds" id="lbRounds" role="group" aria-label="Loops to build"></div>
         <h2 class="lvl-t" id="lbT"></h2>
         <div class="goal"><b class="h">Your goal</b><span id="lbGoal"></span></div>
-        <div class="tray" id="lbTray" aria-label="Cards"></div>
+        <div class="tray" id="lbTray" role="group" aria-label="Cards"></div>
         <div class="bar">
           <button class="tbtn" id="lbHint" type="button">Hint</button>
           <button class="tbtn" id="lbShow" type="button">Show answer</button>
@@ -734,10 +742,10 @@ $("#atShow").onclick=()=>{if(AT.done||AT.finished)return;AT.shown=true;const q=A
 $("#atNext").onclick=()=>{if(AT.i<AT.qs.length-1){AT.i++;atSetup()}else atEnd()};
 function atEnd(){AT.finished=true;const st=AT.score>=9?3:AT.score>=7?2:1;const prev=atBest[AT.mode]||0;if(st>prev){atBest[AT.mode]=st;store.set("bb-at-best",atBest)}atModes();
   $("#atProg").style.width="100%";$("#atOpts").innerHTML="";$("#atQ").textContent="Round complete.";$("#atNext").hidden=true;
-  setMsg($("#atMsg"),`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${AT.score} of ${AT.qs.length}</b> right on the first try, with no hint.<br><button class="btn" id="atAgain" type="button" style="margin-top:8px">Play again</button>`,"good");
+  setMsg($("#atMsg"),`<span class="stars" role="img" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${AT.score} of ${AT.qs.length}</b> right on the first try, with no hint.<br><button class="btn" id="atAgain" type="button" style="margin-top:8px">Play again</button>`,"good");
   $("#atAgain").onclick=atNewRound}
 function atModes(){const box=$("#atModes");box.innerHTML="";AT_MODES.forEach(m=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",m.id===AT.mode);
-  b.innerHTML=m.name+(atBest[m.id]?`<span class="ok" aria-label="best ${atBest[m.id]} stars">${"★".repeat(atBest[m.id])}</span>`:"");b.onclick=()=>{AT.mode=m.id;atModes();atHow();atNewRound()};box.appendChild(b)})}
+  b.innerHTML=m.name+(atBest[m.id]?`<span class="ok" role="img" aria-label="best ${atBest[m.id]} stars">${"★".repeat(atBest[m.id])}</span>`:"");b.onclick=()=>{AT.mode=m.id;atModes();atHow();atNewRound()};box.appendChild(b)})}
 function atHow(){$("#atHow").innerHTML=AT.mode==="dir"?"<li>Dot <b>A</b> is compared to dot <b>B</b>. Finish the sentence with the best direction word.</li><li>On limbs, use proximal and distal.</li><li>The patient is always in anatomical position.</li>"
   :AT.mode==="find"?"<li>Click or tap the named region on the anterior or posterior view.</li><li>No mouse? Pick the area from the list under the picture.</li>"
   :"<li>One region pulses on the body. Pick its name.</li>"}
@@ -905,9 +913,9 @@ $("#sqShow").onclick=()=>{if(SQ.done||SQ.finished)return;const q=SQ.qs[SQ.i];SQ.
   setMsg($("#sqMsg"),`It is <b>${sqName(q.ans).toLowerCase()}</b>. ${CLUE[q.obj][q.ans]}`,"info");sqAfter()};
 $("#sqNext").onclick=()=>{if(SQ.i<SQ.qs.length-1){SQ.i++;sqSetup()}else sqEnd()};
 function sqEnd(){SQ.finished=true;const st=SQ.score>=7?3:SQ.score>=5?2:1;const b=store.get("bb-sq-best")||0;if(st>b)store.set("bb-sq-best",st);slModes();
-  $("#sqOpts").innerHTML="";$("#sqProg").style.width="100%";setMsg($("#sqMsg"),`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${SQ.score} of ${SQ.qs.length}</b> right on the first try.<br><button class="btn" id="sqAgain" type="button" style="margin-top:8px">New quiz</button>`,"good");$("#sqAgain").onclick=sqStart}
+  $("#sqOpts").innerHTML="";$("#sqProg").style.width="100%";setMsg($("#sqMsg"),`<span class="stars" role="img" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${SQ.score} of ${SQ.qs.length}</b> right on the first try.<br><button class="btn" id="sqAgain" type="button" style="margin-top:8px">New quiz</button>`,"good");$("#sqAgain").onclick=sqStart}
 function slModes(){const box=$("#slModes");box.innerHTML="";const best=store.get("bb-sq-best")||0;[["explore","Explore the planes"],["quiz","Quiz: which plane?"]].forEach(m=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",m[0]===SL.mode);
-  b.innerHTML=m[1]+(m[0]==="quiz"&&best?`<span class="ok" aria-label="best ${best} stars">${"★".repeat(best)}</span>`:"");b.onclick=()=>{SL.mode=m[0];$("#slExplore").hidden=m[0]!=="explore";$("#slQuiz").hidden=m[0]!=="quiz";$("#slCtrl").hidden=m[0]!=="explore";if(m[0]==="quiz"&&(!SQ.qs.length||SQ.finished))sqStart();slModes()};box.appendChild(b)})}
+  b.innerHTML=m[1]+(m[0]==="quiz"&&best?`<span class="ok" role="img" aria-label="best ${best} stars">${"★".repeat(best)}</span>`:"");b.onclick=()=>{SL.mode=m[0];$("#slExplore").hidden=m[0]!=="explore";$("#slQuiz").hidden=m[0]!=="quiz";$("#slCtrl").hidden=m[0]!=="explore";if(m[0]==="quiz"&&(!SQ.qs.length||SQ.finished))sqStart();slModes()};box.appendChild(b)})}
 function drawSlice(now){SS.begin();bg();ctx.fillStyle=C["panel-2"];rr(410,10,382,460,8);ctx.fill();
   if(SL.mode==="explore"){const target=slPos();SL.cur+= (target-SL.cur)*.18;const rev=clamp((now-SL.changeT)/700,0,1);
     objViews(SL.obj,SL.plane,SL.cur,true);const items=drawObjSection(SL.obj,SL.plane,SL.cur,rev);if(rev>=1)labelItems(items,SL.plane,SL.obj);
@@ -1009,10 +1017,10 @@ $("#soShow").onclick=()=>{const R=soRound();const id=soDnD.sel||(R.items.find(i=
 $("#soReset").onclick=()=>soStart(SOR.ri);
 function soEnd(){SOR.done=true;const R=soRound();const n=R.items.length;const first=R.items.filter(i=>!SOR.miss[i[0]]).length;const st=first>=n-1?3:first>=Math.ceil(n*.7)?2:1;
   if(st>(soBest[R.id]||0)){soBest[R.id]=st;store.set("bb-so-best",soBest)}soRoundsUI();
-  setMsg($("#soMsg"),`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${first} of ${n}</b> placed right on the first try.`+(SOR.ri<SO_ROUNDS.length-1?`<br><button class="btn" id="soNextR" type="button" style="margin-top:8px">Next round →</button>`:`<br>That was the last round. Nice work.`),"good");
+  setMsg($("#soMsg"),`<span class="stars" role="img" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${first} of ${n}</b> placed right on the first try.`+(SOR.ri<SO_ROUNDS.length-1?`<br><button class="btn" id="soNextR" type="button" style="margin-top:8px">Next round →</button>`:`<br>That was the last round. Nice work.`),"good");
   const nb=$("#soNextR");if(nb)nb.onclick=()=>soStart(SOR.ri+1)}
 function soRoundsUI(){const box=$("#soRounds");box.innerHTML="";SO_ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===SOR.ri);
-  b.innerHTML=(i+1)+" · "+r.name+(soBest[r.id]?`<span class="ok" aria-label="best ${soBest[r.id]} stars">${"★".repeat(soBest[r.id])}</span>`:"");b.onclick=()=>soStart(i);box.appendChild(b)});
+  b.innerHTML=(i+1)+" · "+r.name+(soBest[r.id]?`<span class="ok" role="img" aria-label="best ${soBest[r.id]} stars">${"★".repeat(soBest[r.id])}</span>`:"");b.onclick=()=>soStart(i);box.appendChild(b)});
   const tot=SO_ROUNDS.reduce((s,r)=>s+(soBest[r.id]||0),0);$("#soTot").innerHTML=`Your stars: <b>${tot}</b> of ${SO_ROUNDS.length*3}`}
 /* ---- drawing ---- */
 function soCavBase(){ctx.save();ctx.beginPath();ctx.rect(0,0,800,CVs.oy+262*CVs.s);ctx.clip();drawSection("S",0,CVs.ox,CVs.oy,CVs.s,{noOrgans:true});
@@ -1109,7 +1117,7 @@ function lbCheck(){if(Object.keys(LB.placed).length<4)return;$("#lbType").hidden
     if(o[0]===R.type){b.classList.add("right");LB.typeDone=true;LB.t0=performance.now();setMsg($("#lbTypeMsg"),R.type==="neg"?"✓ Yes. The response pushes the value back the opposite way, toward the set point. Watch the loop run.":"✓ Yes. The response makes the stretch even bigger, so the loop grows until the baby is born. Watch it run.","good");lbEnd()}
     else{b.classList.add("wrong");LB.typeTries++;setMsg($("#lbTypeMsg"),R.type==="neg"?"Not quite. Here the response reverses the change (it brings the value back toward normal). That is negative feedback.":"Not quite. Here the response makes the change bigger: stronger contractions cause more stretch. That is positive feedback.","warn")}};box.appendChild(b)})}
 function lbEnd(){LB.done=true;const st=LB.shown?1:(LB.miss===0&&LB.typeTries===0?3:LB.miss<=2?2:1);if(st>(lbBest[lbR().id]||0)){lbBest[lbR().id]=st;store.set("bb-lb-best",lbBest)}lbRoundsUI();
-  setMsg($("#lbMsg"),`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span><br>Loop complete${LB.miss?` with ${LB.miss} misplaced card${LB.miss>1?"s":""}`:" with no mistakes"}.`+(LB.ri<LB_ROUNDS.length-1?` <button class="btn" id="lbNextR" type="button" style="margin-left:6px">Next loop →</button>`:""),"good");
+  setMsg($("#lbMsg"),`<span class="stars" role="img" aria-label="${st} of 3 stars">${starStr(st)}</span><br>Loop complete${LB.miss?` with ${LB.miss} misplaced card${LB.miss>1?"s":""}`:" with no mistakes"}.`+(LB.ri<LB_ROUNDS.length-1?` <button class="btn" id="lbNextR" type="button" style="margin-left:6px">Next loop →</button>`:""),"good");
   const nb=$("#lbNextR");if(nb)nb.onclick=()=>lbStart(LB.ri+1)}
 $("#lbHint").onclick=()=>{if(LB.done)return;const R=lbR();const id=lbDnD.sel;if(id){const c=lbCard(id);LB.miss+=0;setMsg($("#lbMsg"),c[1]?`Hint for "${c[0]}": ${c[2]}`:`Hint for "${c[0]}": ask whether it would fix the problem or make it worse.`,"info")}
   else setMsg($("#lbMsg"),"Hint: the stimulus is a change. The sensor detects it. The control center decides and sends a command. The effector does the work. Tap a card for a hint about it.","info")};
@@ -1117,7 +1125,7 @@ $("#lbShow").onclick=()=>{if(LB.done)return;const R=lbR();const slot=LB_SLOTS.fi
   setMsg($("#lbMsg"),`The ${ROLE[slot.id]} is "${R.cards[i][0]}". ${R.cards[i][2]}`,"info");lbTray();lbCheck()};
 $("#lbReset").onclick=()=>lbStart(LB.ri);
 function lbRoundsUI(){const box=$("#lbRounds");box.innerHTML="";LB_ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===LB.ri);
-  b.innerHTML=r.name+(lbBest[r.id]?`<span class="ok" aria-label="best ${lbBest[r.id]} stars">${"★".repeat(lbBest[r.id])}</span>`:"");b.onclick=()=>lbStart(i);box.appendChild(b)})}
+  b.innerHTML=r.name+(lbBest[r.id]?`<span class="ok" role="img" aria-label="best ${lbBest[r.id]} stars">${"★".repeat(lbBest[r.id])}</span>`:"");b.onclick=()=>lbStart(i);box.appendChild(b)})}
 function drawLoopB(now){SLB.begin();bg();const R=lbR();const t=now/1000;const cx=400,cy=220,Rr=150;
   ctx.beginPath();ctx.ellipse(cx,cy,268,164,0,0,TAU);ctx.strokeStyle=C.rule;ctx.lineWidth=4;ctx.stroke();
   [[.6],[2.2],[3.75],[5.35]].forEach(a=>{const x=cx+Math.cos(a[0])*268,y=cy+Math.sin(a[0])*164;const ang=Math.atan2(Math.cos(a[0])*164,-Math.sin(a[0])*268);ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.beginPath();ctx.moveTo(9,0);ctx.lineTo(-7,-8);ctx.lineTo(-7,8);ctx.closePath();ctx.fillStyle=C["ink-faint"];ctx.fill();ctx.restore()});
@@ -1151,7 +1159,7 @@ function smChal(){const c=SIM.chal;let ch=false;
   if(SIM.sweat>.4&&!c.sweat){c.sweat=1;ch=true}if(SIM.shiver>.2&&!c.shiver){c.shiver=1;ch=true}if(SIM.resp&&SIM.sweat>.9&&SIM.T>37.5&&!c.limit){c.limit=1;ch=true}if(!SIM.resp&&Math.abs(SIM.T-37)>.6&&!c.off){c.off=1;ch=true}
   if(ch){store.set("bb-sim-chal",c);smChalUI()}}
 function smChalUI(){$("#smChal").innerHTML=CHAL.map((c,i)=>`<li class="${SIM.chal[c[0]]?"done":""}"><b>${SIM.chal[c[0]]?"✓":(i+1)+"."}</b><span>${c[1]}</span></li>`).join("");
-  const n=CHAL.filter(c=>SIM.chal[c[0]]).length;const st=n>=4?3:n>=2?2:n>=1?1:0;$("#smStars").innerHTML=st?`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span> ${n} of 4 challenges done`:"Try the challenges to earn stars."}
+  const n=CHAL.filter(c=>SIM.chal[c[0]]).length;const st=n>=4?3:n>=2?2:n>=1?1:0;$("#smStars").innerHTML=st?`<span class="stars" role="img" aria-label="${st} of 3 stars">${starStr(st)}</span> ${n} of 4 challenges done`:"Try the challenges to earn stars."}
 function smUI(){$("#smRoomOut").textContent=SIM.room+" °C";const a=$("#smAct");a.innerHTML="";ACTS.forEach(x=>{const b=document.createElement("button");b.type="button";b.textContent=x[1];b.setAttribute("aria-pressed",x[0]===SIM.act);b.onclick=()=>{SIM.act=x[0];smUI()};a.appendChild(b)})}
 $("#smRoom").oninput=e=>{SIM.room=+e.target.value;smUI()};$("#smResp").onchange=e=>{SIM.resp=e.target.checked};$("#smRelaxed").onchange=e=>{SIM.relaxed=e.target.checked};
 $("#smReset").onclick=()=>{SIM.T=37;SIM.vd=0;SIM.sweat=0;SIM.shiver=0;SIM.hist=[];SIM.simt=0};
@@ -1252,6 +1260,44 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
     else{if(LPM==="build")drawLoopB(now);else if(LPM==="pos")drawPos(now);drawSimMaybe(now,dt)}}catch(err){console.error(err)}
   requestAnimationFrame(frame)}
 function drawSimMaybe(now,dt){if(LPM==="sim")drawSim(now,dt)}
+/* ---------- accessibility: "Describe the picture" text for the canvas on screen (site-kit) ---------- */
+const GK={last:""};
+function gkCanvas(){const p=[...document.querySelectorAll('[role=tabpanel]')].find(s=>!s.hidden);if(!p)return null;return [...p.querySelectorAll("canvas[role=img]")].find(c=>c.offsetParent!==null)||null}
+function gkPlace(cv){const d=document.getElementById("gk-desc");if(!d||!cv)return;const a=cv.closest(".canvas-holder")||cv;if(a.nextElementSibling!==d)a.parentNode.insertBefore(d,a.nextSibling);
+  document.querySelectorAll('canvas[aria-describedby="gk-desc"]').forEach(c=>{if(c!==cv)c.removeAttribute("aria-describedby")});cv.setAttribute("aria-describedby","gk-desc")}
+function gkTick(){try{const cv=gkCanvas();gkPlace(cv);const t=gkText(cv);if(t&&t!==GK.last){GK.last=t;if(window.gkDescribe)window.gkDescribe(t);gkPlace(cv)}}catch(e){}}
+setInterval(gkTick,400);
+function gkThe(x){return /^the /i.test(x)?x:"the "+x}
+function gkList(a){return a.length<2?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1]}
+function gkText(cv){
+  if(curTab==="atlas"){const q=AT.finished?null:AT.qs[AT.i];
+    if(!q)return "Outlines of the body in anterior (front), posterior (back) and side views. The round is complete; pick a mode above to play again.";
+    if(AT.mode==="dir"){const vn=q.v==="layers"?"layer diagram (skin, fat, muscle and bone of the thigh, from the surface down)":q.v==="side"?"side view":q.v==="back"?"posterior (back) view":"anterior (front) view";
+      return "Three panels: an anterior (front) view, a posterior (back) view and "+(q.v==="layers"?"a layer diagram from skin down to bone":"a side view")+" of the body. The "+vn+" is in focus and the others are dimmed. A red dot labelled A marks "+gkThe(q.an)+" and a blue dot labelled B marks "+gkThe(q.bn)+"."+(AT.chosen?" An orange arrow now points from B to A, labelled "+AT.chosen+".":"")}
+    if(AT.mode==="find"){let s="Anterior (front) and posterior (back) views of the body stand side by side. Your task: find the "+q.name+" region and click it, or choose it from the list under the picture.";
+      if(AT.hint&&!AT.done)s+=" A dashed gold box outlines the view that shows it.";
+      if(AT.clicked&&AT.clicked.r)s+=" The "+AT.clicked.r.name+" region you chose is shaded "+(AT.clicked.ok?"green with a tick: correct.":"orange: not this one.");return s}
+    return "Anterior (front) and posterior (back) views of the body. One region pulses in "+(AT.done?"green":"orange")+": "+q.plain+". Your task: name the highlighted region."}
+  if(curTab==="slice"){
+    if(SL.mode==="explore")return "Left: the "+ONM[SL.obj].toLowerCase()+" with a see-through blue "+PNAME[SL.plane].toLowerCase()+" plane passing through it ("+slPosText()+"). Right: the cut surface this plane makes, drawn flat, with its parts labelled. Move the position slider and the plane slides through the "+ONM[SL.obj].toLowerCase()+" while the section on the right changes.";
+    const q=SQ.qs[SQ.i];if(SQ.finished||!q)return "Plane quiz complete. Your stars are shown beside the picture.";
+    return SQ.done?"The answer is shown: a "+PNAME[q.plane].toLowerCase()+" plane slides into place through the "+ONM[q.obj].toLowerCase()+" on the left, and the matching section is on the right.":"Quiz: on the left, the whole "+ONM[q.obj].toLowerCase()+" with no plane drawn. On the right, a mystery section (cut surface) of it, with its orientation hidden. Which plane made this section?"}
+  if(curTab==="sort"){const R=soRound();const base=R.id==="cav"?"A midsagittal (side) view of the head and trunk, front of the body to the right, with outlined drop zones for the cranial, vertebral, thoracic, abdominal and pelvic cavities.":R.id==="chest"?"A front view of the chest as you face the patient, with drop zones for the right and left pleural cavities, the mediastinum and the pericardial cavity.":R.id==="quad"?"A front view of the abdomen as you face the patient, split into four quadrants by a vertical and a horizontal line through the navel.":"A front view of the abdomen as you face the patient, split into nine regions by a tic-tac-toe grid.";
+    const pl=Object.keys(SOR.placed).map(id=>soItem(id)[1]+" in the "+soZoneName(SOR.placed[id]).toLowerCase());
+    return base+" "+(pl.length?"Placed so far: "+gkList(pl)+".":"Nothing has been placed yet.")+" "+(R.items.length-pl.length)+" items are left to sort."}
+  if(LPM==="build"){const R=lbR();const filled=LB_SLOTS.map(s=>LB.placed[s.id]?s.name+": "+lbCard(LB.placed[s.id])[0]:s.name+": empty");
+    return "A feedback loop for "+R.name.toLowerCase()+", drawn as an oval with arrows going clockwise and four slots around it. "+filled.join(". ")+"."+(LB.typeDone?" A teal dot now travels around the loop, lighting each slot in turn.":"")}
+  if(LPM==="sim"){const T=SIM.T;const st=T>=40?"far too hot":T<35?"far too cold":T>37.5?"above the normal range":T<36.5?"below the normal range":"inside the normal range";
+    const eff=[];if(SIM.sweat>.1)eff.push("blue sweat drops on the skin");if(SIM.shiver>.2)eff.push("the body shaking with shivering");if(SIM.vd>.1)eff.push("skin flushed red from widened vessels");if(SIM.vd<-.1)eff.push("pale skin from narrowed vessels");
+    return "A body stands on the left with the hypothalamus marked in the head, beside a thermometer. A graph on the right shows core temperature as a teal line against a green normal band and a dashed set point at 37 °C, with room temperature as an orange dotted line. The core temperature is "+st+(SIM.resp?"":", and body responses are switched off")+". "+(eff.length?"You can see "+gkList(eff)+".":"No cooling or warming responses are showing.")+" A row of boxes below lights up teal for each active part of the loop."}
+  const st=PF.born?"The baby has been born: the cervix is no longer stretched, the bars stop, and the label says the loop ends at birth.":PF.k===0?"Labor has not started; the bar chart is empty.":"The chart shows "+PF.k+" teal bar"+(PF.k>1?"s":"")+", each taller than the last.";
+  return "On the left, a uterus drawn as a thick red wall around light blue fluid, with the baby's head pressing on the cervix at the bottom. A dotted yellow nerve path runs up to the brain and a dotted purple path brings oxytocin back from the pituitary. On the right, a bar chart of contraction strength. "+st}
+function gkLabels(){
+  if(curTab==="atlas"&&AT.finished)SA.cv.setAttribute("aria-label","Body figures: anterior, posterior and side views. Round complete.");
+  if(curTab==="loops"&&LPM==="sim")SM.cv.setAttribute("aria-label","Thermoregulation simulator: core temperature "+SIM.T.toFixed(1)+" °C, room "+SIM.room+" °C, "+ACTS.find(a=>a[0]===SIM.act)[1].toLowerCase()+", sweating "+Math.round(SIM.sweat*100)+"%, shivering "+Math.round(SIM.shiver*100)+"%"+(SIM.resp?"":", body responses off")+".");
+  if(curTab==="loops"&&LPM==="pos")SP.cv.setAttribute("aria-label","Positive feedback in childbirth: "+(PF.born?"baby born, loop ended":PF.k?PF.k+" of "+PF_MAX+" contractions, each stronger than the last":"labor not started")+".");
+  if(curTab==="loops"&&LPM==="build"){const n=Object.keys(LB.placed).length;SLB.cv.setAttribute("aria-label","Feedback loop for "+lbR().name+": "+n+" of 4 slots filled.")}}
+setInterval(gkLabels,700);
 /* test hooks */
 window.__bb={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),AT:()=>AT,SL:()=>SL,SQ:()=>SQ,SOR:()=>SOR,LB:()=>LB,SIM:()=>SIM,PF:()=>PF,
   atMode:m=>{AT.mode=m;atModes();atHow();atNewRound()},soPlace:(id,z)=>soPlace(id,z),soStart:i=>soStart(i),lbPlace:(id,z)=>lbPlace(id,z),lbStart:i=>lbStart(i),

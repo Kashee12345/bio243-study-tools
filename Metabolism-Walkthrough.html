@@ -149,7 +149,23 @@ footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
 footer a{color:var(--ink-soft)}
 .body a{color:var(--accent)}
 sub,sup{line-height:0}
+/* a11y: text contrast for act chips and "not quite" feedback (WCAG 2.1 AA) */
+:root{--warn-ink:#9A5220}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn-ink:var(--warn)}}
+:root[data-theme="dark"]{--warn-ink:var(--warn)}
+.fb.no{color:var(--warn-ink)}
+.actchip[data-act="act2"],.actchip[data-act="act3"]{color:#10161A}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .actchip[data-act="act4"]{background:#26786A!important}}
+:root[data-theme="light"] .actchip[data-act="act4"]{background:#26786A!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .actchip{color:#10161A}}
+:root[data-theme="dark"] .actchip{color:#10161A}
+.dot.done:not(.cur){border-width:3px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dot.cur{color:#0B1A20}}
+:root[data-theme="dark"] .dot.cur{color:#0B1A20}
+/* keep the site-kit tool button names available to screen readers when their labels are hidden on narrow screens */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -207,7 +223,7 @@ const ACTS={1:{name:"Part 1 · Energy basics",col:"act1"},
             4:{name:"Part 4 · Fed and fasting",col:"act4"},
             5:{name:"Part 5 · Energy, heat and nutrition",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: food in, ATP out",
+{desc:"Three boxes on the left stand for the fuels: carbohydrates (orange outline), fats (tan) and proteins (purple). Gray paths lead from each through its own step, glycolysis, beta-oxidation or deamination, and small coloured pieces travel along them into a green circle in the middle labelled Acetyl CoA. From there, acetyl CoA moves into a large orange ring labelled Krebs cycle, and small blue and purple trucks carry electrons to a tall striped membrane on the right labelled electron transport chain and ATP synthase. Green ATP tags stream out (\"ATP out\"), O2 comes in, CO2 leaves at the top, and a pink triangle under deamination marks ammonia going to urea in the liver.",act:0,scene:"map",id:"map",title:"The big picture: food in, ATP out",
  body:`<p><b>Metabolism</b> is every chemical reaction in your body. This chapter follows one big story: how the food you eat becomes <b>ATP</b>, the energy your cells spend.</p>
  <p>Watch the map. All three kinds of food feed into the same machinery:</p>
  <ul><li><b>Carbohydrates</b> become <b>glucose</b>, which is split in <b>glycolysis</b>.</li>
@@ -224,7 +240,7 @@ const STEPS=[
  caption:"Carbs, fats and proteins all flow toward acetyl CoA, the Krebs cycle, and the electron transport chain.",
  legend:[["glu","Glucose","hex"],["fat","Fatty acid","r"],["amino","Amino acid"],["acoa","Acetyl CoA"],["atp","ATP","r"]]},
 
-{act:1,scene:"cata",id:"cata",title:"Metabolism = catabolism + anabolism",
+{desc:"Two framed panels sit side by side. In the red \"Catabolism, break down\" panel, a chain of six yellow hexagons (a big molecule like glycogen) breaks apart into single pieces. Green ATP tags then travel along a gray track from left to right (\"ATP carries energy\") into the teal \"Anabolism, build up\" panel, where scattered purple dots (amino acids) gather together while the ATP tags are spent (\"Building uses energy\"). Spent ADP travels back along a second track from right to left to be recharged.",act:1,scene:"cata",id:"cata",title:"Metabolism = catabolism + anabolism",
  body:`<p>Metabolism has two sides that work together.</p>
  <p><b>Catabolism</b> breaks big molecules into smaller ones. Breaking bonds <b>releases energy</b>. Digesting food and burning glucose are catabolic.</p>
  <p><b>Anabolism</b> builds big molecules from small ones. Building <b>uses energy</b>. Making proteins, glycogen and fat are anabolic.</p>
@@ -239,7 +255,7 @@ const STEPS=[
  caption:"Left: catabolism breaks molecules and releases energy as ATP. Right: anabolism spends that ATP to build.",
  legend:[["atp","ATP (charged)","r"],["adp","ADP (spent)","r"],["glu","Big molecule pieces","hex"],["amino","Building blocks"]]},
 
-{act:1,scene:"atp",id:"atp",title:"ATP: the cell's energy currency",
+{desc:"An ATP molecule is drawn as a lilac box labelled adenine, a yellow pentagon labelled ribose and three brown circles labelled P, with the last bond marked \"high-energy bond\". The last phosphate snaps off and flies to a \"Cell work\" box, where a lightning bolt makes a pink muscle fiber contract, and a battery below drops from green \"Charged (ATP)\" to a short brown \"Low (ADP)\". Then a yellow glucose hexagon in the \"Food energy\" box fades as an orange dashed arrow carries its energy up to put the phosphate back on, and the battery returns to green. The cycle repeats, with the note \"ATP ⇌ ADP + Pi, recycled again and again\".",act:1,scene:"atp",id:"atp",title:"ATP: the cell's energy currency",
  body:`<p><b>ATP (adenosine triphosphate)</b> has a base called adenine, a sugar called ribose, and a tail of <b>three phosphate groups</b>.</p>
  <p>When the cell needs energy, it snaps off the last phosphate. ATP becomes <b>ADP</b> (adenosine <i>di</i>phosphate) plus a free phosphate, P<sub>i</sub>. The energy released powers work, like a muscle contracting or a pump moving ions.</p>
  <p>Energy from food is then used to stick the phosphate back on. ADP becomes ATP again. Cells recycle the same ATP over and over.</p>`,
@@ -253,7 +269,7 @@ const STEPS=[
  caption:"The last phosphate snaps off to power work (ATP → ADP + Pᵢ). Energy from food puts it back on.",
  legend:[["atp","ATP","r"],["adp","ADP","r"],["pi","Phosphate (Pᵢ)"],["glu","Glucose (fuel)","hex"]]},
 
-{act:1,scene:"redox",id:"redox",title:"Electron carriers: NADH and FADH₂ are delivery trucks",
+{desc:"Two roads run from left to right toward a tall striped membrane labelled electron transport chain. On the top road, an empty light blue truck labelled NAD+ drives to a yellow fuel molecule, two small electrons jump onto it (\"Fuel is OXIDIZED: loses e-\", \"NAD+ is REDUCED: gains e-\"), and the dark blue truck, now labelled NADH, drives to the membrane to unload. On the bottom road, a purple FAD truck does the same with a Krebs cycle molecule and becomes FADH2. After unloading, each truck turns pale and drives back empty to reload, under a purple banner \"OIL RIG: Oxidation Is Loss, Reduction Is Gain\".",act:1,scene:"redox",id:"redox",title:"Electron carriers: NADH and FADH₂ are delivery trucks",
  body:`<p>Much of the energy in food is held in its <b>electrons</b>. Cells move those electrons in <b>oxidation-reduction (redox) reactions</b>.</p>
  <ul><li><b>Oxidation</b> means a molecule <b>loses</b> electrons. Food is oxidized.</li>
  <li><b>Reduction</b> means a molecule <b>gains</b> electrons.</li></ul>
@@ -268,7 +284,7 @@ const STEPS=[
  caption:"Empty NAD⁺ and FAD trucks load electrons from food, drive them to the electron transport chain, unload, and return.",
  legend:[["nad","NAD⁺ / NADH truck","r"],["fad","FAD / FADH₂ truck","r"],["elec","Electron (e⁻)"],["glu","Food molecule","hex"]]},
 
-{act:2,scene:"overview",id:"overview",title:"Cellular respiration: three stages, two places",
+{desc:"A large tan oval cell, labelled cytoplasm, contains a pink mitochondrion with folded inner walls. Three numbered stations light up in turn: (1) a glycolysis box in the cytoplasm where a yellow glucose hexagon splits into two orange pyruvate pieces and two ATP tags, (2) a gray ring in the mitochondrial matrix labelled Krebs cycle that turns orange as pyruvate enters, and (3) a column of purple blocks on the inner membrane labelled ETC, which lights up as O2 comes in. A caption at the bottom names each stage, and the equation for cellular respiration is written across the top.",act:2,scene:"overview",id:"overview",title:"Cellular respiration: three stages, two places",
  body:`<p><b>Cellular respiration</b> breaks glucose all the way down to carbon dioxide and water and captures the energy as ATP. Overall:</p>
  <p style="font-family:var(--mono);font-size:14px">C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O + ATP + heat</p>
  <ol><li><b>Glycolysis</b> happens in the <b>cytoplasm</b>.</li>
@@ -285,7 +301,7 @@ const STEPS=[
  caption:"Glucose is split in the cytoplasm (1), finished in the mitochondrial matrix (2), and the electron transport chain makes most ATP (3).",
  legend:[["glu","Glucose","hex"],["pyr","Pyruvate"],["o2","O₂"],["co2","CO₂"],["atp","ATP","r"]]},
 
-{act:2,scene:"glyco",id:"glyco",title:"Glycolysis: splitting glucose in the cytoplasm",
+{desc:"On a tan background labelled cytoplasm and O2 not needed, a yellow hexagon labelled glucose (6 C) receives two brown phosphates from ATP, which leave as pale ADP tags (\"1, Investment: spend 2 ATP\"). The glucose then splits into two yellow 3-carbon halves, and each half gives off ATP and loads a blue NAD+ truck (\"3, Payoff\"). At the end, two orange triangle-shaped clusters labelled pyruvate (3 C) remain. A row of counters at the bottom tracks ATP spent (2), ATP made (4), net ATP (going from -2 to +2) and NADH loaded (2).",act:2,scene:"glyco",id:"glyco",title:"Glycolysis: splitting glucose in the cytoplasm",
  body:`<p><b>Glycolysis</b> means "sugar splitting." One 6-carbon <b>glucose</b> is split into two 3-carbon molecules of <b>pyruvate</b>. It happens in the <b>cytoplasm</b> and <b>does not need oxygen</b>.</p>
  <ol><li><b>Investment:</b> the cell spends <b>2 ATP</b> to add phosphates to glucose. This primes it to split.</li>
  <li><b>Split:</b> glucose breaks into two 3-carbon halves.</li>
@@ -301,7 +317,7 @@ const STEPS=[
  caption:"Invest 2 ATP, split glucose, then each half pays back 2 ATP and 1 NADH. Net: 2 pyruvate, 2 ATP, 2 NADH.",
  legend:[["glu","Glucose (6 C)","hex"],["pyr","Pyruvate (3 C)"],["atp","ATP","r"],["adp","ADP","r"],["nad","NAD⁺ / NADH","r"]]},
 
-{act:2,scene:"lactate",id:"lactate",title:"No oxygen? Pyruvate becomes lactate",
+{desc:"An oxygen supply bar at the top right is short and brown, labelled LOW, with the note that during hard exercise the ETC can't empty NADH. Yellow glucose hexagons enter an orange glycolysis box (\"needs NAD+\"), which gives off orange pyruvate pieces and a green ATP tag. A blue NADH truck drives along a dashed loop to a pink box labelled \"Pyruvate → Lactate\", hands over its electrons, and pink lactate pieces leave toward the blood and the liver. The empty NAD+ truck drives back to glycolysis so it can keep going, and a box at the bottom says the net ATP per glucose without oxygen is 2.",act:2,scene:"lactate",id:"lactate",title:"No oxygen? Pyruvate becomes lactate",
  body:`<p>Glycolysis keeps running only if it has empty <b>NAD⁺</b> trucks to load. Normally the electron transport chain empties NADH. But that chain needs oxygen.</p>
  <p>When oxygen is low, like in a hard sprint, cells use <b>anaerobic</b> metabolism (fermentation). Pyruvate takes the electrons from NADH and becomes <b>lactate</b> (lactic acid). That frees NAD⁺, so glycolysis can keep going.</p>
  <p>The catch: you only get <b>2 ATP per glucose</b>. Lactate goes into the blood, and the <b>liver</b> can turn it back into glucose later.</p>`,
@@ -315,7 +331,7 @@ const STEPS=[
  caption:"With little oxygen, pyruvate takes electrons from NADH and becomes lactate. The freed NAD⁺ returns to glycolysis.",
  legend:[["glu","Glucose","hex"],["pyr","Pyruvate"],["lact","Lactate","s"],["nad","NAD⁺ / NADH","r"],["atp","ATP","r"]]},
 
-{act:2,scene:"link",id:"link",title:"Into the mitochondrion: pyruvate → acetyl CoA",
+{desc:"The picture is split by a double membrane with purple transport channels: tan cytoplasm on the left and pink mitochondrial matrix on the right, with a tag saying this happens twice per glucose. An orange 3-carbon pyruvate is carried across both membranes into the matrix. There, one carbon leaves as a gray CO2 molecule, a blue NADH truck is loaded with electrons and drives off, and the remaining 2-carbon piece (two teal dots) joins a teal tag labelled CoA (\"Coenzyme A attaches\") to become acetyl CoA.",act:2,scene:"link",id:"link",title:"Into the mitochondrion: pyruvate → acetyl CoA",
  body:`<p>When oxygen is present, each pyruvate is carried into the <b>mitochondrial matrix</b>.</p>
  <p>There, one carbon is removed and leaves as <b>carbon dioxide (CO₂)</b>. Electrons are loaded onto NAD⁺, making <b>NADH</b>. The leftover 2-carbon piece is attached to <b>coenzyme A</b>, forming <b>acetyl CoA</b>.</p>
  <p>This happens twice for each glucose: 2 pyruvate give <b>2 acetyl CoA, 2 CO₂ and 2 NADH</b>.</p>`,
@@ -329,7 +345,7 @@ const STEPS=[
  caption:"Pyruvate enters the matrix, loses one carbon as CO₂, loads an NADH, and picks up CoA to become acetyl CoA.",
  legend:[["pyr","Pyruvate"],["co2","CO₂"],["acoa","Acetyl CoA"],["nad","NAD⁺ / NADH","r"]]},
 
-{act:2,scene:"krebs",id:"krebs",title:"The citric acid (Krebs) cycle turns",
+{desc:"A large gray ring with orange dashed arrows, in the mitochondrial matrix, shows the Krebs cycle turning clockwise. A cluster of brown dots travels around the ring, and the label in the middle counts down from \"Citrate (6 C)\" to 5 C and 4 C as gray CO2 molecules leave; along the way blue NADH trucks, a purple FADH2 truck and a green ATP tag drive off the ring. A panel on the right fills in circles to count this turn's products: NADH 3, FADH2 1, ATP 1 and CO2 2. The middle text shows \"Turn 1 of 2\" then \"Turn 2 of 2\", and a note says one glucose gives 6 NADH, 2 FADH2, 2 ATP and 4 CO2.",act:2,scene:"krebs",id:"krebs",title:"The citric acid (Krebs) cycle turns",
  body:`<p>In the matrix, acetyl CoA (2 carbons) joins a 4-carbon molecule called <b>oxaloacetate</b> to form 6-carbon <b>citrate</b>. That is why this is called the <b>citric acid cycle</b> (also the <b>Krebs cycle</b> or TCA cycle).</p>
  <p>As the cycle turns, the two carbons are removed as <b>2 CO₂</b>, and oxaloacetate is rebuilt to start again. Along the way, <b>each turn</b> (one acetyl CoA) makes:</p>
  <ul><li><b>3 NADH</b> and <b>1 FADH₂</b> (loaded trucks)</li><li><b>1 ATP</b> (made as GTP)</li><li><b>2 CO₂</b></li></ul>
@@ -344,7 +360,7 @@ const STEPS=[
  caption:"Acetyl CoA joins oxaloacetate. Each turn releases 2 CO₂ and makes 3 NADH, 1 FADH₂ and 1 ATP.",
  legend:[["acoa","Acetyl CoA (2 C)"],["gly","Cycle carbons"],["co2","CO₂"],["nad","NADH","r"],["fad","FADH₂","r"],["atp","ATP (GTP)","r"]]},
 
-{act:2,scene:"etc",id:"etc",title:"The electron transport chain pumps H⁺",
+{desc:"A tan striped membrane runs across the middle, with the intermembrane space above and the matrix below. Purple protein complexes labelled I, III and IV, a smaller magenta complex II, a yellow Q carrier and a red cyt c carrier sit in it, joined by a yellow dashed path. A blue NADH truck drops electrons at complex I, the electrons hop along the path to complex IV, and each hop pumps red H+ dots up into the space above, so a counter (\"H+ in IMS\") climbs. At complex IV, O2 takes the electrons and a blue water drop forms, a small chart shows the electron's energy stepping down, and in another round a FADH2 truck drops electrons at complex II, skipping the first pump.",act:2,scene:"etc",id:"etc",title:"The electron transport chain pumps H⁺",
  body:`<p>The loaded trucks drive to the <b>inner mitochondrial membrane</b>. Here sits the <b>electron transport chain (ETC)</b>: four protein complexes (I to IV) plus two small carriers (ubiquinone and cytochrome c).</p>
  <p>NADH drops its electrons at complex I. FADH₂ drops its electrons at complex II, a little further down. The electrons are passed from one complex to the next, losing a bit of energy at each step.</p>
  <p>That energy is used to <b>pump hydrogen ions (H⁺)</b> from the matrix into the <b>intermembrane space</b>. H⁺ piles up there.</p>
@@ -359,7 +375,7 @@ const STEPS=[
  caption:"Electrons hop along the chain. Each hop powers H⁺ pumps. At complex IV, O₂ takes the electrons and forms water.",
  legend:[["elec","Electron (e⁻)"],["hplus","H⁺"],["o2","O₂"],["water","H₂O"],["nad","NADH","r"],["fad","FADH₂","r"]]},
 
-{act:2,scene:"synthase",id:"synthase",title:"Chemiosmosis: ATP synthase spins",
+{desc:"The upper area, labelled \"Intermembrane space: lots of H+\", is crowded with red H+ dots, while the matrix below has few. A teal ATP synthase sits in the tan membrane: a rotor ring at the top, a black stalk and a round head below, with a pale purple ETC complex to the left pumping H+ up. Red H+ dots flow down through the rotor (a long red arrow says \"H+ flows down its gradient\"), the rotor spins, and the head joins gray ADP tags and brown P dots into green ATP tags. A box counts ATP made, rising from 1 to 18 and beyond.",act:2,scene:"synthase",id:"synthase",title:"Chemiosmosis: ATP synthase spins",
  body:`<p>Now there is a lot of H⁺ in the intermembrane space and little in the matrix. H⁺ "wants" to flow back, down its gradient.</p>
  <p>The only open door is an enzyme called <b>ATP synthase</b>. As H⁺ flows through it, part of the enzyme <b>spins like a turbine</b>. The spinning snaps phosphates onto ADP, making <b>ATP</b>.</p>
  <p>Using an H⁺ gradient to make ATP is called <b>chemiosmosis</b>. Together, the ETC and chemiosmosis make up <b>oxidative phosphorylation</b>, which makes most of the body's ATP.</p>`,
@@ -373,7 +389,7 @@ const STEPS=[
  caption:"H⁺ rushes back through ATP synthase. The rotor spins and ADP + Pᵢ are joined into ATP.",
  legend:[["hplus","H⁺"],["adp","ADP","r"],["pi","Pᵢ"],["atp","ATP","r"]]},
 
-{act:2,scene:"yield",id:"yield",title:"Adding it up: about 36 ATP per glucose",
+{desc:"On the left, rows of a tally appear one at a time: glycolysis (2 ATP, 2 NADH), pyruvate to acetyl CoA (2 NADH), Krebs cycle twice (2 ATP, 6 NADH, 2 FADH2), ETC with 10 NADH times 3 (30 ATP) and ETC with 2 FADH2 times 2 (4 ATP), with small truck icons for NADH and FADH2. On the right, green ATP tags drop one by one into a tall bin as an \"ATP count\" climbs to 38. At the end, a gross total of 38 ATP is shown in green, minus 2 ATP in orange for moving glycolysis NADH into the mitochondrion, giving a net of about 36 ATP per glucose.",act:2,scene:"yield",id:"yield",title:"Adding it up: about 36 ATP per glucose",
  body:`<p>OpenStax counts about <b>3 ATP for each NADH</b> and about <b>2 ATP for each FADH₂</b> that reaches the ETC. Per glucose:</p>
  <ul><li>Glycolysis: 2 ATP, 2 NADH</li><li>Pyruvate → acetyl CoA: 2 NADH</li><li>Krebs cycle (2 turns): 2 ATP, 6 NADH, 2 FADH₂</li><li>ETC: 10 NADH × 3 = 30 ATP, plus 2 FADH₂ × 2 = 4 ATP</li></ul>
  <p>That is 38 ATP. Moving the 2 NADH from glycolysis into the mitochondrion costs 2 ATP, so OpenStax gives a <b>net of 36 ATP</b> per glucose.</p>
@@ -388,7 +404,7 @@ const STEPS=[
  caption:"Each loaded truck is cashed in at the ETC. 38 ATP gross, minus 2 to move glycolysis NADH: about 36 (OpenStax).",
  legend:[["atp","ATP","r"],["nad","NADH (≈3 ATP)","r"],["fad","FADH₂ (≈2 ATP)","r"]]},
 
-{act:3,scene:"gng",id:"gng",title:"Gluconeogenesis: making new glucose",
+{desc:"A big pink oval liver cell, labelled hepatocyte, sits between source tissues on the left and a vertical blood vessel on the right, under a red banner \"Fasting: glucagon and cortisol turn this on\". Pink lactate pieces come from muscle, gray glycerol pieces from a cluster of fat cells, and purple and red amino acids from muscle protein, all moving into the cell. They become orange 3-carbon pieces (\"Pyruvate and other 3-C pieces\"), which enter a dashed box labelled gluconeogenesis that uses green ATP, and yellow glucose hexagons come out and travel into the blood toward the brain and red blood cells. A boxed note shows a fatty acid crossed out in red: \"Fatty acids cannot become glucose\".",act:3,scene:"gng",id:"gng",title:"Gluconeogenesis: making new glucose",
  body:`<p>Your brain and red blood cells depend on glucose. When you have not eaten for a while, the <b>liver</b> (and to a smaller degree the kidneys) builds new glucose. This is <b>gluconeogenesis</b> ("making new glucose").</p>
  <p>The raw materials are not carbohydrates. They are <b>lactate</b> (from muscles), <b>glycerol</b> (from fat), and some <b>amino acids</b> such as alanine and glutamine (from protein), plus pyruvate.</p>
  <p>It costs ATP. It is turned on by <b>glucagon</b> and cortisol during fasting. Note: fatty acids cannot be turned into glucose. Only the glycerol part of fat can.</p>`,
@@ -402,7 +418,7 @@ const STEPS=[
  caption:"Lactate, glycerol and amino acids flow into a liver cell and are built into new glucose, which goes out to the blood.",
  legend:[["lact","Lactate","s"],["glycerol","Glycerol","s"],["amino","Amino acid"],["glu","New glucose","hex"],["atp","ATP spent","r"]]},
 
-{act:3,scene:"glycogen",id:"glycogen",title:"Glycogen: saving and spending glucose",
+{desc:"A blood vessel runs across the top, above a big liver cell on the left and a rounded muscle fiber on the right. After a meal, a blue banner says \"Glycogenesis, after a meal, insulin\": blue insulin dots fill the blood, and yellow glucose hexagons move into both cells and join brown branching chains of glycogen, while a counter of glucose units in the liver climbs past 30. Between meals, a red banner says \"Glycogenolysis, between meals, glucagon (liver), epinephrine\": red glucagon triangles fill the blood and the chains shrink. The liver sends its glucose up into the blood (\"Liver sends glucose to the blood\"), but the muscle keeps its glucose and burns it itself (\"own glycolysis → ATP\", \"not to blood\").",act:3,scene:"glycogen",id:"glycogen",title:"Glycogen: saving and spending glucose",
  body:`<p><b>Glycogen</b> is the body's stored form of glucose. It is a big branched chain of glucose units, kept in the <b>liver</b> and <b>skeletal muscle</b>.</p>
  <p><b>Glycogenesis</b> builds glycogen after a meal, when glucose is plentiful. <b>Insulin</b> turns it on.</p>
  <p><b>Glycogenolysis</b> breaks glycogen back into glucose between meals. <b>Glucagon</b> (and epinephrine) turns it on.</p>
@@ -417,7 +433,7 @@ const STEPS=[
  caption:"After a meal, insulin builds glycogen. Between meals, glucagon breaks it down. The liver sends its glucose to the blood; muscle keeps its own.",
  legend:[["glu","Glucose","hex"],["gly","Glycogen","hex"],["ins","Insulin"],["gcg","Glucagon","tri"]]},
 
-{act:3,scene:"beta",id:"beta",title:"Burning fat: lipolysis and beta-oxidation",
+{desc:"On the left, a round yellow fat cell holds a triglyceride, drawn as three gray glycerol blocks with three yellow zigzag fatty acid tails. A pair of scissors (lipase) cuts the tails off, the glycerol leaves toward the liver, and a fatty acid moves into a large pink mitochondrion with folded inner walls. Inside, the scissors cut two carbons at a time from the end of the zigzag chain; each 2-carbon piece becomes teal acetyl CoA headed to the orange Krebs cycle ring, while blue NADH and purple FADH2 trucks leave for the ETC. A counter at the bottom shows the cuts (up to 7) and acetyl CoA made (up to 8), and the label shows the carbons left in the chain dropping from 16 to 2.",act:3,scene:"beta",id:"beta",title:"Burning fat: lipolysis and beta-oxidation",
  body:`<p>Fat is stored as <b>triglycerides</b>: one <b>glycerol</b> backbone with three <b>fatty acid</b> chains.</p>
  <p><b>Lipolysis</b> splits a triglyceride into glycerol and three fatty acids. Glycerol can go to the liver and become glucose.</p>
  <p>The fatty acids enter mitochondria. In <b>beta-oxidation</b>, the chain is chopped off <b>two carbons at a time</b>. Each chop makes one <b>acetyl CoA</b> and loads an NADH and an FADH₂. The acetyl CoA goes into the Krebs cycle.</p>
@@ -432,7 +448,7 @@ const STEPS=[
  caption:"Lipase splits a triglyceride. The fatty acid enters a mitochondrion and is cut two carbons at a time into acetyl CoA.",
  legend:[["fat","Fatty acid","r"],["glycerol","Glycerol","s"],["acoa","Acetyl CoA"],["nad","NADH","r"],["fad","FADH₂","r"]]},
 
-{act:3,scene:"keto",id:"keto",title:"Ketogenesis: when carbohydrate is scarce",
+{desc:"A large pink liver cell receives many yellow zigzag fatty acids from the upper left, and teal acetyl CoA pairs pile up in the middle (\"Acetyl CoA piles up\"), while a faded gray Krebs cycle ring slows down. Pairs of acetyl CoA join into orange pentagon-shaped ketone bodies, which leave through a vertical blood vessel to the heart, the brain (in starvation) and muscle, which use them for ATP. A Blood pH gauge at the lower left stays at 7.40 in green under the banner \"Long fast / low-carb\". Then the banner turns dark red (\"Uncontrolled type 1 diabetes: ketones pile up\"), the vessel fills with ketones and red H+ dots, the gauge drops to 7.21 marked ACIDOSIS, and a label notes \"Acetone → fruity breath\".",act:3,scene:"keto",id:"keto",title:"Ketogenesis: when carbohydrate is scarce",
  body:`<p>During a long fast, a very low-carbohydrate diet, or uncontrolled diabetes, the liver burns lots of fat. Acetyl CoA piles up faster than the Krebs cycle can use it, partly because oxaloacetate is being pulled away to make glucose.</p>
  <p>The liver joins the extra acetyl CoA into <b>ketone bodies</b> (acetoacetate, beta-hydroxybutyrate, and acetone). This is <b>ketogenesis</b>. Ketone bodies travel in the blood to the heart, muscles and, during starvation, the brain, which turn them back into acetyl CoA for fuel.</p>
  <p>Ketone bodies are acids. If they build up too fast, as in uncontrolled <b>type 1 diabetes</b>, blood pH drops. This dangerous state is <b>ketoacidosis</b>. Acetone can give the breath a fruity smell.</p>`,
@@ -446,7 +462,7 @@ const STEPS=[
  caption:"Extra acetyl CoA in the liver is packed into ketone bodies, shipped to other organs, and in excess lowers blood pH.",
  legend:[["acoa","Acetyl CoA"],["ketone","Ketone body","pent"],["fat","Fatty acid","r"],["hplus","Acid (H⁺)"]]},
 
-{act:3,scene:"lipogen",id:"lipogen",title:"Lipogenesis: storing extra fuel as fat",
+{desc:"A blood vessel full of yellow glucose hexagons and blue insulin dots runs down the left side, beside a large tan cell labelled liver or fat cell, under a blue banner \"Fed state: insulin says build and store\". Glucose enters the cell and passes through a glycolysis box, becoming teal acetyl CoA pairs. The pairs are linked onto a growing yellow zigzag chain, and a label counts \"Adds 2 carbons at a time\" from 2 C up to 16 C, using green ATP that turns into gray ADP. The finished fatty acid moves into a round yellow stored fat droplet at the right.",act:3,scene:"lipogen",id:"lipogen",title:"Lipogenesis: storing extra fuel as fat",
  body:`<p>When you eat more than you need, cells do not waste the extra. In the liver and fat tissue, extra glucose (and extra amino acids) are broken down to <b>acetyl CoA</b>.</p>
  <p>Then the cell runs fat-burning in reverse. In <b>lipogenesis</b>, acetyl CoA units are linked <b>two carbons at a time</b> into new fatty acids. Three fatty acids are attached to glycerol to make a <b>triglyceride</b>, which is stored in adipose tissue.</p>
  <p>Lipogenesis is anabolic, so it costs ATP. <b>Insulin</b> turns it on after a meal.</p>`,
@@ -460,7 +476,7 @@ const STEPS=[
  caption:"Extra glucose becomes acetyl CoA. Units are linked 2 carbons at a time into fatty acids, packed as triglyceride, and stored.",
  legend:[["glu","Glucose","hex"],["acoa","Acetyl CoA"],["fat","Fatty acid","r"],["glycerol","Glycerol","s"],["ins","Insulin"]]},
 
-{act:3,scene:"urea",id:"urea",title:"Protein: deamination and the urea cycle",
+{desc:"Purple and red amino acids (from extra food or muscle) arrive at the upper left of a large pink liver cell, and sometimes a whole protein chain is shown being split into them first. One amino acid moves into a dashed box labelled deamination, where its red amino group is removed as a dark pink triangle labelled NH3 (toxic). The triangle enters a green ring labelled urea cycle and becomes urea, which travels through a vertical blood vessel to a dark red kidney (\"Kidneys → urine\"). The leftover purple carbon skeleton moves away with the label \"Carbon skeleton → pyruvate, acetyl CoA or Krebs\", giving off CO2.",act:3,scene:"urea",id:"urea",title:"Protein: deamination and the urea cycle",
  body:`<p>Amino acids are mostly used to <b>build</b> proteins. But extra amino acids, or muscle protein during a long fast, can be used as fuel.</p>
  <p>First the nitrogen-containing <b>amino group</b> must come off. This is <b>deamination</b>. The nitrogen becomes <b>ammonia (NH₃)</b>, which is toxic.</p>
  <p>The <b>liver</b> turns ammonia and CO₂ into much safer <b>urea</b> in the <b>urea cycle</b>. Urea goes into the blood and the kidneys excrete it in urine.</p>
@@ -475,7 +491,7 @@ const STEPS=[
  caption:"Amino acids lose their amino group as ammonia. The liver turns ammonia into urea for the kidneys. The carbon skeleton becomes fuel.",
  legend:[["amino","Amino acid"],["nh3","Ammonia (NH₃)","tri"],["urea","Urea","d"],["acoa","Carbon skeleton → fuel"]]},
 
-{act:4,scene:"fed",id:"fed",title:"The absorptive (fed) state: insulin says store",
+{desc:"A pink rectangular loop of blood vessel is surrounded by organs: the gut absorbing a meal at the upper left, the pancreas at the top releasing blue insulin dots, the liver on the left, the brain at the upper right, and skeletal muscle and yellow adipose tissue (fat cells) on the right. Yellow glucose, purple amino acids and fat pieces pour from the gut into the loop and move into the liver, muscle and fat, where brown glycogen chains grow and fat cells fill up. A panel in the middle shows the time after the meal, a blue insulin bar rising to high and a red glucagon bar staying low, blood glucose rising to about 133 mg/dL and then falling, and the words \"Insulin says: STORE fuel\". Switches beside each organ show storing processes ON in green (glycogenesis, lipogenesis, glucose uptake, protein synthesis, triglyceride storage) and releasing processes off in gray.",act:4,scene:"fed",id:"fed",title:"The absorptive (fed) state: insulin says store",
  body:`<p>The <b>absorptive state</b> is the time while a meal is being digested and absorbed. It can last up to about <b>4 hours</b>.</p>
  <p>Blood glucose rises, and the pancreas releases <b>insulin</b>. Insulin is the "store it" signal:</p>
  <ul><li><b>Liver:</b> takes up glucose, makes glycogen (glycogenesis) and fat (lipogenesis).</li>
@@ -491,7 +507,7 @@ const STEPS=[
  caption:"Fed state: nutrients pour into the blood, insulin rises, and the liver, muscle and fat tissue store fuel.",
  legend:[["glu","Glucose","hex"],["amino","Amino acid"],["fat","Fat","r"],["ins","Insulin"]]},
 
-{act:4,scene:"fast",id:"fast",title:"The postabsorptive (fasting) state: glucagon says release",
+{desc:"The same loop of blood vessel and organs is shown, but now the gut is empty and the pancreas releases red glucagon triangles. The liver's glycogen chain shrinks as glucose hexagons leave it, gray glycerol and yellow fatty acid pieces leave the fat cells, and muscle burns fatty acids. The middle panel shows the time since the meal growing from 5 to 11 hours and then day 1 of fasting, a short blue insulin bar, a red glucagon bar rising to high, blood glucose easing from 88 to 79 mg/dL, and \"Glucagon says: RELEASE fuel\". The switches flip so that glycogenolysis, gluconeogenesis and lipolysis are ON, and on day 1 ketogenesis turns ON too, with orange ketone pentagons flowing to the brain.",act:4,scene:"fast",id:"fast",title:"The postabsorptive (fasting) state: glucagon says release",
  body:`<p>The <b>postabsorptive state</b> begins when the meal has been digested, absorbed and stored. Blood glucose starts to fall, insulin drops, and the pancreas releases <b>glucagon</b>.</p>
  <ul><li><b>Liver:</b> breaks down glycogen (glycogenolysis) and makes new glucose (gluconeogenesis). It sends glucose to the blood for the brain.</li>
  <li><b>Adipose tissue:</b> breaks down triglycerides (lipolysis). Fatty acids feed muscle and liver; glycerol goes to the liver.</li>
@@ -507,7 +523,7 @@ const STEPS=[
  caption:"Fasting: insulin falls, glucagon rises. The liver releases glucose, fat tissue releases fatty acids, and later the liver makes ketones.",
  legend:[["glu","Glucose","hex"],["fat","Fatty acid","r"],["glycerol","Glycerol","s"],["gcg","Glucagon","tri"],["ketone","Ketone body","pent"]]},
 
-{act:5,scene:"bmr",id:"bmr",title:"Energy balance and metabolic rate",
+{desc:"A seesaw has a tray of yellow food blocks on the left (energy in) and a tray of red, teal and brown blocks on the right (energy out: BMR, activity and digestion). When both are 2,200 kcal, the beam is level and the banner says \"Balanced: weight stays steady\". When energy in rises to 2,900 kcal, the left side drops and a yellow fat circle in a person's outline grows (\"extra stored as fat\"); when energy out rises to 2,700 kcal, the right side drops and the fat circle shrinks (\"stored fat is used\"). A pie chart shows daily energy use with BMR as the biggest red slice, and a row of tags at the bottom highlights things that change BMR, such as more lean muscle, older age and thyroid hormone.",act:5,scene:"bmr",id:"bmr",title:"Energy balance and metabolic rate",
  body:`<p>Food energy is measured in <b>kilocalories</b> (kcal, the "Calories" on food labels).</p>
  <p>The <b>basal metabolic rate (BMR)</b> is the energy your body uses at rest, in a comfortable temperature, after fasting. It keeps the heart beating, lungs breathing, and cells pumping ions. BMR is the biggest part of the energy you use each day. Physical activity and digesting food add the rest.</p>
  <p>BMR is higher with more <b>lean muscle mass</b> and more activity, and it usually <b>drops with age</b> as muscle is lost. Thyroid hormone raises it.</p>
@@ -522,7 +538,7 @@ const STEPS=[
  caption:"The scale tips with energy in versus energy out. Extra energy is stored as fat; a shortfall is taken from stores.",
  legend:[["glu","Energy in (food)","s"],["heat","BMR","s"],["act4","Activity","s"],["adipose","Fat store"]]},
 
-{act:5,scene:"heat",id:"heat",title:"Body temperature: making and losing heat",
+{desc:"A person stands in a cool room between a cool wall on the left and a cold tile floor, with a red-orange glow in the chest labelled \"Core about 37 °C, metabolism makes heat\" and a note that the hypothalamus is the thermostat. Each way of losing heat is highlighted in turn by a purple banner: red wavy lines travel from the body to the wall for radiation (about 60%), blue sweat drops form on the skin and rise as vapor for evaporation (about 20%), blue dashed arrows of moving air sweep up past the body for convection (about 15%), and red dots flow from the feet into the floor for conduction (about 3%). The active label gets an outline while the others fade.",act:5,scene:"heat",id:"heat",title:"Body temperature: making and losing heat",
  body:`<p>Metabolism is not perfectly efficient. Much of the energy in food becomes <b>heat</b>, and that heat keeps your core near <b>37 °C</b> (98.6 °F). The <b>hypothalamus</b> acts as the thermostat.</p>
  <p>Heat leaves the body four ways (OpenStax, at rest):</p>
  <ul><li><b>Radiation</b> (about 60%): heat given off as infrared rays to cooler objects.</li>
@@ -540,7 +556,7 @@ const STEPS=[
  caption:"Metabolism makes heat in the core. It leaves by radiation, evaporation, convection and conduction (percentages at rest).",
  legend:[["heat","Heat (radiation)"],["water","Sweat / vapor"],["air","Air current"],["cold","Into cool surface"]]},
 
-{act:5,scene:"nutri",id:"nutri",title:"Nutrition: fuels, vitamins and minerals",
+{desc:"A round plate at the upper left is divided into slices for carbs (yellow, biggest), proteins (purple) and lipids (pale yellow). Pieces move from the plate to the right: yellow glucose hexagons, yellow zigzag fatty acids and purple amino acids, next to cards that explain each fuel. Below, a yellow box for fat-soluble vitamins A, D, E and K fills up with purple diamonds that stay (\"stored in liver and fat; can build up\"), while in a blue box for water-soluble B and C vitamins, extra diamonds drop out with a blue drop labelled urine. A mineral list on the right highlights calcium, iron, sodium and potassium, and iodine one at a time with their jobs.",act:5,scene:"nutri",id:"nutri",title:"Nutrition: fuels, vitamins and minerals",
  body:`<p>A <b>nutrient</b> is a substance in food the body needs. The three fuels are:</p>
  <ul><li><b>Carbohydrates:</b> broken into glucose. The main quick fuel.</li>
  <li><b>Lipids:</b> fatty acids and glycerol. Long-term energy storage, cell membranes, and steroid hormones.</li>
@@ -557,7 +573,7 @@ const STEPS=[
  caption:"Carbs, lipids and proteins are broken into their building blocks. Fat-soluble vitamins are stored; water-soluble extras wash out.",
  legend:[["glu","Glucose","hex"],["fat","Fatty acid","r"],["amino","Amino acid"],["fad","Vitamin","d"],["co2","Mineral","s"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole map.",
+{desc:"This is the same pathway map as the first step: carbohydrates, fats and proteins on the left feed through glycolysis, beta-oxidation and deamination into acetyl CoA, then the orange Krebs cycle ring and the electron transport chain on the right, where green ATP tags stream out. Small orange and red tags now mark which part of the walkthrough covered each piece (Part 2 for glycolysis, Krebs and electron transport, Part 3 for beta-oxidation and deamination). A dashed green box for stores (glycogen and triglyceride) is added, a red glow and the label \"heat (Part 5)\" appear by the chain, and a green banner at the top reads \"Fed: insulin stores, Fasting: glucagon releases\".",act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole map.",
  body:`<ol class="recap">
  <li class="h">Part 1 · Energy basics</li>
  <li>Catabolism breaks down and releases energy; anabolism builds up and uses it.</li><li>ATP → ADP + Pᵢ releases usable energy. Food recharges ADP.</li><li>NAD⁺ → NADH and FAD → FADH₂ carry electrons (reduction = gain).</li>
@@ -597,13 +613,13 @@ function buildChain(){
     d.appendChild(dots);chainEl.appendChild(d);
   });
 }
-function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i));if(i===cur)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current")})}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.remove("gk-oninv");b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i));if(i===cur)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current");b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title+(done.has(i)?" (answered)":""))})}
 function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
   return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" data-act="${a.col}" style="background:var(--${a.col})">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -612,6 +628,7 @@ function render(){
   $("#terms").style.display=s.terms.length?"":"none";
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

@@ -153,7 +153,17 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 sub,sup{line-height:0}
 footer a{color:var(--ink-soft)}
+
+/* accessibility retrofit (WCAG 2.1 AA contrast) */
+:root{--chip-ink:#fff;--act1-chip:#7B5CC9;--act2-chip:#A06614;--act3-chip:#B25A47;--act4-chip:#2A8071;--act5-chip:#A04E8C;--warn-ink:#A05825}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--chip-ink:#10161A;--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--warn-ink:var(--warn)}}
+:root[data-theme="dark"]{--chip-ink:#10161A;--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5);--warn-ink:var(--warn)}
+.actchip{color:var(--chip-ink)}
+.dot.cur{color:var(--chip-ink)}
+.fb.no{color:var(--warn-ink)}
+#body a,footer a{color:var(--accent)}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -211,7 +221,8 @@ const ACTS={1:{name:"Part 1 · Membrane & passive transport",col:"act1"},
             4:{name:"Part 4 · DNA to protein",col:"act4"},
             5:{name:"Part 5 · Dividing & specializing",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",id:"map",title:"The big picture: a tour of the cell",
+{act:0,desc:"A large oval cell fills the picture, outlined by a gold dotted plasma membrane. Inside are a purple round nucleus with a dark nucleolus and tangled threads, pink curved layers of rough ER dotted with ribosomes beside it, a teal stack of Golgi, orange bean-shaped mitochondria, small purple lysosomes and yellow tubes of smooth ER. A dashed coloured circle moves to a different region for each part of the walkthrough, with a label at the top such as Part 1, the membrane and passive transport, or Part 3, the organelles.",
+ scene:"map",id:"map",title:"The big picture: a tour of the cell",
  body:`<p>A <b>cell</b> is the smallest living unit of your body. You are built from trillions of them, and every one has three main parts:</p>
  <ol><li>The <b>plasma membrane</b>: the thin outer edge that controls what gets in and out.</li>
  <li>The <b>cytoplasm</b>: everything inside the membrane except the nucleus. It is a watery fluid (the <b>cytosol</b>) plus small working parts called <b>organelles</b>.</li>
@@ -228,7 +239,8 @@ const STEPS=[
  legend:[["lipid","Plasma membrane"],["nuc","Nucleus","s"],["mito","Mitochondrion","s"],["golgi","Golgi","s"],["er","Endoplasmic reticulum","s"]]},
 
 /* ---------- Part 1 ---------- */
-{act:1,scene:"mosaic",id:"mosaic",title:"The plasma membrane: a fluid mosaic",
+{act:1,desc:"A wide strip of plasma membrane runs across the middle: two rows of gold round heads with wavy tails pointing inward, with the light blue outside fluid above and the tan cytosol below. Blue channel and carrier proteins cross the membrane, a purple oval protein sits on the inner surface, brown cholesterol pieces sit among the tails, and green branched sugar chains stick up from the top. The phospholipids jiggle and drift sideways, a purple arrow says pieces drift sideways, and labels appear one at a time naming each part.",
+ scene:"mosaic",id:"mosaic",title:"The plasma membrane: a fluid mosaic",
  body:`<p>The <b>plasma membrane</b> is built on a <b>phospholipid bilayer</b>: two layers of phospholipid molecules.</p>
  <p>Each phospholipid has a <b>hydrophilic head</b> ("water-loving") and two <b>hydrophobic tails</b> ("water-fearing"). The heads face the watery fluid inside and outside the cell. The tails hide in the middle, away from water.</p>
  <p>Mixed in are <b>cholesterol</b> (keeps the membrane from getting too stiff or too runny), <b>integral proteins</b> (go all the way through, often as channels), and <b>peripheral proteins</b> (sit on one surface). Sugar chains on the outside make the <b>glycocalyx</b>, a sugary coat that works like a name tag.</p>
@@ -243,7 +255,8 @@ const STEPS=[
  caption:"Phospholipids jiggle and drift sideways. Labels appear one at a time.",
  legend:[["lipid","Hydrophilic head"],["tail-edge","Hydrophobic tails","l"],["chol","Cholesterol","r"],["prot","Integral protein","s"],["pprot","Peripheral protein","s"],["glyco","Glycocalyx (sugars)","d"]]},
 
-{act:1,scene:"diff",id:"diff",title:"Simple diffusion: downhill, no help needed",
+{act:1,desc:"The membrane runs across the middle with the outside above and the cytosol below. Red oxygen pairs are crowded above the membrane and dark grey carbon dioxide molecules are crowded below it. One at a time they slip straight through the gold phospholipids: oxygen moves down into the cell and carbon dioxide moves up and out. Bars on the right count each gas outside and inside, evening out over time (for example oxygen 18 outside and 2 inside moving toward 12 and 8), with a red arrow for oxygen in, a grey arrow for carbon dioxide out, and the note no ATP used.",
+ scene:"diff",id:"diff",title:"Simple diffusion: downhill, no help needed",
  body:`<p>Molecules are always moving and bumping. On their own they spread from where they are <b>crowded</b> (high concentration) to where they are <b>sparse</b> (low concentration). This is <b>diffusion</b>. The difference in concentration is the <b>concentration gradient</b>.</p>
  <p>In <b>simple diffusion</b>, a molecule slips right between the phospholipids. Only <b>small, nonpolar (lipid-soluble)</b> molecules can do this, such as <b>oxygen (O₂)</b>, <b>carbon dioxide (CO₂)</b>, and lipids like steroid hormones.</p>
  <p>Diffusion is <b>passive transport</b>: it uses <b>no ATP</b>. Watch the counters. Movement slows as the two sides get close to equal.</p>`,
@@ -257,7 +270,8 @@ const STEPS=[
  caption:"O₂ moves in and CO₂ moves out, each from its crowded side to its sparse side. No ATP is used.",
  legend:[["o2","O₂"],["co2","CO₂"],["lipid","Phospholipid bilayer"]]},
 
-{act:1,scene:"facil",id:"facil",title:"Facilitated diffusion: downhill, with a protein's help",
+{act:1,desc:"The membrane runs across the middle. On the left, a blue channel protein forms an open tunnel, and blue sodium ions flow through it from the crowded outside to the inside. On the right, a blue carrier protein grabs an orange glucose from above, changes shape, and releases it below, with numbered labels for each stage: open outside, glucose binds; carrier changes shape; open inside, glucose released. A side panel says both are passive, downhill only, no ATP used, with a ball rolling down a slope.",
+ scene:"facil",id:"facil",title:"Facilitated diffusion: downhill, with a protein's help",
  body:`<p>Ions (like Na⁺) and larger polar molecules (like <b>glucose</b>) cannot slip through the oily middle of the membrane. They need a protein to help. This is <b>facilitated diffusion</b>.</p>
  <p><b>Channel proteins</b> form a tunnel. Ions flow through when the channel is open. <b>Carrier proteins</b> grab a molecule, change shape, and let it go on the other side. Glucose enters most body cells this way.</p>
  <p>It is still <b>passive</b>. Molecules only move <b>down</b> their concentration gradient, and <b>no ATP</b> is used.</p>`,
@@ -271,7 +285,8 @@ const STEPS=[
  caption:"Left: Na⁺ flows through an open channel. Right: a carrier changes shape to move glucose in.",
  legend:[["na","Na⁺ ion"],["glu","Glucose","d"],["prot","Channel and carrier proteins","s"]]},
 
-{act:1,scene:"osmo",id:"osmo",title:"Osmosis: water follows solute",
+{act:1,desc:"A tank of light blue water is split down the middle by a gold membrane with blue aquaporin channels. The left side has few purple solute particles (less solute, more free water) and the right side has many. Small blue water dots pass through the channels mostly from left to right, while a purple particle bounces off, labelled too big to cross. The right water level rises and the left level falls compared with a dashed starting line, and an arrow at the top right shows net water flow to the right.",
+ scene:"osmo",id:"osmo",title:"Osmosis: water follows solute",
  body:`<p><b>Osmosis</b> is the diffusion of <b>water</b> across a membrane. Water moves toward the side with <b>more solute</b> (dissolved particles), because that side has less free water.</p>
  <p>Water crosses mostly through water channels called <b>aquaporins</b>. In this picture the solute particles cannot cross, so only water can move to even things out. Watch the water level rise on the salty side.</p>
  <p>A short rule to remember: <b>water follows solute</b>.</p>`,
@@ -285,7 +300,8 @@ const STEPS=[
  caption:"Water moves through aquaporins toward the side with more solute. That side's water level rises.",
  legend:[["water","Water"],["solute","Solute (cannot cross)"],["prot","Aquaporin","s"]]},
 
-{act:1,scene:"tonic",id:"tonic",title:"Tonicity: what happens to a red blood cell",
+{act:1,desc:"Three boxes show the same red blood cell in three solutions, with purple dots for solute and blue dots for water. In the isotonic box (0.9 percent saline), blue arrows point both ways and the cell keeps its round shape: no net change. In the hypertonic box (3 percent salt), the arrow points out, water leaves, and the cell shrinks into a spiky shape (crenation). In the hypotonic box (distilled water), the arrow points in, the cell swells into a big ball and then bursts, shown fading with the word Lysis.",
+ scene:"tonic",id:"tonic",title:"Tonicity: what happens to a red blood cell",
  body:`<p><b>Tonicity</b> describes how a solution will make a cell gain or lose water.</p>
  <ol><li><b>Isotonic</b>: same solute concentration as the cell. Water moves in and out equally, so there is <b>no net change</b>. Normal saline (0.9% NaCl) is isotonic.</li>
  <li><b>Hypertonic</b>: more solute outside. Water <b>leaves</b> the cell, and a red blood cell shrivels into a spiky shape. This is <b>crenation</b>.</li>
@@ -301,7 +317,8 @@ const STEPS=[
  legend:[["rbc","Red blood cell"],["water","Water"],["solute","Solute"]]},
 
 /* ---------- Part 2 ---------- */
-{act:2,scene:"pump",id:"pump",title:"The sodium-potassium pump: primary active transport",
+{act:2,desc:"The membrane runs across the middle with a blue pump protein crossing it. Blue sodium ions with a ring shape and purple diamond potassium ions float on both sides. The pump opens to the inside and three sodium ions enter it, an orange phosphate from ATP attaches, the pump flips open to the outside and releases the sodium, two potassium ions enter from outside, the phosphate leaves, and the pump flips back to release potassium inside. A numbered list on the right highlights each of the six steps in orange, and running totals count sodium pumped out, potassium brought in, and ATP used.",
+ scene:"pump",id:"pump",title:"The sodium-potassium pump: primary active transport",
  body:`<p><b>Active transport</b> moves a substance <b>up</b> its concentration gradient, from low to high. Going uphill costs energy, so it uses <b>ATP</b>.</p>
  <p>The best-known example is the <b>sodium-potassium pump (Na⁺/K⁺ ATPase)</b>. For each ATP it uses, it pushes <b>3 Na⁺ out</b> and brings <b>2 K⁺ in</b>:</p>
  <ol><li>3 Na⁺ bind from inside.</li><li>ATP is split. A phosphate attaches to the pump.</li><li>The pump changes shape and releases 3 Na⁺ outside.</li><li>2 K⁺ bind from outside.</li><li>The phosphate falls off. The pump returns to its first shape.</li><li>2 K⁺ are released inside.</li></ol>
@@ -316,7 +333,8 @@ const STEPS=[
  caption:"One pump cycle in six steps. The pump flips shape each time a phosphate is added or removed.",
  legend:[["na","Na⁺"],["k","K⁺","d"],["atp","ATP"],["pi","Phosphate (P)"]]},
 
-{act:2,scene:"symport",id:"symport",title:"Secondary active transport: riding the sodium gradient",
+{act:2,desc:"The membrane runs across the middle with an intestine lumen above and an intestine cell below. On the left a blue sodium-potassium pump uses a green ATP tag to push sodium out. On the right a purple symporter protein lets a blue sodium ion and an orange glucose bind from outside, flips, and releases both inside, with the label no ATP used here. Two bars on the right compare gradients: sodium is high outside and flows downhill (blue arrow), while glucose is low outside and is carried uphill (orange arrow).",
+ scene:"symport",id:"symport",title:"Secondary active transport: riding the sodium gradient",
  body:`<p>The Na⁺/K⁺ pump builds up a lot of Na⁺ outside the cell. That gradient is stored energy, like water behind a dam.</p>
  <p>In <b>secondary active transport</b>, a carrier lets Na⁺ flow back in (downhill) and uses that energy to bring another molecule in <b>uphill</b>. The carrier does not use ATP directly. The ATP was spent earlier by the pump.</p>
  <p>In the small intestine and the kidney, the <b>sodium-glucose symporter</b> moves Na⁺ and glucose in together. When both go the same direction it is a <b>symport</b>. When they go opposite directions it is an <b>antiport</b>.</p>`,
@@ -330,7 +348,8 @@ const STEPS=[
  caption:"Left: the pump keeps Na⁺ high outside. Right: Na⁺ flows in and brings glucose in with it, uphill.",
  legend:[["na","Na⁺"],["glu","Glucose","d"],["k","K⁺","d"],["atp","ATP (used by the pump only)"]]},
 
-{act:2,scene:"endo",id:"endo",title:"Endocytosis: bringing big things in",
+{act:2,desc:"Three panels show the cell membrane as a gold line with the outside above and the cell below. In phagocytosis (cell eating), the membrane sends out two arms called pseudopodia around a green bacterium and closes them into a phagosome vesicle. In pinocytosis (cell drinking), the membrane dips in and pinches off a small vesicle of blue fluid drops. In receptor-mediated endocytosis, gold triangle ligands stick to Y-shaped receptors, and the membrane pinches off a coated vesicle carrying them.",
+ scene:"endo",id:"endo",title:"Endocytosis: bringing big things in",
  body:`<p>Some things are too big for any channel or carrier. The cell wraps them in a piece of its own membrane, making a bubble called a <b>vesicle</b>. This uses ATP. Bringing things in this way is <b>endocytosis</b>.</p>
  <ol><li><b>Phagocytosis</b> ("cell eating"): the cell reaches out with arms of membrane (<b>pseudopodia</b>) and swallows a large particle, like a white blood cell engulfing a bacterium.</li>
  <li><b>Pinocytosis</b> ("cell drinking"): the membrane dips in and pinches off a tiny drop of extracellular fluid.</li>
@@ -345,7 +364,8 @@ const STEPS=[
  caption:"Three kinds of endocytosis happening side by side. Each ends with a vesicle inside the cell.",
  legend:[["lipid","Plasma membrane"],["glyco","Bacterium","r"],["water","Fluid"],["lig","Ligand (e.g., LDL)","d"],["lyso","Lysosome"]]},
 
-{act:2,scene:"exo",id:"exo",title:"Exocytosis: shipping things out",
+{act:2,desc:"A teal stack of curved Golgi sacs sits near the bottom of the cell. Round gold vesicles filled with brown dots bud off and move upward, labelled 1, vesicle moves up. Each vesicle reaches the gold plasma membrane at the top, fuses with it (2, fuses with membrane), and its brown contents spill out into the light blue space outside (3, contents released). A label says examples are neurotransmitter, insulin and mucus.",
+ scene:"exo",id:"exo",title:"Exocytosis: shipping things out",
  body:`<p>In <b>exocytosis</b>, a vesicle inside the cell moves to the plasma membrane, <b>fuses</b> with it, and releases its contents outside.</p>
  <p>This is how cells <b>secrete</b>. Neurons release neurotransmitters, pancreas cells release insulin, and goblet cells release mucus.</p>
  <p>Each fusion also adds the vesicle's membrane to the plasma membrane. Endocytosis takes membrane away and exocytosis adds it back, so the two balance each other.</p>`,
@@ -360,7 +380,8 @@ const STEPS=[
  legend:[["golgi","Golgi apparatus","s"],["lyso","Secretory vesicle"],["glow","Secreted product"]]},
 
 /* ---------- Part 3 ---------- */
-{act:3,scene:"nucleus",id:"nucleus",title:"The nucleus and ribosomes",
+{act:3,desc:"A large pale purple nucleus on the left has a double outline with small pores, tangled purple chromatin threads, and a dark purple nucleolus. Small dark ribosome pieces leave the nucleolus, pass out through the pores, and pair up, labelled small plus large subunit join. A purple mRNA strand also leaves through a pore. On the right, ribosomes sit along the pink rough ER at the top, labelled bound ribosomes, and below they line up on an mRNA strand, labelled free ribosomes, with yellow protein chains growing from them.",
+ scene:"nucleus",id:"nucleus",title:"The nucleus and ribosomes",
  body:`<p>The <b>nucleus</b> is the cell's control center. It holds the DNA, loosely packed with proteins as <b>chromatin</b>.</p>
  <p>It is wrapped in the <b>nuclear envelope</b>, a double membrane dotted with <b>nuclear pores</b>. Messages (mRNA) and ribosome parts leave through the pores.</p>
  <p>The dark area inside is the <b>nucleolus</b>. It builds the two pieces (subunits) of <b>ribosomes</b>. Out in the cytoplasm, the two pieces join on an mRNA and make protein. <b>Free ribosomes</b> float in the cytosol and make proteins used inside the cell. <b>Bound ribosomes</b> sit on the rough ER.</p>`,
@@ -374,7 +395,8 @@ const STEPS=[
  caption:"Ribosome pieces leave the nucleolus, exit through pores, and join on mRNA in the cytoplasm.",
  legend:[["nuc","Nucleus","s"],["nucleolus","Nucleolus"],["rib","Ribosome"],["mrna","mRNA","l"]]},
 
-{act:3,scene:"er",id:"er",title:"Rough ER and smooth ER",
+{act:3,desc:"On the left, pink stacked sacs of rough ER are studded with dark blue ribosomes. A ribosome on a purple mRNA at the top threads a yellow protein chain down into the sac, where yellow balls show proteins folding inside. On the right, yellow branching tubes of smooth ER have no ribosomes. Orange dots show lipids being made and calcium being stored, and a red warning triangle for a toxin turns into a green check, showing detoxification of drugs and alcohol.",
+ scene:"er",id:"er",title:"Rough ER and smooth ER",
  body:`<p>The <b>endoplasmic reticulum (ER)</b> is a maze of membrane sacs and tubes connected to the nuclear envelope.</p>
  <p><b>Rough ER</b> is covered with ribosomes. The proteins they make are threaded into the ER's inside space (the <b>lumen</b>), where they fold. These proteins will be secreted, built into membranes, or sent to lysosomes.</p>
  <p><b>Smooth ER</b> has no ribosomes. It makes <b>lipids</b> (including phospholipids and steroid hormones), stores <b>calcium ions</b>, and helps <b>detoxify</b> drugs and alcohol, especially in liver cells.</p>`,
@@ -388,7 +410,8 @@ const STEPS=[
  caption:"Left: a ribosome on rough ER threads a protein into the lumen. Right: smooth ER makes lipids, stores Ca²⁺, and detoxifies.",
  legend:[["er","Rough ER","s"],["ser","Smooth ER","s"],["rib","Ribosome"],["ca","Ca²⁺"]]},
 
-{act:3,scene:"golgi",id:"golgi",title:"Golgi, lysosomes and peroxisomes",
+{act:3,desc:"On the left, a teal stack of curved Golgi sacs sits above a pink strip of rough ER. A yellow glowing protein arrives in a vesicle at the bottom, the cis face, moves up through the stack while a sugar tag is added, and leaves from the top, the trans face, in a secretory vesicle; a new purple lysosome buds off the side. On the right, a lysosome surrounds an orange worn-out mitochondrion and fills with purple enzymes to digest it, and below it a green peroxisome with catalase turns H2O2 into water and oxygen.",
+ scene:"golgi",id:"golgi",title:"Golgi, lysosomes and peroxisomes",
  body:`<p>The <b>Golgi apparatus</b> is a stack of flat sacs. Vesicles from the ER arrive on the receiving side. The Golgi <b>modifies</b> proteins (for example, adds sugar tags), <b>sorts</b> them, and <b>packages</b> them into new vesicles on the shipping side.</p>
  <p>Some of those vesicles become <b>lysosomes</b>, bags of digestive enzymes. Lysosomes break down worn-out organelles (<b>autophagy</b>) and things the cell has swallowed.</p>
  <p><b>Peroxisomes</b> are small sacs that break down fatty acids and toxins such as alcohol. This makes <b>hydrogen peroxide (H₂O₂)</b>, which they safely turn into water and oxygen.</p>`,
@@ -402,7 +425,8 @@ const STEPS=[
  caption:"Proteins move through the Golgi and ship out. A lysosome digests an old mitochondrion. A peroxisome makes harmless water and O₂.",
  legend:[["golgi","Golgi","s"],["lyso","Lysosome"],["perox","Peroxisome"],["mito","Worn-out mitochondrion","s"]]},
 
-{act:3,scene:"mito",id:"mito",title:"Mitochondria: making ATP",
+{act:3,desc:"A large orange mitochondrion fills the middle, with an outer membrane and an inner membrane folded into fingers called cristae, a pale matrix inside, and a small loop of its own DNA. Orange fuel dots and red oxygen pairs drift in from the left, labelled in: fuel from food plus oxygen. Green ATP tags appear along the cristae and stream out to the right, labelled out: ATP, while carbon dioxide and blue water dots leave at the bottom as waste.",
+ scene:"mito",id:"mito",title:"Mitochondria: making ATP",
  body:`<p><b>Mitochondria</b> are the cell's power plants. They carry out <b>cellular respiration</b>: they use oxygen to break down fuel from food (like glucose) and capture the energy as <b>ATP</b>.</p>
  <p>Each mitochondrion has a smooth <b>outer membrane</b> and a deeply folded <b>inner membrane</b>. The folds, called <b>cristae</b>, add surface area for making ATP. The fluid inside is the <b>matrix</b>.</p>
  <p>Hard-working cells, like muscle and liver cells, have many mitochondria. Mitochondria even have their own small loop of DNA.</p>`,
@@ -416,7 +440,8 @@ const STEPS=[
  caption:"Fuel and O₂ go in. ATP comes out. CO₂ and water leave as waste.",
  legend:[["mito","Outer membrane / cristae","s"],["matrix","Matrix","s"],["atp","ATP"],["o2","O₂"],["co2","CO₂"]]},
 
-{act:3,scene:"cyto",id:"cyto",title:"Cytoskeleton, centrosome, cilia and flagella",
+{act:3,desc:"On the left, a cell is drawn with a nucleus, finger-like microvilli on top, and three kinds of fibres: thin red microfilaments, wavy brown intermediate filaments, and straight teal microtubules spreading out from a centrosome in the middle. A small motor protein carries a gold vesicle along a microtubule track. On the right, a row of short teal cilia beats back and forth, sweeping a green blob of mucus along, and below it a purple sperm swims by whipping one long flagellum.",
+ scene:"cyto",id:"cyto",title:"Cytoskeleton, centrosome, cilia and flagella",
  body:`<p>The <b>cytoskeleton</b> is a network of protein fibers that shapes the cell and moves things around. There are three kinds, thinnest to thickest:</p>
  <ol><li><b>Microfilaments</b> (actin): thin fibers that help the cell change shape, support microvilli, and pinch the cell in two during division.</li>
  <li><b>Intermediate filaments</b>: tough ropes (like keratin) that resist pulling and hold organelles in place.</li>
@@ -432,7 +457,8 @@ const STEPS=[
  caption:"Left: a motor protein walks a vesicle along a microtubule. Right: cilia beat to move mucus, and a flagellum drives a sperm.",
  legend:[["mf","Microfilament","l"],["if","Intermediate filament","l"],["mt","Microtubule","l"],["motor","Motor protein"]]},
 
-{act:3,scene:"factory",id:"factory",title:"The factory path of a secreted protein",
+{act:3,desc:"A cell is drawn with a nucleus on the left, pink rough ER, a teal Golgi stack, and the cell edge on the right with the outside beyond it. A glowing orange protein travels the whole path: mRNA leaves the nucleus, the protein is made at the rough ER, moves in a transport vesicle to the Golgi, is modified, leaves in a secretory vesicle, and is released outside by exocytosis. A strip of six numbered steps along the bottom highlights the current stop in red.",
+ scene:"factory",id:"factory",title:"The factory path of a secreted protein",
  body:`<p>Now put the organelles together. Follow one protein that will leave the cell, like insulin or a digestive enzyme:</p>
  <ol><li>The <b>nucleus</b> sends out an mRNA copy of the gene.</li><li>A ribosome on the <b>rough ER</b> makes the protein into the ER.</li><li>A <b>transport vesicle</b> carries it to the <b>Golgi</b>.</li><li>The Golgi modifies it and packs it into a <b>secretory vesicle</b>.</li><li>The vesicle fuses with the plasma membrane: <b>exocytosis</b>.</li></ol>
  <p>These membrane organelles working together are called the <b>endomembrane system</b>.</p>`,
@@ -447,7 +473,8 @@ const STEPS=[
  legend:[["glow","The protein"],["mrna","mRNA","l"],["er","Rough ER","s"],["golgi","Golgi","s"]]},
 
 /* ---------- Part 4 ---------- */
-{act:4,scene:"rep",id:"rep",title:"DNA replication: copying the code",
+{act:4,desc:"A long DNA ladder lies flat across a purple background, with two dark strands joined by coloured letters: A pairs with T and G pairs with C. An orange triangle labelled helicase moves along from left to right, unzipping the strands into a Y shape. Green ovals labelled DNA polymerase follow along each old strand, picking up loose coloured letters and building a new teal partner strand. Two labels then show the two finished copies, each one old strand plus one new strand.",
+ scene:"rep",id:"rep",title:"DNA replication: copying the code",
  body:`<p><b>DNA</b> is a double helix: two strands of nucleotides, like a twisted ladder. The rungs are <b>base pairs</b>. <b>A</b> always pairs with <b>T</b>, and <b>G</b> always pairs with <b>C</b>.</p>
  <p>Before a cell divides, it copies its DNA. <b>Helicase</b> unzips the two strands. <b>DNA polymerase</b> then reads each old strand and adds the matching (complementary) nucleotides to build a new strand.</p>
  <p>Each new DNA molecule ends up with <b>one old strand and one new strand</b>. This is <b>semi-conservative replication</b>.</p>`,
@@ -461,7 +488,8 @@ const STEPS=[
  caption:"Helicase unzips. DNA polymerase builds a new partner strand on each old strand. The ladder is drawn untwisted.",
  legend:[["old","Old strand","l"],["new","New strand","l"],["helic","Helicase"],["dnap","DNA polymerase"]]},
 
-{act:4,scene:"tx",id:"tx",title:"Transcription: DNA to mRNA",
+{act:4,desc:"A DNA ladder of coloured letters runs across the top of a purple nucleus. A blue oval labelled RNA polymerase slides along it, opening a bubble and reading the lower template strand. Below, a new pre-mRNA strand grows with matching letters, where A becomes U, T becomes A, G becomes C and C becomes G; purple U letters show uracil. Grey intron pieces are then cut out, and the shorter mRNA moves right and leaves through a pore in the nuclear envelope into the cytoplasm.",
+ scene:"tx",id:"tx",title:"Transcription: DNA to mRNA",
  body:`<p>A <b>gene</b> is a stretch of DNA with the instructions for a protein. DNA stays inside the nucleus, so the cell sends out a copy: <b>messenger RNA (mRNA)</b>.</p>
  <p>In <b>transcription</b>, <b>RNA polymerase</b> opens the DNA and reads one strand, the <b>template strand</b>. It builds mRNA with matching bases, but RNA uses <b>U (uracil)</b> instead of T. So an A on the template becomes a U in the mRNA.</p>
  <p>The first copy contains extra pieces called <b>introns</b>. They are cut out, and the useful pieces, the <b>exons</b>, are joined. This is <b>splicing</b>. The finished mRNA leaves through a nuclear pore.</p>`,
@@ -475,7 +503,8 @@ const STEPS=[
  caption:"RNA polymerase reads the template strand and builds mRNA. Then introns are spliced out and the mRNA leaves the nucleus.",
  legend:[["rnap","RNA polymerase"],["mrna","mRNA exon","r"],["intron","Intron (cut out)","r"],["bU","U = uracil","s"]]},
 
-{act:4,scene:"tl",id:"tl",title:"Translation: mRNA to protein",
+{act:4,desc:"A purple mRNA strand runs across the bottom, with codons in coloured letters labelled start, codon 2 through codon 5, and stop. A grey ribosome with a P site and an A site clamps onto it. Orange cross-shaped tRNAs carry coloured amino acid balls (Met, Ala, Phe, Lys, Trp) and match their anticodons to each codon; the chain grows by one ball each time, used tRNAs leave, and the ribosome slides one codon to the right. At the stop codon the finished chain of five beads floats away, and a box shows the peptide so far.",
+ scene:"tl",id:"tl",title:"Translation: mRNA to protein",
  body:`<p>In <b>translation</b>, a <b>ribosome</b> reads the mRNA three bases at a time. Each group of three is a <b>codon</b>, and most codons stand for one <b>amino acid</b>.</p>
  <p><b>Transfer RNA (tRNA)</b> brings the amino acids. Each tRNA has an <b>anticodon</b> that pairs with the codon, so the right amino acid is added.</p>
  <p>Translation begins at the <b>start codon, AUG</b> (methionine). The ribosome links each new amino acid to the chain with a <b>peptide bond</b> and slides to the next codon. At a <b>stop codon</b> (UAA, UAG or UGA) the finished chain is released.</p>`,
@@ -490,7 +519,8 @@ const STEPS=[
  legend:[["mrna","mRNA","l"],["trna","tRNA"],["rib","Ribosome","s"],["glow","New peptide bond"]]},
 
 /* ---------- Part 5 ---------- */
-{act:5,scene:"cycle",id:"cycle",title:"The cell cycle: grow, copy, divide",
+{act:5,desc:"On the left a ring is divided into coloured arcs: G1 in purple, S in teal, G2 in tan and M in pink. A black pointer sweeps around it like a clock hand, and the current arc darkens. On the right a small cell grows during G1, copies its DNA in S as the blue and red threads double and two centrioles appear, and then divides in M. A bar at the bottom shows DNA amount at 1 times, copying, then 2 times.",
+ scene:"cycle",id:"cycle",title:"The cell cycle: grow, copy, divide",
  body:`<p>The <b>cell cycle</b> is the life of a cell from one division to the next. Most of it is <b>interphase</b>, when the cell is working and getting ready:</p>
  <ol><li><b>G1</b> (first gap): the cell grows and does its normal job.</li><li><b>S</b> (synthesis): the cell <b>copies its DNA</b>. Each chromosome becomes two identical <b>sister chromatids</b>.</li><li><b>G2</b> (second gap): more growth and final checks before dividing.</li></ol>
  <p>Then comes the <b>mitotic phase</b>: <b>mitosis</b> (dividing the nucleus) and <b>cytokinesis</b> (dividing the cytoplasm). Some cells, like most neurons, leave the cycle and rest in <b>G0</b>.</p>`,
@@ -504,7 +534,8 @@ const STEPS=[
  caption:"The pointer moves around the cycle. Watch the cell grow, copy its DNA in S, and divide in M.",
  legend:[["act1","G1","r"],["act4","S","r"],["act2","G2","r"],["act5","M (mitotic phase)","r"],["chromatin","Chromatin","l"]]},
 
-{act:5,scene:"mitosis",id:"mitosis",title:"Mitosis and cytokinesis",
+{act:5,desc:"A large oval cell shows mitosis step by step, with one chromosome set drawn in blue and the other in red. The loose threads in the nucleus coil into X-shaped chromosomes, the nuclear envelope breaks into pieces, and dashed spindle fibres from teal centrosomes at each end grab the chromosomes. The chromosomes line up in the middle, the sister halves are pulled to opposite ends, new nuclei form, and a ring pinches the cell into two. A strip of phase names along the bottom highlights the current phase in magenta.",
+ scene:"mitosis",id:"mitosis",title:"Mitosis and cytokinesis",
  body:`<p><b>Mitosis</b> divides the copied chromosomes evenly into two nuclei. Watch the chromosomes:</p>
  <ol><li><b>Prophase</b>: chromatin <b>condenses</b> into visible X-shaped chromosomes. The <b>spindle</b> starts to grow from the centrosomes.</li>
  <li><b>Prometaphase</b>: the nuclear envelope breaks apart. Spindle fibers attach to each chromosome at its <b>kinetochore</b>.</li>
@@ -522,7 +553,8 @@ const STEPS=[
  caption:"One cell divides. The strip at the bottom shows the current phase.",
  legend:[["chrA","Chromosome (blue set)","l"],["chrB","Chromosome (red set)","l"],["spindle","Spindle fibers","l"],["mf","Contractile ring","l"]]},
 
-{act:5,scene:"checkp",id:"checkp",title:"Checkpoints, and what goes wrong in cancer",
+{act:5,desc:"The left half shows a normal cell's cycle ring with green checkpoint marks at G1, G2 and M. A small cell travels around the ring; at the G1 checkpoint a red label reads DNA damage found: pause, the checkpoint turns red with STOP, and then it opens again once the damage is repaired. The right half, labelled cancer cell, shows one magenta cell dividing again and again with no stops, into 2, then 4, then 8 cells, with a label that reads a growing tumor.",
+ scene:"checkp",id:"checkp",title:"Checkpoints, and what goes wrong in cancer",
  body:`<p>The cell cycle has <b>checkpoints</b>, like quality-control stops. At each one, the cell checks that it is ready before it moves on:</p>
  <ol><li><b>G1 checkpoint</b>: Is the cell big enough? Is the DNA undamaged?</li><li><b>G2 checkpoint</b>: Was all the DNA copied correctly?</li><li><b>M checkpoint</b>: Is every chromosome attached to the spindle?</li></ol>
  <p>If something is wrong, the cycle pauses for repair. If it cannot be fixed, the cell may destroy itself (<b>apoptosis</b>).</p>
@@ -537,7 +569,8 @@ const STEPS=[
  caption:"Left: a normal cell stops at a checkpoint until damage is repaired. Right: a cell with broken checkpoints keeps dividing into a tumor.",
  legend:[["good","Checkpoint open","r"],["bad","Checkpoint closed","r"],["tumor","Cancer cells"]]},
 
-{act:5,scene:"stem",id:"stem",title:"Cell differentiation: from stem cell to specialist",
+{act:5,desc:"A ladder on the left shows potency from totipotent to pluripotent to multipotent to specialized, with the current level highlighted in teal. In the middle a teal stem cell divides; one daughter loops back as a new stem cell (self-renewal) and the other moves right and becomes a specialist: a red blood cell, a purple neuron, a striped skeletal muscle cell, or a skin cell. A row of gene switches at the bottom lights up green for the genes turned on in that cell, such as hemoglobin, ion channels, myosin or keratin, while the ATP-making gene stays on in all.",
+ scene:"stem",id:"stem",title:"Cell differentiation: from stem cell to specialist",
  body:`<p>Almost every cell in your body has the <b>same DNA</b>. A neuron and a red blood cell look different because they <b>turn on different genes</b>. Becoming a specialized cell type is called <b>differentiation</b>.</p>
  <p>A <b>stem cell</b> can divide to make more of itself (<b>self-renewal</b>) and can also make cells that differentiate.</p>
  <ol><li><b>Totipotent</b>: can become any cell, including the placenta (the fertilized egg).</li><li><b>Pluripotent</b>: can become any type of body cell (early embryo).</li><li><b>Multipotent</b>: can become several related types, such as the blood stem cells in red bone marrow.</li></ol>`,
@@ -551,7 +584,8 @@ const STEPS=[
  caption:"A stem cell divides. One daughter stays a stem cell. The other turns on certain genes and becomes a specialist.",
  legend:[["accent","Stem cell"],["good","Gene switched on","s"],["rule","Gene switched off","s"]]},
 
-{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole cell.",
+{act:0,desc:"The full oval cell from the start of the chapter appears again. Labels pop up one part at a time and stay, with a counter at the top left counting up to 13: plasma membrane, nucleus, nucleolus, nuclear pore, rough ER, smooth ER, Golgi apparatus, mitochondrion, lysosome, peroxisome, vesicles and more. When all thirteen are labelled, the labels clear and the tour starts again.",
+ scene:"recap",id:"recap",title:"You made it. Here is the whole cell.",
  body:`<ol class="recap">
  <li class="h">Part 1 · Membrane &amp; passive transport (no ATP)</li>
  <li>Fluid mosaic: phospholipid bilayer, cholesterol, proteins, glycocalyx.</li><li>Simple diffusion: O₂, CO₂ and lipids slip through the bilayer.</li><li>Facilitated diffusion: channels and carriers, still downhill.</li><li>Osmosis: water follows solute, through aquaporins.</li><li>Isotonic: no change. Hypertonic: crenation. Hypotonic: swelling and lysis.</li>
@@ -599,7 +633,7 @@ function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip)">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -607,6 +641,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{

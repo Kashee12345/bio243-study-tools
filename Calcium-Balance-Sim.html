@@ -11,7 +11,7 @@
   --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
   --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
   --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
-  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --warn:#9A5524;--warn-wash:#F6E7D8;--chip-act2:#A46815;--chip-ct:#1D8383;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
   --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--gold:#C9A227;--gold-wash:#F6EFD3;
   /* calcium palette */
   --ca:#D98A1C;--pth:#7B5CC9;--ct:#1F8A8A;--vitd:#C9A227;
@@ -34,7 +34,7 @@
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
   --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
-  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--gold:#E0BE48;--gold-wash:#352E14;
+  --chip-act2:var(--act2);--chip-ct:var(--ct);--act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--gold:#E0BE48;--gold-wash:#352E14;
   --ca:#F2A93B;--pth:#A98BEF;--ct:#4FC9C0;--vitd:#E0BE48;
   --plasma:#3A1F1C;--vessel:#D9675A;--blood-edge:#E07A6D;
   --thyroid:#8E4A3F;--thyroid-edge:#D98A7E;--ptg:#B8962F;--ptg-edge:#E8C766;
@@ -51,7 +51,7 @@
   --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
   --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
   --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
-  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--gold:#E0BE48;--gold-wash:#352E14;
+  --chip-act2:var(--act2);--chip-ct:var(--ct);--act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--gold:#E0BE48;--gold-wash:#352E14;
   --ca:#F2A93B;--pth:#A98BEF;--ct:#4FC9C0;--vitd:#E0BE48;
   --plasma:#3A1F1C;--vessel:#D9675A;--blood-edge:#E07A6D;
   --thyroid:#8E4A3F;--thyroid-edge:#D98A7E;--ptg:#B8962F;--ptg-edge:#E8C766;
@@ -79,6 +79,8 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 /* tabs */
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+/* a11y: a tab that was selected keeps site-kit's dark-on-light class after it is deselected; give it back its normal text colour */
+.tab[aria-selected="false"].gk-oninv{color:var(--ink)!important}
 .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 /* chain map */
 .chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
@@ -183,7 +185,12 @@ footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color
 sub,sup{line-height:0}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* a11y: in dark mode the accent is light, so selected/pressed controls use dark text (this also stops
+   site-kit's contrast fixer from leaving a stale dark-text class behind when the selection moves) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.tab[aria-selected="true"],.dot.cur,.chip.cur){color:#0B1A20}}
+:root[data-theme="dark"] :is(.tab[aria-selected="true"],.dot.cur,.chip.cur){color:#0B1A20}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -250,7 +257,7 @@ sub,sup{line-height:0}
       <h3 class="sec">What is happening right now</h3>
       <div class="now" id="now" aria-live="polite"></div>
       <h3 class="sec">Live readouts</h3>
-      <table class="readouts" id="readouts"></table>
+      <table class="readouts" id="readouts"><caption class="sr">Live readouts</caption><tr><th scope="row">Blood Ca²⁺</th><td>10.0 mg/dL</td><td class="tag ok">● normal</td></tr></table>
       <p class="calm">Hormone levels are shown relative to a normal resting level (1.0&times; = normal). Values are teaching numbers, not lab values, and time is sped up.</p>
     </section>
 
@@ -616,7 +623,7 @@ function setLegend(keys){$("#legend").innerHTML=(keys||["ca","pth","ct","vitd","
 function renderStep(){
   const s=STEPS[cur];
   const grp=GROUPS[s.g];
-  $("#stepno").innerHTML=(grp?`<span class="actchip" style="background:var(--${grp.col})">${grp.name}</span>`:"")+
+  $("#stepno").innerHTML=(grp?`<span class="actchip" style="background:var(--chip-${grp.col},var(--${grp.col}))">${grp.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:(cur===0?"<span>Start here</span>":"<span>Summary</span>"));
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -1108,6 +1115,30 @@ function updateAria(force){
   const s=`${lead}Blood calcium ${S.Ca.toFixed(1)} mg/dL, ${st}. PTH ${S.PTH.toFixed(1)} times normal, calcitonin ${(S.CT/CT0).toFixed(1)} times normal, calcitriol ${S.D.toFixed(1)} times normal. Bone calcium bank ${S.bone.toFixed(0)} percent.`;
   if(force||s!==lastAria){cv.setAttribute("aria-label",s);lastAria=s}
   ch.setAttribute("aria-label",`Line chart of blood calcium and hormone levels over time. Current blood calcium ${S.Ca.toFixed(1)} mg/dL; PTH ${S.PTH.toFixed(1)} times normal.`);
+  describeScene();
+}
+/* a11y: fuller picture description for the site kit, sent only when the described state changes */
+const FOCN={vessel:"the blood vessel",gauge:"the calcium gauge",bone:"the bone",ptg:"the parathyroid glands",kidney:"the kidney",gut:"the small intestine",skin:"the skin",cc:"the thyroid C cells"};
+let lastDesc="";
+function lvlWord(v){return v>1.25?"raised":v<0.8?"low":"near normal"}
+function describeScene(){
+  if(!window.gkDescribe)return;
+  const ca=Math.round(S.Ca*2)/2;
+  const st=S.Ca<NORMAL_LO?"below the green normal band, so it reads LOW":S.Ca>NORMAL_HI?"above the green normal band, so it reads HIGH":"inside the green normal band, so it reads NORMAL";
+  const pth=lvlWord(S.PTH),ct=lvlWord(S.CT/CT0),dv=lvlWord(S.D);
+  let t="A map of the calcium loop. A long red blood vessel runs across the middle carrying orange calcium dots. Above it are the thyroid seen from the back with its four small parathyroid glands, the small intestine, and the skin under a yellow sun. Below it are the bone, with purple osteoclasts and teal osteoblasts on its surface, and the kidney with a cup of urine. On the right, a tall gauge shows blood calcium on a scale from 6 to 14 mg/dL with the normal range, 9 to 11, shaded green.";
+  t+=" Right now blood calcium is about "+ca.toFixed(1)+" mg/dL, "+st+".";
+  t+=" PTH is "+pth+(S.PTH>1.25?": purple diamonds stream from the parathyroid glands to the bone and the kidney, and more calcium dots move from the bone into the blood":"")+".";
+  t+=" Calcitonin is "+ct+(S.CT/CT0>1.25?": squares travel from the thyroid C cells to the bone, and more calcium is deposited into it":"")+".";
+  t+=" Calcitriol (active vitamin D) is "+dv+(S.D>1.25?", so more calcium dots are absorbed from the small intestine":"")+".";
+  if(mode==="guide"){const s=STEPS[cur];
+    if(s.overlay==="why")t+=" A box at the top lists what blood calcium is needed for: muscle contraction, nerve signals, blood clotting and the heartbeat, each with a small moving picture.";
+    if(s.overlay==="bank")t+=" A box over the bone shows a bar that is almost all bone colour: about 99 percent of the body's calcium is in bone, with only a thin orange slice elsewhere, including the blood.";
+    if(s.focus&&s.focus.length)t+=" A pulsing dashed blue outline highlights "+s.focus.map(k=>FOCN[k]||k).join(" and ")+"."}
+  if(scenario)t+=" Scenario running: "+SCN[scenario].name+".";
+  if(events.length)t+=" Life events running: "+events.map(e=>EVENTS[e.id].name).join(", ")+".";
+  const key=[mode,cur,scenario,ca,pth,ct,dv,events.map(e=>e.id).join()].join("|");
+  if(key!==lastDesc){lastDesc=key;window.gkDescribe(t)}
 }
 
 /* ---------- loop ---------- */

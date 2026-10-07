@@ -190,7 +190,13 @@ sub,sup{line-height:0}
 .fieldopt svg{flex:0 0 auto}
 .pq{margin-top:12px;border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;background:var(--panel-2)}
 .pq h3{margin:0 0 4px!important}
+
+/* a11y retrofit: contrast fixes (WCAG 2.1 AA) */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"],:root:not([data-theme="light"]) .chip.cur{color:#0B1A20}}
+:root[data-theme="dark"] .tab[aria-selected="true"],:root[data-theme="dark"] .chip.cur{color:#0B1A20}
+.lbl.used{opacity:1;color:var(--ink-soft);text-decoration:line-through;border-style:dashed}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -212,7 +218,7 @@ sub,sup{line-height:0}
 
   <!-- PART 1: pathway tracer -->
   <section id="tab-path" role="tabpanel" aria-labelledby="tabbtn-path">
-    <div class="rounds" id="pRounds" aria-label="Rounds"></div>
+    <div class="rounds" id="pRounds" role="group" aria-label="Rounds"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvPath" role="img" aria-label="Brain and spinal cord pathway diagram"></canvas></div>
@@ -255,7 +261,7 @@ sub,sup{line-height:0}
 
   <!-- PART 2: reflex lab -->
   <section id="tab-reflex" role="tabpanel" aria-labelledby="tabbtn-reflex" hidden>
-    <div class="rounds" id="rModes" aria-label="Activities"></div>
+    <div class="rounds" id="rModes" role="group" aria-label="Activities"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvReflex" role="img" aria-label="Reflex arc"></canvas></div>
@@ -304,7 +310,7 @@ sub,sup{line-height:0}
 
   <!-- PART 3: ear lab -->
   <section id="tab-ear" role="tabpanel" aria-labelledby="tabbtn-ear" hidden>
-    <div class="rounds" id="eModes" aria-label="Activities"></div>
+    <div class="rounds" id="eModes" role="group" aria-label="Activities"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvEar" role="img" aria-label="Ear"></canvas></div>
@@ -361,7 +367,7 @@ sub,sup{line-height:0}
 
   <!-- PART 4: eye lab -->
   <section id="tab-eye" role="tabpanel" aria-labelledby="tabbtn-eye" hidden>
-    <div class="rounds" id="yModes" aria-label="Activities"></div>
+    <div class="rounds" id="yModes" role="group" aria-label="Activities"></div>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvEye" role="img" aria-label="Eye"></canvas></div>
@@ -1390,7 +1396,44 @@ function fitAll(){[S1,S2,S3,S4].forEach(s=>s.fit())}
 window.addEventListener("resize",fitAll);
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
-function frame(now){try{if(curTab==="path")drawPath(now);else if(curTab==="reflex")drawReflex(now);else if(curTab==="ear")drawEarTab(now);else drawEyeTab(now)}catch(err){console.error(err)}requestAnimationFrame(frame)}
+/* ---- accessibility: name and describe the picture that is on screen ---- */
+const A11Y={key:"",n:17};
+function a11yDl(sel){const el=$(sel);if(!el)return "";const k=[...el.children];const out=[];for(let i=0;i+1<k.length;i+=2)out.push(k[i].textContent+": "+k[i+1].textContent);return out.join(". ")+(out.length?".":"")}
+const A11Y_CNS="A diagram of the brain and spinal cord seen from behind, so the body's left side is on the left: two hemispheres at the top with the thalamus, the brainstem, and the spinal cord with a cervical and a lumbar cross-section, plus a hand and a foot on each side.";
+function a11yScene(){
+  if(curTab==="path"){const R=PROUNDS[pr];const col={dcml:"blue",stt:"orange",cst:"red"}[R.tract];
+    if(R.kind==="trace"){const done=R.seq.slice(0,pState.done?R.seq.length:pState.step).map(nodeName);
+      let d=`${A11Y_CNS} Round ${pr+1}: ${R.title}. `;
+      if(pState.done){const cross={dcml:"in the medulla",stt:"in the spinal cord",cst:"at the pyramids"}[R.tract];d+=`The complete path is animated in ${col}, stop by stop: ${done.join(", ")}. A yellow ring flashes where it crosses ${cross}.`}
+      else{d+=`Your path so far, drawn as a ${col} line: ${done.join(", ")}. Four dots lettered A to D mark the choices for the next stop: ${pState.choices.map((c,i)=>"ABCD"[i]+" "+nodeName(c)).join(", ")}.`;if(pState.hintPulse===R.seq[pState.step])d+=" A yellow ring pulses around the right choice."}
+      return [S1.cv,`Pathway diagram, round ${pr+1}: ${R.title}. ${pState.done?"Path complete.":done.length+" stops so far."}`,d]}
+    let d=`${A11Y_CNS} Round ${pr+1}: ${R.title}. A red hatched ${R.lesion.type==="rect"?"box":"circle"} labelled lesion marks the damage.`;
+    if(pState.done)d+=` Blue (fine touch), orange (pain) and red (movement) pathways from both sides are animated; the ones that run into the lesion stop at a red X. A box at the right lists what is lost: ${R.qs.map(q=>q[0]+": "+R.opts[q[1]]).join("; ")}.`;
+    return [S1.cv,`Lesion puzzle, round ${pr+1}: ${R.title}`,d]}
+  if(curTab==="reflex"){
+    if(rMode===0){const sl=rb.slots.map((v,i)=>`${i+1} ${v==null?"empty":CARDS[v]}${rb.res?(rb.res[i]?" (correct)":" (wrong)"):""}`);
+      return [S2.cv,`Reflex arc with five numbered slots. ${rb.slots.filter(v=>v!=null).length} of 5 filled.`,`A spinal cord cross-section at the top, a patch of skin with a blue receptor at the lower left, and a red muscle at the bottom middle, joined by a dashed nerve path into the dorsal root and out the ventral root. Five numbered circles sit along the path: ${sl.join("; ")}. Filled slots turn green when right and orange when wrong after Check.${rb.okT>0?" The arc is complete: a yellow dot runs along the blue sensory path into the cord and out the red motor path, and the muscle glows.":""}`]}
+    const knee=rMode===1;const D=dmg();const cuts=[D.d&&"dorsal root cut",D.v&&"ventral root cut",D.c&&"spinal cord cut above this level"].filter(Boolean);
+    const base=knee?"A seated leg seen from the side, with a reflex hammer at the knee, the quadriceps on top of the thigh with a blue muscle spindle, the hamstrings underneath, a small lumbar spinal cord slice above, and a brain icon at the upper left. Tapping sends a blue dot from the spindle into the cord and a red dot back to the quadriceps, which kicks the leg, while a purple interneuron relaxes the hamstrings.":
+      "Two legs seen from behind standing over a tack under the right foot, a spinal cord slice above, and a brain icon at the upper left. Stepping on the tack sends an orange pain signal into the cord, then red commands make the right leg's flexors lift the foot and, through crossing interneurons, the left leg's extensors brace.";
+    return [S2.cv,`${knee?"Knee-jerk":"Withdrawal"} reflex simulator. Damage: ${cuts.length?cuts.join(", "):"none"}.`,`${base} ${cuts.length?"Damage shown with red X marks: "+cuts.join(", ")+".":"No damage."} ${a11yDl("#rRead")} Three live graphs at the right trace the motor signals and the movement.`]}
+  if(curTab==="ear"){
+    if(eMode===0){const pos=placeFromBase(eFreq);const where=pos<.33?"near the base":pos<.66?"in the middle":"near the apex";
+      return [S3.cv,`Cochlea pitch simulator: ${fmtHz2(eFreq)}, peak ${where}${eDamage?", base hair cells damaged":""}.`,`The cochlea is drawn unrolled across the top, from the base by the stapes on the left to the apex on the right, with a purple basilar membrane and a row of hair cells. A traveling wave peaks ${where}, where the hair cells turn yellow. ${eDamage?"The hair cells in the first third, near the base, are gray and crossed out (noise damage). ":""}A coiled cochlea at the lower left marks the same spot with a dot, and a graph at the lower right shows how much each spot vibrates. ${a11yDl("#eRead")}`]}
+    if(eMode===1){const n=Object.keys(el.place).length;const pl=ELABS.map((k,i)=>el.place[i]?`${i+1} ${eName(el.place[i])}${el.res?(el.res[i]?" (correct)":" (wrong)"):""}`:null).filter(Boolean);
+      return [S3.cv,`Ear diagram with 13 numbered targets. ${n} of 13 labelled.`,`A cut-away of the side of the head showing the outer ear and ear canal on the left, the eardrum and three ossicles in the middle ear, the inner ear (cochlea, vestibule and semicircular canals) on the right, the nerve leaving it, and the auditory tube running down. Thirteen numbered dots mark the parts. ${pl.length?"Placed so far: "+pl.join("; ")+".":"No labels placed yet."}`]}
+    return [S3.cv,"Balance demo: "+a11yDl("#eRead"),`Left: a head that tilts or rides an elevator, beside zoomed views of the utricle and saccule, where a gel layer with diamond-shaped otoliths slides and bends the hair cells. Right: a head seen from above that can spin, and a ring-shaped canal of fluid with a coral cupula that bends when the fluid lags or keeps moving. A graph at the bottom traces hair cell bending over the last 10 seconds. Now: ${a11yDl("#eRead")}`]}
+  if(yMode===0){const d=distFrom(yv),O=optics(d);
+    return [S4.cv,`Focus simulator: ${O.E.name}${yGl&&O.G?" with glasses":""}, object at ${fmtD(d)}.`,`A large side view of an eye on the right with a green tree on the left that you can move nearer or farther; gold light rays run from the tree through the cornea and lens toward the retina, and a red circle marks the focus point when it misses the retina. ${yGl&&O.G?(O.G<0?"A minus lens (glasses) sits in front of the eye. ":"Reading glasses sit in front of the eye. "):""}A box at the lower right shows what you see, and a graph at the lower left plots the focusing power needed against distance. ${a11yDl("#yRead")}`]}
+  if(yMode===1){const n=Object.keys(yl.place).length;const pl=YLABS.map((k,i)=>yl.place[i]?`${i+1} ${YNAME[yl.place[i]]}${yl.res?(yl.res[i]?" (correct)":" (wrong)"):""}`:null).filter(Boolean);
+    return [S4.cv,`Eye diagram with 13 numbered targets. ${n} of 13 labelled.`,`A side view of the right eye with light coming in from the left: the clear cornea at the front, the iris and pupil, the lens held by the ciliary body, the vitreous humor filling the back, the retina, choroid and sclera layers, the fovea, the optic disc and the yellow optic nerve. Thirteen numbered dots mark the parts. ${pl.length?"Placed so far: "+pl.join("; ")+".":"No labels placed yet."}`]}
+  const L=VL[vr.i];
+  return [S4.cv,`Visual pathway, lesion ${vr.i+1} of ${VL.length}: ${L.name}${vr.ok?". Answer: "+PATN[L.ans]:""}`,`The brain seen from above with both eyes at the top. Blue fibers carry the left visual field and orange fibers the right field, from each eye through the optic nerves, the optic chiasm (where inner fibers cross), the optic tracts and the thalamus to the visual cortex at the back. A red X marks damage to the ${L.name.toLowerCase()}. Two circles at the top show what each eye sees: ${vr.ok?PATN[L.ans].toLowerCase()+", with the lost halves blacked out; yellow dots run along the fibers and stop at the X.":"they stay colored until you answer."}`]}
+function a11yApply(){let s;try{s=a11yScene()}catch(e){return}if(!s)return;const [cv,l,d]=s;const key=cv.id+"|"+l+"|"+d;if(key===A11Y.key)return;A11Y.key=key;
+  cv.setAttribute("aria-label",l);
+  const box=document.getElementById("gk-desc");if(box){const h=cv.closest(".canvas-holder")||cv;if(h.nextElementSibling!==box)h.parentNode.insertBefore(box,h.nextSibling);cv.setAttribute("aria-describedby","gk-desc")}
+  if(window.gkDescribe)window.gkDescribe(d)}
+function frame(now){try{if(curTab==="path")drawPath(now);else if(curTab==="reflex")drawReflex(now);else if(curTab==="ear")drawEarTab(now);else drawEyeTab(now)}catch(err){console.error(err)}if((A11Y.n=(A11Y.n+1)%18)===0)a11yApply();requestAnimationFrame(frame)}
 window.__lab={tab:k=>$("#tabbtn-"+k).click(),pRound:i=>pSetup(i),rMode:i=>rSetMode(i),eMode:i=>eSetMode(i),yMode:i=>ySetMode(i),
   pSeq:()=>PROUNDS[pr].seq,pick:id=>pPick(id,null),setF:f=>{eFreq=f},setD:v=>{yv=v;$("#yDist").value=1-v},vl:i=>{vr.i=i;vr.ok=false;vlUI()}};
 pSetup(0);rSetMode(0);eSetMode(0);ySetMode(0);rBuildUI();fitAll();requestAnimationFrame(frame);

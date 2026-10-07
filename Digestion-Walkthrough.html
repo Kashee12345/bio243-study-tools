@@ -149,7 +149,23 @@ footer a{color:var(--ink-soft)}
 .legend i.hex{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border:0;border-radius:0;width:13px;height:12px}
 .legend i.pent{clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%);border:0;border-radius:0;width:13px;height:12px}
 .body ul{margin:0 0 10px;padding-left:22px}
+/* a11y: text contrast for act chips and "not quite" feedback (WCAG 2.1 AA) */
+:root{--warn-ink:#9A5220}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--warn-ink:var(--warn)}}
+:root[data-theme="dark"]{--warn-ink:var(--warn)}
+.fb.no{color:var(--warn-ink)}
+.actchip[data-act="act2"],.actchip[data-act="act3"]{color:#10161A}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .actchip[data-act="act4"]{background:#26786A!important}}
+:root[data-theme="light"] .actchip[data-act="act4"]{background:#26786A!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .actchip{color:#10161A}}
+:root[data-theme="dark"] .actchip{color:#10161A}
+.dot.done:not(.cur){border-width:3px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dot.cur{color:#0B1A20}}
+:root[data-theme="dark"] .dot.cur{color:#0B1A20}
+/* keep the site-kit tool button names available to screen readers when their labels are hidden on narrow screens */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -207,7 +223,7 @@ const ACTS={1:{name:"Part 1 · The big picture",col:"act1"},
             4:{name:"Part 4 · Nutrients in",col:"act4"},
             5:{name:"Part 5 · Large intestine",col:"act5"}};
 const STEPS=[
-{act:0,scene:"map",title:"The big picture: a tube with helpers",
+{desc:"An outline of the head and trunk shows the whole digestive tract in pink: mouth, esophagus, stomach, coiled small intestine and the large intestine framing it, with the dark red liver, green gallbladder, tan pancreas and blue salivary glands beside it. A small tan food ball travels down the tube from the mouth to the end of the large intestine, along a dotted orange path. As it moves, the matching station in a numbered list on the right lights up, from 1 Mouth to 6 Rectum and anus. Three small boxes at the bottom show the three jobs: a pac-man shaped enzyme biting a chain (break it down), a dot crossing into a red blood line (absorb it), and a brown lump leaving (get rid of the rest).",act:0,scene:"map",title:"The big picture: a tube with helpers",
  body:`<p>Your digestive system has one big job: take in food, break it into molecules small enough to use, absorb them, and get rid of what is left.</p>
  <p>It is built as a long, hollow <b>tube</b> that runs from your mouth to your anus. Several <b>helper organs</b> sit beside the tube and pour juices into it.</p>
  <ul><li><b>Part 1:</b> the tube, the helpers, and the six digestive processes.</li>
@@ -227,7 +243,7 @@ const STEPS=[
  legend:[["food","Food"],["gut","Alimentary canal (the tube)"],["liver","Accessory organs","s"]]},
 
 /* ---------- PART 1 ---------- */
-{act:1,scene:"organs",title:"The alimentary canal and the accessory organs",
+{desc:"The same body outline is shown, but this time the tube itself is outlined in orange first, and labels appear one by one for the mouth, pharynx, esophagus, stomach, small intestine and large intestine, matching an orange-framed list on the right. Then the tube fades and the helper organs are outlined in orange instead: the teeth and tongue, blue salivary glands, dark red liver, green gallbladder and tan pancreas. Small drops of juice move along ducts from these helpers into the tube. Notes under the lists say \"One continuous tube, mouth to anus\" and \"Food never enters these organs\".",act:1,scene:"organs",title:"The alimentary canal and the accessory organs",
  body:`<p>The <b>alimentary canal</b> (also called the GI tract) is the tube that food actually travels through: <b>mouth, pharynx, esophagus, stomach, small intestine, and large intestine</b>.</p>
  <p>The <b>accessory digestive organs</b> help, but food never passes through them. They are the <b>teeth, tongue, salivary glands, liver, gallbladder, and pancreas</b>.</p>
  <p>The glands among them make juices (saliva, bile, pancreatic juice) and send them into the tube through small tubes called <b>ducts</b>.</p>`,
@@ -241,7 +257,7 @@ const STEPS=[
  caption:"First the tube lights up, then the helpers. Watch juices drip from the helpers into the tube.",
  legend:[["gut","Alimentary canal"],["liver","Liver"],["gb","Gallbladder"],["panc","Pancreas"],["saliva","Salivary glands"],["bile","Secretions in ducts"]]},
 
-{act:1,scene:"moving",title:"Moving food: ingestion, swallowing and peristalsis",
+{desc:"Four small panels show the first steps: in \"Ingestion\", a food piece moves into the open mouth of a face drawn from the side. In \"Swallowing starts\", the pink tongue rises from front to back and pushes the food ball under the palate toward the throat. In \"Works even upside down\", a gray arrow labelled gravity points down while a teal arrow labelled bolus points up, and the bolus climbs the tube anyway. The large panel at the bottom shows a long tube with a brown food ball: a red ring of muscle squeezes just behind the ball (labelled \"contracts\") while the tube ahead stays wide (\"relaxed\"), and the squeeze travels to the right, pushing the ball along.",act:1,scene:"moving",title:"Moving food: ingestion, swallowing and peristalsis",
  body:`<p>Digestion is really six processes. The first two move food in and along.</p>
  <p><b>Ingestion</b> is taking food into the mouth. <b>Propulsion</b> is moving it along the tube. Propulsion starts with <b>swallowing</b> (deglutition), which you start on purpose.</p>
  <p>After that, <b>peristalsis</b> takes over. It is a wave of muscle contraction. The ring of muscle just <b>behind</b> the food squeezes, and the muscle just ahead relaxes. The wave pushes the food forward, like squeezing toothpaste from the bottom of the tube.</p>
@@ -256,7 +272,7 @@ const STEPS=[
  caption:"Ingestion, swallowing, and a peristaltic wave: the ring squeezes behind the bolus and travels forward.",
  legend:[["food","Bolus of food"],["circ","Contracting ring of muscle"]]},
 
-{act:1,scene:"breaking",title:"Breaking food: mechanical and chemical digestion",
+{desc:"Four panels show ways food is broken down: in \"Chewing\", upper and lower rows of teeth close and open on brown food lumps, and a counter shows the pieces growing in number, such as 2, 5, then 9 pieces. In \"Churning\", a stomach squeezes in and out and its food pieces tumble around. In \"Segmentation\", red rings pinch a tube in a few places, then switch places, so the food and blue water dots slosh back and forth. In the highlighted \"Chemical\" panel, a teal pac-man shaped enzyme with a blue water drop moves along a chain of yellow hexagons and cuts the links one at a time, until eight single units are left.",act:1,scene:"breaking",title:"Breaking food: mechanical and chemical digestion",
  body:`<p><b>Mechanical digestion</b> breaks food into smaller pieces without changing its molecules. It includes <b>chewing</b> (mastication), <b>churning</b> in the stomach, and <b>segmentation</b> in the small intestine. Segmentation is ring contractions in many places at once that slosh food back and forth and mix it with juices.</p>
  <p><b>Chemical digestion</b> uses <b>enzymes</b> to cut large food molecules into their small building blocks. Each cut uses a water molecule, so it is called <b>hydrolysis</b>.</p>
  <p>Mechanical digestion helps chemical digestion: smaller pieces have more surface for enzymes to work on.</p>`,
@@ -270,7 +286,7 @@ const STEPS=[
  caption:"Chewing, churning and segmentation break food up. An enzyme cuts a chain into single units.",
  legend:[["food","Food pieces"],["enzc","Enzyme"],["carb","Monomer (single unit)","hex"],["water","Water used in each cut"]]},
 
-{act:1,scene:"absorbdef",title:"Absorption and defecation",
+{desc:"The left panel shows a row of pink absorptive cells lining the small intestine, with the open space (lumen) above and a red blood capillary below, where white arrows show blood flowing to the right. Small yellow glucose hexagons, purple amino acid dots and a teal dot move down from the lumen, through the cells and into the capillary, which carries them away. The right panel shows the large intestine as a tall tube: a tan lump of leftovers moves down it, blue water drops leave through the wall (\"water taken back\"), and the lump turns darker brown and firmer. At the bottom, a red ring labelled anus changes from closed to open as the lump leaves, then closes again.",act:1,scene:"absorbdef",title:"Absorption and defecation",
  body:`<p><b>Absorption</b> is the movement of digested nutrients out of the tube and into the <b>blood</b> or <b>lymph</b>. Most absorption happens in the <b>small intestine</b>, through the cells that line it.</p>
  <p>Some materials cannot be digested, such as most plant fiber. The large intestine takes back water from this leftover material and forms <b>feces</b>.</p>
  <p><b>Defecation</b> is getting rid of the feces through the anus. That completes the six processes: <b>ingestion, propulsion, mechanical digestion, chemical digestion, absorption, defecation</b>.</p>`,
@@ -284,7 +300,7 @@ const STEPS=[
  caption:"Small units cross the lining into a capillary. Leftover material moves on and leaves the body.",
  legend:[["carb","Glucose","hex"],["amino","Amino acid"],["blood","Blood capillary","l"],["stool","Feces"]]},
 
-{act:1,scene:"wall",title:"The four layers of the GI wall, and the gut's own nerves",
+{desc:"A cross section of the gut wall is drawn as rings that appear from the inside out: the pink mucosa with a wavy inner edge around the lumen, the paler submucosa with small red and blue vessels, a dark red circular muscle ring, a lighter red longitudinal muscle ring with dotted texture, and the thin outer serosa. Yellow dots between the layers glow when they fire, labelled submucosal plexus (glands) and myenteric plexus (movement). A side panel shows a short tube that gets narrower when the circular layer squeezes (arrows from top and bottom) and shorter when the longitudinal layer contracts (arrows from the ends). Another panel shows the peritoneum: an outer parietal layer, a loop of gut wrapped in the visceral layer, a stalk labelled mesentery, and an organ behind it marked retroperitoneal.",act:1,scene:"wall",title:"The four layers of the GI wall, and the gut's own nerves",
  body:`<p>From the esophagus to the anus, the tube wall has the same <b>four layers</b>, from the inside out:</p>
  <ol><li><b>Mucosa</b>: the lining. Epithelium touching the food, a thin connective tissue layer, and a thin muscle layer.</li>
  <li><b>Submucosa</b>: connective tissue with blood vessels, lymph vessels and nerves.</li>
@@ -302,7 +318,7 @@ const STEPS=[
  legend:[["mucosa","Mucosa"],["submucosa","Submucosa"],["circ","Circular muscle"],["longi","Longitudinal muscle"],["serosa","Serosa"],["nerve","Enteric plexus"]]},
 
 /* ---------- PART 2 ---------- */
-{act:2,scene:"mouth",title:"The mouth: teeth, tongue and saliva",
+{desc:"A front view of the open mouth shows white teeth, a pink tongue and six blue salivary glands (two parotid, two submandibular, one sublingual) with ducts leading into the mouth. Food lumps first break into smaller pieces as the label reads \"Teeth cut and grind\", then blue saliva drops flow in through the ducts (\"Saliva moistens and starts digestion\"), and finally the pieces gather into one tan ball labelled bolus (\"Tongue rolls a bolus\"). In the side panel, a teal enzyme cuts a long chain of yellow hexagons into shorter pieces, including pairs labelled maltose. A brown lingual lipase enzyme sits beside an orange fat molecule, with a note that it mostly waits until it reaches stomach acid.",act:2,scene:"mouth",title:"The mouth: teeth, tongue and saliva",
  body:`<p>In the mouth, <b>teeth</b> cut and grind food, and the <b>tongue</b> moves it around and mixes it with saliva.</p>
  <p>Three pairs of <b>salivary glands</b> (parotid, submandibular, sublingual) make about 1 to 1.5 liters of <b>saliva</b> a day. Saliva is mostly water. It moistens food and contains two enzymes:</p>
  <ul><li><b>Salivary amylase</b> starts breaking <b>starch</b> into smaller sugars such as maltose.</li>
@@ -318,7 +334,7 @@ const STEPS=[
  caption:"Teeth grind, saliva flows in, and salivary amylase snips starch into maltose. The tongue rolls a bolus.",
  legend:[["food","Food"],["saliva","Saliva"],["enzc","Salivary amylase"],["enzl","Lingual lipase"],["carb","Sugar units","hex"]]},
 
-{act:2,scene:"swallow",title:"Swallowing: three phases",
+{desc:"Three tabs across the top light up in turn: voluntary phase, pharyngeal phase and esophageal phase. On the left, a side view of the head and neck shows the tongue pushing a tan bolus back; then the soft palate rises to close the nose route, the green epiglottis tips down to cover the airway (\"breathing pauses\"), and the bolus passes into the esophagus behind the trachea. On the right, the whole esophagus is drawn as a tall tube with a red ring at the top (UES) and another at the bottom (LES) just above the stomach. Each ring opens as the bolus reaches it, red squeeze marks labelled peristalsis push the bolus down, and the bolus drops into the stomach.",act:2,scene:"swallow",title:"Swallowing: three phases",
  body:`<p>Swallowing, or <b>deglutition</b>, has three phases:</p>
  <ol><li><b>Voluntary phase</b>: you choose to swallow. The tongue pushes the bolus back into the oropharynx.</li>
  <li><b>Pharyngeal phase</b> (involuntary): the soft palate and uvula rise to close off the nasopharynx. The larynx rises and the <b>epiglottis</b> folds over the opening to the airway, so food goes into the esophagus, not the trachea. Breathing stops for a moment.</li>
@@ -333,7 +349,7 @@ const STEPS=[
  caption:"Voluntary push, then the soft palate rises, the epiglottis folds down, and sphincters open in turn.",
  legend:[["food","Bolus"],["tongue","Tongue"],["glow","Phase in progress"],["circ","Sphincter","r"]]},
 
-{act:2,scene:"stomach",title:"The stomach: rugae and three muscle layers",
+{desc:"A large stomach is drawn with labels for the fundus, cardia, body, pylorus and a red ring-shaped pyloric sphincter. At first its inner wall is full of zigzag folds (rugae); as brown food chunks pour in from the esophagus, the folds flatten into gentle lines (\"Filling: rugae flatten\"). Then red arrows show waves squeezing along the wall toward the pylorus (\"Churning\"), and the dark chunks turn into many small pale bits (\"Chyme: soupy and well mixed\"). A key in the corner shows the three muscle layers as stripes: longitudinal (horizontal lines), circular (vertical lines) and oblique (orange diagonal lines), each highlighted as it works.",act:2,scene:"stomach",title:"The stomach: rugae and three muscle layers",
  body:`<p>The <b>stomach</b> is a J-shaped bag between the esophagus and the small intestine. Its regions are the <b>cardia</b>, <b>fundus</b>, <b>body</b> and <b>pylorus</b>.</p>
  <p>When empty, its lining lies in big folds called <b>rugae</b>. As the stomach fills, the rugae flatten out, so it can hold a large meal (up to about 4 liters).</p>
  <p>Unlike the rest of the tract, the stomach's muscularis has <b>three layers</b>: longitudinal, circular, and an extra inner <b>oblique</b> layer. Twisting and squeezing in three directions <b>churns</b> food and mixes it with gastric juice. The result is a soupy mix called <b>chyme</b>.</p>`,
@@ -347,7 +363,7 @@ const STEPS=[
  caption:"The stomach fills, rugae flatten, and three muscle layers squeeze in waves that churn food into chyme.",
  legend:[["food","Food chunks"],["chyme","Chyme"],["longi","Longitudinal"],["circ","Circular"],["act2","Oblique"]]},
 
-{act:2,scene:"glands",title:"Gastric glands: acid, pepsin and a mucus shield",
+{desc:"The left panel shows the stomach lining: a row of pale blue surface mucous cells with a teal layer of mucus and bicarbonate on top, and two deep gastric glands below lined with blue mucous neck cells, red parietal cells and purple chief cells. Small red-ringed H+ dots stream from the parietal cells up into the stomach lumen (pH about 2), and small purple pepsinogen molecules rise from the chief cells. In the right panel, a purple pepsinogen with a lock turns into active pepsin when acid touches it, a tangled ball of purple and teal beads unfolds into a straight chain, and pepsin bites the chain into three shorter pieces. A small brown diamond stands for intrinsic factor, which travels on to the ileum for vitamin B12.",act:2,scene:"glands",title:"Gastric glands: acid, pepsin and a mucus shield",
  body:`<p>The stomach lining is dotted with <b>gastric pits</b> that lead down into <b>gastric glands</b>. Different cells in the glands make different parts of <b>gastric juice</b>:</p>
  <ul><li><b>Parietal cells</b> secrete <b>hydrochloric acid (HCl)</b> and <b>intrinsic factor</b>, which is needed later to absorb vitamin B<sub>12</sub>. The acid kills many microbes and unfolds proteins.</li>
  <li><b>Chief cells</b> secrete <b>pepsinogen</b>, an inactive enzyme. When it meets HCl, it is converted to active <b>pepsin</b>, which starts cutting proteins into smaller pieces.</li>
@@ -363,7 +379,7 @@ const STEPS=[
  caption:"Parietal cells release HCl and intrinsic factor. HCl turns pepsinogen into pepsin, which cuts proteins. Mucus shields the lining.",
  legend:[["acid","H⁺ / HCl"],["enzp","Pepsinogen → pepsin"],["amino","Protein"],["mucus","Mucus layer"],["act3","Intrinsic factor","d"]]},
 
-{act:2,scene:"phases",title:"Phases of gastric secretion and gastric emptying",
+{desc:"Three small panels light up one after another: in the cephalic phase, a brain glows and a yellow vagus nerve sends a signal to the stomach when a slice of food is seen. In the gastric phase, the stomach stretches with food (orange arrows) and orange gastrin diamonds travel in the blood back to the stomach (\"gastrin → more acid\"). In the intestinal phase, chyme in the duodenum triggers a red minus sign and a blue dotted signal that slows the stomach. The wide panel at the bottom shows a funnel-shaped stomach end leading to a narrow duodenum: a squeeze wave moves toward the pyloric sphincter, which lets only a few bits of chyme through while most are pushed back to mix more.",act:2,scene:"phases",title:"Phases of gastric secretion and gastric emptying",
  body:`<p>Gastric secretion is controlled in three phases:</p>
  <ol><li><b>Cephalic phase</b> (head): seeing, smelling, tasting or even thinking about food sends signals through the vagus nerve, and the stomach starts secreting before food arrives.</li>
  <li><b>Gastric phase</b>: food stretches the stomach, and partly digested proteins buffer the acid. This triggers <b>gastrin</b>, a hormone that increases acid and juice secretion. This phase makes most of the gastric juice.</li>
@@ -380,7 +396,7 @@ const STEPS=[
  legend:[["nerve","Vagus nerve signal"],["gastrin","Gastrin","d"],["acid","Acid"],["chyme","Chyme"]]},
 
 /* ---------- PART 3 ---------- */
-{act:3,scene:"si",title:"The small intestine: three parts, one long tube",
+{desc:"A pink tube unrolls from the stomach across the picture, and a counter in the corner shows the length growing to 3.0 m. The first short part is outlined in purple (\"Duodenum about 25 cm, bile and pancreatic juice in\"), the next in orange (\"Jejunum about 0.9 m, digestion and absorption\"), and the long last part in red (\"Ileum about 1.8 m, B12 and bile salts absorbed\"), ending at the large intestine. Small tan chyme bits move slowly along the tube. A zoom panel below shows rings that contract in several places at once and then switch, so the chyme and blue dots slosh back and forth.",act:3,scene:"si",title:"The small intestine: three parts, one long tube",
  body:`<p>The <b>small intestine</b> is "small" only in width. In a living person it is about <b>3 meters (10 feet)</b> long. It has three parts:</p>
  <ul><li><b>Duodenum</b>, about 25 cm: the shortest. It receives chyme from the stomach and juices from the pancreas and liver.</li>
  <li><b>Jejunum</b>, about 0.9 m: digestion and absorption continue.</li>
@@ -396,7 +412,7 @@ const STEPS=[
  caption:"The tube unrolls: duodenum, jejunum, ileum. Segmentation mixes chyme as it slowly moves along.",
  legend:[["act1","Duodenum"],["act2","Jejunum"],["act3","Ileum"],["chyme","Chyme"]]},
 
-{act:3,scene:"zoom",title:"Zoom in: folds, villi and microvilli",
+{desc:"Four tabs walk through the zoom levels while a red surface area bar at the bottom grows: first a smooth oval tube with food bits shows little surface, then circular folds rise from its wall as red ridges. Next, one fold is shown up close, covered with rows of finger-like villi (\"much more\"). Then the inside of one villus is shown: absorptive cells along the edge, a red network of blood capillaries, and a green tube in the middle labelled lacteal (lymph), with coloured nutrient dots moving into them. Finally the tiny microvilli on the cell surface are shown carrying brush border enzymes, and the bar reaches \"hundreds of times more\".",act:3,scene:"zoom",title:"Zoom in: folds, villi and microvilli",
  body:`<p>The small intestine has a huge surface for absorption because of three levels of folding:</p>
  <ol><li><b>Circular folds</b>: deep ridges of the mucosa and submucosa. They also make chyme spiral, so it moves slowly.</li>
  <li><b>Villi</b>: tiny finger-like projections of the mucosa. Each villus has a network of <b>blood capillaries</b> and one lymph capillary called a <b>lacteal</b>.</li>
@@ -412,7 +428,7 @@ const STEPS=[
  caption:"Zooming in: circular folds, then villi with capillaries and a lacteal, then the brush border of microvilli.",
  legend:[["mucosa","Mucosa"],["blood","Blood capillary","l"],["lymph","Lacteal"],["enzb","Brush border enzyme"]]},
 
-{act:3,scene:"pancreas",title:"The pancreas: enzymes and bicarbonate",
+{desc:"On the left, a tan pancreas with a duct running through it meets the side of the pink duodenum. Teal bicarbonate dots and coloured enzyme shapes travel along the duct and out into the duodenum, and a round zoom shows one acinus, a ring of wedge-shaped cells with purple enzyme granules. On the right, inside the duodenum, red acid dots and teal bicarbonate dots meet and cancel, and a pH bar rises from 2.2 (short and red) to about 7.2 (tall and teal), with the message \"Chyme is now near neutral\". A green enteropeptidase on the lining unlocks purple trypsinogen into trypsin, which then unlocks teal chymotrypsinogen into chymotrypsin, while amylase, lipase and nucleases wait nearby.",act:3,scene:"pancreas",title:"The pancreas: enzymes and bicarbonate",
  body:`<p>The <b>pancreas</b> sits behind the stomach. Its exocrine cells make more than a liter of <b>pancreatic juice</b> a day, which flows through the pancreatic duct into the <b>duodenum</b>.</p>
  <ul><li><b>Bicarbonate</b> (HCO<sub>3</sub><sup>−</sup>) neutralizes the acid in chyme, so intestinal enzymes can work.</li>
  <li><b>Pancreatic amylase</b> digests starch. <b>Pancreatic lipase</b> digests fats. <b>Nucleases</b> digest DNA and RNA.</li>
@@ -428,7 +444,7 @@ const STEPS=[
  caption:"Pancreatic juice flows into the duodenum. Bicarbonate neutralizes acid, and trypsinogen is unlocked into trypsin.",
  legend:[["panc","Pancreas"],["base","Bicarbonate (HCO₃⁻)"],["acid","Acid (H⁺)"],["enzp","Trypsin and chymotrypsin"],["enzc","Amylase"],["enzl","Lipase"]]},
 
-{act:3,scene:"bile",title:"Liver and gallbladder: bile emulsifies fat",
+{desc:"On the left, the dark red liver makes yellow-green bile that drips down the hepatic ducts. Between meals, the sphincter at the duodenum is closed, so bile backs up into the green gallbladder, and blue water drops leave it as the bile is concentrated. After a fatty meal, purple CCK triangles rise from the duodenum, the gallbladder squeezes smaller, the sphincter opens and bile drips into the duodenum. On the right, one big orange fat globule gets coated with small green bile salts and breaks into many small droplets, while brown lipase enzymes move in, and an orange bar for \"Fat surface exposed to lipase\" fills from short to full.",act:3,scene:"bile",title:"Liver and gallbladder: bile emulsifies fat",
  body:`<p>The <b>liver</b> makes <b>bile</b>, roughly half a liter to a liter a day. Bile contains water, bile salts, bilirubin, cholesterol and other substances. It drains out through the hepatic ducts.</p>
  <p>Between meals, bile backs up through the cystic duct into the <b>gallbladder</b>, which <b>stores</b> it and <b>concentrates</b> it by removing water. After a fatty meal, the gallbladder contracts and squeezes bile down the <b>common bile duct</b> into the duodenum.</p>
  <p><b>Bile salts</b> are not enzymes. They <b>emulsify</b> fat: they break large fat globules into many tiny droplets. Tiny droplets have much more surface, so <b>lipase</b> can digest them much faster.</p>`,
@@ -442,7 +458,7 @@ const STEPS=[
  caption:"The liver makes bile, the gallbladder stores and concentrates it, then squeezes it out. Bile salts break a fat globule into droplets.",
  legend:[["liver","Liver"],["gb","Gallbladder"],["bile","Bile"],["fat","Fat"],["water","Water removed"]]},
 
-{act:3,scene:"hormones",title:"Hormones that coordinate digestion",
+{desc:"The stomach, duodenum, liver, green gallbladder and tan pancreas are drawn together, beside three cards for the hormones, and first, orange gastrin diamonds leave the stomach, travel in a dotted loop of blood and come back, and the stomach outline glows orange as red acid dots appear. Next, blue secretin squares leave the duodenum when acidic chyme arrives, travel in the blood and bring red-ringed bicarbonate out from the pancreas. Last, purple CCK triangles leave the duodenum, travel to the gallbladder and pancreas, and orange enzyme dots flow into the duodenum. The matching card is outlined in the hormone's colour with a tag such as \"trigger\" or \"hormone in blood\".",act:3,scene:"hormones",title:"Hormones that coordinate digestion",
  body:`<p>Three hormones made in the GI tract coordinate the stomach, pancreas and gallbladder. They travel through the blood.</p>
  <ul><li><b>Gastrin</b> is made in the <b>stomach</b> when food arrives. It stimulates gastric glands to secrete <b>acid</b> and enzymes.</li>
  <li><b>Secretin</b> is made in the <b>duodenum</b> when <b>acidic chyme</b> arrives. It tells the pancreas to release <b>bicarbonate-rich</b> juice, which neutralizes the acid.</li>
@@ -459,7 +475,7 @@ const STEPS=[
  legend:[["gastrin","Gastrin","d"],["secretin","Secretin","s"],["cck","CCK","tri"],["blood","Blood flow","l"]]},
 
 /* ---------- PART 4 ---------- */
-{act:4,scene:"carbs",title:"Carbohydrates: from starch to monosaccharides",
+{desc:"A long strip is divided into four zones with tabs: mouth, stomach, small intestine and brush border, with intestinal cells at the right end and a red capillary along the bottom flowing toward the liver. In the mouth, a teal amylase cuts a chain of yellow hexagons (starch) into shorter pieces. In the stomach, the amylase is crossed out in red (\"Acid stops salivary amylase\"). In the small intestine, pancreatic amylase cuts the pieces into pairs (maltose), next to lactose and sucrose pairs drawn with pink and orange units, and at the brush border green enzymes split every pair into single sugars that move into the cells and the blood.",act:4,scene:"carbs",title:"Carbohydrates: from starch to monosaccharides",
  body:`<p>Carbohydrates arrive mostly as <b>starch</b> (long chains of glucose) plus the disaccharides <b>sucrose</b> and <b>lactose</b>.</p>
  <ol><li><b>Salivary amylase</b> in the mouth starts cutting starch.</li>
  <li><b>Pancreatic amylase</b> in the small intestine cuts the rest into short pieces, mainly maltose.</li>
@@ -475,7 +491,7 @@ const STEPS=[
  caption:"Amylase cuts starch into maltose, then brush border enzymes split disaccharides into single sugars that enter the blood.",
  legend:[["carb","Glucose","hex"],["gal","Galactose","hex"],["fru","Fructose","pent"],["enzc","Amylase"],["enzb","Brush border enzyme"],["blood","Capillary","l"]]},
 
-{act:4,scene:"proteins",title:"Proteins: from chains to amino acids",
+{desc:"The same four-zone strip is shown for protein, with tabs for mouth, stomach, small intestine and brush border, and a red capillary along the bottom. In the mouth, a tangled ball of purple and teal beads passes through uncut (\"Chewing only; no enzyme for protein here\"). In the stomach, red acid dots unfold the ball and it is cut (\"HCl unfolds the protein\", \"Pepsin cuts the unfolded protein\"). In the small intestine, the chain is cut into shorter pieces of four beads, and at the brush border green peptidase enzymes free single beads (amino acids) that move into the cells and the blood.",act:4,scene:"proteins",title:"Proteins: from chains to amino acids",
  body:`<p>Proteins are long, folded chains of <b>amino acids</b>.</p>
  <ol><li><b>Stomach</b>: HCl unfolds proteins, and <b>pepsin</b> cuts them into smaller polypeptides.</li>
  <li><b>Small intestine</b>: pancreatic <b>trypsin</b>, <b>chymotrypsin</b> and <b>carboxypeptidase</b> cut the polypeptides into short peptides.</li>
@@ -491,7 +507,7 @@ const STEPS=[
  caption:"Acid unfolds the protein, pepsin cuts it, pancreatic proteases cut it shorter, and peptidases free amino acids into the blood.",
  legend:[["amino","Amino acids"],["acid","HCl"],["enzp","Proteases"],["enzb","Peptidases"],["blood","Capillary","l"]]},
 
-{act:4,scene:"lipids",title:"Lipids: emulsify, digest, micelles, chylomicrons",
+{desc:"Five tabs mark the steps: emulsify, lipase, micelles, rebuild and lacteal. On the left, in the lumen of the small intestine, one big orange fat globule breaks into many small droplets coated with green bile salts, and a brown lipase cuts an orange triglyceride (a bar with three wavy tails) into a monoglyceride and two fatty acids. Small round micelles, made of green bile salts around the pieces, carry them to a large pink absorptive cell in the middle. Inside the cell, wavy orange lines (smooth ER) rebuild triglycerides and a purple Golgi packs them into round chylomicrons, which leave the cell and enter the wide green lacteal on the right, because they are \"too big for blood capillary\" (the narrow red tube).",act:4,scene:"lipids",title:"Lipids: emulsify, digest, micelles, chylomicrons",
  body:`<p>Fats (mostly <b>triglycerides</b>) do not mix with water, so they need extra steps.</p>
  <ol><li><b>Bile salts emulsify</b> big fat globules into tiny droplets.</li>
  <li><b>Pancreatic lipase</b> splits each triglyceride into <b>two free fatty acids</b> and a <b>monoglyceride</b>.</li>
@@ -509,7 +525,7 @@ const STEPS=[
  caption:"Bile emulsifies, lipase splits triglycerides, micelles ferry the pieces in, and chylomicrons exit into the lacteal.",
  legend:[["fat","Fat droplet / triglyceride"],["micelle","Bile salt / micelle"],["enzl","Lipase"],["chylo","Chylomicron"],["lymph","Lacteal"]]},
 
-{act:4,scene:"water",title:"Water, electrolytes and vitamins",
+{desc:"The left panel shows a row of pink intestinal cells between the lumen above and a red blood capillary below, with small green pumps along the base of each cell. Brown Na+ dots move from the lumen through the cells and are pumped out the bottom, and blue water drops follow them down between and through the cells into the capillary (\"Water follows the moved solutes\"). The right panel shows vitamins: a micelle with the letters A, D, E and K, light blue B and C circles crossing a lining, and a brown diamond (intrinsic factor) joined to a purple B12 dot that moves to a green receptor on an ileum cell and is taken in.",act:4,scene:"water",title:"Water, electrolytes and vitamins",
  body:`<p>Many liters of fluid enter the small intestine each day, from food, drink and digestive juices. Most of it is absorbed in the small intestine, and the large intestine takes back much of the rest.</p>
  <p>Water is absorbed by <b>osmosis</b>: absorptive cells actively transport sodium and nutrients into the body, and water follows.</p>
  <ul><li><b>Fat-soluble vitamins</b> (A, D, E, K) travel in micelles with fat and are absorbed with it.</li>
@@ -525,7 +541,7 @@ const STEPS=[
  caption:"Sodium is pumped across the cell and water follows by osmosis. Fat-soluble vitamins ride micelles; B12 needs intrinsic factor.",
  legend:[["water","Water"],["warn","Na⁺"],["micelle","Micelle with vitamins A, D, E, K"],["act3","Intrinsic factor + B12","d"]]},
 
-{act:4,scene:"portal",title:"Two routes out: the hepatic portal vein and the lymph",
+{desc:"An outline of the trunk shows the liver, stomach, intestines and a red heart near the top. A thick blue-purple tube labelled hepatic portal vein carries yellow sugar dots and purple amino acid dots up from the intestines into the liver, which is outlined in orange, while a green dashed line labelled lymph route carries cream-coloured chylomicron circles straight up past the liver to the heart. A side panel highlights the blood route, then the lymph route. Its bottom section shows what happens in the liver: single yellow glucose units join a growing chain and pile into a glycogen stack, and a dark red hepatocyte with a green check mark processes amino acids and a red toxin symbol.",act:4,scene:"portal",title:"Two routes out: the hepatic portal vein and the lymph",
  body:`<p>Absorbed nutrients leave the intestine by two routes:</p>
  <ul><li>Sugars, amino acids, water-soluble vitamins and short-chain fatty acids enter blood capillaries. These drain into the <b>hepatic portal vein</b>, which carries the blood straight to the <b>liver</b>.</li>
  <li><b>Chylomicrons</b> enter lacteals and travel in the lymph. Lymph reaches the blood near the heart, so most fats skip the liver at first.</li></ul>
@@ -541,7 +557,7 @@ const STEPS=[
  legend:[["vein","Hepatic portal vein"],["lymph","Lymph route"],["liver","Liver"],["carb","Glucose","hex"],["amino","Amino acids"],["chylo","Chylomicrons"]]},
 
 /* ---------- PART 5 ---------- */
-{act:5,scene:"large",title:"The large intestine: water, bacteria and mass movements",
+{desc:"The large intestine is drawn as a big pink frame: the cecum with the appendix at the lower left, where the ileum joins, then the ascending colon going up, the transverse colon across the top, the descending colon going down the right side, and the sigmoid colon curving into the rectum and anal canal. Pale tan contents enter from the ileum and slowly turn into dark brown lumps as blue water drops leave through the wall. Green rod-shaped bacteria drift inside and small green squares (vitamin K) leave the wall. Every so often a red glowing squeeze labelled mass movement sweeps along the transverse colon and pushes the contents far toward the rectum.",act:5,scene:"large",title:"The large intestine: water, bacteria and mass movements",
  body:`<p>Material leaves the ileum through the ileocecal sphincter into the <b>large intestine</b> (about 1.5 m long). Its parts are the <b>cecum</b> (with the appendix attached), the <b>colon</b> (ascending, transverse, descending and sigmoid), the <b>rectum</b>, and the <b>anal canal</b>.</p>
  <ul><li>It absorbs <b>water and electrolytes</b>, so the contents become firmer feces.</li>
  <li>Its <b>gut bacteria</b> ferment leftover carbohydrates (releasing gas) and make some <b>vitamin K</b> and some B vitamins, which are absorbed.</li>
@@ -556,7 +572,7 @@ const STEPS=[
  caption:"Water is pulled out, bacteria make vitamin K, and a mass movement sweeps the contents toward the rectum.",
  legend:[["chyme","Watery contents"],["stool","Feces"],["water","Water absorbed"],["bact","Bacteria"],["vitk","Vitamin K","s"]]},
 
-{act:5,scene:"defec",title:"The defecation reflex: two sphincters",
+{desc:"On the left, the rectum is drawn as a tall funnel ending in two pairs of sphincters: a red internal anal sphincter (smooth, involuntary) and a purple striped external anal sphincter (skeletal, voluntary). On the right, a tall sacral spinal cord connects to a pink brain at the top, with yellow dotted lines for the stretch signal and reflex and a purple dotted line for voluntary control. A brown mass of feces moves into the rectum and stretches it, yellow sensors on the wall glow, and the brain shows \"Urge to defecate\"; the internal sphincter then relaxes (open) while the external one stays closed and the urge fades. Finally the external sphincter relaxes too, black arrows show the abdominal muscles helping push, and a numbered box at the bottom tracks each of the four steps.",act:5,scene:"defec",title:"The defecation reflex: two sphincters",
  body:`<p>When a mass movement pushes feces into the <b>rectum</b>, its walls stretch. Stretch receptors send signals to the spinal cord, and a reflex makes the rectum contract and the <b>internal anal sphincter</b> relax. You feel the urge to go.</p>
  <ul><li>The <b>internal anal sphincter</b> is <b>smooth muscle</b>: involuntary.</li>
  <li>The <b>external anal sphincter</b> is <b>skeletal muscle</b>: voluntary. You decide when it relaxes.</li></ul>
@@ -571,7 +587,7 @@ const STEPS=[
  caption:"The rectum stretches, the reflex relaxes the internal sphincter, and you choose when the external sphincter opens.",
  legend:[["stool","Feces"],["circ","Internal sphincter (smooth)","r"],["act1","External sphincter (skeletal)","r"],["nerve","Nerve signals"]]},
 
-{act:0,scene:"recap",title:"You made it. Here is the whole journey.",
+{desc:"The full body outline with the digestive tract appears again, with a food ball travelling from the mouth to the end of the large intestine. On the right, three cards show what happens to each food type. Carbohydrates: a chain of yellow hexagons is cut into single units that cross a red line (\"monosaccharides → blood\"). Proteins: a chain of purple and teal beads is cut into single amino acids that cross a red line (\"amino acids → blood\"), and Fats: an orange fat droplet becomes a micelle and then crosses a green line (\"chylomicrons → lacteals\").",act:0,scene:"recap",title:"You made it. Here is the whole journey.",
  body:`<ol class="recap">
  <li class="h">Part 1 · The big picture</li>
  <li>Food travels the alimentary canal; accessory organs add juices through ducts.</li><li>Six processes: ingestion, propulsion, mechanical digestion, chemical digestion, absorption, defecation.</li><li>Wall layers: mucosa, submucosa, muscularis (circular + longitudinal), serosa. The enteric nervous system runs the gut.</li>
@@ -610,14 +626,14 @@ function buildChain(){
     d.appendChild(dots);chainEl.appendChild(d);
   });
 }
-function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.remove("gk-oninv");b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i));if(i===cur)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current");b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title+(done.has(i)?" (answered)":""))})}
 function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
   if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
   return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" data-act="${a.col}" style="background:var(--${a.col})">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -626,6 +642,7 @@ function render(){
   $("#terms").style.display=s.terms.length?"":"none";
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{
@@ -1040,7 +1057,7 @@ function sceneWall(T){
   const labs=[["Mucosa",(rs[0]+rs[1])/2+4],["Submucosa",(rs[1]+rs[2])/2],["Circular muscle",(rs[2]+rs[3])/2],["Longitudinal muscle",(rs[3]+rs[4])/2],["Serosa",(rs[4]+rs[5])/2+1]];
   labs.forEach((l,i)=>{const a=reveal(i);if(a<=0)return;ctx.globalAlpha=a;const an=-1.15+i*.38;const x=cx+Math.cos(an)*l[1],y=cy+Math.sin(an)*l[1];
     leader(x,y,372,46+i*30,l[0],{weight:600});ctx.globalAlpha=1});
-  if(t>5.5){ctx.globalAlpha=seg(t,5.5,6.5);label(372,206,"Muscularis = both muscle layers",{size:11.5,color:C["ink-soft"]});
+  if(t>5.5){ctx.globalAlpha=seg(t,5.5,6.5);label(372,200,"Muscularis =",{size:11.5,color:C["ink-soft"]});label(372,216,"both muscle layers",{size:11.5,color:C["ink-soft"]});
     leader(cx-((rs[1]+rs[2])/2+8)*.71,cy+((rs[1]+rs[2])/2+8)*.71,30,452,"Submucosal plexus (glands)",{size:11.5,weight:600});
     leader(cx+((rs[3]+rs[4])/2)*.71,cy+((rs[3]+rs[4])/2)*.71,250,452,"Myenteric plexus (movement)",{size:11.5,weight:600});ctx.globalAlpha=1}
   // Right top: two muscle layers in side view
@@ -1534,7 +1551,7 @@ function sceneBile(T){
   const vol=B?lerp(1,.55,sq):lerp(.7,1,seg(t,0,6));const conc=B?1:seg(t,1,6);
   ctx.save();ctx.translate(110,300);ctx.rotate(-.55);const gx=36*vol+8,gy=58*vol+10;ell(0,0,gx,gy,C.gb,"rgba(0,0,0,.35)",1.5);ctx.globalAlpha=.35+.55*conc;ell(0,4,gx-7,gy-8,C.bile);ctx.restore();ctx.globalAlpha=1;
   label(64,212,"gallbladder",{size:12,weight:700,align:"center"});
-  if(!B){for(let i=0;i<5;i++){const q=((T*.5)+i/5)%1;const an=i*1.3;drop(110+Math.cos(an)*(40+q*40),300+Math.sin(an)*(52+q*40),3.6,C.water,1-q)}label(80,232,"stores + concentrates (water out)",{size:11,align:"center"})}
+  if(!B){for(let i=0;i<5;i++){const q=((T*.5)+i/5)%1;const an=i*1.3;drop(110+Math.cos(an)*(40+q*40),300+Math.sin(an)*(52+q*40),3.6,C.water,1-q)}label(104,232,"stores + concentrates (water out)",{size:11,align:"center"})}
   else{label(64,232,"contracts",{size:11,align:"center",weight:600,color:C.cck})}
   // duodenum + sphincter
   ctx.fillStyle=C.gut;ctx.fillRect(20,392,410,70);ctx.fillStyle=C.lumen;ctx.fillRect(20,404,410,46);txt(400,440,"duodenum",{size:11,align:"right"});

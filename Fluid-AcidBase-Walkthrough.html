@@ -131,7 +131,14 @@ h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;marg
 footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
 footer a{color:var(--ink-soft)}
 sub,sup{line-height:0}
+
+/* a11y retrofit: act chips readable at 11px; current-step dot readable in dark mode */
+:root{--act1-chip:#7B5CC9;--act2-chip:#A36715;--act3-chip:#B25B48;--act4-chip:#2B8273;--act5-chip:#A04E8C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5)}:root:not([data-theme="light"]) .actchip,:root:not([data-theme="light"]) .dot.cur{color:#10161A}}
+:root[data-theme="dark"]{--act1-chip:var(--act1);--act2-chip:var(--act2);--act3-chip:var(--act3);--act4-chip:var(--act4);--act5-chip:var(--act5)}:root[data-theme="dark"] .actchip,:root[data-theme="dark"] .dot.cur{color:#10161A}
+.dot.done.gk-oninv:not(.cur){color:var(--good)!important}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -198,7 +205,7 @@ const STEPS=[
   ["The stomach",0,"The stomach makes acid for digestion, but it does not control blood pH or water balance."],
   ["The lungs",0,"The lungs help with pH by removing CO₂, but they do not control electrolytes like Na⁺ and K⁺."],
   ["The liver",0,"The liver has many jobs, but the kidneys are the main controllers of water, salts and pH."]]},
- caption:"Three balances: fluid, electrolytes, and acid-base. The kidneys work on all three."},
+ desc:"Five tall cards stand side by side, one for each part, each with a coloured header: purple Body fluids, orange Water balance, salmon Electrolytes, teal Buffers and pH, and plum Disorders. The cards light up one at a time. Each holds a small picture: three tanks of fluid labelled ICF, IF and Pl; a head with a glowing thirst center, water drops and a kidney; a cell ringed by ions; a pH gauge with its needle near 7.4; and a small seesaw. The line underneath says every part depends on the kidneys, and water always follows the solutes.",caption:"Three balances: fluid, electrolytes, and acid-base. The kidneys work on all three."},
 
 {act:1,scene:"bodywater",id:"bodywater",title:"Your body is mostly water",
  body:`<p>Water is the most common substance in your body. In an average adult it makes up about <b>50 to 60 percent of body weight</b>.</p>
@@ -210,7 +217,7 @@ const STEPS=[
   ["Her kidneys remove more water each day.",0,"Kidney function is not the reason. It is about body composition: fat holds little water."],
   ["Her cells are smaller.",0,"Cell size is not the reason. The difference comes from more fat and less muscle."],
   ["She drinks less water.",0,"Drinking changes water balance day to day, but the percentage difference is about fat versus muscle."]]},
- caption:"Water fills each body to a different level: about 75% in a baby, 60% in an adult male, 50% in an adult female.",
+ desc:"Four outlines of people stand in a row: an infant, an adult male, an adult female and an older adult. Each outline fills from the feet up with wavy blue water to a different level, and the numbers count up beneath them: about 75% for the infant, 60% for the adult male, 50% for the adult female, and often below 50% for the older adult. Once they fill, a note appears at the top: more fat means a lower water percent, because muscle is about three quarters water and fat holds very little.",caption:"Water fills each body to a different level: about 75% in a baby, 60% in an adult male, 50% in an adult female.",
  legend:[["water","Body water"]]},
 
 {act:1,scene:"tanks",id:"tanks",title:"Two main compartments: inside and outside cells",
@@ -226,7 +233,7 @@ const STEPS=[
   ["Plasma",0,"Plasma is the smallest of the three main compartments, about 20% of the ECF."],
   ["Interstitial fluid",0,"Interstitial fluid is the larger part of the ECF, but the ICF is about twice the whole ECF."],
   ["Transcellular fluid",0,"Transcellular fluid, like CSF and joint fluid, is only a small amount."]]},
- caption:"Total body water splits into ICF (about 2/3) and ECF (about 1/3). ECF splits into interstitial fluid and plasma.",
+ desc:"A long bar across the top grows to show how a 70 kg adult's 42 liters of water are split: a large pink section for intracellular fluid (about two thirds), a light blue section for interstitial fluid, and a thin yellow section for plasma, with a bracket marking the last two together as ECF, about one third. Below, three tanks fill one after another: a wide pink ICF tank of about 28 L with faint cell outlines, a smaller blue interstitial tank of about 11 L, and a small yellow plasma tank of about 3 L with red blood cells. Then grey pipes between the tanks appear with blue drops moving both ways through cell membranes and capillary walls, and a small vial on the right shows transcellular fluid.",caption:"Total body water splits into ICF (about 2/3) and ECF (about 1/3). ECF splits into interstitial fluid and plasma.",
  legend:[["icf","Intracellular fluid"],["isf","Interstitial fluid"],["plasma","Plasma"]]},
 
 {act:1,scene:"comp",id:"comp",title:"Inside and outside have different salts",
@@ -241,7 +248,7 @@ const STEPS=[
   ["Sodium (Na⁺)",0,"Na⁺ is mostly outside cells. The pump keeps pushing it out."],
   ["Chloride (Cl⁻)",0,"Cl⁻ is mostly in the ECF, following Na⁺."],
   ["Calcium (Ca²⁺)",0,"Free Ca²⁺ inside cells is kept very low. Most body calcium is in bone."]]},
- caption:"The Na⁺/K⁺ pump moves 3 Na⁺ out and 2 K⁺ in. ECF is high in Na⁺ and Cl⁻; ICF is high in K⁺ and phosphate.",
+ desc:"A large pink cell sits on a light blue background. Inside the cell are many orange K⁺ circles, magenta phosphate squares and a few brown protein blobs; outside are many purple Na⁺ circles and teal Cl⁻ squares, plus a few blue bicarbonate triangles. A purple pump on the cell's upper right edge, with a green ATP chip, moves three Na⁺ out and then two K⁺ in, over and over. A bar chart on the right grows paired bars for each ion, blue for ECF and pink for ICF: Na⁺ 142 vs 12, K⁺ 4 vs 140, Cl⁻ 103 vs 4, HCO₃⁻ 24 vs 10, phosphate 2 vs 75 mEq/L.",caption:"The Na⁺/K⁺ pump moves 3 Na⁺ out and 2 K⁺ in. ECF is high in Na⁺ and Cl⁻; ICF is high in K⁺ and phosphate.",
  legend:[["na","Na⁺"],["cl","Cl⁻"],["k","K⁺"],["phos","Phosphate"]]},
 
 {act:1,scene:"starling",id:"starling",title:"Pressures move fluid in and out of capillaries",
@@ -256,7 +263,7 @@ const STEPS=[
   ["Dehydrated tissues, because more fluid is pulled into the blood.",0,"Low albumin weakens the inward pull, so less fluid returns to the blood, not more."],
   ["Higher blood pressure in the capillaries.",0,"Albumin affects osmotic pull, not the blood pressure push."],
   ["No change, because albumin does not affect water.",0,"Albumin is the main source of colloid osmotic pressure, so it matters a lot."]]},
- caption:"Arterial end: blood pressure pushes fluid out. Venous end: albumin pulls most of it back. Lymph takes the rest.",
+ desc:"A long capillary runs left to right across the middle, shaded red at the arterial end on the left and blue at the venous end on the right, with red blood cells and brown albumin blobs flowing through it; tissue cells sit above and below. At the arterial end, thick blue arrows point outward and blue water drops leave the capillary up and down. At the venous end, brown arrows point inward and water drops move back in. Boxes explain the numbers: 35 out vs 25 in gives about 10 mmHg out (filtration) at the arterial end, and 18 out vs 25 in gives about 7 mmHg in (reabsorption) at the venous end. A green lymph vessel at the bottom collects leftover drops, and a bar shows blood pressure fading from high to low along the vessel.",caption:"Arterial end: blood pressure pushes fluid out. Venous end: albumin pulls most of it back. Lymph takes the rest.",
  legend:[["water","Water"],["prot","Albumin (plasma protein)"]]},
 
 {act:2,scene:"inout",id:"inout",title:"Water in, water out",
@@ -271,7 +278,7 @@ const STEPS=[
   ["Breath",0,"You lose water in every breath, but the body does not adjust breathing to save water."],
   ["Feces",0,"Fecal water loss is small (about 4%) and not used to regulate water."],
   ["Insensible loss from skin",0,"This evaporation happens all the time and is not controlled for water balance."]]},
- caption:"About 2500 mL in per day (drinks, food, metabolic water) and about 2500 mL out (urine, skin and breath, sweat, feces).",
+ desc:"An outline of a person stands in the middle, partly filled with blue water. On the left, three lines carry blue drops into the body: drinks 1500 mL, food 750 mL and metabolic water 250 mL. On the right, four lines carry drops out: urine 1500 mL, skin and lungs 700 mL (insensible loss), sweat 200 mL and feces 100 mL. More drops travel along the bigger routes. Two stacked bars at the bottom, blue for IN and orange for OUT, are the same length, labelled \"2500 = 2500 mL/day: balanced\".",caption:"About 2500 mL in per day (drinks, food, metabolic water) and about 2500 mL out (urine, skin and breath, sweat, feces).",
  legend:[["water","Water"]]},
 
 {act:2,scene:"thirst",id:"thirst",title:"The thirst center in the hypothalamus",
@@ -285,7 +292,7 @@ const STEPS=[
   ["Lower blood osmolality.",0,"Dilute blood would turn thirst off, not on."],
   ["A full bladder.",0,"A full bladder triggers the urge to urinate, not thirst."],
   ["Signals from the stomach that it is empty.",0,"An empty stomach relates to hunger, not to thirst."]]},
- caption:"Water loss concentrates the blood. Osmoreceptors shrink and switch on thirst. Drinking dilutes the blood and switches it off.",
+ desc:"A head is drawn in profile on the left with the brain showing and a small orange dot for the hypothalamus. A zoom circle on the right shows one osmoreceptor cell surrounded by purple Na⁺ ions. The story plays in four steps shown in a caption at the bottom: water is lost, so more Na⁺ crowds around the cell and it shrinks as water drops leave it; the hypothalamus glows and a THIRST ON chip appears; a glass of water empties as the person drinks, the Na⁺ thins out and the cell swells back; then thirst turns off and the glass refills. A meter on the right shows blood osmolality rising above the green normal band and then returning.",caption:"Water loss concentrates the blood. Osmoreceptors shrink and switch on thirst. Drinking dilutes the blood and switches it off.",
  legend:[["water","Water"],["na","Dissolved particles (mostly Na⁺)"]]},
 
 {act:2,scene:"adh",id:"adh",title:"ADH and aquaporins save water",
@@ -299,7 +306,7 @@ const STEPS=[
   ["Less urine, and it is more concentrated.",0,"That is what ADH does. Blocking ADH has the opposite effect."],
   ["No change in urine.",0,"ADH has a big effect on water reabsorption, so blocking it changes urine a lot."],
   ["Urine becomes acidic.",0,"ADH controls water, not urine pH."]]},
- caption:"ADH from the posterior pituitary puts aquaporins into collecting duct cells. Water moves back into the blood; urine becomes concentrated.",
+ desc:"A small head at the top left marks the posterior pituitary. When it glows, green ADH dots travel down a vessel to the kidney. The kidney part is drawn as three layers: blue tubule fluid on top flowing right, a row of three pink tubule cells in the middle, and blood below with red cells. When ADH arrives it binds green receptors on the blood side, small teal vesicles in each cell rise to the top edge and insert teal water channels, and blue water drops then cross from the tubule fluid through the cells into the blood. The tubule fluid turns gold and fewer drops are left, and a box reads less urine, concentrated; when ADH fades, the channels go and the box reads more urine, dilute and pale.",caption:"ADH from the posterior pituitary puts aquaporins into collecting duct cells. Water moves back into the blood; urine becomes concentrated.",
  legend:[["adh","ADH"],["water","Water"],["aqp","Aquaporin"]]},
 
 {act:2,scene:"dehyd",id:"dehyd",title:"Dehydration and overhydration",
@@ -313,7 +320,7 @@ const STEPS=[
   ["They are shrinking, because water leaves them.",0,"That happens in dehydration, when the ECF is concentrated. Here the ECF is diluted."],
   ["Nothing, because the brain is protected from water shifts.",0,"Brain cells are affected by water shifts, and that is why the symptoms are neurological."],
   ["They are losing potassium to the blood.",0,"The main problem is water moving into cells, not K⁺ loss."]]},
- caption:"Dehydration: concentrated ECF pulls water out of cells (shrink). Overhydration: dilute ECF pushes water into cells (swell).",
+ desc:"Two side-by-side panels, each with three cells in light blue fluid. The left panel, outlined orange and titled DEHYDRATION, shows sweat drops leaving at the top, more purple Na⁺ crowding the fluid, and water drops leaving the cells so the cells shrink and get crinkled edges. The right panel, outlined blue and titled OVERHYDRATION, shows plain water drops coming in at the top, fewer Na⁺ ions, and water drops moving into the cells so the cells swell, with the note \"cells swell (brain: confusion)\". Then both return to normal and repeat.",caption:"Dehydration: concentrated ECF pulls water out of cells (shrink). Overhydration: dilute ECF pushes water into cells (swell).",
  legend:[["water","Water"],["na","Na⁺ in ECF"],["icf","Cell"]]},
 
 {act:2,scene:"iv",id:"iv",title:"IV fluids: isotonic, hypotonic, hypertonic",
@@ -329,7 +336,7 @@ const STEPS=[
   ["0.9% NaCl",0,"Normal saline is isotonic, so cells keep their size."],
   ["0.45% NaCl",0,"Half-normal saline is hypotonic, so cells would swell."],
   ["Lactated Ringer's",0,"Lactated Ringer's is treated as isotonic, so cells keep their size."]]},
- caption:"Isotonic bag: cell stays the same. Hypotonic bag: water rushes in, cell swells. Hypertonic bag: water leaves, cell shrinks.",
+ desc:"Three IV bags hang in a row, each dripping into a box that holds one red blood cell in fluid with purple Na⁺ and teal Cl⁻ ions. On the left, 0.9% NaCl (isotonic, outlined green): water drops move in and out equally and the cell stays the same size. In the middle, 0.45% NaCl (hypotonic, outlined blue): fewer ions, water drops move into the cell, and it swells round and pale. On the right, 3% NaCl (hypertonic, outlined orange): many ions, water drops move out, and the cell shrinks with crinkled edges. A note at the bottom says D5W ends up acting like plain water.",caption:"Isotonic bag: cell stays the same. Hypotonic bag: water rushes in, cell swells. Hypertonic bag: water leaves, cell shrinks.",
  legend:[["water","Water movement"],["rbc","Red blood cell"]]},
 
 {act:3,scene:"na",id:"na",title:"Sodium: aldosterone keeps it, ANP dumps it",
@@ -343,7 +350,7 @@ const STEPS=[
   ["Aldosterone",0,"Aldosterone keeps Na⁺ and water, which would raise blood volume even more."],
   ["ADH",0,"ADH keeps water. High blood volume would lower ADH, not raise it."],
   ["Renin",0,"Renin is released when blood pressure is low, not high."]]},
- caption:"Aldosterone: tubule pulls Na⁺ (and water) back into blood and sends K⁺ out. ANP: stretched atria make the kidneys excrete Na⁺ and water.",
+ desc:"Three horizontal layers cross the screen: pale blue tubule fluid on top with purple Na⁺ ions flowing right toward the urine, a row of pink tubule cells, and blood at the bottom. First, an adrenal gland on a kidney sends brown aldosterone triangles to the cells; every other Na⁺ ion drops down through the cells into the blood with a water drop beside it, orange K⁺ ions move up into the tubule fluid, and a blood volume bar rises. Then the scene switches: a beating red heart (stretched atria) sends red ANP squares, the Na⁺ ions stay in the tubule fluid along with blue water drops and flow out as urine, and the blood volume bar falls.",caption:"Aldosterone: tubule pulls Na⁺ (and water) back into blood and sends K⁺ out. ANP: stretched atria make the kidneys excrete Na⁺ and water.",
  legend:[["na","Na⁺"],["k","K⁺"],["water","Water"],["aldo","Aldosterone"],["anp","ANP"]]},
 
 {act:3,scene:"k",id:"k",title:"Potassium: small range, big effect on the heart",
@@ -358,7 +365,7 @@ const STEPS=[
   ["Swelling of brain cells",0,"Brain cell swelling is linked to low Na⁺ (hyponatremia), not high K⁺."],
   ["Tetany from muscle spasms",0,"Tetany is a sign of low Ca²⁺ (hypocalcemia)."],
   ["Kidney stones",0,"Kidney stones are linked to high calcium, not high potassium."]]},
- caption:"The ECG changes as blood K⁺ drifts: normal, then hyperkalemia (tall peaked T waves, irregular rhythm), then hypokalemia (flat T waves).",
+ desc:"A pink cell on the left is packed with orange K⁺ ions, with fewer K⁺ ions outside it; a gauge below shows blood K⁺ against a green normal band of 3.5 to 5.0. On the right, a dark ECG monitor draws a bright green heart tracing that sweeps from left to right. The scene cycles through three states: normal K⁺ 4.2 with a normal tracing; high K⁺ 6.8 (red title) with more K⁺ outside the cell, tall peaked T waves, a wide QRS and an irregular rhythm; and low K⁺ 2.8 (orange title) with fewer K⁺ outside, a flat T wave and an extra U wave. A caption under the monitor names the ECG changes and the danger.",caption:"The ECG changes as blood K⁺ drifts: normal, then hyperkalemia (tall peaked T waves, irregular rhythm), then hypokalemia (flat T waves).",
  legend:[["k","K⁺"],["aldo","Aldosterone"]]},
 
 {act:3,scene:"ca",id:"ca",title:"Calcium and phosphate: PTH, calcitriol, calcitonin",
@@ -373,7 +380,7 @@ const STEPS=[
   ["Kidney stones from high blood calcium",0,"Losing PTH lowers calcium. Kidney stones go with high calcium."],
   ["Swollen brain cells from low sodium",0,"That is hyponatremia. PTH controls calcium, not sodium."],
   ["Peaked T waves from high potassium",0,"Peaked T waves go with hyperkalemia. PTH does not control K⁺."]]},
- caption:"Low blood Ca²⁺ → parathyroid releases PTH → bone releases Ca²⁺, kidneys keep Ca²⁺ and make calcitriol, gut absorbs more. High Ca²⁺ → calcitonin.",
+ desc:"A blood vessel runs across the screen carrying gold diamond-shaped Ca²⁺ ions. Above it, a pink thyroid has four small purple parathyroid glands on its back, and a meter at the top right shows blood Ca²⁺ against a green normal band. In the first part, Ca²⁺ is LOW: the parathyroids glow and send purple PTH squares to the bone and kidney below; bone releases Ca²⁺ diamonds and magenta phosphate into the blood, the kidney keeps Ca²⁺ and sends phosphate out, a gold calcitriol dot travels to the small intestine, which then absorbs more Ca²⁺, and the meter rises to normal. In the second part, Ca²⁺ is HIGH: teal calcitonin dots travel to the bone, Ca²⁺ diamonds move from the blood into bone, and the meter drops back.",caption:"Low blood Ca²⁺ → parathyroid releases PTH → bone releases Ca²⁺, kidneys keep Ca²⁺ and make calcitriol, gut absorbs more. High Ca²⁺ → calcitonin.",
  legend:[["ca","Ca²⁺"],["pth","PTH"],["ctn","Calcitonin"],["phos","Phosphate"]]},
 
 {act:3,scene:"clhco3",id:"clhco3",title:"Chloride and bicarbonate: the chloride shift",
@@ -387,7 +394,7 @@ const STEPS=[
   ["Bicarbonate (HCO₃⁻)",0,"HCO₃⁻ moves OUT of the red blood cell into the plasma."],
   ["Sodium (Na⁺)",0,"Na⁺ is not part of the chloride shift."],
   ["Hemoglobin",0,"Hemoglobin stays inside the red blood cell. It is not exchanged."]]},
- caption:"Inside a red blood cell, CO₂ + H₂O → H₂CO₃ → H⁺ + HCO₃⁻. HCO₃⁻ leaves and Cl⁻ comes in: the chloride shift.",
+ desc:"A large red blood cell fills the middle, with body tissue cells on the left. Grey CO₂ molecules drift from the tissue into the red cell. Inside, a teal chip marks carbonic anhydrase, and one CO₂ is shown turning into H₂CO₃, which splits: a red H⁺ ion moves down to a dark red Hb box that picks it up, and a blue HCO₃⁻ triangle moves to a salmon exchanger on the cell's right edge. Blue HCO₃⁻ triangles stream out to the plasma on the right while teal Cl⁻ squares stream in: the chloride shift. A small box at the top right shows that Cl⁻ usually follows Na⁺.",caption:"Inside a red blood cell, CO₂ + H₂O → H₂CO₃ → H⁺ + HCO₃⁻. HCO₃⁻ leaves and Cl⁻ comes in: the chloride shift.",
  legend:[["co2","CO₂"],["hco3","HCO₃⁻"],["cl","Cl⁻"],["hplus","H⁺"]]},
 
 {act:4,scene:"ph",id:"ph",title:"Blood pH and where acids come from",
@@ -403,7 +410,7 @@ const STEPS=[
   ["alkalosis, because it is above 7.",0,"Blood has its own normal range. 7.30 is below 7.35, so it is acidosis."],
   ["normal, because it is close to 7.4.",0,"The normal range is narrow: 7.35 to 7.45. 7.30 is outside it."],
   ["the blood has too little H⁺.",0,"A low pH means too MUCH H⁺."]]},
- caption:"Cells make CO₂ (volatile acid, out through the lungs) and fixed acids (out through the kidneys). Blood pH stays in 7.35–7.45.",
+ desc:"A pH scale from 0 to 14 runs across the top, shading from red (acid) to blue (base), with a marker at 7.4. Dashed lines zoom into a smaller bar from 7.0 to 7.8: a red acidosis zone, a narrow green normal zone from 7.35 to 7.45, and a blue alkalosis zone, with an arrow wobbling slightly around 7.40. Below, a body cell on the left sends grey CO₂ molecules along one dashed path to breathing pink lungs on the right, and red H⁺ ions along a second path to a kidney. Labels name CO₂ as the volatile acid and lactic acid, ketones and protein breakdown as fixed acids.",caption:"Cells make CO₂ (volatile acid, out through the lungs) and fixed acids (out through the kidneys). Blood pH stays in 7.35–7.45.",
  legend:[["co2","CO₂ (volatile acid)"],["hplus","H⁺ from fixed acids"]]},
 
 {act:4,scene:"bicarb",id:"bicarb",title:"The bicarbonate-carbonic acid buffer",
@@ -419,7 +426,7 @@ const STEPS=[
   ["Carbonic acid (H₂CO₃)",0,"Carbonic acid gives up H⁺. It is used when there is too much base."],
   ["Water",0,"Water is part of the reaction, but HCO₃⁻ is the part that grabs H⁺."],
   ["Chloride (Cl⁻)",0,"Chloride is not a buffer in this system."]]},
- caption:"Acid added: HCO₃⁻ grabs H⁺ → H₂CO₃ → CO₂ + H₂O, and CO₂ is breathed out. Base added: H₂CO₃ releases H⁺.",
+ desc:"The reaction CO₂ + H₂O ⇌ H₂CO₃ ⇌ H⁺ + HCO₃⁻ is written across the middle, with a reserve of blue HCO₃⁻ triangles above the right end. In the first half (acid added), a red H⁺ drops in from above, pairs with a blue HCO₃⁻, the pair slides left to become carbonic acid, and it then splits into grey CO₂ and a water drop, with \"CO₂ breathed out\"; red arrows point left. In the second half (base added), a teal OH⁻ comes in, carbonic acid in the middle gives up an H⁺ that joins the OH⁻ to make water, and a new HCO₃⁻ moves right; blue arrows point right. At the bottom, 20 blue triangles stand against 1 carbonic acid circle (20 : 1, pH 7.40), and two readouts compare the pH with the buffer, which barely moves, and without it, which swings far.",caption:"Acid added: HCO₃⁻ grabs H⁺ → H₂CO₃ → CO₂ + H₂O, and CO₂ is breathed out. Base added: H₂CO₃ releases H⁺.",
  legend:[["hplus","H⁺"],["hco3","HCO₃⁻"],["co2","CO₂"],["water","H₂O"]]},
 
 {act:4,scene:"otherbuf",id:"otherbuf",title:"Phosphate and protein buffers",
@@ -434,7 +441,7 @@ const STEPS=[
   ["The phosphate buffer in urine",0,"Phosphate buffers urine in the kidney tubules, not inside red blood cells."],
   ["Chloride",0,"Chloride is part of the chloride shift but is not a buffer."],
   ["Sodium",0,"Sodium is not a buffer."]]},
- caption:"Phosphate: HPO₄²⁻ takes up H⁺ to become H₂PO₄⁻. Hemoglobin: as O₂ leaves in the tissues, Hb picks up H⁺.",
+ desc:"Two panels sit side by side. In the left panel (phosphate buffer, magenta), four magenta HPO₄²⁻ squares each catch a red H⁺ that drops onto them, and their labels change to H₂PO₄⁻, above the equation HPO₄²⁻ + H⁺ ⇌ H₂PO₄⁻. In the right panel (hemoglobin, red), a big red blood cell holds four dark Hb boxes above a strip of tissue cells; at each Hb, two blue O₂ dots leave and drift down toward the tissues while a red H⁺ ion rises and binds to the Hb.",caption:"Phosphate: HPO₄²⁻ takes up H⁺ to become H₂PO₄⁻. Hemoglobin: as O₂ leaves in the tissues, Hb picks up H⁺.",
  legend:[["phos","HPO₄²⁻"],["hplus","H⁺"],["rbc","Hemoglobin in RBC"]]},
 
 {act:4,scene:"resp",id:"resp",title:"The lungs adjust pH in minutes",
@@ -448,7 +455,7 @@ const STEPS=[
   ["Breathing slows down to keep more CO₂.",0,"Keeping CO₂ would add acid and lower pH even more."],
   ["The lungs remove lactic acid in the breath.",0,"Lactic acid is a fixed acid. Only the kidneys can remove it."],
   ["The lungs secrete H⁺ into the air.",0,"The lungs remove CO₂, not H⁺ directly."]]},
- caption:"Rising CO₂/H⁺ → chemoreceptors → faster breathing → CO₂ blown off → pH back up. This takes minutes.",
+ desc:"Pink lungs in the middle breathe in and out, and a label above them shows the breathing rate. A head on the left marks the brainstem chemoreceptors, a blood vessel across the bottom carries grey CO₂ molecules, and a pH gauge on the right has red, green and blue zones. First breathing is normal at 12 breaths per minute and pH 7.40. Then acid is added: red H⁺ ions appear in the blood, PaCO₂ rises, the pH needle swings toward acid, and the brainstem glows and sends a teal dashed arrow to the lungs. Breathing becomes faster and deeper, up to 24 breaths per minute, more CO₂ molecules rise out of the lungs, PaCO₂ falls, and the needle swings back toward 7.40.",caption:"Rising CO₂/H⁺ → chemoreceptors → faster breathing → CO₂ blown off → pH back up. This takes minutes.",
  legend:[["co2","CO₂"],["hplus","H⁺"]]},
 
 {act:4,scene:"renal",id:"renal",title:"The kidneys adjust pH over hours to days",
@@ -464,7 +471,7 @@ const STEPS=[
   ["They work faster than the lungs.",0,"The lungs work in minutes. The kidneys take hours to days."],
   ["They can only remove CO₂.",0,"That is the lungs. The kidneys remove H⁺ and manage HCO₃⁻."],
   ["They keep H⁺ when blood is too acidic.",0,"In acidosis, kidneys secrete H⁺ into urine and keep HCO₃⁻."]]},
- caption:"Kidney tubule cell: H⁺ goes into the urine (buffered by phosphate and ammonia) while new HCO₃⁻ goes into the blood. Hours to days.",
+ desc:"Three layers cross the screen: pale blue filtrate at the top flowing toward the urine, a wide pink tubule cell in the middle, and blood at the bottom. In the cell, the reaction CO₂ + H₂O → H₂CO₃ → H⁺ + HCO₃⁻ is written under a teal carbonic anhydrase chip. Two teal pumps on the top edge push red H⁺ ions up into the filtrate while purple Na⁺ ions come back down. In the filtrate, magenta phosphate squares and green NH₃ circles each carry an H⁺ away. Blue HCO₃⁻ triangles move down from the cell into the blood, labelled \"new HCO₃⁻ added to blood: pH rises\", and a clock counts days.",caption:"Kidney tubule cell: H⁺ goes into the urine (buffered by phosphate and ammonia) while new HCO₃⁻ goes into the blood. Hours to days.",
  legend:[["hplus","H⁺"],["hco3","HCO₃⁻"],["phos","Phosphate in urine"]]},
 
 {act:5,scene:"respdis",id:"respdis",title:"Respiratory acidosis and alkalosis",
@@ -479,7 +486,7 @@ const STEPS=[
   ["CO₂ falls and pH rises: respiratory alkalosis.",0,"That happens with fast breathing, like a panic attack."],
   ["HCO₃⁻ falls: metabolic acidosis.",0,"The first problem here is CO₂ from slow breathing, so it is respiratory."],
   ["Nothing changes, because the kidneys fix it right away.",0,"The kidneys take days, so the pH drops quickly."]]},
- caption:"Hypoventilation: CO₂ piles up and the seesaw tips to acid. Hyperventilation: CO₂ is blown off and it tips to base.",
+ desc:"A seesaw sits in the middle with a blue HCO₃⁻ pan on the left (base side) and a grey CO₂ pan on the right (acid side); a pH gauge sits above it and an arterial blood gas box on the right with the PaCO₂ row highlighted. In the first half (hypoventilation), the lungs on the left slow to 6 breaths per minute, few CO₂ molecules leave, the CO₂ pan grows to 62 and the seesaw tips down on the acid side, so pH falls below 7.35 and the box shows PaCO₂ high in red: respiratory acidosis. In the second half (hyperventilation), breathing speeds to 30 per minute, CO₂ drops to 26, the seesaw tips the other way and pH rises above 7.45: respiratory alkalosis.",caption:"Hypoventilation: CO₂ piles up and the seesaw tips to acid. Hyperventilation: CO₂ is blown off and it tips to base.",
  legend:[["hco3","HCO₃⁻ (base)"],["co2","CO₂ (acid)"]]},
 
 {act:5,scene:"metdis",id:"metdis",title:"Metabolic acidosis and alkalosis",
@@ -494,7 +501,7 @@ const STEPS=[
   ["Metabolic acidosis",0,"That fits diarrhea, which loses bicarbonate. Vomiting loses acid."],
   ["Respiratory acidosis",0,"Respiratory acidosis comes from slow breathing, not vomiting."],
   ["Respiratory alkalosis",0,"Respiratory alkalosis comes from fast breathing. Vomiting is a metabolic cause."]]},
- caption:"Ketoacids, lactic acid, kidney failure or diarrhea remove HCO₃⁻ (acidosis). Vomiting or antacids add HCO₃⁻ (alkalosis).",
+ desc:"The same seesaw has a blue HCO₃⁻ pan on the left and a grey CO₂ pan on the right, with a pH gauge above and an arterial blood gas box on the right, this time with the HCO₃⁻ row highlighted. In the first half, red H⁺ ions rain onto the base side, the HCO₃⁻ pan shrinks from 24 to 13, the seesaw tips toward acid and pH falls: metabolic acidosis, with a box cycling through causes such as ketoacidosis, lactic acidosis, kidney failure and diarrhea. In the second half, blue HCO₃⁻ triangles are added, the pan grows to 36, pH rises: metabolic alkalosis, with causes such as vomiting, gastric suction and too many antacids. CO₂ stays at 40 throughout.",caption:"Ketoacids, lactic acid, kidney failure or diarrhea remove HCO₃⁻ (acidosis). Vomiting or antacids add HCO₃⁻ (alkalosis).",
  legend:[["hco3","HCO₃⁻ (base)"],["co2","CO₂ (acid)"],["hplus","Fixed acid H⁺"]]},
 
 {act:5,scene:"compens",id:"compens",title:"Compensation: the other system helps",
@@ -509,7 +516,7 @@ const STEPS=[
   ["They excrete more HCO₃⁻.",0,"That would lower pH even more. In acidosis the kidneys keep HCO₃⁻."],
   ["They make the person breathe faster.",0,"The kidneys do not control breathing. And in COPD the lungs are the problem."],
   ["The kidneys cannot compensate for lung problems.",0,"They can. That is exactly what renal compensation means."]]},
- caption:"Metabolic acidosis: lungs speed up within minutes and remove CO₂. Respiratory acidosis: kidneys add HCO₃⁻ over days.",
+ desc:"The seesaw, pH gauge and blood gas box are shown again. In the first half (respiratory compensation, measured in minutes), HCO₃⁻ is stuck low at 13; the lungs on the left speed up to 30 breaths per minute, grey CO₂ leaves, the CO₂ pan shrinks from 40 to 26, the seesaw levels out and pH climbs back toward the normal range while a clock counts up to 30 minutes. In the second half (renal compensation, measured in days), CO₂ is stuck high at 60; a glowing kidney sends blue HCO₃⁻ triangles into the base pan, which grows from 24 to 32 over several days, and the pH climbs back toward normal. The caption says whether the pH is back in range or only partly compensated.",caption:"Metabolic acidosis: lungs speed up within minutes and remove CO₂. Respiratory acidosis: kidneys add HCO₃⁻ over days.",
  legend:[["hco3","HCO₃⁻"],["co2","CO₂"]]},
 
 {act:5,scene:"abg",id:"abg",title:"Reading an arterial blood gas (ABG)",
@@ -525,7 +532,7 @@ const STEPS=[
   ["Uncompensated metabolic acidosis",0,"HCO₃⁻ is normal (25). The abnormal value is PaCO₂, so it is respiratory."],
   ["Partially compensated respiratory acidosis",0,"For compensation, HCO₃⁻ would be above 26. Here it is 25, still normal."],
   ["Respiratory alkalosis",0,"pH 7.30 is below 7.35, so it is acidosis."]]},
- caption:"Three steps: read pH, use ROME to find respiratory or metabolic, then check whether the other value has moved to compensate.",
+ desc:"An arterial blood gas box on the left shows a patient's pH, PaCO₂ and HCO₃⁻, with abnormal values in red, and the row being checked is highlighted in gold. Below it, three numbered steps appear one at a time: decide acidosis or alkalosis from the pH; decide respiratory or metabolic by whether PaCO₂ moves opposite to pH or HCO₃⁻ moves the same way; and decide the level of compensation. The answer then appears in a box. On the right, a ROME panel shows arrows: respiratory means pH and PaCO₂ go opposite ways, metabolic means pH and HCO₃⁻ go the same way, and a small seesaw shows the balance. Three patients cycle: uncompensated respiratory acidosis, partially compensated metabolic acidosis, and fully compensated respiratory acidosis.",caption:"Three steps: read pH, use ROME to find respiratory or metabolic, then check whether the other value has moved to compensate.",
  legend:[["hplus","pH"],["co2","PaCO₂ (acid)"],["hco3","HCO₃⁻ (base)"]]},
 
 {act:0,scene:"map",id:"recap",title:"You made it. Here is the whole chapter.",
@@ -542,7 +549,7 @@ const STEPS=[
  <li>Respiratory: CO₂ changes first. Metabolic: HCO₃⁻ changes first. ROME. Then check compensation.</li></ol>
  <p>Next: solve real-looking cases in the <a href="Fluid-AcidBase-Lab.html">ABG Detective</a> and try the simulators.</p>`,
  analogy:"Right amount of water, right salts, right pH: the fish tank stays healthy.",
- terms:[],check:null,caption:"Fluid, electrolytes and acid-base: three balances, one connected system."}
+ terms:[],check:null,desc:"Five tall cards stand side by side, one for each part, each with a coloured header: purple Body fluids, orange Water balance, salmon Electrolytes, teal Buffers and pH, and plum Disorders. The cards light up one at a time. Each holds a small picture: three tanks labelled ICF, IF and Pl; a head with a glowing thirst center, water drops and a kidney; a cell ringed by ions; a pH gauge near 7.4; and a small seesaw. This is the same overview as the start, now as a summary of everything covered.",caption:"Fluid, electrolytes and acid-base: three balances, one connected system."}
 ];
 
 /* ---------------- DOM ---------------- */
@@ -572,7 +579,7 @@ const LEG={water:"--water",icf:"--icf",isf:"--isf",plasma:"--plasma",na:"--na",k
 function render(){
   const s=STEPS[cur];
   const a=ACTS[s.act];
-  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col}-chip,var(--${a.col}))">${a.name}</span>`:"")+
     (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
   $("#title").textContent=s.title;
   $("#body").innerHTML=s.body;
@@ -580,6 +587,7 @@ function render(){
   $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
   $("#caption").textContent=s.caption;
   cv.setAttribute("aria-label","Animation: "+s.caption);
+  if(window.gkDescribe)window.gkDescribe(s.desc);
   $("#legend").innerHTML=(s.legend||[]).map(l=>`<span><i style="background:var(${LEG[l[0]]})"></i>${l[1]}</span>`).join("");
   const ck=$("#check");
   if(!s.check){ck.style.display="none"}else{
@@ -617,7 +625,7 @@ let K=1;
 function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
 window.addEventListener("resize",fit);
 const C={};
-const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash","act1","act2","act3","act4","act5",
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash","act1","act2","act3","act4","act5","act1-chip","act2-chip","act3-chip","act4-chip","act5-chip",
  "ecf","icf","cell-edge","isf","plasma","plasma-edge","water","water-wash","na","k","cl","ca","phos","hco3","co2","hplus","mg","prot","adh","aldo","anp","pth","ctn",
  "kidney","lung","lung-edge","tissue","rbc","rbc-edge","bone","bone-edge","brain","brain-edge","vessel","vessel-edge","skin","gut","glow","gold"];
 function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
@@ -736,8 +744,8 @@ function sceneMap(t){
   const names=[["act1","Body fluids","Where water lives"],["act2","Water balance","In, out, thirst, ADH"],["act3","Electrolytes","Na⁺ K⁺ Ca²⁺ Cl⁻"],["act4","Buffers & pH","Buffers, lungs, kidneys"],["act5","Disorders","Seesaw and ABGs"]];
   names.forEach((n,i)=>{const x=12+i*157,y=60,w=148,h=330;const on=i===act;
     ctx.fillStyle=C["panel-2"];rr(x,y,w,h,10);ctx.fill();ctx.strokeStyle=on?C[n[0]]:C.rule;ctx.lineWidth=on?4:1.5;ctx.stroke();
-    ctx.fillStyle=C[n[0]];rr(x,y,w,34,10);ctx.fill();ctx.fillRect(x,y+18,w,16);
-    txt(x+w/2,y+18,(i+1)+" · "+n[1].toUpperCase(),{size:11.5,mono:true,weight:600,align:"center",color:"#fff"});
+    ctx.fillStyle=C[n[0]+"-chip"]||C[n[0]];rr(x,y,w,34,10);ctx.fill();ctx.fillRect(x,y+18,w,16);
+    txt(x+w/2,y+18,(i+1)+" · "+n[1].toUpperCase(),{size:11.5,mono:true,weight:600,align:"center",color:onFill()});
     txt(x+w/2,y+h-22,n[2],{size:12.5,weight:600,align:"center"});
     const cx=x+w/2,cy=y+165;const q=on?ph:0;
     ctx.save();rr(x+4,y+40,w-8,h-80,6);ctx.clip();

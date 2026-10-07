@@ -53,6 +53,10 @@ h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-h
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
 .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab:not([aria-selected="true"]){color:var(--ink)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#0B1A20}}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#0B1A20}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
 .tbtn:hover{border-color:var(--accent)}
 .tbtn:disabled{opacity:.45;cursor:default}
@@ -205,7 +209,10 @@ sub,sup{line-height:0}
 .scen{display:flex;flex-wrap:wrap;gap:6px}
 .scen .tbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .chip.wrongonce{border-color:var(--warn)}
+/* keep the site-kit tool button names available to screen readers when their labels are hidden on narrow screens */
+@media (max-width:640px){.gk-tools button span.gk-lbl{display:inline!important;position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
 </style>
+<script src="site-kit.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -218,15 +225,16 @@ sub,sup{line-height:0}
 </div></header>
 
 <div class="wrap">
-  <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" data-tab="mech" id="tabbtn-mech" type="button">Part 1 &middot; Breathing Mechanics</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="spiro" id="tabbtn-spiro" type="button">Part 2 &middot; Spirometer</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="curve" id="tabbtn-curve" type="button">Part 3 &middot; O&#8322;&ndash;Hemoglobin Curve</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="gas" id="tabbtn-gas" type="button">Part 4 &middot; Gas Exchange &amp; What Breaks</button>
+  <div class="tabs" role="tablist" aria-label="Lab parts">
+    <button class="tab" role="tab" aria-selected="true" data-tab="mech" id="tabbtn-mech" aria-controls="tab-mech" type="button">Part 1 &middot; Breathing Mechanics</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="spiro" id="tabbtn-spiro" aria-controls="tab-spiro" type="button">Part 2 &middot; Spirometer</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="curve" id="tabbtn-curve" aria-controls="tab-curve" type="button">Part 3 &middot; O&#8322;&ndash;Hemoglobin Curve</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="gas" id="tabbtn-gas" aria-controls="tab-gas" type="button">Part 4 &middot; Gas Exchange &amp; What Breaks</button>
   </div>
 
   <!-- PART 1: mechanics -->
   <section id="tab-mech" role="tabpanel" aria-labelledby="tabbtn-mech">
+    <h2 class="sr-only">Part 1: Breathing mechanics simulator</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvMech" role="img" aria-label="A chest with two lungs, ribs and diaphragm that breathes using your settings, with pressure gauges."></canvas></div>
@@ -256,7 +264,7 @@ sub,sup{line-height:0}
           <button class="tbtn" id="cEmph" type="button" aria-pressed="false">Emphysema (lost recoil)</button>
           <button class="tbtn" id="cSurf" type="button" aria-pressed="false">Low surfactant (premature infant)</button>
         </div>
-        <table class="readouts" id="mRead"></table>
+        <table class="readouts" id="mRead"><caption class="sr-only">Live readouts</caption><thead class="sr-only"><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead><tbody></tbody></table>
         <div class="status" id="mStatus" role="status"></div>
         <h3>Challenges</h3>
         <ul class="chal" id="mChal"></ul>
@@ -299,6 +307,7 @@ sub,sup{line-height:0}
 
   <!-- PART 3: curve -->
   <section id="tab-curve" role="tabpanel" aria-labelledby="tabbtn-curve" hidden>
+    <h2 class="sr-only">Part 3: Oxygen-hemoglobin curve</h2>
     <div class="grid">
       <div class="card stage">
         <div class="canvas-holder"><canvas id="cvCurve" role="img" aria-label="The oxygen-hemoglobin dissociation curve, with hemoglobin loading oxygen in the lungs and unloading it in muscle."></canvas></div>
@@ -322,7 +331,7 @@ sub,sup{line-height:0}
         <div class="ctl"><label for="cuCO2">PCO&#8322; <output id="cuCO2o"></output></label><input type="range" id="cuCO2" min="20" max="80" step="1" value="40"></div>
         <div class="ctl"><label for="cuBPG">BPG <output id="cuBPGo"></output></label><input type="range" id="cuBPG" min="0.5" max="2" step="0.05" value="1"></div>
         <div class="ctl" id="cuCOwrap" hidden><label for="cuCO">Carbon monoxide: sites blocked <output id="cuCOo"></output></label><input type="range" id="cuCO" min="0" max="0.6" step="0.05" value="0.3"></div>
-        <table class="readouts" id="cuRead"></table>
+        <table class="readouts" id="cuRead"><caption class="sr-only">Curve readouts</caption><thead class="sr-only"><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead><tbody></tbody></table>
         <div class="status" id="cuStatus" role="status"></div>
         <h3>Challenges</h3>
         <ul class="chal" id="cuChal"></ul>
@@ -651,7 +660,7 @@ function mStatus(){const on=[];if(M.ptxOn)on.push("<b>Pneumothorax:</b> air is i
 function mRead(){const s=mStats();const pr=M.last;
   const rows=[["Tidal volume",Math.round(s.tv*1000)+" mL"],["Minute ventilation",(s.tv*M.rate).toFixed(1)+" L/min"],["Resting (end-expiration) volume",Math.round(s.minV*1000)+" mL"],
     ["Intra-alveolar (left lung)",(760+pr.palv[1]).toFixed(1)+" mm Hg"],["Intrapleural right / left",(760+pr.ppl[0]).toFixed(1)+" / "+(760+pr.ppl[1]).toFixed(1)],["Transpulmonary right / left",(pr.palv[0]-pr.ppl[0]).toFixed(1)+" / "+(pr.palv[1]-pr.ppl[1]).toFixed(1)]];
-  setHTML($("#mRead"),rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join(""))}
+  setHTML($("#mRead tbody"),rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join(""))}
 function drawMech(){use(S1);const W=800,H=440;ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
   const ef=mEffort(M.t);const {cf}=mPar();
   const r=clamp(ef.e*M.A/4,0,1.8)*(.6)+(M.cond.emph?.6:0)-(M.forced&&!ef.ins?.5*Math.sin(Math.PI*Math.min(1,ef.q*1.3)):0);
@@ -894,7 +903,7 @@ function cuChal(){$("#cuChal").innerHTML=CUCH.map(c=>`<li class="${CU.done[c[0]]
 function cuRead(){const s=cuSats();const rest=satOf(100,26.8)-satOf(40,26.8);
   const rows=[["P50 in the tissue (half-saturated)",s.p50.toFixed(1)+" mm Hg"],["Saturation leaving lungs (PO₂ "+CU.lungPO2+")",Math.round(s.sL*100)+"%"],["Saturation leaving tissue (PO₂ "+CU.tPO2+")",Math.round(s.sT*100)+"%"],["O₂ unloaded",Math.round((s.sL-s.sT)*100)+"% of capacity"],["Compared with rest",((s.sL-s.sT)/rest).toFixed(1)+"×"]];
   if(CU.coOn)rows.push(["Sites blocked by CO",Math.round(CU.co*100)+"%"]);
-  setHTML($("#cuRead"),rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join(""))}
+  setHTML($("#cuRead tbody"),rows.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join(""))}
 function drawCurve(now){use(S3);const W=800,H=460;ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);const s=cuSats();const T_=now/1000;
   // graph
   const gx=12,gy=12,gw=440,gh=436;axes(gx,gy,gw,gh,{});
@@ -973,7 +982,7 @@ function gxRender(){const c=CASES[GX.i];GX.a1=false;GX.a2=false;GX.tries[GX.i+"a
   gxOpts("#gxQ1","#gxF1",c.o1,()=>{GX.a1=true;$("#gxQ2wrap").hidden=false},"a");
   gxOpts("#gxQ2","#gxF2",c.o2,()=>{GX.a2=true;$("#gxExp").className="explain show";$("#gxExp").innerHTML="<b>What's going on:</b> "+c.exp;if(GX.first[GX.i]==null){GX.first[GX.i]=!GX.tries[GX.i+"a"]&&!GX.tries[GX.i+"b"];store.set("resp-gx",GX.first)}gxChips()},"b");
   $("#gxPrev").disabled=GX.i===0;$("#gxNext").textContent=GX.i===CASES.length-1?"Back to patient 1":"Next patient →";
-  S4.cv.setAttribute("aria-label",`Normal alveolus and capillary next to ${c.t}: alveolar PO2 ${c.p.topO2}, alveolar PCO2 ${c.p.topCO2}.`);gxChips()}
+  gxChips();axUpdate()}
 $("#gxPrev").onclick=()=>{if(GX.i>0){GX.i--;gxRender()}};$("#gxNext").onclick=()=>{GX.i=(GX.i+1)%CASES.length;gxRender()};
 $("#gxHint").onclick=()=>{const fb=GX.a1?"#gxF2":"#gxF1";if(GX.a1)$("#gxQ2wrap").hidden=false;$(fb).className="fb show no";$(fb).textContent="Hint: "+CASES[GX.i].hint};
 $("#gxShow").onclick=()=>{const c=CASES[GX.i];if(GX.first[GX.i]==null)GX.first[GX.i]=false;
@@ -1000,32 +1009,72 @@ function drawGx(now){use(S4);const W=800,H=430;ctx.fillStyle=C.ecf;ctx.fillRect(
     label(x0+w-18,g.by+g.bh-14,`out: PO₂ ${Math.round(out[0])} · PCO₂ ${Math.round(out[1])}`,{size:11,weight:700,align:"right"});
     drawProfile(x0+12,250,w-24,110,o,i?NORM:null);
     const sat=satOf(out[0],26.8);const ph=gxPH(out[1]);
-    const chips=[[`Arterial PO₂ ${Math.round(out[0])}`,out[0]<80?C.bad:C.good],[`O₂ sat ${Math.round(sat*100)}%`,sat<.92?C.bad:C.good],[`PCO₂ ${Math.round(out[1])}`,out[1]>45||out[1]<35?C.warn:C.good],[`pH ${ph.toFixed(2)}`,ph<7.35||ph>7.45?C.warn:C.good]];
+    const chips=[[`Arterial PO₂ ${Math.round(out[0])}${out[0]<80?" ↓":""}`,out[0]<80?C.bad:C.good],[`O₂ sat ${Math.round(sat*100)}%${sat<.92?" ↓":""}`,sat<.92?C.bad:C.good],[`PCO₂ ${Math.round(out[1])}${out[1]>45?" ↑":out[1]<35?" ↓":""}`,out[1]>45||out[1]<35?C.warn:C.good],[`pH ${ph.toFixed(2)}${ph<7.35?" ↓":ph>7.45?" ↑":""}`,ph<7.35||ph>7.45?C.warn:C.good]];
     let cx=x0+14;chips.forEach(ch=>{const ww=chipText(cx+46,388,ch[0],ch[1]);cx+=ww+6});
-    txt(x0+w/2,410,i?"profile vs normal (dashed)":"blood fully loaded early",{size:10.5,align:"center",color:C["ink-faint"]})});
+    txt(x0+w/2,410,i?"profile vs normal (dashed) · ↑↓ = outside normal range":"blood fully loaded early",{size:10.5,align:"center",color:C["ink-faint"]})});
 }
 
 /* ---------------- tabs / theme / loop ---------------- */
 let curTab="mech";
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;
-  ["mech","spiro","curve","gas"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll()});
+  ["mech","spiro","curve","gas"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll();axUpdate()});
 function fitAll(){[S1,S1g,S2,S3,S4].forEach(s=>s.fit())}
 window.addEventListener("resize",fitAll);
 $("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
 let last=performance.now(),uiAcc=0;
-function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;uiAcc+=dt;
+let axAcc=0;
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;uiAcc+=dt;axAcc+=dt;if(axAcc>.4){axAcc=0;axUpdate()}
   try{if(curTab==="mech"){if(!M.paused&&!window.__manual){const n=Math.ceil(dt/.004);for(let i=0;i<n;i++)mStep(dt/n)}drawMech();drawMechG();if(uiAcc>.2){uiAcc=0;mRead();mCheck();mCaption()}}
     else if(curTab==="spiro"){if(!window.__manual)spStep(dt);drawSpiro(now)}
     else if(curTab==="curve"){drawCurve(now);if(uiAcc>.2){uiAcc=0;cuRead()}}
     else drawGx(now)}catch(err){console.error(err)}
   requestAnimationFrame(frame)}
+/* ---------------- accessibility: canvas labels and picture descriptions ---------------- */
+const AX={lab:{},desc:""};
+function axSet(st,label,desc){if(AX.lab[st.cv.id]!==label){AX.lab[st.cv.id]=label;st.cv.setAttribute("aria-label",label)}
+  if(desc&&AX.desc!==desc){AX.desc=desc;if(window.gkDescribe)window.gkDescribe(desc)}}
+function axMoveDesc(st){const d=document.getElementById("gk-desc");if(!d)return;const h=st.cv.closest(".canvas-holder")||st.cv;if(h.nextSibling!==d)h.parentNode.insertBefore(d,h.nextSibling);st.cv.setAttribute("aria-describedby","gk-desc")}
+function axMech(){const depth=M.A<=2.5?"quiet":M.A<=6?"deeper":"maximal";const conds=[];
+  if(M.ptxOn)conds.push("pneumothorax");if(M.cond.asthma)conds.push("asthma");if(M.cond.emph)conds.push("emphysema");if(M.cond.surf)conds.push("low surfactant");if(M.forced)conds.push("forced exhale");
+  const lab=`Breathing simulator: ${depth} breathing at ${M.rate} breaths per minute, ${conds.length?conds.join(", "):"healthy lungs"}${M.paused?", paused":""}.`;
+  let d=`A front view of the chest shows the right and left lungs inside the rib cage, the trachea above them and the diaphragm below. With each breath (${M.rate} per minute, ${depth}), the diaphragm moves down and the lungs grow, then they shrink back, while small air circles move in or out of the trachea under an "air in" or "air out" arrow. At the top right, three dials show intra-alveolar pressure (green) and right and left intrapleural pressure (purple), with an INSPIRATION or EXPIRATION tag; below them, a bronchiole cross section and a cluster of alveoli show the airway and air sacs.`;
+  const x=[];
+  if(M.ptxOn)x.push("A red line labelled \"puncture: air enters\" pierces the right side; the right intrapleural dial rises to 760 in red and the right lung shrinks into a small collapsed shape while the left lung keeps breathing.");
+  if(M.cond.asthma)x.push("The bronchiole ring is thick and its opening is narrow, labelled \"narrowed: resistance ×3+\".");
+  if(M.cond.emph)x.push("The chest stays over-inflated and the alveoli are drawn as big, floppy sacs with broken walls.");
+  if(M.cond.surf)x.push("The alveoli are small and pulled shut, labelled \"no surfactant: alveoli pull shut\", and the lungs barely move.");
+  if(M.forced)x.push("During each breath out, the label switches to \"forced (active)\" and the alveolar pressure rises well above 760.");
+  if(!x.length)x.push("The bronchiole is wide open and gold surfactant keeps the alveoli open.");
+  return [lab,d+" "+x.join(" ")]}
+function axSpiro(){const r=SP.round;
+  if(r===0){const done=[SP.quiet>=3?"3 quiet breaths done":`${Math.min(3,SP.quiet)} of 3 quiet breaths`,SP.deep?"deepest breath in done":"",SP.out?"hardest breath out done":""].filter(Boolean).join(", ");
+    return [`Spirometer, round 1: lung volume about ${(Math.round(SP.V/100)*100).toLocaleString()} mL; ${done}.`,
+      `On the left, a pair of lungs connects by a tube to a spirometer bell floating in water, with the current lung volume printed underneath. On the right, an empty graph from 0 to 6,000 mL scrolls over the last 24 seconds, with a dashed line marking the resting level at 2,400 mL and a shaded band below 1,200 mL. Holding the IN button (or the up arrow key) draws the orange trace upward and fills the lungs; holding OUT (or the down arrow key) draws it down; letting go lets it settle back to the resting level. Progress so far: ${done}.`]}
+  if(r===1){const n=Object.keys(SP.placed).length;
+    return [`Spirometer, round 2: spirogram with 8 lettered brackets, ${n} of 8 labelled.`,
+      `A finished spirogram (orange line) shows quiet breaths, one maximal breath in up to 6,000 mL, and one maximal breath out down to 1,200 mL, with a shaded band from 0 to 1,200 mL. Eight teal brackets carry the letters A to H in random order: four stand on the graph, each spanning one volume, and four more stand in a row on the right under the word "capacities", each spanning a sum of volumes. ${n} of 8 brackets are labelled so far; labelled brackets show their name beside the letter.`]}
+  const pats=SP.pat.map((pi,j)=>{const p=PATS[pi];const tlc=p.rv+p.erv+p.tv+p.irv;return `Patient ${"ABC"[j]}: total lung capacity ${tlc.toLocaleString()} mL, RV ${p.rv}, ERV ${p.erv}, TV ${p.tv}, IRV ${p.irv}, FEV1/FVC ${p.fev}%`});
+  return [`Spirometer, round 3: three patients' lung volumes and forced breath out.`,
+    `Three panels, one per patient, each show a stacked bar of lung volumes (gray RV at the bottom, then orange ERV, purple TV and orange IRV, with TLC written on top) and a small graph of a forced breath out over 6 seconds with a dot at 1 second. ${pats.join("; ")}.`]}
+function axCurve(){const s=cuSats();const un=Math.round((s.sL-s.sT)*100);const sh=s.p50-26.8;const dir=Math.abs(sh)<1?"near normal":sh>0?"shifted right":"shifted left";
+  const scen=CU.scen==="custom"?"custom settings":SCEN[CU.scen].n;
+  return [`Oxygen-hemoglobin curve (${scen}): ${dir}, P50 ${s.p50.toFixed(0)} mm Hg, lungs ${Math.round(s.sL*100)}%, tissue ${Math.round(s.sT*100)}%, ${un}% unloaded.`,
+    `A graph of percent hemoglobin saturation (0 to 100) against PO2 (0 to 110 mm Hg) shows an S-shaped blue curve, ${dir} compared with the gray dashed normal curve, with P50 marked at ${s.p50.toFixed(0)} mm Hg. A red dot marks the lungs at ${Math.round(s.sL*100)}% and a dark dot marks the tissue at PO2 ${CU.tPO2} and ${Math.round(s.sT*100)}%, with a green bar between them labelled "unloaded ${un}%". On the right, two panels show hemoglobin molecules in the lungs (blue O2 attaching) and in the tissue (O2 leaving), each with a red saturation bar${CU.coOn?`; ${Math.round(CU.co*100)}% of the heme sites are drawn red to show they are blocked by carbon monoxide`:""}.`]}
+function axGas(){const c=CASES[GX.i];const out=profile(Object.assign({mode:"lung"},c.p),1);const sat=satOf(out[0],26.8);
+  return [`Normal alveolus and capillary next to ${c.t}: alveolar PO2 ${c.p.topO2}, PCO2 ${c.p.topCO2}; blood leaves at PO2 ${Math.round(out[0])}, saturation ${Math.round(sat*100)}%.`,
+    `Two panels sit side by side. The left one, labelled NORMAL, shows alveolar air (blue) above a capillary (pink) where blue O2 molecules cross into the blood, red blood cells turn bright red, and a blue graph shows blood PO2 rising quickly to 104. The right one, labelled THIS PATIENT: ${c.t.toUpperCase()}, shows the same layout with alveolar PO2 ${c.p.topO2} and PCO2 ${c.p.topCO2}${c.p.fluid?", fluid filling the gap between air and blood":""}${c.p.thick>1.2?", and a thicker barrier between air and blood":""}. Its blood enters at PO2 ${c.p.inO2} and leaves at PO2 ${Math.round(out[0])} and PCO2 ${Math.round(out[1])}, its graph is compared with a dashed normal profile, and value tags at the bottom are green when normal and red or orange with an arrow when outside the normal range.`]}
+function axUpdate(){try{let st,r;
+  if(curTab==="mech"){st=S1;r=axMech()}else if(curTab==="spiro"){st=S2;r=axSpiro()}else if(curTab==="curve"){st=S3;r=axCurve()}else{st=S4;r=axGas()}
+  axSet(st,r[0],r[1]);axMoveDesc(st)}catch(e){console.error(e)}}
+/* the site kit marks white-on-light text for dark mode but never unmarks it when a toggle turns off: unmark on toggle, the kit re-marks if still needed */
+new MutationObserver(ms=>ms.forEach(m=>{const t=m.target;if(t.classList&&t.classList.contains("gk-oninv"))t.classList.remove("gk-oninv")})).observe(document.body,{subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-selected"]});
 /* test hooks */
 window.__rl={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),
   mech:s=>{for(let i=0;i<s*250;i++)mStep(.004);mRead();mCheck();mStatus()},mS:()=>({tv:mStats().tv,minV:mStats().minV,ppl:M.last.ppl.slice(),done:Object.keys(M.done)}),
   sp:(r)=>spLoad(r),spHold:(k,s)=>{SP[k]=true;for(let i=0;i<s*60;i++)spStep(1/60);SP[k]=false},spRel:s=>{for(let i=0;i<s*60;i++)spStep(1/60)},spS:()=>({V:SP.V,q:SP.quiet,d:SP.deep,o:SP.out,done:SP.doneR}),spAssign:()=>SP.assign,spPat:()=>SP.pat.map(i=>PATS[i].k),
   gx:i=>{GX.i=i;gxRender()}};
-mUI();mStatus();mRenderChal();spLoad(0);cuSync();cuStatus();cuCheck();cuRead();gxRender();fitAll();requestAnimationFrame(frame);
+mUI();mStatus();mRenderChal();spLoad(0);cuSync();cuStatus();cuCheck();cuRead();gxRender();fitAll();axUpdate();if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(axUpdate,0));requestAnimationFrame(frame);
 
 })();
 </script>
