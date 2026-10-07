@@ -1,0 +1,1267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Endocrine Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
+  /* endocrine palette */
+  --ecf:#EEF2F4;--skin:#F1D9C4;--skin-edge:#B98E6E;--skin-dark:#C99A72;--bodyin:#F7E8DA;
+  --blood:#C2453D;--blood-wash:#F4D7D3;--vessel:#D9776F;--brain:#EED3CF;--brain-edge:#B4847D;
+  --gland:#E7B49A;--gland-edge:#A4674B;--cell:#F4E6D6;--cell-edge:#B79A7E;--nuc:#D9CBEA;--nuc-edge:#7E68A8;
+  --liver:#B9624C;--liver-in:#E3A898;--muscle:#D9877C;--fat:#F2DE9C;--fat-edge:#C3A54C;--kidney:#B9605A;--bone:#E9E1CC;--bone-edge:#A8987A;
+  --h1:#2E8A7A;--h2:#7B5CC9;--h3:#D98A1C;--amine:#D98A1C;--peptide:#2F7FC1;--steroid:#7B5CC9;
+  --glu:#D9A21B;--glu-edge:#8F6A0E;--ins:#2F7FC1;--gcg:#C4644F;--gly:#B07A2A;
+  --rec:#2F8A57;--gprot:#D98A1C;--ac:#1E9C7A;--camp:#A04E8C;--pka:#2F6F4F;--phos:#F2B33B;--dna:#7B5CC9;--mrna:#C4644F;--atp:#2F8A57;
+  --lipid:#E0B967;--lipid-edge:#B8914A;--tail:#F3E7CC;
+  --inhib:#A9372F;--stim:#2F8A57;--glow:#F2B33B;--sun:#F2B33B;--night:#2B3A67;--sky:#CFE3F0;
+  --colloid:#F4DC93;--zg:#E9C46A;--zf:#E39B5B;--zr:#C9705A;--med:#8E4A6B;--water:#5AA9E6;--rbc:#C2453D;--anp:#C4644F;--epo:#7B5CC9;--gi:#2E8A7A;
+  --immune:#2F7FC1;--mel:#3E63C8;--gold:#C9A227;--gold-wash:#F6EFD3;--alt:#C4644F;--normal:#57666F;--prot:#9C8F7E;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#141E24;--skin:#4A3A2E;--skin-edge:#B48D6C;--skin-dark:#6B4F3A;--bodyin:#33291F;
+  --blood:#E0675E;--blood-wash:#3B1E1B;--vessel:#9C4B45;--brain:#4A3533;--brain-edge:#B98A83;
+  --gland:#6E4636;--gland-edge:#D49A7E;--cell:#33291F;--cell-edge:#A68B70;--nuc:#3A3150;--nuc-edge:#A994D6;
+  --liver:#C9765F;--liver-in:#5C3329;--muscle:#B86A60;--fat:#5C4E22;--fat-edge:#C9AE5A;--kidney:#C9726B;--bone:#4A4536;--bone-edge:#B8A888;
+  --h1:#5CC4B0;--h2:#A98BEF;--h3:#F2A93B;--amine:#F2A93B;--peptide:#5AA9E6;--steroid:#B39BF5;
+  --glu:#F2C14B;--glu-edge:#C9A02E;--ins:#5AA9E6;--gcg:#F08F74;--gly:#D6A65A;
+  --rec:#5CC98A;--gprot:#F2A93B;--ac:#4FD0A8;--camp:#D186C0;--pka:#6BC293;--phos:#F2B33B;--dna:#B39BF5;--mrna:#F08F74;--atp:#4FBF7F;
+  --lipid:#9C7E45;--lipid-edge:#C9A35E;--tail:#352E22;
+  --inhib:#EE7B70;--stim:#5CC98A;--glow:#F2B33B;--sun:#F2B33B;--night:#0B1230;--sky:#1C3446;
+  --colloid:#6B5A24;--zg:#B8963A;--zf:#B8703A;--zr:#A0503E;--med:#7A3D5C;--water:#5AA9E6;--rbc:#E0675E;--anp:#F08F74;--epo:#B39BF5;--gi:#5CC4B0;
+  --immune:#5AA9E6;--mel:#7F9CF0;--gold:#E0BE48;--gold-wash:#352E14;--alt:#F08F74;--normal:#A3B2BA;--prot:#A89A86;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#141E24;--skin:#4A3A2E;--skin-edge:#B48D6C;--skin-dark:#6B4F3A;--bodyin:#33291F;
+  --blood:#E0675E;--blood-wash:#3B1E1B;--vessel:#9C4B45;--brain:#4A3533;--brain-edge:#B98A83;
+  --gland:#6E4636;--gland-edge:#D49A7E;--cell:#33291F;--cell-edge:#A68B70;--nuc:#3A3150;--nuc-edge:#A994D6;
+  --liver:#C9765F;--liver-in:#5C3329;--muscle:#B86A60;--fat:#5C4E22;--fat-edge:#C9AE5A;--kidney:#C9726B;--bone:#4A4536;--bone-edge:#B8A888;
+  --h1:#5CC4B0;--h2:#A98BEF;--h3:#F2A93B;--amine:#F2A93B;--peptide:#5AA9E6;--steroid:#B39BF5;
+  --glu:#F2C14B;--glu-edge:#C9A02E;--ins:#5AA9E6;--gcg:#F08F74;--gly:#D6A65A;
+  --rec:#5CC98A;--gprot:#F2A93B;--ac:#4FD0A8;--camp:#D186C0;--pka:#6BC293;--phos:#F2B33B;--dna:#B39BF5;--mrna:#F08F74;--atp:#4FBF7F;
+  --lipid:#9C7E45;--lipid-edge:#C9A35E;--tail:#352E22;
+  --inhib:#EE7B70;--stim:#5CC98A;--glow:#F2B33B;--sun:#F2B33B;--night:#0B1230;--sky:#1C3446;
+  --colloid:#6B5A24;--zg:#B8963A;--zf:#B8703A;--zr:#A0503E;--med:#7A3D5C;--water:#5AA9E6;--rbc:#E0675E;--anp:#F08F74;--epo:#B39BF5;--gi:#5CC4B0;
+  --immune:#5AA9E6;--mel:#7F9CF0;--gold:#E0BE48;--gold-wash:#352E14;--alt:#F08F74;--normal:#A3B2BA;--prot:#A89A86;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink);font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.legend i.ln{width:20px;height:0;border-radius:0;border-top:2.5px solid}
+.legend i.dash{width:20px;height:0;border-radius:0;border-top:2.5px dashed}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px;letter-spacing:0}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.together{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:10px 4px 2px;font-size:14px;border-top:1px solid var(--rule-soft);margin-top:8px}
+.together .tl{color:var(--ink-soft);font-size:13.5px}
+.tchk{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--rule);border-radius:99px;padding:3px 10px 3px 6px;background:var(--panel-2);cursor:pointer;font-family:var(--mono);font-size:13.5px}
+.tchk input{accent-color:var(--accent);width:16px;height:16px;margin:0}
+.tchk.E{border-color:var(--exc)}.tchk.I{border-color:var(--inh)}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.budget{font-family:var(--mono);font-size:14px;margin:6px 0 10px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.msg .stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.totstars{font-family:var(--mono);font-size:14px}
+.totstars b{color:var(--gold)}
+.terms{margin:10px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(96px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+/* scenarios */
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 6px}
+.sc-desc{margin:0 0 8px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt .mk{font-family:var(--mono);font-weight:600;margin-right:6px}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.score{font-family:var(--mono);font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.tracecap{font-size:13.5px;color:var(--ink-soft);margin:6px 2px 0}
+/* channel match */
+.qbox{font-size:17px;font-weight:600;margin:4px 0 10px;min-height:52px}
+.qprog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.qprog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.timer{font-family:var(--mono);font-size:18px;font-weight:600}
+.stchips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0;font-family:var(--mono);font-size:13px}
+.stchips span{border:1px solid var(--rule);border-radius:99px;padding:2px 9px;background:var(--panel-2)}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ctl h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.ctl h3:first-child{margin-top:0}
+.tog{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1.5px solid var(--rule);border-radius:var(--r);background:var(--panel-2);margin:0 0 6px;cursor:pointer;font-size:14.5px}
+.tog input{accent-color:var(--accent);width:18px;height:18px;margin:0;flex:0 0 auto}
+.tog.on{border-color:var(--accent);background:var(--accent-wash)}
+.tog small{display:block;color:var(--ink-soft);font-size:12.5px;line-height:1.3}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:5px 11px;cursor:pointer;font-size:13.5px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
+.readouts{width:100%;border-collapse:collapse;font-size:14px}
+.readouts td{padding:5px 4px;border-top:1px solid var(--rule-soft)}
+.readouts td:last-child{text-align:right;font-family:var(--mono);font-weight:600;white-space:nowrap}
+.now{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:9px 11px;font-size:14px;min-height:62px}
+.chal{list-style:none;padding:0;margin:0}
+.chal li{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.chal li .bx{flex:0 0 auto;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:12px;font-family:var(--mono)}
+.chal li.done .bx{background:var(--good);border-color:var(--good);color:#fff}
+.chal li.done span.t{color:var(--ink-soft)}
+.chart-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--panel);margin-top:8px}
+.clock{font-family:var(--mono);font-size:13.5px;color:var(--ink)}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+.big{font-size:15px;padding:10px 14px}
+.qcard{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 4px}
+.qstep{font-size:14.5px;margin:0 0 8px;padding:8px 10px;border-radius:var(--r);background:var(--accent-wash);border-left:4px solid var(--accent)}
+.svg-holder{width:100%;border-radius:4px;border:1px solid var(--rule-soft);background:var(--ecf);overflow:hidden}
+.svg-holder svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.hs{cursor:pointer}
+.hs:focus{outline:none}
+.hs:focus .ring,.hs:hover .ring{stroke:var(--accent);stroke-width:3;stroke-dasharray:none;opacity:1}
+.ring{fill:transparent;stroke:transparent;stroke-width:2}
+.hs.ok .ring{stroke:var(--good);stroke-width:3.5;opacity:1}
+.hs.bad .ring{stroke:var(--warn);stroke-width:3.5;opacity:1}
+.hs.hint .ring{stroke:var(--gold);stroke-width:4;opacity:1;animation:pulse 1s infinite}
+@keyframes pulse{50%{stroke-width:8}}
+.svglab{font-family:var(--sans);font-size:11px;fill:var(--ink-soft);pointer-events:none}
+.namelist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.namelist button{border:1px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:4px 10px;font-size:13px;cursor:pointer}
+.namelist button:hover{border-color:var(--accent)}
+.namelist button.ok{border-color:var(--good);background:var(--good-wash)}
+.namelist button.bad{border-color:var(--warn);background:var(--warn-wash)}
+details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin-top:8px}
+.legend i.tri{clip-path:polygon(50% 0,100% 100%,0 100%);border-radius:0;width:12px;height:11px}
+.legend i.hex{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0;width:13px;height:12px}
+.legend i.sq{border-radius:2px}
+.legend i.dia{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Endocrine System &middot; USC Upstate</div>
+    <h1>Endocrine Lab</h1>
+    <p class="sub">Run hormone axes, balance blood sugar, diagnose clinical cases and match glands to targets. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist" aria-label="Lab parts">
+    <button class="tab" role="tab" aria-selected="true" data-tab="axis" id="tabbtn-axis" aria-controls="tab-axis" type="button">Part 1 &middot; Hormone Axis Simulator</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="glu" id="tabbtn-glu" aria-controls="tab-glu" type="button">Part 2 &middot; Blood Glucose Simulator</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="break" id="tabbtn-break" aria-controls="tab-break" type="button">Part 3 &middot; What breaks if&hellip;?</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="match" id="tabbtn-match" aria-controls="tab-match" type="button">Part 4 &middot; Gland Matcher</button>
+  </div>
+
+  <!-- PART 1 -->
+  <section id="tab-axis" role="tabpanel" aria-labelledby="tabbtn-axis">
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvAxis" role="img" aria-label="Hormone axis simulation"></canvas></div>
+        <div class="stagebar">
+          <button class="tbtn" id="axPause" type="button">Pause</button>
+          <button class="tbtn" id="axReset" type="button">Reset to healthy</button>
+          <label>Speed <input type="range" id="axSpeed" min="0.5" max="4" step="0.5" value="1"></label>
+          <span class="clock" id="axClock">Day 0</span>
+        </div>
+        <div class="legend" id="axLegend"></div>
+        <div class="chart-holder"><canvas id="cvAxChart" role="img" aria-label="Live chart of hormone levels"></canvas></div>
+        <p class="small" style="margin:6px 2px 0">Levels are relative: 1.0&times; is normal, and the green band is the healthy range. Time is sped up a lot.</p>
+      </div>
+      <aside class="card side ctl" aria-live="polite">
+        <h3>Choose an axis</h3>
+        <div class="seg" id="axisSeg">
+          <button type="button" data-ax="thy" aria-pressed="true">Thyroid: TRH &rarr; TSH &rarr; T3/T4</button>
+          <button type="button" data-ax="adr" aria-pressed="false">Adrenal: CRH &rarr; ACTH &rarr; cortisol</button>
+        </div>
+        <h3>Change the inputs</h3>
+        <div id="axInputs"></div>
+        <h3>Add a tumor that oversecretes</h3>
+        <div class="seg" id="tumorSeg">
+          <button type="button" data-tu="none" aria-pressed="true">No tumor</button>
+          <button type="button" data-tu="hyp" aria-pressed="false">Hypothalamus</button>
+          <button type="button" data-tu="pit" aria-pressed="false">Pituitary</button>
+          <button type="button" data-tu="gland" aria-pressed="false" id="tuGland">Thyroid</button>
+        </div>
+        <h3>Live readouts</h3>
+        <table class="readouts" id="axRead"></table>
+        <h3>What is happening</h3>
+        <div class="now" id="axNow"></div>
+        <h3>Challenges <span class="totstars" id="axStars"></span></h3>
+        <ul class="chal" id="axChal"></ul>
+        <div class="btnrow"><button class="tbtn" id="axHint" type="button">Hint</button><button class="tbtn" id="axShow" type="button">Show me</button></div>
+        <div class="msg info" id="axMsg" role="status"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section id="tab-glu" role="tabpanel" aria-labelledby="tabbtn-glu" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvGlu" role="img" aria-label="Blood glucose simulation"></canvas></div>
+        <div class="stagebar">
+          <button class="tbtn" id="gPause" type="button">Pause</button>
+          <label>Speed <input type="range" id="gSpeed" min="0.5" max="4" step="0.5" value="1"></label>
+          <span class="clock" id="gClock">0:00 h</span>
+        </div>
+        <div class="legend" id="gLegend"></div>
+        <div class="chart-holder"><canvas id="cvGluChart" role="img" aria-label="Live chart of blood glucose, insulin and glucagon"></canvas></div>
+        <p class="small" style="margin:6px 2px 0">Glucose in mg/dL (normal fasting range about 70 to 110). Insulin and glucagon are relative (1.0&times; = normal fasting level). A simplified teaching model; time is sped up.</p>
+      </div>
+      <aside class="card side ctl" aria-live="polite">
+        <h3>Do something</h3>
+        <div class="btnrow">
+          <button class="btn big" id="gMeal" type="button">Eat a meal</button>
+          <button class="tbtn big" id="gFast" type="button">Fast 12 hours</button>
+          <button class="tbtn big" id="gEx" type="button">Exercise 45 min</button>
+        </div>
+        <h3>Change the body</h3>
+        <label class="tog" id="tgT1"><input type="checkbox" id="gT1"><span>Type 1 diabetes<small>Beta cells destroyed: no insulin made</small></span></label>
+        <label class="tog" id="tgT2"><input type="checkbox" id="gT2"><span>Type 2 diabetes<small>Insulin resistance: cells respond weakly</small></span></label>
+        <div class="btnrow"><button class="tbtn" id="gInj" type="button">Give an insulin injection</button><button class="tbtn" id="gReset" type="button">Reset to healthy</button></div>
+        <h3>Live readouts</h3>
+        <table class="readouts" id="gRead"></table>
+        <h3>What is happening</h3>
+        <div class="now" id="gNow"></div>
+        <h3>Try this <span class="totstars" id="gStars"></span></h3>
+        <ul class="chal" id="gChal"></ul>
+        <div class="btnrow"><button class="tbtn" id="gHint" type="button">Hint</button></div>
+        <div class="msg info" id="gMsg" role="status"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section id="tab-break" role="tabpanel" aria-labelledby="tabbtn-break" hidden>
+    <div class="card">
+      <div class="sc-top">
+        <div class="chips" id="scChips"></div>
+        <div class="score" id="scScore"></div>
+      </div>
+      <div class="grid2">
+        <div>
+          <div class="sc-n" id="scN"></div>
+          <h2 class="sc-title" id="scTitle"></h2>
+          <p class="sc-desc" id="scDesc"></p>
+          <p class="qlab" id="scQ1t"></p>
+          <div class="opts" id="scQ1"></div>
+          <p class="fb" id="scF1"></p>
+          <div id="q2wrap" hidden>
+            <p class="qlab" id="scQ2t"></p>
+            <div class="opts" id="scQ2"></div>
+            <p class="fb" id="scF2"></p>
+          </div>
+          <div class="explain" id="scExp"></div>
+          <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+        </div>
+        <div>
+          <div class="canvas-holder"><canvas id="cvSc" role="img" aria-label="Before and after picture"></canvas></div>
+          <div class="stagebar">
+            <button class="btn" id="showBtn" type="button">Show me the change</button>
+            <span class="caption" id="scCap" style="font-family:var(--sans)"></span>
+          </div>
+          <p class="tracecap" id="scNote"></p>
+        </div>
+      </div>
+      <div class="bar" style="margin-top:14px">
+        <button class="tbtn" id="scPrev" type="button">&larr; Previous</button>
+        <button class="btn" id="scNext" type="button">Next scenario &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 4 -->
+  <section id="tab-match" role="tabpanel" aria-labelledby="tabbtn-match" hidden>
+    <div class="rounds" id="mRounds" aria-label="Rounds"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="svg-holder" id="bodyHolder"></div>
+        <div class="stagebar">
+          <label class="mode"><input type="checkbox" id="mNames" checked> Show organ names</label>
+          <label class="mode"><input type="checkbox" id="mTimed"> Timed challenge (off = relaxed)</label>
+          <span class="timer" id="mTimer" hidden>0:00</span>
+        </div>
+        <details class="alt"><summary>Or choose by name (keyboard and screen-reader friendly)</summary><div class="namelist" id="nameList"></div></details>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="mN"></div>
+        <div class="qprog"><i id="mProg"></i></div>
+        <p class="qcard" id="mHormone"></p>
+        <p class="small" id="mHint0" style="margin:0 0 8px"></p>
+        <p class="qstep" id="mStep"></p>
+        <div class="bar">
+          <button class="tbtn" id="mHint" type="button">Hint</button>
+          <button class="tbtn" id="mShow" type="button">Show answer</button>
+          <button class="btn" id="mNext" type="button" hidden>Next hormone &rarr;</button>
+        </div>
+        <div class="msg" id="mMsg" role="status"></div>
+        <h3>How to play</h3>
+        <ul>
+          <li>Tap the gland that <b>releases</b> the hormone into the blood.</li>
+          <li>Then tap its main <b>target</b>. Some hormones have more than one correct target.</li>
+          <li>The circles zoom in on the brain and on an adrenal gland.</li>
+        </ul>
+        <h3>Stars</h3>
+        <p class="small" style="margin:0">3 stars: 2 or fewer misses and no answers shown. 2 stars: 5 or fewer misses. 1 star: you finished.</p>
+        <p class="totstars" id="mTot"></p>
+      </aside>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 17, The Endocrine System (OpenStax Anatomy &amp; Physiology 2e) &middot; Learn the steps first in the <a href="Endocrine-Walkthrough.html">Endocrine System Walkthrough</a>. PTH and calcitonin have their own <a href="Calcium-Balance-Sim.html">Calcium Balance Simulator</a>.<br>Simplified teaching models: hormone levels are relative, time is sped up, and diagrams are simplified and not to scale. Clinical cases are simplified for learning and are not medical advice.</footer>
+
+<script>
+(function(){
+"use strict";
+let ctx=null;
+const C={};
+function readColors(){const s=getComputedStyle(document.documentElement);
+  const names=[];for(const sh of document.styleSheets){try{for(const r of sh.cssRules){if(r.selectorText===":root"&&r.style)for(const p of r.style)if(p.startsWith("--"))names.push(p.slice(2))}}catch(e){}}
+  names.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function rr(x,y,w,h,r){r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,r,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,fill,stroke,lw,rot){ctx.beginPath();ctx.ellipse(x,y,rx,ry,rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(!(r>0))return;const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function curveArrow(P,col,lw,dash,head){ctx.beginPath();ctx.moveTo(P[0][0],P[0][1]);if(P.length===3)ctx.quadraticCurveTo(P[1][0],P[1][1],P[2][0],P[2][1]);else ctx.bezierCurveTo(P[1][0],P[1][1],P[2][0],P[2][1],P[3][0],P[3][1]);
+  ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);
+  const n=P.length-1,a=Math.atan2(P[n][1]-P[n-1][1],P[n][0]-P[n-1][0]),x2=P[n][0],y2=P[n][1];
+  if(head==="bar"){ctx.lineCap="round";line(x2-9*Math.sin(a),y2+9*Math.cos(a),x2+9*Math.sin(a),y2-9*Math.cos(a),col,(lw||2)+1.5);ctx.lineCap="butt";return}
+  const h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function bez(P,t){if(P.length===3){const u=1-t;return [u*u*P[0][0]+2*u*t*P[1][0]+t*t*P[2][0],u*u*P[0][1]+2*u*t*P[1][1]+t*t*P[2][1]]}
+  const u=1-t;return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
+function chipText(x,y,txt,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+10}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function wrapText(t,x,y,w,lh){const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function title(x,y,t,col){ctx.font=`600 11.5px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.fillText(t.toUpperCase(),x,y)}
+function panelBox(x,y,w,h,on,col){ctx.fillStyle=on?C["panel-2"]:C.panel;rr(x,y,w,h,8);ctx.fill();ctx.strokeStyle=on?(col||C.accent):C.rule;ctx.lineWidth=on?2.2:1;ctx.stroke()}
+
+/* ---------- particle shapes (shape + colour, so colour is never the only signal) ---------- */
+function A(a){ctx.globalAlpha=a==null?1:clamp(a,0,1)}
+function diamond(x,y,s,col,a){A(a);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function sq(x,y,s,col,a){A(a);rr(x-s,y-s,2*s,2*s,2);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function dotP(x,y,r,col,a){A(a);circ(x,y,r,col,"rgba(0,0,0,.3)",1);ctx.globalAlpha=1}
+function tri(x,y,s,col,a){A(a);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s*.95,y+s*.7);ctx.lineTo(x-s*.95,y+s*.7);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function hexP(x,y,s,col,a,edge){A(a);ctx.beginPath();for(let i=0;i<6;i++){const an=i*Math.PI/3;const px=x+s*Math.cos(an),py=y+s*Math.sin(an);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=edge||"rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function glucose(x,y,a,s){hexP(x,y,s||5.5,C.glu,a,C["glu-edge"])}
+function steroid(x,y,s,col,a){s=s||5;A(a);const pts=[[-s*.9,0],[s*.9,0]];pts.forEach(p=>{ctx.beginPath();for(let i=0;i<6;i++){const an=i*Math.PI/3+Math.PI/6;const px=x+p[0]+s*Math.cos(an),py=y+p[1]+s*Math.sin(an);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=col||C.steroid;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke()});ctx.globalAlpha=1}
+function beads(x,y,n,col,a,ang,r){r=r||3.2;ang=ang||0;A(a);for(let i=0;i<n;i++){const d=(i-(n-1)/2)*r*1.7;circ(x+Math.cos(ang)*d+Math.sin(i*1.7)*.8,y+Math.sin(ang)*d+Math.cos(i*2.3)*1.2,r,col,"rgba(0,0,0,.3)",1)}ctx.globalAlpha=1}
+function hormone(kind,x,y,a,s){
+  switch(kind){
+    case "h1":dotP(x,y,s||4.2,C.h1,a);break;
+    case "h2":sq(x,y,s||4.4,C.h2,a);break;
+    case "h3":diamond(x,y,s||5.4,C.h3,a);break;
+    case "amine":diamond(x,y,s||5.4,C.amine,a);break;
+    case "pep":beads(x,y,3,C.peptide,a,0,s||3);break;
+    case "ster":steroid(x,y,s||4.6,C.steroid,a);break;
+    case "ins":dotP(x,y,s||4.6,C.ins,a);break;
+    case "gcg":tri(x,y,s||5.6,C.gcg,a);break;
+    case "glu":glucose(x,y,a,s);break;
+    case "mel":dotP(x,y,s||4.2,C.mel,a);break;
+    case "oxy":dotP(x,y,s||4,C.act5,a);break;
+    case "adh":dotP(x,y,s||4,C.peptide,a);break;
+    case "anp":dotP(x,y,s||4.4,C.anp,a);break;
+    case "epo":sq(x,y,s||4.4,C.epo,a);break;
+    case "gi":diamond(x,y,s||5,C.gi,a);break;
+    default:dotP(x,y,s||4,C.ink,a)}}
+/* moving stream of particles along a path; returns nothing. n particles spaced evenly, period per trip */
+function stream(P,T,n,period,kind,opt){opt=opt||{};const on=opt.on==null?1:opt.on;if(on<=0)return;
+  for(let i=0;i<n;i++){const q=((T/period)+i/n+(opt.phase||0))%1;const pos=opt.curve?bez(P,q):along(P,q);
+    const a=Math.min(1,q*6,(1-q)*6)*on;const j=opt.jit||0;hormone(kind,pos[0]+Math.sin(i*3.1+T*2)*j,pos[1]+Math.cos(i*2.3+T*1.7)*j,a,opt.size)}}
+/* a puff of particles released from a point at time t0, spreading out along a direction */
+function vessel(P,w,col,inner){ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col||C.vessel;ctx.lineWidth=w;ctx.stroke();
+  ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=inner||C["blood-wash"];ctx.lineWidth=w-4;ctx.stroke();ctx.lineCap="butt";ctx.lineJoin="miter"}
+function cellBlob(x,y,rx,ry,fill,edge,seed){ctx.beginPath();for(let i=0;i<=40;i++){const a=i/40*TAU;const w=1+Math.sin(a*3+(seed||0))*.04+Math.cos(a*5+(seed||0)*2)*.03;const px=x+Math.cos(a)*rx*w,py=y+Math.sin(a)*ry*w;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=1.8;ctx.stroke()}
+/* receptor drawn as a cup on a membrane; shape: "cup","v","sq" for matching */
+function receptor(x,y,ang,shape,col,filled){ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.fillStyle=col;ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;
+  ctx.fillRect(-2.5,0,5,10);
+  ctx.beginPath();
+  if(shape==="v"){ctx.moveTo(-9,-10);ctx.lineTo(-3,-10);ctx.lineTo(0,-5);ctx.lineTo(3,-10);ctx.lineTo(9,-10);ctx.lineTo(5,0);ctx.lineTo(-5,0);ctx.closePath()}
+  else if(shape==="sq"){ctx.moveTo(-9,-10);ctx.lineTo(-5,-10);ctx.lineTo(-5,-4);ctx.lineTo(5,-4);ctx.lineTo(5,-10);ctx.lineTo(9,-10);ctx.lineTo(9,0);ctx.lineTo(-9,0);ctx.closePath()}
+  else{ctx.moveTo(-9,-10);ctx.arc(0,-10,5,Math.PI,0,true);ctx.lineTo(9,-10);ctx.lineTo(9,0);ctx.lineTo(-9,0);ctx.closePath()}
+  ctx.fill();ctx.stroke();ctx.restore()}
+/* simple sine meter */
+function meter(x,y,w,h,val,lo,hi,txt,col,o){o=o||{};ctx.fillStyle=C["panel-2"];rr(x,y,w,h,5);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  const f=clamp((val-lo)/(hi-lo),0,1);
+  if(o.band){const b0=clamp((o.band[0]-lo)/(hi-lo),0,1),b1=clamp((o.band[1]-lo)/(hi-lo),0,1);ctx.globalAlpha=.25;ctx.fillStyle=C.good;
+    if(o.vertical)ctx.fillRect(x+2,y+h-b1*h,w-4,(b1-b0)*h);else ctx.fillRect(x+b0*w,y+2,(b1-b0)*w,h-4);ctx.globalAlpha=1}
+  ctx.fillStyle=col||C.accent;if(o.vertical){rr(x+4,y+h-f*h+2,w-8,Math.max(0,f*h-4),3);ctx.fill()}else{rr(x+3,y+3,Math.max(0,(w-6)*f),h-6,3);ctx.fill()}
+  if(txt)label(o.vertical?x+w/2:x+w/2,o.vertical?y-12:y+h/2,txt,{align:"center",size:11.5,weight:600,mono:true,bga:o.vertical?.9:.75})}
+/* stylized human figure, origin top-centre of head. returns map of organ positions. */
+function bodyFig(ox,oy,s,o){o=o||{};const P=(x,y)=>[ox+x*s,oy+y*s];
+  ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);
+  ctx.fillStyle=C.skin;ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=2/s;ctx.lineJoin="round";
+  // legs
+  ctx.lineCap="round";[-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(d*30,322);ctx.lineTo(d*36,452);ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=44;ctx.stroke();ctx.strokeStyle=C.skin;ctx.lineWidth=40;ctx.stroke()});
+  // arms
+  [-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(d*66,112);ctx.quadraticCurveTo(d*86,200,d*92,292);ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=26;ctx.stroke();ctx.strokeStyle=C.skin;ctx.lineWidth=22;ctx.stroke()});
+  ctx.lineCap="butt";
+  // torso
+  ctx.beginPath();ctx.moveTo(-16,84);ctx.quadraticCurveTo(-70,92,-74,118);ctx.quadraticCurveTo(-60,190,-52,250);ctx.quadraticCurveTo(-66,300,-58,338);ctx.lineTo(58,338);ctx.quadraticCurveTo(66,300,52,250);ctx.quadraticCurveTo(60,190,74,118);ctx.quadraticCurveTo(70,92,16,84);ctx.closePath();
+  ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=2;ctx.stroke();
+  // inner body cavity tint
+  ctx.beginPath();ctx.ellipse(0,215,50,112,0,0,TAU);ctx.fillStyle=C.bodyin;ctx.globalAlpha=.7;ctx.fill();ctx.globalAlpha=1;
+  // neck + head
+  ctx.fillStyle=C.skin;ctx.fillRect(-15,66,30,26);ctx.strokeStyle=C["skin-edge"];ctx.beginPath();ctx.moveTo(-15,68);ctx.lineTo(-15,88);ctx.moveTo(15,68);ctx.lineTo(15,88);ctx.stroke();
+  ctx.beginPath();ctx.ellipse(0,38,32,38,0,0,TAU);ctx.fillStyle=C.skin;ctx.fill();ctx.stroke();
+  // brain hint
+  ctx.beginPath();ctx.ellipse(0,26,24,20,0,0,TAU);ctx.fillStyle=C.brain;ctx.globalAlpha=.85;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1;ctx.stroke();
+  ctx.restore();
+  return {hyp:P(0,34),pit:P(0,46),pin:P(6,24),thy:P(0,82),pth:P(0,82),thymus:P(0,122),heart:P(10,152),liver:P(-24,196),stomach:P(24,196),pancreas:P(10,222),
+    adrL:P(-26,232),adrR:P(26,232),kidL:P(-28,250),kidR:P(28,250),gon:P(0,312),ovL:P(-26,304),ovR:P(26,304),uterus:P(0,300),intestine:P(0,268),bone:P(-36,400),muscle:P(36,390),breast:P(-30,130),breastR:P(30,130),arm:P(-88,240)}}
+function organ(kind,x,y,s,on,col){s=s||1;const hl=on?2.4:1.4;
+  switch(kind){
+    case "thy":ctx.save();ctx.translate(x,y);ctx.scale(s,s);[-1,1].forEach(d=>{ctx.beginPath();ctx.ellipse(d*7,0,6.5,9,d*.25,0,TAU);ctx.fillStyle=col||C.gland;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke()});ctx.fillStyle=col||C.gland;ctx.fillRect(-3,1,6,5);ctx.restore();break;
+    case "heart":ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(0,12);ctx.bezierCurveTo(-18,0,-12,-14,-2,-8);ctx.bezierCurveTo(6,-16,18,-6,0,12);ctx.fillStyle=col||C.blood;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke();ctx.restore();break;
+    case "liver":ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-22,-8);ctx.quadraticCurveTo(10,-18,30,-8);ctx.quadraticCurveTo(14,10,-14,12);ctx.quadraticCurveTo(-26,6,-22,-8);ctx.fillStyle=col||C.liver;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke();ctx.restore();break;
+    case "stomach":ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-6,-14);ctx.quadraticCurveTo(14,-16,14,0);ctx.quadraticCurveTo(12,14,-8,12);ctx.quadraticCurveTo(-2,4,-10,-6);ctx.closePath();ctx.fillStyle=col||"#E2A79A";ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke();ctx.restore();break;
+    case "pancreas":ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-20,2);ctx.quadraticCurveTo(-4,-8,22,-4);ctx.quadraticCurveTo(24,2,20,3);ctx.quadraticCurveTo(0,4,-18,8);ctx.closePath();ctx.fillStyle=col||C.gland;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke();ctx.restore();break;
+    case "kidney":ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.ellipse(0,0,7,11,0,0,TAU);ctx.fillStyle=col||C.kidney;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke();ctx.restore();break;
+    case "adrenal":ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-7,4);ctx.lineTo(0,-6);ctx.lineTo(7,4);ctx.closePath();ctx.fillStyle=col||C.zf;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke();ctx.restore();break;
+    case "thymus":ctx.save();ctx.translate(x,y);ctx.scale(s,s);[-1,1].forEach(d=>{ctx.beginPath();ctx.ellipse(d*5,0,6,11,d*.15,0,TAU);ctx.fillStyle=col||"#E8B8C8";ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke()});ctx.restore();break;
+    case "gonad":ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.ellipse(0,0,6,4.5,0,0,TAU);ctx.fillStyle=col||C.gland;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=hl/s;ctx.stroke();ctx.restore();break;
+    default:circ(x,y,5*s,col||C.gland,C["gland-edge"],hl)}}
+
+function kidneyIcon(x,y,s,on){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(0,-20);ctx.bezierCurveTo(18,-22,22,18,4,22);ctx.bezierCurveTo(-10,24,-6,6,-4,0);ctx.bezierCurveTo(-6,-6,-14,-18,0,-20);ctx.fillStyle=C.kidney;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=(on?2.5:1.5)/s;ctx.stroke();ctx.restore()}
+function uterusIcon(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-18,-14);ctx.quadraticCurveTo(0,-20,18,-14);ctx.quadraticCurveTo(14,8,4,16);ctx.lineTo(4,24);ctx.lineTo(-4,24);ctx.lineTo(-4,16);ctx.quadraticCurveTo(-14,8,-18,-14);ctx.closePath();ctx.fillStyle=C["blood-wash"];ctx.fill();ctx.strokeStyle=C.blood;ctx.lineWidth=1.6/s;ctx.stroke();
+  [-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(d*18,-14);ctx.quadraticCurveTo(d*30,-22,d*34,-8);ctx.stroke();circ(d*34,-4,4,C.gland,C["gland-edge"],1/s)});ctx.restore()}
+function breastIcon(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.arc(0,0,18,0,Math.PI*1.05);ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.6/s;ctx.stroke();
+  ctx.strokeStyle=C.gland;ctx.lineWidth=1.4/s;for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(0,14);ctx.quadraticCurveTo(-12+i*8,6,-12+i*8,0);ctx.stroke();circ(-12+i*8,0,2.6,C.gland)}circ(0,18,2.5,C["skin-dark"]);ctx.restore()}
+function boneIcon(x,y,s,ang){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.scale(s,s);ctx.fillStyle=C.bone;ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=1.6/s;
+  ctx.beginPath();ctx.moveTo(-5,-24);ctx.lineTo(5,-24);ctx.lineTo(5,24);ctx.lineTo(-5,24);ctx.closePath();ctx.fill();ctx.stroke();[[-6,-26],[6,-26],[-6,26],[6,26]].forEach(p=>circ(p[0],p[1],6.5,C.bone,C["bone-edge"],1.6/s));ctx.fillRect(-4.2,-22,8.4,44);ctx.restore()}
+function muscleIcon(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-26,0);ctx.bezierCurveTo(-10,-14,10,-14,26,0);ctx.bezierCurveTo(10,14,-10,14,-26,0);ctx.fillStyle=C.muscle;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=1.4/s;ctx.stroke();
+  ctx.strokeStyle="rgba(0,0,0,.18)";for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(-20,i*3);ctx.quadraticCurveTo(0,i*4.5,20,i*3);ctx.stroke()}ctx.restore()}
+function adrenalIcon(x,y,s,on){kidneyIcon(x,y+8*s,s*.85,false);ctx.save();ctx.translate(x+2*s,y-12*s);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-12,6);ctx.quadraticCurveTo(0,-14,12,6);ctx.closePath();ctx.fillStyle=C.zf;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=(on?2.4:1.4)/s;ctx.stroke();ctx.restore()}
+function gonadIcon(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ell(-14,0,9,6,C.gland,C["gland-edge"],1.4/s);ell(14,0,7,10,C.gland,C["gland-edge"],1.4/s);ctx.restore()}
+
+
+/* ================= glucose meter ================= */
+function gMeter(x,y,w,h,v){ctx.fillStyle=C["panel-2"];rr(x,y,w,h,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  const lo=40,hi=260;const Y=val=>y+h-14-(val-lo)/(hi-lo)*(h-40);
+  ctx.globalAlpha=.25;ctx.fillStyle=C.good;ctx.fillRect(x+6,Y(110),w-12,Y(70)-Y(110));ctx.globalAlpha=1;
+  [70,110,180].forEach(v=>{line(x+6,Y(v),x+12,Y(v),C["ink-soft"],1);ctx.font=`500 10px ${MONO}`;ctx.textAlign="left";ctx.fillStyle=C["ink-soft"];ctx.fillText(String(v),x+14,Y(v))});
+  const vy=Y(clamp(v,lo,hi));ctx.fillStyle=v>110?C.warn:v<70?C.mel:C.good;rr(x+w-26,vy,14,y+h-14-vy,4);ctx.fill();
+  label(x+w/2,y+14,Math.round(v)+" mg/dL",{align:"center",size:12,weight:700,mono:true});
+  const st=v>110?"HIGH":v<70?"LOW":"NORMAL";label(x+w/2,y+h+12,st,{align:"center",size:11,weight:700,mono:true,color:v>110?C.warn:v<70?C.mel:C.good,pill:false})}
+
+
+function glycogen(x,y,n,s){s=s||1;const nodes=[];const Q=[];for(let r=0;r<5;r++)Q.push([x,y,r*TAU/5+.3,0]);let k=0;
+  while(Q.length&&k<n){const [px,py,a,d]=Q.shift();const nx=px+Math.cos(a)*9*s,ny=py+Math.sin(a)*9*s;line(px,py,nx,ny,C.gly,1.5);nodes.push([nx,ny]);k++;
+    if(d<6)Q.push([nx,ny,a+.12,d+1]);if(d%2===1&&d<5)Q.push([nx,ny,a-.95,d+1])}
+  nodes.forEach(p=>hexP(p[0],p[1],3.4*s,C.glu,1,C["glu-edge"]));circ(x,y,4,C.gly);return nodes}
+/* glucose model: one step = 1 simulated minute */
+function gluNew(){return {G:90,I:1,Gn:1,inj:0,gly:70,gut:0,ex:0,t:0,flows:{}}}
+function gluStep(s,o){
+  const cl=(x,a,b)=>Math.max(a,Math.min(b,x));
+  const t1=o.type1,t2=o.type2;
+  // secretion
+  let Isec=t1?0:Math.pow(cl((s.G-60)/30,0,8),1.5);if(t2)Isec=Math.min(Isec,3.5)*0.8;Isec=cl(Isec,t1?0:0.05,9);
+  s.I+=(Isec-s.I)/14;
+  s.inj*=Math.exp(-1/120);
+  const Itot=s.I+s.inj;
+  const Ie=Itot*(t2?0.2:1);
+  let Gsec=1+(90-s.G)/16;if(s.ex>0)Gsec+=0.6;Gsec/=(1+0.12*Math.max(0,Ie-1));Gsec=cl(Gsec,0.15,5);
+  if(t1)Gsec=Math.max(Gsec,0.9);if(t2)Gsec=Math.max(Gsec,0.75);
+  s.Gn+=(Gsec-s.Gn)/10;
+  // flows (mg/dL per minute)
+  const absorb=s.gut/45;s.gut-=absorb;
+  const brain=0.5;
+  const uptake=0.55*Ie*(s.G/90);
+  const exU=s.ex>0?1.3*(s.G/90):0;if(s.ex>0)s.ex--;
+  const store=s.gly<100?0.2*Ie*cl((s.G-70)/20,0,3):0;
+  const supp=0.5+0.5*Math.min(Ie,4);
+  const glyco=(s.gly>1?0.5*s.Gn:0)/supp;
+  const gng=(s.gly>1?0.75:1.1)*s.Gn/supp;
+  const renal=s.G>180?(s.G-180)*0.03:0;
+  s.G+=absorb+glyco+gng-brain-uptake-exU-store-renal;
+  s.G=cl(s.G,25,450);
+  s.gly=cl(s.gly+(store-glyco)*0.08,0,100);
+  s.t++;
+  s.flows={absorb,uptake,exU,store,glyco,gng,renal,Itot,Ie};
+  return s}
+if(typeof module!=="undefined")module.exports={gluNew,gluStep};
+
+/* ================= shared page plumbing ================= */
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,c:cv.getContext("2d"),W,H,K:1};
+  st.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);st.K=cv.width/W};
+  st.begin=()=>{ctx=st.c;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1};
+  return st}
+let activeTab="axis";
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===b));
+  document.querySelectorAll("[role=tabpanel]").forEach(p=>p.hidden=p.id!=="tab-"+activeTab);
+  fitAll()});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+const fmtX=v=>v.toFixed(v<0.95||v>=9.95?(v<9.95?2:0):1)+"×";
+function arrowWord(v){return v>1.3?"↑ high":v<0.7?"↓ low":"normal"}
+
+/* =====================================================================
+   PART 1 - HORMONE AXIS SIMULATOR
+   ===================================================================== */
+const SA=makeStage("cvAxis",800,440),SAC=makeStage("cvAxChart",800,200);
+const AXES={
+ thy:{names:["TRH","TSH","T3/T4"],gland:"Thyroid",inputs:[["cold","Cold exposure","Body needs more heat: more TRH"],["iod","Iodine deficiency","Thyroid can't build enough T3/T4"],["pill","Take thyroid hormone pills","Extra T4 from outside (like levothyroxine)"]]},
+ adr:{names:["CRH","ACTH","Cortisol"],gland:"Adrenal cortex",inputs:[["stress","Ongoing stress","Hypothalamus releases more CRH"],["dmg","Adrenal cortex damaged","Like Addison disease: cortex can't keep up"],["pill","Take a steroid drug","A cortisol-like medicine (like prednisone)"]]}};
+const AXCH={
+ thy:[{id:"goiter",t:"Grow a goiter (thyroid 1.4× its normal size or more).",hint:"A goiter grows when TSH stays high for a long time. What would keep T3/T4 low, so feedback can't turn TSH off?",show:{iod:1},test:s=>s.size>=1.4},
+      {id:"hypo",t:"Make TSH high while T3/T4 is low.",hint:"The thyroid itself has to be the weak link. Without its raw material it can't answer TSH.",show:{iod:1},test:s=>s.P>1.6&&s.Gt<.75},
+      {id:"hyper",t:"Make T3/T4 high while TSH is low.",hint:"Something must push T3/T4 up without needing TSH. Then feedback shuts TSH down. Try a tumor in the gland itself.",show:{tumor:"gland"},test:s=>s.Gt>1.6&&s.P<.5},
+      {id:"both",t:"Make TRH, TSH and T3/T4 all high together.",hint:"Put the problem at the very top of the chain, so the signal is too strong all the way down.",show:{tumor:"hyp"},test:s=>s.R>1.6&&s.P>1.3&&s.Gt>1.3},
+      {id:"pill",t:"Shrink the thyroid by taking thyroid hormone pills.",hint:"Pills raise T3/T4 from outside. What does high T3/T4 do to TSH, and what happens to a gland with no TSH?",show:{pill:1},test:s=>s.pill&&s.size<.75}],
+ adr:[{id:"stress",t:"Raise cortisol with ongoing stress.",hint:"Long-term stress works through the hypothalamus.",show:{stress:1},test:s=>s.stress&&s.Gt>1.25},
+      {id:"addison",t:"Make ACTH high and cortisol low (the Addison pattern).",hint:"The adrenal cortex itself must fail. Feedback then lets ACTH climb.",show:{dmg:1},test:s=>s.P>1.6&&s.Gt<.6},
+      {id:"adrtumor",t:"Make cortisol high and ACTH low.",hint:"Cortisol has to come from somewhere that ignores ACTH. Try a tumor in the gland.",show:{tumor:"gland"},test:s=>s.Gt>1.6&&s.P<.5},
+      {id:"cushingdz",t:"Make ACTH and cortisol both high.",hint:"Put an oversecreting tumor one level up from the adrenal gland.",show:{tumor:"pit"},test:s=>s.Gt>1.6&&s.P>1.6},
+      {id:"steroid",t:"Shrink the adrenal cortex with a steroid drug.",hint:"The drug acts like cortisol. What happens to ACTH, and to a gland with no ACTH?",show:{pill:1},test:s=>s.pill&&s.size<.75}]};
+let AS=null;
+function axNew(ax){return {ax,inp:{},tumor:"none",R:1,P:1,G:1,size:1,t:0,hist:[],done:(store.get("endoAx_"+ax)||[]),Gt:1,pill:0,stress:0}}
+const axSaved={thy:axNew("thy"),adr:axNew("adr")};
+AS=axSaved.thy;
+const inh=x=>2/(1+x*x);
+function axStep(s,dt){
+  const thy=s.ax==="thy";const I=s.inp;
+  const D=1+(thy?.6*(I.cold?1:0):1.6*(I.stress?1:0));
+  const ext=I.pill?(thy?1.0:1.3):0;
+  const Gt=s.G+ext;
+  const Rs=s.tumor==="hyp"?3:D*inh(Gt);
+  const Ps=s.tumor==="pit"?3:s.R*inh(Gt);
+  const cap=thy?(I.iod?.3:1):(I.dmg?.15:1);
+  const Gs=s.tumor==="gland"?3:cap*s.P;
+  s.R+=(Rs-s.R)*Math.min(1,dt/.4);s.P+=(Ps-s.P)*Math.min(1,dt/.8);s.G+=(Gs-s.G)*Math.min(1,dt/2.5);
+  let sizeT=s.tumor==="gland"?1.6:clamp(.5+.5*s.P,.5,2.4);if(!thy&&I.dmg)sizeT=Math.min(sizeT,.6);
+  s.size+=(sizeT-s.size)*Math.min(1,dt/12);
+  s.t+=dt;s.Gt=s.G+ext;s.pill=!!I.pill;s.stress=!!I.stress;
+}
+function axBuildInputs(){
+  const box=$("#axInputs");box.innerHTML="";
+  AXES[AS.ax].inputs.forEach(([k,name,sub])=>{const l=document.createElement("label");l.className="tog"+(AS.inp[k]?" on":"");
+    l.innerHTML=`<input type="checkbox" ${AS.inp[k]?"checked":""}><span>${name}<small>${sub}</small></span>`;
+    l.querySelector("input").onchange=e=>{AS.inp[k]=e.target.checked;l.classList.toggle("on",e.target.checked)};box.appendChild(l)});
+  document.querySelectorAll("#axisSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.ax===AS.ax));
+  document.querySelectorAll("#tumorSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.tu===AS.tumor));
+  $("#tuGland").textContent=AS.ax==="thy"?"Thyroid":"Adrenal cortex";
+  const n=AXES[AS.ax].names;
+  $("#axLegend").innerHTML=`<span><i style="background:var(--h1)"></i>${n[0]} (hypothalamus)</span><span><i class="sq" style="background:var(--h2)"></i>${n[1]} (pituitary)</span><span><i class="${AS.ax==="thy"?"dia":"hex"}" style="background:var(--${AS.ax==="thy"?"h3":"steroid"})"></i>${n[2]} (${AXES[AS.ax].gland.toLowerCase()})</span><span><i class="ln" style="border-color:var(--inhib);border-top-style:dashed"></i>Negative feedback</span>`;
+  axChal();
+}
+document.querySelectorAll("#axisSeg button").forEach(b=>b.onclick=()=>{AS=axSaved[b.dataset.ax];axBuildInputs();$("#axMsg").classList.remove("show")});
+document.querySelectorAll("#tumorSeg button").forEach(b=>b.onclick=()=>{AS.tumor=b.dataset.tu;axBuildInputs()});
+$("#axReset").onclick=()=>{const d=AS.done;axSaved[AS.ax]=axNew(AS.ax);AS=axSaved[AS.ax];AS.done=d;axBuildInputs();$("#axMsg").classList.remove("show")};
+let axPaused=false;$("#axPause").onclick=()=>{axPaused=!axPaused;$("#axPause").textContent=axPaused?"Play":"Pause"};
+let axSpeed=1;$("#axSpeed").oninput=e=>axSpeed=+e.target.value;
+function axChal(){
+  const L=AXCH[AS.ax];$("#axChal").innerHTML=L.map(c=>`<li class="${AS.done.includes(c.id)?"done":""}"><span class="bx">${AS.done.includes(c.id)?"✓":""}</span><span class="t">${c.t}</span></li>`).join("");
+  const tot=AS.done.length;$("#axStars").innerHTML=`<b>${"★".repeat(tot)}</b>${"☆".repeat(L.length-tot)}`}
+$("#axHint").onclick=()=>{const c=AXCH[AS.ax].find(c=>!AS.done.includes(c.id));const m=$("#axMsg");m.className="msg info show";m.textContent=c?"Hint: "+c.hint:"All challenges done. Try mixing inputs and predicting the chart before you look."};
+$("#axShow").onclick=()=>{const c=AXCH[AS.ax].find(c=>!AS.done.includes(c.id));if(!c)return;
+  AS.inp={};AS.tumor="none";Object.entries(c.show).forEach(([k,v])=>{if(k==="tumor")AS.tumor=v;else AS.inp[k]=!!v});
+  axBuildInputs();const m=$("#axMsg");m.className="msg info show";m.textContent="Set up for: "+c.t+" Now watch the chart for a while. (Speed it up if you like.)"};
+function axCheck(){let changed=false;AXCH[AS.ax].forEach(c=>{if(!AS.done.includes(c.id)&&c.test(AS)){AS.done.push(c.id);changed=true;
+  const m=$("#axMsg");m.className="msg good show";m.innerHTML=`<span class="stars">★</span> Challenge done: ${c.t}`}});
+  if(changed){store.set("endoAx_"+AS.ax,AS.done);axChal()}}
+function axReadouts(){
+  const s=AS,n=AXES[s.ax].names,thy=s.ax==="thy";
+  const rows=[[n[0]+" (hypothalamus)",s.R],[n[1]+" (anterior pituitary)",s.P],[n[2]+(s.pill?" (gland + pill)":""),s.Gt]];
+  let h=rows.map(r=>`<tr><td>${r[0]}</td><td>${fmtX(r[1])} ${arrowWord(r[1])}</td></tr>`).join("");
+  h+=`<tr><td>${AXES[s.ax].gland} size</td><td>${fmtX(s.size)}${s.size>=1.4?(thy?" goiter":" enlarged"):s.size<.75?" shrunken":""}</td></tr>`;
+  if(thy){h+=`<tr><td>Metabolic rate</td><td>${arrowWord(s.Gt)}</td></tr><tr><td>Heart rate</td><td>${Math.round(72*(.8+.2*clamp(s.Gt,.3,3.5)))} bpm</td></tr><tr><td>Body temperature</td><td>${(37+.4*(clamp(s.Gt,.3,3.5)-1)).toFixed(1)} °C</td></tr>`}
+  else{h+=`<tr><td>Blood glucose</td><td>${Math.round(90+18*(clamp(s.Gt,.2,4)-1))} mg/dL</td></tr><tr><td>Inflammation / immune activity</td><td>${s.Gt>1.4?"suppressed":s.Gt<.6?"poorly controlled":"normal"}</td></tr>`}
+  $("#axRead").innerHTML=h;
+  // narrative
+  const parts=[];
+  if(s.tumor!=="none")parts.push(`The tumor in the ${s.tumor==="hyp"?"hypothalamus":s.tumor==="pit"?"pituitary":AXES[s.ax].gland.toLowerCase()} oversecretes and <b>ignores negative feedback</b>.`);
+  if(thy&&s.inp.cold)parts.push("Cold drives the hypothalamus to release more TRH.");
+  if(!thy&&s.inp.stress)parts.push("Stress drives the hypothalamus to release more CRH.");
+  if(thy&&s.inp.iod)parts.push("Without iodine the thyroid can't make enough T3/T4, so feedback weakens and TSH climbs.");
+  if(!thy&&s.inp.dmg)parts.push("The damaged cortex makes little cortisol, so feedback weakens and ACTH climbs.");
+  if(s.inp.pill){const down=s.tumor==="hyp"?n[1]:s.tumor==="pit"?n[0]:n[0]+" and "+n[1];parts.push(`The pill adds ${thy?"thyroid hormone":"a cortisol-like steroid"} from outside. Feedback sees it and turns ${down} down${s.tumor==="none"?", so the gland gets little stimulation":""}.`)}
+  if(s.size>=1.4&&s.tumor!=="gland")parts.push(`High ${n[1]} for a long time is making the ${thy?"thyroid":"adrenal cortex"} grow.`);
+  if(s.size<.75)parts.push(`With little ${n[1]}, the ${thy?"thyroid":"adrenal cortex"} is shrinking.`);
+  if(!parts.length)parts.push(`Healthy balance: ${n[2]} feeds back to keep ${n[0]} and ${n[1]} near normal.`);
+  $("#axNow").innerHTML=parts.join(" ");
+  $("#axClock").textContent="Day "+Math.floor(s.t);
+}
+/* ---- drawing ---- */
+function tumorLump(x,y,r,T){ctx.beginPath();for(let i=0;i<=24;i++){const a=i/24*TAU;const rr2=r*(1+.18*Math.sin(a*5+T*2));const px=x+Math.cos(a)*rr2,py=y+Math.sin(a)*rr2;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=C.bad;ctx.globalAlpha=.85;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.ink;ctx.lineWidth=1.2;ctx.stroke()}
+function levelMeter(x,y,v,name,col){ctx.fillStyle=C["panel-2"];rr(x,y-9,120,18,9);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  const f=v=>clamp(v/3.5,0,1)*116;ctx.globalAlpha=.22;ctx.fillStyle=C.good;ctx.fillRect(x+2+f(.7),y-7,f(1.3)-f(.7),14);ctx.globalAlpha=1;
+  ctx.fillStyle=col;rr(x+2,y-6,Math.max(4,f(v)),12,6);ctx.fill();
+  label(x+60,y-20,name+" "+fmtX(v),{align:"center",size:11.5,weight:700,mono:true,bga:.85})}
+function drawAxis(T){
+  SA.begin();const s=AS,thy=s.ax==="thy",n=AXES[s.ax].names;
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,800,440);
+  const HX=120,HY=58,PX=120,PY=168,GX=120,GY=300;
+  // hypothalamus + pituitary
+  ell(HX,HY,84,34,C.brain,C["brain-edge"],2);label(HX,HY,"Hypothalamus",{align:"center",size:12.5,weight:700,pill:false});
+  ctx.fillStyle=C.brain;ctx.fillRect(HX-7,HY+32,14,PY-HY-56);
+  ell(PX,PY,50,28,C.gland,C["gland-edge"],2);label(PX,PY,"Anterior pituitary",{align:"center",size:11.5,weight:700,pill:false});
+  // target gland
+  const dsz=clamp(s.size,.5,1.7);if(thy){organ("thy",GX,GY,3.2*dsz,s.Gt>1.3)}
+  else{kidneyIcon(GX,GY+40,1.9,false);ctx.save();ctx.translate(GX+4,GY-8);ctx.scale(dsz,dsz);ctx.beginPath();ctx.moveTo(-46,22);ctx.quadraticCurveTo(0,-56,46,22);ctx.closePath();ctx.fillStyle=C.zf;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=2/dsz;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-20,18);ctx.quadraticCurveTo(0,-14,20,18);ctx.closePath();ctx.fillStyle=C.med;ctx.fill();ctx.restore();
+    if(s.inp.dmg){ctx.strokeStyle=C.ink;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(GX-24,GY-16);ctx.lineTo(GX-12,GY-4);ctx.lineTo(GX-18,GY+6);ctx.moveTo(GX+20,GY-20);ctx.lineTo(GX+10,GY-6);ctx.lineTo(GX+18,GY+4);ctx.stroke()}}
+  label(GX,GY+(thy?14+30*dsz:78),AXES[s.ax].gland,{align:"center",size:12.5,weight:700});
+  // streams between levels
+  stream([[HX,HY+34],[PX,PY-28]],T,Math.round(1+clamp(s.R,0,3.5)*3),1.1,"h1",{jit:4});
+  stream([[PX,PY+28],[GX,GY-32]],T,Math.round(1+clamp(s.P,0,3.5)*3),1.2,"h2",{jit:4});
+  levelMeter(232,HY,s.R,n[0],C.h1);levelMeter(232,PY,s.P,n[1],C.h2);levelMeter(232,GY,s.Gt,n[2],thy?C.h3:C.steroid);
+  // blood vessel to body
+  const VP=[[GX+40,GY+20],[300,GY+60],[420,GY+60],[480,330],[780,330]];vessel(VP,26);
+  const kind=thy?"h3":"ster";
+  stream(VP,T,Math.round(1+clamp(s.G,0,3.5)*5),4,kind,{jit:4});
+  if(s.inp.pill){const PP=[[380,420],[420,360],[480,334],[780,334]];stream(PP,T,6,4,kind,{phase:.5,jit:3});
+    ctx.save();ctx.translate(380,420);ctx.rotate(-.5);rr(-18,-8,36,16,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=1.4;ctx.stroke();ctx.fillStyle=thy?C.h3:C.steroid;rr(-18,-8,18,16,8);ctx.fill();ctx.restore();
+    label(410,428,"pill",{size:11.5,weight:700})}
+  // inputs
+  if(thy&&s.inp.cold){ctx.save();ctx.translate(30,HY);ctx.strokeStyle=C.mel;ctx.lineWidth=2.4;for(let i=0;i<3;i++){ctx.rotate(Math.PI/3);ctx.beginPath();ctx.moveTo(-13,0);ctx.lineTo(13,0);ctx.stroke()}ctx.restore();label(30,HY+28,"cold",{align:"center",size:11.5,weight:700,color:C.mel})}
+  if(!thy&&s.inp.stress){ctx.beginPath();ctx.moveTo(34,HY-22);ctx.lineTo(22,HY+2);ctx.lineTo(32,HY+2);ctx.lineTo(24,HY+24);ctx.lineTo(42,HY-4);ctx.lineTo(32,HY-4);ctx.closePath();ctx.fillStyle=C.warn;ctx.fill();label(30,HY+38,"stress",{align:"center",size:11.5,weight:700,color:C.warn})}
+  if(thy){const nI=s.inp.iod?1:6;for(let k=0;k<nI;k++){const q=((T*.5)+k/nI)%1;dotP(lerp(18,GX-30,q),lerp(420,GY+14,q),3.4,C.peptide,Math.min(1,(1-q)*4))}
+    label(20,428,s.inp.iod?"diet: little iodine":"diet: iodine",{size:11.5,weight:600,color:C.peptide})}
+  // tumors
+  if(s.tumor==="hyp"){tumorLump(HX+58,HY-14,14,T);label(HX+58,HY-40,"tumor",{align:"center",size:11,weight:700,color:C.bad})}
+  if(s.tumor==="pit"){tumorLump(PX-46,PY+10,13,T);label(PX-80,PY+34,"tumor",{align:"center",size:11,weight:700,color:C.bad})}
+  if(s.tumor==="gland"){tumorLump(GX+30,GY-18,14,T);label(GX+64,GY-38,"tumor",{align:"center",size:11,weight:700,color:C.bad})}
+  // feedback arrows
+  const fb=clamp((s.Gt-.2)/2,0,1);
+  ctx.globalAlpha=.25+.75*fb;
+  curveArrow([[500,318],[520,190],[340,40],[HX+86,HY+4]],C.inhib,1.2+fb*3.5,[7,5],"bar");
+  curveArrow([[480,318],[470,240],[300,150],[PX+52,PY+6]],C.inhib,1.2+fb*3.5,[7,5],"bar");
+  ctx.globalAlpha=1;
+  label(452,118,n[2]+" feedback (−)",{align:"center",size:11.5,weight:700,color:C.inhib,border:C.inhib});
+  if(s.tumor==="hyp"||s.tumor==="pit"){const x=s.tumor==="hyp"?HX+100:PX+66,y=s.tumor==="hyp"?HY+4:PY+6;line(x-8,y-8,x+8,y+8,C.ink,3);line(x+8,y-8,x-8,y+8,C.ink,3);label(x+14,y+20,"ignores feedback",{size:10.5,weight:700,color:C.bad})}
+  // body cells / effects
+  ctx.fillStyle=C.panel;rr(540,20,248,280,10);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  title(554,38,thy?"Body cells":"Effects of cortisol");
+  if(thy){const met=clamp(s.Gt,0,3);
+    [[600,110],[720,110],[600,220],[720,220]].forEach((c,i)=>{glow(c[0],c[1],52,C.glow,clamp(.08+.25*(met-.6),0,.7));cellBlob(c[0],c[1],42,32,C.cell,C["cell-edge"],i);circ(c[0]-12,c[1],8,C.nuc,C["nuc-edge"],1);
+      for(let k=0;k<3;k++){const q=((T*(.3+met*.6))+k/3)%1;ctx.globalAlpha=(1-q)*clamp(met-.3,0,1);ctx.strokeStyle=C.warn;ctx.lineWidth=2;ctx.beginPath();for(let y=0;y<14;y++){const x=c[0]-12+k*12+Math.sin(y*.6+T*4)*2.5;const yy=c[1]-34-q*22-y;y?ctx.lineTo(x,yy):ctx.moveTo(x,yy)}ctx.stroke();ctx.globalAlpha=1}});
+    label(664,280,met>1.3?"metabolic rate HIGH: hot, fast heart":met<.7?"metabolic rate LOW: cold, tired":"metabolic rate normal",{align:"center",size:12,weight:700,color:met>1.3?C.bad:met<.7?C.mel:C.good})}
+  else{const c=clamp(s.Gt,0,3.5);organ("liver",620,110,2.2,c>1.3);
+    for(let k=0;k<Math.round(c*3);k++){const q=((T*.5)+k/Math.max(1,Math.round(c*3)))%1;glucose(620+q*70,110-q*50+Math.sin(k)*10,(1-q),5)}
+    label(620,150,"liver makes glucose",{align:"center",size:11.5,weight:600});
+    for(let k=0;k<4;k++){const x=600+k*42,y=220;const act=clamp(1.6-c*.6,0.1,1.4);glow(x,y,22,C.bad,.3*act);circ(x,y,11,C.immune,"rgba(0,0,0,.3)",1);
+      for(let j=0;j<6;j++){const a=j/6*TAU+T;line(x+Math.cos(a)*11,y+Math.sin(a)*11,x+Math.cos(a)*(11+5*act),y+Math.sin(a)*(11+5*act),C.immune,1.6)}}
+    label(664,250,"immune cells",{align:"center",size:11.5,weight:600});
+    label(664,280,c>1.4?"glucose HIGH, immunity suppressed":c<.6?"glucose LOW, poor stress response":"balanced",{align:"center",size:12,weight:700,color:c>1.4?C.bad:c<.6?C.mel:C.good})}
+  SA.cv.setAttribute("aria-label",`${AXES[s.ax].gland} axis. ${n[0]} ${fmtX(s.R)}, ${n[1]} ${fmtX(s.P)}, ${n[2]} ${fmtX(s.Gt)}. Gland size ${fmtX(s.size)}.`);
+}
+function drawAxChart(){
+  SAC.begin();const s=AS,n=AXES[s.ax].names;const g={x0:46,x1:786,y0:30,y1:178};
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,200);
+  const Y=v=>g.y1-clamp(v,0,4.5)/4.5*(g.y1-g.y0);
+  ctx.globalAlpha=.18;ctx.fillStyle=C.good;ctx.fillRect(g.x0,Y(1.3),g.x1-g.x0,Y(.7)-Y(1.3));ctx.globalAlpha=1;
+  [0,1,2,3,4].forEach(v=>{line(g.x0,Y(v),g.x1,Y(v),C["rule-soft"],1);ctx.font=`500 10.5px ${MONO}`;ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];ctx.fillText(v+"×",g.x0-6,Y(v))});
+  const span=60,t1=Math.max(span,s.t),t0=t1-span;const X=t=>g.x0+(t-t0)/span*(g.x1-g.x0);
+  ctx.font=`500 10.5px ${MONO}`;ctx.textAlign="center";ctx.fillStyle=C["ink-soft"];for(let d=Math.ceil(t0/10)*10;d<=t1;d+=10)ctx.fillText("day "+d,X(d),g.y1+12);
+  const series=[[1,C.h1,[]],[2,C.h2,[6,4]],[3,s.ax==="thy"?C.h3:C.steroid,[]]];
+  series.forEach(([idx,col,dash])=>{ctx.beginPath();let first=true;s.hist.forEach(h=>{if(h[0]<t0)return;const x=X(h[0]),y=Y(h[idx]);first?ctx.moveTo(x,y):ctx.lineTo(x,y);first=false});ctx.strokeStyle=col;ctx.lineWidth=idx===3?3:2.2;ctx.setLineDash(dash);ctx.stroke();ctx.setLineDash([])});
+  const last=s.hist[s.hist.length-1];if(last){series.forEach(([idx,col],k)=>{const y=Y(last[idx]);circ(X(last[0]),y,4,col,C.panel,1.5)});}
+  // inline legend
+  [[n[0],C.h1,"solid"],[n[1],C.h2,"dashed"],[n[2],series[2][1],"thick"]].forEach((l,i)=>{const x=g.x0+10+i*130;line(x,12,x+22,12,l[1],i===2?3:2.2,i===1?[6,4]:[]);label(x+28,12,l[0]+" ("+l[2]+")",{size:11,pill:false,color:C.ink})});
+  label(g.x1-4,Y(1.3)-8,"healthy range",{align:"right",size:10.5,pill:false,color:C.good});
+}
+
+/* =====================================================================
+   PART 2 - BLOOD GLUCOSE SIMULATOR
+   ===================================================================== */
+const SG=makeStage("cvGlu",800,400),SGC=makeStage("cvGluChart",800,200);
+const GO={type1:false,type2:false};
+let GS=gluNew();let gHist=[];let gSince=999;let fastLeft=0;let gAcc=0;let gPaused=false,gSpeed=1;
+const gFlags={meal:false,mealPeak:0,fastStartGly:null,inj:false,wasHigh:false,t2peak:0};
+let gDone=store.get("endoGlu")||[];
+const GCH=[
+ {id:"meal",t:"Eat a meal. Watch insulin bring glucose back under 110 mg/dL.",hint:"Press Eat a meal, then watch the insulin line rise and the glucose line come back down.",test:()=>gFlags.meal&&gFlags.mealPeak>115&&GS.G<110&&gSince>30&&!GO.type1&&!GO.type2},
+ {id:"fast",t:"Fast. Watch glucagon rise and liver glycogen fall.",hint:"Press Fast 12 hours. Keep an eye on the liver's glycogen readout and the glucagon line.",test:()=>gFlags.fastStartGly!=null&&gFlags.fastStartGly-GS.gly>=8},
+ {id:"ex",t:"Exercise: muscles pull in glucose even without extra insulin.",hint:"Press Exercise 45 min and watch the muscle cell's doors and the glucose stream into it.",test:()=>GS.ex>0&&GS.flows.exU>0.5&&GS.I<1.4},
+ {id:"t1",t:"Turn on type 1 and eat: glucose climbs past 180 and spills into urine.",hint:"Tick Type 1 diabetes, then Eat a meal. Watch the kidney.",test:()=>GO.type1&&GS.flows.renal>0.05},
+ {id:"rescue",t:"Rescue type 1: use an insulin injection to bring glucose under 140.",hint:"With type 1 on and glucose high, press Give an insulin injection, then wait.",test:()=>GO.type1&&gFlags.inj&&gFlags.wasHigh&&GS.G<140},
+ {id:"t2",t:"Turn on type 2 and eat: insulin is high but glucose falls slowly.",hint:"Untick type 1, tick Type 2 diabetes, then Eat a meal. Compare the insulin line with the glucose line.",test:()=>GO.type2&&!GO.type1&&gFlags.t2peak>170&&GS.I>2}];
+function gChal(){$("#gChal").innerHTML=GCH.map(c=>`<li class="${gDone.includes(c.id)?"done":""}"><span class="bx">${gDone.includes(c.id)?"✓":""}</span><span class="t">${c.t}</span></li>`).join("");
+  $("#gStars").innerHTML=`<b>${"★".repeat(gDone.length)}</b>${"☆".repeat(GCH.length-gDone.length)}`}
+function gCheck(){GCH.forEach(c=>{if(!gDone.includes(c.id)&&c.test()){gDone.push(c.id);store.set("endoGlu",gDone);gChal();const m=$("#gMsg");m.className="msg good show";m.innerHTML=`<span class="stars">★</span> Done: ${c.t}`}})}
+$("#gHint").onclick=()=>{const c=GCH.find(c=>!gDone.includes(c.id));const m=$("#gMsg");m.className="msg info show";m.textContent=c?"Hint: "+c.hint:"All done. Try exercise with type 1 on, or two meals close together."};
+$("#gMeal").onclick=()=>{GS.gut+=240;gSince=0;fastLeft=0;gFlags.meal=true;gFlags.mealPeak=GS.G;gFlags.t2peak=0;gFlags.fastStartGly=null;$("#gFast").textContent="Fast 12 hours"};
+$("#gFast").onclick=()=>{if(fastLeft>0){fastLeft=0;$("#gFast").textContent="Fast 12 hours";return}fastLeft=720;gFlags.fastStartGly=GS.gly;$("#gFast").textContent="Stop fasting"};
+$("#gEx").onclick=()=>{GS.ex=45};
+$("#gInj").onclick=()=>{GS.inj+=4;gFlags.inj=true};
+$("#gT1").onchange=e=>{GO.type1=e.target.checked;$("#tgT1").classList.toggle("on",GO.type1);gFlags.inj=false;gFlags.wasHigh=false};
+$("#gT2").onchange=e=>{GO.type2=e.target.checked;$("#tgT2").classList.toggle("on",GO.type2)};
+$("#gReset").onclick=()=>{GS=gluNew();gHist=[];gSince=999;fastLeft=0;GO.type1=GO.type2=false;$("#gT1").checked=$("#gT2").checked=false;$("#tgT1").classList.remove("on");$("#tgT2").classList.remove("on");
+  Object.assign(gFlags,{meal:false,mealPeak:0,fastStartGly:null,inj:false,wasHigh:false,t2peak:0});$("#gFast").textContent="Fast 12 hours";$("#gMsg").classList.remove("show")};
+$("#gPause").onclick=()=>{gPaused=!gPaused;$("#gPause").textContent=gPaused?"Play":"Pause"};
+$("#gSpeed").oninput=e=>gSpeed=+e.target.value;
+$("#gLegend").innerHTML=`<span><i class="hex" style="background:var(--glu)"></i>Glucose</span><span><i style="background:var(--ins)"></i>Insulin (beta cells)</span><span><i class="tri" style="background:var(--gcg)"></i>Glucagon (alpha cells)</span><span><i class="ln" style="border-color:var(--gly)"></i>Liver glycogen</span><span><i class="sq" style="background:var(--ac)"></i>GLUT4 door</span>`;
+function gTick(realDt){
+  if(gPaused)return;
+  const mult=fastLeft>0?8:1;gAcc+=realDt*6*gSpeed*mult;   // 6 sim minutes per real second
+  let n=0;while(gAcc>=1&&n<200){gAcc-=1;n++;gluStep(GS,GO);gSince++;if(fastLeft>0){fastLeft--;if(fastLeft===0)$("#gFast").textContent="Fast 12 hours"}
+    gFlags.mealPeak=Math.max(gFlags.mealPeak,GS.G);if(GO.type2)gFlags.t2peak=Math.max(gFlags.t2peak,GS.G);if(GS.G>180)gFlags.wasHigh=true;
+    gHist.push([GS.t,GS.G,GS.flows.Itot,GS.Gn,GS.gly]);if(gHist.length>3000)gHist.shift()}
+  if(n)gCheck();
+}
+function gReadouts(){const s=GS,f=s.flows;const st=s.G>180?"very high":s.G>110?"high":s.G<70?"low":"normal";
+  const fasting=fastLeft>0;
+  $("#gRead").innerHTML=`<tr><td>Blood glucose</td><td>${Math.round(s.G)} mg/dL ${st}</td></tr><tr><td>Insulin</td><td>${fmtX(f.Itot||1)}${GO.type1&&!(s.inj>.05)?" none made":""}</td></tr><tr><td>Glucagon</td><td>${fmtX(s.Gn)}</td></tr><tr><td>Liver glycogen</td><td>${Math.round(s.gly)}%</td></tr><tr><td>Glucose in urine</td><td>${f.renal>0.02?"yes":"no"}</td></tr><tr><td>Since last meal</td><td>${gSince>900?"long ago":Math.floor(gSince/60)+" h "+String(gSince%60).padStart(2,"0")+" min"}</td></tr>`;
+  const P=[];
+  if(fasting)P.push("Fasting: time is running 8× faster.");
+  if(f.absorb>.3)P.push("Glucose from the meal is being absorbed into the blood.");
+  if(GO.type1)P.push(s.inj>.3?"Injected insulin is opening GLUT4 doors and helping the liver store glucose.":"Type 1: no insulin, so muscle and fat cells can't take in much glucose, and the liver keeps releasing it.");
+  else if(GO.type2)P.push("Type 2: the pancreas makes plenty of insulin, but cells respond weakly, so glucose stays high longer.");
+  if(!GO.type1&&s.I>1.5)P.push("Beta cells are releasing insulin: cells take up glucose and the liver stores glycogen.");
+  if(s.Gn>1.3)P.push("Alpha cells are releasing glucagon: the liver breaks down glycogen and makes new glucose.");
+  if(s.ex>0)P.push("Exercising muscles take up glucose on their own, without needing extra insulin.");
+  if(f.renal>.02)P.push("Glucose is above about 180 mg/dL, so the kidneys can't reabsorb it all. It spills into urine and pulls water with it.");
+  if(s.gly<15)P.push("Liver glycogen is running low, so the liver relies more on making new glucose.");
+  if(!P.length)P.push("Fasting balance: small amounts of insulin and glucagon keep glucose near 90 mg/dL.");
+  $("#gNow").textContent=P.join(" ");
+  const h=Math.floor(GS.t/60);$("#gClock").textContent=h+":"+String(Math.floor(GS.t%60)).padStart(2,"0")+" h"+(fasting?" (fasting, 8×)":"");
+  SG.cv.setAttribute("aria-label",`Blood glucose ${Math.round(s.G)} mg/dL. Insulin ${fmtX(f.Itot||1)}, glucagon ${fmtX(s.Gn)}, liver glycogen ${Math.round(s.gly)} percent.`)}
+function drawGlu(T){
+  SG.begin();const s=GS,f=s.flows,itot=f.Itot==null?1:f.Itot,ie=f.Ie==null?1:f.Ie;
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,800,400);
+  const VY=200;
+  // vessel
+  vessel([[10,VY],[790,VY]],64);label(20,VY-44,"blood",{size:11.5,weight:700,color:C.blood,pill:false});
+  const ng=Math.round(clamp(s.G/9,2,40));for(let k=0;k<ng;k++)glucose(((k*47.3+T*40)%820)-10,VY-20+rnd(k)*40,1,5.2);
+  // gut / meal
+  ctx.fillStyle=C.panel;rr(16,14,200,110,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  title(28,30,"Small intestine");
+  ctx.strokeStyle=C.muscle;ctx.lineWidth=10;ctx.lineCap="round";ctx.beginPath();for(let i=0;i<4;i++){const y=54+i*16;ctx.moveTo(40,y);ctx.bezierCurveTo(80,y-8,140,y+8,190,y)}ctx.stroke();ctx.lineCap="butt";
+  const ab=clamp(f.absorb||0,0,4);if(ab>.05){for(let k=0;k<Math.round(2+ab*4);k++){const q=((T*.6)+k/Math.round(2+ab*4))%1;glucose(60+k*22%140,lerp(70,VY-10,q),Math.min(1,(1-q)*4),5)}
+    label(116,110,"absorbing a meal",{align:"center",size:11,weight:700,color:C.glu})}
+  // brain use
+  ctx.fillStyle=C.panel;rr(670,14,118,110,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.stroke();ell(728,62,38,26,C.brain,C["brain-edge"],1.6);label(728,104,"brain uses glucose",{align:"center",size:10.5,pill:false,color:C["ink-soft"]});
+  for(let k=0;k<3;k++){const q=((T*.5)+k/3)%1;glucose(728+Math.sin(k*2)*10,lerp(VY-30,80,q),Math.min(1,(1-q)*3),4.6)}
+  // kidney + urine
+  ctx.fillStyle=C.panel;rr(240,14,200,110,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.stroke();kidneyIcon(290,64,1.5,f.renal>.02);
+  title(326,30,"Kidney");
+  if(f.renal>.02){for(let k=0;k<5;k++){const q=((T*.7)+k/5)%1;glucose(350+k*12,lerp(50,108,q),(1-q),4.4);dotP(356+k*12,lerp(56,112,q),3,C.water,(1-q)*.8)}label(370,112,"glucose in urine!",{align:"center",size:11,weight:700,color:C.bad})}
+  else label(372,76,"no glucose in urine",{align:"center",size:10.5,pill:false,color:C["ink-soft"]});
+  // meter
+  gMeter(462,14,100,134,s.G);
+  // pancreas islet
+  const IX=110,IY=320;circ(IX,IY,62,C.cell,C["cell-edge"],2);
+  for(let k=0;k<14;k++){const a=k/14*TAU,r=k%2?44:22;const x=IX+Math.cos(a)*r,y=IY+Math.sin(a)*r;const isB=r<30||k%4===1;const dead=isB&&GO.type1;
+    const col=dead?C["ink-faint"]:isB?C.ins:C.gcg;circ(x,y,9,C.cell,col,2);ctx.font=`700 9.5px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=col;ctx.fillText(isB?"β":"α",x,y+.5);
+    if(dead){line(x-6,y-6,x+6,y+6,C.bad,1.5)}}
+  label(IX,IY+76,GO.type1?"islet (beta cells destroyed)":"pancreatic islet",{align:"center",size:11.5,weight:700});
+  const nI=Math.round(clamp(s.I,0,7)*2.2);for(let k=0;k<nI;k++){const q=((T*.5)+k/Math.max(1,nI))%1;dotP(IX-20+k*7%40,lerp(IY-50,VY+10,q),4,C.ins,Math.min(1,(1-q)*4))}
+  const nG=Math.round(clamp(s.Gn,0,4)*2.5);for(let k=0;k<nG;k++){const q=((T*.5)+k/Math.max(1,nG)+.3)%1;tri(IX+16+k*7%30,lerp(IY-50,VY+10,q),5,C.gcg,Math.min(1,(1-q)*4))}
+  if(s.inj>.3){const nn=Math.round(clamp(s.inj,0,4)*2);for(let k=0;k<nn;k++){const q=((T*.4)+k/nn)%1;dotP(lerp(250,600,q),VY+16+Math.sin(k)*8,4,C.ins,.9)}label(250,VY+48,"injected insulin",{size:11,weight:700,color:C.ins})}
+  // liver
+  const LX=370,LY=322;ctx.save();ctx.translate(LX,LY);ctx.scale(1,1);ctx.beginPath();ctx.moveTo(-110,-30);ctx.quadraticCurveTo(20,-70,120,-36);ctx.quadraticCurveTo(80,40,-60,52);ctx.quadraticCurveTo(-130,30,-110,-30);ctx.fillStyle=C["liver-in"];ctx.fill();ctx.strokeStyle=C.liver;ctx.lineWidth=2.5;ctx.stroke();ctx.restore();
+  glycogen(LX-10,LY+2,Math.round(clamp(s.gly,0,100)/100*46),1);
+  label(LX,LY+66,"liver · glycogen "+Math.round(s.gly)+"%",{align:"center",size:11.5,weight:700});
+  const st=clamp(f.store||0,0,4),out=clamp((f.glyco||0)+(f.gng||0),0,4);
+  for(let k=0;k<Math.round(st*3);k++){const q=((T*.6)+k/Math.round(st*3))%1;glucose(LX+40+k*9%40,lerp(VY+30,LY-30,q),Math.min(1,(1-q)*4),4.6)}
+  for(let k=0;k<Math.round(out*3);k++){const q=((T*.6)+k/Math.round(out*3)+.5)%1;glucose(LX-50-k*9%40,lerp(LY-30,VY+30,q),Math.min(1,(1-q)*4),4.6)}
+  if(st>.4)label(LX+60,VY+62,"storing ↓",{align:"center",size:11,weight:700,color:C.gly});if(out>.6)label(LX-70,VY+62,"releasing ↑",{align:"center",size:11,weight:700,color:C.gly});
+  // muscle / fat cell
+  const MX0=540,MX1=780,MY0=262,MY1=380;rr(MX0,MY0,MX1-MX0,MY1-MY0,18);ctx.fillStyle=C.cell;ctx.fill();ctx.strokeStyle=C.muscle;ctx.lineWidth=2.5;ctx.stroke();
+  label((MX0+MX1)/2,MY1+12,"muscle or fat cell",{align:"center",size:11.5,weight:700});
+  const open=clamp(ie/2.2+(s.ex>0?.6:0),0,1);
+  [580,640,700,750].forEach((x,k)=>{const shown=open>k*.22;if(shown){rr(x-7,MY0-11,14,22,3);ctx.fillStyle=C.ac;ctx.fill();ctx.fillStyle=C.cell;ctx.fillRect(x-2.5,MY0-11,5,22)}
+    else{circ(x,MY0+34,9,C.panel,C.ac,1.6)}
+    receptor(x-22,MY0,0,"cup",GO.type2?C["ink-faint"]:C.rec)});
+  const up=clamp((f.uptake||0)+(f.exU||0),0,4);for(let k=0;k<Math.round(up*3);k++){const q=((T*.6)+k/Math.round(up*3))%1;const x=[580,640,700,750][k%4];if(open>(k%4)*.22)glucose(x,lerp(VY+30,MY0+40,q),Math.min(1,(1-q)*4),4.6)}
+  if(s.ex>0)label((MX0+MX1)/2,MY0+56,"exercising: doors open",{align:"center",size:11,weight:700,color:C.ac});
+  else if(GO.type2)label((MX0+MX1)/2,MY0+56,"resistant: few doors open",{align:"center",size:11,weight:700,color:C.warn});
+}
+function drawGluChart(){
+  SGC.begin();ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,200);
+  const g={x0:52,x1:744,y0:16,y1:176};const span=480;const t1=Math.max(span,GS.t),t0=t1-span;const X=t=>g.x0+(t-t0)/span*(g.x1-g.x0);
+  const Y=v=>g.y1-(clamp(v,40,320)-40)/280*(g.y1-g.y0),Yr=v=>g.y1-clamp(v,0,6)/6*(g.y1-g.y0);
+  ctx.globalAlpha=.18;ctx.fillStyle=C.good;ctx.fillRect(g.x0,Y(110),g.x1-g.x0,Y(70)-Y(110));ctx.globalAlpha=1;
+  [70,110,180,250].forEach(v=>{line(g.x0,Y(v),g.x1,Y(v),C["rule-soft"],1,v===180?[4,4]:[]);ctx.font=`500 10.5px ${MONO}`;ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];ctx.fillText(String(v),g.x0-6,Y(v))});
+  [0,2,4,6].forEach(v=>{ctx.textAlign="left";ctx.fillText(v+"×",g.x1+6,Yr(v))});
+  label(g.x0+4,Y(180)-8,"kidney limit ≈180",{size:10,pill:false,color:C["ink-soft"]});
+  ctx.textAlign="center";for(let h=Math.ceil(t0/60);h*60<=t1;h++)ctx.fillText(h+" h",X(h*60),g.y1+12);
+  const plot=(idx,col,sc,w,dash)=>{ctx.beginPath();let f=true;gHist.forEach(h=>{if(h[0]<t0)return;const x=X(h[0]),y=sc(h[idx]);f?ctx.moveTo(x,y):ctx.lineTo(x,y);f=false});ctx.strokeStyle=col;ctx.lineWidth=w;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])};
+  plot(2,C.ins,Yr,2,[6,4]);plot(3,C.gcg,Yr,2,[2,3]);plot(1,C.glu,Y,3.2);
+  [["Glucose (mg/dL, left)",C.glu,[]],["Insulin (×, right)",C.ins,[6,4]],["Glucagon (×, right)",C.gcg,[2,3]]].forEach((l,i)=>{const x=g.x0+180+i*170;line(x,g.y0+2,x+22,g.y0+2,l[1],2.5,l[2]);label(x+28,g.y0+2,l[0],{size:11,pill:false})});
+}
+
+/* =====================================================================
+   PART 3 - WHAT BREAKS IF...?
+   ===================================================================== */
+const S3=makeStage("cvSc",560,400);
+/* person drawn front-on; o fields 0..1 */
+function mixHex(a,b,t){const p=h=>{h=h.replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");return [0,2,4].map(i=>parseInt(h.substr(i,2),16))};try{const A2=p(a),B2=p(b);return "rgb("+A2.map((v,i)=>Math.round(v+(B2[i]-v)*t)).join(",")+")"}catch(e){return a}}
+function person(cx,foot,o,T){o=o||{};const h=(o.h||1),sc=170*h;const top=foot-sc;
+  const skin=mixHex(C.skin,C["skin-dark"],o.skin||0);const edge=C["skin-edge"];
+  const w=1+.55*(o.wide||0)-.25*(o.thin||0);
+  const Y=f=>top+f*sc;
+  ctx.lineCap="round";ctx.lineJoin="round";
+  // legs
+  [-1,1].forEach(d=>{line(cx+d*10*w,Y(.6),cx+d*12*w,foot-4,edge,13*(1-.3*(o.thin||0))+2);line(cx+d*10*w,Y(.6),cx+d*12*w,foot-4,skin,13*(1-.3*(o.thin||0)))});
+  // arms
+  const hand=5+7*(o.hands||0);
+  [-1,1].forEach(d=>{const sx=cx+d*20*w,sy=Y(.25);let ex=cx+d*30*w,ey=Y(.55);if(o.drink&&d===1){ex=cx+18;ey=Y(.2)}
+    line(sx,sy,ex,ey,edge,10*(1-.3*(o.thin||0))+2);line(sx,sy,ex,ey,skin,10*(1-.3*(o.thin||0)));circ(ex,ey,hand,skin,edge,1.5)});
+  if(o.drink){rr(cx+22,Y(.1),10,16,2);ctx.fillStyle=C.water;ctx.globalAlpha=.6;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.ink;ctx.lineWidth=1;ctx.stroke()}
+  // hump behind shoulders
+  if(o.hump){ell(cx,Y(.24),20*o.hump,10*o.hump,mixHex(C.fat,skin,.4),edge,1.5)}
+  // torso
+  ctx.beginPath();ctx.moveTo(cx-20*w,Y(.24));ctx.lineTo(cx+20*w,Y(.24));ctx.quadraticCurveTo(cx+(22+18*(o.belly||0))*w,Y(.45),cx+16*w,Y(.62));ctx.lineTo(cx-16*w,Y(.62));ctx.quadraticCurveTo(cx-(22+18*(o.belly||0))*w,Y(.45),cx-20*w,Y(.24));ctx.closePath();
+  ctx.fillStyle=skin;ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=1.5;ctx.stroke();
+  // neck + goiter
+  ctx.fillStyle=skin;ctx.fillRect(cx-6,Y(.17),12,Y(.25)-Y(.17));
+  if(o.goiter){ell(cx,Y(.215),8+12*o.goiter,5+6*o.goiter,mixHex(skin,C.gland,.35),edge,1.5)}
+  // head
+  const hr=sc*.085,hw=hr*(1+.35*(o.moon||0)),hh=hr*(1+.12*(o.moon||0)+.18*(o.jaw||0));
+  ctx.beginPath();ctx.ellipse(cx,Y(.09)+hr*.12*(o.jaw||0),hw,hh,0,0,TAU);ctx.fillStyle=skin;ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=1.5;ctx.stroke();
+  if(o.moon){circ(cx-hw*.55,Y(.11),hr*.22,C["blood-wash"]);circ(cx+hw*.55,Y(.11),hr*.22,C["blood-wash"])}
+  const er=1.8+3.2*(o.eyes||0);[-1,1].forEach(d=>{if(o.eyes)circ(cx+d*hr*.4,Y(.08),er,"#fff",C.ink,1);circ(cx+d*hr*.4,Y(.08),1.8,C.ink)});
+  // mouth
+  ctx.beginPath();ctx.arc(cx,Y(.115)+hr*.25*(o.jaw||0),hr*.3,.2*Math.PI,.8*Math.PI);ctx.strokeStyle=C.ink;ctx.lineWidth=1.2;ctx.stroke();
+  if(o.sweat){for(let k=0;k<3;k++){const q=((T*.8)+k/3)%1;ctx.globalAlpha=(1-q)*o.sweat;ctx.beginPath();const x=cx+(k-1)*hw*1.2,y=Y(.04)+q*30;ctx.moveTo(x,y-5);ctx.quadraticCurveTo(x+4,y+2,x,y+3);ctx.quadraticCurveTo(x-4,y+2,x,y-5);ctx.fillStyle=C.water;ctx.fill();ctx.globalAlpha=1}}
+  if(o.shiver){ctx.globalAlpha=o.shiver;[-1,1].forEach(d=>{ctx.beginPath();for(let k=0;k<14;k++){const x=cx+d*(34*w+Math.sin(k*1.6+T*20)*3),y=Y(.25)+k*4;k?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.strokeStyle=C.mel;ctx.lineWidth=1.5;ctx.stroke()});ctx.globalAlpha=1}
+  ctx.lineCap="butt";ctx.lineJoin="miter";
+}
+function antibody(x,y,a,s){ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.scale(s||1,s||1);ctx.strokeStyle=C.immune;ctx.lineWidth=2.6;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(0,8);ctx.lineTo(0,0);ctx.lineTo(-6,-8);ctx.moveTo(0,0);ctx.lineTo(6,-8);ctx.stroke();ctx.restore()}
+const SC=[
+ {t:"Graves disease",d:"Maya, 29, has lost weight without trying. She feels hot and shaky, her heart races, and her eyes look like they are bulging. Blood tests show antibodies that bind the TSH receptor on the thyroid.",
+  q1t:"1. What is happening in her thyroid axis?",
+  q1:[["Antibodies act like TSH and keep the thyroid switched on.",1,"Right. The antibodies bind the TSH receptor and stimulate it, so the thyroid makes T3/T4 no matter what feedback says."],
+      ["Her pituitary is making far too much TSH.",0,"Not quite. TSH is actually low. High T3/T4 feeds back and shuts TSH down. The antibodies, not TSH, drive the gland."],
+      ["She is not getting enough iodine.",0,"Not quite. Low iodine means low T3/T4, which would make her tired and cold, not hot and shaky."],
+      ["Her thyroid has been destroyed.",0,"Not quite. A destroyed thyroid makes too little hormone. Her symptoms point to too much."]],
+  q2t:"2. Which set of signs fits?",
+  q2:[["High T3/T4, low TSH, fast heart rate, weight loss, heat intolerance",1,"Right. Everything speeds up because her metabolic rate is high."],
+      ["Low T3/T4, high TSH, weight gain, feeling cold",0,"Not quite. That is hypothyroidism, the opposite problem."],
+      ["High blood glucose, thirst and lots of urine",0,"Not quite. That describes diabetes mellitus, a pancreas problem."],
+      ["Low blood pressure and darker skin",0,"Not quite. That points to Addison disease, an adrenal problem."]],
+  exp:"Graves disease is an <b>autoimmune</b> cause of <b>hyperthyroidism</b>. The antibodies mimic TSH, so the thyroid makes too much T3/T4 and often enlarges (a goiter). High T3/T4 raises the <b>metabolic rate</b>: fast heart, weight loss, sweating, nervousness. Because feedback still works at the pituitary, <b>TSH is low</b>. The bulging eyes (exophthalmos) come from immune swelling behind the eyes.",
+  gl:"graves",after:{thin:1,eyes:1,sweat:1,goiter:.5},rows:[["T3/T4",1,3.2,"×"],["TSH",1,.1,"×"],["Heart rate",72,118,"bpm"],["Body temp",37,37.6,"°C"]],
+  cap:"Antibodies (Y shapes) switch on the thyroid. T3/T4 pours out while TSH drops."},
+ {t:"Iodine deficiency goiter",d:"In a region with little iodine in the soil and no iodized salt, Sam, 45, has a large swelling at the front of his neck. He is tired, gaining weight and always cold.",
+  q1t:"1. Why is his thyroid so big?",
+  q1:[["Low T3/T4 removes feedback, so TSH rises and keeps stimulating the thyroid to grow.",1,"Right. The gland grows because TSH keeps telling it to work harder, but without iodine it can't finish the hormone."],
+      ["Too much T3/T4 is swelling the gland.",0,"Not quite. Without iodine he makes too little T3/T4, not too much."],
+      ["A tumor in the hypothalamus is making too much TRH.",0,"Not quite. That is possible in theory, but here the cause is the missing raw material: iodine."],
+      ["Antibodies are stimulating the gland.",0,"Not quite. That is Graves disease, which causes high T3/T4. His signs show low T3/T4."]],
+  q2t:"2. Which signs fit his hormone levels?",
+  q2:[["Low T3/T4, high TSH, tiredness, weight gain, feeling cold, slow heart rate",1,"Right. These are signs of hypothyroidism: a low metabolic rate."],
+      ["High T3/T4, low TSH, weight loss, feeling hot",0,"Not quite. That is hyperthyroidism, like Graves disease."],
+      ["Normal T3/T4 and normal TSH",0,"Not quite. With no iodine the thyroid can't keep up, so levels shift."],
+      ["Low TSH and a small thyroid",0,"Not quite. TSH is high, and high TSH makes the gland grow."]],
+  exp:"T3 and T4 contain iodine. Without it, the thyroid can't make enough, so negative feedback weakens. The hypothalamus and pituitary keep raising <b>TRH and TSH</b>, and constant TSH makes the gland grow into a <b>goiter</b>. Low T3/T4 means a low metabolic rate. In infants, low thyroid hormone also harms growth and brain development, which is why iodized salt and newborn screening matter.",
+  gl:"goiter",after:{goiter:1,wide:.5,belly:.5,shiver:1},rows:[["T3/T4",1,.4,"×"],["TSH",1,3,"×"],["Thyroid size",1,2.5,"×"],["Heart rate",72,58,"bpm"]],
+  cap:"Few iodine atoms reach the thyroid. TSH piles up and the gland swells."},
+ {t:"Addison disease",d:"Priya, 38, is exhausted, losing weight and dizzy when she stands up. Her skin has darkened, she craves salt, and her blood glucose is low. Her adrenal cortex has been damaged by an autoimmune attack.",
+  q1t:"1. Which hormones are low?",
+  q1:[["Cortisol and aldosterone, from the adrenal cortex",1,"Right. The damaged cortex can't make its steroid hormones."],
+      ["Epinephrine only, from the adrenal medulla",0,"Not quite. The problem is in the cortex, the outer layer that makes steroids."],
+      ["ACTH from the pituitary",0,"Not quite. ACTH is actually high, because there is no cortisol to feed back and turn it down."],
+      ["Insulin from the pancreas",0,"Not quite. Low insulin would make glucose high. Her glucose is low because cortisol is missing."]],
+  q2t:"2. Which signs fit?",
+  q2:[["Low blood glucose, low blood pressure, low Na⁺ and high K⁺, fatigue, darker skin",1,"Right. Little cortisol (glucose) and little aldosterone (salt and water)."],
+      ["High blood glucose, round face and fat on the upper back",0,"Not quite. That is Cushing syndrome, too much cortisol."],
+      ["Very tall height and large hands",0,"Not quite. That comes from too much growth hormone."],
+      ["Lots of dilute urine with normal blood glucose and normal salt",0,"Not quite. That is diabetes insipidus, a lack of ADH."]],
+  exp:"In <b>Addison disease</b> the adrenal cortex fails. With little <b>cortisol</b>, blood glucose falls and the body copes poorly with stress. With little <b>aldosterone</b>, the kidneys lose Na⁺ and water and keep K⁺, so blood pressure drops. Without cortisol feedback, <b>ACTH rises</b>, and the very high ACTH is linked to the darker skin. Treatment replaces the missing hormones.",
+  gl:"addison",after:{thin:.8,skin:.7},rows:[["Cortisol",1,.3,"×"],["Aldosterone",1,.3,"×"],["ACTH",1,4,"×"],["Blood glucose",90,62,"mg/dL"]],
+  cap:"A damaged cortex releases little cortisol. ACTH rises, glucose and blood pressure fall."},
+ {t:"Cushing syndrome",d:"Dan, 52, has gained weight in his face, belly and upper back, but his arms and legs look thin. He bruises easily, his blood pressure is high, and his blood glucose is high. A tumor is oversecreting at one level of his stress axis.",
+  q1t:"1. Which hormone is too high?",
+  q1:[["Cortisol",1,"Right. Long-term excess cortisol causes the classic Cushing signs."],
+      ["Epinephrine",0,"Not quite. Too much epinephrine causes bursts of fast heart rate and sweating, not fat redistribution."],
+      ["Growth hormone",0,"Not quite. Too much GH enlarges bones and tissues. Dan's pattern is from cortisol."],
+      ["ADH",0,"Not quite. ADH controls water balance. Dan's signs are about glucose, fat and protein."]],
+  q2t:"2. Which signs fit?",
+  q2:[["High blood glucose, round face, fat on the upper back, thin skin, weak muscles",1,"Right. Cortisol raises glucose, breaks down protein and moves fat to the trunk and face."],
+      ["Low blood glucose and darker skin",0,"Not quite. That is Addison disease, too little cortisol."],
+      ["Bulging eyes and heat intolerance",0,"Not quite. Those point to too much thyroid hormone."],
+      ["Lots of dilute urine",0,"Not quite. That is diabetes insipidus."]],
+  exp:"<b>Cushing syndrome</b> is long-term <b>excess cortisol</b>. It can come from a pituitary tumor making ACTH (Cushing disease), an adrenal tumor, or long-term use of steroid medicines. Cortisol raises <b>blood glucose</b> (gluconeogenesis), breaks down muscle protein, thins the skin, suppresses the immune system and moves fat to the face (<b>moon face</b>), belly and upper back. Try the patterns yourself in Part 1.",
+  gl:"cushing",after:{wide:.8,belly:1,moon:1,hump:1},rows:[["Cortisol",1,3.5,"×"],["Blood glucose",90,165,"mg/dL"],["Blood pressure",120,150,"mmHg"],["Muscle mass",1,.7,"×"]],
+  cap:"A tumor pours out cortisol. Glucose climbs and fat moves to the face, belly and upper back."},
+ {t:"Diabetes insipidus",d:"After a head injury, Leo, 24, urinates huge amounts of pale, watery urine day and night and is constantly thirsty. His blood glucose is normal.",
+  q1t:"1. Which hormone is missing?",
+  q1:[["ADH, normally released from the posterior pituitary",1,"Right. Without ADH, the kidneys can't hold on to water."],
+      ["Insulin",0,"Not quite. Missing insulin causes diabetes mellitus, with high blood glucose. Leo's glucose is normal."],
+      ["Aldosterone",0,"Not quite. Aldosterone loss affects Na⁺ and K⁺ too. The key clue is huge volumes of watery urine."],
+      ["Oxytocin",0,"Not quite. Oxytocin controls uterine contraction and milk ejection, not urine."]],
+  q2t:"2. What happens to his urine?",
+  q2:[["Large amounts of dilute urine, with great thirst and normal blood glucose",1,"Right. Water just flows through the kidneys."],
+      ["Glucose spills into the urine",0,"Not quite. That happens in diabetes mellitus when blood glucose is very high."],
+      ["Tiny amounts of very concentrated urine",0,"Not quite. That would be too much ADH."],
+      ["Urine stops completely",0,"Not quite. Without ADH, there is far more urine, not less."]],
+  exp:"ADH is made in the hypothalamus and released from the <b>posterior pituitary</b>. It tells the kidneys to <b>reabsorb water</b>. A head injury, surgery or tumor can stop ADH release. Then the kidneys make many liters of <b>dilute urine</b>, and the person becomes very thirsty to replace it. Both kinds of \"diabetes\" cause lots of urine, but only diabetes mellitus has <b>high blood glucose</b>.",
+  gl:"di",after:{drink:1,thin:.3},rows:[["ADH",1,.05,"×"],["Urine per day",1.5,10,"L"],["Urine concentration",1,.2,"×"],["Blood glucose",90,90,"mg/dL"]],
+  cap:"No ADH reaches the kidney, so water pours out as dilute urine."},
+ {t:"Gigantism and acromegaly",d:"A pituitary tumor makes too much growth hormone. In 12-year-old Ana it started before her growth plates closed. In her uncle, it started at age 40.",
+  q1t:"1. Which hormone is in excess?",
+  q1:[["Growth hormone (GH) from the anterior pituitary",1,"Right. Pituitary tumors are the usual cause of GH excess."],
+      ["TSH from the anterior pituitary",0,"Not quite. Too much TSH would drive the thyroid. GH drives growth of bones and tissues."],
+      ["Cortisol from the adrenal cortex",0,"Not quite. Cortisol excess actually breaks down tissue and causes Cushing syndrome."],
+      ["Prolactin",0,"Not quite. Too much prolactin affects milk production and fertility, not bone size."]],
+  q2t:"2. What does the extra GH do in each of them?",
+  q2:[["Ana grows very tall (gigantism). Her uncle's hands, feet and jaw thicken (acromegaly).",1,"Right. Growth plates decide which: open plates let long bones lengthen, closed plates don't."],
+      ["Both of them grow much taller.",0,"Not quite. After the growth plates close, long bones can't lengthen any more."],
+      ["Both of them become unusually short.",0,"Not quite. Too little GH in childhood causes short stature (pituitary dwarfism). This is too much."],
+      ["Only their blood glucose falls.",0,"Not quite. GH actually tends to raise blood glucose, and its main effect here is on growth."]],
+  exp:"GH tells the liver to make growth factors that build bone, muscle and other tissues. In a child, before the <b>epiphyseal (growth) plates</b> close, excess GH makes long bones lengthen: <b>gigantism</b>. In an adult the plates have closed, so bones get thicker instead, especially in the hands, feet and face: <b>acromegaly</b>. GH also raises blood glucose.",
+  gl:"gh",after:{},rows:[["GH",1,4,"×"],["Child's height",145,185,"cm"],["Adult hand size",1,1.4,"×"],["Blood glucose",90,115,"mg/dL"]],
+  cap:"A pituitary tumor floods the body with GH: tall child, thick-boned adult."}];
+let si=0,shownT=-1;const scState=SC.map(()=>({q1:null,q2:null,first:null,p1:[],p2:[]}));
+function shuffleOpts(arr,seed){return arr.map((o,i)=>[o,rnd(i*7+seed*13)]).sort((a,b)=>a[1]-b[1]).map(x=>x[0])}
+function scRender(){
+  const s=SC[si],st=scState[si];
+  $("#scChips").innerHTML="";SC.forEach((x,i)=>{const b=document.createElement("button");b.type="button";b.className="chip"+(i===si?" cur":"")+(scState[i].q2===true?" done":"");b.textContent=i+1;b.setAttribute("aria-label","Case "+(i+1)+": "+x.t+(scState[i].q2===true?" (solved)":""));b.onclick=()=>{si=i;shownT=-1;scRender()};$("#scChips").appendChild(b)});
+  const got=scState.filter(x=>x.q2===true).length,first=scState.filter(x=>x.first===true&&x.q2===true).length;
+  $("#scScore").innerHTML=`Solved ${got} of ${SC.length} · first try ${first} <span class="stars" style="color:var(--gold)">${"★".repeat(Math.round(first/SC.length*3))}</span>`;
+  $("#scN").textContent="Case "+(si+1)+" of "+SC.length;$("#scTitle").textContent=s.t;$("#scDesc").textContent=s.d;$("#scQ1t").textContent=s.q1t;$("#scQ2t").textContent=s.q2t;
+  const mk=(box,list,key,pick,done,fbKey)=>{box.innerHTML="";shuffleOpts(list,si+key.length).forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";
+    const picked=pick.includes(o[0])||(o[1]&&done);b.innerHTML=(picked?`<span class="mk">${o[1]?"✓":"✗"}</span>`:"")+o[0];if(picked)b.classList.add(o[1]?"right":"wrong");
+    b.onclick=()=>{if(st[key]===true)return;if(!pick.includes(o[0]))pick.push(o[0]);if(o[1]){st[key]=true;if(st.first===null)st.first=true;if(key==="q2"&&shownT<0)shownT=performance.now()}else st.first=false;st[fbKey]=[!!o[1],o[2]];scRender()};
+    box.appendChild(b)})};
+  mk($("#scQ1"),s.q1,"q1",st.p1,st.q1===true,"fb1");
+  const f1=$("#scF1");f1.className="fb"+(st.fb1?" show "+(st.fb1[0]?"ok":"no"):"");f1.textContent=st.fb1?(st.fb1[0]?"":"")+st.fb1[1]:"";
+  $("#q2wrap").hidden=st.q1!==true;
+  mk($("#scQ2"),s.q2,"q2",st.p2,st.q2===true,"fb2");
+  const f2=$("#scF2");f2.className="fb"+(st.fb2?" show "+(st.fb2[0]?"ok":"no"):"");f2.textContent=st.fb2?st.fb2[1]:"";
+  const e=$("#scExp");e.classList.toggle("show",st.q2===true);e.innerHTML=st.q2===true?"<b>Why:</b> "+s.exp:"";
+  $("#scPrev").disabled=si===0;$("#scNext").innerHTML=si===SC.length-1?"Back to case 1":"Next case &rarr;";
+  $("#scCap").textContent=shownT>=0?s.cap:"Answer the questions, or press the button to see the change.";
+  $("#showBtn").textContent=shownT>=0?"Replay":"Show me the change";
+  $("#scNote").textContent=shownT>=0?"Left: healthy. Right: "+s.t+". Bars compare the two. Values are typical teaching numbers.":"";
+  S3.fit();
+}
+$("#scPrev").onclick=()=>{si=Math.max(0,si-1);shownT=-1;scRender()};
+$("#scNext").onclick=()=>{si=(si+1)%SC.length;shownT=-1;scRender()};
+$("#showBtn").onclick=()=>{shownT=performance.now();scRender()};
+function scGland(kind,x,y,p,T,after){
+  // small gland scene; p = 0 healthy .. 1 disease (only used on the right panel)
+  const q=after?p:0;
+  if(kind==="graves"||kind==="goiter"){organ("thy",x,y,2.2*(1+(kind==="goiter"?.65:.25)*q),false);
+    const nT=Math.round(kind==="graves"?4+10*q:4-3*q);for(let k=0;k<nT;k++){const qq=((T*.5)+k/nT)%1;diamond(x+22+qq*28,y-10+Math.sin(k*2)*14+qq*30,4.5,C.h3,(1-qq))}
+    const nS=Math.round(kind==="graves"?3-2.6*q:3+6*q);for(let k=0;k<nS;k++){const qq=((T*.5)+k/Math.max(1,nS)+.4)%1;sq(x-50+qq*30,y-40+qq*24,3.6,C.h2,(1-qq))}
+    if(kind==="graves"&&q>.1){for(let k=0;k<5;k++)antibody(x-20+k*10,y+22-((k%2)*8),.3*(k-2),1.0*q)}
+    if(kind==="goiter"){const nI=Math.round(5-4*q);for(let k=0;k<nI;k++){const qq=((T*.4)+k/nI)%1;dotP(x-60+qq*40,y+40-qq*30,3,C.peptide,1-qq)}}
+    label(x,y+48,"thyroid",{align:"center",size:10.5,pill:false,color:C["ink-soft"]})}
+  else if(kind==="addison"||kind==="cushing"){ctx.save();ctx.translate(x,y);const sz=kind==="addison"?1-.4*q:1;ctx.scale(sz,sz);ctx.beginPath();ctx.moveTo(-30,14);ctx.quadraticCurveTo(0,-36,30,14);ctx.closePath();ctx.fillStyle=C.zf;ctx.fill();ctx.strokeStyle=C["gland-edge"];ctx.lineWidth=1.6;ctx.stroke();ctx.restore();
+    if(kind==="addison"&&q>.3){ctx.strokeStyle=C.ink;ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x-10,y-10);ctx.lineTo(x-2,y);ctx.lineTo(x-8,y+8);ctx.stroke()}
+    if(kind==="cushing"&&q>.1)tumorLump(x+20,y-8,9*q,T);
+    const n=Math.round(kind==="addison"?5-4*q:5+10*q);for(let k=0;k<n;k++){const qq=((T*.5)+k/Math.max(1,n))%1;steroid(x+16+qq*34,y-2+Math.sin(k*2)*10+qq*24,3.8,C.steroid,(1-qq))}
+    if(kind==="addison"){const nA=Math.round(2+7*q);for(let k=0;k<nA;k++){const qq=((T*.5)+k/nA+.3)%1;sq(x-50+qq*30,y-40+qq*26,3.6,C.h2,1-qq)}}
+    label(x,y+28,"adrenal cortex",{align:"center",size:10.5,pill:false,color:C["ink-soft"]})}
+  else if(kind==="di"){ell(x-10,y-40,22,14,C.brain,C["brain-edge"],1.4);ell(x+4,y-14,12,10,C.brain,C["brain-edge"],1.4);label(x-10,y-62,"posterior pituitary",{align:"center",size:10.5,pill:false,color:C["ink-soft"]});
+    const nA=Math.round(5-5*q);for(let k=0;k<nA;k++){const qq=((T*.5)+k/Math.max(1,nA))%1;dotP(x+4+qq*10,y-6+qq*40,3.4,C.peptide,1-qq)}
+    kidneyIcon(x+10,y+44,1,false);const nW=Math.round(2+10*q);for(let k=0;k<nW;k++){const qq=((T*.9)+k/nW)%1;dotP(x+30+Math.sin(k)*6,y+50+qq*36,2.8,C.water,1-qq)}
+    label(x+10,y+96,q>.5?"lots of dilute urine":"normal urine",{align:"center",size:10.5,pill:false,color:C.water,weight:600})}
+  else if(kind==="gh"){ell(x,y-20,24,18,C.gland,C["gland-edge"],1.6);if(q>.1)tumorLump(x+12,y-28,8*q,T);label(x,y+4,"pituitary",{align:"center",size:10.5,pill:false,color:C["ink-soft"]});
+    const n=Math.round(3+10*q);for(let k=0;k<n;k++){const qq=((T*.5)+k/n)%1;sq(x+qq*40-20,y+16+qq*40,3.6,C.h2,1-qq)}
+    boneIcon(x,y+56,.9,1.57)}
+}
+function drawSc(T){
+  S3.begin();const s=SC[si];const W3=560,H3=400;
+  const p=shownT<0?0:clamp((performance.now()-shownT)/2500,0,1);const pe=ease(p);
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W3,H3);
+  [[0,"Healthy",false],[280,shownT<0?"?":s.t,true]].forEach(([x0,name,after])=>{
+    ctx.fillStyle=after?C.ecf:C["panel-2"];rr(x0+6,6,268,388,8);ctx.fill();
+    label(x0+140,22,name,{align:"center",size:13,weight:700,color:after&&shownT>=0?C.alt:C.ink,pill:false});
+    const q=after?pe:0;
+    // person
+    const o={};Object.entries(s.after).forEach(([k,v])=>o[k]=v*q);
+    if(s.gl==="gh"&&after){person(x0+50,262,{h:.9+.35*q},T);label(x0+50,276,"child",{align:"center",size:10.5,pill:false});person(x0+112,262,{h:1,hands:q,jaw:q},T);label(x0+112,276,"adult",{align:"center",size:10.5,pill:false})}
+    else if(s.gl==="gh"){person(x0+50,262,{h:.9},T);label(x0+50,276,"child",{align:"center",size:10.5,pill:false});person(x0+112,262,{h:1},T);label(x0+112,276,"adult",{align:"center",size:10.5,pill:false})}
+    else person(x0+70,262,o,T);
+    scGland(s.gl,x0+200,120,pe,T,after);
+    // rows
+    s.rows.forEach((r,i)=>{const v=after?lerp(r[1],r[2],q):r[1];const y=294+i*24;
+      const maxV=Math.max(r[1],r[2])*1.15;const f=clamp(v/maxV,0,1);
+      ctx.font=`500 11px ${FONT}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=C.ink;ctx.fillText(r[0],x0+14,y);
+      ctx.fillStyle=C["panel"];rr(x0+128,y-6,70,12,6);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+      const changed=after&&Math.abs(r[2]-r[1])>1e-6&&q>.5;ctx.fillStyle=changed?(r[2]>r[1]?C.bad:C.mel):C.good;rr(x0+130,y-4,Math.max(3,66*f),8,4);ctx.fill();
+      const txt=(r[3]==="×"?v.toFixed(v<1?2:1)+"×":(r[3]==="°C"||Math.abs(v)<20?v.toFixed(1):Math.round(v))+" "+r[3]);ctx.font=`600 10.5px ${MONO}`;ctx.textAlign="left";ctx.fillStyle=C.ink;ctx.fillText(txt+(changed?(r[2]>r[1]?" ↑":" ↓"):""),x0+204,y)});
+  });
+  if(shownT<0){ctx.fillStyle=C.ecf;ctx.globalAlpha=.75;rr(286,40,268,240,8);ctx.fill();ctx.globalAlpha=1;label(420,160,"Press “Show me the change”",{align:"center",size:13,weight:700,color:C.accent,border:C.accent})}
+  S3.cv.setAttribute("aria-label",`${s.t}. Left: healthy. Right: ${shownT<0?"not shown yet":s.cap}. `+s.rows.map(r=>`${r[0]}: normal ${r[1]}, with ${s.t} ${r[2]} ${r[3]}`).join("; "));
+}
+
+/* =====================================================================
+   PART 4 - GLAND / HORMONE / TARGET MATCHER
+   ===================================================================== */
+const SPOTS={
+ hyp:{n:"Hypothalamus",c:[118,116]},antpit:{n:"Anterior pituitary",c:[102,164]},postpit:{n:"Posterior pituitary",c:[130,164]},pineal:{n:"Pineal gland",c:[158,90]},
+ thyroid:{n:"Thyroid gland",c:[400,124]},thymus:{n:"Thymus",c:[400,160]},breast:{n:"Mammary glands",c:[372,182]},heart:{n:"Heart",c:[414,208]},
+ liver:{n:"Liver",c:[374,250]},gall:{n:"Gallbladder",c:[392,270]},stomach:{n:"Stomach",c:[432,248]},pancreas:{n:"Pancreas",c:[420,284]},
+ kidney:{n:"Kidneys",c:[362,314]},intestine:{n:"Small intestine",c:[400,342]},uterus:{n:"Uterus",c:[400,382]},gonads:{n:"Gonads (ovaries; testes in males)",c:[426,374]},
+ fat:{n:"Adipose (fat) tissue",c:[350,368]},bone:{n:"Bone and red marrow",c:[370,486]},muscle:{n:"Skeletal muscle",c:[432,476]},
+ adrcortex:{n:"Adrenal cortex",c:[658,90]},adrmed:{n:"Adrenal medulla",c:[690,96]},cells:{n:"Most body cells",c:[690,605]}};
+const ROUNDS=[
+ {name:"Round 1 · Hypothalamus and pituitary",items:[
+  {h:"TRH",clue:"A releasing hormone that starts the thyroid axis.",src:["hyp"],tgt:["antpit"],note:"TRH travels through the portal system to the anterior pituitary, which then releases TSH."},
+  {h:"ADH (antidiuretic hormone)",clue:"Made in the hypothalamus, but released somewhere else.",src:["postpit"],tgt:["kidney"],note:"ADH is made by hypothalamic neurons and released from the posterior pituitary. The kidneys reabsorb more water."},
+  {h:"Oxytocin",clue:"Childbirth and breastfeeding.",src:["postpit"],tgt:["uterus","breast"],note:"Released from the posterior pituitary: uterine contractions and milk ejection."},
+  {h:"TSH",clue:"A tropic hormone for the neck gland.",src:["antpit"],tgt:["thyroid"],note:"TSH tells the thyroid to release T3 and T4."},
+  {h:"ACTH",clue:"The tropic hormone of the stress axis.",src:["antpit"],tgt:["adrcortex"],note:"ACTH tells the adrenal cortex to release cortisol."},
+  {h:"Growth hormone (GH)",clue:"Building and growing tissues.",src:["antpit"],tgt:["bone","muscle","liver"],note:"GH acts on bone, muscle and the liver (which makes growth factors)."},
+  {h:"Prolactin",clue:"Milk production.",src:["antpit"],tgt:["breast"],note:"Prolactin stimulates the mammary glands to make milk."},
+  {h:"FSH and LH",clue:"The gonadotropins.",src:["antpit"],tgt:["gonads"],note:"FSH and LH control gamete and sex hormone production in the ovaries and testes."},
+  {h:"Melatonin",clue:"Released in darkness.",src:["pineal"],tgt:["hyp","cells"],note:"Melatonin from the pineal gland acts on the brain's body clock (hypothalamus) and many tissues to promote sleep."}]},
+ {name:"Round 2 · Thyroid, adrenals, pancreas",items:[
+  {h:"T3 and T4",clue:"Contain iodine and raise metabolic rate.",src:["thyroid"],tgt:["cells"],note:"Thyroid hormones act on nearly every cell in the body."},
+  {h:"Calcitonin",clue:"Made by C cells; lowers blood calcium.",src:["thyroid"],tgt:["bone"],note:"Calcitonin slows bone breakdown. More in the Calcium Balance Simulator."},
+  {h:"Aldosterone",clue:"The 'salt' hormone.",src:["adrcortex"],tgt:["kidney"],note:"From the zona glomerulosa. The kidneys keep Na⁺ and water and release K⁺."},
+  {h:"Cortisol",clue:"The 'sugar' hormone of long-term stress.",src:["adrcortex"],tgt:["liver","cells"],note:"From the zona fasciculata. It makes the liver build new glucose and acts on most body cells."},
+  {h:"Epinephrine",clue:"Fight or flight, in seconds.",src:["adrmed"],tgt:["heart","liver"],note:"From the adrenal medulla. Speeds the heart and makes the liver release glucose."},
+  {h:"Insulin",clue:"Lowers blood glucose.",src:["pancreas"],tgt:["liver","muscle","fat"],note:"From beta cells. Liver, muscle and fat cells take up and store glucose."},
+  {h:"Glucagon",clue:"Raises blood glucose.",src:["pancreas"],tgt:["liver"],note:"From alpha cells. The liver breaks down glycogen and makes new glucose."}]},
+ {name:"Round 3 · Everywhere else",items:[
+  {h:"Thymosins",clue:"Training camp for white blood cells.",src:["thymus"],tgt:["thymus"],note:"Thymosins help T cells mature inside the thymus itself."},
+  {h:"Testosterone",clue:"The main androgen.",src:["gonads"],tgt:["muscle","bone","gonads"],note:"From the testes. Builds muscle and bone and supports sperm production."},
+  {h:"Estrogen",clue:"Made by the ovaries.",src:["gonads"],tgt:["uterus","breast","bone"],note:"Acts on the uterus, breasts and bone, among others."},
+  {h:"ANP (atrial natriuretic peptide)",clue:"Released when the atria are stretched.",src:["heart"],tgt:["kidney"],note:"The kidneys excrete more Na⁺ and water, lowering blood volume."},
+  {h:"EPO (erythropoietin)",clue:"Released when blood oxygen is low.",src:["kidney"],tgt:["bone"],note:"Red bone marrow makes more red blood cells."},
+  {h:"Gastrin",clue:"More stomach acid, please.",src:["stomach"],tgt:["stomach"],note:"Gastrin from the stomach acts on the stomach to boost acid secretion."},
+  {h:"Secretin",clue:"Acid has reached the duodenum.",src:["intestine"],tgt:["pancreas"],note:"The pancreas releases bicarbonate to neutralize the acid."},
+  {h:"CCK (cholecystokinin)",clue:"Fat has reached the duodenum.",src:["intestine"],tgt:["gall","pancreas"],note:"The gallbladder releases bile and the pancreas releases enzymes."},
+  {h:"Leptin",clue:"A fullness signal from stored fat.",src:["fat"],tgt:["hyp"],note:"Leptin from adipose tissue tells the hypothalamus that energy stores are full, reducing appetite."}]}];
+function bodySVG(){
+  const lab=(x,y,t,a)=>`<text class="svglab" x="${x}" y="${y}" text-anchor="${a||"middle"}">${t}</text>`;
+  const hs=(id,inner)=>`<g class="hs" id="hs-${id}" data-id="${id}" role="button" tabindex="0" aria-label="${SPOTS[id].n}">${inner}</g>`;
+  const sk='fill="var(--skin)" stroke="var(--skin-edge)" stroke-width="2"';
+  let s=`<svg viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg" aria-label="Drawn human body with endocrine glands and target organs">`;
+  s+=`<rect x="0" y="0" width="800" height="640" fill="var(--ecf)"/>`;
+  s+=`<g transform="translate(100,0)">`;
+  // limbs
+  s+=`<g stroke-linecap="round"><path d="M270 400 L266 596 M330 400 L334 596" stroke="var(--skin-edge)" stroke-width="50"/><path d="M270 400 L266 596 M330 400 L334 596" stroke="var(--skin)" stroke-width="46"/>
+   <path d="M232 150 Q206 230 200 320 M368 150 Q394 230 400 320" stroke="var(--skin-edge)" stroke-width="28" fill="none"/><path d="M232 150 Q206 230 200 320 M368 150 Q394 230 400 320" stroke="var(--skin)" stroke-width="24" fill="none"/></g>`;
+  s+=`<path d="M262 130 Q226 134 222 152 Q232 250 238 300 Q226 360 236 404 L364 404 Q374 360 362 300 Q368 250 378 152 Q374 134 338 130 Z" ${sk}/>`;
+  s+=`<ellipse cx="300" cy="280" rx="54" ry="118" fill="var(--bodyin)" opacity=".7"/>`;
+  s+=`<rect x="285" y="104" width="30" height="30" fill="var(--skin)"/><ellipse cx="300" cy="66" rx="36" ry="42" ${sk}/><ellipse cx="300" cy="54" rx="26" ry="22" fill="var(--brain)" stroke="var(--brain-edge)"/>`;
+  s+=`</g><line x1="372" y1="60" x2="198" y2="96" stroke="var(--ink-faint)" stroke-dasharray="4 3"/><line x1="376" y1="84" x2="170" y2="170" stroke="var(--ink-faint)" stroke-dasharray="4 3"/><g transform="translate(6,-50)">`;
+  // head inset
+  
+  s+=`<circle cx="104" cy="160" r="90" fill="var(--panel)" stroke="var(--rule)" stroke-width="2"/>`;
+  s+=`<path d="M30 150 Q40 84 110 80 Q178 82 184 148 Q172 176 140 184 L120 186 Q80 186 50 176 Z" fill="var(--brain)" stroke="var(--brain-edge)" stroke-width="1.6"/>`;
+  s+=`<path d="M104 182 L106 202 L116 202 L118 182 Z" fill="var(--brain)" stroke="var(--brain-edge)"/>`;
+  s+=hs("hyp",`<ellipse cx="112" cy="166" rx="26" ry="12" fill="var(--h1)" opacity=".85"/><ellipse class="ring" cx="112" cy="166" rx="30" ry="16"/>`);
+  s+=hs("antpit",`<ellipse cx="96" cy="214" rx="14" ry="11" fill="var(--gland)" stroke="var(--gland-edge)" stroke-width="1.5"/><ellipse class="ring" cx="96" cy="214" rx="17" ry="14"/>`);
+  s+=hs("postpit",`<ellipse cx="124" cy="214" rx="11" ry="10" fill="var(--brain)" stroke="var(--brain-edge)" stroke-width="1.5"/><ellipse class="ring" cx="124" cy="214" rx="14" ry="13"/>`);
+  s+=hs("pineal",`<ellipse cx="152" cy="140" rx="8" ry="6" fill="var(--mel)"/><ellipse class="ring" cx="152" cy="140" rx="12" ry="10"/>`);
+  s+=`</g>`;s+=lab(110,226,"zoom: brain");
+  s+=`<g transform="translate(100,0)">`;
+  // organs
+  s+=hs("thyroid",`<ellipse cx="292" cy="124" rx="7" ry="10" fill="var(--gland)" stroke="var(--gland-edge)" stroke-width="1.5"/><ellipse cx="308" cy="124" rx="7" ry="10" fill="var(--gland)" stroke="var(--gland-edge)" stroke-width="1.5"/><ellipse class="ring" cx="300" cy="124" rx="19" ry="14"/>`);
+  s+=hs("breast",`<circle cx="268" cy="184" r="15" fill="var(--skin)" stroke="var(--skin-edge)"/><circle cx="332" cy="184" r="15" fill="var(--skin)" stroke="var(--skin-edge)"/><circle cx="268" cy="186" r="3" fill="var(--gland)"/><circle cx="332" cy="186" r="3" fill="var(--gland)"/><ellipse class="ring" cx="268" cy="184" rx="19" ry="19"/><ellipse class="ring" cx="332" cy="184" rx="19" ry="19"/>`);
+  s+=hs("thymus",`<ellipse cx="295" cy="160" rx="6" ry="11" fill="var(--liver-in)" stroke="var(--gland-edge)"/><ellipse cx="305" cy="160" rx="6" ry="11" fill="var(--liver-in)" stroke="var(--gland-edge)"/><ellipse class="ring" cx="300" cy="160" rx="16" ry="15"/>`);
+  s+=hs("heart",`<path d="M314 222 C296 210 300 194 310 198 C318 190 332 200 314 222 Z" fill="var(--blood)" stroke="var(--gland-edge)"/><circle class="ring" cx="314" cy="208" r="17"/>`);
+  s+=hs("liver",`<path d="M248 244 Q278 230 300 242 Q290 262 262 266 Q246 262 248 244 Z" fill="var(--liver)" stroke="var(--gland-edge)"/><ellipse class="ring" cx="274" cy="250" rx="30" ry="18"/>`);
+  s+=hs("gall",`<ellipse cx="292" cy="270" rx="5" ry="7" fill="var(--good)" stroke="var(--gland-edge)"/><circle class="ring" cx="292" cy="270" r="10"/>`);
+  s+=hs("stomach",`<path d="M324 234 Q348 232 348 248 Q346 264 324 262 Q330 252 318 242 Z" fill="var(--muscle)" stroke="var(--gland-edge)"/><ellipse class="ring" cx="333" cy="248" rx="20" ry="18"/>`);
+  s+=hs("pancreas",`<path d="M298 286 Q320 276 344 280 Q346 286 342 288 Q320 288 300 292 Z" fill="var(--gland)" stroke="var(--gland-edge)"/><ellipse class="ring" cx="320" cy="285" rx="28" ry="10"/>`);
+  s+=hs("kidney",`<ellipse cx="262" cy="314" rx="9" ry="14" fill="var(--kidney)" stroke="var(--gland-edge)"/><ellipse cx="338" cy="314" rx="9" ry="14" fill="var(--kidney)" stroke="var(--gland-edge)"/><ellipse class="ring" cx="262" cy="314" rx="13" ry="18"/><ellipse class="ring" cx="338" cy="314" rx="13" ry="18"/>`);
+  s+=`<path d="M254 302 L262 292 L270 302 Z M330 302 L338 292 L346 302 Z" fill="var(--zf)" stroke="var(--gland-edge)"/>`;
+  s+=hs("intestine",`<path d="M276 334 Q300 326 324 334 M276 344 Q300 336 324 344 M276 354 Q300 346 324 354" stroke="var(--muscle)" stroke-width="5" fill="none"/><ellipse class="ring" cx="300" cy="342" rx="30" ry="18"/>`);
+  s+=hs("fat",`<ellipse cx="250" cy="370" rx="11" ry="17" fill="var(--fat)" stroke="var(--fat-edge)"/><ellipse class="ring" cx="250" cy="370" rx="15" ry="21"/>`);
+  s+=hs("uterus",`<path d="M290 374 Q300 398 310 374 Z" fill="var(--blood-wash)" stroke="var(--blood)"/><ellipse class="ring" cx="300" cy="382" rx="13" ry="13"/>`);
+  s+=hs("gonads",`<ellipse cx="276" cy="374" rx="6" ry="4.5" fill="var(--gland)" stroke="var(--gland-edge)"/><ellipse cx="324" cy="374" rx="6" ry="4.5" fill="var(--gland)" stroke="var(--gland-edge)"/><circle class="ring" cx="276" cy="374" r="9"/><circle class="ring" cx="324" cy="374" r="9"/>`);
+  s+=hs("bone",`<path d="M265 446 L275 446 L275 526 L265 526 Z" fill="var(--bone)" stroke="var(--bone-edge)"/><circle cx="264" cy="444" r="6" fill="var(--bone)" stroke="var(--bone-edge)"/><circle cx="276" cy="444" r="6" fill="var(--bone)" stroke="var(--bone-edge)"/><circle cx="264" cy="528" r="6" fill="var(--bone)" stroke="var(--bone-edge)"/><circle cx="276" cy="528" r="6" fill="var(--bone)" stroke="var(--bone-edge)"/><rect x="267" y="462" width="6" height="48" fill="var(--blood)" opacity=".5"/><ellipse class="ring" cx="270" cy="486" rx="16" ry="50"/>`);
+  s+=hs("muscle",`<path d="M332 436 Q348 476 334 520 Q318 476 332 436 Z" fill="var(--muscle)" stroke="var(--gland-edge)"/><ellipse class="ring" cx="332" cy="478" rx="16" ry="46"/>`);
+  s+=`</g><g transform="translate(190,-210)">`;
+  // adrenal inset
+  s+=`<circle cx="500" cy="320" r="74" fill="var(--panel)" stroke="var(--rule)" stroke-width="2"/>`;
+  s+=`<ellipse cx="500" cy="360" rx="30" ry="22" fill="var(--kidney)" stroke="var(--gland-edge)"/>`;
+  s+=hs("adrcortex",`<path d="M446 340 Q500 236 554 340 Z" fill="var(--zf)" stroke="var(--gland-edge)" stroke-width="2"/><path class="ring" d="M440 344 Q500 226 560 344 Z"/>`);
+  s+=hs("adrmed",`<path d="M474 336 Q500 284 526 336 Z" fill="var(--med)" stroke="var(--gland-edge)" stroke-width="1.5"/><path class="ring" d="M470 338 Q500 278 530 338 Z"/>`);
+  s+=`</g>`;s+=lab(690,218,"zoom: adrenal gland (sits on each kidney)");
+  // body cells pill
+  s+=hs("cells",`<rect x="620" y="588" width="140" height="34" rx="17" fill="var(--panel-2)" stroke="var(--rule)" stroke-width="1.5"/><text x="690" y="610" text-anchor="middle" style="font:600 13px var(--sans);fill:var(--ink)">Most body cells</text><rect class="ring" x="616" y="584" width="148" height="42" rx="21"/>`);
+  const LB=[["thyroid",280,120,"end"],["thymus",280,152,"end"],["breast",280,194,"end"],["liver",280,244,"end"],["gall",280,274,"end"],["kidney",280,318,"end"],["fat",280,372,"end"],["uterus",280,402,"end"],["bone",280,476,"end"],
+    ["heart",520,206,"start"],["stomach",520,244,"start"],["pancreas",520,276,"start"],["intestine",520,340,"start"],["gonads",520,380,"start"],["muscle",520,476,"start"],
+    ["hyp",112,96,"middle"],["antpit",66,190,"middle"],["postpit",156,206,"middle"],["pineal",158,70,"middle"],["adrcortex",690,40,"middle"],["adrmed",690,114,"middle"]];
+  LB.forEach(([id,x,y,an])=>{const c=SPOTS[id].c;const nm=SPOTS[id].n.replace(" (ovaries; testes in males)","").replace(" and red marrow"," / red marrow");
+    if(an!=="middle")s+=`<line class="svglab" x1="${c[0]+(an==="end"?-10:10)}" y1="${c[1]}" x2="${x+(an==="end"?4:-4)}" y2="${y-4}" stroke="var(--ink-faint)"/>`;
+    s+=id==="adrmed"?`<text class="svglab" x="${x}" y="${y}" text-anchor="middle" style="fill:#fff;font-weight:600">${nm}</text>`:lab(x,y,nm,an)});
+  s+=`<g id="flow"></g></svg>`;
+  return s}
+$("#bodyHolder").innerHTML=bodySVG();
+const svgEl=$("#bodyHolder svg");
+// adrmed label text sits on the medulla; make it white-ish for contrast
+
+let MR=0,MI=0,mPhase="src",mMiss=0,mShown=0,mStart=performance.now(),mDoneRound=false;
+const mRes=store.get("endoMatch")||{};
+function mItem(){return ROUNDS[MR].items[MI]}
+function mClearMarks(){document.querySelectorAll(".hs").forEach(h=>h.classList.remove("ok","bad","hint"));document.querySelectorAll("#nameList button").forEach(b=>b.classList.remove("ok","bad"))}
+function mRounds(){$("#mRounds").innerHTML="";ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===MR);
+  b.innerHTML=r.name+(mRes[i]?`<span class="ok">${"★".repeat(mRes[i])}</span>`:"");b.onclick=()=>{MR=i;MI=0;mStartRound()};$("#mRounds").appendChild(b)});
+  const tot=Object.values(mRes).reduce((a,b)=>a+b,0);$("#mTot").innerHTML=`Total stars: <b>${tot}</b> of ${ROUNDS.length*3}`}
+function mStartRound(){mPhase="src";$("#flow").innerHTML="";$("#mMsg").classList.remove("show");mMiss=0;mShown=0;mStart=performance.now();mDoneRound=false;MI=0;mRounds();mRender()}
+function mRender(){
+  const it=mItem(),R=ROUNDS[MR];mClearMarks();
+  $("#mN").textContent=`${R.name} · hormone ${MI+1} of ${R.items.length}`;$("#mProg").style.width=(MI/R.items.length*100)+"%";
+  $("#mHormone").textContent=it.h;$("#mHint0").textContent="Clue: "+it.clue;
+  $("#mStep").innerHTML=mPhase==="src"?"<b>Step 1:</b> tap the gland that <b>releases</b> "+it.h+".":mPhase==="tgt"?"<b>Step 2:</b> now tap its main <b>target</b>.":"<b>Done.</b> "+it.note;
+  if(mPhase!=="src")markOk(it.src[0]);
+  $("#mNext").hidden=mPhase!=="done";$("#mHint").disabled=$("#mShow").disabled=mPhase==="done";
+}
+function markOk(id){const h=$("#hs-"+id);if(h)h.classList.add("ok");const b=document.querySelector(`#nameList button[data-id="${id}"]`);if(b)b.classList.add("ok")}
+function mMsg(cls,html){const m=$("#mMsg");m.className="msg show "+cls;m.innerHTML=html}
+function mPick(id){
+  if(mDoneRound||mPhase==="done")return;const it=mItem();
+  const list=mPhase==="src"?it.src:it.tgt;
+  document.querySelectorAll(".hs.bad").forEach(h=>h.classList.remove("bad"));
+  if(list.includes(id)){
+    if(mPhase==="src"){mPhase="tgt";mMsg("good",`Yes: ${SPOTS[id].n} releases ${it.h}.`);mRender()}
+    else{mPhase="done";mRender();markOk(id);mFlow(it.src[0],id);mMsg("good",`Yes. ${it.h} → ${SPOTS[id].n}.`+(it.tgt.length>1?` (Also correct: ${it.tgt.filter(t=>t!==id).map(t=>SPOTS[t].n).join(", ")}.)`:""))}
+  }else{mMiss++;const h=$("#hs-"+id);if(h)h.classList.add("bad");const b=document.querySelector(`#nameList button[data-id="${id}"]`);if(b)b.classList.add("bad");
+    mMsg("warn",`Not quite. That is the ${SPOTS[id].n.toLowerCase()}. ${mPhase==="src"?"Think about which gland releases "+it.h+". "+it.clue:"Where does "+it.h+" act? "+it.clue}`)}
+}
+function mFlow(a,b){const g=$("#flow");const A2=SPOTS[a].c,B2=SPOTS[b].c;const mx=(A2[0]+B2[0])/2+(A2[1]===B2[1]?0:60),my=(A2[1]+B2[1])/2-(a===b?50:0);
+  g.innerHTML="";const N=8;const els=[];for(let i=0;i<N;i++){const c=document.createElementNS("http://www.w3.org/2000/svg","circle");c.setAttribute("r","5");c.setAttribute("fill","var(--h3)");c.setAttribute("stroke","var(--ink)");c.setAttribute("stroke-width","1");g.appendChild(c);els.push(c)}
+  const path=document.createElementNS("http://www.w3.org/2000/svg","path");path.setAttribute("d",a===b?`M${A2[0]} ${A2[1]} C${A2[0]-60} ${A2[1]-60} ${A2[0]+60} ${A2[1]-60} ${B2[0]} ${B2[1]}`:`M${A2[0]} ${A2[1]} Q${mx} ${my} ${B2[0]} ${B2[1]}`);
+  path.setAttribute("fill","none");path.setAttribute("stroke","var(--h3)");path.setAttribute("stroke-width","2");path.setAttribute("stroke-dasharray","5 4");g.insertBefore(path,g.firstChild);
+  const L=path.getTotalLength();const t0=performance.now();
+  (function anim(now){const t=(now-t0)/1000;if(t>4||!g.contains(path)){return}els.forEach((c,i)=>{const q=((t*.6)+i/N)%1;const p=path.getPointAtLength(q*L);c.setAttribute("cx",p.x);c.setAttribute("cy",p.y);c.setAttribute("opacity",Math.min(1,q*5,(1-q)*5))});requestAnimationFrame(anim)})(t0);
+  setTimeout(()=>{if(g.contains(path)){g.innerHTML=""}},4200)}
+$("#mNext").onclick=()=>{const R=ROUNDS[MR];$("#flow").innerHTML="";$("#mMsg").classList.remove("show");
+  if(MI<R.items.length-1){MI++;mPhase="src";mRender()}
+  else{const stars=mShown===0&&mMiss<=2?3:(mMiss<=5?2:1);mRes[MR]=Math.max(mRes[MR]||0,stars);store.set("endoMatch",mRes);mDoneRound=true;mRounds();
+    $("#mProg").style.width="100%";const secs=Math.round((performance.now()-mStart)/1000);
+    mMsg("good",`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span> Round complete with ${mMiss} miss${mMiss===1?"":"es"}${mShown?" and "+mShown+" shown answer"+(mShown>1?"s":""):""}${$("#mTimed").checked?" in "+Math.floor(secs/60)+":"+String(secs%60).padStart(2,"0"):""}. ${MR<ROUNDS.length-1?"Pick the next round above.":"That was the last round."}`);
+    $("#mNext").hidden=true;$("#mStep").innerHTML="<b>Round complete.</b> Replay it any time from the round buttons.";if(MR<ROUNDS.length-1){MR++;setTimeout(()=>{if(mDoneRound){MI=0;mPhase="src";mStartRound()}},2600)}}};
+$("#mHint").onclick=()=>{const it=mItem();const id=(mPhase==="src"?it.src:it.tgt)[0];const h=$("#hs-"+id);if(h)h.classList.add("hint");mMsg("info","Hint: look at the glowing spot. "+it.clue)};
+$("#mShow").onclick=()=>{const it=mItem();mShown++;if(mPhase==="src"){mPhase="tgt";mRender();mMsg("info",`Answer: ${SPOTS[it.src[0]].n} releases ${it.h}. Now find the target.`)}else{const id=it.tgt[0];mPhase="done";mRender();markOk(id);mFlow(it.src[0],id);mMsg("info",`Answer: ${it.h} acts on ${it.tgt.map(t=>SPOTS[t].n).join(", ")}.`)}};
+document.querySelectorAll(".hs").forEach(h=>{h.addEventListener("click",()=>mPick(h.dataset.id));h.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();mPick(h.dataset.id)}})});
+$("#nameList").innerHTML=Object.entries(SPOTS).map(([id,s])=>`<button type="button" data-id="${id}">${s.n}</button>`).join("");
+document.querySelectorAll("#nameList button").forEach(b=>b.onclick=()=>mPick(b.dataset.id));
+$("#mNames").onchange=e=>document.querySelectorAll(".svglab").forEach(t=>t.style.display=e.target.checked?"":"none");
+$("#mTimed").onchange=e=>{$("#mTimer").hidden=!e.target.checked;mStart=performance.now()};
+
+/* ================= loop ================= */
+function fitAll(){[SA,SAC,SG,SGC,S3].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+let last=performance.now(),TT=0,uiAcc=0,axT=0,gT=0;
+function frame(now){
+  const dt=clamp((now-last)/1000,0,.05);last=now;TT+=dt;uiAcc+=dt;
+  try{
+    // simulations keep running only while their tab is open
+    if(activeTab==="axis"){if(!axPaused){const sd=dt*2*axSpeed;const n=Math.ceil(sd/.05);for(let i=0;i<n;i++)axStep(AS,sd/n);
+        if(!AS.hist.length||AS.t-AS.hist[AS.hist.length-1][0]>=.25){AS.hist.push([AS.t,AS.R,AS.P,AS.Gt]);if(AS.hist.length>800)AS.hist.shift()}axCheck()}
+      if(!axPaused)axT+=dt*Math.min(2,axSpeed);drawAxis(axT);drawAxChart();if(uiAcc>.25)axReadouts()}
+    else if(activeTab==="glu"){gTick(dt);if(!gPaused)gT+=dt;drawGlu(gT);drawGluChart();if(uiAcc>.25)gReadouts()}
+    else if(activeTab==="break"){drawSc(TT)}
+    else if(activeTab==="match"){if($("#mTimed").checked&&!mDoneRound){const s=Math.round((now-mStart)/1000);$("#mTimer").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}}
+  }catch(e){console.error(e)}
+  if(uiAcc>.25)uiAcc=0;
+  requestAnimationFrame(frame)}
+readColors();axBuildInputs();gChal();scRender();mRounds();mRender();fitAll();axReadouts();gReadouts();
+requestAnimationFrame(frame);
+window.__lab={AS:()=>AS,GS:()=>GS,setAx:(k)=>{AS=axSaved[k];axBuildInputs()},run:(days)=>{for(let i=0;i<days*20;i++)axStep(AS,.05);AS.hist=[];for(let t=0;t<=60;t+=.25)AS.hist.push([AS.t-60+t,AS.R,AS.P,AS.Gt])},
+  gRun:(min)=>{for(let i=0;i<min;i++){gluStep(GS,GO);gSince++;gHist.push([GS.t,GS.G,GS.flows.Itot,GS.Gn,GS.gly])}gCheck()},fit:fitAll};
+})();
+</script>
+</body>
+</html>

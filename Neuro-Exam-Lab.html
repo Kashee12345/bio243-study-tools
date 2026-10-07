@@ -1,0 +1,1298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neuro Exam Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --gold:#C9A227;--gold-wash:#F6EFD3;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;--act6:#3F7FB5;
+  /* exam-room palette */
+  --room:#EEF2F4;--floor:#C9D1D6;--skin:#E6B894;--skin-edge:#9A6B4C;--skin-2:#D9A27C;--hair:#4A3426;--lip:#A65A55;
+  --gown:#9CC3D3;--gown-edge:#4F7F92;--pants:#6E8796;--shoe:#3C4A52;
+  --glove:#B9B3EA;--glove-edge:#6A62B5;--coat:#FFFFFF;--coat-edge:#9AA8B0;--metal:#8E9AA2;--wood:#D8B98A;--rubber:#B5523B;
+  --iris:#5B7FA6;--sclera:#FFFFFF;--mouth:#5E2329;--tongue:#E3858A;--teeth:#FFFFFF;--palate:#EBA3A3;--beam:#FFD95A;
+  --brain:#F1C9C2;--brain-edge:#B9837C;--gyrus:#D49A92;--cord:#F3E6C6;--cord-edge:#B89B60;--grey:#C9B8A2;
+  --nerve:#D9A72B;--dc:#2F7FC1;--st:#C4482F;--cst:#2F8A57;--lesion:#C0392B;--sound:#7B5CC9;--odor:#8A5A2B;
+  --table:#D7CDBB;--table-edge:#A8987B;--zone1:#7B5CC9;--zone2:#2E8A7A;--zone3:#D98A1C;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --gold:#E0BE48;--gold-wash:#352E14;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#7FB3E6;
+  --room:#131D23;--floor:#2A363E;--skin:#D9A884;--skin-edge:#7A4E34;--skin-2:#C48F6A;--hair:#3A2A1E;--lip:#9C4F4A;
+  --gown:#3F6E80;--gown-edge:#8FC3D6;--pants:#4F6472;--shoe:#1E262B;
+  --glove:#8F88D6;--glove-edge:#C9C4F2;--coat:#DCE3E7;--coat-edge:#7D8C94;--metal:#AEBAC2;--wood:#B8996A;--rubber:#C9654D;
+  --iris:#4F739A;--sclera:#F2F2EE;--mouth:#3A1418;--tongue:#C9706F;--teeth:#EDEDE8;--palate:#C98584;--beam:#FFD95A;
+  --brain:#6A4A48;--brain-edge:#D9A39A;--gyrus:#9C6E68;--cord:#4E4532;--cord-edge:#C9A86E;--grey:#7A6B58;
+  --nerve:#F2C14E;--dc:#5AA9E6;--st:#F07A66;--cst:#5CC98A;--lesion:#FF6B5B;--sound:#B39BF5;--odor:#D6A66A;
+  --table:#4A4234;--table-edge:#8C7A5A;--zone1:#A98BEF;--zone2:#5CC4B0;--zone3:#F2A93B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --gold:#E0BE48;--gold-wash:#352E14;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#7FB3E6;
+  --room:#131D23;--floor:#2A363E;--skin:#D9A884;--skin-edge:#7A4E34;--skin-2:#C48F6A;--hair:#3A2A1E;--lip:#9C4F4A;
+  --gown:#3F6E80;--gown-edge:#8FC3D6;--pants:#4F6472;--shoe:#1E262B;
+  --glove:#8F88D6;--glove-edge:#C9C4F2;--coat:#DCE3E7;--coat-edge:#7D8C94;--metal:#AEBAC2;--wood:#B8996A;--rubber:#C9654D;
+  --iris:#4F739A;--sclera:#F2F2EE;--mouth:#3A1418;--tongue:#C9706F;--teeth:#EDEDE8;--palate:#C98584;--beam:#FFD95A;
+  --brain:#6A4A48;--brain-edge:#D9A39A;--gyrus:#9C6E68;--cord:#4E4532;--cord-edge:#C9A86E;--grey:#7A6B58;
+  --nerve:#F2C14E;--dc:#5AA9E6;--st:#F07A66;--cst:#5CC98A;--lesion:#FF6B5B;--sound:#B39BF5;--odor:#D6A66A;
+  --table:#4A4234;--table-edge:#8C7A5A;--zone1:#A98BEF;--zone2:#5CC4B0;--zone3:#F2A93B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--room)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14.5px;color:var(--ink)}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);border:1px solid var(--rule)}
+.stars{color:var(--gold);letter-spacing:2px;font-size:20px}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.small{font-size:13px;color:var(--ink-soft)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.totstars{font-family:var(--mono);font-size:14px}
+.totstars b{color:var(--gold)}
+.menu{display:flex;flex-direction:column;gap:10px}
+.menu .grp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.menu .gn{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);width:100%}
+.tst{background:var(--panel-2);border:1.5px solid var(--rule);border-radius:99px;padding:5px 11px;cursor:pointer;font-size:13.5px}
+.tst:hover{border-color:var(--accent)}
+.tst.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.tst.did:not(.cur){border-color:var(--good)}
+.tst.did:not(.cur)::after{content:" ✓";color:var(--good)}
+table.find{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+table.find td,table.find th{border-top:1px solid var(--rule-soft);padding:6px 4px;text-align:left;vertical-align:top}
+table.find th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:600}
+.nab{display:inline-flex;gap:4px}
+.nab button{border:1.5px solid var(--rule);background:var(--panel);border-radius:var(--r);padding:3px 8px;cursor:pointer;font-size:13px}
+.nab button[aria-pressed="true"].n{background:var(--good-wash);border-color:var(--good);color:var(--good);font-weight:600}
+.nab button[aria-pressed="true"].a{background:var(--warn-wash);border-color:var(--warn);color:var(--warn);font-weight:600}
+.fbk{font-size:13px;margin-top:3px}
+.fbk.ok{color:var(--good)}.fbk.no{color:var(--warn)}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.sel{border-color:var(--accent);background:var(--accent-wash)}
+.opt:disabled{cursor:default}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:12px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.qlab{font-weight:600;margin:12px 0 8px}
+.findings{font-size:15px;margin:6px 0 0;padding-left:20px}
+.findings li{margin-bottom:4px}
+.regions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.nerves{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:6px 0}
+.nerves button{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:var(--r);padding:7px 0;cursor:pointer;font-family:var(--mono);font-weight:600;font-size:14px}
+.nerves button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+.ctrl label{display:inline-flex;gap:8px;align-items:center;font-size:14.5px}
+.ctrl input[type=range]{accent-color:var(--accent);width:150px}
+.readout{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.readout span{font-family:var(--mono);font-size:13px;border:1px solid var(--rule);border-radius:99px;padding:3px 10px;background:var(--panel-2)}
+.sorter{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+@media (max-width:700px){.sorter{grid-template-columns:1fr}}
+.bin{border:2px dashed var(--rule);border-radius:var(--r);padding:10px;min-height:150px;background:var(--panel-2);display:flex;flex-direction:column;gap:6px}
+.bin h4{margin:0 0 4px;font-family:var(--mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em}
+.bin.over,.bin.target{border-color:var(--accent);background:var(--accent-wash)}
+.bin button.place{margin-top:auto;font-size:13px}
+.pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;min-height:48px;padding:8px;border:1px solid var(--rule-soft);border-radius:var(--r)}
+.scard{display:flex;align-items:center;gap:8px;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:6px 10px;cursor:grab;font-size:14px;touch-action:none;user-select:none;text-align:left}
+.scard svg{flex:0 0 auto}
+.scard.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.scard.good{border-color:var(--good);background:var(--good-wash)}
+.scard.bad{border-color:var(--warn);background:var(--warn-wash)}
+.scard.ghost{position:fixed;pointer-events:none;z-index:50;opacity:.9;box-shadow:var(--shadow)}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Neurological Exam &middot; USC Upstate</div>
+    <h1>Neuro Exam Lab</h1>
+    <p class="sub">Examine a patient, find the lesion, match each cranial nerve test, and sort upper vs lower motor neuron signs. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="sim" id="tb-sim" aria-controls="tab-sim" type="button">Part 1 &middot; Exam Simulator</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="det" id="tb-det" aria-controls="tab-det" type="button">Part 2 &middot; Lesion Detective</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="cnm" id="tb-cnm" aria-controls="tab-cnm" type="button">Part 3 &middot; Cranial Nerve Test Match</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="umn" id="tb-umn" aria-controls="tab-umn" type="button">Part 4 &middot; UMN vs LMN</button>
+  </div>
+
+  <!-- PART 1 -->
+  <section id="tab-sim" role="tabpanel" aria-labelledby="tb-sim">
+    <div class="grid">
+      <div>
+        <div class="card stage">
+          <div class="canvas-holder"><canvas id="cvSim" role="img" aria-label="The patient"></canvas></div>
+          <div class="stagebar">
+            <button class="tbtn" id="simReplay" type="button">Replay test</button>
+            <button class="tbtn" id="simPause" type="button">Pause</button>
+            <span class="caption" id="simCap" aria-live="polite"></span>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="lvl-n">Your findings checklist</div>
+          <p class="small" style="margin:4px 0 0">After each test, mark what you saw. Then check your findings.</p>
+          <table class="find"><thead><tr><th>Test</th><th>What you saw</th><th>Your call</th></tr></thead><tbody id="findBody"><tr><td colspan="3" class="small">No tests yet. Pick one from the menu.</td></tr></tbody></table>
+          <div class="bar"><button class="btn" id="checkFind" type="button">Check my findings</button></div>
+          <div class="msg" id="findMsg" role="status"></div>
+        </div>
+      </div>
+      <aside class="card side">
+        <div class="lvl-n" id="caseN"></div>
+        <h2 class="lvl-t" id="caseT">Today's patient</h2>
+        <div class="goal"><b class="h">Why they came in</b><span id="caseCC"></span></div>
+        <div class="bar"><button class="tbtn" id="newCase" type="button">New patient</button><button class="tbtn" id="simHint" type="button">Hint</button></div>
+        <div class="msg info" id="hintMsg" role="status"></div>
+        <h3>Choose a test</h3>
+        <div class="menu" id="menu"></div>
+        <h3>Where is the problem?</h3>
+        <p class="small" style="margin:0 0 6px">Do at least six tests first. Then make your call.</p>
+        <div class="opts" id="locOpts"></div>
+        <p class="fb" id="locFb"></p>
+        <div class="bar"><button class="tbtn" id="simShow" type="button">Show answer</button></div>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+        <p class="totstars" id="simStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section id="tab-det" role="tabpanel" aria-labelledby="tb-det" hidden>
+    <div class="rounds" id="detChips" aria-label="Cases"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvDet" role="img" aria-label="Map of the nervous system. Click a region or use the buttons below."></canvas></div>
+        <div class="regions" id="regBtns" aria-label="Or choose a region with a button"></div>
+        <p class="small" style="margin:8px 4px 0">The figure faces you, so the patient's RIGHT side is on your LEFT. Click a region on the map, or use the buttons.</p>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="detN"></div>
+        <h2 class="lvl-t" id="detT"></h2>
+        <ul class="findings" id="detF"></ul>
+        <p class="qlab">1. Where is the lesion?</p>
+        <p class="fb" id="detFb1"></p>
+        <div id="detQ2" hidden>
+          <p class="qlab">2. Which structure is damaged?</p>
+          <div class="opts" id="detOpts"></div>
+          <p class="fb" id="detFb2"></p>
+        </div>
+        <div class="explain" id="detExp"></div>
+        <div class="bar"><button class="tbtn" id="detHint" type="button">Hint</button><button class="tbtn" id="detShow" type="button">Show answer</button><button class="btn" id="detNext" type="button">Next case &rarr;</button></div>
+        <div class="msg info" id="detHintMsg"></div>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+        <p class="totstars" id="detStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section id="tab-cnm" role="tabpanel" aria-labelledby="tb-cnm" hidden>
+    <div class="rounds" id="cnChips" aria-label="Rounds"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvCN" role="img" aria-label="A cranial nerve test"></canvas></div>
+        <div class="stagebar"><button class="tbtn" id="cnReplay" type="button">Replay</button><span class="caption" id="cnCap"></span></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="cnN"></div>
+        <h2 class="lvl-t">Which nerve(s) does this test check?</h2>
+        <p class="small" style="margin:0">Pick every nerve involved. Some tests use two or three.</p>
+        <div class="nerves" id="nerveBtns"></div>
+        <p class="qlab">What is the normal response?</p>
+        <div class="opts" id="cnOpts"></div>
+        <div class="bar"><button class="btn" id="cnCheck" type="button">Check</button><button class="tbtn" id="cnHint" type="button">Hint</button><button class="tbtn" id="cnShow" type="button">Show answer</button><button class="tbtn" id="cnNext" type="button">Next &rarr;</button></div>
+        <div class="msg" id="cnMsg" role="status"></div>
+        <p class="calm">No timer. Take your time; watch the animation as often as you like.</p>
+        <p class="totstars" id="cnStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 4 -->
+  <section id="tab-umn" role="tabpanel" aria-labelledby="tb-umn" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvRx" role="img" aria-label="Reflex bench: a seated leg, a reflex hammer and a live graph of the knee kick"></canvas></div>
+        <div class="ctrl" role="group" aria-label="Lesion type">
+          <span class="small">Patient:</span>
+          <button class="tbtn" data-les="normal" aria-pressed="true" type="button">Healthy</button>
+          <button class="tbtn" data-les="umn" aria-pressed="false" type="button">UMN lesion</button>
+          <button class="tbtn" data-les="lmn" aria-pressed="false" type="button">LMN lesion</button>
+        </div>
+        <div class="ctrl">
+          <label>Tap strength <input type="range" id="rxStr" min="1" max="10" step="1" value="6"> <span id="rxStrV" class="small">6</span></label>
+          <button class="btn" id="rxTap" type="button">Tap the tendon</button>
+          <button class="tbtn" id="rxSole" type="button">Stroke the sole</button>
+          <label class="mode"><input type="checkbox" id="rxAuto"> Auto-tap every 2 s</label>
+        </div>
+        <div class="readout" id="rxRead"></div>
+      </div>
+      <aside class="card side">
+        <div class="lvl-n">Reflex bench</div>
+        <h2 class="lvl-t">Feel the difference</h2>
+        <ul style="padding-left:18px;margin:0;font-size:14.5px">
+          <li>Pick a patient, set the tap strength and tap the patellar tendon.</li>
+          <li>The graph shows the knee kick. Compare kick size, extra beats (clonus) and how hard you must tap.</li>
+          <li>Stroke the sole to see the plantar response.</li>
+        </ul>
+        <div class="msg info show" id="rxNote" style="margin-top:12px"></div>
+      </aside>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="lvl-n">Sorter</div>
+      <h2 class="lvl-t" style="margin-bottom:4px">UMN sign, LMN sign, or both?</h2>
+      <p class="small" style="margin:0">Drag each card into a box, or tap a card and then tap a box's "Place here" button.</p>
+      <div class="pool" id="pool" aria-label="Cards to sort"></div>
+      <div class="sorter">
+        <div class="bin" data-bin="umn"><h4 style="color:var(--cst)">Upper motor neuron</h4><div class="slot"></div><button class="tbtn place" type="button" data-place="umn">Place here</button></div>
+        <div class="bin" data-bin="lmn"><h4 style="color:var(--warn)">Lower motor neuron</h4><div class="slot"></div><button class="tbtn place" type="button" data-place="lmn">Place here</button></div>
+        <div class="bin" data-bin="both"><h4>Both</h4><div class="slot"></div><button class="tbtn place" type="button" data-place="both">Place here</button></div>
+      </div>
+      <div class="bar"><button class="btn" id="srtCheck" type="button">Check</button><button class="tbtn" id="srtHint" type="button">Hint</button><button class="tbtn" id="srtShuffle" type="button">Shuffle / restart</button><button class="tbtn" id="srtShow" type="button">Show answer</button></div>
+      <div class="msg" id="srtMsg" role="status"></div>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 16, The Neurological Exam (OpenStax Anatomy &amp; Physiology 2e) &middot; Learn the tests first in the <a href="Neuro-Exam-Walkthrough.html">Neuro Exam Walkthrough</a>.<br>Diagrams are simplified and not to scale. Patients are drawn figures and cases are made up for practice; real patients rarely show findings this cleanly, and pathways are drawn as single lines.</footer>
+<script>
+(function(){
+"use strict";
+/* ================= shared drawing library (patient, examiner, tools) ================= */
+const TAU=Math.PI*2;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const es=(p,a,b)=>ease(seg(p,a,b));
+const bump=(p,a,b,c,d)=>es(p,a,b)*(1-es(p,c,d));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+const SX={R:-1,L:1}; /* patient faces the viewer: patient's RIGHT is on the viewer's LEFT */
+let ctx=null;const C={};
+const CKEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","good-wash","warn","warn-wash","bad","bad-wash","gold",
+ "act1","act2","act3","act4","act5","act6","room","floor","skin","skin-edge","skin-2","hair","lip","gown","gown-edge","pants","shoe","glove","glove-edge","coat","coat-edge","metal","wood","rubber",
+ "iris","sclera","mouth","tongue","teeth","palate","beam","brain","brain-edge","gyrus","cord","cord-edge","grey","nerve","dc","st","cst","lesion","sound","odor","table","table-edge","zone1","zone2","zone3"];
+function readColors(){const s=getComputedStyle(document.documentElement);CKEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(.1,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,rot,fill,stroke,lw){ctx.beginPath();ctx.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const A=o.a==null?1:o.a;
+  if(o.pill!==false){ctx.globalAlpha=(o.bga==null?.92:o.bga)*A;ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=A;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.globalAlpha=A;ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1;return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function poly(P,col,lw,dash,close){ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));if(close)ctx.closePath();ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,txt,col,fg,size){size=size||11;ctx.font=`600 ${size}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-size*.8,w+12,size*1.6,size*.8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+12}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function polyPart(P,p,col,lw){/* draw the first fraction p of a polyline */let L=0;for(let i=0;i<P.length-1;i++)L+=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);
+  let d=clamp(p,0,1)*L;ctx.beginPath();ctx.moveTo(P[0][0],P[0][1]);for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);if(d>=l){ctx.lineTo(P[i+1][0],P[i+1][1]);d-=l}else{const f=l?d/l:0;ctx.lineTo(lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f));break}}
+  ctx.strokeStyle=col;ctx.lineWidth=lw||3;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke();ctx.lineCap="butt"}
+function capsule(x1,y1,x2,y2,w,fill,edge){ctx.lineCap="round";ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=edge;ctx.lineWidth=w+3;ctx.stroke();ctx.strokeStyle=fill;ctx.lineWidth=w;ctx.stroke();ctx.lineCap="butt"}
+function wrap(txt,maxW,font){ctx.font=font;const out=[];txt.split("\n").forEach(par=>{const words=par.split(" ");let cur="";words.forEach(w=>{const t=cur?cur+" "+w:w;if(ctx.measureText(t).width>maxW&&cur){out.push(cur);cur=w}else cur=t});out.push(cur)});return out}
+/* speech bubble: who = "ex" (examiner) or "pt" (patient). Tagged in text so colour is never the only signal. */
+function bubble(x,y,txt,o){o=o||{};const A=o.a==null?1:clamp(o.a,0,1);if(A<.02||!txt)return;const size=o.size||14;
+  const font=`${o.italic?"italic ":""}500 ${size}px ${FONT}`;const L=wrap(txt,o.maxW||210,font);ctx.font=font;let w=0;L.forEach(l=>w=Math.max(w,ctx.measureText(l).width));
+  const lh=size*1.28,h=L.length*lh+14,bw=w+22;let x0=x-bw/2,y0=y-h/2;
+  if(o.bounds){x0=clamp(x0,o.bounds[0]+4,o.bounds[2]-bw-4);y0=clamp(y0,o.bounds[1]+14,o.bounds[3]-h-4)}
+  const col=o.who==="ex"?C.accent:(o.col||C["ink-soft"]);
+  ctx.globalAlpha=A;
+  const tri=()=>{if(!o.tail)return null;const [tx,ty]=o.tail;let bx=clamp(tx,x0+16,x0+bw-16),by;if(ty>y0+h)by=y0+h-1;else if(ty<y0)by=y0+1;else{by=clamp(ty,y0+10,y0+h-10);bx=tx<x0?x0+1:x0+bw-1;
+      return [[bx,by-7],[bx,by+7],[tx,ty]]}return [[bx-8,by],[bx+8,by],[tx,ty]]};
+  const T=tri();
+  if(T){ctx.beginPath();ctx.moveTo(T[0][0],T[0][1]);ctx.lineTo(T[2][0],T[2][1]);ctx.lineTo(T[1][0],T[1][1]);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.stroke()}
+  rr(x0,y0,bw,h,o.who==="ex"?5:13);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.stroke();
+  if(T){ctx.beginPath();ctx.moveTo(T[0][0],T[0][1]);ctx.lineTo(T[2][0]*.15+T[0][0]*.85,T[2][1]*.15+T[0][1]*.85);ctx.lineTo(T[2][0]*.15+T[1][0]*.85,T[2][1]*.15+T[1][1]*.85);ctx.lineTo(T[1][0],T[1][1]);ctx.closePath();ctx.fillStyle=C.panel;ctx.fill()}
+  if(o.tag!==false){ctx.font=`600 9.5px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="bottom";ctx.fillStyle=col;ctx.fillText(o.who==="ex"?"EXAMINER":(o.tagTxt||"PATIENT"),x0+4,y0-2)}
+  ctx.font=font;ctx.fillStyle=o.color||C.ink;ctx.textAlign="center";ctx.textBaseline="middle";L.forEach((l,i)=>ctx.fillText(l,x0+bw/2,y0+7+lh*(i+.5)));
+  ctx.globalAlpha=1;return {x0,y0,w:bw,h}}
+function lesionMark(x,y,r,a,txt){a=a==null?1:a;ctx.globalAlpha=a;circ(x,y,r,null,C.lesion,3);line(x-r*.6,y-r*.6,x+r*.6,y+r*.6,C.lesion,3);line(x-r*.6,y+r*.6,x+r*.6,y-r*.6,C.lesion,3);ctx.globalAlpha=1;
+  if(txt)label(x+r+6,y,txt,{size:11.5,weight:600,color:C.lesion,border:C.lesion,a})}
+function hatch(pathFn,col,gap,a){ctx.save();pathFn();ctx.clip();ctx.globalAlpha=a==null?.55:a;ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.beginPath();for(let x=-900;x<900;x+=gap||7){ctx.moveTo(x,-50);ctx.lineTo(x+600,650)}ctx.stroke();ctx.restore();ctx.globalAlpha=1}
+function check(x,y,ok,s){s=s||1;if(ok){ctx.beginPath();ctx.moveTo(x-6*s,y);ctx.lineTo(x-2*s,y+5*s);ctx.lineTo(x+7*s,y-6*s);ctx.strokeStyle=C.good;ctx.lineWidth=3*s;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke();ctx.lineCap="butt"}
+  else{line(x-5*s,y-5*s,x+5*s,y+5*s,C.warn,3*s);line(x-5*s,y+5*s,x+5*s,y-5*s,C.warn,3*s)}}
+function sideTags(cx,y,dx,o){o=o||{};label(cx-dx,y,"Patient's R",{align:"center",size:11,mono:true,color:C["ink-soft"],bga:.8});label(cx+dx,y,"Patient's L",{align:"center",size:11,mono:true,color:C["ink-soft"],bga:.8})}
+function soundArcs(x,y,dir,t,col,n){for(let i=0;i<(n||3);i++){const p=((t*1.6+i/3)%1);ctx.globalAlpha=(1-p)*.9;ctx.beginPath();ctx.arc(x,y,6+p*26,dir-.7,dir+.7);ctx.strokeStyle=col||C.sound;ctx.lineWidth=2.2;ctx.stroke()}ctx.globalAlpha=1}
+function vibLines(x,y,t,col){for(let i=0;i<3;i++){const p=((t*2.2+i/3)%1);ctx.globalAlpha=(1-p)*.85;ctx.beginPath();ctx.arc(x,y,5+p*18,0,TAU);ctx.strokeStyle=col||C.sound;ctx.lineWidth=1.6;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([])}ctx.globalAlpha=1}
+
+/* ---------------- the patient's face ----------------
+   R = half head height. Side-specific keys end in R or L = the PATIENT's right or left. */
+const FACE0={turn:0,gx:0,gy:0,gR:null,gL:null,pupR:1,pupL:1,lidR:0,lidL:0,sqR:0,sqL:0,browR:0,browL:0,
+ smileR:0,smileL:0,droopR:0,droopL:0,open:0,teeth:0,tongue:0,tdev:0,tweak:null,fasc:0,puffR:0,puffL:0,purse:0,clenchR:0,clenchL:0,neck:true,zones:null,t:0};
+function eye(x,y,w,h,g,pup,lid,sq,ed){
+  ctx.save();ctx.beginPath();ctx.moveTo(x-w,y);ctx.quadraticCurveTo(x,y-h*2.1,x+w,y);ctx.quadraticCurveTo(x,y+h*1.9,x-w,y);ctx.closePath();
+  ctx.fillStyle=C.sclera;ctx.fill();ctx.clip();
+  const ix=x+g[0]*w*.55,iy=y+g[1]*h*.55;circ(ix,iy,h*.98,C.iris);circ(ix,iy,h*.98*.42*pup,"#111");circ(ix-h*.32,iy-h*.32,h*.18,"rgba(255,255,255,.85)");
+  if(lid>0.01){const ly=y-h*1.15+lid*h*2.25;ctx.beginPath();ctx.moveTo(x-w-3,y-h*3);ctx.lineTo(x-w-3,ly+h*.25);ctx.quadraticCurveTo(x,ly-h*.45,x+w+3,ly+h*.25);ctx.lineTo(x+w+3,y-h*3);ctx.closePath();ctx.fillStyle=C.skin;ctx.fill();
+    ctx.beginPath();ctx.moveTo(x-w-3,ly+h*.25);ctx.quadraticCurveTo(x,ly-h*.45,x+w+3,ly+h*.25);ctx.strokeStyle=ed;ctx.lineWidth=Math.max(1,h*.25);ctx.stroke()}
+  ctx.restore();
+  ctx.beginPath();ctx.moveTo(x-w,y);ctx.quadraticCurveTo(x,y-h*2.1,x+w,y);ctx.quadraticCurveTo(x,y+h*1.9,x-w,y);ctx.closePath();ctx.strokeStyle=ed;ctx.lineWidth=Math.max(1,h*.22);ctx.stroke();
+  if(lid>.93){ctx.beginPath();ctx.moveTo(x-w,y);ctx.quadraticCurveTo(x,y+h*.9,x+w,y);ctx.strokeStyle=ed;ctx.lineWidth=Math.max(1.2,h*.3);ctx.stroke();
+    for(let i=1;i<5;i++){const lx=x-w+i*w*.4,ly2=y+h*.45*Math.sin(i/5*Math.PI);line(lx,ly2,lx-w*.06,ly2+h*.55,ed,Math.max(.8,h*.16))}}
+  if(sq>.05){ctx.globalAlpha=sq;for(let i=-1;i<=1;i++){const sd=Math.sign(w);line(x+w*1.08,y+i*h*.6,x+w*1.35,y+i*h*.95,ed,Math.max(.8,h*.18));line(x-w*1.08,y+i*h*.6,x-w*1.35,y+i*h*.95,ed,Math.max(.8,h*.18))}ctx.globalAlpha=1}}
+function face(cx,cy,R,o){
+  o=Object.assign({},FACE0,o||{});
+  const sk=C.skin,ed=C["skin-edge"],lw=Math.max(1.2,R*.03);
+  const fx=cx+o.turn*R*.27;
+  if(o.neck){ctx.fillStyle=sk;rr(cx-R*.3,cy+R*.55,R*.6,R*.9,R*.08);ctx.fill();ctx.strokeStyle=ed;ctx.lineWidth=lw;ctx.stroke()}
+  ["R","L"].forEach(sd=>{const s=SX[sd];const ex=cx+s*R*.79-o.turn*R*.14;const sc=clamp(1-s*o.turn*.6,.35,1.4);ell(ex,cy-R*.02,R*.12*sc,R*.21,0,sk,ed,lw);
+    ctx.beginPath();ctx.arc(ex,cy-R*.02,R*.065*sc,s>0?-1.6:1.54,s>0?1.6:4.74);ctx.strokeStyle=ed;ctx.lineWidth=lw*.7;ctx.stroke()});
+  const puffs=()=>["R","L"].forEach(sd=>{const p=o["puff"+sd];if(p>.02){ell(fx+SX[sd]*R*(.52+.07*p),cy+R*.33,R*(.12+.15*p),R*(.2+.06*p),0,sk,ed,lw)}});
+  puffs();
+  ell(cx,cy,R*.8,R,0,sk,ed,lw*1.1);
+  ["R","L"].forEach(sd=>{const p=o["puff"+sd];if(p>.02){ell(fx+SX[sd]*R*(.52+.07*p),cy+R*.33,R*(.12+.15*p)-lw,R*(.2+.06*p)-lw,0,sk);ctx.globalAlpha=p*.6;ctx.beginPath();ctx.arc(fx+SX[sd]*R*.5,cy+R*.33,R*.17,SX[sd]>0?Math.PI-.9:-.9,SX[sd]>0?Math.PI+.9:.9);ctx.strokeStyle=ed;ctx.lineWidth=lw*.8;ctx.stroke();ctx.globalAlpha=1}});
+  ctx.save();ctx.beginPath();ctx.ellipse(cx,cy,R*.8,R,0,0,TAU);ctx.clip();
+  if(o.zones){const Z=o.zones;const band=(y1,y2,col,a,side)=>{if(a<.02)return;ctx.globalAlpha=a*.4;ctx.fillStyle=col;const x1=side==="L"?fx:cx-R,x2=side==="R"?fx:cx+R;ctx.fillRect(x1,y1,x2-x1,y2-y1);ctx.globalAlpha=1};
+    band(cy-R,cy-R*.05,C.zone1,Z.V1||0,Z.side);band(cy-R*.05,cy+R*.36,C.zone2,Z.V2||0,Z.side);band(cy+R*.36,cy+R,C.zone3,Z.V3||0,Z.side)}
+  ctx.fillStyle=C.hair;ctx.beginPath();ctx.ellipse(cx+o.turn*R*.12,cy-R*1.02,R*1.0,R*.4,0,0,TAU);ctx.fill();
+  ctx.beginPath();ctx.moveTo(cx-R*.9,cy-R*.66);ctx.quadraticCurveTo(cx-R*.3+o.turn*R*.1,cy-R*.56,cx+R*.15+o.turn*R*.1,cy-R*.66);ctx.quadraticCurveTo(cx+R*.5,cy-R*.74,cx+R*.9,cy-R*.6);ctx.lineTo(cx+R*.9,cy-R*.9);ctx.lineTo(cx-R*.9,cy-R*.9);ctx.closePath();ctx.fill();
+  ctx.restore();
+  ell(cx,cy,R*.8,R,0,null,ed,lw*1.1);
+  /* forehead wrinkles (only on the side that raises its brow) */
+  ["R","L"].forEach(sd=>{const b=o["brow"+sd];if(b>.25){ctx.globalAlpha=clamp((b-.25)*1.6,0,1);for(let i=0;i<3;i++){const y=cy-R*(.45+i*.055);ctx.beginPath();ctx.moveTo(fx+SX[sd]*R*.04,y);ctx.quadraticCurveTo(fx+SX[sd]*R*.25,y-R*.025,fx+SX[sd]*R*.44,y+R*.01);ctx.strokeStyle=ed;ctx.lineWidth=lw*.8;ctx.stroke()}ctx.globalAlpha=1}});
+  /* brows + eyes */
+  ["R","L"].forEach(sd=>{const s=SX[sd];const ex=fx+s*R*.31,ey=cy-R*.1;const b=o["brow"+sd],sq=o["sq"+sd];
+    const by=ey-R*.2-b*R*.1+sq*R*.05;ctx.beginPath();ctx.moveTo(ex-s*R*.17,by+R*.03);ctx.quadraticCurveTo(ex,by-R*.06-b*R*.03,ex+s*R*.18,by+R*.035+b*R*.0);ctx.strokeStyle=C.hair;ctx.lineWidth=Math.max(2,R*.055);ctx.lineCap="round";ctx.stroke();ctx.lineCap="butt";
+    const g=o["g"+sd]||[o.gx,o.gy];eye(ex,ey,R*.165,R*.072,g,o["pup"+sd],o["lid"+sd],sq,ed)});
+  /* nose */
+  ctx.beginPath();ctx.moveTo(fx+R*.02,cy-R*.06);ctx.quadraticCurveTo(fx+R*.07+o.turn*R*.05,cy+R*.12,fx+R*.03,cy+R*.2);ctx.strokeStyle=ed;ctx.lineWidth=lw;ctx.stroke();
+  [-1,1].forEach(s=>{ctx.beginPath();ctx.arc(fx+s*R*.075,cy+R*.2,R*.035,s<0?-.2:Math.PI+.2,s<0?Math.PI*.9:TAU*.1+.0,s>0);ctx.strokeStyle=ed;ctx.lineWidth=lw*.9;ctx.stroke()});
+  /* nasolabial folds: flatten on a weak (drooping) side */
+  ["R","L"].forEach(sd=>{const s=SX[sd];const d=o["droop"+sd];const sm=o["smile"+sd];ctx.globalAlpha=clamp(.45*(1-d*1.3)+sm*.4,0,1);ctx.beginPath();ctx.moveTo(fx+s*R*.14,cy+R*.17);ctx.quadraticCurveTo(fx+s*R*(.25+sm*.04),cy+R*.24,fx+s*R*(.27+sm*.03),cy+R*(.37-sm*.03));ctx.strokeStyle=ed;ctx.lineWidth=lw*.9;ctx.stroke();ctx.globalAlpha=1});
+  /* masseter bulge when the jaw is clenched */
+  ["R","L"].forEach(sd=>{const c=o["clench"+sd];if(c>.03){const s=SX[sd];ctx.globalAlpha=c;ell(cx+s*R*.53,cy+R*.4,R*.1,R*.16,s*.25,C["skin-2"],null);ctx.globalAlpha=c*.7;ell(cx+s*R*.53,cy+R*.4,R*.1,R*.16,s*.25,null,ed,lw*.7);ctx.globalAlpha=1}});
+  /* mouth */
+  const mx=fx,my=cy+R*.44,pw=1-o.purse*.5;
+  const cR=[mx-R*.2*pw,my+(o.droopR*.1-o.smileR*.085)*R],cL=[mx+R*.2*pw,my+(o.droopL*.1-o.smileL*.085)*R];
+  const smA=(o.smileR+o.smileL)/2;const op=Math.max(o.open,o.tongue>0?.28:0,o.teeth*.32)*R*.22;
+  if(op>1){ctx.beginPath();ctx.moveTo(cR[0],cR[1]);ctx.quadraticCurveTo(mx,my-R*.03-smA*R*.03,cL[0],cL[1]);ctx.quadraticCurveTo(mx,my+R*.05+op+smA*R*.04,cR[0],cR[1]);ctx.closePath();ctx.fillStyle=C.mouth;ctx.fill();
+    ctx.save();ctx.clip();if(o.teeth>.05){ctx.fillStyle=C.teeth;ctx.fillRect(mx-R*.3,my-R*.08,R*.6,R*.065+o.teeth*R*.02);ctx.globalAlpha=.25;for(let i=-3;i<=3;i++)line(mx+i*R*.05,my-R*.08,mx+i*R*.05,my-R*.01,C["skin-edge"],1);ctx.globalAlpha=1}
+    ctx.restore();ctx.strokeStyle=C.lip;ctx.lineWidth=lw*1.3;ctx.stroke()}
+  else{ctx.beginPath();ctx.moveTo(cR[0],cR[1]);ctx.quadraticCurveTo(mx,my+smA*R*.08+R*.04,cL[0],cL[1]);ctx.strokeStyle=C.lip;ctx.lineWidth=lw*1.5;ctx.lineCap="round";ctx.stroke();ctx.lineCap="butt";
+    ctx.beginPath();ctx.moveTo(mx-R*.09,my+R*.08+smA*R*.03);ctx.quadraticCurveTo(mx,my+R*.12+smA*R*.03,mx+R*.09,my+R*.08+smA*R*.03);ctx.strokeStyle=ed;ctx.globalAlpha=.6;ctx.lineWidth=lw*.8;ctx.stroke();ctx.globalAlpha=1}
+  /* tongue out */
+  if(o.tongue>.02){const len=R*(.06+o.tongue*.36),dev=o.tdev*R*.24*o.tongue;const bx=mx,by=my+R*.02,tx=bx+dev,ty=by+len;const ang=Math.atan2(dev,len);
+    const mxp=(bx+tx)/2,myp=(by+ty)/2;ell(mxp,myp,R*.12,len/2+R*.06,-ang,C.tongue,C.lip,lw);
+    line(lerp(bx,tx,.1),lerp(by,ty,.1),lerp(bx,tx,.82),lerp(by,ty,.82),C.lip,lw*.7);
+    if(o.tweak){const s=SX[o.tweak];ctx.save();ctx.translate(mxp,myp);ctx.rotate(-ang);ctx.globalAlpha=.7;for(let i=0;i<4;i++){const yy=-len/2+len*(.2+i*.2);ctx.beginPath();ctx.moveTo(s*R*.02,yy);ctx.quadraticCurveTo(s*R*.06,yy+R*.02,s*R*.1,yy);ctx.strokeStyle=C.lip;ctx.lineWidth=lw*.7;ctx.stroke()}
+      if(o.fasc){for(let i=0;i<3;i++){const ph=(o.t*3+i*.37)%1;if(ph<.35){ctx.globalAlpha=1-ph/.35;circ(s*R*.065,-len/2+len*(.25+i*.22),R*.018,null,C.lip,1.4)}}}ctx.restore();ctx.globalAlpha=1}}
+}
+/* bust = shoulders + gown + head. shR/shL raise the shoulders (shrug). */
+function bust(cx,cy,R,o){o=o||{};const shR=(o.shR||0)*R*.3,shL=(o.shL||0)*R*.3;const sy=cy+R*1.32;const bot=o.bottom||cy+R*3.4;
+  const sk=C.skin,ed=C["skin-edge"];
+  ctx.fillStyle=sk;rr(cx-R*.3,cy+R*.55,R*.6,R*.95,R*.08);ctx.fill();ctx.strokeStyle=ed;ctx.lineWidth=Math.max(1.2,R*.03);ctx.stroke();
+  /* SCM strap (highlighted when turning against resistance) */
+  ["R","L"].forEach(sd=>{const a=o["scm"+sd]||0;if(a>.03){const s=SX[sd];ctx.globalAlpha=a;capsule(cx+s*R*.22,cy+R*.62,cx-s*R*.04,sy+R*.08,R*.09,C["skin-2"],C.act3);ctx.globalAlpha=1}});
+  const path=()=>{ctx.beginPath();ctx.moveTo(cx-R*1.6,bot);ctx.lineTo(cx-R*1.6,sy+R*.55-shR);ctx.quadraticCurveTo(cx-R*1.58,sy+R*.02-shR,cx-R*1.2,sy-shR);
+    ctx.quadraticCurveTo(cx-R*.6,sy-R*.12-shR*.6,cx-R*.32,sy-R*.16-shR*.3);ctx.quadraticCurveTo(cx,sy+R*.42,cx+R*.32,sy-R*.16-shL*.3);
+    ctx.quadraticCurveTo(cx+R*.6,sy-R*.12-shL*.6,cx+R*1.2,sy-shL);ctx.quadraticCurveTo(cx+R*1.58,sy+R*.02-shL,cx+R*1.6,sy+R*.55-shL);ctx.lineTo(cx+R*1.6,bot);ctx.closePath()};
+  path();ctx.fillStyle=C.gown;ctx.fill();
+  ctx.save();path();ctx.clip();ctx.fillStyle=C["gown-edge"];ctx.globalAlpha=.22;for(let y=sy-R*.4;y<bot;y+=R*.26)for(let x=cx-R*1.6;x<cx+R*1.6;x+=R*.26){const ox=((Math.round((y-sy)/(R*.26))%2)?R*.13:0);ctx.beginPath();ctx.arc(x+ox,y,R*.028,0,TAU);ctx.fill()}ctx.restore();ctx.globalAlpha=1;
+  path();ctx.strokeStyle=C["gown-edge"];ctx.lineWidth=Math.max(1.5,R*.035);ctx.stroke();
+  if(!o.noArms)[-1,1].forEach(s=>{const sh=s<0?shR:shL;ctx.beginPath();ctx.moveTo(cx+s*R*1.12,sy+R*.25-sh);ctx.quadraticCurveTo(cx+s*R*1.08,sy+R*1.2,cx+s*R*1.14,bot);ctx.strokeStyle=C["gown-edge"];ctx.lineWidth=Math.max(1.2,R*.03);ctx.stroke()});
+  face(cx,cy,R,Object.assign({},o,{neck:false}));
+  return {sy,shR,shL,shoulderR:[cx-R*1.25,sy+R*.12-shR],shoulderL:[cx+R*1.25,sy+R*.12-shL]}}
+
+/* ---------------- examiner's gloved hand + tools ----------------
+   (x,y) = the TIP (fingertip or tool tip). ang = direction the fingers point. The coat sleeve trails off behind. */
+const TOOLLEN={light:58,fork:76,hammer:92,cotton:62,pin:52,vial:34,depressor:118,caliper:54,stick:74};
+function exHand(x,y,ang,o){o=o||{};const s=o.s||1;const tool=o.tool||null;const L=tool?TOOLLEN[tool]:0;const tt=o.t||0;
+  ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.scale(s,s);if(o.flip)ctx.scale(1,-1);
+  const g=C.glove,ge=C["glove-edge"];
+  const fx=-L;
+  const pose=o.pose||(tool?"grip":"point");
+  const pc=pose==="grip"?fx-12:fx-(pose==="flat"?44:34);
+  /* sleeve */
+  ctx.fillStyle=C.coat;ctx.strokeStyle=C["coat-edge"];ctx.lineWidth=2;rr(pc-420,-19,394,38,7);ctx.fill();ctx.stroke();
+  line(pc-34,-19,pc-34,19,C["coat-edge"],1.5);
+  if(tool)drawTool(tool,L,o,tt);
+  ctx.fillStyle=g;ctx.strokeStyle=ge;ctx.lineWidth=1.8;
+  if(pose==="grip"){rr(pc-30,-14,18,28,5);ctx.fill();ctx.stroke();rr(pc-14,-14,26,28,10);ctx.fill();ctx.stroke();
+    for(let i=0;i<3;i++)line(pc+4,-8+i*7.5,pc+11,-8+i*7.5,ge,1.2);capsule(pc-10,-13,pc+6,-16,8,g,ge)}
+  else if(pose==="flat"){rr(pc-30,-14,18,28,5);ctx.fill();ctx.stroke();rr(pc-14,-14,24,28,8);ctx.fill();ctx.stroke();rr(pc+6,-13,38,25,10);ctx.fill();ctx.stroke();
+    for(let i=1;i<4;i++)line(pc+14,-13+i*6.2,pc+42,-13+i*6.2,ge,1);capsule(pc-6,-14,pc+14,-21,8,g,ge)}
+  else if(pose==="wiggle"||pose==="rub"){rr(pc-30,-14,18,28,5);ctx.fill();ctx.stroke();rr(pc-14,-14,26,28,10);ctx.fill();ctx.stroke();
+    const w1=pose==="rub"?Math.sin(tt*30)*3:Math.sin(tt*14)*7,w2=pose==="rub"?-Math.sin(tt*30)*3:Math.sin(tt*14+2)*7;
+    capsule(pc+8,-7,fx-2,-7+w1,8.5,g,ge);capsule(pc+8,3,fx-6,4+w2,8.5,g,ge);capsule(pc-6,-14,pc+(pose==="rub"?18:8),-16+(pose==="rub"?6+w1:0),8,g,ge);
+    if(pose==="rub")circ(fx-2,-3,3,null,ge,1)}
+  else{/* point */rr(pc-30,-14,18,28,5);ctx.fill();ctx.stroke();rr(pc-14,-12,26,26,9);ctx.fill();ctx.stroke();capsule(pc+8,-5,-4,-5+(o.bend||0),8.5,g,ge);
+    for(let i=0;i<2;i++)circ(pc+13,4+i*6,3.6,g,ge,1.2);capsule(pc-8,-12,pc+6,-14,8,g,ge)}
+  ctx.restore()}
+function drawTool(tool,L,o,tt){const m=C.metal;
+  if(tool==="light"){rr(-L,-5,L-8,10,3);ctx.fillStyle=m;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke();rr(-L+6,-7,4,14,1);ctx.fill();rr(-9,-6,9,12,2);ctx.fillStyle="#2b3238";ctx.fill();
+    if(o.on){glow(2,0,22,C.beam,.9);ctx.globalAlpha=.16;ctx.beginPath();ctx.moveTo(0,-5);ctx.lineTo(o.beam||90,-(o.beamW||26));ctx.lineTo(o.beam||90,o.beamW||26);ctx.lineTo(0,5);ctx.closePath();ctx.fillStyle=C.beam;ctx.fill();ctx.globalAlpha=1}}
+  else if(tool==="fork"){const v=o.vib?Math.sin(tt*70)*1.6*o.vib:0;capsule(-L,0,-36,0,5,m,"rgba(0,0,0,.3)");ctx.beginPath();ctx.moveTo(-36,-6);ctx.lineTo(-36,6);ctx.strokeStyle=m;ctx.lineWidth=5;ctx.stroke();
+    capsule(-36,-6+v,0,-6+v,3.5,m,"rgba(0,0,0,.3)");capsule(-36,6-v,0,6-v,3.5,m,"rgba(0,0,0,.3)");circ(-L,0,4,m)}
+  else if(tool==="hammer"){capsule(-L,0,-12,0,5,m,"rgba(0,0,0,.3)");ctx.beginPath();ctx.moveTo(-18,-26);ctx.lineTo(0,-4);ctx.lineTo(0,4);ctx.lineTo(-18,26);ctx.quadraticCurveTo(-24,0,-18,-26);ctx.closePath();ctx.fillStyle=C.rubber;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1.2;ctx.stroke()}
+  else if(tool==="cotton"){capsule(-L,0,-8,0,3,C.wood,"rgba(0,0,0,.25)");[[-6,0,6],[-2,-3,4],[-2,3,4],[0,0,4]].forEach(c=>circ(c[0],c[1],c[2],"#fbfbf8","rgba(0,0,0,.18)",1))}
+  else if(tool==="pin"){capsule(-L,0,-6,0,4,m,"rgba(0,0,0,.3)");ctx.beginPath();ctx.moveTo(-7,-2.4);ctx.lineTo(0,0);ctx.lineTo(-7,2.4);ctx.closePath();ctx.fillStyle=m;ctx.fill();circ(-L,0,4.5,C.rubber)}
+  else if(tool==="vial"){rr(-L,-11,L-4,22,4);ctx.fillStyle="rgba(255,255,255,.55)";ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1.2;ctx.stroke();rr(-L+2,-9,L-14,18,3);ctx.fillStyle="#6B4426";ctx.fill();rr(-6,-8,6,16,2);ctx.fillStyle="#cfd6da";ctx.fill();ctx.stroke()}
+  else if(tool==="depressor"){rr(-L,-6,L,12,6);ctx.fillStyle=C.wood;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke()}
+  else if(tool==="caliper"){const gp=(o.gap||10)/2;ctx.strokeStyle=m;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-L,0);ctx.lineTo(-28,0);ctx.lineTo(-4,-gp);ctx.lineTo(0,-gp);ctx.moveTo(-28,0);ctx.lineTo(-4,gp);ctx.lineTo(0,gp);ctx.stroke()}
+  else if(tool==="stick"){capsule(-L,0,-3,0,5,m,"rgba(0,0,0,.3)")}}
+
+/* ---------------- body parts ---------------- */
+/* seated leg, side view (patient faces right). hip at (hx,hy). o.lift = hip flexion (rad), o.knee = shin angle from vertical (+ = kicked forward), o.ankle = dorsiflexion (rad) */
+function legSide(hx,hy,s,o){o=o||{};const lift=o.lift||0,k=o.knee||0,a=o.ankle||0;
+  const kx=hx+130*s*Math.cos(lift),ky=hy-130*s*Math.sin(lift);
+  const d=[Math.sin(k),Math.cos(k)],f=[Math.cos(k+a),-Math.sin(k+a)];
+  const ax=kx+118*s*d[0],ay=ky+118*s*d[1];
+  if(o.table!==false){rr(hx-90*s,hy+19*s,220*s,16*s,4*s);ctx.fillStyle=C.table;ctx.fill();ctx.strokeStyle=C["table-edge"];ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle=C.table;ctx.fillRect(hx-60*s,hy+35*s,10*s,90*s)}
+  capsule(hx-40*s,hy,kx,ky,36*s,C.skin,C["skin-edge"]);
+  if(o.quad){ctx.globalAlpha=o.quad;ell((hx+kx)/2,(hy+ky)/2-6*s,52*s,13*s,-lift,C.act3);ctx.globalAlpha=1}
+  /* gown over the hip */
+  ctx.save();ctx.translate(hx,hy);ctx.rotate(-lift*.6);rr(-110*s,-30*s,150*s,50*s,16*s);ctx.fillStyle=C.gown;ctx.fill();ctx.strokeStyle=C["gown-edge"];ctx.lineWidth=1.8;ctx.stroke();ctx.restore();
+  ell(kx-d[0]*0+ (-d[1])*-9*s*0,ky,6*s,6*s,0,null,null);
+  /* calf */
+  ell(kx+d[0]*48*s-d[1]*-10*s*0-f[0]*9*s,ky+d[1]*48*s-f[1]*9*s,13*s,40*s,-k,C.skin,C["skin-edge"],1.4);
+  capsule(kx,ky,ax,ay,25*s,C.skin,C["skin-edge"]);
+  const hx2=ax-f[0]*10*s+d[0]*6*s,hy2=ay-f[1]*10*s+d[1]*6*s,tx=ax+f[0]*54*s+d[0]*10*s,ty=ay+f[1]*54*s+d[1]*10*s;
+  capsule(hx2,hy2,tx,ty,19*s,C.skin,C["skin-edge"]);
+  ell(kx+f[0]*14*s,ky+f[1]*14*s+2*s,10*s,12*s,-k,C["skin-2"],C["skin-edge"],1.4); /* kneecap */
+  const tend=[kx+d[0]*26*s+f[0]*13*s,ky+d[1]*26*s+f[1]*13*s];
+  return {knee:[kx,ky],ankle:[ax,ay],toe:[tx,ty],tendon:tend,d,f,hip:[hx,hy],top:[tx-f[0]*30*s-d[0]*9*s,ty-f[1]*30*s-d[1]*9*s]}}
+/* foot, side (medial) view, toes to the right. (x,y)= ankle. o.big = big-toe angle (+ up), o.fan 0..1 */
+function footSide(x,y,s,o){o=o||{};const big=o.big||0,fan=o.fan||0;
+  capsule(x-6*s,y-70*s,x,y,30*s,C.skin,C["skin-edge"]);
+  const P=()=>{ctx.beginPath();ctx.moveTo(x-26*s,y-6*s);ctx.quadraticCurveTo(x-36*s,y+30*s,x-10*s,y+34*s);ctx.lineTo(x+110*s,y+30*s);ctx.quadraticCurveTo(x+128*s,y+26*s,x+126*s,y+10*s);ctx.quadraticCurveTo(x+90*s,y-4*s,x+40*s,y-10*s);ctx.quadraticCurveTo(x+10*s,y-18*s,x-26*s,y-6*s);ctx.closePath()};
+  /* lesser toes behind */
+  const base=[x+120*s,y+16*s];
+  [[-.8,9,-12],[-.55,8,-8],[-.3,7.5,-4],[-.05,7,0]].forEach((q,i)=>{const ang=(o.curl!=null?o.curl:0)+lerp(-.05,q[0]*-0.55,fan)+ (big>0? .1*(1-i*.3)*fan:0);const L=24*s;
+    const bx=base[0]-6*s-i*3*s,by=base[1]-5*s-i*4*s;ctx.globalAlpha=.85;capsule(bx,by,bx+L*Math.cos(-ang),by+L*Math.sin(-ang),q[1]*s*1.6,C["skin-2"],C["skin-edge"]);ctx.globalAlpha=1});
+  P();ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.8;ctx.stroke();
+  const L=34*s;capsule(base[0],base[1],base[0]+L*Math.cos(-big),base[1]+L*Math.sin(-big),17*s,C.skin,C["skin-edge"]);
+  circ(base[0]+L*Math.cos(-big)-3*s*Math.cos(-big),base[1]+L*Math.sin(-big)-3*s*Math.sin(-big)-4*s,3*s,null,null);
+  return {sole:[[x-22*s,y+30*s],[x+40*s,y+33*s],[x+105*s,y+29*s]],ball:[x+105*s,y+29*s],toeTip:[base[0]+L*Math.cos(-big),base[1]+L*Math.sin(-big)]}}
+/* both feet seen from above (seated patient). R foot on the viewer's left */
+function feetTop(cx,cy,s,o){o=o||{};const out={};
+  ["R","L"].forEach(sd=>{const sx=SX[sd],x=cx+sx*80*s;
+    capsule(x,cy-170*s,x,cy-56*s,46*s,C.skin,C["skin-edge"]);
+    const fp=()=>{ctx.beginPath();ctx.moveTo(x-26*s,cy-62*s);ctx.bezierCurveTo(x-30*s,cy-10*s,x-42*s,cy+30*s,x-38*s,cy+62*s);ctx.bezierCurveTo(x-34*s,cy+92*s,x+34*s,cy+92*s,x+38*s,cy+62*s);ctx.bezierCurveTo(x+42*s,cy+30*s,x+30*s,cy-10*s,x+26*s,cy-62*s);ctx.closePath()};
+    fp();ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.8;ctx.stroke();
+    const T=[[-24,90,12.5],[-3,93,9],[13,90,8.2],[26,84,7.4],[36,75,6.6]];
+    T.forEach((q,i)=>{const tx=x+sx*q[0]*s,ty=cy+q[1]*s,r=q[2]*s;if(o.hiToe&&o.hiToe===sd&&i===0)glow(tx,ty,r*3,C.accent,.5);ell(tx,ty,r,r*1.15,0,C.skin,C["skin-edge"],1.5);ell(tx,ty+r*.45,r*.55,r*.4,0,C["skin-2"])});
+    if(o.shade&&o.shade[sd]){ctx.save();fp();ctx.clip();ctx.globalAlpha=.5;ctx.strokeStyle=C.warn;ctx.lineWidth=2;ctx.beginPath();for(let k=-200;k<200;k+=8){ctx.moveTo(x+k*s,cy-70*s);ctx.lineTo(x+k*s+120*s,cy+100*s)}ctx.stroke();ctx.restore();ctx.globalAlpha=1}
+    out[sd]={dorsum:[x+sx*4*s,cy+10*s],bigToe:[x-sx*24*s,cy+86*s],ankle:[x,cy-56*s]}});
+  return out}
+/* standing figure, front view. (x,y) = floor between the feet. h = height */
+function personFront(x,y,h,o){o=o||{};const s=h/300;
+  ctx.save();ctx.translate(x,y);ctx.rotate(o.sway||0);ctx.translate(o.dx||0,0);
+  const gp=(o.gap==null?6:o.gap)*s;
+  [-1,1].forEach(sx=>{capsule(sx*16*s,-150*s,sx*(gp+9*s),-14*s,25*s,C.pants,C["skin-edge"]);ell(sx*(gp+11*s),-7*s,17*s,8*s,0,C.shoe,"rgba(0,0,0,.35)",1.2)});
+  const arms=o.arms||"side";
+  const hand=sx=>arms==="out"?[sx*88*s,-176*s]:arms==="front"?[sx*30*s,-205*s]:[sx*48*s,-150*s];
+  [-1,1].forEach(sx=>{const sh=[sx*38*s,-246*s],hd=hand(sx);const el=arms==="out"?[sx*66*s,-200*s]:[sx*48*s,-200*s];
+    capsule(sh[0],sh[1],el[0],el[1],17*s,C.gown,C["gown-edge"]);capsule(el[0],el[1],hd[0],hd[1],13*s,C.skin,C["skin-edge"]);circ(hd[0],hd[1],8*s,C.skin,C["skin-edge"],1.3)});
+  rr(-40*s,-266*s,80*s,130*s,18*s);ctx.fillStyle=C.gown;ctx.fill();ctx.strokeStyle=C["gown-edge"];ctx.lineWidth=1.8;ctx.stroke();
+  face(0,-296*s,27*s,Object.assign({neck:true},o.face||{}));
+  ctx.restore()}
+/* walking figure, side view facing right. o.ph = stride phase. mode: normal | ataxic | hemiR | steppageR | sensory | spastic */
+function personSide(x,y,h,o){o=o||{};const s=h/300,ph=o.ph||0,mode=o.mode||"normal";
+  ctx.save();ctx.translate(x,y);const lean=o.lean||0;
+  const bob=-3*s*Math.cos(4*Math.PI*ph);
+  const hip=[0,-150*s+bob];
+  const legAt=(i)=>{const p=ph+i*.5;const aff=(i===0&&(mode==="hemiR"||mode==="steppageR"))||mode==="spastic";
+    let th=.42*Math.sin(TAU*p),kf=.95*Math.pow(Math.max(0,Math.cos(TAU*p)),1.4),foot=0;
+    if(mode==="steppageR"&&i===0){kf*=1.6;th*=1.15;foot=-.8*Math.max(0,Math.cos(TAU*p))}
+    if(aff&&mode!=="steppageR"){kf*=.12;th*=mode==="spastic"?.55:.85;foot=-.25}
+    if(mode==="sensory"){kf*=1.4}
+    const sh=th-kf;const kn=[hip[0]+72*s*Math.sin(th),hip[1]+72*s*Math.cos(th)];const an=[kn[0]+72*s*Math.sin(sh),kn[1]+72*s*Math.cos(sh)];
+    const fa=sh+foot;const toe=[an[0]+30*s*Math.cos(fa),an[1]-30*s*Math.sin(fa)+6*s];return {kn,an,toe,aff}};
+  const drawLeg=(L,far)=>{ctx.globalAlpha=far?.75:1;capsule(hip[0],hip[1],L.kn[0],L.kn[1],24*s,C.pants,C["skin-edge"]);capsule(L.kn[0],L.kn[1],L.an[0],L.an[1],19*s,C.pants,C["skin-edge"]);
+    capsule(L.an[0]-8*s,L.an[1]+3*s,L.toe[0],L.toe[1],13*s,C.shoe,"rgba(0,0,0,.35)");ctx.globalAlpha=1};
+  const armAt=i=>{const p=ph+i*.5+.5;const flexed=i===0&&mode==="hemiR";let a=.38*Math.sin(TAU*p);if(mode==="ataxic"||mode==="sensory")a*=.4;
+    const sh=[4*s,-246*s+bob];if(flexed){return [sh,[sh[0]+8*s,sh[1]+50*s],[sh[0]+30*s,sh[1]+22*s]]}
+    if(mode==="ataxic")return [sh,[sh[0]+20*s*Math.sin(a)+14*s,sh[1]+40*s],[sh[0]+40*s,sh[1]+54*s]];
+    const el=[sh[0]+48*s*Math.sin(a),sh[1]+48*s*Math.cos(a)];const hd=[el[0]+44*s*Math.sin(a+.25),el[1]+44*s*Math.cos(a+.25)];return [sh,el,hd]};
+  const drawArm=(A,far)=>{ctx.globalAlpha=far?.75:1;capsule(A[0][0],A[0][1],A[1][0],A[1][1],15*s,C.gown,C["gown-edge"]);capsule(A[1][0],A[1][1],A[2][0],A[2][1],12*s,C.skin,C["skin-edge"]);circ(A[2][0],A[2][1],7*s,C.skin,C["skin-edge"],1.2);ctx.globalAlpha=1};
+  ctx.rotate(lean);
+  drawArm(armAt(1),true);drawLeg(legAt(1),true);
+  rr(-24*s,-266*s+bob,48*s,124*s,15*s);ctx.fillStyle=C.gown;ctx.fill();ctx.strokeStyle=C["gown-edge"];ctx.lineWidth=1.8;ctx.stroke();
+  const L0=legAt(0);drawLeg(L0,false);drawArm(armAt(0),false);
+  const hy=-292*s+bob,hx=2*s,dn=mode==="sensory"?.35:0;ctx.save();ctx.translate(hx,hy);ctx.rotate(dn);
+  capsule(-2*s,10*s,-2*s,30*s,14*s,C.skin,C["skin-edge"]);circ(0,0,25*s,C.skin,C["skin-edge"],1.8);
+  ctx.beginPath();ctx.moveTo(23*s,-4*s);ctx.lineTo(31*s,6*s);ctx.lineTo(23*s,9*s);ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  ctx.save();ctx.beginPath();ctx.arc(0,0,25*s,0,TAU);ctx.clip();ctx.fillStyle=C.hair;ctx.beginPath();ctx.ellipse(-8*s,-16*s,30*s,17*s,-.25,0,TAU);ctx.fill();ctx.restore();
+  circ(13*s,-3*s,2.6*s,"#222");ell(-6*s,2*s,5*s,8*s,0,C.skin,C["skin-edge"],1.4);
+  ctx.restore();ctx.restore();return L0}
+/* 2-link reach for an arm: shoulder S, target H, lengths a,b, bend = +1/-1 */
+function ik2(S,H,a,b,bend){const dx=H[0]-S[0],dy=H[1]-S[1];let d=Math.hypot(dx,dy);d=Math.min(d,a+b-.01);const ang=Math.atan2(dy,dx);
+  const c=clamp((a*a+d*d-b*b)/(2*a*d),-1,1);const ac=Math.acos(c);if(!bend){const e1=[S[0]+a*Math.cos(ang+ac),S[1]+a*Math.sin(ang+ac)],e2=[S[0]+a*Math.cos(ang-ac),S[1]+a*Math.sin(ang-ac)];return e1[1]>e2[1]?e1:e2}const t=ang+bend*ac;return [S[0]+a*Math.cos(t),S[1]+a*Math.sin(t)]}
+function armFront(S,H,a,b,bend,o){o=o||{};const E=ik2(S,H,a,b,bend);capsule(S[0],S[1],E[0],E[1],o.w||22,C.gown,C["gown-edge"]);capsule(E[0],E[1],H[0],H[1],(o.w||22)*.8,C.skin,C["skin-edge"]);
+  circ(H[0],H[1],(o.w||22)*.55,C.skin,C["skin-edge"],1.4);if(o.point){const a2=Math.atan2(H[1]-E[1],H[0]-E[0]);capsule(H[0],H[1],H[0]+Math.cos(a2)*(o.w||22)*.8,H[1]+Math.sin(a2)*(o.w||22)*.8,(o.w||22)*.28,C.skin,C["skin-edge"])}return E}
+/* lap seen from above with a hand on each thigh. flip = rotation angle about the forearm (0 = palm down) */
+function lapHands(cx,cy,s,o){o=o||{};const out={};
+  ["R","L"].forEach(sd=>{const sx=SX[sd],x=cx+sx*120*s;rr(x-48*s,cy-110*s,96*s,230*s,40*s);ctx.fillStyle=C.gown;ctx.fill();ctx.strokeStyle=C["gown-edge"];ctx.lineWidth=1.6;ctx.stroke();
+    const fl=o["flip"+sd]||0;const c=Math.cos(fl);const palmUp=c<0;const w=Math.max(.08,Math.abs(c));
+    capsule(x,cy-170*s,x,cy-40*s,30*s,C.skin,C["skin-edge"]);
+    ctx.save();ctx.translate(x,cy+12*s);ctx.scale(w,1);
+    rr(-24*s,-30*s,48*s,62*s,14*s);ctx.fillStyle=palmUp?C["skin-2"]:C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.6/w>4?4:1.6;ctx.stroke();
+    for(let i=0;i<4;i++){capsule(-16*s+i*10.5*s,30*s,-16*s+i*10.5*s,(i===1||i===2?58:52)*s,8*s,palmUp?C["skin-2"]:C.skin,C["skin-edge"])}
+    const th=(palmUp?1:-1)*sx;capsule(th*24*s,-6*s,th*36*s,18*s,9*s,palmUp?C["skin-2"]:C.skin,C["skin-edge"]);
+    if(palmUp){ctx.globalAlpha=.6;ctx.beginPath();ctx.moveTo(-16*s,-4*s);ctx.quadraticCurveTo(0,6*s,18*s,-10*s);ctx.moveTo(-18*s,10*s);ctx.quadraticCurveTo(0,16*s,18*s,8*s);ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.3;ctx.stroke();ctx.globalAlpha=1}
+    else{for(let i=0;i<4;i++)circ(-16*s+i*10.5*s,26*s,2.2*s,C["skin-edge"])}
+    ctx.restore();out[sd]={x,y:cy+12*s,palmUp}});return out}
+/* open mouth, looking in: soft palate arches + uvula. raiseR/raiseL 0..1 */
+function mouthInside(cx,cy,s,o){o=o||{};const rR=o.raiseR||0,rL=o.raiseL||0;
+  ell(cx,cy,190*s,150*s,0,C.skin,C["skin-edge"],2);
+  ell(cx,cy+6*s,140*s,108*s,0,C.lip,null);
+  ctx.save();ctx.beginPath();ctx.ellipse(cx,cy+6*s,128*s,98*s,0,0,TAU);ctx.clip();
+  ctx.fillStyle=C.mouth;ctx.fillRect(cx-200*s,cy-200*s,400*s,400*s);
+  /* back of the throat */
+  ell(cx,cy+18*s,62*s,54*s,0,"rgba(0,0,0,.35)");
+  /* palate arches: patient's R on the viewer's left */
+  const up=(sd)=>sd==="R"?rR:rL;
+  ctx.fillStyle=C.palate;ctx.beginPath();ctx.moveTo(cx-140*s,cy-110*s);ctx.lineTo(cx+140*s,cy-110*s);
+  const archY=sd=>cy-6*s-up(sd)*22*s;const midY=cy-18*s-(rR+rL)/2*20*s;
+  ctx.lineTo(cx+140*s,cy+60*s);ctx.quadraticCurveTo(cx+80*s,archY("L"),cx+18*s,midY);ctx.lineTo(cx-18*s,midY);ctx.quadraticCurveTo(cx-80*s,archY("R"),cx-140*s,cy+60*s);ctx.closePath();ctx.fill();
+  ctx.strokeStyle=C.lip;ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(cx+140*s,cy+60*s);ctx.quadraticCurveTo(cx+80*s,archY("L"),cx+18*s,midY);ctx.moveTo(cx-18*s,midY);ctx.quadraticCurveTo(cx-80*s,archY("R"),cx-140*s,cy+60*s);ctx.stroke();
+  /* uvula: pulled toward the side that lifts more */
+  const dev=(rL-rR)*26*s;const ub=[cx,midY-1*s];const ut=[cx+dev,midY+44*s-(rR+rL)*6*s];
+  ctx.beginPath();ctx.moveTo(ub[0]-14*s,ub[1]);ctx.quadraticCurveTo(ut[0]-14*s,ut[1]-8*s,ut[0],ut[1]);ctx.quadraticCurveTo(ut[0]+14*s,ut[1]-8*s,ub[0]+14*s,ub[1]);ctx.closePath();ctx.fillStyle=C.palate;ctx.fill();ctx.strokeStyle=C.lip;ctx.lineWidth=2;ctx.stroke();
+  /* upper teeth */
+  for(let i=-5;i<=5;i++){const a=i/5*1.0;const tx=cx+Math.sin(a)*112*s,ty=cy-78*s+(1-Math.cos(a))*40*s;rr(tx-9*s,ty-14*s,18*s,22*s,5*s);ctx.fillStyle=C.teeth;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.2)";ctx.lineWidth=1;ctx.stroke()}
+  /* tongue */
+  ell(cx,cy+92*s-(o.tongueUp||0)*10*s,112*s,58*s,0,C.tongue,C.lip,2);line(cx,cy+48*s,cx,cy+90*s,C.lip,1.5);
+  ctx.restore();ell(cx,cy+6*s,130*s,100*s,0,null,C.lip,6);
+  return {uvula:ut,back:[cx,cy+30*s],archR:[cx-70*s,cy-6*s-rR*22*s],archL:[cx+70*s,cy-6*s-rL*22*s]}}
+
+/* ---------------- left hemisphere, lateral view (front of the head = viewer's left) ---------------- */
+function brainPath(x,y,s){const P=(a,b)=>[x+a*s,y+b*s];ctx.beginPath();let p=P(-150,0);ctx.moveTo(p[0],p[1]);
+  const bz=(a,b,c,d,e,f)=>{const A=P(a,b),B=P(c,d),D=P(e,f);ctx.bezierCurveTo(A[0],A[1],B[0],B[1],D[0],D[1])};
+  bz(-152,-72,-84,-114,0,-114);bz(82,-114,152,-78,154,-12);bz(156,30,132,56,96,58);bz(70,60,50,62,34,64);bz(10,84,-52,84,-82,58);bz(-98,46,-98,30,-88,22);bz(-112,30,-148,28,-150,0);ctx.closePath()}
+const BR={broca:[-74,-4,24,15],wernicke:[50,14,28,14],aud:[2,14,16,9],vis:[138,-6,14,24]};
+function brainLat(x,y,s,o){o=o||{};const P=(a,b)=>[x+a*s,y+b*s];
+  /* brainstem + cerebellum */
+  const bs=[P(26,52),P(40,150)];capsule(bs[0][0],bs[0][1],bs[1][0],bs[1][1],30*s,C.brain,C["brain-edge"]);
+  ell(x+98*s,y+82*s,50*s,29*s,-.12,C.brain,C["brain-edge"],1.8);ctx.save();ctx.beginPath();ctx.ellipse(x+98*s,y+82*s,50*s,29*s,-.12,0,TAU);ctx.clip();
+  for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(x+98*s,y+40*s,(30+i*8)*s,.6,2.5);ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1;ctx.globalAlpha=.6;ctx.stroke()}ctx.restore();ctx.globalAlpha=1;
+  brainPath(x,y,s);ctx.fillStyle=C.brain;ctx.fill();
+  ctx.save();brainPath(x,y,s);ctx.clip();
+  if(o.mca){ctx.globalAlpha=o.mca*.5;ctx.fillStyle=C.lesion;ctx.beginPath();const m=[[-128,-6],[-96,-60],[-30,-82],[40,-86],[100,-64],[132,-6],[96,40],[40,62],[-40,74],[-88,40]];m.forEach((q,i)=>{const p=P(q[0],q[1]);i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])});ctx.closePath();ctx.fill();ctx.globalAlpha=1}
+  /* gyri texture */
+  ctx.globalAlpha=.55;ctx.strokeStyle=C.gyrus;ctx.lineWidth=1.6*s+.4;
+  for(let i=0;i<26;i++){const a=rnd(i*3)*300-150,b=rnd(i*5+1)*190-115;const p=P(a,b);ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.bezierCurveTo(p[0]+14*s,p[1]-12*s,p[0]+22*s,p[1]+10*s,p[0]+34*s*(rnd(i)>.5?1:-.6),p[1]+(rnd(i*7)-.5)*20*s);ctx.stroke()}
+  ctx.globalAlpha=1;
+  if(o.motor){ctx.globalAlpha=o.motor;ctx.fillStyle=C.cst;ctx.beginPath();let p=P(2,-114);ctx.moveTo(p[0],p[1]);p=P(-20,-50);let q=P(-34,6);ctx.quadraticCurveTo(p[0],p[1],q[0],q[1]);p=P(-60,6);ctx.lineTo(p[0],p[1]);p=P(-46,-50);q=P(-26,-114);ctx.quadraticCurveTo(p[0],p[1],q[0],q[1]);ctx.closePath();ctx.fill();ctx.globalAlpha=1}
+  if(o.sens){ctx.globalAlpha=o.sens;ctx.fillStyle=C.dc;ctx.beginPath();let p=P(30,-114);ctx.moveTo(p[0],p[1]);p=P(12,-50);let q=P(-6,6);ctx.quadraticCurveTo(p[0],p[1],q[0],q[1]);p=P(-30,6);ctx.lineTo(p[0],p[1]);p=P(-14,-50);q=P(6,-114);ctx.quadraticCurveTo(p[0],p[1],q[0],q[1]);ctx.closePath();ctx.fill();ctx.globalAlpha=1}
+  ["broca","wernicke","aud","vis"].forEach(k=>{const a=o[k];if(a){const r=BR[k];ctx.globalAlpha=Math.min(1,a);ell(x+r[0]*s,y+r[1]*s,r[2]*s,r[3]*s,0,k==="broca"?C.act2:k==="wernicke"?C.act1:k==="aud"?C.sound:C.act4);ctx.globalAlpha=1}});
+  if(o.hatchBroca)hatch(()=>{ctx.beginPath();ctx.ellipse(x+BR.broca[0]*s,y+BR.broca[1]*s,BR.broca[2]*s,BR.broca[3]*s,0,0,TAU)},C.lesion,5,o.hatchBroca);
+  if(o.hatchWernicke)hatch(()=>{ctx.beginPath();ctx.ellipse(x+BR.wernicke[0]*s,y+BR.wernicke[1]*s,BR.wernicke[2]*s,BR.wernicke[3]*s,0,0,TAU)},C.lesion,5,o.hatchWernicke);
+  ctx.restore();
+  /* sulci */
+  ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=2.4;ctx.beginPath();let a=P(-88,22),b=P(-20,8),c=P(46,-6),d=P(66,-28);ctx.moveTo(a[0],a[1]);ctx.quadraticCurveTo(b[0],b[1],c[0],c[1]);ctx.lineTo(d[0],d[1]);ctx.stroke();
+  a=P(12,-114);b=P(-6,-50);c=P(-20,5);ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.quadraticCurveTo(b[0],b[1],c[0],c[1]);ctx.stroke();
+  brainPath(x,y,s);ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=2.2;ctx.stroke();
+  if(o.arcuate!=null){const pth=[P(50,10),P(70,-26),P(30,-50),P(-30,-40),P(-70,-6)];ctx.globalAlpha=.5;poly(pth,C.gold,3,[5,4]);ctx.globalAlpha=1;if(o.arcuate>0&&o.arcuate<1){const q=along(pth,o.arcuate);glow(q[0],q[1],16,C.gold,1);circ(q[0],q[1],4,C.gold)}}
+  return P}
+
+/* ---------------- whole-body nervous system map (front view) ----------------
+   Local units; patient's RIGHT is on the viewer's LEFT. */
+const NSM={head:[0,74,68],hemi:{R:[-27,52,31,37],L:[27,52,31,37]},stem:[-9,84,18,56],cbl:{R:[-22,116,16,11],L:[22,116,16,11]},cordTop:140,cordBot:302};
+function nsPaths(){const P={};
+  ["R","L"].forEach(sd=>{const s=SX[sd],o=-s;/* o = opposite side */
+    P["armNerve"+sd]=[[s*6,184],[s*40,186],[s*74,194],[s*92,252],[s*106,314]];
+    P["legNerve"+sd]=[[s*6,294],[s*16,314],[s*30,348],[s*34,412],[s*38,466]];
+    /* corticospinal: from hemisphere on side o, crosses in the lower medulla, runs down the cord on side s */
+    P["cstArm"+sd]=[[o*44,36],[o*16,70],[o*6,98],[o*4,128],[s*4,140],[s*4,184]].concat(P["armNerve"+sd]);
+    P["cstLeg"+sd]=[[o*14,24],[o*14,70],[o*6,98],[o*4,128],[s*4,140],[s*4,292]].concat(P["legNerve"+sd]);
+    P["cstArmUMN"+sd]=[[o*44,36],[o*16,70],[o*6,98],[o*4,128],[s*4,140],[s*4,184]];
+    P["cstLegUMN"+sd]=[[o*14,24],[o*14,70],[o*6,98],[o*4,128],[s*4,140],[s*4,292]];
+    /* dorsal column from the foot on side s: up the same side, crosses in the medulla */
+    P["dc"+sd]=P["legNerve"+sd].slice().reverse().concat([[s*3,292],[s*3,132],[o*4,120],[o*8,84],[o*10,68],[o*36,34]]);
+    /* spinothalamic from the foot on side s: crosses right away in the cord */
+    P["st"+sd]=P["legNerve"+sd].slice().reverse().concat([[s*3,294],[o*3,286],[o*3,132],[o*7,100],[o*10,68],[o*36,34]]);
+    P["cn7"+sd]=[[s*8,104],[s*30,108],[s*52,112]];P["cn12"+sd]=[[s*6,128],[s*20,134],[s*30,140]];P["cn3"+sd]=[[s*5,90],[s*20,92],[s*30,94]];P["cn2"+sd]=[[s*30,92],[s*16,82],[s*4,72]];
+    P["cn11"+sd]=[[s*7,132],[s*28,152],[s*56,170]];
+    P["cbl"+sd]=[[s*22,116],[s*4,104]];
+  });return P}
+const NSP=nsPaths();
+function nsMap(ox,oy,s,o){o=o||{};const P=(a,b)=>[ox+a*s,oy+b*s];const hl=o.hl||{};const fade=o.fade||0;
+  /* body silhouette */
+  ctx.save();ctx.globalAlpha=.9;
+  const body=()=>{ctx.beginPath();let p=P(-14,138);ctx.moveTo(p[0],p[1]);[[-16,164],[-70,172],[-84,186],[-110,312],[-96,318],[-74,214],[-64,236],[-62,330],[-50,470],[-24,472],[-6,350],[6,350],[24,472],[50,470],[62,330],[64,236],[74,214],[96,318],[110,312],[84,186],[70,172],[16,164],[14,138]].forEach(q=>{p=P(q[0],q[1]);ctx.lineTo(p[0],p[1])});ctx.closePath()};
+  body();ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.stroke();
+  const h=NSM.head;circ(ox+h[0]*s,oy+h[1]*s,h[2]*s,C["panel-2"],C.rule,1.5);ctx.restore();
+  /* hemispheres */
+  ["R","L"].forEach(sd=>{const e=NSM.hemi[sd];const on=hl["hemi"+sd]||0;ell(ox+e[0]*s,oy+e[1]*s,e[2]*s,e[3]*s,0,C.brain,C["brain-edge"],1.6);
+    ctx.save();ctx.beginPath();ctx.ellipse(ox+e[0]*s,oy+e[1]*s,e[2]*s,e[3]*s,0,0,TAU);ctx.clip();ctx.globalAlpha=.5;for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(ox+(e[0]+(rnd(i+(sd==="R"?0:9))-.5)*40)*s,oy+(e[1]+(rnd(i*3+2)-.5)*50)*s,10*s,0,3);ctx.strokeStyle=C.gyrus;ctx.lineWidth=1.2;ctx.stroke()}ctx.restore();ctx.globalAlpha=1;
+    if(on){ctx.globalAlpha=on*.45;ell(ox+e[0]*s,oy+e[1]*s,e[2]*s,e[3]*s,0,o.hlCol||C.accent);ctx.globalAlpha=1}});
+  ["R","L"].forEach(sd=>{const e=NSM.cbl[sd];ell(ox+e[0]*s,oy+e[1]*s,e[2]*s,e[3]*s,0,C.brain,C["brain-edge"],1.4);for(let i=-1;i<=1;i++)line(ox+(e[0]-12)*s,oy+(e[1]+i*4)*s,ox+(e[0]+12)*s,oy+(e[1]+i*4)*s,C.gyrus,1);
+    const on=hl["cbl"+sd]||hl.cbl||0;if(on){ctx.globalAlpha=on*.5;ell(ox+e[0]*s,oy+e[1]*s,e[2]*s,e[3]*s,0,o.hlCol||C.accent);ctx.globalAlpha=1}});
+  const st=NSM.stem;rr(ox+st[0]*s,oy+st[1]*s,st[2]*s,st[3]*s,8*s);ctx.fillStyle=C.brain;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  ell(ox,oy+106*s,11*s,10*s,0,C.brain,C["brain-edge"],1.3);
+  if(hl.stem){ctx.globalAlpha=hl.stem*.5;rr(ox+st[0]*s,oy+st[1]*s,st[2]*s,st[3]*s,8*s);ctx.fillStyle=o.hlCol||C.accent;ctx.fill();ctx.globalAlpha=1}
+  /* spinal cord */
+  rr(ox-7*s,oy+NSM.cordTop*s,14*s,(NSM.cordBot-NSM.cordTop)*s,7*s);ctx.fillStyle=C.cord;ctx.fill();ctx.strokeStyle=C["cord-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=0;i<5;i++)line(ox+(i-2)*2.5*s,oy+300*s,ox+(i-2)*6*s,oy+336*s,C["cord-edge"],1);
+  if(hl.cord){ctx.globalAlpha=hl.cord*.5;rr(ox-7*s,oy+NSM.cordTop*s,14*s,(NSM.cordBot-NSM.cordTop)*s,7*s);ctx.fillStyle=o.hlCol||C.accent;ctx.fill();ctx.globalAlpha=1}
+  /* nerves */
+  const nerve=(k,a)=>{const pts=NSP[k].map(q=>P(q[0],q[1]));poly(pts,C.nerve,2.2*Math.max(.7,s));if(a){ctx.globalAlpha=a;poly(pts,o.hlCol||C.accent,5);ctx.globalAlpha=1}};
+  ["R","L"].forEach(sd=>{nerve("armNerve"+sd,hl["arm"+sd]);nerve("legNerve"+sd,hl["leg"+sd]);["cn2","cn3","cn7","cn12"].forEach(k=>nerve(k+sd,hl[k+sd]))});
+  /* small face hints */
+  ["R","L"].forEach(sd=>{const sx=SX[sd];ell(ox+sx*30*s,oy+94*s,6*s,3.5*s,0,C.panel,C["ink-faint"],1)});
+  if(o.labels){const L=(t,a,b,al)=>label(ox+a*s,oy+b*s,t,{size:11,align:al||"center",color:C["ink-soft"],bga:.75});
+    L("R",-70,20);L("L",70,20);}
+  return P}
+function nsFlow(k,p,col,opts){/* draw a path on the map with a moving pulse. p in 0..1 = pulse position; opts.full = draw whole path */
+  opts=opts||{};const P=opts.P;const pts=NSP[k].map(q=>P(q[0],q[1]));
+  ctx.globalAlpha=opts.a==null?.9:opts.a;
+  if(opts.full)poly(pts,col,opts.lw||3.2);else polyPart(pts,p,col,opts.lw||3.2);
+  ctx.globalAlpha=1;if(opts.dot!==false&&p>0&&p<1){const q=along(pts,p);glow(q[0],q[1],14,col,.9);circ(q[0],q[1],3.6,col,C.panel,1.2)}
+  return pts}
+/* spinal cord cross-section (dorsal side up). hl: dc, st, cst = alpha; side "R"/"L" limits the highlight */
+function cordX(cx,cy,r,o){o=o||{};ell(cx,cy,r,r*.78,0,C.cord,C["cord-edge"],2);
+  const g=()=>{ctx.beginPath();ctx.moveTo(cx,cy-r*.12);[-1,1].forEach(sx=>{})};
+  ctx.fillStyle=C.grey;ctx.beginPath();
+  ctx.moveTo(cx-r*.1,cy-r*.08);ctx.quadraticCurveTo(cx-r*.3,cy-r*.75,cx-r*.42,cy-r*.62);ctx.quadraticCurveTo(cx-r*.38,cy-r*.2,cx-r*.6,cy+r*.1);ctx.quadraticCurveTo(cx-r*.55,cy+r*.55,cx-r*.25,cy+r*.5);ctx.quadraticCurveTo(cx-r*.12,cy+r*.18,cx,cy+r*.15);
+  ctx.quadraticCurveTo(cx+r*.12,cy+r*.18,cx+r*.25,cy+r*.5);ctx.quadraticCurveTo(cx+r*.55,cy+r*.55,cx+r*.6,cy+r*.1);ctx.quadraticCurveTo(cx+r*.38,cy-r*.2,cx+r*.42,cy-r*.62);ctx.quadraticCurveTo(cx+r*.3,cy-r*.75,cx+r*.1,cy-r*.08);ctx.closePath();ctx.fill();
+  const zones={dc:(sx)=>[cx+sx*r*.16,cy-r*.5,r*.13,r*.22],cst:(sx)=>[cx+sx*r*.72,cy-r*.08,r*.15,r*.2],st:(sx)=>[cx+sx*r*.62,cy+r*.45,r*.16,r*.14]};
+  const cols={dc:C.dc,cst:C.cst,st:C.st};
+  Object.keys(zones).forEach(k=>["R","L"].forEach(sd=>{const z=zones[k](SX[sd]);const a=(o[k]||0)*((!o.side||o.side===sd)?1:.25);ell(z[0],z[1],z[2],z[3],0,null,cols[k],1.5);if(a){ctx.globalAlpha=a;ell(z[0],z[1],z[2],z[3],0,cols[k]);ctx.globalAlpha=1}}));
+  return zones}
+
+/* ================= animated exam tests =================
+   SCN.x(t,p,B): t = seconds into the test, p = findings for this patient (empty = normal), B = {x,y,w,h} box to draw in. */
+const SCN={};
+function boxOf(B){return {bx:B.x,by:B.y,W:B.w,H:B.h,cx:B.x+B.w/2,bd:[B.x,B.y,B.x+B.w,B.y+B.h]}}
+function talk(list,t){/* list of [t0,t1,who,text,x,y,tail,maxW] ; draws those active */
+  list.forEach(q=>{if(t>=q[0]&&t<q[1]){const a=Math.min(1,(t-q[0])/.25,(q[1]-t)/.25);bubble(q[4],q[5],q[3],{who:q[2],tail:q[6],a,maxW:q[7]||220,bounds:q[8]})}})}
+function ticklist(x,y,items,title){/* items: [text, state] state: null pending, true ok, false abnormal */
+  ctx.font=`600 11px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];if(title)ctx.fillText(title.toUpperCase(),x,y-20);
+  items.forEach((it,i)=>{const yy=y+i*26;rr(x,yy-10,20,20,4);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.4;ctx.stroke();
+    if(it[1]!=null)check(x+10,yy,it[1],.85);ctx.font=`500 13px ${FONT}`;ctx.fillStyle=it[1]===false?C.warn:C.ink;ctx.textAlign="left";ctx.fillText(it[0]+(it[1]===false?" (abnormal)":""),x+28,yy+.5)})}
+function eyesClosedTag(x,y){face(x,y,22,{lidR:1,lidL:1,neck:false});label(x+30,y,"Eyes closed",{size:11.5,mono:true,color:C["ink-soft"]})}
+
+SCN.orient=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.16,cx=bx+W*.3,cy=by+H*.42;bust(cx,cy,R,{gx:.25});
+  const ex=[bx+W*.7,by+H*.22],pt=[cx,by+H*.08];const qs=[["What is your full name?","Jordan Reyes."],["Where are we right now?","At the hospital, in the clinic."],["What is today's date?","Tuesday, October 7th."],["Spell WORLD backward.","D... L... R... O... W."]];
+  const L=[];qs.forEach((q,i)=>{const t0=.3+i*2.4;L.push([t0,t0+2.2,"ex",q[0],ex[0],ex[1],[cx+R*.9,cy-R*.2],200,bd]);L.push([t0+1,t0+2.3,"pt",q[1],pt[0],pt[1],[cx,cy-R*1.02],220,bd])});talk(L,t);
+  ticklist(bx+W*.6,by+H*.5,[["Person (who)",t>1.6?true:null],["Place (where)",t>4?true:null],["Time (when)",t>6.4?true:null],["Attention",t>8.8?true:null]],"Oriented ×3 + attention")};
+SCN.speech=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const a=p.aph||"none";const R=H*.16,cx=bx+W*.3,cy=by+H*.42;
+  const closed=t>4.2&&t<6&&a!=="wernicke";bust(cx,cy,R,{gx:.25,lidR:closed?1:0,lidL:closed?1:0,browR:a==="wernicke"&&t>4.2&&t<6?.4:0});
+  const ex=[bx+W*.7,by+H*.2],pt=[cx,by+H*.08];
+  const A={none:["My son drove me here this morning.","(closes eyes)","A pen."],broca:["Son... drive... here. Car.","(closes eyes)","P... pen."],wernicke:["Well the morning drove a tabler into the blue, you know, here.","(looks puzzled) The eyes, yes, fine fine.","A spork... a writer-thing."]}[a];
+  const Q=["Tell me how you got here today.","Close your eyes.","What is this called?"];
+  const L=[];Q.forEach((q,i)=>{const t0=.3+i*3;L.push([t0,t0+2.8,"ex",q,ex[0],ex[1],[cx+R*.9,cy-R*.2],190,bd]);L.push([t0+1.1,t0+2.9,"pt",A[i],pt[0],pt[1],[cx,cy-R*1.02],240,bd])});talk(L,t);
+  if(t>6.3&&t<9.2)exHand(cx+R*1.1,cy+R*1.2,-Math.PI*.8,{tool:"stick",s:.9});
+  ticklist(bx+W*.6,by+H*.5,[["Speech is fluent",t>2?(a!=="broca"):null],["Understands commands",t>5?(a!=="wernicke"):null],["Names objects",t>8?(a==="none"):null]],"Language")};
+SCN.smell=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.24,cx=bx+W*.45,cy=by+H*.4;bust(cx,cy,R,{lidR:1,lidL:1,bottom:by+H+40});
+  const side=t<3.9?"R":"L",tt=t<3.9?t:t-3.6;const s=SX[side],o=-s;const nx=cx+s*R*.075,ny=cy+R*.21;
+  const inn=es(tt,.3,.9)*(1-es(tt,3.1,3.5));
+  exHand(cx+o*R*.11+o*(1-inn)*80,cy+R*.17,o>0?Math.PI:0,{s:.85});
+  exHand(nx,ny+R*.16+(1-inn)*120,-Math.PI/2,{tool:"vial",s:.85});
+  if(inn>.9){for(let i=0;i<4;i++){const q=((tt*1.2+i/4)%1);ctx.globalAlpha=(1-q)*.8;ctx.beginPath();const yy=ny+R*.16-q*R*.16;ctx.moveTo(nx+Math.sin(q*9+i)*5,yy);ctx.quadraticCurveTo(nx+Math.sin(q*9+i+1)*9,yy-6,nx+Math.sin(q*9+i+2)*4,yy-12);ctx.strokeStyle=C.odor;ctx.lineWidth=2.4;ctx.stroke()}ctx.globalAlpha=1}
+  const anos=p.anosmia&&p.anosmia[side];
+  talk([[.2,1.5,"ex","Close your eyes. What do you smell?",bx+W*.8,by+H*.14,[cx+R*.8,cy],180,bd],[1.6,3.6,"pt",anos?"I don't smell anything.":"Coffee.",cx-R*1.7,by+H*.16,[cx-R*.4,cy+R*.3],160,bd],[3.8,5.1,"ex","Now the other side.",bx+W*.8,by+H*.14,[cx+R*.8,cy],160,bd],[5.2,7.3,"pt",anos?"Nothing.":"Coffee again.",cx-R*1.7,by+H*.16,[cx-R*.4,cy+R*.3],160,bd]],t);
+  label(bx+W*.82,by+H*.86,"Testing the "+(side==="R"?"right":"left")+" nostril",{align:"center",size:12.5,weight:600,color:C.accent,border:C.accent})};
+const SNELLEN=[["E"],["F","P"],["T","O","Z"],["L","P","E","D"],["P","E","C","F","D"],["E","D","F","C","Z","P"],["F","E","L","O","P","Z","D"],["D","E","F","P","O","T","E","C"]];
+const SNL=["20/200","20/100","20/70","20/50","20/40","20/30","20/25","20/20"];
+function snellen(x,y,w,h,row){rr(x,y,w,h,6);ctx.fillStyle="#FBFBF7";ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.stroke();
+  let yy=y+16;SNELLEN.forEach((r,i)=>{const sz=Math.max(7,(h*.17)*Math.pow(.72,i));yy+=sz*.6+6;ctx.font=`600 ${sz}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#111";ctx.fillText(r.join(" "),x+w/2-8,yy);
+    ctx.font=`500 9px ${MONO}`;ctx.textAlign="right";ctx.fillStyle="#57666F";ctx.fillText(SNL[i],x+w-4,yy);if(i===row){ctx.strokeStyle=C.accent;ctx.lineWidth=2;rr(x+5,yy-sz*.55-3,w-10,sz*1.1+6,4);ctx.stroke()}yy+=sz*.6})}
+SCN.acuity=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.16,cx=bx+W*.3,cy=by+H*.46;const side=t<4.6?"R":"L";const cov=side==="R"?"L":"R";
+  bust(cx,cy,R,{gx:.5,gy:-.2,["lid"+cov]:0});
+  /* occluder card over the other eye */
+  const ox=cx+SX[cov]*R*.31;rr(ox-R*.24,cy-R*.3,R*.48,R*.42,R*.12);ctx.fillStyle="#2B3238";ctx.fill();capsule(ox,cy+R*.1,ox+SX[cov]*R*.1,cy+R*1.2,R*.1,"#2B3238","#2B3238");
+  const tt=side==="R"?t:t-4.6;const row=Math.min(7,Math.floor(seg(tt,.6,3.6)*8));snellen(bx+W*.6,by+H*.06,W*.34,H*.86,row);
+  const lim=p.acuity&&p.acuity[side]!=null?p.acuity[side]:7;const r=Math.min(row,lim);
+  talk([[.6,4.4,"pt",row>lim?"I can't make out that line.":SNELLEN[r].join(" "),cx,by+H*.08,[cx,cy-R],200,bd],[5,9,"pt",row>lim?"I can't make out that line.":SNELLEN[r].join(" "),cx,by+H*.08,[cx,cy-R],200,bd]],t);
+  label(cx,by+H*.94,"Testing the "+(side==="R"?"right":"left")+" eye (the other is covered)",{align:"center",size:12.5,weight:600,color:C.accent,border:C.accent})};
+SCN.fields=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.15,cx=bx+W*.4,cy=by+H*.47;bust(cx,cy,R,{});
+  const Q=[["R",-1],["R",1],["L",-1],["L",1]];const k=Math.floor((t-1.4)/1.6);const loss=p.fieldLoss||"";
+  const seen=[];Q.forEach((q,i)=>{const t0=1.4+i*1.6;const on=bump(t,t0,t0+.3,t0+1.2,t0+1.5);const s=SX[q[0]];
+    if(on>.02){ctx.globalAlpha=on;exHand(cx+s*R*2.35,cy+q[1]*R*1.05,s<0?0:Math.PI,{pose:"wiggle",t,s:.85,flip:s>0});ctx.globalAlpha=1}
+    const miss=loss.indexOf(q[0])>=0;seen.push(t>t0+.9?!miss:null);if(t>t0+.4&&t<t0+1.4)bubble(cx+s*R*.2,by+H*.08,miss?"(says nothing)":"Now!",{who:"pt",tail:[cx,cy-R],maxW:140,bounds:bd})});
+  talk([[.2,1.4,"ex","Look at my nose. Tell me when you see my fingers move.",bx+W*.78,by+H*.12,null,190,bd]],t);
+  /* field map */
+  const fx=bx+W*.86,fy=by+H*.8,fr=Math.min(W*.1,H*.12);ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.fillStyle=C["ink-soft"];ctx.fillText("VISUAL FIELD MAP",fx,fy-fr-16);
+  circ(fx,fy,fr,C.panel,C.rule,1.5);line(fx-fr,fy,fx+fr,fy,C.rule,1);line(fx,fy-fr,fx,fy+fr,C.rule,1);
+  Q.forEach((q,i)=>{const qx=fx+SX[q[0]]*fr*.5,qy=fy+q[1]*fr*.5;if(seen[i]!=null){if(!seen[i]){ctx.globalAlpha=.35;ctx.beginPath();ctx.moveTo(fx,fy);ctx.arc(fx,fy,fr,q[1]<0?(SX[q[0]]<0?Math.PI:-Math.PI/2):(SX[q[0]]<0?Math.PI/2:0),q[1]<0?(SX[q[0]]<0?-Math.PI/2:0):(SX[q[0]]<0?Math.PI:Math.PI/2));ctx.fillStyle=C.warn;ctx.fill();ctx.globalAlpha=1}check(qx,qy,seen[i],.8)}});
+  ctx.font=`500 10.5px ${MONO}`;ctx.fillStyle=C["ink-soft"];ctx.fillText("pt's R",fx-fr*.6,fy+fr+12);ctx.fillText("pt's L",fx+fr*.6,fy+fr+12)};
+function pupilState(t,p,T){/* T = timeline [[eye,t0,t1]...] returns {R,L,lit} pupil sizes */
+  const lit={R:0,L:0};T.forEach(q=>{lit[q[0]]=Math.max(lit[q[0]],es(t,q[1],q[1]+.35)*(1-es(t,q[2],q[2]+.35)))});
+  const d=p.pupil||"";const aff=E=>d!==E+"2";const eff=X=>d!==X+"3";
+  const resp=X=>{let r=0;["R","L"].forEach(E=>{if(aff(E))r=Math.max(r,lit[E])});return eff(X)?r:0};
+  return {R:1.5-1.05*resp("R"),L:1.5-1.05*resp("L"),lit,resp}}
+SCN.pupil=(t,p,B,o)=>{o=o||{};const {bx,by,W,H,bd}=boxOf(B);const R=o.R||H*.62,cx=o.cx||bx+W*.5,cy=o.cy||by+H*.44+R*.1;
+  ctx.fillStyle="rgba(10,16,20,.28)";ctx.fillRect(bx,by,W,H);
+  const T=[["R",1.4,3.6],["L",5.4,7.6]];const S=pupilState(t,p,T);const d=p.pupil||"";
+  face(cx,cy,R,{pupR:S.R,pupL:S.L,lidR:d==="R3"?.5:0,gR:d==="R3"?[-.7,.6]:null,neck:false});
+  ["R","L"].forEach(E=>{const tr=T.find(q=>q[0]===E);const inn=es(t,tr[1]-.6,tr[1])*(1-es(t,tr[2],tr[2]+.6));if(inn<.01)return;
+    const ex=cx+SX[E]*R*.31,ey=cy-R*.1;const tip=[ex+SX[E]*R*.5*(1+(1-inn)*1.2),ey+R*.42*(1+(1-inn))];const ang=Math.atan2(ey-tip[1],ex-tip[0]);
+    exHand(tip[0],tip[1],ang,{tool:"light",on:inn>.85,beam:Math.hypot(ex-tip[0],ey-tip[1])+10,beamW:R*.09});
+    if(S.lit[E]>.5&&o.labels!==false){const other=E==="R"?"L":"R";const sh=S.resp(E)>.5;const oh=S.resp(other)>.5;
+      label(ex,ey-R*.46,sh?"Direct: constricts":"Direct: no change",{align:"center",size:12.5,weight:600,color:sh?C.good:C.warn,border:sh?C.good:C.warn});
+      const ox=cx+SX[other]*R*.31;label(ox,ey-R*.33,oh?"Consensual: constricts":"Consensual: no change",{align:"center",size:12.5,weight:600,color:oh?C.good:C.warn,border:oh?C.good:C.warn})}});
+  if(o.labels!==false)label(bx+12,by+H-16,"Room lights dimmed. Light goes in one eye at a time.",{size:12,color:C["ink-soft"]})};
+const HPATH=[[0,0],[-1,0],[-1,-1],[-1,1],[-1,0],[0,0],[1,0],[1,-1],[1,1],[1,0],[0,0]];
+SCN.eom=(t,p,B,o)=>{o=o||{};const {bx,by,W,H,bd}=boxOf(B);const R=o.R||H*.42,cx=o.cx||bx+W*.45,cy=o.cy||by+H*.5;
+  const q=seg(t,.6,(o.dur||9)-.6);const g=along(HPATH,q);const pal=p.palsy||"";
+  const gR=[g[0],g[1]],gL=[g[0],g[1]];
+  if(pal==="L6")gL[0]=Math.min(gL[0],0);if(pal==="R6")gR[0]=Math.max(gR[0],0);
+  if(pal==="R3"){gR[0]=Math.min(-.75,gR[0]);gR[1]=.55}
+  face(cx,cy,R,{gR,gL,lidR:pal==="R3"?.55:0,neck:false});
+  const ex=cx,ey=cy-R*.1,sx=R*1.15,sy=R*.5;
+  ctx.globalAlpha=.55;poly(HPATH.map(h=>[ex+h[0]*sx,ey+h[1]*sy+R*.3]),C.accent,2,[6,5]);ctx.globalAlpha=1;
+  exHand(ex+g[0]*sx,ey+g[1]*sy+R*.3,-Math.PI/2,{s:.75});
+  if(o.labels!==false)talk([[0,2,"ex","Follow my finger with your eyes. Keep your head still.",bx+W*.78,by+H*.1,null,180,bd]],t)};
+SCN.cn5=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.36,cx=bx+W*.42,cy=by+H*.5;
+  const seq=[["R","V1"],["L","V1"],["R","V2"],["L","V2"],["R","V3"],["L","V3"]];const k=Math.floor((t-.3)/.85);const ph=((t-.3)/.85)%1;
+  const zones={V1:0,V2:0,V3:0,side:null};let cur=null;if(t>.3&&k<6){cur=seq[k];zones[cur[1]]=bump(ph,.1,.3,.75,.95);zones.side=cur[0]}
+  const fxx=cx;const P={V1:[.3,-.42],V2:[.43,.17],V3:[.32,.72]};
+  const clench=bump(t,6,6.5,8.4,8.8);
+  face(cx,cy,R,{lidR:t<5.6?1:0,lidL:t<5.6?1:0,zones:cur?zones:null,clenchR:clench,clenchL:clench,neck:true});
+  if(cur){const s=SX[cur[0]];const tip=[fxx+s*R*P[cur[1]][0],cy+R*P[cur[1]][1]];const inn=bump(ph,.0,.3,.7,1);const ang=s<0?.25:Math.PI-.25;
+    exHand(tip[0]-Math.cos(ang)*(1-inn)*70,tip[1]-Math.sin(ang)*(1-inn)*70,ang,{tool:"cotton",s:.9});
+    const numb=p.numb&&p.numb[cur[0]]&&p.numb[cur[0]].indexOf(cur[1])>=0;
+    if(ph>.35)bubble(cx+s*R*1.25,by+H*.1,numb?"Hmm, less there.":"Yes.",{who:"pt",maxW:120,bounds:bd});
+    if(!p.quiz)label(bx+W*.86,by+H*.9,"Touch: "+cur[1]+" ("+(cur[0]==="R"?"right":"left")+")",{align:"center",size:12.5,weight:600,color:C.accent,border:C.accent})}
+  if(t>5.8){[-1,1].forEach(s=>exHand(cx+s*R*.62,cy+R*.5,-Math.PI/2+s*.25,{s:.8}));talk([[5.8,9,"ex","Clench your teeth.",bx+W*.82,by+H*.12,[cx+R*.7,cy+R*.3],160,bd]],t);
+    if(clench>.8){label(cx-R*1.05,cy+R*.62,"masseter bulges",{align:"center",size:12,color:C["ink-soft"]});label(cx+R*1.05,cy+R*.62,"masseter bulges",{align:"center",size:12,color:C["ink-soft"]})}}
+  if(t<5.6)talk([[0,1.6,"ex","Close your eyes. Say yes when you feel me touch.",bx+W*.8,by+H*.1,null,180,bd]],t)};
+function cn7Face(t,p){/* returns face params over the 4-part CN VII routine */
+  const ph=[[.4,2.3],[2.4,4.3],[4.4,6.3],[6.4,8.3]].map(q=>bump(t,q[0],q[0]+.4,q[1]-.3,q[1]));
+  const w=p.facial||null;const o={};
+  ["R","L"].forEach(sd=>{const weak=w&&w.side===sd;const lmn=weak&&w.type==="LMN";const umn=weak&&w.type==="UMN";
+    o["brow"+sd]=ph[0]*(lmn?0:1);
+    o["lid"+sd]=ph[1]*(lmn?.55:1);o["sq"+sd]=ph[1]*(lmn?0:umn?.6:1);
+    o["smile"+sd]=ph[2]*(weak?0:1);o["droop"+sd]=weak?.35+ph[2]*.35+ph[3]*.2:0;
+    o["puff"+sd]=ph[3]*(weak?.25:1)});
+  o.teeth=ph[2];o.purse=ph[3]*.8;return {o,ph}}
+SCN.cn7=(t,p,B,opt)=>{opt=opt||{};const {bx,by,W,H,bd}=boxOf(B);const R=opt.R||H*.36,cx=opt.cx||bx+W*.42,cy=opt.cy||by+H*.52;const F=cn7Face(t,p);face(cx,cy,R,F.o);
+  const w=p.facial;
+  if(w&&F.ph[3]>.5){const s=SX[w.side];for(let i=0;i<3;i++){const q=((t*1.5+i/3)%1);ctx.globalAlpha=1-q;line(cx+s*R*.26+s*q*20,cy+R*.45+i*4-q*6,cx+s*R*.26+s*q*20+s*8,cy+R*.45+i*4-q*6,C["ink-soft"],1.6)}ctx.globalAlpha=1}
+  if(opt.talk!==false)talk([[.3,2.3,"ex","Raise your eyebrows.",bx+W*.82,by+H*.12,[cx+R*.6,cy-R*.4],160,bd],[2.4,4.3,"ex","Close your eyes tight. Don't let me open them.",bx+W*.82,by+H*.12,[cx+R*.6,cy-R*.2],160,bd],[4.4,6.3,"ex","Show me your teeth. Big smile.",bx+W*.82,by+H*.12,[cx+R*.6,cy+R*.3],160,bd],[6.4,8.4,"ex","Puff out your cheeks.",bx+W*.82,by+H*.12,[cx+R*.7,cy+R*.3],160,bd]],t)};
+SCN.hear=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.2,cx=bx+W*.45,cy=by+H*.44;bust(cx,cy,R,{lidR:1,lidL:1});
+  const side=t<3.7?"R":"L",tt=t<3.7?t:t-3.5;const s=SX[side];const inn=bump(tt,.3,.8,2.9,3.3);
+  const tip=[cx+s*R*1.25+s*(1-inn)*60,cy-R*.05];exHand(tip[0],tip[1],s<0?0:Math.PI,{pose:"rub",t,s:.8,flip:s>0});
+  if(inn>.9)soundArcs(tip[0]-s*4,tip[1],s<0?0:Math.PI,t,C.sound,3);
+  const deaf=p.deaf&&p.deaf[side];
+  talk([[.2,1.4,"ex","Eyes closed. Say yes when you hear my fingers.",bx+W*.82,by+H*.1,null,170,bd],[1.2,3.4,"pt",deaf?"I don't hear anything.":"Yes, I hear it.",cx-s*R*1.5,by+H*.12,[cx,cy-R],150,bd],[4.9,7,"pt",deaf?"I don't hear anything.":"Yes, I hear it.",cx-s*R*1.5,by+H*.12,[cx,cy-R],150,bd]],t);
+  label(bx+W*.84,by+H*.9,(side==="R"?"Right":"Left")+" ear",{align:"center",size:12.5,weight:600,color:C.accent,border:C.accent})};
+SCN.ahh=(t,p,B,opt)=>{opt=opt||{};const {bx,by,W,H,bd}=boxOf(B);const s=opt.s||H/400,cx=opt.cx||bx+W*.45,cy=opt.cy||by+H*.52;const wk=p.palate||null;
+  const say=bump(t,.9,1.4,3.2,3.6);const gag=bump(t,5.3,5.45,6.1,6.6);const r=Math.max(say,gag);
+  const M=mouthInside(cx,cy,s,{raiseR:wk==="R"?r*.05:r,raiseL:wk==="L"?r*.05:r,tongueUp:gag});
+  if(t>4&&t<7.6){const inn=es(t,4.2,5.3)*(1-es(t,6.6,7.4));const tip=[lerp(cx+260*s,M.back[0]+20*s,inn),lerp(cy+150*s,M.back[1]+12*s,inn)];exHand(tip[0],tip[1],Math.atan2(M.back[1]-(cy+150*s),M.back[0]-(cx+260*s)),{tool:"depressor",s:.9})}
+  if(say>.6){arrow(M.archR[0],M.archR[1]+30*s,M.archR[0],M.archR[1]+4*s,wk==="R"?C.warn:C.good,2.2);arrow(M.archL[0],M.archL[1]+30*s,M.archL[0],M.archL[1]+4*s,wk==="L"?C.warn:C.good,2.2)}
+  if(gag>.5)label(cx,cy-160*s,"Gag reflex",{align:"center",size:13,weight:700,color:C.act3,border:C.act3});
+  if(opt.talk!==false)talk([[.2,3.6,"ex","Open wide and say \"ahh.\"",bx+W*.85,by+H*.1,null,150,bd],[1,3.4,"pt","Ahhhh...",cx+200*s,cy+150*s,null,120,bd],[4,5.2,"ex","Just a quick touch at the back.",bx+W*.85,by+H*.1,null,150,bd]],t);
+  if(wk&&say>.6)label(cx,cy+185*s,"Uvula pulled toward the "+(wk==="R"?"left":"right")+" (strong) side",{align:"center",size:12.5,weight:600,color:C.warn,border:C.warn});
+  sideTags(cx,cy-172*s,150*s)};
+SCN.shrug=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.17,cx=bx+W*.42,cy=by+H*.36;const wk=p.xi||null;
+  const sh=bump(t,.9,1.5,3.2,3.6);const tL=bump(t,4.2,4.8,5.6,6),tR=bump(t,6.3,6.9,7.7,8.1);
+  const turn=tL*(wk==="R"?.25:.85)-tR*(wk==="L"?.25:.85);
+  const st=bust(cx,cy,R,{shR:sh*(wk==="R"?.3:1),shL:sh*(wk==="L"?.3:1),turn,scmR:tL*(wk==="R"?.3:1),scmL:tR*(wk==="L"?.3:1)});
+  if(t<3.8){[st.shoulderR,st.shoulderL].forEach(q=>exHand(q[0],q[1]-R*.12,Math.PI/2,{pose:"flat",s:.8}))}
+  if(tL>.05)exHand(cx+R*.86,cy+R*.25,Math.PI,{pose:"flat",s:.8});if(tR>.05)exHand(cx-R*.86,cy+R*.25,0,{pose:"flat",s:.8,flip:true});
+  talk([[.2,3.6,"ex","Shrug your shoulders. Don't let me push them down.",bx+W*.84,by+H*.1,null,170,bd],[4,6.1,"ex","Turn your head to your left, against my hand.",bx+W*.84,by+H*.1,null,170,bd],[6.2,8.3,"ex","Now to your right.",bx+W*.84,by+H*.1,null,170,bd]],t);
+  if(tL>.6)label(cx-R*1.3,cy+R*1.1,"right SCM working",{align:"right",size:12,weight:600,color:C.act3,border:C.act3});
+  if(tR>.6)label(cx+R*1.3,cy+R*1.1,"left SCM working",{size:12,weight:600,color:C.act3,border:C.act3});
+  if(sh>.6)label(cx,cy+R*2.6,"trapezius lifts both shoulders",{align:"center",size:12,weight:600,color:C.act3,border:C.act3})};
+SCN.tongue=(t,p,B,opt)=>{opt=opt||{};const {bx,by,W,H,bd}=boxOf(B);const R=opt.R||H*.42,cx=opt.cx||bx+W*.42,cy=opt.cy||by+H*.42;const wk=p.xii||null;
+  const out=es(t,.8,1.4)*(1-es(t,6.6,7.1));const wig=t>3.6&&t<6.4?Math.sin((t-3.6)*3.2):0;
+  let dev=wk?SX[wk]*.85:0;if(wig){dev=wk?SX[wk]*.85+wig*.4:wig*.85;dev=clamp(dev,-1,1)}
+  face(cx,cy,R,{tongue:out,tdev:dev,tweak:wk,fasc:wk?1:0,t});
+  if(opt.talk!==false)talk([[.2,3.4,"ex","Stick out your tongue.",bx+W*.84,by+H*.12,null,150,bd],[3.5,6.5,"ex","Move it side to side.",bx+W*.84,by+H*.12,null,150,bd]],t);
+  if(wk&&out>.8&&!wig)label(cx+SX[wk]*R*.7,cy+R*.95,"points to the weak "+(wk==="R"?"right":"left")+" side",{align:"center",size:12.5,weight:600,color:C.warn,border:C.warn});
+  sideTags(cx,cy+R*1.18,R*.55)};
+function feetScene(t,p,B,mode){const {bx,by,W,H,bd}=boxOf(B);const s=H/430,cx=bx+W*.45,cy=by+H*.46;
+  const lossK=mode==="cotton"?"lossTouch":mode==="pin"?"lossPain":"lossVib";const loss=p[lossK]||{};
+  const done={R:t>3,L:t>6.1};
+  const F=feetTop(cx,cy,s,{shade:{R:done.R&&loss.R,L:done.L&&loss.L},hiToe:mode==="fork"?(t<3.2?"R":"L"):null});
+  eyesClosedTag(bx+34,by+30);
+  const side=t<3.2?"R":"L",tt=t<3.2?t:t-3.1;const inn=bump(tt,.3,.9,2.4,2.9);const sx=SX[side];
+  const tgt=mode==="fork"?F[side].bigToe:F[side].dorsum;const ang=-Math.PI/2+sx*.45;
+  const tool=mode==="cotton"?"cotton":mode==="pin"?"pin":"fork";
+  exHand(tgt[0]-Math.cos(ang)*(1-inn)*90,tgt[1]-Math.sin(ang)*(1-inn)*90+(mode==="fork"?-4:0),ang,{tool,vib:mode==="fork"?1:0,t,s:.9});
+  if(mode==="fork"&&inn>.9&&!loss[side])vibLines(tgt[0],tgt[1],t,C.sound);
+  const msg={cotton:["Yes, I feel that.","I don't feel anything."],pin:["Sharp.","Just pressure. Not sharp."],fork:["Buzzing... now it stopped.","I feel you press, but no buzz."]}[mode];
+  if(tt>1.1&&tt<3)bubble(tgt[0]+sx*30,by+H*.12,msg[loss[side]?1:0],{who:"pt",maxW:170,bounds:bd});
+  const nm={cotton:"Light touch (cotton wisp)",pin:"Pain (pin: sharp vs dull)",fork:"Vibration (128 Hz tuning fork)"}[mode];
+  label(bx+W*.5,by+H*.95,nm+" · "+(side==="R"?"right":"left")+" foot",{align:"center",size:12.5,weight:600,color:C.accent,border:C.accent})}
+SCN.touch=(t,p,B)=>feetScene(t,p,B,"cotton");
+SCN.pain=(t,p,B)=>feetScene(t,p,B,"pin");
+SCN.vib=(t,p,B)=>feetScene(t,p,B,"fork");
+SCN.prop=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const s=H/330;eyesClosedTag(bx+34,by+30);const loss=p.lossProp||{};
+  ["R","L"].forEach((sd,i)=>{const t0=.4+i*3.4;const tt=t-t0;const act=tt>0&&tt<3.2;const mv=act?[es(tt,.3,.6)*(1-es(tt,.9,1.2)),-es(tt,1.3,1.6)*(1-es(tt,1.9,2.2)),es(tt,2.3,2.6)*(1-es(tt,2.9,3.1))]:[0,0,0];
+    const big=(mv[0]+mv[1]+mv[2])*.42;const px=bx+W*(i?.56:.06);const F=footSide(px+40*s,by+H*.48,s,{big,fan:0});
+    label(px+90*s,by+H*.22,(sd==="R"?"Right":"Left")+" big toe",{align:"center",size:12.5,weight:600,color:act?C.accent:C["ink-soft"],border:act?C.accent:null});
+    if(act){exHand(F.toeTip[0]-4,F.toeTip[1]+2,Math.PI*.82,{s:.75});
+      const k=tt<1.2?0:tt<2.2?1:2;const truth=["Up.","Down.","Up."][k];const wrong=["Down?","Up?","I'm not sure."][k];if((tt%1.05)>.45)bubble(px+90*s,by+H*.1,loss[sd]?wrong:truth,{who:"pt",maxW:130,bounds:bd})}});
+  label(bx+W*.5,by+H*.94,"Proprioception: the examiner moves the toe; the patient names the direction",{align:"center",size:12,color:C["ink-soft"]})};
+const GR_YIELD=[1.0,1.0,1.0,.62,.18,0];/* how far the forearm drops under resistance, by grade 0-5 */
+SCN.arms=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.14,cx=bx+W*.45,cy=by+H*.26;const st=bust(cx,cy,R,{noArms:true,bottom:by+H+20});
+  const g={R:p.armR==null?5:p.armR,L:p.armL==null?5:p.armL};const push=bump(t,2,2.6,4.6,5);
+  ["R","L"].forEach(sd=>{const s=SX[sd];const S=sd==="R"?st.shoulderR:st.shoulderL;const gr=g[sd];
+    const lift=es(t,.5,1.5)*(gr>=3?1:gr===2?.25:gr===1?.04:0);const a=Math.PI*.5*lift*(1-push*GR_YIELD[gr]*(gr>=3?.9:0));
+    const Lu=R*1.55,Lf=R*1.45;const E=[S[0]+s*Lu*Math.sin(a),S[1]+Lu*Math.cos(a)],Hh=[E[0]+s*Lf*Math.sin(a*.97),E[1]+Lf*Math.cos(a*.97)];
+    capsule(S[0],S[1],E[0],E[1],R*.42,C.gown,C["gown-edge"]);capsule(E[0],E[1],Hh[0],Hh[1],R*.32,C.skin,C["skin-edge"]);circ(Hh[0],Hh[1],R*.2,C.skin,C["skin-edge"],1.4);
+    if(t>1.8)exHand(E[0]+s*R*.2,E[1]-R*.22,Math.PI/2,{pose:"flat",s:.75});
+    if(t>4)label(S[0]+s*R*1.6,S[1]+R*2.4,"Strength "+gr+"/5",{align:"center",size:13,weight:700,color:gr<5?C.warn:C.good,border:gr<5?C.warn:C.good})});
+  talk([[.2,1.9,"ex","Lift both arms out to the sides.",bx+W*.84,by+H*.1,null,160,bd],[2,4.8,"ex","Hold them up. Don't let me push down.",bx+W*.84,by+H*.1,null,160,bd]],t);sideTags(cx,by+H*.97,R*2.2)};
+SCN.legs=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const s=H/470;
+  ["R","L"].forEach((sd,i)=>{const px=bx+W*(i?.54:.04);const g=(p["leg"+sd]||{});const hip=g.hip==null?5:g.hip,dor=g.dorsi==null?5:g.dorsi;
+    const lp=bump(t,.6,1.2,3,3.4),dp=bump(t,3.8,4.4,6.2,6.6);
+    const L=legSide(px+70*s,by+H*.42,s,{lift:.32*lp*(hip>=4?1:hip===3?.8:.1)*(1-(hip<5?.3:0)*bump(t,1.6,2,2.8,3.2)),ankle:.5*dp*(dor>=4?1:dor===3?.7:dor===2?.1:0)*(1-(dor===4?.3:0)*bump(t,4.8,5.2,6,6.3))-(dor<=2?.35:0)});
+    if(lp>.05)exHand(L.knee[0]-28*s,L.knee[1]-22*s,Math.PI/2,{pose:"flat",s:.7});
+    if(dp>.05)exHand(L.top[0],L.top[1]-14*s,Math.PI/2+.2,{pose:"flat",s:.7});
+    label(px+120*s,by+H*.08,(sd==="R"?"Right":"Left")+" leg",{align:"center",size:13,weight:600});
+    if(t>2.4&&t<3.6)label(px+120*s,by+H*.8,"Hip flexion "+hip+"/5",{align:"center",size:12.5,weight:700,color:hip<5?C.warn:C.good,border:hip<5?C.warn:C.good});
+    if(t>5.4)label(px+120*s,by+H*.8,"Foot up (dorsiflexion) "+dor+"/5",{align:"center",size:12.5,weight:700,color:dor<5?C.warn:C.good,border:dor<5?C.warn:C.good})});
+  talk([[.2,3.4,"ex","Lift your knee. Push up against my hand.",bx+W*.5,by+H*.95,null,440,bd],[3.6,6.8,"ex","Pull your foot up toward you. Don't let me push it down.",bx+W*.5,by+H*.95,null,460,bd]],t)};
+const RFX_AMP=[0,.14,.42,.66,.74];const RFX_TXT=["0 (absent)","1+ (diminished)","2+ (normal)","3+ (brisk)","4+ (very brisk, clonus)"];
+function kneeAt(tt,g){if(tt<0)return 0;const A=RFX_AMP[g]||0;let k=A*es(tt,.04,.2)*(1-es(tt,.32,.85));if(g>=4&&tt>.5){const d=tt-.5;k+=A*.32*Math.max(0,Math.sin(d*14))*Math.exp(-d*1.1)}return k}
+SCN.patellar=(t,p,B,opt)=>{opt=opt||{};const {bx,by,W,H,bd}=boxOf(B);const s=opt.s||H/580;
+  ["R","L"].forEach((sd,i)=>{const px=bx+W*(i?.53:.05);const g=p["dtr"+sd]==null?2:p["dtr"+sd];const ts=i?4.4:1.2;const tt=t-ts;
+    const k=kneeAt(tt,g);const L=legSide(px+60*s,by+H*.36,s,{knee:k,quad:tt>0&&tt<.6?.5*(RFX_AMP[g]>0?1:0):0});
+    const wind=t<ts-.05?es(t,ts-.9,ts-.4)*(1-es(t,ts-.35,ts-.02)):0;const near=bump(t,ts-1.3,ts-1,ts+.6,ts+1);
+    if(near>.02){const A0=Math.PI-.75;const pv=[L.tendon[0]-92*.85*Math.cos(A0),L.tendon[1]-92*.85*Math.sin(A0)];const ang=A0+wind*.9;ctx.globalAlpha=near;exHand(pv[0]+92*.85*Math.cos(ang),pv[1]+92*.85*Math.sin(ang),ang,{tool:"hammer",s:.85});ctx.globalAlpha=1;
+      if(tt>-.02&&tt<.15)glow(L.tendon[0],L.tendon[1],20,C.beam,1)}
+    label(px+130*s,by+H*.06,(sd==="R"?"Right":"Left")+" knee",{align:"center",size:13,weight:600});
+    /* knee-angle trace */
+    const gx=px+20*s,gy=by+H*.9,gw=W*.42,gh=H*.12;line(gx,gy,gx+gw,gy,C.rule,1.2);ctx.font=`500 10px ${MONO}`;ctx.fillStyle=C["ink-soft"];ctx.textAlign="left";ctx.fillText("kick size",gx,gy-gh-6);
+    ctx.beginPath();for(let j=0;j<=80;j++){const tx=ts-.4+j/80*3;if(tx>t)break;const v=kneeAt(tx-ts,g);const X=gx+j/80*gw,Y=gy-v/.8*gh;j?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=C.accent;ctx.lineWidth=2.2;ctx.stroke();
+    if(tt>.9){const ab=g!==2;label(px+130*s,by+H*.7,"Reflex "+RFX_TXT[g],{align:"center",size:12.5,weight:700,color:ab?C.warn:C.good,border:ab?C.warn:C.good})}});
+  if(opt.talk!==false)talk([[.0,1,"ex","Let your legs hang loose.",bx+W*.5,by+H*.62,null,200,bd]],t)};
+SCN.babinski=(t,p,B,opt)=>{opt=opt||{};const {bx,by,W,H,bd}=boxOf(B);const s=opt.s||H/330;
+  ["R","L"].forEach((sd,i)=>{const px=bx+W*(i?.53:.05);const pos=p["bab"+sd];const ts=i?4.2:.6;const tt=t-ts;
+    const resp=es(tt,1.7,2.2);const big=pos?resp*.62:-resp*.3,fan=pos?resp:0;
+    const F=footSide(px+50*s,by+H*.42,s,{big,fan,curl:pos?null:-resp*.32});
+    const str=seg(tt,.3,1.8);if(tt>0&&tt<3.4){const P=F.sole;const q=along(P,str);ctx.globalAlpha=.6;polyPart(P,str,C.accent,2.5);ctx.globalAlpha=1;exHand(q[0],q[1]+2,-Math.PI/2+.5,{tool:"stick",s:.8})}
+    label(px+110*s,by+H*.08,(sd==="R"?"Right":"Left")+" foot (inner side view)",{align:"center",size:12.5,weight:600});
+    if(tt>2)label(px+110*s,by+H*.82,pos?"Big toe UP, toes fan: positive Babinski":"Toes curl DOWN: normal",{align:"center",size:12.5,weight:700,color:pos?C.warn:C.good,border:pos?C.warn:C.good})});
+  if(opt.talk!==false)label(bx+W*.5,by+H*.95,"A blunt tip strokes the outer sole from heel to ball. (Not painful, just firm.)",{align:"center",size:12,color:C["ink-soft"]})};
+function ftnPath(tt,ax,period){/* 0..1 fraction of reach (0 nose,1 target) plus wobble */const c=(tt/period)%2;const f=c<1?c:2-c;return ease(f)}
+SCN.ftn=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const R=H*.15,cx=bx+W*.45,cy=by+H*.34;
+  const sd=t<5?"R":"L",tt=(t<5?t:t-5)-.4;const s=SX[sd];const tgt=[cx+s*R*2.9,cy-R*.35];const nose=[cx,cy+R*.15];
+  const st=bust(cx,cy,R,{noArms:true,bottom:by+H+30,gx:tt>0?s*.6*ftnPath(tt,0,1.1):0});
+  exHand(tgt[0]+s*14,tgt[1],s<0?0:Math.PI,{s:.8,flip:s>0});
+  const atax=p["atax"+sd];const weak=p["armWeak"+sd];const per=weak?1.6:1.1;
+  let f=tt>0&&tt<4.4?ftnPath(tt,0,per):0;
+  let hx=lerp(nose[0]+s*R*.25,tgt[0],f),hy=lerp(nose[1]+R*.05,tgt[1],f);
+  if(atax&&tt>0&&tt<4.4){const near=Math.max(Math.pow(f,3),Math.pow(1-f,3)*.6);hx+=Math.sin(tt*17)*R*.22*near+s*R*.35*Math.max(0,Math.sin(f*Math.PI*.9))*.6;hy+=Math.cos(tt*13)*R*.18*near}
+  const S=sd==="R"?st.shoulderR:st.shoulderL;
+  /* trail */
+  ctx.globalAlpha=.6;ctx.beginPath();for(let j=0;j<=40;j++){const q=tt-j*.03;if(q<0)break;let f2=ftnPath(q,0,per),x=lerp(nose[0]+s*R*.25,tgt[0],f2),y=lerp(nose[1]+R*.05,tgt[1],f2);if(atax){const nr=Math.max(Math.pow(f2,3),Math.pow(1-f2,3)*.6);x+=Math.sin(q*17)*R*.22*nr+s*R*.35*Math.max(0,Math.sin(f2*Math.PI*.9))*.6;y+=Math.cos(q*13)*R*.18*nr}j?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.strokeStyle=atax?C.warn:C.accent;ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1;
+  armFront(S,[hx,hy],R*1.5,R*1.45,0,{w:R*.36,point:true});
+  const os=sd==="R"?st.shoulderL:st.shoulderR;capsule(os[0],os[1],os[0]-s*R*.15,os[1]+R*1.6,R*.36,C.gown,C["gown-edge"]);
+  talk([[.0,1.6,"ex","Touch my finger, then your nose. Back and forth.",bx+W*.5,by+H*.94,null,320,bd]],t);
+  label(cx,by+H*.05,(sd==="R"?"Right":"Left")+" arm",{align:"center",size:13,weight:600,color:C.accent,border:C.accent});
+  if(atax&&tt>1.5)label(tgt[0]-s*R*.6,tgt[1]+R*.7,"overshoots + tremor near the target",{align:"center",size:12,weight:600,color:C.warn,border:C.warn})};
+function ramFlip(t,dys,ph){if(!dys){const c=(t*2.2+ph)%1;return Math.PI*ease(c<.5?c*2:2-c*2)}
+  const c=((t*1.15+ph+.12*Math.sin(t*2.7))%1);const a=c<.5?c*2:2-c*2;return Math.PI*(.15+.75*ease(a))*(.8+.2*Math.sin(t*1.9))}
+SCN.ram=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const s=H/470,cx=bx+W*.5,cy=by+H*.42;const fl={R:ramFlip(t,p.dysR,0),L:ramFlip(t,p.dysL,.5)};
+  const O=lapHands(cx,cy,s,{flipR:fl.R,flipL:fl.L});
+  ["R","L"].forEach(sd=>{const gx=O[sd].x-W*.12,gy=by+H*.84,gw=W*.24,gh=H*.07;line(gx,gy+gh/2,gx+gw,gy+gh/2,C.rule,1);
+    ctx.beginPath();for(let j=0;j<=120;j++){const tx=t-3+j/120*3;const v=Math.cos(ramFlip(Math.max(0,tx),p["dys"+sd],sd==="R"?0:.5));const X=gx+j/120*gw,Y=gy+gh/2+v*gh/2;j?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=p["dys"+sd]?C.warn:C.accent;ctx.lineWidth=2;ctx.stroke();
+    label(O[sd].x,by+H*.06,(sd==="R"?"Right":"Left")+" hand: "+(O[sd].palmUp?"palm up":"palm down"),{align:"center",size:12.5,weight:600});
+    label(O[sd].x,gy+gh+12,p["dys"+sd]?"slow, uneven":"fast, even",{align:"center",size:11.5,color:p["dys"+sd]?C.warn:C["ink-soft"]})});
+  label(bx+W*.5,by+H*.76,"Rhythm, last 3 seconds (up = palm down)",{align:"center",size:11,mono:true,color:C["ink-soft"],pill:false})};
+function rombergSway(t,type){const open=t<3.8;const n=Math.sin(t*1.7)*.6+Math.sin(t*3.1+1)*.4;
+  if(type==="prop")return open?.008*n:.008*n+.075*es(t,3.9,6.5)*Math.sin((t-3.9)*2.3);
+  if(type==="cereb")return .045*n+.012*Math.sin(t*5);return .006*n}
+SCN.romberg=(t,p,B)=>{const {bx,by,W,H,bd}=boxOf(B);const ty=p.romberg||"normal";const open=t<3.8;const sw=rombergSway(t,ty);
+  const x0=bx+W*.34,y0=by+H*.96;ctx.fillStyle=C.floor;ctx.fillRect(bx,y0,W,H*.04);
+  personFront(x0,y0,H*.78,{sway:sw,gap:0,face:{lidR:open?0:1,lidL:open?0:1}});
+  const catchIt=Math.abs(sw)>.05;[-1,1].forEach(s=>exHand(x0+s*H*.2+(catchIt?-s*10:0),y0-H*.6,s<0?0:Math.PI,{pose:"flat",s:.75,flip:s>0}));
+  label(x0,by+H*.04,open?"Eyes OPEN, feet together":"Eyes CLOSED, feet together",{align:"center",size:13,weight:700,color:open?C.ink:C.accent,border:open?C.rule:C.accent});
+  if(catchIt)label(x0+H*.25,y0-H*.72,"examiner stays close to catch",{size:11.5,color:C["ink-soft"]});
+  /* sway trace */
+  const gx=bx+W*.62,gy=by+H*.5,gw=W*.34,gh=H*.28;rr(gx-8,gy-gh/2-24,gw+16,gh+56,6);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  ctx.font=`600 10.5px ${MONO}`;ctx.textAlign="left";ctx.fillStyle=C["ink-soft"];ctx.fillText("BODY SWAY",gx,gy-gh/2-12);
+  const xm=gx+gw*3.8/8.6;ctx.globalAlpha=.12;ctx.fillStyle=C.accent;ctx.fillRect(xm,gy-gh/2,gx+gw-xm,gh);ctx.globalAlpha=1;
+  ctx.font=`500 10px ${MONO}`;ctx.fillStyle=C["ink-soft"];ctx.fillText("open",gx+4,gy+gh/2+14);ctx.fillText("closed",xm+4,gy+gh/2+14);
+  line(gx,gy,gx+gw,gy,C.rule,1);ctx.beginPath();for(let j=0;j<=200;j++){const tx=j/200*8.6;if(tx>t)break;const v=rombergSway(tx,ty);const X=gx+j/200*gw,Y=gy-clamp(v/.09,-1,1)*gh/2;j?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=C.act4;ctx.lineWidth=2;ctx.stroke();
+  talk([[.1,2,"ex","Feet together, arms at your sides.",bx+W*.78,by+H*.12,null,170,bd],[3.7,5.4,"ex","Now close your eyes. I'm right here.",bx+W*.78,by+H*.12,null,170,bd]],t)};
+function gaitPrints(mode,n){const out=[];for(let i=0;i<n;i++){const side=i%2?"L":"R";let off=side==="R"?1:-1;let w=9,x=i*34;
+    if(mode==="tandem"){w=0;x=i*22}if(mode==="ataxic"||mode==="sensory"){w=20+rnd(i)*8;x=i*30+(rnd(i+5)-.5)*14}
+    if(mode==="spastic"){w=-2;x=i*24}
+    out.push({side,x,y:off*w+(mode==="ataxic"?(rnd(i*3)-.5)*12:0),circ:mode==="hemiR"&&side==="R",slap:mode==="steppageR"&&side==="R"})}return out}
+SCN.gait=(t,p,B,opt)=>{opt=opt||{};const {bx,by,W,H,bd}=boxOf(B);const mode=opt.mode||p.gait||"normal";const dur=opt.dur||8;
+  const sc=W/800;const stride={normal:68,tandem:44,ataxic:60,hemiR:56,steppageR:62,sensory:60,spastic:46}[mode];
+  const q=seg(t,.2,dur-.6);const x=bx+40*sc+q*(W-120*sc);const dist=(x-bx-40*sc);
+  const x0=bx+40*sc,y0=by+H*.66;ctx.fillStyle=C.floor;ctx.fillRect(bx,y0,W,4);
+  const lean=mode==="ataxic"?.07*Math.sin(t*2.1)+.03*Math.sin(t*4.3):0;
+  personSide(x,y0,H*.5,{ph:dist/(stride*2*sc),mode,lean});
+  /* footprint strip (top view) */
+  const sy=by+H*.84;rr(bx+8,sy-H*.11,W-16,H*.22,6);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  ctx.font=`600 10.5px ${MONO}`;ctx.textAlign="left";ctx.fillStyle=C["ink-soft"];ctx.fillText("FOOTPRINTS FROM ABOVE",bx+16,sy-H*.11+12);ctx.textAlign="right";ctx.fillText("L (left foot) row",bx+W-16,sy-20);ctx.fillText("R (right foot) row",bx+W-16,sy+30);ctx.textAlign="left";
+  const P=gaitPrints(mode,40);P.forEach((f,i)=>{const fx=x0+(f.x/34)*stride*sc*.5*2+0;const fy=sy+f.y*sc*1.6;if(fx>x-10)return;
+    if(f.circ&&i>1){const pr=P[i-2];const px=x0+(pr.x/34)*stride*sc;ctx.globalAlpha=.6;ctx.beginPath();ctx.moveTo(px+8,sy+pr.y*sc*1.6);ctx.quadraticCurveTo((px+fx)/2,sy+30*sc,fx-8,fy);ctx.strokeStyle=C.warn;ctx.setLineDash([4,3]);ctx.lineWidth=1.8;ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1}
+    ell(fx,fy,10*sc+2,4.5*sc+1.5,0,f.side==="R"?C.act1:C.act4,null);ell(fx+8*sc+2,fy,3,3,0,f.side==="R"?C.act1:C.act4);
+    if(f.slap){label(fx,fy+16,"slap",{align:"center",size:10,mono:true,color:C.warn,pill:false})}});
+  const NM={normal:"Normal gait: smooth, narrow base, arms swing",tandem:"Tandem walk: heel touching toe, in a line",ataxic:"Ataxic (cerebellar) gait: wide base, staggering",hemiR:"Hemiparetic gait: stiff right leg swings out in an arc",steppageR:"Steppage gait: right foot drop, knee lifts high, foot slaps",sensory:"Sensory ataxia: wide base, watches feet, stamps",spastic:"Spastic gait: stiff legs, short steps"};
+  if(opt.label!==false)label(bx+W*.5,by+H*.06,NM[mode],{align:"center",size:13,weight:700,color:mode==="normal"||mode==="tandem"?C.ink:C.warn,border:mode==="normal"||mode==="tandem"?C.rule:C.warn})};
+
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function starStr(n){return "★".repeat(n)+"☆".repeat(3-n)}
+function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,c:cv.getContext("2d"),W,H,K:1};
+  st.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);st.K=cv.width/W};
+  st.loc=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};
+  st.begin=()=>{ctx=st.c;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,W,H);ctx.fillStyle=C.room;ctx.fillRect(0,0,W,H)};return st}
+const S1=makeStage("cvSim",800,500),S2=makeStage("cvDet",560,500),S3=makeStage("cvCN",800,500),S4=makeStage("cvRx",800,440);
+const FULL={x:0,y:0,w:800,h:500};
+
+/* ======================= PART 1: Exam Simulator ======================= */
+const TESTS=[
+ ["Mental status",[["orient","Orientation",10,"Knows name, place and date; spells WORLD backward."],["speech","Speech & language",9.3,"Fluent speech, follows commands, names objects."]]],
+ ["Cranial nerves",[["fields","Visual fields (II)",8.2,"Sees the fingers in all four quarters."],["pupil","Pupils (II, III)",9,"Both pupils constrict to light in either eye (direct + consensual)."],["eom","Eye movements (III, IV, VI)",9,"Both eyes follow the finger smoothly in every direction."],
+   ["cn5","Face feeling, jaw (V)",9.2,"Feels the cotton equally in V1, V2 and V3 on both sides; strong jaw clench."],["cn7","Face movement (VII)",8.6,"Eyebrows, eyelids, smile and cheeks move equally on both sides."],["hear","Hearing (VIII)",7.2,"Hears the finger rub at both ears."],
+   ["ahh","Say \"ahh\", gag (IX, X)",8,"Palate lifts evenly, uvula stays midline, gag present."],["shrug","Shrug, head turn (XI)",8.4,"Strong shrug and head turn both ways."],["tongue","Tongue (XII)",7.2,"Tongue sticks out straight and moves side to side."]]],
+ ["Sensory",[["touch","Light touch",6.6,"Feels the cotton on both feet."],["pain","Pain (pin)",6.6,"Pin feels sharp on both feet."],["vib","Vibration",6.6,"Feels the buzz on both big toes."],["prop","Position sense",7.4,"Names every toe movement correctly."]]],
+ ["Motor",[["arms","Arm strength",5.4,"Both arms 5/5."],["legs","Leg strength",7,"Both legs 5/5 (hip and foot)."],["patellar","Knee reflexes",7.2,"Both knees 2+ (normal)."],["babinski","Plantar (Babinski)",7.8,"Toes curl down on both sides (normal)."]]],
+ ["Coordination & gait",[["ftn","Finger-to-nose",10,"Smooth and accurate with both arms."],["ram","Rapid alternating",6,"Fast, even rhythm with both hands."],["romberg","Romberg",8.6,"Steady with eyes open and closed."],["gait","Gait",8,"Smooth steps, narrow base, arms swing."]]]];
+const TEST={};TESTS.forEach(g=>g[1].forEach(t=>TEST[t[0]]={id:t[0],name:t[1],dur:t[2],norm:t[3],sec:g[0]}));
+const LOCS=[["none","No lesion: this is a normal exam"],["cortex","Cerebral cortex (one hemisphere)"],["stem","Brainstem"],["cbl","Cerebellum"],["cord","Spinal cord"],["cn","A cranial nerve (outside the brainstem)"],["pn","A peripheral nerve in one limb"]];
+const CASES=[
+ {nm:"Healthy check-up",cc:"A 30-year-old here for a sports physical. No complaints.",p:{},ab:{},loc:"none",hint:"Try a few tests from every section. If everything is normal, that is an answer too.",
+  why:"Every test was normal, so there is nothing to localize. A normal exam is common and worth recognizing."},
+ {nm:"Sudden speech trouble",cc:"A 67-year-old whose family noticed halting speech and a weak right hand starting one hour ago.",loc:"cortex",hint:"Check speech, the face (CN VII), arm strength and the Babinski sign.",
+  p:{aph:"broca",fieldLoss:"R",facial:{side:"R",type:"UMN"},armR:3,legR:{hip:4,dorsi:4},dtrR:3,babR:true,lossTouch:{R:1},lossPain:{R:1},gait:"hemiR"},
+  ab:{speech:"Halting, effortful speech with few words; follows commands.",fields:"Misses the fingers on the patient's right side (both quarters).",cn7:"Right lower face droops; the forehead wrinkles on both sides (forehead spared).",arms:"Right arm 3/5; left arm 5/5.",legs:"Right hip and foot 4/5; left 5/5.",patellar:"Right knee 3+ (brisk); left 2+.",babinski:"Right: big toe up, toes fan (positive). Left: toes curl down.",touch:"Reduced on the right foot.",pain:"Pin feels dull on the right foot.",gait:"Stiff right leg swings out in an arc; right arm held bent."},
+  why:"Aphasia is a cortex-only clue (left hemisphere language areas). Right face (forehead spared), arm and leg weakness with UMN signs, right sensory loss and a right field cut all fit the LEFT cerebral hemisphere, as in a left MCA stroke."},
+ {nm:"Crooked smile",cc:"A 35-year-old woke up unable to close the right eye; drinks dribble out of the right side of the mouth.",loc:"cn",hint:"Look closely at the face test. Does the forehead move on the weak side?",
+  p:{facial:{side:"R",type:"LMN"}},ab:{cn7:"Whole right side of the face is weak: no forehead wrinkles, the eye won't close, the mouth droops."},
+  why:"Weakness of the whole right side of the face, forehead included, with everything else normal, points to the right facial nerve itself (CN VII), as in Bell's palsy. A brain lesion would spare the forehead and usually affect the arm too."},
+ {nm:"Clumsy left hand",cc:"A 52-year-old with dizziness and a clumsy left hand for two days.",loc:"cbl",hint:"Try the coordination tests and the Romberg test.",
+  p:{ataxL:1,dysL:1,romberg:"cereb",gait:"ataxic"},ab:{ftn:"Left hand overshoots the target, with a tremor near the end.",ram:"Left hand slow and uneven (dysdiadochokinesia).",romberg:"Unsteady even with eyes open; closing them changes little.",gait:"Wide-based, staggering gait."},
+  why:"Dysmetria, intention tremor and dysdiadochokinesia on the left with normal strength and sensation point to the LEFT cerebellar hemisphere (the cerebellum works on the same side). Unsteady with eyes open means this is not a positive Romberg."},
+ {nm:"Unsteady in the dark",cc:"A 60-year-old with numb feet who wobbles when walking at night. Blood tests show a low vitamin B12 level.",loc:"cord",hint:"Compare the sensory tests. Then try Romberg with eyes closed.",
+  p:{lossVib:{R:1,L:1},lossProp:{R:1,L:1},romberg:"prop",gait:"sensory"},ab:{vib:"No vibration felt at either big toe.",prop:"Can't tell whether the toe moved up or down, on either side.",romberg:"Steady with eyes open; sways badly with eyes closed (positive Romberg).",gait:"Wide-based, stamping steps; watches the feet."},
+  why:"Lost vibration and position sense with normal pain sensation, plus a positive Romberg, point to the dorsal columns of the spinal cord (here from B12 deficiency). Normal finger-to-nose and rapid alternating movements argue against the cerebellum."},
+ {nm:"Foot that slaps",cc:"A 45-year-old who sat cross-legged for hours; now the right foot catches and slaps on the floor.",loc:"pn",hint:"Test leg strength and sensation on the feet, then watch the gait.",
+  p:{legR:{hip:5,dorsi:2},lossTouch:{R:1},lossPain:{R:1},gait:"steppageR"},ab:{legs:"Right foot can barely lift (dorsiflexion 2/5); hip 5/5.",touch:"Reduced on top of the right foot.",pain:"Pin feels dull on top of the right foot.",gait:"Right knee lifts high and the foot slaps down (steppage gait)."},
+  why:"Weak foot lifting and numbness on top of the foot, on one side only, with normal reflexes and no Babinski sign, match one peripheral nerve: the right common fibular nerve, which runs around the outside of the knee and can be compressed by crossing the legs."},
+ {nm:"Sudden right-sided weakness",cc:"A 72-year-old with sudden weakness of the right arm and leg and trouble moving the tongue.",loc:"stem",hint:"Check the tongue, then compare strength and sensation on the two sides of the body.",
+  p:{xii:"L",armR:4,legR:{hip:4,dorsi:4},dtrR:3,babR:true,lossVib:{R:1},lossProp:{R:1},gait:"hemiR"},ab:{tongue:"Tongue points to the LEFT; the left half looks thin and twitches.",arms:"Right arm 4/5; left 5/5.",legs:"Right hip and foot 4/5.",patellar:"Right knee 3+; left 2+.",babinski:"Right: positive (toes fan up). Left: normal.",vib:"No vibration felt at the right big toe.",prop:"Wrong answers for the right toe.",gait:"Stiff right leg swings out."},
+  why:"Crossed findings: a LEFT cranial nerve problem (CN XII, tongue to the left) with RIGHT body weakness and right vibration loss. That points to the left side of the brainstem, at the level of CN XII: the left medulla."},
+ {nm:"Stiff legs after a fall",cc:"A 40-year-old who fell from a ladder; both legs feel stiff and numb below the belly button.",loc:"cord",hint:"Compare arms with legs, and check the reflexes and Babinski on both sides.",
+  p:{legR:{hip:3,dorsi:3},legL:{hip:3,dorsi:3},dtrR:4,dtrL:4,babR:true,babL:true,lossTouch:{R:1,L:1},lossPain:{R:1,L:1},lossVib:{R:1,L:1},romberg:"cereb",gait:"spastic"},
+  ab:{legs:"Both legs 3/5.",patellar:"Both knees 4+ with clonus.",babinski:"Positive on both sides.",touch:"Reduced on both feet.",pain:"Pin feels dull on both feet.",vib:"No vibration felt on either side.",romberg:"Unsteady: legs weak and stiff.",gait:"Stiff legs, short steps."},
+  why:"Both legs have UMN signs (weak, brisk reflexes, clonus, Babinski) with sensory loss below a level, while the arms, face and cranial nerves are normal. That is the thoracic spinal cord."}];
+let simCase=null,simTest=null,simT=0,simPaused=false,findings={},locTries=0,simShown=false,lastCase=-1;
+const simBest=store.get("nel-sim")||{};
+function newSimCase(i){let k=i;if(k==null){do{k=Math.floor(Math.random()*CASES.length)}while(k===lastCase&&CASES.length>1)}lastCase=k;simCase=CASES[k];simTest=null;findings={};locTries=0;simShown=false;
+  $("#caseN").textContent="Patient "+(k+1)+" of "+CASES.length+" (shuffled)";$("#caseT").textContent=simCase.nm;$("#caseCC").textContent=simCase.cc;$("#hintMsg").className="msg info";$("#hintMsg").textContent="";
+  $("#findMsg").className="msg";$("#simCap").textContent="Pick a test from the menu to begin.";$("#locFb").className="fb";buildMenu();renderFind();buildLoc();S1.cv.setAttribute("aria-label","The patient, waiting")}
+function buildMenu(){const m=$("#menu");m.innerHTML="";TESTS.forEach(g=>{const d=document.createElement("div");d.className="grp";d.innerHTML=`<span class="gn">${g[0]}</span>`;
+  g[1].forEach(t=>{const b=document.createElement("button");b.type="button";b.className="tst"+(findings[t[0]]?" did":"")+(simTest&&simTest.id===t[0]?" cur":"");b.textContent=t[1];b.onclick=()=>runTest(t[0]);d.appendChild(b)});m.appendChild(d)})}
+function resultOf(id){const ab=simCase.ab[id];return {abn:!!ab,txt:ab||TEST[id].norm}}
+function runTest(id){simTest=TEST[id];simT=0;simPaused=false;$("#simPause").textContent="Pause";if(!findings[id])findings[id]={call:null};buildMenu();renderFind();
+  $("#simCap").textContent="Watching: "+simTest.name+"…";S1.cv.setAttribute("aria-label","Test in progress: "+simTest.name)}
+function renderFind(){const tb=$("#findBody");const ids=Object.keys(findings);if(!ids.length){tb.innerHTML=`<tr><td colspan="3" class="small">No tests yet. Pick one from the menu.</td></tr>`;return}
+  tb.innerHTML="";ids.forEach(id=>{const f=findings[id];const r=resultOf(id);const tr=document.createElement("tr");
+    tr.innerHTML=`<td><b>${esc(TEST[id].name)}</b></td><td>${f.seen?esc(r.txt):'<span class="small">watching…</span>'}${f.fb?`<div class="fbk ${f.fb[0]}">${esc(f.fb[1])}</div>`:""}</td><td><span class="nab"><button type="button" class="n" aria-pressed="${f.call==="n"}">Normal</button><button type="button" class="a" aria-pressed="${f.call==="a"}">Abnormal</button></span></td>`;
+    const [bn,ba]=tr.querySelectorAll(".nab button");bn.onclick=()=>{f.call="n";f.fb=null;renderFind()};ba.onclick=()=>{f.call="a";f.fb=null;renderFind()};tb.appendChild(tr)})}
+$("#checkFind").onclick=()=>{const ids=Object.keys(findings);const m=$("#findMsg");if(!ids.length){m.className="msg info show";m.textContent="Run a test first.";return}
+  let ok=0,un=0;ids.forEach(id=>{const f=findings[id];const r=resultOf(id);if(!f.call){un++;f.fb=null;return}const right=(f.call==="a")===r.abn;if(right){ok++;f.fb=["ok","✓ Right: this is "+(r.abn?"abnormal.":"normal.")]}else f.fb=["no","Not quite. "+(r.abn?"This one is abnormal: compare it with a healthy result ("+TEST[id].norm+")":"This is a normal result for this test.")]});
+  renderFind();m.className="msg "+(ok===ids.length-un&&!un?"good":"info")+" show";m.textContent=`${ok} of ${ids.length-un} calls correct`+(un?` · ${un} not marked yet`:"")+". "+(ok===ids.length&&ids.length>=6?"Now decide where the problem is.":"")};
+function buildLoc(){const box=$("#locOpts");box.innerHTML="";LOCS.forEach(l=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=l[1];b.onclick=()=>pickLoc(l[0],b);box.appendChild(b)})}
+function pickLoc(k,b){const fb=$("#locFb");const n=Object.keys(findings).length;
+  if(n<6&&!simShown){fb.className="fb no show";fb.textContent="Do at least six tests first (you have done "+n+"). The answer depends on the pattern.";return}
+  locTries++;$("#locOpts").querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+  if(k===simCase.loc){b.classList.add("right");fb.className="fb ok show";const st=simShown?1:locTries===1?3:2;fb.innerHTML="✓ "+esc(simCase.why)+` <span class="stars">${starStr(st)}</span>`;
+    if(!simShown){simBest[simCase.nm]=Math.max(simBest[simCase.nm]||0,st);store.set("nel-sim",simBest);showSimStars()}}
+  else{b.classList.add("wrong");fb.className="fb no show";fb.textContent="Not quite. "+locWhy(k)}}
+function locWhy(k){return {none:"At least one test here should look abnormal. Recheck your findings list.",cortex:"A cortex lesion affects the opposite side of the body, often face plus arm, with clues like aphasia or a field cut. Does this pattern have those?",
+  stem:"A brainstem lesion gives crossed findings: a cranial nerve sign on one side and body signs on the other. Look for that pairing.",cbl:"Cerebellar problems cause overshoot, tremor near the target and clumsy rapid movements on the same side, with normal strength and sensation.",
+  cord:"A spinal cord lesion spares the face and cranial nerves and affects the body below a level, often on both sides.",cn:"A single cranial nerve lesion affects only that nerve's job, with the arms and legs normal.",pn:"A peripheral nerve lesion affects one patch of one limb, with LMN signs and no Babinski sign."}[k]}
+function showSimStars(){const n=Object.values(simBest).reduce((a,b)=>a+b,0);$("#simStars").innerHTML=`Patients solved: ${Object.keys(simBest).length} of ${CASES.length} · stars <b>${n}</b> / ${CASES.length*3}`}
+$("#newCase").onclick=()=>newSimCase();
+$("#simHint").onclick=()=>{const m=$("#hintMsg");m.className="msg info show";m.textContent=simCase.hint};
+$("#simShow").onclick=()=>{simShown=true;TESTS.forEach(g=>g[1].forEach(t=>{if(simCase.ab[t[0]]&&!findings[t[0]])findings[t[0]]={call:null,seen:true}}));Object.values(findings).forEach(f=>f.seen=true);renderFind();buildMenu();
+  const ans=LOCS.find(l=>l[0]===simCase.loc);$("#locOpts").querySelectorAll(".opt").forEach(b=>{if(b.textContent===ans[1])b.classList.add("right")});
+  const fb=$("#locFb");fb.className="fb ok show";fb.innerHTML="Answer: <b>"+esc(ans[1])+"</b>. "+esc(simCase.why)+" The abnormal tests are now in your list. <span class='stars'>"+starStr(1)+"</span> if you pick it.";};
+$("#simReplay").onclick=()=>{simT=0;simPaused=false;$("#simPause").textContent="Pause"};
+$("#simPause").onclick=()=>{simPaused=!simPaused;$("#simPause").textContent=simPaused?"Play":"Pause"};
+function drawSim(dt){S1.begin();if(!simTest){bust(400,190,80,{gx:Math.sin(performance.now()/1400)*.3});exHand(700,230,Math.PI,{s:.9});
+    label(400,450,"Pick a test from the menu on the right (or below on a phone).",{align:"center",size:14,weight:600,color:C.accent,border:C.accent});
+    bubble(560,80,"Hi, I'm ready when you are.",{who:"pt",tail:[460,150],maxW:200});return}
+  if(!simPaused)simT+=dt;const dur=simTest.dur;const t=simT%(dur+1.2);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,800,500);ctx.clip();try{SCN[simTest.id](Math.min(t,dur),simCase.p,FULL)}catch(e){console.error(e)}ctx.restore();
+  if(simT>dur-.4){const f=findings[simTest.id];if(f&&!f.seen){f.seen=true;renderFind();const r=resultOf(simTest.id);$("#simCap").textContent=simTest.name+": "+r.txt+" Now mark it Normal or Abnormal in your checklist.";S1.cv.setAttribute("aria-label",simTest.name+" result: "+r.txt)}}}
+
+/* ======================= PART 2: Lesion Detective ======================= */
+const REG=[["hemiR","Right cerebral hemisphere"],["hemiL","Left cerebral hemisphere"],["stem","Brainstem"],["cbl","Cerebellum"],["cord","Spinal cord"],["cn","A cranial nerve"],["pn","A peripheral (limb) nerve"]];
+const DET=[
+ {t:"Droop with a spared forehead",f:["Right lower face droops; the forehead wrinkles on both sides","Right arm weaker than the right leg","Halting, effortful speech; understands everything"],reg:"hemiL",
+  opts:[["Left frontal lobe: motor cortex and Broca's area (left MCA area)",1,"Yes. Lower-face weakness with forehead sparing, arm weakness and expressive aphasia all fit the left frontal lobe."],["Right facial nerve (CN VII)",0,"A facial nerve lesion would weaken the forehead too and wouldn't explain arm weakness or aphasia."],["Right motor cortex",0,"The right cortex controls the LEFT side of the body, and language is usually on the left."],["Left cerebellum",0,"The cerebellum causes clumsiness on the same side, not weakness or aphasia."]],
+  paths:[["cstArmR","cst"],["cn7R","warn"]],les:[30,44],hint:"Aphasia only comes from the cerebral cortex. Which hemisphere handles language?",
+  exp:"Motor pathways cross in the medulla, so the LEFT motor cortex runs the RIGHT arm and lower face. The forehead is spared because it gets input from both hemispheres. Aphasia confirms the left hemisphere."},
+ {t:"Fluent but confused",f:["Speaks easily, but the sentences make little sense","Cannot follow \"touch your nose\"","Strength and feeling are normal"],reg:"hemiL",
+  opts:[["Wernicke's area, left temporal lobe",1,"Yes. Fluent speech without understanding is Wernicke (receptive) aphasia."],["Broca's area, left frontal lobe",0,"Broca damage makes speech halting, but understanding stays good."],["Right temporal lobe",0,"Language areas are usually in the left hemisphere."],["Left occipital lobe",0,"The occipital lobe handles vision."]],
+  paths:[],les:[40,62],hint:"Speech is fluent, but understanding is lost. Which language area understands?",exp:"Wernicke's area, at the back of the left temporal lobe, understands language. Damage leaves speech fluent but empty, and the patient cannot follow commands. No weakness, because the motor cortex is spared."},
+ {t:"Ignores the left side",f:["Left arm and leg weak; left lower face droops","Doesn't notice people standing on the left","Speech is normal"],reg:"hemiR",
+  opts:[["Right cerebral hemisphere (right MCA area)",1,"Yes. Left-sided weakness and neglect with normal language point to the right hemisphere."],["Left cerebral hemisphere",0,"The left hemisphere controls the right body, and damage there usually affects language."],["Right cerebellum",0,"Cerebellar problems cause same-side clumsiness, not weakness or neglect."],["Left half of the spinal cord",0,"A cord lesion would spare the face."]],
+  paths:[["cstArmL","cst"],["cstLegL","cst"]],les:[-30,44],hint:"Face plus arm plus leg on one side, and speech is fine. Which hemisphere?",exp:"The right motor cortex runs the left side of the body (the pathway crosses in the medulla). Ignoring one side (neglect) is a classic right-hemisphere sign. Normal language fits, since language is usually on the left."},
+ {t:"Eye down and out",f:["Left eye looks down and out; left eyelid droops; left pupil is large","Right arm and leg weak with brisk reflexes"],reg:"stem",
+  opts:[["Left midbrain (CN III and the corticospinal tract)",1,"Yes. A left CN III palsy plus right body weakness are crossed findings at the level of CN III: the midbrain."],["Right midbrain",0,"Then the CN III problem would be on the right."],["Left oculomotor nerve only",0,"A nerve outside the brainstem can't explain the right arm and leg weakness."],["Right motor cortex",0,"That would weaken the left body and wouldn't affect CN III."]],
+  paths:[["cn3L","warn"],["cstArmR","cst"],["cstLegR","cst"]],les:[6,90],hint:"One finding is on the left face, the others on the right body. Where do a cranial nerve and a crossing motor tract sit side by side?",exp:"In the brainstem the motor tract hasn't crossed yet (it crosses lower, in the medulla), so left brainstem damage weakens the right body. CN III leaves the midbrain, so the level is the midbrain."},
+ {t:"Tongue points left",f:["Tongue points to the left; the left half is thin and twitching","Right arm and leg weak","Vibration lost on the right"],reg:"stem",
+  opts:[["Left medulla (CN XII nucleus, pyramid and medial lemniscus)",1,"Yes. Crossed findings with a CN XII sign place this in the left medulla."],["Right medulla",0,"The tongue points to the weak side, so the CN XII problem is on the left."],["Left hypoglossal nerve only",0,"A nerve outside the brainstem can't explain right arm and leg weakness."],["Left cerebellum",0,"The cerebellum doesn't move the tongue or cause weakness."]],
+  paths:[["cn12L","warn"],["cstArmR","cst"],["dcR","dc"]],les:[5,126],hint:"The tongue points toward the weak side. The body signs are on the other side.",exp:"The tongue points to the weak (left) side. CN XII leaves the medulla right beside the motor tract (before it crosses) and the medial lemniscus (after the dorsal columns cross). So left medulla damage gives a left tongue sign with right weakness and right vibration loss."},
+ {t:"Overshoot and wobble",f:["Left hand overshoots the target with a tremor","Slow, clumsy flipping of the left hand","Wide, staggering gait; strength and sensation normal"],reg:"cbl",
+  opts:[["Left cerebellar hemisphere",1,"Yes. Dysmetria and dysdiadochokinesia on the left come from the same-side cerebellum."],["Right cerebellar hemisphere",0,"The cerebellum works on the same side, so the left hand points to the left cerebellum."],["Right motor cortex",0,"Strength is normal, and cortex problems cause weakness."],["Left dorsal column",0,"Dorsal column problems are worse with eyes closed and cause sensory loss."]],
+  paths:[["cblL","act4"]],les:[22,116],hint:"Strength and sensation are normal. Which part of the brain smooths movement?",exp:"The cerebellum coordinates movement on the SAME side of the body. Overshoot, intention tremor, clumsy rapid movements and a wide gait with normal strength point to the left cerebellar hemisphere."},
+ {t:"Positive Romberg",f:["Steady with eyes open, sways with eyes closed","Finger-to-nose and rapid alternating movements are normal","Vibration and position sense lost in both feet; pain normal"],reg:"cord",
+  opts:[["Dorsal columns of the spinal cord",1,"Yes. Lost vibration and position sense with a positive Romberg points to the dorsal columns."],["Cerebellum",0,"Cerebellar tests are normal, and cerebellar patients are unsteady even with eyes open."],["Spinothalamic tracts",0,"Those carry pain, which is normal here."],["Corticospinal tracts",0,"Those are motor; strength isn't the problem."]],
+  paths:[["dcR","dc"],["dcL","dc"]],les:[0,240],hint:"Vision covers for the problem. Which sense is lost?",exp:"The dorsal columns carry vibration and position sense. With them damaged, vision has to take over, so the patient sways only when the eyes close. Causes include vitamin B12 deficiency."},
+ {t:"Babinski on both sides",f:["Both legs stiff and weak with brisk reflexes and clonus","Babinski positive on both sides","Can't feel a pin below the belly button","Arms, face and cranial nerves normal"],reg:"cord",
+  opts:[["Thoracic spinal cord, both sides (about T10)",1,"Yes. UMN signs in both legs with a sensory level at the umbilicus fit a thoracic cord lesion."],["Both cerebral hemispheres",0,"That would usually affect the arms, face and thinking too."],["Cervical spinal cord",0,"A cervical lesion would weaken the arms as well."],["Both femoral nerves",0,"Nerve damage gives LMN signs (weak reflexes), not brisk reflexes and Babinski signs."]],
+  paths:[["cstLegR","cst"],["cstLegL","cst"]],les:[0,262],hint:"Arms and face are fine. Look for a level on the body.",exp:"A sensory level is a hallmark of spinal cord damage. The umbilicus is about the T10 dermatome. Below the lesion the legs lose their UMN control: spastic, hyperreflexic, Babinski positive."},
+ {t:"Split sensory loss",f:["Right leg weak and stiff with a Babinski sign","Right leg can't feel vibration","LEFT leg can't feel pain or temperature"],reg:"cord",
+  opts:[["Right half of the thoracic spinal cord",1,"Yes. This split pattern is a cord hemisection (Brown-Séquard pattern)."],["Left half of the spinal cord",0,"The motor and vibration losses are on the right, the same side as the damage."],["Right cerebral cortex",0,"That would affect the left body and wouldn't split the senses this way."],["Right sciatic nerve",0,"A nerve lesion couldn't cause loss of pain on the opposite leg."]],
+  paths:[["cstLegR","cst"],["dcR","dc"],["stL","st"]],les:[-5,256],hint:"Remember where each pathway crosses: dorsal columns in the medulla, spinothalamic in the cord.",exp:"The corticospinal tract and dorsal columns run on the same side in the cord, so right-side damage hits the right leg's strength and vibration. Pain fibers cross right away, so the right half of the cord carries pain from the LEFT leg."},
+ {t:"Whole half of the face",f:["Can't wrinkle the left forehead or close the left eye","Left mouth corner droops","Everything else is normal"],reg:"cn",
+  opts:[["Left facial nerve (CN VII), as in Bell's palsy",1,"Yes. The whole left face, forehead included, with nothing else wrong."],["Right motor cortex",0,"A cortex lesion spares the forehead and usually weakens the arm."],["Left trigeminal nerve (CN V)",0,"CN V carries facial sensation and chewing, not expression."],["Right facial nerve",0,"The weak side is the left."]],
+  paths:[["cn7L","warn"]],les:[30,108],hint:"Is the forehead spared or not?",exp:"The facial nerve carries the final signal to every expression muscle on its side, upper and lower face. Damage to the nerve itself weakens the whole side. Forehead sparing would point to the brain instead."},
+ {t:"Dark left eye",f:["Light in the left eye: neither pupil constricts","Light in the right eye: both constrict","Left eye can't read the chart"],reg:"cn",
+  opts:[["Left optic nerve (CN II)",1,"Yes. The left eye's signal never gets in, but the output (CN III) works."],["Left oculomotor nerve (CN III)",0,"Then the left pupil wouldn't constrict even when the right eye is lit."],["Right optic nerve",0,"Light in the right eye works normally."],["Left occipital lobe",0,"Pupil reflexes don't go through the occipital lobe, and one occipital lobe sees half of each eye's field."]],
+  paths:[["cn2L","warn"]],les:[17,83],hint:"Which nerve carries the light signal IN?",exp:"CN II carries the light signal in; CN III carries the constriction command out to both pupils. If light in the left eye does nothing but light in the right eye works for both pupils, the left CN II is the broken input."},
+ {t:"Foot drop",f:["Right foot drop with a steppage gait","Numb patch on top of the right foot","Shin muscles thin; knee and ankle reflexes normal; Babinski negative"],reg:"pn",
+  opts:[["Right common fibular (peroneal) nerve",1,"Yes. One nerve's muscles and skin patch, with LMN signs."],["Left motor cortex, leg area",0,"That would give UMN signs, such as a Babinski sign, and no numb patch on the foot."],["Thoracic spinal cord",0,"That would affect both legs and cause UMN signs."],["Right femoral nerve",0,"The femoral nerve runs the thigh (knee extension) and the knee reflex, which is normal."]],
+  paths:[["legNerveR","nerve"]],les:[-33,400],hint:"Only one patch of one limb is involved, with LMN signs.",exp:"The common fibular nerve wraps around the outside of the knee and supplies the muscles that lift the foot and the skin on top of the foot. Pressure there (like crossing the legs for hours) causes foot drop and a numb patch, with normal reflexes and no Babinski sign."}];
+let di=0,dReg=null,dTries1=0,dTries2=0,dDone1=false,dDone2=false,dShown=false,dT0=0;const detBest=store.get("nel-det")||{};
+const MAPO=[280,16],MAPS=.98;const MP=(a,b)=>[MAPO[0]+a*MAPS,MAPO[1]+b*MAPS];
+function detChips(){const c=$("#detChips");c.innerHTML="";DET.forEach((d,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===di);b.innerHTML=`Case ${i+1}`+(detBest[i]?`<span class="ok">${"★".repeat(detBest[i])}</span>`:"");b.onclick=()=>detLoad(i);c.appendChild(b)})}
+function detLoad(i){di=i;const d=DET[i];dReg=null;dTries1=0;dTries2=0;dDone1=false;dDone2=false;dShown=false;
+  $("#detN").textContent="Case "+(i+1)+" of "+DET.length;$("#detT").textContent=d.t;$("#detF").innerHTML=d.f.map(x=>`<li>${esc(x)}</li>`).join("");
+  ["#detFb1","#detFb2"].forEach(s=>$(s).className="fb");$("#detQ2").hidden=true;$("#detExp").className="explain";$("#detHintMsg").className="msg info";
+  const box=$("#detOpts");box.innerHTML="";d.opts.map((o,k)=>[o,Math.random()]).sort((a,b)=>a[1]-b[1]).forEach(([o])=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];b.onclick=()=>detPick2(o,b);box.appendChild(b)});
+  detChips();regButtons()}
+function regButtons(){const r=$("#regBtns");r.innerHTML="";REG.forEach(g=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.textContent=g[1];b.setAttribute("aria-pressed",dReg===g[0]);b.onclick=()=>detPick1(g[0]);r.appendChild(b)})}
+function detPick1(k){if(dDone1&&!dShown)return;dReg=k;regButtons();const d=DET[di];const fb=$("#detFb1");dTries1++;
+  if(k===d.reg){dDone1=true;fb.className="fb ok show";fb.textContent="✓ Yes: "+REG.find(r=>r[0]===k)[1].toLowerCase()+". Now name the structure.";$("#detQ2").hidden=false}
+  else{fb.className="fb no show";fb.textContent="Not quite. "+regWhy(k,d)}}
+function regWhy(k,d){const m={hemiR:"The right hemisphere controls the LEFT side of the body.",hemiL:"The left hemisphere controls the RIGHT side of the body and usually language.",stem:"Brainstem lesions give crossed findings: a cranial nerve sign on one side, body signs on the other.",
+  cbl:"Cerebellar lesions cause same-side clumsiness and tremor with normal strength.",cord:"Cord lesions spare the face and cranial nerves and usually show a level.",cn:"A single cranial nerve lesion affects only that nerve's job.",pn:"A limb nerve lesion affects one patch of one limb."};return m[k]+" Does that match these findings?"}
+function detPick2(o,b){if(dDone2&&!dShown)return;dTries2++;const fb=$("#detFb2");$("#detOpts").querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+  if(o[1]){b.classList.add("right");dDone2=true;fb.className="fb ok show";fb.textContent="✓ "+o[2];const st=dShown?1:(dTries1===1&&dTries2===1?3:2);
+    if(!dShown){detBest[di]=Math.max(detBest[di]||0,st);store.set("nel-det",detBest)}const ex=$("#detExp");ex.className="explain show";ex.innerHTML=`<b>Why:</b> ${esc(DET[di].exp)} <span class="stars">${starStr(st)}</span>`;dT0=performance.now();detChips();detStars()}
+  else{b.classList.add("wrong");fb.className="fb no show";fb.textContent="Not quite. "+o[2]}}
+function detStars(){const n=Object.values(detBest).reduce((a,b)=>a+b,0);$("#detStars").innerHTML=`Cases solved: ${Object.keys(detBest).length} of ${DET.length} · stars <b>${n}</b> / ${DET.length*3}`}
+$("#detHint").onclick=()=>{const m=$("#detHintMsg");m.className="msg info show";m.textContent=DET[di].hint};
+$("#detShow").onclick=()=>{dShown=true;const d=DET[di];detPick1(d.reg);const right=[...$("#detOpts").querySelectorAll(".opt")].find(b=>b.textContent===d.opts.find(o=>o[1])[0]);detPick2(d.opts.find(o=>o[1]),right)};
+$("#detNext").onclick=()=>detLoad((di+1)%DET.length);
+function hitRegion(x,y){const L=(a,b)=>[(x-MAPO[0])/MAPS-a,(y-MAPO[1])/MAPS-b];const lx=(x-MAPO[0])/MAPS,ly=(y-MAPO[1])/MAPS;
+  const inE=(e,pad)=>{const dx=(lx-e[0])/(e[2]+pad),dy=(ly-e[1])/(e[3]+pad);return dx*dx+dy*dy<=1};
+  const dSeg=(P)=>{let m=1e9;for(let i=0;i<P.length-1;i++){const [ax,ay]=P[i],[bx,by]=P[i+1];const vx=bx-ax,vy=by-ay;const t=clamp(((lx-ax)*vx+(ly-ay)*vy)/(vx*vx+vy*vy||1),0,1);m=Math.min(m,Math.hypot(lx-ax-t*vx,ly-ay-t*vy))}return m};
+  for(const sd of ["R","L"])for(const k of ["cn2","cn3","cn7","cn12"])if(dSeg(NSP[k+sd])<7&&Math.abs(lx)>8)return "cn";
+  if(inE(NSM.cbl.R,3)||inE(NSM.cbl.L,3))return "cbl";
+  const st=NSM.stem;if(lx>=st[0]-3&&lx<=st[0]+st[2]+3&&ly>=st[1]&&ly<=st[1]+st[3])return "stem";
+  if(inE(NSM.hemi.R,2))return "hemiR";if(inE(NSM.hemi.L,2))return "hemiL";
+  if(Math.abs(lx)<=12&&ly>=NSM.cordTop&&ly<=NSM.cordBot)return "cord";
+  for(const sd of ["R","L"])for(const k of ["armNerve","legNerve"])if(dSeg(NSP[k+sd].slice(1))<12)return "pn";
+  return null}
+S2.cv.addEventListener("click",e=>{const [x,y]=S2.loc(e);const r=hitRegion(x,y);if(r)detPick1(r)});
+S2.cv.addEventListener("mousemove",e=>{const [x,y]=S2.loc(e);S2.hover=hitRegion(x,y);S2.cv.style.cursor=S2.hover?"pointer":"default"});
+S2.cv.addEventListener("mouseleave",()=>S2.hover=null);
+function drawDet(now){S2.begin();const d=DET[di];const hl={};
+  const hv=S2.hover;const sel=dReg;[hv,sel].forEach((k,j)=>{if(!k)return;const a=j?.9:.45;if(k==="hemiR")hl.hemiR=a;if(k==="hemiL")hl.hemiL=a;if(k==="stem")hl.stem=a;if(k==="cbl")hl.cbl=a;if(k==="cord")hl.cord=a;
+    if(k==="cn")["cn2R","cn2L","cn3R","cn3L","cn7R","cn7L","cn12R","cn12L"].forEach(q=>hl[q]=a*.8);if(k==="pn")["armR","armL","legR","legL"].forEach(q=>hl[q]=a*.8)});
+  const P=nsMap(MAPO[0],MAPO[1],MAPS,{hl});
+  label(MP(-60,4)[0],MP(-60,4)[1],"Patient's R",{align:"center",size:11,mono:true,color:C["ink-soft"]});label(MP(60,4)[0],MP(60,4)[1],"Patient's L",{align:"center",size:11,mono:true,color:C["ink-soft"]});
+  /* region labels on hover */
+  if(hv){const nm=REG.find(r=>r[0]===hv)[1];label(280,488,nm,{align:"center",size:13,weight:700,color:C.accent,border:C.accent})}
+  if(dDone2){const t=(now-dT0)/1000;d.paths.forEach((q,j)=>{const col=C[q[1]];nsFlow(q[0],((t*.35)+j*.27)%1,col,{P,full:true,a:.85,lw:3.4});nsFlow(q[0],((t*.35)+j*.27)%1,col,{P,lw:0.1})});
+    const lp=MP(d.les[0],d.les[1]);lesionMark(lp[0],lp[1],12,1,"lesion");
+    /* legend of drawn paths */
+    const names={cst:"motor path",warn:"affected nerve",dc:"dorsal column",st:"spinothalamic",act4:"cerebellar output",nerve:"limb nerve"};
+    d.paths.forEach((q,j)=>{const ly=480-(d.paths.length-1-j)*22;line(16,ly,40,ly,C[q[1]],4);label(46,ly,(q[0].indexOf("cst")===0?"motor path to the "+(q[0].slice(-1)==="R"?"right ":"left ")+(q[0].indexOf("Arm")>0?"arm":"leg"):names[q[1]]),{size:11.5,pill:false})})}
+  S2.cv.setAttribute("aria-label","Map of the nervous system."+(dDone2?" The damaged pathway is highlighted.":" Click a region or use the buttons below."))}
+
+/* ======================= PART 3: Cranial Nerve Test Match ======================= */
+const RN=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+const CNR=[
+ {sc:"smell",dur:7.4,nv:["I"],cap:"Smelling coffee, one nostril at a time, eyes closed.",opts:[["Names the smell (coffee) with each nostril",1],["Both pupils constrict",0,"That is the light reflex (II, III)."],["The eyes water",0,"Tearing isn't how smell is tested."],["The tongue points to the side",0,"That is a CN XII finding."]],hint:"This nerve is the first one, sitting right above the nose."},
+ {sc:"acuity",dur:9.4,nv:["II"],cap:"Reading a Snellen chart with one eye covered.",opts:[["Reads down to the 20/20 line with each eye",1],["Hears the letters being read",0,"Hearing is CN VIII."],["The eyes follow a finger in an H",0,"That is eye movement (III, IV, VI)."],["Smells the chart",0,"Smell is CN I."]],hint:"This is the nerve of vision itself."},
+ {sc:"fields",dur:8.2,nv:["II"],cap:"Wiggling fingers in each quarter of the visual field.",opts:[["Sees the fingers in all four quarters",1],["Feels the fingers touch the face",0,"Feeling on the face is CN V."],["Turns the head toward the fingers",0,"The head stays still; only seeing is tested."],["Blinks at each finger",0,"Blinking isn't the response being tested."]],hint:"Still vision: this time how WIDE it is."},
+ {sc:"pupil",dur:9,nv:["II","III"],cap:"A penlight shines into each eye in a dim room.",opts:[["Both pupils constrict, whichever eye is lit",1],["Only the lit pupil constricts",0,"Normally the other pupil constricts too (the consensual response)."],["Both pupils get larger",0,"Light makes pupils smaller."],["The eyes close",0,"Blinking to light isn't this reflex."]],hint:"Two nerves: one carries the light IN, one carries the command OUT."},
+ {sc:"eom",dur:9,nv:["III","IV","VI"],cap:"The patient follows a finger through an H pattern.",opts:[["Both eyes move together smoothly in every direction",1],["Only one eye follows",0,"The eyes should move together."],["The head turns to follow",0,"The head stays still."],["The pupils shrink",0,"That's the light reflex."]],hint:"Three nerves share the six eye muscles: LR6 SO4, the rest 3."},
+ {sc:"cn5",dur:9.2,nv:["V"],cap:"Cotton on the forehead, cheek and jaw; then clenching the teeth.",opts:[["Feels the touch the same in all three zones on both sides; jaw muscles bulge",1],["The face smiles evenly",0,"Smiling is CN VII."],["The tongue moves side to side",0,"That's CN XII."],["The palate lifts",0,"That's CN X."]],hint:"This nerve has three branches across the face and also runs chewing."},
+ {sc:"cn7",dur:8.6,nv:["VII"],cap:"Raise eyebrows, close eyes tight, smile, puff cheeks.",opts:[["Both sides of the face move equally",1],["Feels touch on both cheeks",0,"Feeling is CN V."],["The jaw clenches",0,"Chewing muscles are CN V."],["The tongue points straight",0,"That's CN XII."]],hint:"The nerve of facial EXPRESSION."},
+ {sc:"hear",dur:7.2,nv:["VIII"],cap:"Rubbing fingers beside each ear, eyes closed.",opts:[["Hears the rub at each ear",1],["Turns the head toward the sound",0,"Turning isn't what's tested."],["Feels the fingers",0,"Touch would be CN V."],["Sees the fingers",0,"The eyes are closed."]],hint:"Hearing and balance travel together in this nerve."},
+ {sc:"ahh",dur:8,nv:["IX","X"],cap:"\"Say ahh,\" then a touch at the back of the throat.",opts:[["Palate lifts evenly, uvula stays in the middle, and a gag occurs",1],["Uvula swings to one side",0,"That would mean one side is weak."],["Tongue points to one side",0,"That's a CN XII finding."],["No gag is normal",0,"A gag is expected; IX brings the signal in and X sends it out."]],hint:"One nerve feels the touch (in), the other moves the throat (out)."},
+ {sc:"shrug",dur:8.4,nv:["XI"],cap:"Shrugging against resistance; turning the head against a hand.",opts:[["Strong, equal shrug and head turn both ways",1],["The shoulders stay down",0,"That would be weakness."],["The tongue moves",0,"That's CN XII."],["The eyes follow",0,"That's eye movement."]],hint:"This nerve runs the trapezius and sternocleidomastoid."},
+ {sc:"tongue",dur:7.2,nv:["XII"],cap:"Sticking out the tongue, then moving it side to side.",opts:[["Tongue sticks out straight in the middle",1],["Tongue points to one side",0,"That points to a weak side."],["Tastes something sweet",0,"Taste is VII and IX."],["The uvula lifts",0,"That's CN X."]],hint:"The last of the twelve."}];
+let ci=0,cnSel=new Set(),cnOpt=null,cnTries=0,cnSolved=false,cnShown=false,cnT=0;const cnBest=store.get("nel-cn")||{};let cnOrder=[];
+function cnChips(){const c=$("#cnChips");c.innerHTML="";CNR.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===ci);b.innerHTML="Test "+(i+1)+(cnBest[i]?`<span class="ok">${"★".repeat(cnBest[i])}</span>`:"");b.onclick=()=>cnLoad(i);c.appendChild(b)})}
+function cnLoad(i){ci=i;cnSel=new Set();cnOpt=null;cnTries=0;cnSolved=false;cnShown=false;cnT=0;const r=CNR[i];$("#cnN").textContent="Test "+(i+1)+" of "+CNR.length;$("#cnCap").textContent=r.cap;$("#cnMsg").className="msg";
+  const nb=$("#nerveBtns");nb.innerHTML="";RN.forEach(n=>{const b=document.createElement("button");b.type="button";b.textContent=n;b.setAttribute("aria-pressed","false");b.setAttribute("aria-label","Cranial nerve "+n);b.onclick=()=>{if(cnSolved)return;cnSel.has(n)?cnSel.delete(n):cnSel.add(n);b.setAttribute("aria-pressed",cnSel.has(n))};nb.appendChild(b)});
+  const ob=$("#cnOpts");ob.innerHTML="";r.opts.map((o,k)=>[o,Math.random()]).sort((a,b)=>a[1]-b[1]).forEach(([o])=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];b.setAttribute("aria-pressed","false");b.onclick=()=>{if(cnSolved)return;cnOpt=o;ob.querySelectorAll(".opt").forEach(x=>{x.classList.remove("sel","wrong");x.setAttribute("aria-pressed","false")});b.classList.add("sel");b.setAttribute("aria-pressed","true")};ob.appendChild(b)});
+  cnChips();S3.cv.setAttribute("aria-label","Cranial nerve test animation: "+r.cap)}
+$("#cnCheck").onclick=()=>{const r=CNR[ci];const m=$("#cnMsg");if(cnSolved)return;if(!cnSel.size||!cnOpt){m.className="msg info show";m.textContent="Pick at least one nerve and one normal response first.";return}
+  cnTries++;const need=new Set(r.nv);const nOk=need.size===cnSel.size&&[...need].every(n=>cnSel.has(n));const oOk=!!cnOpt[1];
+  if(nOk&&oOk){cnSolved=true;$("#cnOpts").querySelectorAll(".opt.sel").forEach(x=>{x.classList.remove("sel");x.classList.add("right")});const st=cnShown?1:cnTries===1?3:2;if(!cnShown){cnBest[ci]=Math.max(cnBest[ci]||0,st);store.set("nel-cn",cnBest)}m.className="msg good show";m.innerHTML=`✓ Right: CN ${r.nv.join(" + ")}. <span class="stars">${starStr(st)}</span>`;cnChips();cnStars()}
+  else{let t="Not quite. ";if(!nOk){const miss=[...need].filter(n=>!cnSel.has(n)),extra=[...cnSel].filter(n=>!need.has(n));t+=(miss.length?"A nerve is missing. ":"")+(extra.length?"CN "+extra.join(", ")+" isn't part of this test. ":"")}
+    if(!oOk){t+="About the response: "+cnOpt[2];$("#cnOpts").querySelectorAll(".opt.sel").forEach(x=>x.classList.add("wrong"))}else t+="Your normal response is right.";m.className="msg warn show";m.textContent=t}};
+$("#cnHint").onclick=()=>{const m=$("#cnMsg");m.className="msg info show";m.textContent="Hint: "+CNR[ci].hint};
+$("#cnShow").onclick=()=>{cnShown=true;const r=CNR[ci];cnSel=new Set(r.nv);$("#nerveBtns").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",cnSel.has(b.textContent)));
+  const ok=r.opts.find(o=>o[1]);$("#cnOpts").querySelectorAll(".opt").forEach(b=>{b.classList.remove("sel","wrong");if(b.textContent===ok[0]){b.classList.add("right");cnOpt=ok}});const m=$("#cnMsg");m.className="msg info show";m.textContent="Answer shown: CN "+r.nv.join(" + ")+". Press Check to log it (1 star).";};
+$("#cnNext").onclick=()=>cnLoad((ci+1)%CNR.length);$("#cnReplay").onclick=()=>{cnT=0};
+function cnStars(){const n=Object.values(cnBest).reduce((a,b)=>a+b,0);$("#cnStars").innerHTML=`Tests matched: ${Object.keys(cnBest).length} of ${CNR.length} · stars <b>${n}</b> / ${CNR.length*3}`}
+function drawCN(dt){S3.begin();cnT+=dt;const r=CNR[ci];const t=cnT%(r.dur+1);ctx.save();ctx.beginPath();ctx.rect(0,0,800,500);ctx.clip();SCN[r.sc](Math.min(t,r.dur),{quiz:true},FULL);ctx.restore();
+  /* hide any CN labels that would give the answer away: none are drawn by the shared scenes except tags, so add a neutral tag */
+  label(788,488,"Test "+(ci+1)+": watch, then answer",{align:"right",size:11.5,mono:true,color:C["ink-soft"]})}
+
+/* ======================= PART 4: Reflex bench + sorter ======================= */
+let les="normal",taps=[],sole=-99,rxT=0,autoNext=0;
+document.querySelectorAll("[data-les]").forEach(b=>b.onclick=()=>{les=b.dataset.les;document.querySelectorAll("[data-les]").forEach(x=>x.setAttribute("aria-pressed",x===b));taps=[];sole=-99;rxRead()});
+$("#rxStr").oninput=e=>{$("#rxStrV").textContent=e.target.value};
+function rxAmp(s){const f=clamp((s-2)/5,0,1);if(les==="umn")return {A:.72*clamp(f*1.3+.25,0,1),cl:s>=5};if(les==="lmn")return {A:.13*f*(s>=5?1:.4),cl:false};return {A:.44*f,cl:false}}
+function rxGrade(a){if(a.cl)return 4;if(a.A<.03)return 0;if(a.A<.25)return 1;if(a.A<.56)return 2;return 3}
+function tap(){const s=+$("#rxStr").value;const a=rxAmp(s);taps.push({t:rxT+.35,A:a.A,cl:a.cl,g:rxGrade(a),s});if(taps.length>12)taps.shift();rxRead()}
+$("#rxTap").onclick=tap;$("#rxSole").onclick=()=>{sole=rxT;rxRead()};
+function kneeRx(T){let k=0;taps.forEach(q=>{const d=T-q.t;if(d<0)return;k+=q.A*es(d,.04,.2)*(1-es(d,.32,.85));if(q.cl&&d>.5){const e=d-.5;k+=q.A*.32*Math.max(0,Math.sin(e*14))*Math.exp(-e*1.1)}});return clamp(k,0,1.1)}
+function rxRead(){const last=taps[taps.length-1];const G=["0 (absent)","1+ (diminished)","2+ (normal)","3+ (brisk)","4+ (clonus)"];
+  const tone={normal:"normal",umn:"spastic (increased)",lmn:"flaccid (decreased)"}[les],bulk={normal:"normal",umn:"near normal",lmn:"atrophy"}[les];
+  const pl=sole<-50?"not tested":(les==="umn"?"big toe UP, toes fan (Babinski +)":"toes curl down (normal)");
+  $("#rxRead").innerHTML=`<span>Last reflex: ${last?G[last.g]:"tap the tendon"}</span><span>Tone: ${tone}</span><span>Bulk: ${bulk}</span><span>Plantar: ${pl}</span>`;
+  const note={normal:"Healthy: a medium tap gives a 2+ kick. A very light tap may give little or nothing, which is still normal.",umn:"UMN lesion: the brain's calming signal is gone. Even light taps give big kicks (3+), and firmer taps set off clonus (4+). The plantar response turns up (Babinski).",lmn:"LMN lesion: the reflex arc itself is broken. Even a hard tap gives a tiny kick (1+) or none. The muscle is thin and twitches (fasciculations)."}[les];$("#rxNote").textContent=note}
+function drawRx(dt){S4.begin();rxT+=dt;if($("#rxAuto").checked&&rxT>autoNext){tap();autoNext=rxT+2}
+  const kn=kneeRx(rxT);const L=legSide(140,170,1.0,{knee:kn,quad:taps.some(q=>rxT-q.t>0&&rxT-q.t<.5&&q.A>.03)?.6:0});
+  if(les==="lmn"){/* thin, twitching thigh */for(let i=0;i<3;i++){const ph=(rxT*1.4+i*.33)%1;if(ph<.3){ctx.globalAlpha=1-ph/.3;const x=lerp(L.hip[0],L.knee[0],.3+i*.2),y=L.hip[1]-8;line(x-6,y,x+6,y-3,C["skin-edge"],2);ctx.globalAlpha=1}}label(150,120,"thin, twitching quadriceps",{align:"center",size:11.5,color:C.warn})}
+  /* hammer */const nt=taps.length?taps[taps.length-1].t:-9;const pre=nt-rxT;const wind=pre>0?es(.35-pre,0,.2)*(1-es(.35-pre,.22,.35)):0;
+  const A0=Math.PI-.75,len=92*.9;const pv=[L.tendon[0]-len*Math.cos(A0),L.tendon[1]-len*Math.sin(A0)];const ang=A0+wind*.9;exHand(pv[0]+len*Math.cos(ang),pv[1]+len*Math.sin(ang),ang,{tool:"hammer",s:.9});
+  if(pre<=0&&pre>-.12)glow(L.tendon[0],L.tendon[1],22,C.beam,1);
+  /* graph */const gx=440,gy=40,gw=340,gh=170;rr(gx-10,gy-24,gw+20,gh+56,6);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  label(gx,gy-10,"KNEE KICK · last 6 seconds",{size:11,mono:true,weight:600,color:C["ink-soft"],pill:false});
+  [0,.25,.5,.75].forEach(v=>line(gx,gy+gh-v/.8*gh,gx+gw,gy+gh-v/.8*gh,C["rule-soft"],1));ctx.beginPath();for(let j=0;j<=240;j++){const tt=rxT-6+j/240*6;const v=kneeRx(tt);const X=gx+j/240*gw,Y=gy+gh-v/.8*gh;j?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}
+  ctx.strokeStyle=les==="normal"?C.accent:C.warn;ctx.lineWidth=2.4;ctx.stroke();
+  taps.forEach(q=>{const X=gx+(q.t-(rxT-6))/6*gw;if(X>gx&&X<gx+gw){line(X,gy+gh,X,gy+gh+8,C.ink,2);label(X,gy+gh+18,["0","1+","2+","3+","4+"][q.g],{align:"center",size:11,mono:true,weight:700,color:q.g===2?C.good:C.warn,pill:false})}});
+  /* plantar response */const st=rxT-sole;const resp=es(st,1.3,1.8);const pos=les==="umn";
+  label(615,262,"Plantar response",{align:"center",size:12,weight:600});const F=footSide(520,330,.85,{big:pos?resp*.62:-resp*.3,fan:pos?resp:0,curl:pos?null:-resp*.3});
+  if(st>0&&st<1.6){const q=along(F.sole,seg(st,.1,1.3));polyPart(F.sole,seg(st,.1,1.3),C.accent,2.5);exHand(q[0],q[1]+2,-Math.PI/2+.5,{tool:"stick",s:.7})}
+  if(st>1.6&&st<8)label(615,425,pos?"Babinski sign: big toe up":"Toes curl down: normal",{align:"center",size:12.5,weight:700,color:pos?C.warn:C.good,border:pos?C.warn:C.good});
+  label(20,425,{normal:"Patient: healthy",umn:"Patient: UMN lesion",lmn:"Patient: LMN lesion"}[les],{size:13,weight:700,color:les==="normal"?C.good:C.warn,border:les==="normal"?C.good:C.warn});
+  S4.cv.setAttribute("aria-label","Reflex bench. "+$("#rxRead").textContent)}
+
+const CARDS=[["Spasticity (stiff, catches)","umn","spastic"],["Hyperreflexia (3+ to 4+)","umn","hyper"],["Clonus (repeated beats)","umn","clonus"],["Positive Babinski sign","umn","bab"],["Little or no wasting","umn","bulk"],["Lesion in the motor cortex or corticospinal tract","umn","brain"],
+ ["Flaccid (floppy) tone","lmn","floppy"],["Hyporeflexia or no reflex","lmn","hypo"],["Marked atrophy (wasting)","lmn","atrophy"],["Fasciculations (twitches)","lmn","fasc"],["Lesion in the anterior horn or a peripheral nerve","lmn","nerve"],["Weakness","both","weak"]];
+function icon(k){const s=(b)=>`<svg width="34" height="28" viewBox="0 0 34 28" aria-hidden="true">${b}</svg>`;const st='stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"';
+  return s({spastic:`<path d="M4 22 L14 8 L16 12 L30 6" ${st}/>`,hyper:`<path d="M2 24 L8 24 L11 3 L14 24 L32 24" ${st}/>`,clonus:`<path d="M2 22 L6 22 L8 4 L11 22 L14 12 L17 22 L20 15 L23 22 L32 22" ${st}/>`,bab:`<path d="M4 20 L22 20 L28 8" ${st}/><path d="M22 20 L30 16 M22 20 L31 21" ${st}/>`,
+   bulk:`<ellipse cx="17" cy="14" rx="10" ry="9" ${st}/>`,brain:`<path d="M6 16 C4 6 14 2 18 6 C24 2 32 8 28 16 C26 22 10 24 6 16 Z" ${st}/>`,floppy:`<path d="M4 6 C10 6 12 22 30 22" ${st}/>`,hypo:`<path d="M2 24 L12 24 L14 20 L16 24 L32 24" ${st}/>`,
+   atrophy:`<ellipse cx="17" cy="14" rx="5" ry="9" ${st}/>`,fasc:`<path d="M6 10 l4 -3 M18 18 l4 -3 M12 22 l3 -2 M24 9 l4 -2" ${st}/>`,nerve:`<path d="M2 14 C10 8 20 20 32 12" ${st}/><circle cx="2" cy="14" r="2" fill="currentColor"/>`,weak:`<path d="M6 22 L28 22 M10 22 L10 14 M24 22 L24 18" ${st}/>`}[k])}
+let place={},selCard=null,srtShown=false,srtTries=0;
+function srtInit(){place={};selCard=null;srtShown=false;srtTries=0;const order=CARDS.map((c,i)=>[i,Math.random()]).sort((a,b)=>a[1]-b[1]).map(x=>x[0]);srtOrder=order;srtRender();$("#srtMsg").className="msg"}
+let srtOrder=CARDS.map((c,i)=>i);
+function cardEl(i){const c=CARDS[i];const b=document.createElement("button");b.type="button";b.className="scard"+(selCard===i?" sel":"");b.dataset.i=i;b.innerHTML=icon(c[2])+`<span>${esc(c[0])}</span>`;
+  if(place[i]&&place[i].mark)b.classList.add(place[i].mark);
+  b.setAttribute("aria-pressed",selCard===i);b.onclick=()=>{if(dragMoved)return;selCard=selCard===i?null:i;srtRender()};b.addEventListener("pointerdown",e=>startDrag(e,i,b));return b}
+function srtRender(){const pool=$("#pool");pool.innerHTML="";srtOrder.forEach(i=>{if(!place[i])pool.appendChild(cardEl(i))});if(!pool.children.length)pool.innerHTML='<span class="small">All cards placed. Press Check.</span>';
+  document.querySelectorAll(".bin").forEach(bn=>{const sl=bn.querySelector(".slot");sl.innerHTML="";srtOrder.forEach(i=>{if(place[i]&&place[i].bin===bn.dataset.bin)sl.appendChild(cardEl(i))});bn.classList.toggle("target",selCard!=null)})}
+function putCard(i,bin){place[i]={bin};selCard=null;srtRender()}
+document.querySelectorAll("[data-place]").forEach(b=>b.onclick=()=>{if(selCard!=null)putCard(selCard,b.dataset.place);else{$("#srtMsg").className="msg info show";$("#srtMsg").textContent="Tap a card first, then tap Place here."}});
+let drag=null,dragMoved=false;
+function startDrag(e,i,el){dragMoved=false;const r=el.getBoundingClientRect();drag={i,el,x0:e.clientX,y0:e.clientY,dx:e.clientX-r.left,dy:e.clientY-r.top,ghost:null};
+  const mv=ev=>{if(!drag)return;if(!dragMoved&&Math.hypot(ev.clientX-drag.x0,ev.clientY-drag.y0)<6)return;
+    if(!dragMoved){dragMoved=true;drag.ghost=el.cloneNode(true);drag.ghost.classList.add("ghost");drag.ghost.style.width=r.width+"px";document.body.appendChild(drag.ghost);el.style.opacity=".35"}
+    drag.ghost.style.left=(ev.clientX-drag.dx)+"px";drag.ghost.style.top=(ev.clientY-drag.dy)+"px";document.querySelectorAll(".bin").forEach(bn=>{const b=bn.getBoundingClientRect();bn.classList.toggle("over",ev.clientX>b.left&&ev.clientX<b.right&&ev.clientY>b.top&&ev.clientY<b.bottom)})};
+  const up=ev=>{window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);if(drag&&dragMoved){let hit=null;document.querySelectorAll(".bin").forEach(bn=>{const b=bn.getBoundingClientRect();if(ev.clientX>b.left&&ev.clientX<b.right&&ev.clientY>b.top&&ev.clientY<b.bottom)hit=bn.dataset.bin;bn.classList.remove("over")});
+      drag.ghost.remove();el.style.opacity="";if(hit)putCard(drag.i,hit);setTimeout(()=>dragMoved=false,0)}drag=null};
+  window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up)}
+$("#srtCheck").onclick=()=>{const m=$("#srtMsg");const n=Object.keys(place).length;if(n<CARDS.length){m.className="msg info show";m.textContent=`Place all ${CARDS.length} cards first (${n} placed).`;return}
+  srtTries++;let ok=0;Object.keys(place).forEach(i=>{const r=place[i].bin===CARDS[i][1];place[i].mark=r?"good":"bad";if(r)ok++});srtRender();
+  if(ok===CARDS.length){const st=srtShown?1:srtTries===1?3:2;const best=Math.max(store.get("nel-srt")||0,st);store.set("nel-srt",best);m.className="msg good show";m.innerHTML=`✓ All ${ok} correct. <span class="stars">${starStr(st)}</span> Weakness is the one sign shared by both.`}
+  else{m.className="msg warn show";m.textContent=`${ok} of ${CARDS.length} in the right box. Cards with an orange border are in the wrong box; tap one and move it. Tip: UMN = too much (stiff, brisk, toes up); LMN = too little (floppy, quiet, wasted).`}};
+$("#srtHint").onclick=()=>{const m=$("#srtMsg");m.className="msg info show";m.textContent="Hint: with UMN damage the spinal reflexes lose the brain's brake, so signs are \"too much\". With LMN damage the muscle loses its nerve, so signs are \"too little\" and the muscle wastes and twitches. One card belongs to both."};
+$("#srtShuffle").onclick=srtInit;$("#srtShow").onclick=()=>{srtShown=true;CARDS.forEach((c,i)=>place[i]={bin:c[1],mark:"good"});srtTries=1;srtRender();const m=$("#srtMsg");m.className="msg info show";m.textContent="Answer shown. Press Shuffle / restart to try again on your own."};
+
+/* ======================= tabs / loop ======================= */
+let curTab="sim";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;["sim","det","cnm","umn"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll()});
+function fitAll(){[S1,S2,S3,S4].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;try{if(curTab==="sim")drawSim(dt);else if(curTab==="det")drawDet(now);else if(curTab==="cnm")drawCN(dt);else drawRx(dt)}catch(e){console.error(e)}requestAnimationFrame(frame)}
+window.__lab={sim:(c,t)=>{newSimCase(c);if(t)runTest(t)},simT:v=>{simT=v},det:i=>detLoad(i),cn:i=>cnLoad(i),cnT:v=>{cnT=v},tab:k=>document.querySelector(`[data-tab="${k}"]`).click(),rxT:v=>{rxT=v}};
+readColors();newSimCase();detLoad(0);detStars();cnLoad(0);cnStars();showSimStars();rxRead();srtInit();fitAll();requestAnimationFrame(frame);
+
+})();
+</script>
+</body>
+</html>

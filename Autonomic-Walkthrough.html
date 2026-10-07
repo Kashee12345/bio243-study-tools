@@ -1,0 +1,1543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autonomic Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#4F62B8;--act2:#C4502F;--act3:#2C8A63;--act4:#7B5CC9;--act5:#B8901C;--act6:#1B8A86;
+  /* autonomic palette */
+  --sym:#C4502F;--sym-wash:#F7E0D8;--para:#2C8A63;--para-wash:#DDEFE5;--soma:#4F62B8;
+  --ach:#2F7FC1;--ne:#D98A1C;--epi:#B03A78;--glu:#6F8F24;--na:#5C7F99;
+  --nic:#7B5CC9;--musc:#1B8A86;--alpha:#8A5A2B;--beta:#B8901C;--drug:#3D4A52;--drugok:#2F8A57;
+  --skin:#EBD9C8;--skin-edge:#B89A80;--heart:#C4544A;--lung:#EDC3BD;--lung-edge:#B9746C;
+  --liver:#A2533F;--gut:#E6BC97;--gut-edge:#A87650;--kidney:#B5654F;--adrenal:#E0B24A;--bladder:#E8D27A;
+  --cns:#F0E3C6;--cns-edge:#B59A66;--gray:#CDB596;--blood:#C23B3B;--vessel:#EBC2BA;--vessel-edge:#A8483D;
+  --smooth:#D69C94;--bone:#E4DCCB;--bone-edge:#B3A587;--ganglion:#EBCFA6;--gang-edge:#A7804F;--sweat:#5E9FD0;
+  --membrane:#E0B967;--tail:#F3E7CC;--cyto:#F6E9E5;--ecf:#EAF1F5;--glow:#F2B33B;--muscle:#C98A84;--muscle-edge:#94504A;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#8FA0F0;--act2:#F07A5A;--act3:#5CC98F;--act4:#A98BEF;--act5:#E0BE48;--act6:#4CC2BD;
+  --sym:#F07A5A;--sym-wash:#3A2119;--para:#5CC98F;--para-wash:#173023;--soma:#8FA0F0;
+  --ach:#5AA9E6;--ne:#F2A93B;--epi:#E07AB5;--glu:#A8C95A;--na:#9DB6C9;
+  --nic:#A98BEF;--musc:#4CC2BD;--alpha:#D6A66A;--beta:#E0BE48;--drug:#C9D3D9;--drugok:#5CC98A;
+  --skin:#3A3029;--skin-edge:#8C7460;--heart:#E07067;--lung:#5A3532;--lung-edge:#B9746C;
+  --liver:#B86A58;--gut:#6B4A33;--gut-edge:#C29068;--kidney:#A0604E;--adrenal:#B08A35;--bladder:#6B5E2A;
+  --cns:#4A4030;--cns-edge:#A08A5E;--gray:#6B5E4E;--blood:#E06060;--vessel:#4A2A28;--vessel-edge:#C46A5E;
+  --smooth:#7A4A44;--bone:#3C372E;--bone-edge:#7D735E;--ganglion:#5A4630;--gang-edge:#C29A63;--sweat:#7FB8E0;
+  --membrane:#9C7E45;--tail:#352E22;--cyto:#2A1D1B;--ecf:#14222A;--glow:#F2B33B;--muscle:#7A4440;--muscle-edge:#C47A72;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#8FA0F0;--act2:#F07A5A;--act3:#5CC98F;--act4:#A98BEF;--act5:#E0BE48;--act6:#4CC2BD;
+  --sym:#F07A5A;--sym-wash:#3A2119;--para:#5CC98F;--para-wash:#173023;--soma:#8FA0F0;
+  --ach:#5AA9E6;--ne:#F2A93B;--epi:#E07AB5;--glu:#A8C95A;--na:#9DB6C9;
+  --nic:#A98BEF;--musc:#4CC2BD;--alpha:#D6A66A;--beta:#E0BE48;--drug:#C9D3D9;--drugok:#5CC98A;
+  --skin:#3A3029;--skin-edge:#8C7460;--heart:#E07067;--lung:#5A3532;--lung-edge:#B9746C;
+  --liver:#B86A58;--gut:#6B4A33;--gut-edge:#C29068;--kidney:#A0604E;--adrenal:#B08A35;--bladder:#6B5E2A;
+  --cns:#4A4030;--cns-edge:#A08A5E;--gray:#6B5E4E;--blood:#E06060;--vessel:#4A2A28;--vessel-edge:#C46A5E;
+  --smooth:#7A4A44;--bone:#3C372E;--bone-edge:#7D735E;--ganglion:#5A4630;--gang-edge:#C29A63;--sweat:#7FB8E0;
+  --membrane:#9C7E45;--tail:#352E22;--cyto:#2A1D1B;--ecf:#14222A;--glow:#F2B33B;--muscle:#7A4440;--muscle-edge:#C47A72;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 150px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--panel)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:14px}
+.legend i.t{border-radius:0;border:0;clip-path:polygon(50% 0,100% 100%,0 100%);width:12px;height:11px}
+.legend i.h{border-radius:0;border:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);width:12px;height:11px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Autonomic Nervous System &middot; USC Upstate</div>
+    <h1>Autonomic Nervous System Walkthrough</h1>
+    <p class="sub">How your body runs the heart, gut, glands and blood vessels without you thinking about it, one step at a time. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 15, The Autonomic Nervous System (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Pair this with the <a href="Autonomic-Lab.html">Autonomic Lab</a>.<br>Diagrams are simplified and not to scale. Nerve paths are drawn as single lines, organ positions are schematic, heart rates are rounded teaching numbers, and the animations are sped up so you can see them.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · Two motor systems",col:"act1"},
+            2:{name:"Part 2 · Sympathetic wiring",col:"act2"},
+            3:{name:"Part 3 · Parasympathetic wiring",col:"act3"},
+            4:{name:"Part 4 · Chemical signals",col:"act4"},
+            5:{name:"Part 5 · The divisions at work",col:"act5"},
+            6:{name:"Part 6 · Control and drugs",col:"act6"}};
+const NACTS=6;
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: the body's automatic pilot",
+ body:`<p>Your <b>autonomic nervous system</b> (ANS) runs the parts of your body you do not consciously control: your <b>heart</b>, the <b>smooth muscle</b> in your gut, airways and blood vessels, and your <b>glands</b>. "Autonomic" means self-governing.</p>
+ <p>The ANS is the motor (output) side of the nervous system for these organs. It has two main divisions:</p>
+ <ol><li>The <b>sympathetic division</b> gets you ready for action. It is the <b>fight-or-flight</b> system.</li>
+ <li>The <b>parasympathetic division</b> handles calm, everyday upkeep. It is the <b>rest-and-digest</b> system.</li></ol>
+ <p>Watch the picture. Sympathetic signals leave the <b>middle</b> of the spinal cord. Parasympathetic signals leave the <b>brainstem</b> and the <b>bottom</b> of the spinal cord. Most organs get signals from both.</p>`,
+ analogy:"A car's gas pedal and brake. The sympathetic division presses the gas, the parasympathetic division presses the brake, and both are being adjusted all day long without you thinking about it.",
+ terms:[["Autonomic nervous system","The part of the nervous system that controls cardiac muscle, smooth muscle and glands without conscious control."],["Sympathetic division","The fight-or-flight division. Its outflow leaves the thoracic and upper lumbar spinal cord."],["Parasympathetic division","The rest-and-digest division. Its outflow leaves the brainstem and sacral spinal cord."],["Effector","The tissue that carries out a response, such as a muscle or gland."]],
+ check:{q:"Which of these is NOT an effector of the autonomic nervous system?",opts:[
+  ["Skeletal muscle in your arm",1,"Right. Skeletal muscle is controlled by the somatic nervous system, which you can control on purpose."],
+  ["Cardiac muscle in the heart",0,"The heart is a classic autonomic target. Autonomic nerves speed it up or slow it down."],
+  ["Smooth muscle in the airways",0,"Smooth muscle in airways, gut and blood vessels is controlled by the ANS."],
+  ["Salivary glands",0,"Glands are autonomic effectors. That is why your mouth goes dry when you are nervous."]]},
+ caption:"Sympathetic outflow (thoracolumbar) and parasympathetic outflow (craniosacral) take turns lighting up. Both reach the same organs.",
+ legend:[["sym","Sympathetic division"],["para","Parasympathetic division"],["cns","Brain and spinal cord","r"]]},
+
+{act:1,scene:"chains",id:"somatic",title:"Somatic vs autonomic: one neuron or two",
+ body:`<p>Compare the two lanes in the picture.</p>
+ <p>In the <b>somatic</b> system (top), <b>one</b> motor neuron runs all the way from the spinal cord to a <b>skeletal muscle</b>. It releases <b>acetylcholine (ACh)</b> and the muscle contracts. You can control this on purpose.</p>
+ <p>In the <b>autonomic</b> system (bottom), it takes <b>two neurons in a row</b>. The first neuron starts in the brain or spinal cord and ends in an <b>autonomic ganglion</b>, a cluster of nerve cell bodies outside the CNS. There it hands the signal to the second neuron, which carries it to the effector: <b>cardiac muscle</b>, <b>smooth muscle</b> or a <b>gland</b>.</p>
+ <p>The first neuron is the <b>preganglionic neuron</b> (before the ganglion). The second is the <b>postganglionic neuron</b> (after the ganglion).</p>`,
+ analogy:"Somatic is a direct flight. Autonomic is a flight with one layover. The ganglion is the layover airport where you change planes.",
+ terms:[["Somatic nervous system","Controls skeletal muscle with one motor neuron. Usually voluntary."],["Preganglionic neuron","First autonomic neuron. Its cell body is in the brainstem or spinal cord, and its axon ends in a ganglion."],["Postganglionic neuron","Second autonomic neuron. Its cell body is in the ganglion, and its axon reaches the effector."],["Autonomic ganglion","A cluster of neuron cell bodies outside the CNS where the two neurons meet."]],
+ check:{q:"How many motor neurons connect the CNS to the heart?",opts:[
+  ["Two: a preganglionic and a postganglionic neuron",1,"Yes. Every autonomic pathway is a two-neuron chain that meets at a ganglion."],
+  ["One, like a skeletal muscle",0,"One neuron is the somatic pattern. The heart is an autonomic target, so it needs two."],
+  ["Three, with two ganglia",0,"There is only one ganglion in each autonomic pathway, so only two neurons."],
+  ["None. The heart has no nerves.",0,"The heart beats on its own, but autonomic nerves speed it up and slow it down."]]},
+ caption:"Top: one somatic neuron makes a skeletal muscle twitch. Bottom: two autonomic neurons, meeting at a ganglion, reach cardiac muscle, smooth muscle or a gland.",
+ legend:[["soma","Somatic motor neuron"],["sym","Autonomic neurons"],["ganglion","Ganglion"],["ach","ACh"]]},
+
+{act:1,scene:"ganglion",id:"gang",title:"Inside a ganglion: where the two neurons meet",
+ body:`<p>Zoom in on one pathway. The <b>preganglionic</b> cell body sits in the <b>gray matter</b> of the spinal cord. For the sympathetic division it is in a small region called the <b>lateral horn</b>.</p>
+ <p>Its axon leaves the cord through the <b>ventral root</b> and travels to a ganglion. Inside the ganglion it releases <b>ACh</b> onto the cell bodies of postganglionic neurons. Those neurons fire and send their axons out to the organs.</p>
+ <p>Notice that <b>one preganglionic axon can branch to many postganglionic neurons</b>. In the sympathetic division this spreading out is large, so one signal can reach many organs at once. That is part of why fight-or-flight feels like a whole-body event.</p>`,
+ analogy:"A phone tree. The preganglionic neuron makes one call to the ganglion, and the ganglion passes the news to several people, who each call a different organ.",
+ terms:[["Lateral horn","A small region of gray matter in the thoracic and upper lumbar cord. It holds sympathetic preganglionic cell bodies."],["Ventral root","Where motor axons leave the spinal cord."],["Divergence","One neuron branching to connect with many others."]],
+ check:{q:"Where is the cell body of a postganglionic neuron?",opts:[
+  ["In an autonomic ganglion, outside the CNS",1,"Yes. That is what makes it the post-ganglionic neuron: it begins at the ganglion."],
+  ["In the lateral horn of the spinal cord",0,"That is where sympathetic preganglionic cell bodies sit. The postganglionic cell body is in the ganglion."],
+  ["Inside the target organ's muscle cells",0,"The muscle cells are the effector. The neuron's cell body is in the ganglion."],
+  ["In the brain only",0,"Postganglionic neurons are entirely in the peripheral nervous system."]]},
+ caption:"Preganglionic neuron (lateral horn) → ventral root → ganglion. One axon branches to several postganglionic neurons, which reach the heart, a blood vessel and the eye.",
+ legend:[["sym","Preganglionic (thick) and postganglionic (thin) axons","l"],["gray","Gray matter","r"],["ganglion","Ganglion","r"],["ach","ACh"]]},
+
+{act:2,scene:"cord",id:"tl",title:"Sympathetic outflow: thoracolumbar, T1 to L2",
+ body:`<p>The sympathetic preganglionic neurons sit in the <b>lateral horns</b> of the spinal cord from the first thoracic segment to the second lumbar segment, <b>T1 to L2</b>. That is why the sympathetic division is called <b>thoracolumbar</b>.</p>
+ <p>Watch the highlighted band move down the cord. Each segment from T1 to L2 sends preganglionic axons out. Segments above T1 and below L2 have no lateral horn, so they send no sympathetic outflow.</p>
+ <p>Yet sympathetic signals still reach your <b>head</b> and your <b>legs</b>. The next step shows how: the signals travel up and down a chain of ganglia beside the spine.</p>`,
+ analogy:"A single power station in the middle of town. It sits in one place (T1 to L2), but power lines run up and down to reach every neighborhood.",
+ terms:[["Thoracolumbar","Describes where sympathetic outflow leaves the CNS: spinal segments T1 to L2."],["Lateral horn","Gray matter region that holds sympathetic preganglionic cell bodies, found only from T1 to L2."],["Outflow","Nerve signals leaving the CNS toward the body."]],
+ check:{q:"A spinal cord segment at C5 (neck) contains…",opts:[
+  ["no sympathetic preganglionic neurons",1,"Right. Sympathetic outflow comes only from T1 to L2. The neck gets sympathetic signals that travel up the chain."],
+  ["the sympathetic neurons for the head",0,"The head's sympathetic signals start at T1 to T2 and travel up the chain. C5 has no sympathetic outflow."],
+  ["parasympathetic neurons for the heart",0,"Parasympathetic signals to the heart come from the brainstem, through the vagus nerve, not from C5."],
+  ["the lateral horn for the arms",0,"There is no lateral horn at C5. It is only found from T1 to L2."]]},
+ caption:"Scanning T1 to L2: each segment's lateral horn sends preganglionic axons out to the sympathetic chain.",
+ legend:[["sym","Sympathetic outflow (T1 to L2)"],["para","Parasympathetic outflow (later)"],["cns","Spinal cord","r"],["ganglion","Chain ganglia"]]},
+
+{act:2,scene:"symchain",id:"chain",title:"Chain ganglia: short in, long out",
+ body:`<p>On each side of the spine runs a string of ganglia called the <b>sympathetic chain</b>. These are the <b>chain ganglia</b>, also called <b>paravertebral ganglia</b> because they sit beside the vertebrae.</p>
+ <p>A sympathetic preganglionic axon is <b>short</b>. It only has to reach the chain right next to the cord. Then it can:</p>
+ <ol><li><b>synapse at the same level</b> (the path to the heart),</li><li><b>travel up the chain</b> and synapse higher (the path to the eye goes up to the <b>superior cervical ganglion</b> in the neck),</li><li><b>travel down the chain</b> and synapse lower (the path to blood vessels in the leg).</li></ol>
+ <p>The postganglionic axon then makes the <b>long</b> trip to the organ. Short preganglionic, long postganglionic: that is the sympathetic pattern.</p>`,
+ analogy:"An elevator beside a building. You step in on your own floor (T1 to L2), ride up or down, and get off on whatever floor you need. From there it is a long walk to the room you are visiting.",
+ terms:[["Sympathetic chain","A row of connected ganglia running along each side of the vertebral column."],["Chain (paravertebral) ganglia","Sympathetic ganglia right beside the spine."],["Superior cervical ganglion","The top chain ganglion in the neck. It sends sympathetic fibers to the head, including the eye."]],
+ check:{q:"In the sympathetic division, which fiber is usually longer?",opts:[
+  ["The postganglionic fiber",1,"Yes. The ganglia sit close to the spine, so the preganglionic fiber is short and the postganglionic fiber has the long trip."],
+  ["The preganglionic fiber",0,"That is the parasympathetic pattern. Sympathetic ganglia are near the spinal cord, so the preganglionic fiber is short."],
+  ["They are always the same length",0,"They differ. Watch the picture: a short hop to the chain, then a long run to the organ."],
+  ["Neither. Sympathetic pathways have one neuron.",0,"All autonomic pathways, sympathetic included, use two neurons."]]},
+ caption:"Three paths: synapse at the same level (heart), ride up the chain (eye), ride down the chain (leg blood vessel). Short in, long out.",
+ legend:[["sym","Preganglionic (short, beaded) and postganglionic (long)","l"],["ganglion","Chain ganglion"],["ne","Norepinephrine","d"],["ach","ACh"]]},
+
+{act:2,scene:"collat",id:"coll",title:"Collateral ganglia: passing through to the gut",
+ body:`<p>Some sympathetic preganglionic axons <b>pass straight through</b> the chain without stopping. They form the <b>splanchnic nerves</b> and travel to ganglia in front of the spine, on the large arteries that feed the gut.</p>
+ <p>These are the <b>collateral ganglia</b>, also called <b>prevertebral ganglia</b> (in front of the vertebrae). The three main ones are named for the arteries they sit on:</p>
+ <ol><li><b>Celiac ganglion</b>: stomach, liver and nearby organs.</li><li><b>Superior mesenteric ganglion</b>: small intestine.</li><li><b>Inferior mesenteric ganglion</b>: large intestine, bladder and pelvic organs.</li></ol>
+ <p>The postganglionic fibers continue to the organs. The message is usually <b>slow down digestion</b>: less movement, less secretion, and narrower blood vessels in the gut.</p>`,
+ analogy:"An express train. Some passengers skip the local stops (the chain) and ride straight to a hub downtown (a collateral ganglion), then transfer to a local line to their final stop.",
+ terms:[["Collateral (prevertebral) ganglia","Sympathetic ganglia in front of the spine, such as the celiac, superior mesenteric and inferior mesenteric ganglia."],["Splanchnic nerves","Preganglionic sympathetic axons that pass through the chain to reach collateral ganglia."],["Celiac ganglion","Collateral ganglion that serves the stomach, liver and nearby organs."]],
+ check:{q:"A sympathetic preganglionic axon heading to the small intestine…",opts:[
+  ["passes through the chain and synapses in the superior mesenteric ganglion",1,"Yes. It rides through the chain as a splanchnic nerve and synapses in a collateral ganglion."],
+  ["synapses in the chain ganglion at its own level",0,"Axons to the gut organs usually pass through the chain without synapsing."],
+  ["synapses in a ganglion inside the intestine wall",0,"Ganglia in the organ wall are parasympathetic terminal ganglia, not sympathetic ones."],
+  ["goes directly to the intestine with no ganglion",0,"Every autonomic pathway has a ganglion. The one exception that looks direct, the adrenal medulla, is the next step."]]},
+ caption:"Preganglionic axons pass through the chain (no stop), synapse in the celiac, superior mesenteric or inferior mesenteric ganglion, and the gut slows down.",
+ legend:[["sym","Sympathetic axons","l"],["ganglion","Collateral ganglia"],["blood","Aorta and its branches","r"],["ne","Norepinephrine","d"]]},
+
+{act:2,scene:"adrenal",id:"adr",title:"The adrenal medulla: a ganglion that makes hormones",
+ body:`<p>The <b>adrenal glands</b> sit on top of the kidneys. Their inner part, the <b>adrenal medulla</b>, is a special case.</p>
+ <p>A sympathetic preganglionic axon goes <b>straight to the adrenal medulla</b> with no ganglion along the way. It releases ACh onto <b>chromaffin cells</b>. These cells are really <b>modified postganglionic neurons</b> with no axons. So the adrenal medulla works like a sympathetic ganglion.</p>
+ <p>Instead of sending signals down an axon, chromaffin cells release <b>epinephrine</b> (mostly) and <b>norepinephrine</b> into the <b>blood</b>. Now they act as <b>hormones</b>. They travel everywhere the blood goes, so their effects are widespread, and they last longer than a nerve signal because they stay in the blood until they are cleared.</p>`,
+ analogy:"A town crier vs a group text. Most sympathetic neurons deliver a message to one address. The adrenal medulla shouts it into the blood, and everyone downstream hears it.",
+ terms:[["Adrenal medulla","Inner part of the adrenal gland. It works like a sympathetic ganglion and releases hormones into the blood."],["Chromaffin cells","Adrenal medulla cells that act as modified postganglionic neurons."],["Epinephrine","Also called adrenaline. The main hormone of the adrenal medulla."]],
+ check:{q:"Why is the adrenal medulla compared to a sympathetic ganglion?",opts:[
+  ["Its cells receive preganglionic ACh, like postganglionic neurons do.",1,"Yes. Chromaffin cells sit where postganglionic neurons would be, but they release hormones into the blood instead of sending axons out."],
+  ["It sits inside the sympathetic chain.",0,"It sits on top of the kidney, far from the chain. The comparison is about its cells, not its location."],
+  ["It releases ACh into the blood.",0,"It releases epinephrine and norepinephrine into the blood. ACh is what it receives."],
+  ["It is controlled by the parasympathetic division.",0,"The adrenal medulla gets sympathetic input only."]]},
+ caption:"A preganglionic axon goes straight to the adrenal medulla. Chromaffin cells release epinephrine (triangles) and norepinephrine (diamonds) into the blood, which carries them to the heart, liver and airways.",
+ legend:[["sym","Sympathetic preganglionic axon","l"],["epi","Epinephrine","t"],["ne","Norepinephrine","d"],["glu","Glucose","h"],["adrenal","Adrenal gland","r"]]},
+
+{act:3,scene:"cranio",id:"cs",title:"Parasympathetic outflow: craniosacral",
+ body:`<p>Parasympathetic preganglionic neurons sit in two places, at the two ends of the CNS. That is why this division is called <b>craniosacral</b>.</p>
+ <ol><li><b>Cranial</b>: nuclei in the brainstem send axons out in four cranial nerves: <b>III</b> (oculomotor, to the eye), <b>VII</b> (facial, to tear and salivary glands), <b>IX</b> (glossopharyngeal, to the parotid salivary gland) and <b>X</b> (vagus, to the heart, lungs and most abdominal organs).</li>
+ <li><b>Sacral</b>: segments <b>S2 to S4</b> of the spinal cord send axons to the bladder, the lower large intestine and the reproductive organs.</li></ol>
+ <p>Watch each nerve light up in turn. Notice that every ganglion sits <b>right next to or inside</b> the organ it controls.</p>`,
+ analogy:"Two bookends. The parasympathetic division sits at the top (brainstem) and bottom (sacral cord) of the shelf. The sympathetic division fills the middle.",
+ terms:[["Craniosacral","Describes where parasympathetic outflow leaves the CNS: brainstem (cranial nerves III, VII, IX, X) and sacral cord (S2 to S4)."],["Oculomotor nerve (III)","Carries parasympathetic fibers that constrict the pupil."],["Vagus nerve (X)","Carries parasympathetic fibers to the thoracic and most abdominal organs."]],
+ check:{q:"Which cranial nerve carries parasympathetic signals that constrict the pupil?",opts:[
+  ["III, the oculomotor nerve",1,"Yes. Its parasympathetic fibers synapse in the ciliary ganglion behind the eye."],
+  ["X, the vagus nerve",0,"The vagus goes to the chest and abdomen, not the eye."],
+  ["VII, the facial nerve",0,"The facial nerve's parasympathetic fibers go to tear and salivary glands."],
+  ["None. The pupil is controlled only by sympathetic nerves.",0,"The pupil gets both. Parasympathetic fibers in nerve III constrict it, sympathetic fibers dilate it."]]},
+ caption:"Cranial nerves III, VII, IX and X leave the brainstem; S2 to S4 leave the sacral cord. Each ganglion sits next to or inside its target.",
+ legend:[["para","Parasympathetic preganglionic (long)","l"],["ganglion","Ganglion near the target"],["cns","Brain and spinal cord","r"]]},
+
+{act:3,scene:"vagus",id:"vagus",title:"The vagus nerve does most of the work",
+ body:`<p><b>Vagus</b> means "wandering." The vagus nerve (cranial nerve X) leaves the brainstem, runs down the neck, and wanders through the chest and abdomen. It carries <b>most of the body's parasympathetic output</b>.</p>
+ <p>It reaches the <b>heart</b>, <b>lungs</b>, <b>stomach</b>, <b>liver</b>, <b>small intestine</b> and the first part of the <b>large intestine</b>.</p>
+ <p>Its preganglionic axons are <b>long</b>. They run all the way into the walls of the organs and synapse in <b>terminal ganglia</b>, also called <b>intramural ganglia</b> ("within the wall"). The postganglionic axons are then <b>very short</b>.</p>
+ <p>Watch the effects: the heart slows, the airways narrow a little, and the stomach and intestines get busier.</p>`,
+ analogy:"A delivery driver with one very long route. The driver (the long preganglionic axon) drives all the way to each building and hands the package to someone at the front door (the terminal ganglion), who carries it a few steps inside.",
+ terms:[["Terminal (intramural) ganglia","Parasympathetic ganglia located near or inside the wall of the target organ."],["Vagus nerve","Cranial nerve X. Carries most parasympathetic output to the chest and abdomen."],["Long preganglionic, short postganglionic","The parasympathetic pattern."]],
+ check:{q:"Where does a vagus preganglionic axon to the stomach synapse?",opts:[
+  ["In a terminal ganglion in the stomach wall",1,"Yes. Parasympathetic ganglia sit in or near the organ, so the postganglionic axon is very short."],
+  ["In the sympathetic chain",0,"The chain is sympathetic. Parasympathetic axons do not stop there."],
+  ["In the celiac ganglion",0,"The celiac ganglion is a sympathetic collateral ganglion. Vagus fibers synapse in the stomach wall."],
+  ["In the brainstem",0,"The brainstem is where the preganglionic cell body lives. The synapse is out at the organ."]]},
+ caption:"The vagus wanders from the brainstem to the heart, lungs, stomach and intestines. Inset: a terminal ganglion inside the stomach wall.",
+ legend:[["para","Vagus nerve (preganglionic)","l"],["ganglion","Terminal (intramural) ganglion"],["ach","ACh"]]},
+
+{act:3,scene:"lengths",id:"len",title:"Side by side: where the ganglia sit",
+ body:`<p>Here are the two divisions side by side. Watch a signal race down each one at the same time.</p>
+ <ol><li><b>Sympathetic</b>: ganglia are <b>close to the spinal cord</b> (chain or collateral). Preganglionic fiber <b>short</b>, postganglionic fiber <b>long</b>.</li>
+ <li><b>Parasympathetic</b>: ganglia are <b>close to or inside the organ</b> (terminal ganglia). Preganglionic fiber <b>long</b>, postganglionic fiber <b>short</b>.</li></ol>
+ <p>The sympathetic ganglion also branches out to many postganglionic neurons, so its effects spread widely. The parasympathetic signal stays more <b>local</b>, aimed at one organ at a time. That fits their jobs: an emergency needs the whole body, while digesting lunch does not.</p>`,
+ analogy:"Sympathetic is a radio station near town that broadcasts to everyone. Parasympathetic is a courier who drives out to one house and knocks on one door.",
+ terms:[["Sympathetic ganglia","Near the spinal cord: chain and collateral ganglia."],["Parasympathetic ganglia","Near or within the target organ: terminal ganglia."],["Widespread vs local","Sympathetic responses tend to involve many organs at once; parasympathetic responses tend to be more targeted."]],
+ check:{q:"A ganglion inside the wall of the bladder belongs to which division?",opts:[
+  ["Parasympathetic",1,"Yes. Ganglia in or near the target organ are parasympathetic terminal ganglia."],
+  ["Sympathetic",0,"Sympathetic ganglia sit near the spine (chain) or in front of it (collateral), not in organ walls."],
+  ["Somatic",0,"The somatic system has no ganglia on its motor side."],
+  ["Both divisions share it",0,"Each division has its own ganglia. A ganglion in the organ wall is parasympathetic."]]},
+ caption:"Same race, different wiring. Sympathetic: short then long, fans out widely. Parasympathetic: long then short, stays local.",
+ legend:[["sym","Sympathetic"],["para","Parasympathetic"],["ganglion","Ganglion"]]},
+
+{act:4,scene:"syn",id:"nic",title:"Every ganglion: ACh on nicotinic receptors",
+ body:`<p>Now zoom in on a synapse inside a ganglion. This step is the same in <b>both</b> divisions.</p>
+ <ol><li>An action potential reaches the end of the preganglionic axon.</li><li>Vesicles release <b>acetylcholine (ACh)</b> into the gap.</li><li>ACh binds <b>nicotinic receptors</b> on the postganglionic neuron.</li><li>Nicotinic receptors are <b>ion channels</b>. They open, Na⁺ rushes in, and the postganglionic neuron fires.</li></ol>
+ <p>Rule to remember: <b>all preganglionic neurons release ACh</b>, sympathetic and parasympathetic. Neurons that release ACh are called <b>cholinergic</b>. The chromaffin cells of the adrenal medulla and skeletal muscle (at the neuromuscular junction) also use nicotinic receptors.</p>`,
+ analogy:"A doorbell wired straight to a light. ACh presses the button (the nicotinic receptor), the door opens at once, ions flood in, and the next neuron lights up.",
+ terms:[["Acetylcholine (ACh)","The neurotransmitter released by all autonomic preganglionic neurons."],["Nicotinic receptor","An ACh receptor that is an ion channel. Found on all postganglionic neurons, chromaffin cells and skeletal muscle."],["Cholinergic","Describes a neuron that releases ACh, or a receptor that binds it."]],
+ check:{q:"A sympathetic preganglionic neuron releases…",opts:[
+  ["ACh, onto nicotinic receptors",1,"Yes. All preganglionic neurons, in both divisions, release ACh onto nicotinic receptors."],
+  ["norepinephrine, onto adrenergic receptors",0,"Norepinephrine comes later, from most sympathetic postganglionic neurons. Preganglionic neurons always use ACh."],
+  ["ACh, onto muscarinic receptors",0,"Muscarinic receptors are on the target organs. In the ganglion, the receptors are nicotinic."],
+  ["epinephrine, into the blood",0,"That is the adrenal medulla's job, and it does it after receiving ACh from a preganglionic neuron."]]},
+ caption:"Action potential arrives → ACh released → binds nicotinic receptors (ion channels) → Na⁺ in → the postganglionic neuron fires.",
+ legend:[["ach","ACh"],["nic","Nicotinic receptor (ion channel)","r"],["na","Na⁺"],["glow","Action potential"]]},
+
+{act:4,scene:"syn",id:"musc",title:"Parasympathetic targets: ACh on muscarinic receptors",
+ body:`<p>At the other end of a parasympathetic pathway, the postganglionic neuron also releases <b>ACh</b>. But the receptors on the target organ are a different kind: <b>muscarinic receptors</b>.</p>
+ <p>Muscarinic receptors are not ion channels. When ACh binds, the receptor switches on a <b>G protein</b> inside the cell. The G protein then changes what the cell does. That is a little slower, but it lets the same ACh cause different effects in different organs.</p>
+ <ol><li>In the <b>heart</b>, it slows the heart rate.</li><li>In the <b>gut</b>, it makes smooth muscle contract more.</li><li>In <b>glands</b>, it increases secretion, like saliva.</li></ol>`,
+ analogy:"A doorbell that rings a person instead of opening the door. The person (G protein) then decides what to do, and different houses have different people with different jobs.",
+ terms:[["Muscarinic receptor","An ACh receptor that works through a G protein. Found on parasympathetic target organs (and sweat glands)."],["G protein","A protein inside the cell that is switched on by a receptor and passes the signal along."],["Parasympathetic postganglionic","Releases ACh onto muscarinic receptors."]],
+ check:{q:"What makes muscarinic receptors different from nicotinic receptors?",opts:[
+  ["Muscarinic receptors work through G proteins; nicotinic receptors are ion channels.",1,"Yes. Both bind ACh, but they pass the message in different ways."],
+  ["Muscarinic receptors bind norepinephrine.",0,"Both muscarinic and nicotinic receptors bind ACh. Norepinephrine binds adrenergic receptors."],
+  ["Muscarinic receptors are only in ganglia.",0,"It is the other way around. Ganglia have nicotinic receptors; target organs have muscarinic ones."],
+  ["They are the same receptor with two names.",0,"They are different proteins, found in different places and working in different ways."]]},
+ caption:"Parasympathetic postganglionic ACh → muscarinic receptor → G protein switches on → the heart slows, the gut contracts, glands secrete.",
+ legend:[["ach","ACh"],["musc","Muscarinic receptor","r"],["para","G protein (signal inside the cell)"]]},
+
+{act:4,scene:"syn",id:"ne",title:"Sympathetic targets: norepinephrine on adrenergic receptors",
+ body:`<p>Most <b>sympathetic postganglionic</b> neurons release <b>norepinephrine (NE)</b>. Their axons have swellings called <b>varicosities</b> that release NE along the way, right onto the smooth muscle or other target.</p>
+ <p>NE binds <b>adrenergic receptors</b>. There are two main families, <b>alpha (α)</b> and <b>beta (β)</b>, each with subtypes. Neurons that release NE are called <b>adrenergic</b>.</p>
+ <p><b>The exception:</b> the sympathetic postganglionic neurons that go to <b>sweat glands</b> release <b>ACh</b>, not NE, onto muscarinic receptors. (Some that go to blood vessels in skeletal muscle do too.) They are still sympathetic, because they come from T1 to L2 through the chain. Only the chemical is different.</p>`,
+ analogy:"Same company, different uniform. Sweat-gland fibers belong to the sympathetic team, but they wear the ACh uniform instead of the NE uniform.",
+ terms:[["Norepinephrine (NE)","The neurotransmitter released by most sympathetic postganglionic neurons."],["Adrenergic receptor","Receptor that binds NE and epinephrine. Two families: alpha and beta."],["Varicosities","Bead-like swellings on postganglionic axons that release neurotransmitter."]],
+ check:{q:"A sympathetic postganglionic neuron to a sweat gland releases…",opts:[
+  ["ACh onto muscarinic receptors",1,"Yes. This is the classic exception. Sympathetic wiring, cholinergic chemistry."],
+  ["NE onto adrenergic receptors",0,"That is the rule for most sympathetic targets, but sweat glands are the exception."],
+  ["ACh onto nicotinic receptors",0,"Nicotinic receptors are found in ganglia. The sweat gland's receptors are muscarinic."],
+  ["epinephrine into the blood",0,"Only the adrenal medulla releases epinephrine into the blood."]]},
+ caption:"Left: NE released from varicosities binds alpha and beta receptors. Right: the exception, a sympathetic fiber releasing ACh onto a sweat gland.",
+ legend:[["ne","Norepinephrine","d"],["alpha","Alpha receptor","r"],["beta","Beta receptor","r"],["ach","ACh"],["sweat","Sweat"]]},
+
+{act:4,scene:"receptors",id:"rec",title:"Same chemical, different receptor, different effect",
+ body:`<p>Why can NE speed up the heart but relax the airways? Because each organ has its own <b>receptor subtype</b>. The receptor decides the effect, not the chemical. Watch the three examples:</p>
+ <ol><li><b>Beta-1 (β1)</b> receptors on the <b>heart</b>: heart rate and force of contraction go <b>up</b>.</li>
+ <li><b>Beta-2 (β2)</b> receptors on <b>bronchiolar smooth muscle</b>: the muscle <b>relaxes</b>, so the airways widen. These respond mainly to epinephrine circulating in the blood.</li>
+ <li><b>Alpha-1 (α1)</b> receptors on smooth muscle of <b>most blood vessels</b> (like those in skin and gut): the muscle <b>contracts</b>, so the vessels narrow.</li></ol>
+ <p>This is why drugs can target one organ: a drug that fits only β2 receptors acts mostly on the airways.</p>`,
+ analogy:"One key, three different locks, three different doors. NE (or epinephrine) is the key; the lock on each organ decides which door opens.",
+ terms:[["β1 receptor","On the heart. Increases heart rate and force."],["β2 receptor","On bronchiolar smooth muscle (and some blood vessels). Relaxes the muscle."],["α1 receptor","On smooth muscle of most blood vessels. Constricts them."]],
+ check:{q:"Epinephrine binds β2 receptors in the lungs. What happens?",opts:[
+  ["Bronchiolar smooth muscle relaxes and the airways widen.",1,"Yes. That is why β2 drugs are used to open the airways in asthma."],
+  ["Bronchiolar smooth muscle contracts and the airways narrow.",0,"That is what parasympathetic ACh on muscarinic receptors does. β2 relaxes the airways."],
+  ["The heart rate goes up.",0,"That is β1, on the heart. β2 on the lungs opens the airways."],
+  ["Blood vessels in the skin narrow.",0,"That is α1. β2 relaxes smooth muscle."]]},
+ caption:"β1 on the heart: faster and stronger. β2 on bronchioles: muscle relaxes, airway widens. α1 on a skin blood vessel: muscle contracts, vessel narrows.",
+ legend:[["ne","Norepinephrine","d"],["epi","Epinephrine","t"],["beta","Beta receptor","r"],["alpha","Alpha receptor","r"],["smooth","Smooth muscle","r"]]},
+
+{act:5,scene:"body",id:"fight",title:"Fight or flight: the sympathetic body",
+ body:`<p>Something startles you. Your sympathetic division fires widely and your adrenal medulla adds epinephrine to the blood. Watch the whole body shift into action mode:</p>
+ <ol><li><b>Pupils dilate</b>, letting in more light.</li><li><b>Heart rate and force increase</b>, pumping more blood.</li><li><b>Bronchioles dilate</b>, so more air reaches the lungs.</li><li><b>Blood shifts to skeletal muscle</b>: vessels in skin and gut narrow, vessels in working muscle widen.</li><li><b>Digestion slows</b> and the mouth goes dry.</li><li>The <b>liver releases glucose</b> for fuel.</li><li><b>Sweating</b> increases to shed heat, and the bladder holds urine.</li></ol>
+ <p>Everything that helps you run or fight goes up. Everything that can wait, like digestion, goes down.</p>`,
+ analogy:"A restaurant when a huge party walks in. Every cook moves to the grill, the dishwashing stops, and the manager raids the storeroom (glucose) for supplies.",
+ terms:[["Fight-or-flight response","The widespread sympathetic response to stress, danger or exercise."],["Pupil dilation","Widening of the pupil by the sympathetic division."],["Glycogenolysis","Breaking down stored glycogen in the liver to release glucose."]],
+ check:{q:"Which change is part of fight or flight?",opts:[
+  ["The liver releases glucose into the blood.",1,"Yes. Muscles need fuel to run or fight, and epinephrine tells the liver to release it."],
+  ["The pupils constrict.",0,"Pupils dilate in fight or flight. Constriction is a parasympathetic effect."],
+  ["Digestion speeds up.",0,"Digestion slows down. It can wait until the danger is over."],
+  ["The bronchioles constrict.",0,"They dilate, so more air can reach the lungs."]]},
+ caption:"Sympathetic activity rises: pupils dilate, heart speeds, airways open, blood shifts to muscle, gut slows, glucose rises, sweat appears.",
+ legend:[["sym","Sympathetic effect"],["glu","Glucose","h"],["sweat","Sweat"],["epi","Epinephrine","t"]]},
+
+{act:5,scene:"body",id:"rest",title:"Rest and digest: the parasympathetic body",
+ body:`<p>Now picture yourself after a big meal on a quiet afternoon. The parasympathetic division is in charge, mostly through the vagus nerve. Watch the body switch to maintenance mode:</p>
+ <ol><li><b>Pupils constrict</b>.</li><li><b>Heart rate slows</b>.</li><li><b>Bronchioles narrow</b> a little; you don't need extra air.</li><li><b>Digestion speeds up</b>: more stomach churning, more gut movement, more digestive juices.</li><li><b>Salivation</b> increases.</li><li>The <b>bladder empties</b>: its wall muscle contracts.</li></ol>
+ <p>The parasympathetic division saves energy and takes care of upkeep. Some people also call it "feed and breed."</p>`,
+ analogy:"The same restaurant at 3 p.m. The grill is off, the staff are prepping food, washing dishes and restocking for later.",
+ terms:[["Rest-and-digest response","The parasympathetic state of saving energy, digesting food and doing body upkeep."],["Pupil constriction","Narrowing of the pupil by parasympathetic fibers in cranial nerve III."],["Micturition","Emptying the bladder. Parasympathetic signals contract the bladder wall."]],
+ check:{q:"Which change is part of rest and digest?",opts:[
+  ["Salivation increases.",1,"Yes. Parasympathetic signals (cranial nerves VII and IX) turn up the salivary glands."],
+  ["Heart rate rises.",0,"Heart rate falls. The vagus nerve slows the heart."],
+  ["Blood glucose is released from the liver.",0,"That is a fight-or-flight effect driven by epinephrine."],
+  ["The pupils dilate.",0,"They constrict in rest and digest."]]},
+ caption:"Parasympathetic activity rises: pupils constrict, heart slows, airways narrow a little, gut and salivary glands get busy, bladder empties.",
+ legend:[["para","Parasympathetic effect"],["sweat","Saliva and urine drops"],["gut","Gut motility","r"]]},
+
+{act:5,scene:"dual",id:"dual",title:"Dual innervation and autonomic tone",
+ body:`<p>Most organs get input from <b>both</b> divisions. This is <b>dual innervation</b>. The two usually have <b>opposite</b> effects, like a gas pedal and a brake.</p>
+ <p>Look at the eye: <b>sympathetic</b> fibers contract the <b>radial (dilator) muscle</b> to widen the pupil, while <b>parasympathetic</b> fibers contract the <b>circular (sphincter) muscle</b> to shrink it.</p>
+ <p>Both divisions are <b>always a little bit active</b>. This background level is <b>autonomic tone</b>. At rest, the heart is under <b>parasympathetic tone</b>: the vagus keeps a light foot on the brake. The heart's own pacemaker would beat about <b>80 to 100 times a minute</b>, but at rest it beats more like 70.</p>
+ <p>Watch the four phases. When all autonomic input is removed, the heart settles at its own built-in rate.</p>`,
+ analogy:"Driving downhill with a light foot on the brake. You can speed up by easing off the brake, or by pressing the gas. Both work, and you usually do a bit of both.",
+ terms:[["Dual innervation","An organ receives both sympathetic and parasympathetic fibers."],["Autonomic tone","The steady background activity of a division. It sets an organ's resting level."],["Parasympathetic tone of the heart","Constant vagus activity that keeps the resting heart rate below the pacemaker's built-in rate."]],
+ check:{q:"A drug blocks all vagus input to the heart. The resting heart rate will…",opts:[
+  ["go up, toward the pacemaker's own rate of about 80 to 100",1,"Yes. Removing the parasympathetic brake lets the heart speed up to its built-in rate."],
+  ["go down, because the heart needs the vagus to beat",0,"The heart beats on its own. The vagus only slows it, so removing it speeds the heart up."],
+  ["stay exactly the same",0,"At rest the heart is under parasympathetic tone, so removing it changes the rate."],
+  ["stop",0,"The heart's pacemaker keeps working with no nerves at all. That is why transplanted hearts beat."]]},
+ caption:"Four phases: resting tone, more sympathetic, more parasympathetic, then no autonomic input. The heart rate and pupil change together.",
+ legend:[["sym","Sympathetic: gas pedal, dilator muscle"],["para","Parasympathetic: brake, sphincter muscle"],["heart","Heart rate trace","l"]]},
+
+{act:5,scene:"symponly",id:"only",title:"Sympathetic only: control by turning one dial",
+ body:`<p>A few targets get <b>only sympathetic</b> fibers. The main ones are:</p>
+ <ol><li><b>Most blood vessels</b> (their smooth muscle),</li><li><b>Sweat glands</b>,</li><li>The <b>adrenal medulla</b>,</li><li>The <b>arrector pili</b> muscles that raise your hairs (goosebumps).</li></ol>
+ <p>With no parasympathetic brake, how can these organs be turned down? By changing <b>sympathetic tone</b>. More sympathetic signal makes vessel smooth muscle contract, so the vessel narrows (<b>vasoconstriction</b>). Less signal lets it relax, so the vessel widens (<b>vasodilation</b>). Watch the dial and the vessel together.</p>`,
+ analogy:"A dimmer switch instead of two separate switches. One knob turned up or down gives you every brightness you need.",
+ terms:[["Sympathetic tone","Steady background sympathetic activity. Blood vessels are kept partly narrowed by it."],["Vasoconstriction","Narrowing of a blood vessel when its smooth muscle contracts."],["Vasodilation","Widening of a blood vessel when its smooth muscle relaxes."]],
+ check:{q:"Most blood vessels have no parasympathetic fibers. How are they made wider?",opts:[
+  ["By decreasing sympathetic activity, so their smooth muscle relaxes",1,"Yes. Less sympathetic tone means less contraction, so the vessel widens."],
+  ["By increasing parasympathetic activity",0,"Most vessels have no parasympathetic fibers, so that dial does not exist for them."],
+  ["By increasing sympathetic activity",0,"More sympathetic activity (through α1 receptors) narrows most vessels."],
+  ["They can't be made wider",0,"They can. Turning sympathetic tone down lets them relax and widen."]]},
+ caption:"One dial: sympathetic activity low → vessel wide; medium → resting tone; high → vessel narrow. Sweat glands and adrenal medulla follow the same single dial.",
+ legend:[["sym","Sympathetic fiber","l"],["smooth","Vessel smooth muscle","r"],["blood","Blood cells"],["sweat","Sweat"]]},
+
+{act:6,scene:"central",id:"brain",title:"Who's in charge? The hypothalamus and brainstem",
+ body:`<p>The ANS is not on its own. It takes orders from the brain.</p>
+ <ol><li>The <b>hypothalamus</b> is the main control center. It links emotions, body temperature, hunger and stress to autonomic output.</li>
+ <li>The <b>brainstem</b>, especially the <b>medulla</b>, holds centers for heart rate, blood pressure and breathing. It sends signals down to the preganglionic neurons.</li>
+ <li>Higher areas, like the <b>amygdala</b> (part of the limbic system) and the cerebral cortex, can feed in too. That is why a scary thought can make your heart pound.</li></ol>
+ <p>Sensory neurons from the organs (<b>visceral sensory</b> neurons) send information back up, so the brain knows how the organs are doing.</p>`,
+ analogy:"The hypothalamus is the manager, the brainstem is the shift supervisor, and the preganglionic neurons are the workers on the floor. A worried customer (the amygdala) can get the manager's attention fast.",
+ terms:[["Hypothalamus","The main autonomic control center in the brain."],["Medulla oblongata","Brainstem region with centers for heart rate, blood pressure and breathing."],["Visceral sensory neurons","Neurons that carry information from the organs back to the CNS."]],
+ check:{q:"Which brain region is the main control center for the autonomic nervous system?",opts:[
+  ["The hypothalamus",1,"Yes. It ties together stress, emotion, temperature and other inputs and directs the ANS."],
+  ["The cerebellum",0,"The cerebellum coordinates movement. It is not the ANS control center."],
+  ["The primary motor cortex",0,"That controls voluntary skeletal muscle, which is somatic, not autonomic."],
+  ["The spinal cord alone",0,"The cord holds the preganglionic neurons, but they take direction from the hypothalamus and brainstem."]]},
+ caption:"A scary sight → amygdala → hypothalamus → brainstem → spinal cord → sympathetic outflow → the heart speeds up. Visceral sensory signals report back.",
+ legend:[["sym","Command signal (down)"],["ach","Sensory feedback (up)"],["cns","Brain and spinal cord","r"]]},
+
+{act:6,scene:"baro",id:"baro",title:"An autonomic reflex: the baroreceptor reflex",
+ body:`<p>An <b>autonomic reflex</b> works like a somatic reflex: a sensor, a sensory neuron, a center in the CNS, motor neurons and an effector. One of the most important is the <b>baroreceptor reflex</b>, which keeps blood pressure steady.</p>
+ <ol><li><b>Baroreceptors</b> are stretch sensors in the walls of the <b>carotid sinus</b> and the <b>aortic arch</b>.</li>
+ <li>When blood pressure <b>rises</b>, the walls stretch more and the sensors fire faster. Signals travel in cranial nerves <b>IX</b> and <b>X</b> to the <b>medulla</b>.</li>
+ <li>The medulla turns <b>up parasympathetic</b> (vagus) output to the heart and turns <b>down sympathetic</b> output.</li>
+ <li>The heart slows and blood vessels relax. Blood pressure drops back toward normal.</li></ol>
+ <p>When pressure <b>falls</b>, as when you stand up fast, everything runs the other way. This is <b>negative feedback</b>.</p>`,
+ analogy:"A thermostat for blood pressure. The sensors read the pressure, the medulla compares it with the set point, and the ANS turns the heat up or down.",
+ terms:[["Baroreceptor","A stretch receptor in an artery wall that senses blood pressure."],["Baroreceptor reflex","An autonomic reflex that adjusts heart rate and vessel diameter to keep blood pressure steady."],["Negative feedback","A response that reverses the original change."]],
+ check:{q:"Blood pressure suddenly rises. The baroreceptor reflex will…",opts:[
+  ["increase vagus output and decrease sympathetic output, slowing the heart",1,"Yes. Slowing the heart and relaxing vessels brings pressure back down."],
+  ["increase sympathetic output to raise the heart rate",0,"That would push pressure even higher. Negative feedback opposes the change."],
+  ["stop all baroreceptor firing",0,"Higher pressure stretches the arteries more, so the baroreceptors fire faster, not slower."],
+  ["make the hypothalamus release epinephrine",0,"Epinephrine comes from the adrenal medulla, and adding more would raise pressure further."]]},
+ caption:"Pressure rises → baroreceptors stretch and fire faster → medulla → more vagus, less sympathetic → heart slows, vessels relax → pressure falls. Then the reverse.",
+ legend:[["blood","Blood pressure","l"],["heart","Heart rate","l"],["para","Vagus output"],["sym","Sympathetic output"]]},
+
+{act:6,scene:"drugs",id:"drugs1",title:"Drugs at adrenergic receptors: beta blockers and albuterol",
+ body:`<p>Because each organ has its own receptor types, drugs can target them. Two common examples:</p>
+ <ol><li><b>Beta blockers</b> (such as metoprolol or propranolol) <b>block β receptors</b>. On the heart, they stop NE and epinephrine from binding β1, so <b>heart rate and force go down</b>. They are used for high blood pressure and some heart problems. A drug that blocks a receptor is an <b>antagonist</b>.</li>
+ <li><b>Albuterol</b> <b>activates β2 receptors</b>. In the lungs, it relaxes bronchiolar smooth muscle and <b>opens the airways</b>, which is why it is a rescue inhaler for asthma. A drug that activates a receptor is an <b>agonist</b>.</li></ol>
+ <p>Watch the left panel: NE arrives, but the receptors are capped by the blocker. Watch the right panel: a puff of albuterol opens a narrowed airway.</p>`,
+ analogy:"An antagonist is gum stuck in a lock, so the real key can't get in. An agonist is a copy of the key that opens the door by itself.",
+ terms:[["Agonist","A drug that binds a receptor and activates it, like the natural chemical."],["Antagonist","A drug that binds a receptor and blocks it."],["Beta blocker","An antagonist at β receptors. Lowers heart rate and force."],["Albuterol","A β2 agonist. Opens the airways."]],
+ check:{q:"Why can a nonselective beta blocker (one that blocks β1 and β2) be risky for someone with asthma?",opts:[
+  ["Blocking β2 in the lungs can let the airways narrow.",1,"Yes. β2 receptors keep the airways open. Block them and the bronchioles can tighten."],
+  ["It speeds up the heart too much.",0,"Beta blockers slow the heart. The asthma concern is about the lungs."],
+  ["It activates muscarinic receptors.",0,"Beta blockers act on β receptors, not muscarinic ones."],
+  ["It blocks albuterol from being made.",0,"It does not stop the drug from existing, but it can block the receptor albuterol needs, which is part of the risk."]]},
+ caption:"Left: beta blocker caps β1 receptors, so NE can't bind and the heart rate drops. Right: albuterol activates β2 receptors and the narrowed airway opens.",
+ legend:[["drug","Antagonist (blocker)","s"],["drugok","Agonist (albuterol)","s"],["ne","Norepinephrine","d"],["beta","β receptor","r"]]},
+
+{act:6,scene:"drugs",id:"drugs2",title:"Drugs at cholinergic receptors: atropine and nicotine",
+ body:`<p>Drugs can also act where ACh works.</p>
+ <ol><li><b>Atropine</b> is a <b>muscarinic antagonist</b>. It blocks ACh at parasympathetic targets, so the sympathetic side wins: <b>pupils dilate</b> (eye doctors use similar drops), the <b>heart speeds up</b>, the <b>mouth goes dry</b> and the gut slows. It also reduces sweating, because sweat glands use muscarinic receptors.</li>
+ <li><b>Nicotine</b> is a <b>nicotinic agonist</b>. Nicotinic receptors are in <b>every autonomic ganglion</b> and the adrenal medulla, so nicotine stimulates <b>both divisions at once</b>. The effects are mixed. In most people heart rate and blood pressure rise (sympathetic ganglia plus adrenal epinephrine), while the gut may become more active (parasympathetic ganglia).</li></ol>
+ <p>Nicotine also acts at the neuromuscular junction and in the brain, which is part of why it is so addictive.</p>`,
+ analogy:"Atropine cuts the brake cable, so the gas pedal wins. Nicotine leans on every switchboard at the same time, so you get a mix of signals.",
+ terms:[["Atropine","A muscarinic antagonist. Blocks parasympathetic effects."],["Nicotine","A nicotinic agonist. Stimulates all autonomic ganglia and the adrenal medulla."],["Anticholinergic","Describes a drug that blocks ACh receptors, like atropine."]],
+ check:{q:"After atropine eye drops, the pupil dilates. Why?",opts:[
+  ["The parasympathetic sphincter muscle can't respond to ACh, so the sympathetic dilator wins.",1,"Yes. With muscarinic receptors blocked, the constricting side is switched off."],
+  ["Atropine activates α1 receptors on the dilator muscle.",0,"Atropine does not act on adrenergic receptors. It blocks muscarinic ones."],
+  ["Atropine blocks nicotinic receptors in the ganglion.",0,"Atropine blocks muscarinic receptors at the target, not nicotinic receptors in ganglia."],
+  ["Atropine releases epinephrine from the adrenal medulla.",0,"That is not how atropine works. It simply removes the parasympathetic side of the tug-of-war."]]},
+ caption:"Left: atropine blocks muscarinic receptors: pupil dilates, heart speeds, saliva stops. Right: nicotine activates nicotinic receptors in both divisions' ganglia and the adrenal medulla.",
+ legend:[["drug","Atropine (blocker)","s"],["drugok","Nicotine (activator)","s"],["musc","Muscarinic","r"],["nic","Nicotinic","r"],["ach","ACh"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole autonomic system.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · Two motor systems</li>
+ <li>Somatic: one neuron, ACh, skeletal muscle. Autonomic: two neurons (preganglionic and postganglionic) meeting in a ganglion, to cardiac muscle, smooth muscle and glands.</li>
+ <li class="h">Part 2 · Sympathetic wiring</li>
+ <li>Thoracolumbar (T1 to L2). Short preganglionic to chain (paravertebral) or collateral (prevertebral) ganglia, long postganglionic.</li><li>Adrenal medulla = modified ganglion; releases epinephrine and norepinephrine into the blood.</li>
+ <li class="h">Part 3 · Parasympathetic wiring</li>
+ <li>Craniosacral: cranial nerves III, VII, IX, X (vagus carries most) and S2 to S4. Long preganglionic to terminal (intramural) ganglia, short postganglionic.</li>
+ <li class="h">Part 4 · Chemical signals</li>
+ <li>All preganglionic: ACh on nicotinic. Parasympathetic postganglionic: ACh on muscarinic. Most sympathetic postganglionic: NE on α and β (sweat glands: ACh).</li><li>β1 heart up; β2 airways open; α1 most vessels narrow.</li>
+ <li class="h">Part 5 · The divisions at work</li>
+ <li>Fight or flight vs rest and digest. Dual innervation, autonomic tone. Sympathetic-only targets are controlled by turning tone up or down.</li>
+ <li class="h">Part 6 · Control and drugs</li>
+ <li>Hypothalamus and brainstem in charge; baroreceptor reflex keeps blood pressure steady.</li><li>Beta blockers, albuterol (β2 agonist), atropine (muscarinic antagonist), nicotine (nicotinic agonist).</li></ol>
+ <p>Next: flip the switches yourself in the <b>Autonomic Lab</b>.</p>`,
+ analogy:"Two drivers sharing one car. The sympathetic driver floors it in an emergency; the parasympathetic driver cruises and does the maintenance. The brain decides who gets the wheel, and both keep a foot near the pedals all the time.",
+ terms:[],check:null,caption:"The two divisions side by side, with the wiring and chemicals behind each one.",
+ legend:[["sym","Sympathetic"],["para","Parasympathetic"],["ach","ACh"],["ne","Norepinephrine","d"]]}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=NACTS;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([NACTS+1,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===NACTS+1)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
+  return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=520;
+const cv=document.getElementById("stage");const ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","good","warn","bad","act1","act2","act3","act4","act5","act6",
+ "sym","sym-wash","para","para-wash","soma","ach","ne","epi","glu","na","nic","musc","alpha","beta","drug","drugok","skin","skin-edge","heart","lung","lung-edge",
+ "liver","gut","gut-edge","kidney","adrenal","bladder","cns","cns-edge","gray","blood","vessel","vessel-edge","smooth","bone","bone-edge","ganglion","gang-edge","sweat",
+ "membrane","tail","cyto","ecf","glow","muscle","muscle-edge"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const cyc=(t,P)=>((t%P)+P)%P;
+const bump=(t,a,b,f)=>{f=f||.2;return Math.min(seg(t,a,a+f),1-seg(t,b-f,b))};
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+let STATE={};
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,rot,fill,stroke,lw){ctx.beginPath();ctx.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(a!=null&&a<=0)return;const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const al=o.alpha==null?1:clamp(o.alpha,0,1);if(al<=0)return w;ctx.globalAlpha=al;
+  if(o.pill!==false){ctx.globalAlpha=al*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=al;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1;return w}
+function hdr(x,y,txt,col,o){o=o||{};ctx.font=`600 ${o.size||11.5}px ${MONO}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.globalAlpha=o.alpha==null?1:o.alpha;ctx.fillText(txt.toUpperCase(),x,y);ctx.globalAlpha=1}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipT(x,y,txt,col,fg,o){o=o||{};ctx.font=`600 ${o.size||11}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.globalAlpha=o.alpha==null?1:o.alpha;ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1;return w+12}
+function badge(x,y,n,col){circ(x,y,9.5,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function poly(P,col,lw,dash,a){if(!P.length)return;ctx.globalAlpha=a==null?1:a;ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.lineJoin="round";ctx.lineCap="round";ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1}
+function bez(p0,p1,p2,p3,n){n=n||24;const o=[];for(let i=0;i<=n;i++){const t=i/n,u=1-t;o.push([u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]])}return o}
+function qb(p0,p1,p2,n){n=n||20;const o=[];for(let i=0;i<=n;i++){const t=i/n,u=1-t;o.push([u*u*p0[0]+2*u*t*p1[0]+t*t*p2[0],u*u*p0[1]+2*u*t*p1[1]+t*t*p2[1]])}return o}
+function cat(){const o=[];for(const P of arguments){P.forEach((p,i)=>{if(i===0&&o.length&&Math.hypot(p[0]-o[o.length-1][0],p[1]-o[o.length-1][1])<.5)return;o.push(p)})}return o}
+function plen(P){let L=0;for(let i=0;i<P.length-1;i++)L+=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);return L}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function sub(P,a,b){const o=[];const n=Math.max(2,Math.round(40*(b-a)));for(let i=0;i<=n;i++)o.push(along(P,lerp(a,b,i/n)));return o}
+function angAt(P,p){const a=along(P,clamp(p-.01,0,1)),b=along(P,clamp(p+.01,0,1));return Math.atan2(b[1]-a[1],b[0]-a[0])}
+function bg(col){ctx.fillStyle=col||C.panel;ctx.fillRect(0,0,W,H)}
+
+/* ---- molecules (shape + colour; colour is never the only signal) ---- */
+function mol(k,x,y,a,s){if(a!=null&&a<=0)return;ctx.globalAlpha=a==null?1:clamp(a,0,1);s=s||1;
+  if(k==="ach"){circ(x,y,4.3*s,C.ach,"rgba(0,0,0,.3)",1)}
+  else if(k==="ne"){const r=5.4*s;ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x+r,y);ctx.lineTo(x,y+r);ctx.lineTo(x-r,y);ctx.closePath();ctx.fillStyle=C.ne;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke()}
+  else if(k==="epi"){const r=6*s;ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x+r*.95,y+r*.7);ctx.lineTo(x-r*.95,y+r*.7);ctx.closePath();ctx.fillStyle=C.epi;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke()}
+  else if(k==="glu"){const r=5.2*s;ctx.beginPath();for(let i=0;i<6;i++){const an=i/6*TAU;i?ctx.lineTo(x+r*Math.cos(an),y+r*Math.sin(an)):ctx.moveTo(x+r*Math.cos(an),y+r*Math.sin(an))}ctx.closePath();ctx.fillStyle=C.glu;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke()}
+  else if(k==="na"){circ(x,y,4.2*s,C.na,"rgba(0,0,0,.3)",1);ctx.fillStyle="#fff";ctx.font=`700 ${8*s}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("+",x,y+.5)}
+  else if(k==="k"){const r=4*s;rr(x-r,y-r,2*r,2*r,1.5);ctx.fillStyle=C.nic;ctx.fill()}
+  else if(k==="sweat"||k==="saliva"){ctx.beginPath();ctx.moveTo(x,y-5*s);ctx.quadraticCurveTo(x+4*s,y+1*s,x,y+3.5*s);ctx.quadraticCurveTo(x-4*s,y+1*s,x,y-5*s);ctx.fillStyle=C.sweat;ctx.fill()}
+  else if(k==="rbc"){ell(x,y,4.5*s,3*s,0,C.blood);ell(x,y,2*s,1.2*s,0,"rgba(0,0,0,.18)")}
+  else if(k==="air"){circ(x,y,2.4*s,C["ink-faint"])}
+  ctx.globalAlpha=1}
+function puff(x,y,q,k,n,spread,seed,a0,a1){if(q<=0||q>=1)return;a0=a0==null?0:a0;a1=a1==null?Math.PI:a1;
+  for(let i=0;i<n;i++){const an=lerp(a0,a1,rnd(seed+i*3.1));const d=spread*(.35+.65*rnd(seed+i*7.7))*ease(q);mol(k,x+Math.cos(an)*d,y+Math.sin(an)*d,1-seg(q,.7,1))}}
+function capsule(x,y,txt,col,a,fg){if(a!=null&&a<=0)return;ctx.globalAlpha=a==null?1:clamp(a,0,1);ctx.font=`700 9.5px ${MONO}`;const w=Math.max(18,ctx.measureText(txt).width+9);
+  rr(x-w/2,y-7,w,14,7);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke();ctx.fillStyle=fg||C.panel;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1}
+
+/* ---- neurons ---- */
+function soma(x,y,r,col){circ(x,y,r,col,"rgba(0,0,0,.3)",1.2);circ(x-r*.15,y-r*.1,r*.38,C.panel)}
+function axon(P,col,o){o=o||{};const a=o.alpha==null?1:o.alpha;
+  poly(P,col,o.lw||3,o.dash,a);
+  if(o.beads){const L=plen(P);ctx.globalAlpha=a;for(let d=14;d<L-10;d+=15){const p=d/L;const q=along(P,p),an=angAt(P,p);ctx.save();ctx.translate(q[0],q[1]);ctx.rotate(an);rr(-5,-(o.lw||3)/2-2,10,(o.lw||3)+4,3);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.restore()}ctx.globalAlpha=1}
+  if(o.vari){const L=plen(P);ctx.globalAlpha=a;for(let d=30;d<L-6;d+=34){const q=along(P,d/L);circ(q[0],q[1],(o.lw||3)*.9+1.5,col)}ctx.globalAlpha=1}
+  if(o.term!==false){const e=P[P.length-1];ctx.globalAlpha=a;circ(e[0],e[1],(o.lw||3)+2,col);ctx.globalAlpha=1}
+  if(o.soma){ctx.globalAlpha=a;soma(P[0][0],P[0][1],o.soma,col);ctx.globalAlpha=1}}
+function pulseOn(P,p,col,r){if(p<=0||p>=1)return;const q=along(P,p);glow(q[0],q[1],r||18,col||C.glow,.95);circ(q[0],q[1],4,col||C.glow)}
+function ganglion(x,y,rx,ry,on,txt){ell(x,y,rx,ry,0,C.ganglion,C["gang-edge"],1.6);if(on>0)glow(x,y,Math.max(rx,ry)*1.6,C.glow,on*.7);
+  const n=Math.max(2,Math.round(rx*ry/90));for(let i=0;i<Math.min(n,9);i++){const a=i/Math.min(n,9)*TAU+.4;circ(x+Math.cos(a)*rx*.5,y+Math.sin(a)*ry*.5,Math.min(rx,ry)*.18,C["gang-edge"])}
+  if(txt)label(x,y-ry-10,txt,{align:"center",size:11.5,weight:600})}
+
+/* ---- organs ---- */
+function heartPath(x,y,r){ctx.beginPath();ctx.moveTo(x,y+r*.95);ctx.bezierCurveTo(x-r*1.35,y+r*.05,x-r*1.05,y-r*1.05,x,y-r*.42);ctx.bezierCurveTo(x+r*1.05,y-r*1.05,x+r*1.35,y+r*.05,x,y+r*.95);ctx.closePath()}
+function heartIcon(x,y,r,pl,o){o=o||{};const s=1+.13*(pl||0)*(o.force||1);heartPath(x,y,r*s);ctx.fillStyle=C.heart;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.4;ctx.stroke();
+  ctx.globalAlpha=.35;heartPath(x-r*.25,y-r*.15,r*s*.35);ctx.fillStyle="#fff";ctx.fill();ctx.globalAlpha=1;
+  if(pl>.3&&o.glow!==false)glow(x,y,r*1.9,C.heart,pl*.35)}
+const pulseF=ph=>ph<.2?Math.sin(ph/.2*Math.PI):0;
+function beatInfo(hrFn,t){let acc=0;const dt=.02;const beats=[];for(let x=0;x<t;x+=dt){const a2=acc+hrFn(x)/60*dt;if(Math.floor(a2)>Math.floor(acc))beats.push(x);acc=a2}return {ph:acc%1,beats}}
+function pqrst(u){const g=(m,s)=>Math.exp(-((u-m)*(u-m))/(2*s*s));return .12*g(-.16,.025)-.1*g(-.03,.008)+1*g(0,.011)-.25*g(.03,.01)+.25*g(.25,.045)}
+function ecg(x0,y0,w,h,beats,tNow,win,col){const N=220;ctx.beginPath();for(let i=0;i<=N;i++){const t=tNow-win+win*i/N;let v=0;for(const b of beats){if(Math.abs(t-b)<.5)v+=pqrst(t-b)}const x=x0+w*i/N,y=y0-v*h;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}
+  ctx.strokeStyle=col||C.heart;ctx.lineWidth=2;ctx.lineJoin="round";ctx.stroke()}
+function eyeIcon(x,y,r,pupil,o){o=o||{};ctx.save();ctx.beginPath();ctx.moveTo(x-r*1.6,y);ctx.quadraticCurveTo(x,y-r*1.25,x+r*1.6,y);ctx.quadraticCurveTo(x,y+r*1.25,x-r*1.6,y);ctx.closePath();
+  ctx.fillStyle="#F6F3EC";ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.5;ctx.stroke();ctx.clip();
+  circ(x,y,r*.82,"#6E8FAE");ctx.strokeStyle="rgba(20,40,60,.35)";ctx.lineWidth=1;for(let i=0;i<20;i++){const a=i/20*TAU;line(x+Math.cos(a)*r*.3,y+Math.sin(a)*r*.3,x+Math.cos(a)*r*.8,y+Math.sin(a)*r*.8,"rgba(20,40,60,.3)",1)}
+  const pr=r*.82*(.18+.66*clamp(pupil,0,1));circ(x,y,pr,"#0B0F12");circ(x-pr*.35,y-pr*.35,Math.max(1,pr*.22),"rgba(255,255,255,.75)");ctx.restore()}
+function airway(x,y,R,open,T,o){o=o||{};// cross-section: smooth muscle ring around lumen
+  const lr=R*(.22+.5*clamp(open,0,1));circ(x,y,R,C.lung,C["lung-edge"],1.5);
+  // smooth muscle ring
+  ctx.beginPath();ctx.arc(x,y,lr+R*.16,0,TAU);ctx.strokeStyle=C.smooth;ctx.lineWidth=R*.2;ctx.stroke();
+  ctx.strokeStyle="rgba(0,0,0,.18)";ctx.lineWidth=1;for(let i=0;i<14;i++){const a=i/14*TAU;line(x+Math.cos(a)*(lr+R*.07),y+Math.sin(a)*(lr+R*.07),x+Math.cos(a)*(lr+R*.25),y+Math.sin(a)*(lr+R*.25),"rgba(0,0,0,.18)",1)}
+  circ(x,y,lr,C.panel,"rgba(0,0,0,.25)",1.2);
+  const n=Math.round(3+lr/3.2);for(let i=0;i<n;i++){const a=rnd(i+9)*TAU+T*.6*(i%2?1:-1);const d=lr*.65*rnd(i+33);mol("air",x+Math.cos(a)*d,y+Math.sin(a)*d,.9)}}
+function vesselX(x,y,R,open,T){const lr=R*(.25+.55*clamp(open,0,1));circ(x,y,R,C.vessel,C["vessel-edge"],1.5);
+  ctx.beginPath();ctx.arc(x,y,lr+R*.14,0,TAU);ctx.strokeStyle=C.smooth;ctx.lineWidth=R*.2;ctx.stroke();
+  circ(x,y,lr,"#F2D6D2","rgba(0,0,0,.25)",1.2);
+  ctx.save();ctx.beginPath();ctx.arc(x,y,lr,0,TAU);ctx.clip();const n=Math.max(2,Math.round(lr*lr/40));for(let i=0;i<n;i++){const a=rnd(i+3)*TAU+T*.4;const d=lr*.6*rnd(i+17);mol("rbc",x+Math.cos(a)*d,y+Math.sin(a)*d,1,.9)}ctx.restore()}
+function gutTube(x,y,w,h,T,mot,o){o=o||{};// horizontal tube with travelling squeeze waves
+  const N=60,ph=T*(.35+.9*mot);const top=[],bot=[];
+  for(let i=0;i<=N;i++){const u=i/N;let sq=0;for(let k=0;k<2;k++){const c=((ph*.5+k*.5)%1);const d=(u-c);sq+=Math.exp(-d*d/.004)}const r=h/2*(1-.45*clamp(mot,0,1.5)/1.5*sq);top.push([x+u*w,y-r]);bot.push([x+u*w,y+r])}
+  ctx.beginPath();top.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));for(let i=bot.length-1;i>=0;i--)ctx.lineTo(bot[i][0],bot[i][1]);ctx.closePath();
+  ctx.fillStyle=C.gut;ctx.fill();ctx.strokeStyle=C["gut-edge"];ctx.lineWidth=1.6;ctx.stroke();
+  // food boluses ride the waves
+  for(let k=0;k<2;k++){const c=((ph*.5+k*.5)%1)-.06;if(c>0&&c<1)ell(x+c*w,y,7,h*.22,0,C["gut-edge"])}
+  if(o.label)label(x+w/2,y+h/2+12,o.label,{align:"center",size:11})}
+function gland(x,y,r,rate,T,seed,o){o=o||{};seed=seed||1;
+  for(let i=0;i<7;i++){const a=i/7*TAU;circ(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.5,r*.42,C.adrenal,"rgba(0,0,0,.25)",1)}circ(x,y,r*.4,C.adrenal,"rgba(0,0,0,.25)",1);
+  const dx=o.dx==null?0:o.dx,dy=o.dy==null?1:o.dy;const L=o.len||r*2.2;line(x,y,x+dx*L,y+dy*L,C["gut-edge"],3);
+  const n=Math.round(4*clamp(rate,0,1.5));for(let i=0;i<n;i++){const q=cyc(T*.7+i/n+seed*.13,1);mol("saliva",x+dx*L*q,y+dy*L*q+ (dy?0:0),1-q*.3,.9)}}
+function sweatGland(x,y,s,rate,T){ // y = skin surface; duct down to a coiled gland
+  line(x,y,x,y+30*s,C.sweat,2.6*s);
+  ctx.beginPath();for(let i=0;i<=70;i++){const a=i/70*TAU*4;const px=x+(i/70-.5)*30*s+Math.cos(a)*6*s,py=y+40*s+Math.sin(a)*7*s;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.strokeStyle=C.sweat;ctx.lineWidth=2.6*s;ctx.lineJoin="round";ctx.stroke();
+  const n=Math.round(4*clamp(rate,0,1.2));for(let i=0;i<n;i++){const q=cyc(T*.5+i/4,1);mol("sweat",x,y+30*s-q*30*s,1-seg(q,.85,1),.9)}
+  if(rate>.3)for(let i=0;i<3;i++)mol("sweat",x-12*s+i*12*s,y-6,clamp((rate-.3)*1.6,0,1),1.1)}
+function muscleFiber(x,y,w,h,sh){const ww=w*(1-.14*sh);rr(x+(w-ww)/2,y,ww,h,h/2);ctx.fillStyle=C.muscle;ctx.fill();ctx.strokeStyle=C["muscle-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=1;i<14;i++){const xx=x+(w-ww)/2+ww*i/14;line(xx,y+3,xx,y+h-3,C["muscle-edge"],1)}}
+function bladderIcon(x,y,r,fill,empt,T){const s=.55+.45*fill;ell(x,y,r*s,r*.85*s,0,C.bladder,"rgba(0,0,0,.3)",1.5);
+  if(empt>.2)for(let i=0;i<3;i++){const q=cyc(T*.9+i/3,1);mol("sweat",x,y+r*.85*s+4+q*22,empt*(1-q))}}
+function kidneyAd(x,y,s,epi){ell(x,y+8*s,8*s,12*s,0,C.kidney,"rgba(0,0,0,.3)",1);ctx.beginPath();ctx.moveTo(x-7*s,y-2*s);ctx.lineTo(x,y-9*s);ctx.lineTo(x+7*s,y-2*s);ctx.closePath();ctx.fillStyle=C.adrenal;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();if(epi>0)glow(x,y-4*s,16*s,C.epi,epi*.6)}
+
+/* ---- the body ---- */
+const NEUT={pupil:.45,hr:72,force:1,bronch:.5,gut:.6,saliva:.3,skin:.5,muscle:.4,glucose:0,sweat:0,bladder:0,epi:0};
+const FIGHT={pupil:1,hr:128,force:1.5,bronch:1,gut:.08,saliva:0,skin:.08,muscle:1,glucose:1,sweat:1,bladder:0,epi:1};
+const REST={pupil:.08,hr:60,force:.9,bronch:.28,gut:1.5,saliva:1,skin:.55,muscle:.35,glucose:0,sweat:0,bladder:1,epi:0};
+function mixS(a,b,q){const o={};for(const k in a)o[k]=lerp(a[k],b[k]==null?a[k]:b[k],q);return o}
+const BODY={eye:[13,38],eyeL:[-13,38],mouth:[0,57],gland:[17,58],glandL:[-17,58],trachea:[0,100],bronch:[30,132],lung:[-30,140],lungR:[30,140],heart:[8,160],liver:[-28,196],stomach:[28,194],gut:[0,236],gutL:[-24,236],adrenal:[46,212],adrenalL:[-46,212],bladder:[0,274],arm:[-82,160],armR:[82,160],forearm:[-92,215],thigh:[-29,330],thighR:[29,330],forehead:[0,14],skin:[-64,120],brain:[0,28],brainstem:[0,52],cordT1:[0,100],cordL2:[0,214],sacral:[0,246],neck:[0,76]};
+function bp(cx,y0,s,k){const p=Array.isArray(k)?k:BODY[k];return [cx+p[0]*s,y0+p[1]*s]}
+function torsoPath(){ctx.beginPath();ctx.moveTo(-14,84);ctx.lineTo(-56,92);ctx.quadraticCurveTo(-74,96,-72,118);ctx.lineTo(-61,200);ctx.quadraticCurveTo(-58,240,-62,262);ctx.quadraticCurveTo(-60,292,-30,292);
+  ctx.lineTo(30,292);ctx.quadraticCurveTo(60,292,62,262);ctx.quadraticCurveTo(58,240,61,200);ctx.lineTo(72,118);ctx.quadraticCurveTo(74,96,56,92);ctx.lineTo(14,84);ctx.closePath()}
+const GUTP=[[-36,226],[30,226],[36,232],[30,238],[-30,238],[-36,244],[-30,250],[34,250]];
+function body(cx,y0,s,st,T,o){o=o||{};st=Object.assign({},NEUT,st);
+  ctx.save();ctx.translate(cx,y0);ctx.scale(s,s);
+  const sk=C.skin,ed=C["skin-edge"];ctx.lineCap="round";ctx.lineJoin="round";
+  [-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(27*d,268);ctx.lineTo(33*d,436);ctx.strokeStyle=ed;ctx.lineWidth=37;ctx.stroke();ctx.strokeStyle=sk;ctx.lineWidth=34;ctx.stroke()});
+  [-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(62*d,106);ctx.lineTo(84*d,180);ctx.lineTo(96*d,250);ctx.strokeStyle=ed;ctx.lineWidth=25;ctx.stroke();ctx.strokeStyle=sk;ctx.lineWidth=22;ctx.stroke()});
+  ctx.fillStyle=sk;ctx.fillRect(-13,60,26,32);ctx.strokeStyle=ed;ctx.lineWidth=1.5;line(-13,62,-13,88,ed,1.5);line(13,62,13,88,ed,1.5);
+  torsoPath();ctx.fillStyle=sk;ctx.fill();ctx.strokeStyle=ed;ctx.lineWidth=1.5;ctx.stroke();
+  circ(0,38,32,sk,ed,1.5);
+  // skin blood flow: pale when vessels narrow, flushed when wide
+  const pale=clamp(.5-st.skin,0,.5)*2,flush=clamp(st.skin-.5,0,.5)*2;
+  if(pale>0){ctx.globalAlpha=pale*.28;torsoPath();ctx.fillStyle="#FFFFFF";ctx.fill();circ(0,38,32,"#FFFFFF");ctx.globalAlpha=1}
+  if(flush>0){ctx.globalAlpha=flush*.18;torsoPath();ctx.fillStyle=C.blood;ctx.fill();circ(0,38,32,C.blood);ctx.globalAlpha=1}
+  // skeletal muscle (arms, thighs) with blood supply
+  [-1,1].forEach(d=>{ctx.globalAlpha=.25+.45*st.muscle;ell(76*d,150,8,24,-.26*d,C.muscle);ell(29*d,330,12,40,.03*d,C.muscle);ctx.globalAlpha=1;
+    line(76*d,128,78*d,172,C.blood,.6+2.6*st.muscle);line(29*d,295,31*d,368,C.blood,.6+3.2*st.muscle);
+    line(88*d,196,95*d,240,C.blood,.5+2.2*st.skin)});
+  if(o.cns){ctx.globalAlpha=.95;ell(0,26,25,17,0,C.cns,C["cns-edge"],1.2);ctx.globalAlpha=1;line(0,48,0,252,C["cns-edge"],5);
+    if(o.symHL>0){ctx.globalAlpha=o.symHL;line(0,100,0,214,C.sym,8);ctx.globalAlpha=1}
+    if(o.paraHL>0){ctx.globalAlpha=o.paraHL;circ(0,50,6,C.para);line(0,238,0,252,C.para,8);ctx.globalAlpha=1}}
+  // lungs + bronchial tree
+  const br=1+.035*Math.sin(T*TAU*(st.hr/72)/4);
+  [-1,1].forEach(d=>ell(30*d,140,22*br,40*br,0,C.lung,C["lung-edge"],1.3));
+  const bw=1.4+3.6*st.bronch;ctx.strokeStyle=C["lung-edge"];ctx.lineCap="round";
+  poly([[0,92],[0,118]],C["lung-edge"],5);
+  [-1,1].forEach(d=>{poly([[0,118],[16*d,128],[26*d,150],[30*d,168]],C["lung-edge"],bw);poly([[16*d,128],[34*d,122]],C["lung-edge"],bw*.8);poly([[26*d,150],[40*d,152]],C["lung-edge"],bw*.7);poly([[22*d,140],[14*d,158]],C["lung-edge"],bw*.6)});
+  // liver, stomach, intestines
+  ctx.beginPath();ctx.moveTo(-58,186);ctx.quadraticCurveTo(-30,174,10,182);ctx.quadraticCurveTo(0,204,-30,210);ctx.quadraticCurveTo(-56,212,-58,186);ctx.closePath();ctx.fillStyle=C.liver;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.25)";ctx.lineWidth=1;ctx.stroke();
+  const ch=1+.06*st.gut*Math.sin(T*3*(.4+st.gut));ell(28,194,18*ch,12/ch,-.4,C.gut,C["gut-edge"],1.3);
+  poly(GUTP,C["gut-edge"],10);poly(GUTP,C.gut,7.5);
+  {const L=plen(GUTP);for(let k=0;k<4;k++){const q=cyc(T*.05*(.15+st.gut)+k/4,1);const p=along(GUTP,q),an=angAt(GUTP,q);ctx.save();ctx.translate(p[0],p[1]);ctx.rotate(an);rr(-2,-5.5,4,11,2);ctx.fillStyle=C["gut-edge"];ctx.globalAlpha=.4+.5*clamp(st.gut,0,1);ctx.fill();ctx.globalAlpha=1;ctx.restore()}}
+  [-1,1].forEach(d=>kidneyAd(46*d,214,1,st.epi));
+  bladderIcon(0,274,13,1-.5*st.bladder,st.bladder,T);
+  // glucose leaving liver
+  if(st.glucose>0){for(let i=0;i<6;i++){const q=cyc(T*.35+i/6,1);mol("glu",-30+q*40,196-q*44+Math.sin(q*6+i)*4,st.glucose*(1-q*.6),.75)}}
+  // heart
+  heartIcon(8,160,13,o.beat||0,{force:st.force,glow:false});
+  // epinephrine in the blood
+  if(st.epi>0){const loop=[[46,206],[60,150],[40,100],[-40,100],[-62,160],[-46,220],[-20,260],[20,262],[46,206]];for(let i=0;i<8;i++){const q=cyc(T*.12+i/8,1);const p=along(loop,q);mol("epi",p[0],p[1],st.epi*.9,.7)}}
+  // face: eyes, mouth, salivary glands, sweat
+  [-1,1].forEach(d=>{ell(17*d,58,5,4,0,C.adrenal,"rgba(0,0,0,.25)",1)});
+  if(st.saliva>.05)for(let i=0;i<3;i++){const q=cyc(T*.6+i/3,1);[-1,1].forEach(d=>mol("saliva",d*(17-q*15),58-q*2,st.saliva*(1-q*.5),.55))}
+  line(-7,52,7,52,ed,2);
+  [-1,1].forEach(d=>eyeIcon(13*d,36,4.6,st.pupil));
+  if(st.sweat>.05)[[-14,12],[10,10],[0,18],[-70,128],[70,128]].forEach((p,i)=>{const q=cyc(T*.4+i*.27,1);mol("sweat",p[0],p[1]+q*8,st.sweat*(1-q*.4),.7)});
+  if(o.hl)for(const k in o.hl){const p=BODY[k];if(p&&o.hl[k][1]>0)glow(p[0],p[1],20,o.hl[k][0],o.hl[k][1]*.75)}
+  ctx.restore()}
+
+/* ---- spinal cord column helper ---- */
+const SEGN=[];[["C",8],["T",12],["L",5],["S",5]].forEach(([l,n])=>{for(let i=1;i<=n;i++)SEGN.push(l+i)});
+function cordCol(x,y0,sh,o){o=o||{};const n=30;const yb=y0+n*sh;
+  rr(x-13,y0-6,26,n*sh+12,12);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=1;i<n;i++)line(x-13,y0+i*sh,x+13,y0+i*sh,C["cns-edge"],.6);
+  if(o.sym!==false){ctx.globalAlpha=o.symA==null?.28:o.symA;ctx.fillStyle=C.sym;rr(x-13,y0+8*sh,26,14*sh,4);ctx.fill();ctx.globalAlpha=1;
+    for(let i=8;i<22;i++){circ(x-6,y0+(i+.5)*sh,2,C.sym);circ(x+6,y0+(i+.5)*sh,2,C.sym)}}
+  if(o.para){ctx.globalAlpha=o.paraA==null?.28:o.paraA;ctx.fillStyle=C.para;rr(x-13,y0+26*sh,26,3*sh,4);ctx.fill();ctx.globalAlpha=1}
+  if(o.labels){[["C1",0],["T1",8],["T12",19],["L2",21],["S5",29]].forEach(([t,i])=>{ctx.font=`500 10.5px ${MONO}`;ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];ctx.fillText(t,x-17,y0+(i+.5)*sh)})}
+  return i=>y0+(i+.5)*sh}
+
+/* ---- receptors on a horizontal membrane (ligands arrive from above) ---- */
+function membraneH(x0,x1,y,h){h=h||16;ctx.fillStyle=C.tail;ctx.fillRect(x0,y-h/2,x1-x0,h);for(let x=x0+4;x<x1;x+=8){circ(x,y-h/2+2.5,3,C.membrane);circ(x,y+h/2-2.5,3,C.membrane)}}
+function recep(x,y,type,state,o){o=o||{};const on=state===1,bl=state===2;
+  if(type==="nic"){const g=on?4:0;rr(x-13-g,y-15,9,30,4);ctx.fillStyle=C.nic;ctx.fill();rr(x+4+g,y-15,9,30,4);ctx.fill();
+    if(on){ctx.globalAlpha=.3;ctx.fillStyle=C.na;ctx.fillRect(x-4-g+4,y-14,2*g,28);ctx.globalAlpha=1}}
+  else if(type==="musc"){ctx.beginPath();for(let i=0;i<=7;i++){const xx=x-14+i*4;ctx.lineTo(xx,i%2?y+11:y-13)}ctx.strokeStyle=C.musc;ctx.lineWidth=3.2;ctx.lineJoin="round";ctx.stroke();ctx.beginPath();ctx.arc(x,y-16,6,Math.PI,0);ctx.stroke()}
+  else{const col=type[0]==="a"?C.alpha:C.beta;rr(x-8,y-12,16,24,3);ctx.fillStyle=col;ctx.fill();rr(x-12,y-26,7,16,3);ctx.fill();rr(x+5,y-26,7,16,3);ctx.fill()}
+  if(on)glow(x,y-8,26,C.glow,.55);
+  if(o.lab!==false){const t={nic:"nicotinic",musc:"muscarinic",a1:"α1",b1:"β1",b2:"β2",a:"α",b:"β"}[type];ctx.font=`600 10.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];ctx.fillText(t,x,y+26)}
+  if(bl){capsule(x,y-30,o.drug||"BB",C.drug,1);line(x-5,y-21,x+5,y-11,C.bad,2);line(x+5,y-21,x-5,y-11,C.bad,2)}}
+
+/* ======================= SCENES ======================= */
+function lbl(x,y,t,o){return label(x,y,t,Object.assign({size:12,weight:600},o||{}))}
+function lead(x1,y1,x2,y2,t,o){line(x1,y1,x2,y2,C["ink-faint"],1.1);return lbl(x2,y2,t,o)}
+
+/* ---- Start map ---- */
+function sceneMap(T){bg();
+  const t=cyc(T,8),sym=t<4,q=sym?t/4:(t-4)/4;const k=ease(seg(q,0,.35))*(1-seg(q,.92,1));
+  const cx=175,y0=30,s=1.02;
+  const st=mixS(NEUT,sym?FIGHT:REST,k*.85);
+  const hr=st.hr;const bi=beatInfo(()=>hr,T);
+  body(cx,y0,s,st,T,{cns:true,symHL:sym?.9:.15,paraHL:sym?.15:.9,beat:pulseF(bi.ph)});
+  const P=k2=>bp(cx,y0,s,k2);
+  const sTargets=[[[0,104],"eyeL",[-10,70]],[[0,120],"heart",[10,140]],[[0,128],"lungR",[16,134]],[[0,170],"liver",[-14,180]],[[0,184],"stomach",[14,190]],[[0,196],"adrenal",[24,206]],[[0,206],"gut",[8,224]],[[0,212],"bladder",[10,250]],[[0,140],"arm",[-50,150]]];
+  const pTargets=[[[0,50],"eyeL",[-8,46]],[[0,50],"gland",[12,54]],[[0,52],"heart",[6,110]],[[0,52],"lungR",[14,110]],[[0,52],"stomach",[18,150]],[[0,52],"gut",[6,180]],[[0,248],"bladder",[6,262]]];
+  const list=sym?sTargets:pTargets,col=sym?C.sym:C.para;
+  list.forEach((tg,i)=>{const a=P(tg[0]),c=P(tg[2]),b=P(tg[1]);const path=qb(a,c,b,16);poly(path,col,2.2,null,.35+.5*k);
+    const pp=seg(q,.05+i*.03,.4+i*.03);pulseOn(path,pp,C.glow,12);if(pp>=1&&q<.95)glow(b[0],b[1],16,col,.45*k)});
+  // side labels on the body
+  lbl(P([0,50])[0]+40,P([0,50])[1]-30,"Brainstem",{color:C.para,border:C.para,alpha:.5+.5*!sym});
+  lbl(P([0,110])[0]+98,P([0,110])[1]-38,"T1 to L2",{color:C.sym,border:C.sym,alpha:.5+.5*sym});
+  lbl(P([0,250])[0]+70,P([0,250])[1]+16,"S2 to S4",{color:C.para,border:C.para,alpha:.5+.5*!sym});
+  // the tree on the right
+  const box=(x,y,w,h,t1,t2,on,c)=>{ctx.globalAlpha=1;rr(x,y,w,h,8);ctx.fillStyle=on?c:C["panel-2"];ctx.fill();ctx.strokeStyle=on?c:C.rule;ctx.lineWidth=1.6;ctx.stroke();
+    ctx.font=`600 13px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=on?"#fff":C.ink;ctx.fillText(t1,x+w/2,y+(t2?h/2-8:h/2));
+    if(t2){ctx.font=`500 11px ${FONT}`;ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.fillText(t2,x+w/2,y+h/2+9)}};
+  hdr(410,26,"Motor output of the nervous system");
+  box(410,40,370,40,"Motor (efferent) neurons","carry commands out to effectors",false);
+  line(500,80,500,104,C.rule,1.5);line(690,80,690,104,C.rule,1.5);
+  box(410,104,180,52,"Somatic","skeletal muscle · voluntary",false);
+  box(600,104,180,52,"Autonomic (ANS)","heart, smooth muscle, glands",true,C.accent);
+  line(690,156,690,172,C.rule,1.5);line(560,172,720,172,C.rule,1.5);line(560,172,560,190,C.rule,1.5);line(720,172,720,190,C.rule,1.5);
+  box(474,190,172,56,"Sympathetic","fight or flight · T1 to L2",sym,C.sym);
+  box(654,190,136,56,"Parasympathetic","rest and digest",!sym,C.para);
+  label(722,262,"brainstem + S2 to S4",{align:"center",size:11,color:C["ink-soft"],pill:false});
+  // two-neuron chain icon
+  hdr(410,300,"Every autonomic pathway: two neurons");
+  const y=340;rr(410,y-22,58,44,8);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.4;ctx.stroke();label(439,y,"CNS",{align:"center",size:11,pill:false,weight:600});
+  const pre=[[460,y],[585,y]],post=[[595,y],[700,y]];axon(pre,col,{lw:3,beads:true,soma:6});ganglion(590,y,22,16,0);axon(post,col,{lw:2.2,soma:5});
+  heartIcon(735,y,16,pulseF(bi.ph));
+  const pc=cyc(T,2.4)/2.4;pulseOn(pre,seg(pc,0,.45),C.glow,12);pulseOn(post,seg(pc,.5,.9),C.glow,12);
+  label(522,y+30,"preganglionic",{align:"center",size:11,pill:false,color:C["ink-soft"]});label(590,y-30,"ganglion",{align:"center",size:11,pill:false,color:C["ink-soft"]});label(648,y+30,"postganglionic",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  // division status
+  const msg=sym?"Now: sympathetic outflow from T1 to L2":"Now: parasympathetic outflow from brainstem and S2 to S4";
+  rr(410,402,370,90,8);ctx.fillStyle=sym?C["sym-wash"]:C["para-wash"];ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke();
+  label(595,424,msg,{align:"center",size:12.5,weight:600,color:col,pill:false});
+  label(595,448,sym?"Pupils wide · heart faster · airways open":"Pupils small · heart slower · gut busy",{align:"center",size:12,pill:false});
+  label(595,470,sym?"gut slows · glucose up · sweating":"saliva flows · bladder empties",{align:"center",size:12,pill:false});
+  STATE={sym}}
+
+/* ---- Step 1: somatic vs autonomic ---- */
+function sceneChains(T){bg();
+  const P=4.5,t=cyc(T,P),p=t/P,idx=Math.floor(T/P)%3;
+  line(20,232,780,232,C["rule-soft"],1.5,[4,4]);
+  // lane A: somatic
+  hdr(24,30,"Somatic motor pathway",C.soma);chipT(740,30,"1 neuron",C.soma);
+  rr(24,72,92,92,10);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.5;ctx.stroke();label(70,86,"Spinal cord",{align:"center",size:11,pill:false,weight:600});
+  const A=[[100,118],[562,118]];axon(A,C.soma,{lw:4,beads:true,soma:9});
+  pulseOn(A,seg(p,0,.52),C.glow,16);
+  const sh=ease(bump(p,.58,.92,.12));muscleFiber(580,94,190,48,sh);
+  puff(568,118,seg(p,.52,.72),"ach",7,22,3,-1.2,1.2);
+  lbl(330,92,"Somatic motor neuron (one long axon)",{align:"center"});
+  lbl(675,162,"Skeletal muscle · voluntary",{align:"center"});
+  if(sh>.2)lbl(675,72,"contracts",{align:"center",color:C.soma,border:C.soma,alpha:sh});
+  // lane B: autonomic
+  hdr(24,258,"Autonomic motor pathway",C.sym);chipT(700,258,"2 neurons, 1 ganglion",C.sym);
+  const y=340;rr(24,294,92,92,10);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.5;ctx.stroke();label(70,308,"Spinal cord",{align:"center",size:11,pill:false,weight:600});
+  const pre=[[100,y],[312,y]],post=[[338,y],[562,y]];
+  axon(pre,C.sym,{lw:3.4,beads:true,soma:8});ganglion(330,y,34,24,bump(p,.3,.45,.05));axon(post,C.sym,{lw:2.4,soma:7});
+  pulseOn(pre,seg(p,0,.3),C.glow,15);puff(318,y,seg(p,.3,.44),"ach",5,14,7,-1.3,1.3);pulseOn(post,seg(p,.44,.72),C.glow,15);
+  lbl(205,y-26,"Preganglionic neuron",{align:"center"});lbl(330,y+44,"Autonomic ganglion",{align:"center"});lbl(450,y-26,"Postganglionic neuron",{align:"center"});
+  const r=ease(bump(p,.78,.98,.08));const ex=665;
+  if(idx===0){const hr=72+40*r;heartIcon(ex,y,30,pulseF(cyc(T*hr/60,1)));puff(572,y,seg(p,.72,.86),"ne",6,18,11,-1.2,1.2)}
+  else if(idx===1){gutTube(590,y,150,40,T,.4+1.1*r);puff(572,y,seg(p,.72,.86),"ach",6,18,11,-1.2,1.2)}
+  else{gland(ex-20,y-10,22,.4+r,T,2,{dx:1,dy:.6,len:60});puff(572,y,seg(p,.72,.86),"ach",6,18,11,-1.2,1.2)}
+  const names=["Cardiac muscle","Smooth muscle","Glands"];
+  names.forEach((n,i)=>{const x=520+i*100;const on=i===idx;rr(x-46,440,92,28,14);ctx.fillStyle=on?C.sym:C["panel-2"];ctx.fill();ctx.strokeStyle=on?C.sym:C.rule;ctx.lineWidth=1.3;ctx.stroke();
+    ctx.font=`600 11.5px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.fillText(n,x,454)});
+  label(520,484,"Autonomic effectors · involuntary",{size:11.5,pill:false,color:C["ink-soft"],align:"left"});
+  if(r>.2)lbl(665,y-56,["beats faster","contracts more","secretes"][idx],{align:"center",color:C.sym,border:C.sym,alpha:r});
+  STATE={idx,p}}
+
+/* ---- Step 2: inside a ganglion ---- */
+function sceneGanglion(T){bg();
+  const P=5.5,t=cyc(T,P);
+  const cx=150,cy=230;
+  ell(cx,cy,104,82,0,C.cns,C["cns-edge"],1.6);
+  ctx.fillStyle=C.gray;[-1,1].forEach(d=>{ell(cx+30*d,cy-36,12,32,-.45*d,C.gray);ell(cx+36*d,cy+30,24,26,0,C.gray);ell(cx+56*d,cy+2,13,10,0,C.gray)});ctx.fillRect(cx-40,cy-9,80,18);circ(cx,cy,4,C.panel);
+  glow(cx+58,cy+2,26,C.sym,.5+.3*Math.sin(T*3));
+  lbl(cx,cy-104,"Spinal cord (cross-section)",{align:"center"});
+  lead(cx-36,cy+30,40,cy+128,"Gray matter",{size:11.5});
+  lead(cx+60,cy+8,120,cy+160,"Lateral horn: preganglionic cell body",{size:11.5,color:C.sym,border:C.sym});
+  // ventral root
+  ctx.globalAlpha=.55;poly([[cx+44,cy+46],[cx+90,cy+96],[cx+150,cy+110]],C["cns-edge"],16);ctx.globalAlpha=1;
+  label(cx+96,cy+132,"Ventral root",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  const gx=470,gy=230;
+  ell(gx,gy,112,84,0,C.ganglion,C["gang-edge"],1.8);
+  lbl(gx,gy-100,"Ganglion: cell bodies outside the CNS",{align:"center"});
+  const pre=cat([[cx+58,cy+2],[cx+76,cy+40]],qb([cx+76,cy+40],[cx+100,cy+96],[cx+150,cy+106]),qb([cx+150,cy+106],[340,gy+90],[384,gy+54]));
+  axon(pre,C.sym,{lw:3.6,beads:true,term:false});soma(cx+58,cy+2,7,C.sym);
+  const S=[[gx-40,gy-44],[gx+18,gy-38],[gx-50,gy+6],[gx+30,gy+18],[gx-12,gy+52]];
+  const ent=[384,gy+54];
+  const br=S.map((s,i)=>qb(ent,[gx-70,(s[1]+gy+54)/2],[s[0]-11,s[1]],12));
+  br.forEach(b=>axon(b,C.sym,{lw:2.2}));
+  const T1=seg(t,0,1.3);pulseOn(pre,T1,C.glow,16);
+  br.forEach((b,i)=>{pulseOn(b,seg(t,1.3,1.75),C.glow,10);puff(b[b.length-1][0],b[b.length-1][1],seg(t,1.7,2.3),"ach",4,12,i*5,-1.6,1.6)});
+  const tg=[[700,96],[700,240],[700,380]];
+  const posts=[qb(S[0],[600,S[0][1]],[tg[0][0]-44,tg[0][1]]),qb(S[3],[600,S[3][1]],[tg[1][0]-36,tg[1][1]]),qb(S[4],[600,S[4][1]+40],[tg[2][0]-44,tg[2][1]]),qb(S[1],[620,S[1][1]-30],[790,40])];
+  posts.forEach((pp,i)=>{axon(pp,C.sym,{lw:1.8,alpha:i>2?.45:1,term:i<3})});
+  S.forEach((s,i)=>{soma(s[0],s[1],9,C.sym);if(t>1.8&&t<3.6)glow(s[0],s[1],18,C.glow,.6*(1-seg(t,3,3.6)))});
+  posts.forEach((pp,i)=>pulseOn(pp,seg(t,2.2,3.4),C.glow,12));
+  const r=ease(bump(t,3.4,5.3,.4));
+  heartIcon(tg[0][0],tg[0][1],24,pulseF(cyc(T*(72+45*r)/60,1)));vesselX(tg[1][0],tg[1][1],32,.75-.5*r,T);eyeIcon(tg[2][0],tg[2][1],20,.4+.55*r);
+  [["Heart: faster",tg[0]],["Blood vessel: narrower",tg[1]],["Pupil: wider",tg[2]]].forEach(([s,p])=>lbl(p[0],p[1]+46,s,{align:"center",size:11.5,color:r>.3?C.sym:C.ink,border:r>.3?C.sym:null}));
+  label(790,26,"to other organs",{align:"right",size:11,pill:false,color:C["ink-faint"]});
+  lbl(gx+20,gy+104,"One preganglionic axon → many postganglionic neurons",{align:"center",size:11.5});
+  lbl(300,gy+62,"Preganglionic axon",{align:"center",size:11.5,color:C.sym});
+  STATE={t}}
+
+/* ---- Step 3: thoracolumbar outflow ---- */
+function sceneCord(T){bg();
+  const x=290,y0=58,sh=13.5;
+  // brainstem cap
+  rr(x-17,20,34,40,12);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.5;ctx.stroke();ctx.globalAlpha=.3;rr(x-17,20,34,40,12);ctx.fillStyle=C.para;ctx.fill();ctx.globalAlpha=1;
+  const Y=cordCol(x,y0,sh,{para:true,symA:.18});
+  // group brackets
+  [["Cervical C1 to C8",0,7],["Thoracic T1 to T12",8,19],["Lumbar L1 to L5",20,24],["Sacral S1 to S5",25,29]].forEach(([n,a,b])=>{const ya=y0+a*sh+2,yb=y0+(b+1)*sh-2;line(258,ya,258,yb,C["ink-soft"],1.5);line(258,ya,264,ya,C["ink-soft"],1.5);line(258,yb,264,yb,C["ink-soft"],1.5);
+    label(250,(ya+yb)/2,n,{align:"right",size:11.5,pill:false,color:C.ink,weight:600})});
+  label(250,y0+27.5*sh+18,"S2 to S4: parasympathetic",{align:"right",size:11,pill:false,color:C.para});
+  label(250,40,"Brainstem: parasympathetic",{align:"right",size:11,pill:false,color:C.para});
+  // sympathetic chain
+  const chx=350;line(chx,y0,chx,y0+30*sh,C["gang-edge"],2.4);for(let i=0;i<30;i+=1)if(i%2===0||(i>=8&&i<22))ell(chx,Y(i),6,4.5,0,C.ganglion,C["gang-edge"],1.2);
+  label(chx,y0+30*sh+16,"Sympathetic chain",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  // scan T1..L2 = segments 8..21
+  const P=14*0.55,t=cyc(T,P),kk=8+Math.floor(t/.55),sub=(t%.55)/.55;
+  const TG=[[590,70,"eye","Eye and head"],[590,160,"heart","Heart and lungs"],[590,250,"gut","Stomach and intestines"],[590,335,"adr","Adrenal medulla"],[590,420,"blad","Bladder, lower body"]];
+  const map=i=>i<=9?0:i<=12?1:i<=17?2:i<=19?3:4;
+  for(let i=8;i<22;i++){const y=Y(i);const lit=i===kk?1:(i<kk?.3:.12);
+    ctx.globalAlpha=1;line(x+13,y,chx-6,y,C.sym,lit>.5?3:2);
+    const tg=TG[map(i)];const path=bez([chx+6,y],[480,y],[520,tg[1]],[tg[0]-34,tg[1]],18);poly(path,C.sym,lit>.5?2.4:1.2,null,lit>.5?1:.28);
+    if(i===kk){glow(x,y,22,C.sym,.9);pulseOn([[x+13,y],[chx,y]],seg(sub,0,.3),C.glow,10);pulseOn(path,seg(sub,.3,1),C.glow,12);glow(tg[0],tg[1],40,C.sym,.35)}}
+  // targets
+  const r=t;TG.forEach((tg,j)=>{const on=map(kk)===j;const [tx,ty]=tg;
+    if(tg[2]==="eye")eyeIcon(tx,ty,16,on?.95:.45);else if(tg[2]==="heart")heartIcon(tx,ty,18,pulseF(cyc(T*(on?2:1.2),1)));else if(tg[2]==="gut")gutTube(tx-34,ty,68,22,T,on?.1:.6);
+    else if(tg[2]==="adr")kidneyAd(tx,ty,2.2,on?1:0);else bladderIcon(tx,ty,14,1,0,T);
+    lbl(tx+44,ty,tg[3],{size:12,color:on?C.sym:C.ink,border:on?C.sym:null})});
+  lbl(470,24,"Sympathetic outflow: T1 to L2 (thoracolumbar)",{align:"center",color:C.sym,border:C.sym,size:12.5});
+  chipT(x+60,Y(kk),SEGN[kk],C.sym);
+  label(580,502,"Blood vessels and sweat glands get fibers at every level.",{align:"center",size:11.5,pill:false,color:C["ink-soft"]});
+  STATE={seg:SEGN[kk]}}
+
+/* ---- Step 4: chain ganglia ---- */
+function sceneSymChain(T){bg();
+  const x=110,y0=46,sh=14;const Y=cordCol(x,y0,sh,{labels:true});
+  const chx=200;line(chx,y0,chx,y0+30*sh,C["gang-edge"],3);
+  const beads=[1,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27];beads.forEach(i=>ell(chx,Y(i),8,5.5,0,C.ganglion,C["gang-edge"],1.3));
+  label(chx+16,Y(1),"Superior cervical ganglion",{size:11,pill:false,color:C["ink-soft"]});
+  const P=9,t=cyc(T,P),ph=Math.floor(t/3),u=(t%3)/3*3;
+  const paths=[
+    {seg:10,syn:10,tg:[620,200],kind:"heart",name:"Same level → heart"},
+    {seg:8,syn:1,tg:[620,74],kind:"eye",name:"Up the chain → eye"},
+    {seg:20,syn:27,tg:[620,410],kind:"vessel",name:"Down the chain → leg blood vessel"}];
+  paths.forEach((pt,i)=>{const on=i===ph;const a=on?1:.3;const ys=Y(pt.seg),yz=Y(pt.syn);
+    const pre=[[x+13,ys],[chx-8,ys]];const ride=[[chx,ys],[chx,yz]];
+    const post=bez([chx+8,yz],[360,yz],[460,pt.tg[1]],[pt.tg[0]-40,pt.tg[1]],24);
+    axon(pre,C.sym,{lw:3.2,alpha:a,term:false,beads:true});if(pt.seg!==pt.syn)poly(ride,C.sym,3.2,null,a*.9);axon(post,C.sym,{lw:2,alpha:a});
+    if(on){glow(x,ys,18,C.sym,.8);pulseOn(pre,seg(u,0,.5),C.glow,12);const rideP=pt.seg===pt.syn?1:seg(u,.5,1.2);if(pt.seg!==pt.syn)pulseOn(ride,rideP,C.glow,12);
+      const gs=pt.seg===pt.syn?.5:1.2;puff(chx,yz,seg(u,gs,gs+.35),"ach",4,12,i*9,-1.5,1.5);if(u>gs&&u<gs+.6)glow(chx,yz,18,C.glow,.8);pulseOn(post,seg(u,gs+.3,gs+1.1),C.glow,14);
+      puff(pt.tg[0]-40,pt.tg[1],seg(u,gs+1.1,gs+1.5),"ne",5,16,i*3,-1.3,1.3);
+      const lx=along(pre,.5);label(lx[0],lx[1]-14,"short",{align:"center",size:11,weight:600,color:C.sym});
+      const lp=along(post,.5);lbl(lp[0],lp[1]-16,"long postganglionic",{align:"center",size:11,color:C.sym,border:C.sym});
+      if(pt.seg!==pt.syn)label(chx-14,(ys+yz)/2,pt.syn<pt.seg?"rides up":"rides down",{align:"right",size:11,weight:600,color:C.sym})}});
+  const r=paths.map((pt,i)=>i===ph?ease(seg(u,(pt.seg===pt.syn?.5:1.2)+1.3,(pt.seg===pt.syn?.5:1.2)+1.8))*(1-seg(u,2.85,3)):0);
+  heartIcon(620,200,24,pulseF(cyc(T*(72+45*r[0])/60,1)));eyeIcon(620,74,20,.4+.55*r[1]);vesselX(620,410,30,.75-.5*r[2],T);
+  lbl(700,200,r[0]>.2?"Heart speeds up":"Heart",{align:"center",size:12,color:r[0]>.2?C.sym:C.ink});
+  lbl(700,74,r[1]>.2?"Pupil dilates":"Eye",{align:"center",size:12,color:r[1]>.2?C.sym:C.ink});
+  lbl(700,410,r[2]>.2?"Vessel narrows":"Leg skin vessel",{align:"center",size:12,color:r[2]>.2?C.sym:C.ink});
+  paths.forEach((pt,i)=>{const on=i===ph;const xx=410+i*0;const yy=300+i*28;rr(330,yy-11,250,22,11);ctx.fillStyle=on?C.sym:C["panel-2"];ctx.fill();ctx.strokeStyle=on?C.sym:C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    ctx.font=`600 11.5px ${FONT}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.fillText((i+1)+". "+pt.name,342,yy)});
+  label(chx,y0+30*sh+22,"Sympathetic chain (paravertebral) ganglia",{align:"center",size:11.5,weight:600,pill:false,color:C["ink-soft"]});
+  STATE={ph}}
+
+/* ---- Step 5: collateral ganglia ---- */
+function sceneCollat(T){bg();
+  const x=100,y0=46,sh=14;const Y=cordCol(x,y0,sh,{labels:true});
+  const chx=175;line(chx,y0,chx,y0+30*sh,C["gang-edge"],3);for(let i=1;i<29;i+=1)if(i>=8&&i<24||i%3===1)ell(chx,Y(i),7,5,0,C.ganglion,C["gang-edge"],1.2);
+  const ax=330;rr(ax-13,50,26,420,12);ctx.fillStyle=C.blood;ctx.globalAlpha=.75;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.2;ctx.stroke();
+  label(ax,484,"Aorta",{align:"center",size:11.5,weight:600,pill:false,color:C["ink-soft"]});
+  const G=[[ax,150,"Celiac",13,[620,140],"Stomach"],[ax,255,"Superior mesenteric",18,[620,255],"Small intestine"],[ax,360,"Inferior mesenteric",21,[620,370],"Large intestine"]];
+  G.forEach(g=>{ctx.globalAlpha=.75;poly([[ax,g[1]],[ax+70,g[1]+10]],C.blood,8);ctx.globalAlpha=1});
+  const P=6.5,t=cyc(T,P);
+  G.forEach((g,i)=>{const ys=Y(g[3]);const pre=cat([[x+13,ys],[chx-7,ys]],[[chx,ys],[chx+7,ys+2]],qb([chx+7,ys+2],[250,ys+10],[ax-30,g[1]],16));
+    axon(pre,C.sym,{lw:3,beads:true,term:false});
+    const post=bez([ax+30,g[1]],[440,g[1]],[480,g[4][1]],[g[4][0]-80,g[4][1]],18);axon(post,C.sym,{lw:2});
+    ganglion(ax,g[1],30,17,bump(t,2.4,3.1,.2));
+    lbl(ax+38,g[1]-30,g[2]+" ganglion",{size:11.5});
+    glow(x,ys,16,C.sym,.6);
+    pulseOn(pre,seg(t,.2,2.4),C.glow,12);
+    const pp=along(pre,seg(t,.2,2.4));if(t>.7&&t<1.4)glow(chx,ys,16,C.glow,.7);
+    puff(ax-26,g[1],seg(t,2.3,2.8),"ach",4,12,i*7,-1.4,1.4);
+    pulseOn(post,seg(t,2.8,3.9),C.glow,13);puff(g[4][0]-80,g[4][1],seg(t,3.8,4.3),"ne",5,16,i*5,-1.3,1.3);
+    const r=ease(bump(t,4,6.3,.6));gutTube(g[4][0]-76,g[4][1],150,i===0?44:32,T,lerp(1.1,.08,r));
+    lbl(g[4][0],g[4][1]+(i===0?36:30),g[5]+(r>.3?": slows down":""),{align:"center",size:11.5,color:r>.3?C.sym:C.ink,border:r>.3?C.sym:null})});
+  lbl(250,34,"Splanchnic nerves pass through the chain without stopping",{align:"center",size:11.5,color:C.sym,border:C.sym});
+  if(t>.7&&t<1.5)lbl(chx+20,Y(17),"passes through",{size:11,color:C.sym,alpha:bump(t,.7,1.5,.15)});
+  label(chx,y0+30*sh+22,"Chain",{align:"center",size:11.5,weight:600,pill:false,color:C["ink-soft"]});
+  STATE={t}}
+
+/* ---- Step 6: adrenal medulla ---- */
+function sceneAdrenal(T){bg();
+  const P=8,t=cyc(T,P);
+  const x=60,y0=40,sh=14;const Y=cordCol(x,y0,sh,{labels:true,symA:.15});
+  // kidney + adrenal cutaway
+  const kx=260,ky=360;ell(kx,ky,58,82,0,C.kidney,"rgba(0,0,0,.3)",1.6);ell(kx+30,ky,16,28,0,C.panel);label(kx,ky+100,"Kidney",{align:"center",size:11.5,pill:false,weight:600,color:C["ink-soft"]});
+  const ax=kx,ay=232;ctx.beginPath();ctx.moveTo(ax-92,ay+46);ctx.quadraticCurveTo(ax-70,ay-64,ax,ay-70);ctx.quadraticCurveTo(ax+70,ay-64,ax+92,ay+46);ctx.quadraticCurveTo(ax,ay+70,ax-92,ay+46);ctx.closePath();ctx.fillStyle=C.adrenal;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.5;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(ax-60,ay+30);ctx.quadraticCurveTo(ax-46,ay-36,ax,ay-40);ctx.quadraticCurveTo(ax+46,ay-36,ax+60,ay+30);ctx.quadraticCurveTo(ax,ay+44,ax-60,ay+30);ctx.closePath();ctx.fillStyle=C["sym-wash"];ctx.fill();ctx.strokeStyle=C.sym;ctx.lineWidth=1.4;ctx.stroke();
+  const cells=[[-30,-10],[-6,-18],[18,-10],[-24,14],[2,8],[28,14]];
+  const rel=bump(t,1.7,3.4,.2);
+  cells.forEach(c=>{circ(ax+c[0],ay+c[1],10,C.sym,"rgba(0,0,0,.25)",1);circ(ax+c[0]-2,ay+c[1]-2,3.5,C.panel);if(rel>0)glow(ax+c[0],ay+c[1],16,C.glow,rel*.6)});
+  lead(ax-80,ay-20,80,ay-118,"Adrenal cortex (outer)",{size:11.5});
+  lead(ax-30,ay+20,120,ay+76,"Adrenal medulla: chromaffin cells",{size:11.5,color:C.sym,border:C.sym});
+  // preganglionic axon straight in
+  const ys=Y(18);const pre=cat([[x+13,ys]],bez([x+13,ys],[120,ys],[140,ay-90],[ax-36,ay-14],24));axon(pre,C.sym,{lw:3.2,beads:true});glow(x,ys,16,C.sym,.6);
+  pulseOn(pre,seg(t,.1,1.4),C.glow,14);puff(ax-36,ay-14,seg(t,1.35,1.85),"ach",5,12,4,-1,2);
+  lbl(150,ay-150,"Preganglionic axon: no ganglion on the way",{size:11.5,color:C.sym,border:C.sym});
+  // vein out to the body
+  const V=[[ax+50,ay-6],[420,ay-6],[470,ay-6]];const B1=bez([470,ay-6],[520,ay-6],[540,110],[600,110],18),B2=[[470,ay-6],[600,ay-6]],B3=bez([470,ay-6],[520,ay-6],[540,370],[600,370],18);
+  [cat(V,B1),cat(V,B2),cat(V,B3)].forEach(pth=>{poly(pth,C["vessel-edge"],18);poly(pth,C.vessel,14)});
+  label(400,ay-28,"Into the blood",{align:"center",size:11.5,weight:600,color:C.blood,pill:false});
+  for(let i=0;i<10;i++){const q=cyc(T*.18+i/10,1);const pth=cat(V,[B1,B2,B3][i%3]);const p=along(pth,q);mol("rbc",p[0],p[1],.8,.8)}
+  // hormones
+  const paths=[cat(V,B1),cat(V,B2),cat(V,B3)];
+  for(let i=0;i<24;i++){const st=1.9+i*.07;const q=seg(t,st,st+3);if(q<=0||q>=1)continue;const p=along(paths[i%3],q);mol(i%5===0?"ne":"epi",p[0],p[1]+(rnd(i)-.5)*6,1-seg(q,.88,1))}
+  const r=ease(bump(t,4.2,7.6,.6));
+  const hr=72+40*r;heartIcon(660,104,26,pulseF(cyc(T*hr/60,1)));lbl(660,146,"Heart: "+Math.round(hr)+" bpm",{align:"center",size:12,color:r>.2?C.sym:C.ink});
+  ctx.beginPath();ctx.moveTo(630,ay-24);ctx.quadraticCurveTo(680,ay-44,710,ay-14);ctx.quadraticCurveTo(690,ay+20,640,ay+14);ctx.closePath();ctx.fillStyle=C.liver;ctx.fill();
+  if(r>0)for(let i=0;i<6;i++){const q=cyc(T*.5+i/6,1);mol("glu",680+q*60,ay-10+Math.sin(i*2+q*5)*14,r*(1-q))}
+  lbl(700,ay+40,"Liver: releases glucose",{align:"center",size:12,color:r>.2?C.sym:C.ink});
+  airway(660,364,34,.35+.6*r,T);lbl(660,414,"Airways widen",{align:"center",size:12,color:r>.2?C.sym:C.ink});
+  label(560,480,"Hormones reach every organ the blood reaches.",{align:"center",size:11.5,pill:false,color:C["ink-soft"]});
+  STATE={t}}
+
+/* ---- Step 7: craniosacral outflow ---- */
+function sceneCranio(T){bg();
+  // brain + brainstem + cord
+  ell(150,78,110,56,0,C.cns,C["cns-edge"],1.6);for(let i=0;i<6;i++){ctx.beginPath();ctx.arc(70+i*32,78+(i%2?6:-6),20,.2,2.6);ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1;ctx.stroke()}
+  ell(240,130,32,20,.2,C.cns,C["cns-edge"],1.4);
+  ctx.beginPath();ctx.moveTo(170,118);ctx.lineTo(200,118);ctx.lineTo(196,186);ctx.lineTo(174,186);ctx.closePath();ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.4;ctx.stroke();
+  rr(176,184,18,290,9);ctx.fillStyle=C.cns;ctx.fill();ctx.stroke();
+  ctx.globalAlpha=.3;rr(176,410,18,44,6);ctx.fillStyle=C.para;ctx.fill();rr(172,128,26,58,8);ctx.fill();ctx.globalAlpha=1;
+  ctx.globalAlpha=.15;rr(176,230,18,150,6);ctx.fillStyle=C.sym;ctx.fill();ctx.globalAlpha=1;
+  label(150,78,"Brain",{align:"center",size:12,pill:false,weight:600,color:C["ink-soft"]});
+  label(160,152,"Brainstem",{align:"right",size:11.5,pill:false,color:C.para,weight:600});
+  label(168,432,"S2 to S4",{align:"right",size:11.5,pill:false,color:C.para,weight:600});
+  label(168,305,"T1 to L2 (sympathetic)",{align:"right",size:11,pill:false,color:C["ink-faint"]});
+  const tx=580,gx=520;
+  const N=[
+    {n:"III",o:[198,130],tg:[tx,50],kind:"eye",txt:"III · Eye: pupil constricts",g:"ciliary"},
+    {n:"VII",o:[198,145],tg:[tx,118],kind:"gland",txt:"VII · Tear, salivary glands"},
+    {n:"IX",o:[198,160],tg:[tx,182],kind:"gland2",txt:"IX · Parotid gland"},
+    {n:"X",o:[198,176],tg:[tx,250],kind:"heart",txt:"X · Heart: slows"},
+    {n:"X",o:[198,176],tg:[tx,318],kind:"lung",txt:"X · Lungs: airways narrow"},
+    {n:"X",o:[198,176],tg:[tx,382],kind:"gut",txt:"X · Stomach, intestines"},
+    {n:"S2–S4",o:[194,432],tg:[tx,450],kind:"blad",txt:"S2–S4 · Bladder, lower colon"}];
+  const P=10,t=cyc(T,P),ph=Math.min(4,Math.floor(t/2)),u=(t%2)/2;
+  const grp=i=>i<3?i:(i<6?3:4);
+  N.forEach((nv,i)=>{const g=grp(i);const on=g===ph;const a=on?1:.32;
+    const pre=nv.n==="X"?cat(bez(nv.o,[260,190],[300,nv.tg[1]-30],[gx-30,nv.tg[1]],24)):bez(nv.o,[300,nv.o[1]],[420,nv.tg[1]],[gx,nv.tg[1]],24);
+    const post=[[gx+10,nv.tg[1]],[nv.tg[0]-30,nv.tg[1]]];
+    axon(pre,C.para,{lw:2.8,alpha:a,beads:true,term:false});ganglion(nv.n==="X"||nv.n==="S2–S4"?gx-20:gx,nv.tg[1],10,8,on?bump(u,.45,.65,.05):0);axon(post,C.para,{lw:2,alpha:a});
+    if(on){pulseOn(pre,seg(u,0,.5),C.glow,12);pulseOn(post,seg(u,.6,.8),C.glow,10);puff(nv.tg[0]-28,nv.tg[1],seg(u,.78,.95),"ach",4,12,i*7,-1.4,1.4)}
+    const r=on?ease(seg(u,.8,1)):0;const [X,Yy]=nv.tg;
+    if(nv.kind==="eye")eyeIcon(X,Yy,16,.5-.42*r);else if(nv.kind==="gland"||nv.kind==="gland2")gland(X,Yy-6,13,.2+r,T,i,{dx:1,dy:.4,len:30});
+    else if(nv.kind==="heart")heartIcon(X,Yy,18,pulseF(cyc(T*(72-14*r)/60,1)));else if(nv.kind==="lung")airway(X,Yy,22,.7-.35*r,T);
+    else if(nv.kind==="gut")gutTube(X-26,Yy,64,22,T,.5+r);else bladderIcon(X,Yy,15,1-.5*r,r,T);
+    lbl(X+34,Yy,nv.txt,{size:11.5,color:on?C.para:C.ink,border:on?C.para:null})});
+  label(212,104,"Cranial nerves III, VII, IX, X",{size:11,weight:600,color:C.para});
+  chipT(380,494,["Now: III (oculomotor)","Now: VII (facial)","Now: IX (glossopharyngeal)","Now: X (vagus)","Now: S2 to S4 (pelvic)"][ph],C.para,"#fff",{size:11});
+  label(gx,20,"Ganglia sit next to (or in) each target",{align:"center",size:11.5,weight:600,pill:false,color:C.para});
+  STATE={ph}}
+
+/* ---- Step 8: the vagus ---- */
+function sceneVagus(T){bg();
+  const P=9,t=cyc(T,P);const r=ease(seg(t,2.2,4))*(1-seg(t,8.4,9));
+  const cx=190,y0=24,s=1.05;
+  const st=mixS(NEUT,{hr:58,bronch:.32,gut:1.5,saliva:.6,pupil:.4},r);
+  const hrF=x=>{const rr2=ease(seg(cyc(x,P),2.2,4))*(1-seg(cyc(x,P),8.4,9));return 72-14*rr2};
+  const bi=beatInfo(hrF,T);
+  body(cx,y0,s,st,T,{cns:true,paraHL:.6,beat:pulseF(bi.ph)});
+  const L=k=>bp(cx,y0,s,k);
+  const trunk=[L([2,52]),L([8,80]),L([12,100]),L([14,124])];
+  const br=[["heart",[8,154]],["lungR",[26,132]],["lung",[-24,134]],["stomach",[24,188]],["liver",[-22,192]],["gut",[0,230]]];
+  poly(trunk,C.para,3.2);
+  const pp=seg(t,0,1.2);pulseOn(trunk,pp,C.glow,12);
+  br.forEach((b,i)=>{const e=L(b[1]);const path=qb(trunk[3],[lerp(trunk[3][0],e[0],.2),lerp(trunk[3][1],e[1],.7)],e,12);poly(path,C.para,2.4);circ(e[0],e[1],4,C.ganglion,C["gang-edge"],1.2);
+    pulseOn(path,seg(t,1.2+i*.12,2+i*.12),C.glow,10)});
+  lead(trunk[1][0]+6,trunk[1][1],cx+90,y0+60,"Vagus nerve (X)",{color:C.para,border:C.para});
+  // HR readout
+  const hr=hrF(T);rr(330,24,150,52,8);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+  hdr(342,40,"Heart rate");ctx.font=`600 22px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=r>.2?C.para:C.ink;ctx.fillText(Math.round(hr)+" bpm",342,62);
+  // reached organs list
+  const items=["Heart: slows","Lungs: airways narrow a little","Stomach: churns more","Liver","Small intestine: moves more","Start of large intestine"];
+  items.forEach((it,i)=>{const on=t>1.6+i*.12;label(520,40+i*24,(on?"✓ ":"· ")+it,{size:12,pill:false,color:on?C.para:C["ink-faint"],weight:on?600:500})});
+  // inset: terminal ganglion in the stomach wall
+  const ix=600,iy=360,R=118;const sp=L("stomach");
+  line(sp[0]+16,sp[1]-10,ix-R*.8,iy-R*.6,C["ink-faint"],1,[4,4]);line(sp[0]+16,sp[1]+10,ix-R*.85,iy+R*.5,C["ink-faint"],1,[4,4]);
+  ctx.save();ctx.beginPath();ctx.arc(ix,iy,R,0,TAU);ctx.fillStyle=C.panel;ctx.fill();ctx.clip();
+  // wall layers
+  ctx.fillStyle=C.gut;ctx.fillRect(ix-R,iy-R,2*R,2*R);
+  const sq=(.5+1.2*r);
+  for(let k=0;k<2;k++){const yy=iy-30+k*70;for(let j=0;j<9;j++){const xx=ix-R+12+j*28;const c=.5+.5*Math.sin(T*2.4*sq-j*.7);ell(xx,yy,12,10-3*c*r,0,C.smooth,"rgba(0,0,0,.2)",1)}}
+  ell(ix,iy+5,34,16,0,C.ganglion,C["gang-edge"],1.6);circ(ix-10,iy+5,5,C.para);circ(ix+10,iy+5,5,C.para);
+  const pre=[[ix-R,iy-R*.7],[ix-60,iy-40],[ix-12,iy+2]];poly(pre,C.para,3);pulseOn(pre,seg(t,1.8,2.5),C.glow,12);
+  const post=[[ix+10,iy+5],[ix+40,iy+30],[ix+60,iy+42]];poly(post,C.para,2);puff(ix+60,iy+42,seg(t,2.5,3),"ach",4,10,5,0,TAU);
+  ctx.restore();circ(ix,iy,R,null,C.rule,2);
+  lbl(ix,iy-R-12,"Inset: stomach wall",{align:"center",size:11.5});
+  lbl(ix,iy+R+14,"Terminal (intramural) ganglion: short postganglionic",{align:"center",size:11.5,color:C.para,border:C.para});
+  STATE={hr}}
+
+/* ---- Step 9: lengths side by side ---- */
+function sceneLengths(T){bg();
+  const P=5,t=cyc(T,P);
+  const lane=(y,col,isS)=>{
+    rr(20,y-50,80,100,10);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.5;ctx.stroke();
+    label(60,y-34,isS?"Spinal cord":"Brainstem or",{align:"center",size:11,pill:false,weight:600});label(60,y-20,isS?"T1 to L2":"S2 to S4",{align:"center",size:11,pill:false,weight:600,color:col});
+    const gx=isS?200:610;
+    const pre=[[90,y],[gx-14,y]];axon(pre,col,{lw:3.4,beads:true,soma:8,term:false});
+    if(!isS){rr(590,y-58,190,116,14);ctx.fillStyle=C.gut;ctx.globalAlpha=.55;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C["gut-edge"];ctx.lineWidth=1.5;ctx.stroke();label(760,y-44,"organ wall",{align:"right",size:11,pill:false,color:C["ink-soft"]})}
+    ganglion(gx,y,16,13,bump(t,1.5,2,.1));
+    const posts=isS?[[gx,y,690,y-62],[gx,y,690,y],[gx,y,690,y+62]]:[[gx,y,680,y]];
+    const PP=posts.map(q=>isS?bez([q[0]+10,q[1]],[q[0]+120,q[1]],[q[2]-200,q[3]],[q[2],q[3]],18):[[q[0]+12,q[1]],[q[2],q[3]]]);
+    PP.forEach(pp=>axon(pp,col,{lw:2.2}));
+    pulseOn(pre,seg(t,0,1.5),C.glow,14);PP.forEach(pp=>pulseOn(pp,seg(t,1.8,isS?3.2:2.3),C.glow,12));
+    const r=ease(bump(t,isS?3.2:2.3,4.8,.3));
+    PP.forEach((pp,i)=>{const e=pp[pp.length-1];if(r>0)glow(e[0]+22,e[1],28,col,r*.6);
+      if(isS){if(i===0)eyeIcon(e[0]+26,e[1],13,.45+.5*r);else if(i===1)heartIcon(e[0]+24,e[1],15,pulseF(cyc(T*(72+40*r)/60,1)));else vesselX(e[0]+24,e[1],18,.75-.5*r,T)}
+      else ell(e[0]+22,e[1],16,9,0,C.smooth,"rgba(0,0,0,.25)",1)});
+    const by=y+(isS?96:74);
+    rr(90,by-6,gx-104,12,6);ctx.fillStyle=col;ctx.globalAlpha=.85;ctx.fill();ctx.globalAlpha=1;
+    rr(gx+12,by-6,690-gx-12,12,6);ctx.fillStyle=col;ctx.globalAlpha=.4;ctx.fill();ctx.globalAlpha=1;
+    label((90+gx)/2,by+18,isS?"preganglionic: SHORT":"preganglionic: LONG",{align:"center",size:11.5,weight:600,pill:false,color:col});
+    label((gx+700)/2,by+18,isS?"postganglionic: LONG":"post: SHORT",{align:"center",size:11.5,weight:600,pill:false,color:col});
+  };
+  hdr(20,24,"Sympathetic",C.sym);lane(140,C.sym,true);
+  lbl(200,140-34,"Chain ganglion near the cord",{align:"center",size:11.5});
+  lbl(470,58,"One → many: widespread effects",{align:"center",size:11.5,color:C.sym,border:C.sym});
+  line(20,282,780,282,C["rule-soft"],1.5,[4,4]);
+  hdr(20,304,"Parasympathetic",C.para);lane(390,C.para,false);
+  lbl(560,330,"Terminal ganglion in the organ wall",{align:"right",size:11.5});
+  lbl(330,432,"One → one: local effects",{align:"center",size:11.5,color:C.para,border:C.para});
+  STATE={t}}
+
+/* ---- Steps 10-12: synapse close-ups ---- */
+function minimap(kind){const x0=16,y0=14;rr(x0,y0,236,58,8);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+  const y=y0+36;const col=kind==="musc"?C.para:C.sym;rr(x0+8,y-12,30,24,5);ctx.fillStyle=C.cns;ctx.fill();label(x0+23,y,"CNS",{align:"center",size:9.5,pill:false,weight:600});
+  poly([[x0+38,y],[x0+112,y]],col,2.6);ell(x0+120,y,10,8,0,C.ganglion,C["gang-edge"],1.2);poly([[x0+130,y],[x0+196,y]],col,2);circ(x0+210,y,9,C.heart);
+  const hx=kind==="nic"?x0+120:x0+200;circ(hx,y,16,null,C.glow,2.5);label(x0+8,y0+12,kind==="nic"?"Zoomed in: the ganglion":"Zoomed in: the target organ",{size:10.5,pill:false,color:C["ink-soft"],weight:600})}
+function sceneSyn(T,id){bg(C.ecf);
+  const P=6.5,t=cyc(T,P);
+  if(id==="ne")return sceneNE(T,t);
+  const cx=430,col=id==="nic"?C.sym:C.para;
+  // presynaptic terminal
+  ctx.fillStyle=C.cyto;ctx.beginPath();ctx.moveTo(cx-22,0);ctx.lineTo(cx+22,0);ctx.lineTo(cx+22,58);ctx.bezierCurveTo(cx+170,70,cx+175,232,cx,234);ctx.bezierCurveTo(cx-175,232,cx-170,70,cx-22,58);ctx.closePath();ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.stroke();
+  label(cx+40,22,id==="nic"?"Preganglionic axon terminal":"Parasympathetic postganglionic terminal",{align:"left",size:11.5,weight:600});
+  // AP coming down
+  if(t<1)glow(cx,lerp(0,150,t),30,C.glow,.9);
+  const V=[[-100,150],[-55,175],[0,160],[55,178],[100,152],[-30,120],[35,118]];
+  const fuse=seg(t,1,1.5);
+  V.forEach((v,i)=>{let vy=v[1];const f=i<5?fuse:0;vy=lerp(v[1],222,ease(f));const vx=cx+v[0];
+    if(f<1){circ(vx,vy,14,C.panel,col,1.5);for(let k=0;k<3;k++)mol("ach",vx-5+k*5,vy+(k%2?3:-3),1,.75)}else{ctx.beginPath();ctx.arc(vx,232,12,Math.PI,0,true);ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke()}});
+  // post membrane
+  const my=290;membraneH(0,W,my,18);
+  const R=[cx-150,cx-75,cx,cx+75,cx+150];const bind=seg(t,2.3,2.7),unb=seg(t,5,5.6);
+  R.forEach((rx,i)=>recep(rx,my,id==="nic"?"nic":"musc",bind>0&&unb<1?1:0,{lab:i===2}));
+  // ACh diffusion
+  for(let i=0;i<15;i++){const src=cx+V[i%5][0];const dst=R[i%5]+(i>9?6:-6);const q=seg(t,1.4+rnd(i)*.3,2.5);if(q<=0)continue;const k=1-unb;
+    const x=lerp(src,dst,ease(q))+Math.sin(q*9+i)*8*(1-q),y=lerp(234,my-(id==="nic"?20:24),ease(q));mol("ach",x,y,k*(1-seg(t,5.3,5.8)))}
+  label(cx-250,260,"Synaptic cleft",{size:11,pill:false,color:C["ink-soft"]});
+  // effects inside the postsynaptic cell
+  ctx.fillStyle=C.cyto;ctx.fillRect(0,my+9,W,H-my-9);membraneH(0,W,my,18);R.forEach((rx,i)=>recep(rx,my,id==="nic"?"nic":"musc",bind>0&&unb<1?1:0,{lab:false}));
+  label(cx,id==="nic"?my+28:my+62,id==="nic"?"Nicotinic receptors (ion channels)":"Muscarinic receptors",{align:"center",size:11.5,weight:600,color:id==="nic"?C.nic:C.musc});
+  const on=bind*(1-unb);
+  if(id==="nic"){
+    for(let i=0;i<15;i++){const q=cyc(T*1.1+i/15,1);if(on<.5)continue;const rx=R[i%5];mol("na",rx+(rnd(i)-.5)*4,lerp(my-46,my+70,q),on,1.15)}
+    if(on>.5){const sp=seg(t,2.8,4.6);const x=lerp(cx,790,sp);glow(x,my+80,40,C.glow,.8);glow(lerp(cx,10,sp),my+80,40,C.glow,.8)}
+    lbl(cx,my+120,on>.5?"Na⁺ rushes in → the postganglionic neuron fires":"Postganglionic neuron (cell body)",{align:"center",size:12,color:on>.5?C.sym:C.ink,border:on>.5?C.sym:null});
+    // where else
+    rr(20,420,760,84,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    hdr(36,440,"Same ACh + nicotinic synapse in:");
+    [["Sympathetic ganglia",C.sym],["Parasympathetic ganglia",C.para],["Adrenal medulla",C.adrenal],["Skeletal muscle (NMJ)",C.soma]].forEach((z,i)=>{const x=36+i*188;circ(x+6,478,7,z[1]);label(x+18,478,z[0],{size:12,pill:false,weight:600})});
+  }else{
+    // G protein activation
+    R.forEach((rx,i)=>{const sl=ease(seg(t,2.7,3.6))*(1-unb);const gx=rx+16+sl*30;circ(gx,my+22,7,C.musc);circ(rx+8,my+26,6,C.para);circ(rx+20,my+30,5,C.para);if(sl>.3)glow(gx,my+22,14,C.glow,sl*.6)});
+    label(cx+270,my+34,"G protein switches on",{align:"center",size:11.5,weight:600,pill:false,color:C.musc});
+    // three target examples
+    const r=ease(bump(t,3.4,6.2,.5));const y=420;
+    rr(20,y-46,760,124,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    const hr=74-16*r;heartIcon(110,y+10,26,pulseF(cyc(T*hr/60,1)));label(110,y+56,"Heart: "+Math.round(hr)+" bpm",{align:"center",size:12,pill:false,weight:600,color:r>.3?C.para:C.ink});
+    gutTube(300,y+10,180,40,T,.4+1.1*r);label(390,y+56,"Gut: contracts more",{align:"center",size:12,pill:false,weight:600,color:r>.3?C.para:C.ink});
+    gland(620,y,22,.2+1.2*r,T,4,{dx:1,dy:.5,len:60});label(640,y+56,"Glands: secrete more",{align:"center",size:12,pill:false,weight:600,color:r>.3?C.para:C.ink});
+  }
+  minimap(id);
+  STATE={t}}
+function sceneNE(T,t){
+  // postganglionic axon with varicosities running over smooth muscle
+  const y=140;const ax=[[0,y],[560,y]];poly(ax,C.sym,3);
+  const VX=[110,290,470];VX.forEach(v=>{ell(v,y,30,20,0,C.cyto,C.sym,2.2);for(let k=0;k<4;k++)circ(v-14+k*9,y+(k%2?5:-4),5,C.panel,C.sym,1)});
+  label(20,y-34,"Sympathetic postganglionic axon",{size:11.5,weight:600});label(290,y-34,"varicosity",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  pulseOn(ax,seg(t,0,1.2),C.glow,18);
+  const my=300;membraneH(0,575,my,18);ctx.fillStyle=C.smooth;ctx.globalAlpha=.35;ctx.fillRect(0,my+9,575,H-my-9);ctx.globalAlpha=1;
+  const R=[[60,"a"],[140,"b"],[240,"a"],[330,"b"],[420,"a"],[510,"b"]];
+  const bind=seg(t,2.3,2.7),unb=seg(t,5,5.6),on=bind*(1-unb);
+  R.forEach(r=>recep(r[0],my,r[1],on>0?1:0));
+  for(let i=0;i<14;i++){const v=VX[i%3];const dst=R[i%6][0];const q=seg(t,1.2+rnd(i+4)*.4,2.5);if(q<=0)continue;mol("ne",lerp(v,dst,ease(q))+Math.sin(q*8+i)*6*(1-q),lerp(y+20,my-30,ease(q)),1-seg(t,5.2,5.8))}
+  label(287,my+52,"Adrenergic receptors: alpha (α) and beta (β)",{align:"center",size:12,weight:600,pill:false});
+  label(287,my+76,"Which effect? It depends on the receptor (next step).",{align:"center",size:11.5,pill:false,color:C["ink-soft"]});
+  // smooth muscle cells
+  for(let j=0;j<6;j++){const c=on*.5*Math.sin(j);ell(48+j*96,my+130,42-6*on,12+3*on,0,C.smooth,"rgba(0,0,0,.2)",1);circ(48+j*96,my+130,4,C.muscle)}
+  label(287,my+168,"Target smooth muscle",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  // exception panel
+  const px=590;rr(px,14,196,492,10);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.warn;ctx.lineWidth=1.6;ctx.stroke();
+  hdr(px+98,36,"The exception",C.warn,{align:"center"});label(px+98,58,"Sweat glands",{align:"center",size:13,weight:600,pill:false});
+  const sx=px+98;const fib=[[sx,80],[sx,200]];axon(fib,C.sym,{lw:2.6});label(sx+10,110,"sympathetic",{size:11,pill:false,color:C.sym,weight:600});label(sx+10,126,"postganglionic",{size:11,pill:false,color:C.sym,weight:600});
+  pulseOn(fib,seg(t,.6,1.6),C.glow,14);
+  for(let i=0;i<8;i++){const q=seg(t,1.6+rnd(i)*.3,2.5);if(q<=0)continue;mol("ach",sx+(rnd(i+3)-.5)*60*ease(q),lerp(205,236,ease(q)),1-seg(t,5,5.6))}
+  membraneH(px+20,px+176,250,14);recep(sx-36,250,"musc",on>0?1:0,{lab:false});recep(sx+36,250,"musc",on>0?1:0,{lab:false});
+  label(sx,278,"ACh on muscarinic",{align:"center",size:11.5,weight:600,pill:false,color:C.musc});
+  ctx.fillStyle=C.skin;ctx.fillRect(px+12,300,172,200);line(px+12,330,px+184,330,C["skin-edge"],2);label(px+20,318,"skin surface",{size:10.5,pill:false,color:C["ink-soft"]});
+  sweatGland(sx,330,1.6,on*1.2,T);
+  label(sx,490,"Sweat comes out",{align:"center",size:11.5,weight:600,pill:false,color:on>.3?C.sweat:C["ink-soft"]});
+  STATE={t}}
+
+/* ---- Step 13: receptor effects ---- */
+function sceneReceptors(T){bg();
+  const P=7,t=cyc(T,P);const bind=seg(t,1.2,1.6),unb=seg(t,5.6,6.2),on=bind*(1-unb);const r=ease(seg(t,1.6,3.6))*(1-ease(seg(t,5.6,6.6)));
+  const tiles=[[12,"β1 · Heart","b1","ne",C.beta],[275,"β2 · Bronchiole","b2","epi",C.beta],[538,"α1 · Skin blood vessel","a1","ne",C.alpha]];
+  tiles.forEach(([x,ttl,rt,lig,col],i)=>{const w=250,cx=x+w/2;rr(x,12,w,496,10);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    chipT(cx,34,ttl,col,"#fff",{size:11.5});
+    membraneH(x+10,x+w-10,130,16);recep(cx,130,rt,on>0?1:0,{lab:false});
+    const q=seg(t,.2,1.25);const lx=lerp(cx-70,cx,ease(q)),ly=lerp(60,104,ease(q));if(unb<1)mol(lig,lx,unb>0?lerp(104,60,unb):ly,1,1.3);
+    if(i===1)mol("ne",cx+60,80+Math.sin(T*2)*6,.45,1.1);
+    label(cx,162,lig==="epi"?"epinephrine (or NE) binds":"NE (or epinephrine) binds",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+    const ey=300;
+    if(i===0){const hr=72+48*r;const bi=beatInfo(()=>hr,T);heartIcon(cx,ey-10,50,pulseF(bi.ph),{force:1+r});
+      label(cx,ey+64,Math.round(hr)+" bpm",{align:"center",size:20,weight:600,pill:false,mono:true,color:r>.2?C.sym:C.ink});
+      const bi2=beatInfo(x=>72+48*ease(seg(cyc(x,P),1.6,3.6))*(1-ease(seg(cyc(x,P),5.6,6.6))),T);ecg(x+16,ey+150,w-32,(26+18*r),bi2.beats,T,3,C.heart);
+      label(cx,ey+178,"Rate and force go up",{align:"center",size:12,weight:600,pill:false,color:C.sym})}
+    else if(i===1){airway(cx,ey,78,.22+.7*r,T);label(cx,ey+120,r>.4?"Smooth muscle relaxes: airway widens":"Smooth muscle ring",{align:"center",size:12,weight:600,pill:false,color:r>.4?C.sym:C.ink})}
+    else{vesselX(cx,ey,78,.85-.6*r,T);label(cx,ey+120,r>.4?"Smooth muscle contracts: vessel narrows":"Smooth muscle ring",{align:"center",size:12,weight:600,pill:false,color:r>.4?C.sym:C.ink})}
+    const pct=i===0?"":(i===1?Math.round(100+130*r)+"% airway width":Math.round(100-70*r)+"% vessel width");if(pct)label(cx,ey+146,pct,{align:"center",size:12,pill:false,mono:true,color:C["ink-soft"]});
+  });
+  STATE={r}}
+
+/* ---- Steps 14-15: whole body ---- */
+const FIGHT_L=[["eyeL","Pupils dilate","L"],["skin","Skin vessels narrow (paler)","L"],["lung","Bronchioles dilate","L"],["arm","More blood to skeletal muscle","L"],["liver","Liver releases glucose","L"],["bladder","Bladder holds urine","L"],
+  ["forehead","Sweating increases","R"],["gland","Less saliva: dry mouth","R"],["heart","Heart rate and force go up","R"],["adrenal","Adrenal medulla: epinephrine","R"],["gut","Digestion slows","R"]];
+const REST_L=[["eyeL","Pupils constrict","L"],["lung","Bronchioles narrow a little","L"],["gutL","Intestines move food faster","L"],["bladder","Bladder wall contracts: empties","L"],
+  ["gland","More saliva","R"],["heart","Heart rate slows","R"],["stomach","Stomach churns, more digestive juice","R"]];
+function sceneBody(T,id){const fight=id==="fight";bg();
+  const P=13,t=cyc(T,P);const cx=400,y0=22,s=1.06;
+  const qf=x=>ease(seg(x,.3,2.6))*(1-ease(seg(x,12,13)));const q=qf(t);
+  const st=mixS(NEUT,fight?FIGHT:REST,q);
+  const bi=beatInfo(x=>lerp(72,fight?128:60,qf(cyc(x,P))),T);
+  if(fight){ctx.globalAlpha=.4*q;ctx.fillStyle=C["sym-wash"];ctx.fillRect(0,0,W,H);ctx.globalAlpha=1}else{ctx.globalAlpha=.4*q;ctx.fillStyle=C["para-wash"];ctx.fillRect(0,0,W,H);ctx.globalAlpha=1}
+  const LST=fight?FIGHT_L:REST_L,col=fight?C.sym:C.para;
+  const hl={};LST.forEach((L,i)=>{hl[L[0]]=[col,seg(t,.7+i*.45,1.1+i*.45)*(1-seg(t,12,13))]});
+  body(cx,y0,s,st,T,{beat:pulseF(bi.ph),hl});
+  const left=LST.filter(L=>L[2]==="L"),right=LST.filter(L=>L[2]==="R");
+  const place=(arr,side)=>{const ys=arr.map(L=>bp(cx,y0,s,L[0])[1]);const out=[];let prev=-99;ys.forEach((y,i)=>{let yy=Math.max(y,prev+42);out.push(yy);prev=yy});
+    const over=out[out.length-1]-470;if(over>0)for(let i=0;i<out.length;i++)out[i]-=over;
+    arr.forEach((L,i)=>{const k=LST.indexOf(L);const a=seg(t,.7+k*.45,1.1+k*.45)*(1-seg(t,12,13));if(a<=0)return;const o=bp(cx,y0,s,L[0]);
+      const lx=side==="L"?262:538;ctx.globalAlpha=a;line(o[0],o[1],lx,out[i],col,1.4);circ(o[0],o[1],3,col);ctx.globalAlpha=1;
+      label(side==="L"?lx-4:lx+4,out[i],L[1],{align:side==="L"?"right":"left",size:12.5,weight:600,color:col,border:col,alpha:a})})};
+  place(left,"L");place(right,"R");
+  chipT(130,24,fight?"Sympathetic activity: HIGH":"Parasympathetic activity: HIGH",col,"#fff",{size:11.5});
+  // zoomed eye
+  circ(92,388,44,C.panel,C.rule,1.5);eyeIcon(92,388,24,st.pupil);label(92,346,"Pupil, zoomed in",{align:"center",size:10.5,pill:true,color:C["ink-soft"]});
+  const hr=lerp(72,fight?128:60,q);rr(20,446,214,58,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+  hdr(32,462,"Heart rate");ctx.font=`600 20px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=col;ctx.fillText(Math.round(hr)+" bpm",32,486);
+  ecg(126,490,100,18,bi.beats,T,2.5,col);
+  if(fight){rr(610,446,170,58,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();hdr(622,462,"Blood glucose");
+    const g=lerp(90,140,q);ctx.font=`600 20px ${MONO}`;ctx.textAlign="left";ctx.fillStyle=col;ctx.fillText(Math.round(g)+" mg/dL",622,486);
+    label(400,506,"Something startles you",{align:"center",size:12,weight:600,color:C.sym,border:C.sym,alpha:1-seg(t,4,5)})}
+  else{rr(610,446,170,58,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();hdr(622,462,"Gut movement");
+    ctx.font=`600 20px ${MONO}`;ctx.textAlign="left";ctx.fillStyle=col;ctx.fillText(Math.round(lerp(100,250,q))+"%",622,486);label(400,506,"Quiet afternoon after a big meal",{align:"center",size:12,weight:600,color:C.para,border:C.para,alpha:1-seg(t,4,5)})}
+  STATE={q,hr}}
+
+/* ---- Step 16: dual innervation and tone ---- */
+function sceneDual(T){bg();
+  const P=16,t=cyc(T,P);
+  const PH=[{n:"1 · Resting tone",s:.3,p:.6,hr:72,pu:.45},{n:"2 · More sympathetic",s:.95,p:.1,hr:125,pu:.95},{n:"3 · More parasympathetic",s:.08,p:.95,hr:56,pu:.1},{n:"4 · No autonomic input",s:0,p:0,hr:95,pu:.5}];
+  const val=(x,k)=>{const tt=cyc(x,P);const i=Math.floor(tt/4),f=seg(tt%4,0,.8);const a=PH[(i+3)%4],b=PH[i];return lerp(a[k],b[k],ease(f))};
+  const ph=Math.floor(t/4);const S=val(T,"s"),Pp=val(T,"p"),hr=val(T,"hr"),pu=val(T,"pu");
+  // heart with two inputs
+  const hx=200,hy=180;const bi=beatInfo(x=>val(x,"hr"),T);
+  heartIcon(hx,hy,62,pulseF(bi.ph),{force:1+S*.6});
+  circ(hx-12,hy-44,7,C.glow,"rgba(0,0,0,.3)",1);label(hx-22,hy-62,"SA node (pacemaker)",{align:"right",size:11,pill:false,color:C["ink-soft"]});
+  const sP=bez([20,330],[60,280],[90,180],[hx-18,hy-44],20),vP=bez([200,20],[200,60],[150,100],[hx-8,hy-50],20);
+  poly(sP,C.sym,2+5*S);poly(vP,C.para,2+5*Pp);
+  for(let i=0;i<4;i++){if(S>.05)pulseOn(sP,cyc(T*(.3+1.4*S)+i/4,1),C.sym,9*S+4);if(Pp>.05)pulseOn(vP,cyc(T*(.3+1.4*Pp)+i/4,1),C.para,9*Pp+4)}
+  label(30,346,"Sympathetic: gas pedal",{size:12,weight:600,color:C.sym,border:C.sym});label(214,26,"Vagus: brake",{size:12,weight:600,color:C.para,border:C.para});
+  // meters
+  const meter=(x,lab,v,col)=>{rr(x,230,22,100,5);ctx.fillStyle=C.sunk;ctx.fill();rr(x,230+100*(1-v),22,100*v,5);ctx.fillStyle=col;ctx.fill();label(x+11,344,lab,{align:"center",size:10.5,pill:false,mono:true,color:col,weight:600})};
+  meter(300,"SYM",S,C.sym);meter(340,"PARA",Pp,C.para);
+  // eye with two muscles
+  const ex=600,ey=165,R=95;ell(ex,ey,R*1.45,R*.95,0,"#F6F3EC",C["skin-edge"],2);
+  circ(ex,ey,R*.8,"#6E8FAE");
+  const pr=R*.8*(.16+.6*pu);
+  for(let i=0;i<28;i++){const a=i/28*TAU;line(ex+Math.cos(a)*(pr+14),ey+Math.sin(a)*(pr+14),ex+Math.cos(a)*R*.78,ey+Math.sin(a)*R*.78,C.sym,1.2+2.6*S)}
+  ctx.beginPath();ctx.arc(ex,ey,pr+7,0,TAU);ctx.strokeStyle=C.para;ctx.lineWidth=3+7*Pp;ctx.stroke();
+  circ(ex,ey,pr,"#0B0F12");
+  lead(ex+R*.6,ey-R*.45,ex+30,ey-R-4,"Radial dilator (sympathetic)",{size:11.5,color:C.sym,border:C.sym});
+  lead(ex-pr-6,ey+4,ex-130,ey+R+18,"Circular sphincter (parasympathetic)",{size:11.5,color:C.para,border:C.para});
+  // HR trace
+  const g={x:60,y:380,w:710,h:110};rr(g.x-40,g.y-20,g.w+60,g.h+30,8);ctx.fillStyle=C["panel-2"];ctx.fill();
+  ecg(g.x,g.y+80,g.w,52,bi.beats,T,6,C.heart);
+  hdr(g.x-28,g.y-6,"Heart rate trace");label(g.x+g.w,g.y-6,Math.round(hr)+" bpm",{align:"right",size:15,weight:600,mono:true,pill:false,color:C.heart});
+  PH.forEach((p,i)=>{const on=i===ph;const x=g.x+60+i*172;chipT(x+40,g.y+100,p.n,on?(i===1?C.sym:i===2?C.para:C.accent):C["ink-faint"],null,{size:10.5})});
+  if(ph===3)lbl(460,374,"No nerves: the pacemaker sets about 95 bpm. At rest the vagus holds it near 72.",{align:"center",size:11.5,color:C.accent,border:C.accent});
+  if(ph===0)lbl(460,374,"Both divisions active. The vagus brake dominates the resting heart.",{align:"center",size:11.5});
+  STATE={ph,hr:Math.round(hr)}}
+
+/* ---- Step 17: sympathetic only ---- */
+function sceneSympOnly(T){bg();
+  const P=12,t=cyc(T,P);const lv=[.1,.5,.95];const i=Math.floor(t/4),f=ease(seg(t%4,0,.9));const L=lerp(lv[(i+2)%3],lv[i],f);
+  // dial
+  const dx=120,dy=150,dr=84;ctx.beginPath();ctx.arc(dx,dy,dr,Math.PI,0);ctx.strokeStyle=C.sunk;ctx.lineWidth=18;ctx.stroke();
+  ctx.beginPath();ctx.arc(dx,dy,dr,Math.PI,Math.PI+Math.PI*L);ctx.strokeStyle=C.sym;ctx.lineWidth=18;ctx.stroke();
+  const na=Math.PI+Math.PI*L;line(dx,dy,dx+Math.cos(na)*(dr-14),dy+Math.sin(na)*(dr-14),C.ink,3);circ(dx,dy,7,C.ink);
+  label(dx,dy+24,"Sympathetic activity",{align:"center",size:12,weight:600,pill:false});label(dx-dr,dy+10,"low",{align:"center",size:11,pill:false,color:C["ink-soft"]});label(dx+dr,dy+10,"high",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  label(dx,dy+48,["Low: vasodilation","Medium: resting tone","High: vasoconstriction"][Math.round(L*2)],{align:"center",size:12,weight:600,color:C.sym,border:C.sym});
+  // vessel, longitudinal
+  const vx0=260,vx1=780,vy=130;const half=48*(1-.62*L);
+  ctx.fillStyle=C.vessel;rr(vx0,vy-60,vx1-vx0,120,14);ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1.6;ctx.stroke();
+  ctx.fillStyle="#F2D6D2";ctx.fillRect(vx0,vy-half,vx1-vx0,2*half);
+  for(let j=0;j<18;j++){const x=vx0+10+j*29;[-1,1].forEach(d=>ell(x,vy+d*(half+(60-half)/2),11,(60-half)/2*.8+1,0,C.smooth,"rgba(0,0,0,.18)",1))}
+  ctx.save();ctx.beginPath();ctx.rect(vx0,vy-half,vx1-vx0,2*half);ctx.clip();for(let j=0;j<16;j++){const x=vx0+cyc(T*(60+40*(1-L))+j*37,vx1-vx0);mol("rbc",x,vy+(rnd(j)-.5)*half*1.3,1,1.3)}ctx.restore();
+  const fy=vy-76;poly([[vx0,fy],[vx1,fy]],C.sym,2.4);for(let j=0;j<6;j++){const x=vx0+40+j*86;circ(x,fy,5,C.sym);const n=Math.round(3*L);for(let k=0;k<n;k++){const q=cyc(T*1.5+k/3+j*.2,1);mol("ne",x+(k-1)*6,fy+6+q*14,1-q)}}
+  label(vx0+6,fy-14,"Sympathetic fiber (releases NE onto α1 receptors)",{size:11.5,weight:600,color:C.sym});
+  label(vx1-4,vy+76,"Most blood vessels: no parasympathetic fiber",{align:"right",size:11.5,pill:false,color:C["ink-soft"]});
+  label(vx0+10,vy+76,"Vessel width: "+Math.round(100*(1-.62*L)/.69)+"% of resting",{size:12,weight:600,mono:true,pill:false});
+  // three more single-dial targets
+  const tiles=[[20,"Sweat glands"],[280,"Adrenal medulla"],[540,"Arrector pili (goosebumps)"]];
+  tiles.forEach(([x,n],k)=>{rr(x,250,240,250,10);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    label(x+120,272,n,{align:"center",size:12.5,weight:600,pill:false});chipT(x+120,296,"sympathetic only",C.sym,"#fff",{size:10.5});
+    const cx=x+120;
+    if(k===0){ctx.fillStyle=C.skin;ctx.fillRect(x+12,330,216,160);line(x+12,350,x+228,350,C["skin-edge"],2);sweatGland(cx,350,2,clamp((L-.4)*1.7,0,1),T);label(cx,476,"sweat when activity is high",{align:"center",size:11,pill:false,color:C["ink-soft"]})}
+    else if(k===1){kidneyAd(cx-20,370,3.6,L);for(let j=0;j<Math.round(8*L);j++){const q=cyc(T*.5+j/8,1);mol("epi",cx+14+q*80,360+Math.sin(j*2)*30,1-q)}label(cx,476,"epinephrine release",{align:"center",size:11,pill:false,color:C.epi})}
+    else{ctx.fillStyle=C.skin;ctx.fillRect(x+12,330,216,160);line(x+12,380,x+228,380,C["skin-edge"],2);
+      for(let j=0;j<3;j++){const bx=x+34+j*66,by=456;const th=lerp(.78,.1,L);const tx=bx+Math.sin(th)*112,ty=by-Math.cos(th)*112;
+        const m=[bx+Math.sin(th)*34,by-Math.cos(th)*34];poly([m,[bx+46,402]],C.muscle,2.5+3.5*L);ell(bx,by,5,7,0,C["skin-edge"]);line(bx,by,tx,ty,C.ink,2.4);
+        const ex=bx+Math.sin(th)*(by-380)/Math.cos(th);if(L>.6){ctx.globalAlpha=(L-.6)*2.5;ctx.beginPath();ctx.ellipse(ex,380,11,6*L,0,Math.PI,0);ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1}}
+      label(cx,476,L>.6?"muscles pull hairs upright":"hairs lie flat",{align:"center",size:11,pill:false,color:C["ink-soft"]})}
+  });
+  STATE={L}}
+
+/* ---- Step 18: central control ---- */
+function sceneCentral(T){bg();
+  const P=9.5,t=cyc(T,P);
+  // brain (sagittal, schematic)
+  ell(300,150,200,110,0,C.cns,C["cns-edge"],1.8);for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(150+i*50,120+(i%2?14:-6),28,.3,2.7);ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.1;ctx.stroke()}
+  ell(440,250,64,36,0,C.cns,C["cns-edge"],1.4);for(let i=0;i<5;i++)line(392,236+i*7,488,236+i*7,C["cns-edge"],.8);label(440,250,"Cerebellum",{align:"center",size:11,pill:true,color:C["ink-soft"]});
+  ctx.beginPath();ctx.moveTo(320,220);ctx.lineTo(362,222);ctx.lineTo(356,330);ctx.lineTo(332,330);ctx.closePath();ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.4;ctx.stroke();
+  rr(332,326,24,190,10);ctx.fillStyle=C.cns;ctx.fill();ctx.stroke();
+  const AM=[250,212],HY=[300,206],MD=[344,300],TL=[344,420];
+  const hz=(p,nm,a,col,lx,ly,al)=>{circ(p[0],p[1],11,col,"rgba(0,0,0,.25)",1);if(a>0)glow(p[0],p[1],34,C.glow,a);lead(p[0],p[1],lx,ly,nm,{size:11.5,align:al||"left",color:a>.3?C.sym:C.ink,border:a>.3?C.sym:null})};
+  const aA=bump(t,1.2,2.4,.2),aH=bump(t,2.1,3.4,.2),aM=bump(t,3.1,4.4,.2),aT=bump(t,4.1,5.4,.2);
+  hz(AM,"Amygdala (limbic): fear",aA,C.epi,90,300,"left");
+  hz(HY,"Hypothalamus: main control center",aH,C.adrenal,150,24,"left");
+  hz(MD,"Medulla: heart, breathing, blood pressure centers",aM,C.para,384,322,"left");
+  hz(TL,"Spinal cord T1 to L2: preganglionic neurons",aT,C.sym,384,486,"left");
+  // stimulus
+  const ex=60,ey=150;eyeIcon(ex,ey,14,.45+.5*aA);label(64,96,"You see a snake",{align:"left",size:11.5,weight:600,pill:true});
+  ctx.beginPath();for(let i=0;i<=30;i++){const x=20+i*3,y=70+Math.sin(i*.6+T*4)*6;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.strokeStyle=C.good;ctx.lineWidth=5;ctx.lineCap="round";ctx.stroke();
+  const path1=cat([[ex+20,ey],[160,190],AM],[AM,HY],[HY,[330,240],MD],[MD,[344,360],TL]);poly(path1,C.sym,2,[5,4],.6);
+  pulseOn(path1,seg(t,.6,5),C.glow,14);
+  // outflow to heart
+  const out=bez(TL,[440,430],[540,440],[600,420],18);axon(out,C.sym,{lw:2.6});ell(470,434,9,7,0,C.ganglion,C["gang-edge"],1.2);
+  pulseOn(out,seg(t,5,6),C.glow,14);
+  const r=ease(bump(t,5.8,9,.6));const hr=72+50*r;const bi=beatInfo(x=>72+50*ease(bump(cyc(x,P),5.8,9,.6)),T);
+  heartIcon(660,410,40,pulseF(bi.ph));label(660,470,Math.round(hr)+" bpm",{align:"center",size:16,weight:600,mono:true,pill:false,color:r>.2?C.sym:C.ink});
+  // sensory feedback
+  const fb=bez([640,380],[600,300],[480,300],[MD[0]+12,MD[1]],18);poly(fb,C.ach,2,[3,4]);
+  for(let i=0;i<3;i++)pulseOn(fb,seg(t,6.4+i*.6,7.4+i*.6),C.ach,10);
+  label(600,262,"Visceral sensory feedback",{align:"center",size:11.5,weight:600,color:C.ach,border:C.ach});
+  STATE={t}}
+
+/* ---- Step 19: baroreceptor reflex ---- */
+function sceneBaro(T){bg();
+  const P=16,t=cyc(T,P);
+  const dBP=x=>{const tt=cyc(x,P);let v=0;if(tt>1)v+=26*ease(seg(tt,1,1.6))*Math.exp(-Math.max(0,tt-1.6)/1.6);if(tt>8)v-=22*ease(seg(tt,8,8.6))*Math.exp(-Math.max(0,tt-8.6)/1.6);return v};
+  const drv=x=>clamp(dBP(x-.4)/24,-1,1);
+  const bp_=93+dBP(T),dv=drv(T);const hr=72-20*dv;const para=clamp(.45+.5*dv,0,1),sym=clamp(.45-.5*dv,0,1);
+  // arteries
+  const stretch=dBP(T)/26;
+  const arch=bez([150,360],[150,180],[300,180],[300,360],30);poly(arch,C["vessel-edge"],30+6*stretch);poly(arch,C.vessel,24+6*stretch);
+  const car=[[185,214],[180,140],[176,60]];poly(car,C["vessel-edge"],18+4*stretch);poly(car,C.vessel,13+4*stretch);ell(180,118,13+3*stretch,20,0,C.vessel,C["vessel-edge"],1.6);
+  label(205,112,"Carotid sinus",{size:11.5,weight:600});label(318,200,"Aortic arch",{size:11.5,weight:600});
+  const rate=.6+1.6*clamp(.5+stretch*.8,0,1.4);
+  [[176,110],[184,126],[226,196],[262,198]].forEach((p,i)=>{const f=cyc(T*rate*2+i*.25,1);circ(p[0],p[1],4,C.ach);if(f<.2)glow(p[0],p[1],14,C.glow,.9)});
+  const bx=430,by=90;rr(bx-60,by-34,120,68,10);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  label(bx,by-12,"Medulla",{align:"center",size:13,weight:600,pill:false});label(bx,by+10,"cardiovascular center",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  const s1=bez([180,110],[250,60],[320,70],[bx-60,by-6],18),s2=bez([262,198],[300,140],[340,120],[bx-60,by+10],18);
+  poly(s1,C.ach,2,[4,3]);poly(s2,C.ach,2,[4,3]);
+  for(let i=0;i<4;i++){pulseOn(s1,cyc(T*rate*.7+i/4,1),C.ach,7);pulseOn(s2,cyc(T*rate*.7+i/4+.12,1),C.ach,7)}
+  label(300,46,"IX and X (sensory)",{align:"center",size:11.5,weight:600,color:C.ach,pill:false});
+  // outputs
+  const heartX=150,heartY=400;const bi=beatInfo(x=>72-20*drv(x),T);heartIcon(heartX,heartY,34,pulseF(bi.ph));
+  const vg=bez([bx-20,by+34],[bx-40,250],[300,420],[heartX+34,heartY-10],24),sy=bez([bx+20,by+34],[bx+60,260],[560,300],[600,330],24),sy2=bez([bx,by+34],[bx,300],[260,470],[heartX+30,heartY+14],24);
+  poly(vg,C.para,1.5+5*para);poly(sy,C.sym,1.5+5*sym);poly(sy2,C.sym,1.5+5*sym,null,.8);
+  for(let i=0;i<3;i++){pulseOn(vg,cyc(T*(.2+1.2*para)+i/3,1),C.para,6+6*para);pulseOn(sy,cyc(T*(.2+1.2*sym)+i/3,1),C.sym,6+6*sym);pulseOn(sy2,cyc(T*(.2+1.2*sym)+i/3+.1,1),C.sym,6+6*sym)}
+  label(heartX,heartY+50,Math.round(hr)+" bpm",{align:"center",size:14,weight:600,mono:true,pill:false,color:C.heart});
+  vesselX(650,340,48,.55+.35*dv,T);label(650,402,"Arterioles: "+(dv>.15?"relax (wider)":dv<-.15?"constrict (narrower)":"resting tone"),{align:"center",size:11.5,weight:600});
+  label(500,210,"Vagus "+(para>.6?"↑":para<.3?"↓":"·"),{align:"center",size:12,weight:600,color:C.para,border:C.para});
+  label(560,262,"Sympathetic "+(sym>.6?"↑":sym<.3?"↓":"·"),{align:"center",size:12,weight:600,color:C.sym,border:C.sym});
+  // event banner
+  const ev=t<1?"Steady":t<6?"Blood pressure rises → reflex slows the heart":t<8?"Back to steady":t<13?"Stand up fast: pressure falls → reflex speeds the heart":"Back to steady";
+  lbl(620,30,ev,{align:"center",size:12,color:C.accent,border:C.accent});
+  // graph
+  const g={x0:420,x1:780,y0:440,y1:506};rr(g.x0-14,g.y0-26,g.x1-g.x0+24,g.y1-g.y0+34,8);ctx.fillStyle=C["panel-2"];ctx.fill();
+  const N=160;const tr=(fn,col,lo,hi)=>{ctx.beginPath();for(let i=0;i<=N;i++){const tt=t*i/N;const v=fn(tt);const x=g.x0+(g.x1-g.x0)*tt/P,y=g.y1-(v-lo)/(hi-lo)*(g.y1-g.y0);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke()};
+  tr(x=>93+dBP(x),C.blood,60,125);tr(x=>72-20*drv(x),C.heart,40,100);
+  line(g.x0,g.y1-(93-60)/65*(g.y1-g.y0),g.x1,g.y1-(93-60)/65*(g.y1-g.y0),C["ink-faint"],1,[2,4]);
+  label(g.x0-6,g.y0-14,"Blood pressure",{size:10.5,pill:false,color:C.blood,weight:600});label(g.x0+110,g.y0-14,"Heart rate",{size:10.5,pill:false,color:C.heart,weight:600});
+  STATE={bp:Math.round(bp_),hr:Math.round(hr)}}
+
+/* ---- Steps 20-21: drugs ---- */
+function sceneDrugs(T,id){bg();
+  const P=8,t=cyc(T,P);line(400,16,400,504,C["rule-soft"],1.5,[4,4]);
+  if(id==="drugs1"){
+    // beta blocker
+    hdr(20,26,"Beta blocker at the heart",C.drug);
+    membraneH(20,380,150,16);const RX=[80,200,320];const cap=seg(t,.4,1.4);
+    RX.forEach((x,i)=>{recep(x,150,"b1",cap>=1?2:0,{drug:"BB"});if(cap<1)capsule(lerp(x-40,x,ease(cap)),lerp(60,120,ease(cap)),"BB",C.drug,cap>0?1:0)});
+    for(let i=0;i<6;i++){const q=seg(t,2+i*.25,3.2+i*.25);if(q<=0||q>=1)continue;const x=RX[i%3]+(i>2?16:-16);const y=q<.6?lerp(50,108,q/.6):lerp(108,60,(q-.6)/.4);mol("ne",x,y,1,1.2);if(q>.55&&q<.7){line(x-5,y-5,x+5,y+5,C.bad,2);line(x+5,y-5,x-5,y+5,C.bad,2)}}
+    label(200,196,"NE arrives but can't bind β1",{align:"center",size:12,weight:600,pill:false,color:C["ink-soft"]});
+    const r=ease(seg(t,1.4,3.2))*(1-ease(seg(t,7.3,8)));const hrF=x=>{const tt=cyc(x,P);return 82-24*ease(seg(tt,1.4,3.2))*(1-ease(seg(tt,7.3,8)))};
+    const bi=beatInfo(hrF,T);heartIcon(200,300,48,pulseF(bi.ph),{force:1-.5*r});
+    label(200,372,Math.round(hrF(T))+" bpm",{align:"center",size:18,weight:600,mono:true,pill:false,color:r>.3?C.drug:C.ink});
+    rr(30,398,340,90,8);ctx.fillStyle=C["panel-2"];ctx.fill();ecg(40,470,320,40,bi.beats,T,4,C.heart);
+    label(200,410,"Heart rate and force go down",{align:"center",size:12,weight:600,pill:false});
+    // albuterol
+    hdr(420,26,"Albuterol at the airway",C.drugok);
+    // inhaler
+    rr(712,36,24,34,4);ctx.fillStyle=C["ink-soft"];ctx.fill();rr(704,62,40,58,8);ctx.fillStyle=C.accent;ctx.fill();rr(676,96,34,20,5);ctx.fill();const pf=bump(t,.8,2,.2);if(pf>0)for(let i=0;i<12;i++){const a=Math.PI+(rnd(i)-.5)*.9;const d=70*seg(t,.8,2)*(.4+rnd(i+4));circ(676+Math.cos(a)*d,106+Math.sin(a)*d+d*.4,3,C.drugok,null);}
+    label(720,134,"inhaler",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+    membraneH(420,660,170,16);const R2=[480,560,640];const ag=seg(t,1.5,2.5);
+    R2.forEach((x,i)=>{recep(x,170,"b2",ag>=1&&t<7.3?1:0);if(ag<1||t>=7.3)capsule(lerp(x+60,x,ease(ag)),lerp(110,140,ease(ag)),"A",C.drugok,ag>0&&t<7.3?1:0);else capsule(x,140,"A",C.drugok,1)});
+    const o=ease(seg(t,2.5,4.5))*(1-ease(seg(t,7.3,8)));
+    airway(590,330,92,.15+.75*o,T);
+    label(590,445,o>.4?"Smooth muscle relaxes: airway opens":"Asthma: airway squeezed narrow",{align:"center",size:12,weight:600,pill:false,color:o>.4?C.drugok:C.bad});
+    label(590,470,"β2 agonist",{align:"center",size:11.5,pill:false,color:C["ink-soft"]});
+    STATE={r,o}}
+  else{
+    hdr(20,26,"Atropine blocks muscarinic receptors",C.drug);
+    membraneH(20,380,110,16);const RX=[80,200,320];const cap=seg(t,.4,1.4),on=cap>=1&&t<7.3;
+    RX.forEach((x,i)=>{recep(x,110,"musc",on?2:0,{drug:"At",lab:i===1});if(!on)capsule(lerp(x-40,x,ease(cap)),lerp(40,80,ease(cap)),"At",C.drug,cap>0&&t<7.3?1:0)});
+    for(let i=0;i<5;i++){const q=seg(t,1.8+i*.3,2.9+i*.3);if(q<=0||q>=1||!on)continue;const x=RX[i%3]+14;const y=q<.6?lerp(30,74,q/.6):lerp(74,36,(q-.6)/.4);mol("ach",x,y,1,1.2)}
+    const r=ease(seg(t,1.4,3))*(1-ease(seg(t,7.3,8)));
+    eyeIcon(80,250,26,.35+.6*r);label(80,300,"Pupil dilates",{align:"center",size:11.5,weight:600,pill:false,color:r>.3?C.sym:C.ink});
+    const hrF=x=>{const tt=cyc(x,P);return 70+38*ease(seg(tt,1.4,3))*(1-ease(seg(tt,7.3,8)))};const bi=beatInfo(hrF,T);
+    heartIcon(200,250,30,pulseF(bi.ph));label(200,300,"Heart "+Math.round(hrF(T))+" bpm",{align:"center",size:11.5,weight:600,pill:false,color:r>.3?C.sym:C.ink});
+    gland(304,240,20,1-r,T,3,{dx:0,dy:1,len:36});label(320,300,"Dry mouth",{align:"center",size:11.5,weight:600,pill:false,color:r>.3?C.sym:C.ink});
+    gutTube(40,370,140,30,T,1-.85*r);label(110,404,"Gut slows",{align:"center",size:11.5,weight:600,pill:false});
+    ctx.fillStyle=C.skin;ctx.fillRect(220,340,160,100);line(220,356,380,356,C["skin-edge"],2);sweatGland(300,356,1.3,.8*(1-r),T);label(300,452,"Less sweating",{align:"center",size:11.5,weight:600,pill:false});
+    label(200,486,"Parasympathetic side switched off: sympathetic wins",{align:"center",size:11.5,pill:false,color:C["ink-soft"]});
+    // nicotine
+    hdr(420,26,"Nicotine activates nicotinic receptors",C.drugok);
+    const n=ease(seg(t,1,2))*(1-ease(seg(t,7.3,8)));
+    const lane=(y,col,nm,gx,tgt)=>{rr(420,y-18,50,36,6);ctx.fillStyle=C.cns;ctx.fill();label(445,y,"CNS",{align:"center",size:10,pill:false,weight:600});
+      const pre=[[470,y],[gx-12,y]],post=[[gx+12,y],[700,y]];axon(pre,col,{lw:2.6,beads:true,term:false});axon(post,col,{lw:2});ell(gx,y,14,11,0,C.ganglion,C["gang-edge"],1.4);
+      capsule(gx,y-22,"N",C.drugok,n);recep(gx,y+0,"nic",0,{lab:false});if(n>.5){glow(gx,y,26,C.glow,.8*n);for(let i=0;i<3;i++)pulseOn(post,cyc(T*1.4+i/3,1),C.glow,9)}
+      label(445,y+30,nm,{align:"left",size:11,weight:600,pill:false,color:col});return post};
+    lane(110,C.sym,"Sympathetic ganglion",520);
+    lane(220,C.para,"Parasympathetic ganglion",660);
+    // adrenal
+    kidneyAd(560,320,3,n);capsule(560,284,"N",C.drugok,n);label(560,392,"Adrenal medulla: epinephrine",{align:"center",size:11.5,weight:600,pill:false,color:C.epi});
+    for(let i=0;i<Math.round(6*n);i++){const q=cyc(T*.5+i/6,1);mol("epi",600+q*80,330+Math.sin(i*2)*20,1-q)}
+    const hrN=72+30*n;heartIcon(740,110,22,pulseF(cyc(T*hrN/60,1)));label(740,146,"HR, BP ↑",{align:"center",size:11.5,weight:600,pill:false,color:n>.3?C.sym:C.ink});
+    gutTube(706,220,70,22,T,.5+n);label(740,250,"Gut ↑",{align:"center",size:11.5,weight:600,pill:false,color:n>.3?C.para:C.ink});
+    label(600,440,"Both divisions switched on at once:",{align:"center",size:12,weight:600,pill:false});
+    label(600,462,"mixed effects. Usually heart rate and",{align:"center",size:12,pill:false});
+    label(600,482,"blood pressure rise; the gut may speed up.",{align:"center",size:12,pill:false});
+    STATE={r,n}}}
+
+/* ---- Finish recap ---- */
+function sceneRecap(T){bg();
+  const P=12,t=cyc(T,P);const q=ease(seg(t,.2,2))*(1-ease(seg(t,11.2,12)));
+  const bf=beatInfo(()=>lerp(72,128,q),T),br=beatInfo(()=>lerp(72,60,q),T);
+  body(150,14,.7,mixS(NEUT,FIGHT,q),T,{beat:pulseF(bf.ph)});body(650,14,.7,mixS(NEUT,REST,q),T,{beat:pulseF(br.ph)});
+  chipT(150,338,"Sympathetic: fight or flight",C.sym,"#fff",{size:11.5});chipT(650,338,"Parasympathetic: rest and digest",C.para,"#fff",{size:11.5});
+  const rows=[["Outflow","T1 to L2 (thoracolumbar)","CN III, VII, IX, X + S2 to S4"],["Ganglia","Chain and collateral, near the cord","Terminal, in or near the organ"],["Fibers","Short pre, long post","Long pre, short post"],["Ganglion","ACh → nicotinic","ACh → nicotinic"],["At the target","NE → α and β (sweat glands: ACh)","ACh → muscarinic"]];
+  const y0=362;rows.forEach((r,i)=>{const y=y0+i*29;const a=seg(t,.5+i*.5,1+i*.5);ctx.globalAlpha=a;
+    rr(20,y-12,760,25,5);ctx.fillStyle=i%2?C.panel:C["panel-2"];ctx.fill();
+    label(30,y,r[0],{size:11.5,weight:600,pill:false,mono:true,color:C["ink-soft"]});
+    label(150,y,r[1],{size:12,weight:600,pill:false,color:C.sym});label(470,y,r[2],{size:12,weight:600,pill:false,color:C.para});ctx.globalAlpha=1});
+  label(400,40,"Same organs, opposite settings",{align:"center",size:12,weight:600,pill:false,color:C["ink-soft"]});
+  const mc=(y,col,gx,nm)=>{rr(290,y-12,28,24,5);ctx.fillStyle=C.cns;ctx.fill();const pre=[[318,y],[gx-10,y]],post=[[gx+10,y],[500,y]];axon(pre,col,{lw:2.8,beads:true,term:false});ganglion(gx,y,10,8,0);axon(post,col,{lw:2});
+    const pc=cyc(T,2.6)/2.6;pulseOn(pre,seg(pc,0,.5),C.glow,10);pulseOn(post,seg(pc,.55,.95),C.glow,10);label(395,y-22,nm,{align:"center",size:11,weight:600,pill:false,color:col})};
+  mc(110,C.sym,345,"short pre · long post");mc(190,C.para,470,"long pre · short post");
+  mol("ne",510,110,1,1.2);mol("ach",510,190,1,1.2);label(522,110,"NE",{size:11,pill:false,weight:600});label(522,190,"ACh",{size:11,pill:false,weight:600});
+  STATE={q}}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+const SCENES={map:sceneMap,chains:sceneChains,ganglion:sceneGanglion,cord:sceneCord,symchain:sceneSymChain,collat:sceneCollat,adrenal:sceneAdrenal,cranio:sceneCranio,vagus:sceneVagus,lengths:sceneLengths,
+  syn:sceneSyn,receptors:sceneReceptors,body:sceneBody,dual:sceneDual,symponly:sceneSympOnly,central:sceneCentral,baro:sceneBaro,drugs:sceneDrugs,recap:sceneRecap};
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);
+  const s=STEPS[cur];
+  try{SCENES[s.scene](T,s.id)}catch(e){console.error(e)}
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+window.__state=()=>Object.assign({step:cur,T},STATE);
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

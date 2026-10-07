@@ -1,0 +1,1721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Body Basics Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;
+  /* body palette */
+  --ecf:#EAF1F5;--skin:#EBC9AE;--skin-edge:#9C7158;--hair:#5B4636;--cut:#D7948A;--cut-edge:#A9655B;
+  --bone:#F3ECDC;--bone-edge:#A89A78;--brain:#E3B9BE;--brain-edge:#A86F78;--cord:#EAD9A0;
+  --lung:#E9A9A6;--heart:#B5443B;--liver:#8E4434;--stomach:#E09A63;--gut:#E6B983;--kidney:#9A4A3A;--bladder:#E3C254;
+  --ax:#2E8A7A;--app:#D98A1C;--plane:#1B6E88;--dot-a:#C2412D;--dot-b:#2C5DB8;
+  --fluid:#8CC7E0;--parietal:#2C5DB8;--visceral:#C2412D;
+  --hot:#D2492F;--cold:#2F7FC1;--sweat:#3E9AD6;--vessel:#C23B32;--nerve:#C9A227;
+  --glucose:#D98A1C;--insulin:#2F8A57;--glucagon:#7B5CC9;--oxy:#A04E8C;--platelet:#9C7CC9;--fibrin:#C9A227;--rbc:#C23B32;
+  --o2:#2F7FC1;--food:#2F8A57;--glow:#F2B33B;--gold:#C9A227;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#4CC2AE;
+  --ecf:#14222A;--skin:#8C6B57;--skin-edge:#D9B597;--hair:#2A2019;--cut:#9E5A52;--cut-edge:#D78D82;
+  --bone:#CFC6B0;--bone-edge:#8F8466;--brain:#A7767C;--brain-edge:#D9A3AB;--cord:#B9A766;
+  --lung:#B9706D;--heart:#D9625A;--liver:#A6574A;--stomach:#C98552;--gut:#B98F5E;--kidney:#B65E4B;--bladder:#C9A93E;
+  --ax:#4CC2AE;--app:#F2A93B;--plane:#4FB3D1;--dot-a:#F08F74;--dot-b:#7FA7F0;
+  --fluid:#3C7F99;--parietal:#7FA7F0;--visceral:#F08F74;
+  --hot:#F0785E;--cold:#5AA9E6;--sweat:#6BB8EC;--vessel:#E0605A;--nerve:#E0BE48;
+  --glucose:#F2A93B;--insulin:#4FBF7F;--glucagon:#A98BEF;--oxy:#D47DBE;--platelet:#B9A0E8;--fibrin:#E0BE48;--rbc:#E0605A;
+  --o2:#5AA9E6;--food:#4FBF7F;--glow:#F2B33B;--gold:#E0BE48;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#4CC2AE;
+  --ecf:#14222A;--skin:#8C6B57;--skin-edge:#D9B597;--hair:#2A2019;--cut:#9E5A52;--cut-edge:#D78D82;
+  --bone:#CFC6B0;--bone-edge:#8F8466;--brain:#A7767C;--brain-edge:#D9A3AB;--cord:#B9A766;
+  --lung:#B9706D;--heart:#D9625A;--liver:#A6574A;--stomach:#C98552;--gut:#B98F5E;--kidney:#B65E4B;--bladder:#C9A93E;
+  --ax:#4CC2AE;--app:#F2A93B;--plane:#4FB3D1;--dot-a:#F08F74;--dot-b:#7FA7F0;
+  --fluid:#3C7F99;--parietal:#7FA7F0;--visceral:#F08F74;
+  --hot:#F0785E;--cold:#5AA9E6;--sweat:#6BB8EC;--vessel:#E0605A;--nerve:#E0BE48;
+  --glucose:#F2A93B;--insulin:#4FBF7F;--glucagon:#A98BEF;--oxy:#D47DBE;--platelet:#B9A0E8;--fibrin:#E0BE48;--rbc:#E0605A;
+  --o2:#5AA9E6;--food:#4FBF7F;--glow:#F2B33B;--gold:#E0BE48;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 170px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:14px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.legend b{font-weight:700;font-family:var(--mono);font-size:14px;line-height:1}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Introduction to the Human Body &middot; USC Upstate</div>
+    <h1>Body Basics Walkthrough</h1>
+    <p class="sub">How the body is built, how we describe it, and how it keeps itself steady. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 1, An Introduction to the Human Body (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Practice next in the <a href="Body-Basics-Lab.html">Body Basics Lab</a>.<br>Diagrams are simplified and not to scale. Organ shapes and positions are approximate, and feedback loops are sped up a lot so you can watch a whole loop in a few seconds.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · Organization & life",col:"act1"},
+            2:{name:"Part 2 · Anatomical language",col:"act2"},
+            3:{name:"Part 3 · Planes & cavities",col:"act3"},
+            4:{name:"Part 4 · Homeostasis",col:"act4"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: four parts",
+ body:`<p>Chapter 1 gives you the tools you will use for the rest of the course. It has <b>four parts</b>:</p>
+ <ol><li><b>Organization and life.</b> The body is built in levels, from atoms up to a whole person. Living things share a short list of functions and needs.</li>
+ <li><b>Anatomical language.</b> A shared starting pose and a set of direction words, so everyone describes the body the same way.</li>
+ <li><b>Planes and cavities.</b> How we slice the body to look inside, and the spaces that hold the organs.</li>
+ <li><b>Homeostasis.</b> How the body keeps things like temperature and blood sugar steady using <b>feedback loops</b>.</li></ol>
+ <p>None of this is hard. It is mostly new words. Each step shows you what the words mean.</p>`,
+ analogy:"Learning a new city. First you learn how it is built (buildings, blocks, neighborhoods). Then you learn the map words (north, south, downtown). Then you learn how the city keeps running (traffic lights, the thermostat in each building).",
+ terms:[["Anatomy","The study of body structure: what the parts are and where they are."],["Physiology","The study of body function: how the parts work."],["Homeostasis","Keeping the inside of the body steady, within a narrow range."]],
+ check:{q:"A student studies how the heart pumps blood. Is that anatomy or physiology?",opts:[
+  ["Physiology, because it is about how the heart works.",1,"Yes. Physiology is about function, how things work."],
+  ["Anatomy, because the heart is a body part.",0,"Anatomy would be the heart's shape and parts. How it pumps is function, so that is physiology."],
+  ["Homeostasis, because the heart is always beating.",0,"Homeostasis is about keeping conditions steady. Pumping blood is a function, so this is physiology."],
+  ["Neither. The heart is studied in chemistry.",0,"Chemistry helps, but how an organ works is physiology."]]},
+ caption:"Four parts: how the body is built, how we describe it, how we look inside, and how it stays steady."},
+
+/* ---------- Part 1 ---------- */
+{act:1,scene:"levels",id:"levels",title:"Levels of organization: zooming out",
+ body:`<p>The body is built in <b>levels</b>. Each level is made of the level below it. Watch the picture zoom out:</p>
+ <ol><li><b>Atom</b>: the smallest unit of an element, like oxygen.</li>
+ <li><b>Molecule</b>: two or more atoms bonded together.</li>
+ <li><b>Organelle</b>: a tiny working part inside a cell, like a mitochondrion.</li>
+ <li><b>Cell</b>: the smallest unit that is alive.</li>
+ <li><b>Tissue</b>: a group of similar cells doing one job together.</li>
+ <li><b>Organ</b>: two or more tissue types working together, like the stomach.</li>
+ <li><b>Organ system</b>: organs that work together, like the digestive system. The body has <b>11</b>.</li>
+ <li><b>Organism</b>: a whole living being. You.</li></ol>
+ <p>Atoms and molecules together make the <b>chemical level</b>.</p>`,
+ analogy:"Letters make words, words make sentences, sentences make paragraphs, paragraphs make chapters, and chapters make a book.",
+ terms:[["Cell","The smallest unit of life."],["Tissue","Similar cells working together on one job."],["Organ","Two or more tissue types working together."],["Organ system","A group of organs with a shared job."]],
+ check:{q:"The stomach has muscle tissue, epithelial tissue, and connective tissue. What level is the stomach?",opts:[
+  ["An organ",1,"Yes. Two or more tissue types working together make an organ."],
+  ["A tissue",0,"A tissue is one kind of cell working together. The stomach has several tissue types, so it is a level higher."],
+  ["An organ system",0,"The stomach is one part of the digestive system. By itself it is an organ."],
+  ["A cell",0,"A cell is far smaller. The stomach is made of millions of cells in several tissues."]]},
+ caption:"Zooming out: atom → molecule → organelle → cell → tissue → organ → organ system → organism.",
+ legend:[["act1","Current level","c"],["ink-faint","Other levels","c"]]},
+
+{act:1,scene:"func",id:"func",title:"Six functions of life",
+ body:`<p>All living things, including you, carry out the same basic <b>functions of life</b>:</p>
+ <ol><li><b>Organization</b>: parts are kept in order, with a boundary (like skin or a cell membrane) between inside and outside.</li>
+ <li><b>Metabolism</b>: all the chemical reactions in the body. <b>Catabolism</b> breaks things down and releases energy. <b>Anabolism</b> builds things up and uses energy.</li>
+ <li><b>Responsiveness</b>: sensing a change and reacting to it.</li>
+ <li><b>Movement</b>: of the whole body, and of things inside it, like blood.</li>
+ <li><b>Growth and development</b>: getting bigger, and <b>differentiation</b>, where plain cells become specialized cells.</li>
+ <li><b>Reproduction</b>: making new cells, and making new people.</li></ol>`,
+ analogy:"A small business. It has walls (organization), a budget that takes in and spends (metabolism), customer service that reacts (responsiveness), delivery trucks (movement), hiring and training (growth and differentiation), and new branches (reproduction).",
+ terms:[["Metabolism","All the chemical reactions in the body."],["Catabolism","Breaking larger molecules down. Releases energy."],["Anabolism","Building larger molecules up. Uses energy."],["Differentiation","Unspecialized cells becoming specialized cells."]],
+ check:{q:"Your body builds muscle protein from small amino acids after a workout. Which process is that?",opts:[
+  ["Anabolism",1,"Yes. Building big molecules from small ones is anabolism."],
+  ["Catabolism",0,"Catabolism breaks things down. Here small pieces are joined into something bigger."],
+  ["Responsiveness",0,"Responsiveness is reacting to a change. Building protein is a chemical reaction, part of metabolism."],
+  ["Reproduction",0,"Reproduction makes new cells or new people. Building one protein is anabolism."]]},
+ caption:"Six panels, six functions. The highlighted panel matches the list.",
+ legend:[["act1","Highlighted function","s"],["atp","Energy released","d"]]},
+
+{act:1,scene:"needs",id:"needs",title:"What the body needs to survive",
+ body:`<p>To stay alive, the body needs four things from its surroundings:</p>
+ <ol><li><b>Oxygen</b>. Cells use it to release energy from nutrients. Brain cells can be badly damaged after only a few minutes without it.</li>
+ <li><b>Nutrients</b>. Substances in food and drink that the body needs. <b>Water</b> is the most important one.</li>
+ <li><b>A narrow range of temperature</b>. Body chemistry works best near <b>37 °C (98.6 °F)</b>. Too cold or too hot, and reactions go wrong.</li>
+ <li><b>A narrow range of atmospheric pressure</b>. Air pressure helps push oxygen into the lungs. At very high altitudes there is not enough pressure to get enough oxygen in.</li></ol>`,
+ analogy:"A campfire needs air, fuel, and the right conditions. Take away the air and it goes out. Soak the wood and it will not light.",
+ terms:[["Nutrient","A substance in food or drink the body needs to survive."],["Atmospheric pressure","The push of the air around us. It helps move oxygen into the lungs."],["37 °C","The normal body temperature set point (98.6 °F)."]],
+ check:{q:"Climbers high on Mount Everest often carry bottled oxygen. Which survival need is the problem up there?",opts:[
+  ["Atmospheric pressure is too low to push enough oxygen into the lungs.",1,"Yes. The air still has oxygen, but the low pressure means less of it gets in with each breath."],
+  ["There is no oxygen at all at that height.",0,"There is oxygen up there. The problem is low air pressure, so less of it gets into the lungs."],
+  ["They cannot get any nutrients.",0,"Food can be carried. The bottles are for oxygen, which links to low air pressure."],
+  ["Body temperature rises too high.",0,"It is cold up there, not hot. The bottled oxygen is about low pressure."]]},
+ caption:"Oxygen, nutrients, the right temperature, and the right air pressure.",
+ legend:[["o2","Oxygen","c"],["food","Nutrients and water","c"],["hot","Temperature","s"],["plane","Air pressure","s"]]},
+
+/* ---------- Part 2 ---------- */
+{act:2,scene:"pos",id:"pos",title:"Anatomical position",
+ body:`<p>To describe the body the same way every time, anatomists use one standard pose: <b>anatomical position</b>.</p>
+ <ul><li>Standing upright, facing forward.</li><li>Feet flat on the floor, about shoulder width apart, toes pointing forward.</li><li>Arms at the sides with the <b>palms facing forward</b>, so the thumbs point away from the body.</li></ul>
+ <p>Every direction word assumes this pose, even if the patient is lying down. Lying <b>face up</b> is <b>supine</b>. Lying <b>face down</b> is <b>prone</b>.</p>`,
+ analogy:"\"North\" on a map. The map can be turned any way on the table, but north stays north. Anatomical position is the body's \"north up\".",
+ terms:[["Anatomical position","Upright, facing forward, feet forward, arms at sides, palms forward."],["Supine","Lying face up."],["Prone","Lying face down."]],
+ check:{q:"In anatomical position, which way do the palms face?",opts:[
+  ["Forward, with the thumbs pointing away from the body.",1,"Yes. Palms forward is the one part people forget most."],
+  ["Toward the thighs, like when you stand relaxed.",0,"That is how most people stand, but anatomical position turns the palms forward."],
+  ["Backward.",0,"Palms face forward. Backward would cross the forearm bones."],
+  ["Up toward the ceiling, with arms out to the sides.",0,"The arms hang at the sides. Only the palms turn, to face forward."]]},
+ caption:"A relaxed stance turns into anatomical position. Then: supine (face up) and prone (face down).",
+ legend:[["good","Checklist item met","c"],["dot-a","Palm","c"]]},
+
+{act:2,scene:"dirs1",id:"dirs1",title:"Direction words: up, down, front, back, middle, side",
+ body:`<p>Direction words always <b>compare two places</b>. Each one has an opposite:</p>
+ <ul><li><b>Superior</b> (cranial): toward the head. <b>Inferior</b> (caudal): toward the feet.</li>
+ <li><b>Anterior</b> (ventral): toward the front. <b>Posterior</b> (dorsal): toward the back.</li>
+ <li><b>Medial</b>: toward the <b>midline</b>, the imaginary line down the middle. <b>Lateral</b>: away from the midline, toward the side.</li></ul>
+ <p>Say the whole sentence: "The head is superior <i>to</i> the chest." A word alone means nothing until you say what it is compared to.</p>`,
+ analogy:"\"Left\" and \"right\" only make sense from someone's point of view. These words always use the patient's point of view, standing in anatomical position.",
+ terms:[["Superior / inferior","Toward the head / toward the feet."],["Anterior / posterior","Toward the front / toward the back."],["Medial / lateral","Toward the midline / away from the midline."]],
+ check:{q:"The ears are on the sides of the head. The nose is in the middle. Which sentence is correct?",opts:[
+  ["The ears are lateral to the nose.",1,"Yes. The ears are farther from the midline than the nose."],
+  ["The ears are medial to the nose.",0,"Medial means closer to the midline. The nose sits right on the midline, so the ears are lateral."],
+  ["The ears are anterior to the nose.",0,"The nose sticks out in front. The ears are farther back, so they are posterior to the nose."],
+  ["The ears are inferior to the nose.",0,"They are at about the same height. The big difference is side to side: the ears are lateral."]]},
+ caption:"Each pair appears in turn. Watch the arrow go from one dot to the other.",
+ legend:[["dot-a","First place","c"],["dot-b","Second place","c"],["act2","Direction arrow","l"]]},
+
+{act:2,scene:"dirs2",id:"dirs2",title:"Proximal, distal, superficial, deep",
+ body:`<p>Two more pairs:</p>
+ <ul><li><b>Proximal</b>: closer to where a limb attaches to the trunk. <b>Distal</b>: farther from that attachment. These are used mostly for the arms and legs. The wrist is distal to the elbow.</li>
+ <li><b>Superficial</b>: closer to the body surface. <b>Deep</b>: farther from the surface, toward the inside. The skin is superficial to the muscles. The bone is deep to the muscles.</li></ul>
+ <p>Tip: "proximal" sounds like "proximity" (close). "Distal" sounds like "distance" (far).</p>`,
+ analogy:"A tree branch: the part near the trunk is proximal, the tips are distal. Peeling an orange: the peel is superficial, the seeds are deep.",
+ terms:[["Proximal","Closer to the limb's attachment to the trunk."],["Distal","Farther from the limb's attachment."],["Superficial","Closer to the surface."],["Deep","Farther from the surface."]],
+ check:{q:"A splinter is just under the skin of a finger. A broken bone is in the same finger. Which is correct?",opts:[
+  ["The splinter is superficial to the bone.",1,"Yes. It is closer to the surface."],
+  ["The splinter is deep to the bone.",0,"Deep means farther from the surface. The splinter is just under the skin, so it is superficial."],
+  ["The splinter is proximal to the bone.",0,"Proximal and distal are about distance from the trunk along the limb. Here the difference is how far from the surface."],
+  ["The splinter is medial to the bone.",0,"Medial is about the midline of the body. Here the question is surface versus inside."]]},
+ caption:"Left: a dot slides from the shoulder (proximal) to the fingertips (distal). Right: a probe goes from the surface (superficial) inward (deep).",
+ legend:[["dot-a","Wrist / skin","c"],["dot-b","Elbow / bone","c"],["act2","Direction arrow","l"]]},
+
+{act:2,scene:"axial",id:"axial",title:"Axial and appendicular regions",
+ body:`<p>The body is split into two main regions:</p>
+ <ul><li>The <b>axial</b> region: the head, neck, and trunk. It forms the main <b>axis</b>, the center line, of the body.</li>
+ <li>The <b>appendicular</b> region: the limbs, meaning the arms and legs. They are <b>appended</b> (attached) to the axis.</li></ul>
+ <p>You will see the same split again in the skeleton chapter: the axial skeleton and the appendicular skeleton.</p>`,
+ analogy:"A coat rack. The pole is the axial part. The hooks and whatever hangs from them are the appendicular part.",
+ terms:[["Axial region","Head, neck, and trunk."],["Appendicular region","Upper and lower limbs."],["Trunk","The chest, abdomen, and pelvis together."]],
+ check:{q:"Which body part belongs to the axial region?",opts:[
+  ["The neck",1,"Yes. Head, neck, and trunk make up the axial region."],
+  ["The thigh",0,"The thigh is part of the lower limb, so it is appendicular."],
+  ["The forearm",0,"The forearm is part of the upper limb, so it is appendicular."],
+  ["The hand",0,"The hand is at the end of the upper limb, so it is appendicular."]]},
+ caption:"Teal fills the axial region (head, neck, trunk). Orange fills the appendicular region (limbs).",
+ legend:[["ax","Axial region","s"],["app","Appendicular region","s"]]},
+
+{act:2,scene:"regions",id:"regions",title:"Regional terms",
+ body:`<p>Each body area has a <b>regional term</b>, usually from Latin or Greek. These terms show up again in names of bones, muscles, nerves, and blood vessels. A few to start with:</p>
+ <ul><li><b>Cephalic</b>: head. <b>Cervical</b>: neck. <b>Thoracic</b>: chest. <b>Abdominal</b>: belly.</li>
+ <li><b>Brachial</b>: upper arm. <b>Antebrachial</b>: forearm. <b>Carpal</b>: wrist.</li>
+ <li><b>Femoral</b>: thigh. <b>Patellar</b>: front of the knee. <b>Crural</b>: front of the leg. <b>Pedal</b>: foot.</li>
+ <li>On the back: <b>gluteal</b> (buttock), <b>popliteal</b> (back of the knee), <b>sural</b> (calf), <b>lumbar</b> (lower back).</li></ul>
+ <p>In anatomy, the "arm" is only the upper arm (shoulder to elbow), and the "leg" is only from knee to ankle.</p>`,
+ analogy:"Neighborhood names on a city map. \"Femoral\" is just the name of the thigh neighborhood. The femoral artery and femur bone live there.",
+ terms:[["Brachial","The arm (shoulder to elbow)."],["Femoral","The thigh."],["Popliteal","The back of the knee."],["Gluteal","The buttock."]],
+ check:{q:"A nurse takes a pulse behind the knee. Which region is that?",opts:[
+  ["Popliteal",1,"Yes. The popliteal region is the back of the knee."],
+  ["Patellar",0,"Patellar is the front of the knee, where the kneecap is. The back of the knee is popliteal."],
+  ["Sural",0,"Sural is the calf, just below. The back of the knee itself is popliteal."],
+  ["Femoral",0,"Femoral is the thigh, just above the knee. The back of the knee is popliteal."]]},
+ caption:"Front and back views. Each region lights up as its name appears.",
+ legend:[["act2","Highlighted region","s"]]},
+
+/* ---------- Part 3 ---------- */
+{act:3,scene:"sag",id:"sag",title:"Sagittal planes: left and right",
+ body:`<p>A <b>plane</b> is an imaginary flat cut through the body. The flat face you see after the cut is a <b>section</b>.</p>
+ <p>A <b>sagittal plane</b> runs straight up and down and front to back. It divides the body into <b>left and right</b> parts.</p>
+ <ul><li>Right down the middle, it makes equal halves. That is the <b>midsagittal</b> (or median) plane.</li>
+ <li>Anywhere else, the two parts are unequal. That is a <b>parasagittal</b> plane.</li></ul>
+ <p>Watch the section on the right change as the plane slides.</p>`,
+ analogy:"Slicing a loaf of bread the long way, from the top crust to the bottom. Cut down the exact middle and you get two equal halves.",
+ terms:[["Plane","An imaginary flat surface that cuts through the body."],["Section","The cut surface you look at."],["Midsagittal","Sagittal plane through the midline: equal left and right halves."],["Parasagittal","Sagittal plane off the midline: unequal parts."]],
+ check:{q:"A cut runs down through the right eye and the right leg, parallel to the midline. What is it?",opts:[
+  ["A parasagittal plane",1,"Yes. It separates left from right, but not into equal halves."],
+  ["A midsagittal plane",0,"Midsagittal runs right down the middle, through the nose and navel. This cut is off to one side."],
+  ["A frontal plane",0,"A frontal plane separates front from back. This cut separates left from right."],
+  ["A transverse plane",0,"A transverse plane is horizontal, separating top from bottom. This cut runs up and down."]]},
+ caption:"The plane slides from side to side. In the exact middle it is midsagittal; anywhere else it is parasagittal.",
+ legend:[["plane","Plane","s"],["cut","Cut surface (section)","s"],["bone","Bone","s"]]},
+
+{act:3,scene:"ft",id:"ft",title:"Frontal and transverse planes",
+ body:`<p>Two more planes:</p>
+ <ul><li>A <b>frontal plane</b>, also called a <b>coronal plane</b>, runs up and down and side to side. It divides the body into <b>front (anterior) and back (posterior)</b> parts.</li>
+ <li>A <b>transverse plane</b>, also called a <b>horizontal plane</b>, runs flat across. It divides the body into <b>upper (superior) and lower (inferior)</b> parts. The section it makes is a <b>cross-section</b>.</li></ul>
+ <p>CT and MRI scans show the body as stacks of sections, most often transverse ones. Look for the lungs, heart, liver, and spine in each slice.</p>`,
+ analogy:"Frontal: separating a gingerbread cookie into a front layer and a back layer. Transverse: slicing a carrot into coins.",
+ terms:[["Frontal (coronal) plane","Divides front from back."],["Transverse (horizontal) plane","Divides top from bottom."],["Cross-section","The section made by a transverse plane."]],
+ check:{q:"A CT scan shows a slice with both lungs, the heart, and a vertebra, seen as if looking up from the feet. Which plane made it?",opts:[
+  ["Transverse",1,"Yes. A horizontal slice through the chest shows both lungs, the heart, and one vertebra together."],
+  ["Midsagittal",0,"A midsagittal slice would show the whole spine from top to bottom, but not both lungs."],
+  ["Frontal",0,"A frontal slice is seen from the front and would show the body tall and narrow, not a single vertebra."],
+  ["Parasagittal",0,"A parasagittal slice is up and down through one side. You would not see both lungs."]]},
+ caption:"First a frontal plane sweeps front to back. Then a transverse plane sweeps from head to feet.",
+ legend:[["plane","Plane","s"],["lung","Lungs","c"],["heart","Heart","c"],["liver","Liver","c"],["bone","Bone","s"]]},
+
+{act:3,scene:"cavD",id:"cavD",title:"The dorsal (posterior) cavity",
+ body:`<p>The body has two big, closed spaces that hold organs: <b>body cavities</b>. The first is the <b>dorsal cavity</b>, also called the posterior cavity. It has two parts that connect:</p>
+ <ul><li>The <b>cranial cavity</b>, inside the skull. It holds the <b>brain</b>.</li>
+ <li>The <b>vertebral cavity</b> (spinal cavity), inside the backbone. It holds the <b>spinal cord</b>.</li></ul>
+ <p>Bone surrounds the whole dorsal cavity. Thin protective layers called <b>meninges</b> wrap the brain and spinal cord inside it.</p>`,
+ analogy:"A helmet attached to a long armored tube. The helmet guards the brain; the tube guards the spinal cord.",
+ terms:[["Dorsal cavity","Cranial cavity plus vertebral cavity."],["Cranial cavity","Inside the skull. Holds the brain."],["Vertebral cavity","Inside the vertebral column. Holds the spinal cord."],["Meninges","Protective membranes around the brain and spinal cord."]],
+ check:{q:"What does the vertebral cavity hold?",opts:[
+  ["The spinal cord",1,"Yes. The vertebral (spinal) cavity runs inside the backbone and holds the spinal cord."],
+  ["The lungs",0,"The lungs are in the thoracic cavity, which is part of the ventral cavity in front of the spine."],
+  ["The brain",0,"The brain is in the cranial cavity. The vertebral cavity holds the spinal cord."],
+  ["The kidneys",0,"The kidneys sit against the back wall of the abdomen, outside the vertebral column."]]},
+ caption:"Midsagittal view. The cranial cavity fills with the brain, then the vertebral cavity fills with the spinal cord.",
+ legend:[["brain","Brain","c"],["cord","Spinal cord","r"],["bone","Bone","s"],["act3","Dorsal cavity","dl"]]},
+
+{act:3,scene:"cavV",id:"cavV",title:"The ventral (anterior) cavity",
+ body:`<p>The second big space is the <b>ventral cavity</b>, also called the anterior cavity. It is much larger. A dome-shaped muscle, the <b>diaphragm</b>, splits it in two:</p>
+ <ul><li>The <b>thoracic cavity</b>, above the diaphragm, inside the rib cage. It holds the heart and lungs.</li>
+ <li>The <b>abdominopelvic cavity</b>, below the diaphragm. Its upper part, the <b>abdominal cavity</b>, holds most digestive organs. Its lower part, the <b>pelvic cavity</b>, holds the urinary bladder, the end of the large intestine, and internal reproductive organs.</li></ul>
+ <p>There is no wall between the abdominal and pelvic cavities. The line between them is imaginary.</p>`,
+ analogy:"A two-story house. The diaphragm is the floor between the stories. Upstairs is the thoracic cavity. Downstairs is one big open-plan room, the abdominopelvic cavity, with a kitchen (abdominal) and a pantry (pelvic) but no wall between them.",
+ terms:[["Ventral cavity","Thoracic cavity plus abdominopelvic cavity."],["Diaphragm","The dome-shaped muscle between the thoracic and abdominopelvic cavities."],["Abdominal cavity","Upper part of the abdominopelvic cavity. Most digestive organs."],["Pelvic cavity","Lower part. Bladder, rectum, internal reproductive organs."]],
+ check:{q:"Which structure separates the thoracic cavity from the abdominopelvic cavity?",opts:[
+  ["The diaphragm",1,"Yes. The diaphragm is the muscular floor of the thoracic cavity."],
+  ["The rib cage",0,"The rib cage surrounds the thoracic cavity, but the floor between the two cavities is the diaphragm."],
+  ["A thin wall at the hip bones",0,"There is no real wall there. That imaginary line separates abdominal from pelvic, not thoracic from abdominopelvic."],
+  ["The vertebral column",0,"The vertebral column is at the back and holds the spinal cord. The diaphragm is the divider."]]},
+ caption:"The diaphragm moves as the body breathes. Organs fill the thoracic, abdominal, and pelvic cavities in turn.",
+ legend:[["heart","Heart","c"],["lung","Lung (beside the midline)","c"],["liver","Liver","c"],["gut","Intestines","c"],["bladder","Bladder","c"],["act3","Diaphragm","l"]]},
+
+{act:3,scene:"thor",id:"thor",title:"Inside the thoracic cavity",
+ body:`<p>The thoracic cavity is divided further:</p>
+ <ul><li>Two <b>pleural cavities</b>, one on each side. Each one surrounds a <b>lung</b>.</li>
+ <li>The <b>mediastinum</b>: the central area between the lungs. It holds the heart, the trachea, the esophagus, and large blood vessels.</li>
+ <li>The <b>pericardial cavity</b>, inside the mediastinum. It surrounds the <b>heart</b>.</li></ul>
+ <p>Because each lung is in its own pleural cavity, one lung can collapse while the other keeps working.</p>`,
+ analogy:"A theater with three private boxes: one on the left for a lung, one on the right for a lung, and one in the center row for the heart. The center row is the mediastinum.",
+ terms:[["Pleural cavity","The space around each lung."],["Mediastinum","The central region of the chest, between the lungs."],["Pericardial cavity","The space around the heart."]],
+ check:{q:"Where is the pericardial cavity?",opts:[
+  ["Inside the mediastinum, around the heart.",1,"Yes. The heart and its pericardial cavity sit in the central mediastinum."],
+  ["Around each lung.",0,"The space around each lung is a pleural cavity. The pericardial cavity is around the heart."],
+  ["Below the diaphragm.",0,"Below the diaphragm is the abdominopelvic cavity. The pericardial cavity is in the chest."],
+  ["Inside the skull.",0,"That is the cranial cavity, part of the dorsal cavity."]]},
+ caption:"Front view of the chest. The lungs breathe in their pleural cavities; the heart beats in its pericardial cavity inside the mediastinum.",
+ legend:[["lung","Lung in pleural cavity","c"],["heart","Heart in pericardial cavity","c"],["act3","Mediastinum","s"],["fluid","Pleural / pericardial space","s"]]},
+
+{act:3,scene:"quad",id:"quad",title:"Abdominopelvic quadrants and regions",
+ body:`<p>The abdomen is big, so we divide its surface to say where pain or an organ is.</p>
+ <ul><li>The simple way: <b>four quadrants</b>, made by one vertical and one horizontal line through the navel. Right upper (RUQ), left upper (LUQ), right lower (RLQ), and left lower (LLQ).</li>
+ <li>The detailed way: <b>nine regions</b>, like a tic-tac-toe grid. Top row: right hypochondriac, epigastric, left hypochondriac. Middle row: right lumbar, umbilical, left lumbar. Bottom row: right iliac (inguinal), hypogastric (pubic), left iliac (inguinal).</li></ul>
+ <p>Remember: "right" and "left" are the <b>patient's</b> right and left. Facing someone, their right side is on <b>your</b> left.</p>`,
+ analogy:"Cutting a pizza. Two cuts make four slices (quadrants). Four cuts in a tic-tac-toe pattern make nine pieces (regions).",
+ terms:[["Quadrants","Four areas made by lines through the navel."],["Epigastric","Upper middle region, just below the ribs."],["Hypochondriac","Upper side regions, under the ribs (\"hypo\" = below, \"chondro\" = cartilage)."],["Hypogastric","Lower middle region, also called pubic."]],
+ check:{q:"Appendicitis pain often ends up in the patient's lower right abdomen. Which quadrant is that?",opts:[
+  ["Right lower quadrant (RLQ)",1,"Yes. The appendix usually sits in the RLQ."],
+  ["Left lower quadrant (LLQ)",0,"Remember to use the patient's right. When you face them, their RLQ is on your left side."],
+  ["Right upper quadrant (RUQ)",0,"The RUQ holds most of the liver and the gallbladder. The appendix is lower, in the RLQ."],
+  ["Epigastric region",0,"Epigastric is the upper middle area. Pain from appendicitis usually ends up in the lower right."]]},
+ caption:"Two lines through the navel make four quadrants. Then a tic-tac-toe grid makes nine regions.",
+ legend:[["act3","Highlighted area","s"],["liver","Liver","c"],["stomach","Stomach","c"],["gut","Intestines","c"]]},
+
+{act:3,scene:"serous",id:"serous",title:"Serous membranes",
+ body:`<p>Organs in the ventral cavity move: the heart beats, the lungs fill, the gut churns. To stop them from rubbing, each organ is wrapped in a <b>serous membrane</b>, a thin sheet with two layers:</p>
+ <ul><li>The <b>parietal layer</b> lines the wall of the cavity.</li>
+ <li>The <b>visceral layer</b> covers the organ itself.</li></ul>
+ <p>Between them is a thin film of <b>serous fluid</b>, which lets the layers slide with very little friction. There are three: the <b>pleura</b> (lungs), the <b>pericardium</b> (heart), and the <b>peritoneum</b> (abdominal organs).</p>`,
+ analogy:"Push your fist into a soft balloon. The balloon folds around your fist. The layer touching your fist is the visceral layer. The outer layer is the parietal layer. The air inside is like the serous fluid.",
+ terms:[["Parietal layer","Lines the cavity wall."],["Visceral layer","Covers the organ."],["Serous fluid","Slippery fluid between the layers that cuts friction."],["Pleura / pericardium / peritoneum","Serous membranes of the lungs / heart / abdomen."]],
+ check:{q:"Which layer of the pericardium is stuck right on the surface of the heart?",opts:[
+  ["The visceral pericardium",1,"Yes. Visceral means \"of the organ\", so the visceral layer covers the heart itself."],
+  ["The parietal pericardium",0,"Parietal means \"of the wall\". It is the outer layer, lining the pericardial cavity."],
+  ["The serous fluid",0,"The fluid is between the two layers, not a layer itself."],
+  ["The pleura",0,"The pleura is the serous membrane of the lungs, not the heart."]]},
+ caption:"A fist pushes into a balloon. The balloon wraps it in two layers with fluid between. Then the fist becomes a beating heart.",
+ legend:[["visceral","Visceral layer","l"],["parietal","Parietal layer","l"],["fluid","Serous fluid","s"]]},
+
+/* ---------- Part 4 ---------- */
+{act:4,scene:"setpt",id:"setpt",title:"Homeostasis: set point and normal range",
+ body:`<p><b>Homeostasis</b> means keeping the inside of the body steady even when the outside changes.</p>
+ <p>Each controlled value has a <b>set point</b>, the ideal value. For body temperature it is about <b>37 °C</b>. The value is never perfectly still. It drifts a little above and below the set point, inside a narrow <b>normal range</b>.</p>
+ <p>Exercise, weather, and meals push values away. The body notices and pushes them back. Most of the time this happens without you thinking about it.</p>`,
+ analogy:"Driving in a lane. The center of the lane is the set point. The lane lines are the normal range. You make small corrections all the time to stay between them.",
+ terms:[["Set point","The ideal value the body aims for."],["Normal range","The small band of healthy values around the set point."],["Homeostasis","Keeping the internal environment steady."]],
+ check:{q:"Body temperature reads 37.2 °C one minute and 36.9 °C a few minutes later. Is homeostasis failing?",opts:[
+  ["No. Small changes within the normal range are expected.",1,"Yes. Values wobble around the set point. Homeostasis keeps them inside the normal range."],
+  ["Yes. Temperature should stay at exactly 37.0 °C.",0,"The set point is a target, not a value that never moves. Small changes inside the normal range are normal."],
+  ["Yes. Any drop in temperature is dangerous.",0,"A small drop within the normal range is not dangerous. Danger comes when values leave the range and stay out."],
+  ["No, because temperature is not controlled by homeostasis.",0,"Temperature is one of the best examples of homeostasis."]]},
+ caption:"Body temperature wobbles around the 37 °C set point. Exercise or cold air pushes it out, and the body brings it back.",
+ legend:[["act4","Body temperature","l"],["good","Normal range","s"],["ink-soft","Set point","dl"]]},
+
+{act:4,scene:"loop",id:"loop",title:"The parts of a negative feedback loop",
+ body:`<p>Most homeostasis uses <b>negative feedback</b>: the body's response pushes the value back the <b>opposite</b> way from the change. A negative feedback loop has these parts:</p>
+ <ol><li><b>Stimulus</b>: a change that pushes a value away from its set point.</li>
+ <li><b>Sensor</b> (receptor): detects the change.</li>
+ <li><b>Control center</b>: compares the value to the set point and sends out a command. Often this is in the brain.</li>
+ <li><b>Effector</b>: carries out the command. The <b>response</b> brings the value back toward the set point.</li></ol>
+ <p>When the value is back in range, the stimulus is gone, so the loop quiets down.</p>`,
+ analogy:"A home thermostat. The room gets cold (stimulus). The thermometer notices (sensor). The thermostat compares it to your setting (control center). The furnace turns on (effector). The room warms, so the furnace shuts off.",
+ terms:[["Negative feedback","The response opposes the original change."],["Sensor (receptor)","Detects a change."],["Control center","Compares to the set point and sends a command."],["Effector","Carries out the response."]],
+ check:{q:"In the thermostat example, which part is the effector?",opts:[
+  ["The furnace",1,"Yes. The furnace does the work that changes the temperature."],
+  ["The thermometer inside the thermostat",0,"The thermometer detects the temperature, so it is the sensor."],
+  ["The thermostat's setting",0,"The setting is the set point. The thermostat's comparing part is the control center."],
+  ["The cold air",0,"The cold air is the stimulus, the change that starts the loop."]]},
+ caption:"A token travels the loop: stimulus, sensor, control center, effector, response. The value returns to its set point.",
+ legend:[["act4","Signal moving around the loop","c"],["warn","Value away from set point","s"],["good","Value back in range","s"]]},
+
+{act:4,scene:"hot",id:"hot",title:"Too hot: how the body cools down",
+ body:`<p>Exercise on a hot day raises body temperature. This is the <b>stimulus</b>.</p>
+ <ul><li><b>Sensors</b>: temperature receptors in the skin and brain detect the rise.</li>
+ <li><b>Control center</b>: the <b>hypothalamus</b> in the brain compares it to the 37 °C set point.</li>
+ <li><b>Effectors</b>: <b>sweat glands</b> release sweat, which cools the skin as it evaporates. <b>Blood vessels in the skin widen</b> (<b>vasodilation</b>), so more warm blood flows near the surface and heat leaves the body. That is why your face turns red.</li></ul>
+ <p>Temperature falls back toward the set point. The response opposed the change, so this is negative feedback.</p>`,
+ analogy:"Opening the windows and turning on a fan when the house gets too warm.",
+ terms:[["Hypothalamus","The brain's temperature control center."],["Vasodilation","Widening of blood vessels."],["Sweat glands","Release sweat that cools the skin as it evaporates."]],
+ check:{q:"Why does skin look flushed (red) during hard exercise?",opts:[
+  ["Skin blood vessels widen to send warm blood to the surface, where heat can escape.",1,"Yes. Vasodilation moves heat out to the skin."],
+  ["Skin blood vessels narrow to keep heat in.",0,"Narrowing (vasoconstriction) keeps heat in. That happens in the cold, not when you are too hot."],
+  ["Sweat is red.",0,"Sweat is clear. The red color comes from more blood near the surface."],
+  ["The hypothalamus turns red when it works hard.",0,"The hypothalamus is deep in the brain. The color comes from widened skin blood vessels."]]},
+ caption:"Temperature rises. Skin sensors signal the hypothalamus. Sweat glands and widened skin vessels cool the body back toward 37 °C.",
+ legend:[["hot","Rising temperature","s"],["nerve","Nerve signal","l"],["sweat","Sweat","c"],["vessel","Skin blood vessel","l"]]},
+
+{act:4,scene:"cold",id:"cold",title:"Too cold: how the body warms up",
+ body:`<p>Standing in cold wind lowers body temperature. Same sensors, same control center, different effectors:</p>
+ <ul><li><b>Blood vessels in the skin narrow</b> (<b>vasoconstriction</b>). Less warm blood reaches the surface, so less heat escapes. Skin looks pale.</li>
+ <li><b>Skeletal muscles shiver</b>. Shivering is fast, small contractions. Muscle contraction makes heat.</li></ul>
+ <p>Temperature rises back toward the set point. Again the response opposed the change: negative feedback.</p>`,
+ analogy:"Closing the windows and turning on the furnace when the house gets cold.",
+ terms:[["Vasoconstriction","Narrowing of blood vessels."],["Shivering","Quick, involuntary muscle contractions that make heat."],["Hypothermia","Body temperature dangerously below normal."]],
+ check:{q:"Why does shivering help when you are cold?",opts:[
+  ["Contracting muscles release heat.",1,"Yes. Muscle work makes heat as a byproduct, which warms the body."],
+  ["It shakes cold air off the skin.",0,"The benefit is inside the body: contracting muscles make heat."],
+  ["It widens skin blood vessels.",0,"In the cold, skin vessels narrow. Shivering warms the body by making heat in muscle."],
+  ["It makes the body sweat.",0,"Sweating cools you. That would be the wrong response in the cold."]]},
+ caption:"Temperature falls. The hypothalamus narrows skin vessels and makes muscles shiver until temperature climbs back to 37 °C.",
+ legend:[["cold","Falling temperature","s"],["nerve","Nerve signal","l"],["vessel","Skin blood vessel (narrowed)","l"],["act4","Shivering muscle","s"]]},
+
+{act:4,scene:"gluc",id:"gluc",title:"Blood glucose: another negative feedback loop",
+ body:`<p>Your cells need a steady supply of <b>glucose</b>, a sugar. Normal blood glucose is about <b>70 to 110 mg/dL</b>.</p>
+ <ul><li><b>After a meal</b>, blood glucose rises. Cells in the <b>pancreas</b> detect it and release the hormone <b>insulin</b>. Insulin helps body cells take glucose in, and the liver stores extra glucose. Blood glucose falls.</li>
+ <li><b>Between meals</b>, blood glucose falls. The pancreas releases <b>glucagon</b>. Glucagon tells the liver to release stored glucose. Blood glucose rises.</li></ul>
+ <p>Both responses oppose the change, so both are negative feedback. In <b>diabetes</b>, this loop does not work well.</p>`,
+ analogy:"A savings account. When paychecks (meals) come in, insulin moves extra money into savings (cells and liver). When you run low, glucagon takes money back out of savings.",
+ terms:[["Insulin","Pancreas hormone that lowers blood glucose."],["Glucagon","Pancreas hormone that raises blood glucose."],["Pancreas","The organ that senses blood glucose and releases both hormones."]],
+ check:{q:"Blood glucose has dropped well below 70 mg/dL. Which response would bring it back up?",opts:[
+  ["The pancreas releases glucagon, and the liver releases stored glucose.",1,"Yes. Glucagon raises blood glucose."],
+  ["The pancreas releases more insulin.",0,"Insulin lowers blood glucose. That would push it even further down."],
+  ["Muscle cells take in more glucose.",0,"That would lower blood glucose further."],
+  ["Sweat glands release glucose.",0,"Sweat glands are effectors for temperature, not glucose."]]},
+ caption:"After a meal, insulin moves glucose into cells. Later, glucagon tells the liver to release glucose. Blood glucose stays in range.",
+ legend:[["glucose","Glucose","d"],["insulin","Insulin","c"],["glucagon","Glucagon","c"],["good","Normal range","s"]]},
+
+{act:4,scene:"birth",id:"birth",title:"Positive feedback: childbirth",
+ body:`<p>In <b>positive feedback</b>, the response makes the change <b>bigger</b>, not smaller. It is used when the body needs to finish a job quickly.</p>
+ <ol><li>The baby's head presses on the <b>cervix</b>, the lower opening of the uterus, and stretches it.</li>
+ <li><b>Stretch receptors</b> send nerve signals to the brain.</li>
+ <li>The brain signals the pituitary gland to release the hormone <b>oxytocin</b>.</li>
+ <li>Oxytocin makes the uterus contract harder. That pushes the baby down and stretches the cervix even more, which releases even more oxytocin.</li></ol>
+ <p>The loop gets stronger and stronger until the baby is born. Then the stretching stops, so the loop ends.</p>`,
+ analogy:"A snowball rolling downhill. The bigger it gets, the faster it rolls, and the faster it rolls, the bigger it gets, until it hits the bottom.",
+ terms:[["Positive feedback","The response strengthens the original change."],["Oxytocin","Hormone that makes the uterus contract."],["Cervix","The lower, narrow end of the uterus."]],
+ check:{q:"What ends the positive feedback loop of labor?",opts:[
+  ["The baby is born, so the cervix is no longer being stretched.",1,"Yes. The stimulus disappears, so the loop stops."],
+  ["The uterus runs out of oxytocin receptors.",0,"The loop ends because the stimulus, the stretching, goes away when the baby is delivered."],
+  ["Negative feedback from body temperature.",0,"Temperature control is a separate loop. Labor ends when delivery removes the stretch."],
+  ["It never ends; contractions keep going.",0,"Positive feedback loops need an end point. Here it is delivery of the baby."]]},
+ caption:"Stretch → oxytocin → stronger contractions → more stretch. Each round is stronger, until the baby is born and the loop stops.",
+ legend:[["oxy","Oxytocin","c"],["nerve","Nerve signal","l"],["act4","Contraction strength","r"]]},
+
+{act:4,scene:"clot",id:"clot",title:"Positive feedback: blood clotting, and why it must end",
+ body:`<p>Blood clotting is another positive feedback loop. When a blood vessel is torn, <b>platelets</b> stick to the damaged spot. They release chemicals that call in <b>more</b> platelets, which release more chemicals, and so on. Fast teamwork plugs the hole, and a mesh of protein threads (<b>fibrin</b>) holds the clot together.</p>
+ <p>Once the hole is sealed, the signal stops and the loop ends.</p>
+ <p>Positive feedback is powerful, so it must have an end point. If clotting kept spreading inside healthy vessels, it could block blood flow. That is why positive feedback is used only for short jobs with a clear finish line.</p>`,
+ analogy:"Calling friends to help fill sandbags at a leaking levee. Each friend calls two more. Once the leak is plugged, everybody goes home.",
+ terms:[["Platelets","Cell fragments in blood that start a clot."],["Fibrin","Protein threads that hold a clot together."],["End point","The event that stops a positive feedback loop."]],
+ check:{q:"Why is positive feedback used for only a few body processes?",opts:[
+  ["It keeps building on itself, so it is only safe for short jobs that have a clear end point.",1,"Yes. Without an end point, a runaway loop would harm the body."],
+  ["It is too slow for most jobs.",0,"Positive feedback is actually fast. The problem is that it builds and builds, so it needs an end point."],
+  ["It only works in the brain.",0,"Positive feedback happens in the uterus and in the blood. What limits it is the need for an end point."],
+  ["It always lowers values.",0,"Positive feedback makes a change bigger, in whichever direction the change was going."]]},
+ caption:"Platelets call in more platelets: 1, 2, 4, 8… Fibrin seals the tear, and the loop ends.",
+ legend:[["platelet","Platelet","c"],["rbc","Red blood cell","c"],["fibrin","Fibrin threads","l"],["glow","Chemical signal","c"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole chapter.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · Organization and life</li>
+ <li>Atom → molecule → organelle → cell → tissue → organ → organ system → organism.</li><li>Functions of life: organization, metabolism, responsiveness, movement, growth and development, reproduction.</li><li>Needs: oxygen, nutrients, narrow temperature range, narrow air pressure range.</li>
+ <li class="h">Part 2 · Anatomical language</li>
+ <li>Anatomical position: upright, facing forward, feet forward, palms forward.</li><li>Pairs: superior/inferior, anterior/posterior, medial/lateral, proximal/distal, superficial/deep.</li><li>Axial (head, neck, trunk) vs. appendicular (limbs), plus regional terms.</li>
+ <li class="h">Part 3 · Planes and cavities</li>
+ <li>Sagittal (left/right), frontal (front/back), transverse (top/bottom).</li><li>Dorsal cavity: cranial + vertebral. Ventral cavity: thoracic + abdominopelvic, split by the diaphragm.</li><li>Four quadrants or nine regions. Serous membranes: parietal, visceral, fluid between.</li>
+ <li class="h">Part 4 · Homeostasis</li>
+ <li>Set point and normal range.</li><li>Negative feedback: stimulus, sensor, control center, effector. Temperature and blood glucose.</li><li>Positive feedback: childbirth and clotting. Must have an end point.</li></ol>
+ <p>Next: practice it all in the <a href="Body-Basics-Lab.html"><b>Body Basics Lab</b></a>.</p>`,
+ analogy:"You now have the map of the body (position, directions, planes, cavities) and the rule that keeps it running (feedback). Every later chapter uses both.",
+ terms:[],check:null,caption:"The four parts of Chapter 1, replayed.",
+ legend:[["act1","Organization","s"],["act2","Language","s"],["act3","Planes & cavities","s"],["act4","Homeostasis","s"]]}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=4;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([5,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===5)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
+  return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;POSE.palm=1;POSE.feet=1;POSE.head=1;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=480;
+const cv=document.getElementById("stage");let ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","good-wash","warn","warn-wash","bad","act1","act2","act3","act4",
+ "ecf","skin","skin-edge","hair","cut","cut-edge","bone","bone-edge","brain","brain-edge","cord","lung","heart","liver","stomach","gut","kidney","bladder",
+ "ax","app","plane","dot-a","dot-b","fluid","parietal","visceral","hot","cold","sweat","vessel","nerve","glucose","insulin","glucagon","oxy","platelet","fibrin","rbc","o2","food","glow","gold"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim());C.atp=C.gold}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,rot,fill,stroke,lw){ctx.beginPath();ctx.ellipse(x,y,Math.max(.01,rx),Math.max(.01,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){if(Math.hypot(x2-x1,y2-y1)<2)return;line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=8+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,txt,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+10}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
+function heading(x,y,txt,col){ctx.font=`600 12px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.fillText(txt.toUpperCase(),x,y)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function panelBox(x,y,w,h,on,col){ctx.fillStyle=C["panel-2"];rr(x,y,w,h,8);ctx.fill();ctx.strokeStyle=on?(col||C.accent):C.rule;ctx.lineWidth=on?3:1.2;ctx.stroke()}
+function dotPt(x,y,col,txt,t){const pul=1+.18*Math.sin((t||0)*6);glow(x,y,16*pul,col,.35);circ(x,y,6.5,col,C.panel,2);if(txt)label(x+11,y-11,txt,{size:12,weight:700,color:col,bga:.95})}
+function drop(x,y,r,col,a){ctx.globalAlpha=a==null?1:clamp(a,0,1);ctx.beginPath();ctx.moveTo(x,y-r*1.7);ctx.bezierCurveTo(x+r*.9,y-r*.4,x+r,y+r*.9,x,y+r);ctx.bezierCurveTo(x-r,y+r*.9,x-r*.9,y-r*.4,x,y-r*1.7);ctx.fillStyle=col;ctx.fill();ctx.globalAlpha=1}
+function hexa(x,y,r,col,a){ctx.globalAlpha=a==null?1:clamp(a,0,1);ctx.beginPath();for(let i=0;i<6;i++){const q=i/6*TAU+Math.PI/6;ctx.lineTo(x+r*Math.cos(q),y+r*Math.sin(q))}ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function wiggle(x1,y1,x2,y2,col,lw,amp,ph){const n=24;ctx.beginPath();for(let i=0;i<=n;i++){const u=i/n;const x=lerp(x1,x2,u),y=lerp(y1,y2,u);const a=Math.atan2(y2-y1,x2-x1)+Math.PI/2;const o=Math.sin(u*14+ph)*amp;ctx.lineTo(x+Math.cos(a)*o,y+Math.sin(a)*o)}ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.stroke()}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function pathLine(P,col,lw,dash){ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function thermo(x,y,h,val,lo,hi,col,o){o=o||{}; // vertical thermometer, val in degrees
+  const f=clamp((val-lo)/(hi-lo),0,1);ctx.fillStyle=C.panel;rr(x-9,y,18,h,9);ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.stroke();
+  circ(x,y+h+8,13,C.panel,C["ink-soft"],1.5);
+  if(o.band){const b0=y+h-(o.band[0]-lo)/(hi-lo)*h,b1=y+h-(o.band[1]-lo)/(hi-lo)*h;ctx.globalAlpha=.3;ctx.fillStyle=C.good;ctx.fillRect(x-8,b1,16,b0-b1);ctx.globalAlpha=1}
+  ctx.fillStyle=col;ctx.fillRect(x-4,y+h-f*h,8,f*h+4);circ(x,y+h+8,9,col);
+  if(o.ticks)o.ticks.forEach(v=>{const yy=y+h-(v-lo)/(hi-lo)*h;line(x+9,yy,x+15,yy,C["ink-soft"],1.2);label(x+18,yy,String(v),{size:11,mono:true,pill:false,color:C["ink-soft"]})})}
+/* =====================================================================
+   BODY MODEL
+   Units: the figure is about 440 units tall. y goes down from the top of the head.
+   x: + is the figure's LEFT (so in a front view, + is the viewer's right).
+   z: + is ANTERIOR. Every body part is a stack of elliptical slices, so the same
+   model draws the front/back/side figures and computes any section.
+   ===================================================================== */
+const POSE={palm:1,feet:1,head:1};
+function interp(T,y,k){const n=T.length;if(y<=T[0][0])return T[0][k];if(y>=T[n-1][0])return T[n-1][k];
+  for(let i=0;i<n-1;i++){if(y<=T[i+1][0]){const u=(y-T[i][0])/(T[i+1][0]-T[i][0]);return T[i][k]+(T[i+1][k]-T[i][k])*u}}return T[n-1][k]}
+function smooth(T,y,k){return (interp(T,y-5,k)+2*interp(T,y,k)+interp(T,y+5,k))/4}
+//            y   hw  zFront zBack
+const TOR=[[80,14,10,-12],[86,44,14,-16],[96,54,18,-19],[120,52,25,-21],[140,49,26,-21],[160,44,20,-19],[180,39,20,-15],[200,42,23,-17],[222,47,20,-25],[240,44,14,-22],[252,24,6,-10]];
+const ARM=[[100,58,11,-1],[186,68,8.5,-3],[258,75,6.4,3]];
+const LEG=[[212,23,18,-3],[226,23.5,20,0],[336,25,12.5,3],[414,25,7,0]];
+const sq=v=>Math.sqrt(Math.max(0,v));
+function torsoAt(y){const hw=smooth(TOR,y,1),zF=smooth(TOR,y,2),zB=smooth(TOR,y,3);return {cx:0,hw,zc:(zF+zB)/2,hd:(zF-zB)/2,zF,zB}}
+function spineZ(y){return y<88?-5:smooth(TOR,y,3)+9}
+const PARTS=[
+ {id:"head",y0:3,y1:65,views:"front side",f:y=>{const k=sq(1-((y-34)/31)**2);return {cx:5*(1-POSE.head),hw:24*k,zc:2,hd:26*k}}},
+ {id:"nose",y0:33,y1:47,views:"side",f:y=>{const u=(y-33)/14;return {cx:0,hw:3,zc:25+2*u,hd:2.6*Math.sin(Math.PI*u)+.4}}},
+ {id:"ear",s:1,y0:29,y1:45,views:"front",f:y=>{const u=(y-29)/16;return {cx:24.5+5*(1-POSE.head),hw:3.2*sq(Math.sin(Math.PI*u)),zc:-2,hd:4}}},
+ {id:"ear",s:-1,y0:29,y1:45,views:"front",f:y=>{const u=(y-29)/16;return {cx:24.5-5*(1-POSE.head),hw:3.2*sq(Math.sin(Math.PI*u)),zc:-2,hd:4}}},
+ {id:"neck",y0:56,y1:88,views:"front side",f:y=>({cx:0,hw:10.5,zc:-1,hd:11})},
+ {id:"torso",y0:80,y1:252,views:"front side",f:torsoAt},
+ {id:"arm",s:1,y0:86,y1:260,views:"front side",limb:1,f:armAt},
+ {id:"arm",s:-1,y0:86,y1:260,views:"front",limb:1,f:armAt},
+ {id:"hand",s:1,y0:256,y1:302,views:"front side",limb:1,f:handAt},
+ {id:"hand",s:-1,y0:256,y1:302,views:"front",limb:1,f:handAt},
+ {id:"thumb",s:1,y0:262,y1:288,views:"front side",limb:1,f:thumbAt},
+ {id:"thumb",s:-1,y0:262,y1:288,views:"front",limb:1,f:thumbAt},
+ {id:"leg",s:1,y0:212,y1:418,views:"front side",f:legAt},
+ {id:"leg",s:-1,y0:212,y1:418,views:"front",f:legAt},
+ {id:"foot",s:1,y0:410,y1:438,views:"front side",f:footAt},
+ {id:"foot",s:-1,y0:410,y1:438,views:"front",f:footAt}
+];
+function armAt(y){if(y<100){const k=sq(1-((100-y)/14)**2);return {cx:58-(100-y)*.2,hw:11*k,zc:-1,hd:10.5*k}}
+  const hw=interp(ARM,y,2);return {cx:interp(ARM,y,1),hw,zc:interp(ARM,y,3),hd:hw*.95}}
+function handAt(y){const pr=POSE.palm;const full=y<270?6.4+3.1*(y-256)/14:(y>280?9.5*sq(1-((y-280)/22)**2):9.5);const f=full/9.5;
+  return {cx:75+2.5*(y-256)/46-2*(1-pr),hw:3.6*f+(full-3.6*f)*pr,zc:2+2*(y-256)/46,hd:full+(3.6*f-full)*pr}}
+function thumbAt(y){const u=(y-262)/26;const r=3.4*sq(Math.sin(Math.PI*u));const pr=POSE.palm;return {cx:77+(86.5+u*1.5-77)*pr,hw:r,zc:10+(6-10)*pr,hd:r}}
+function legAt(y){let hw=interp(LEG,y,2),zc=interp(LEG,y,3),hd=hw*1.05;
+  if(y>336){const u=(y-336)/78;const s=Math.sin(Math.PI*Math.min(1,u*1.25));hw+=2.2*s;zc-=2.6*s;hd=hw+1.6*s}
+  return {cx:interp(LEG,y,1),hw,zc,hd}}
+function footAt(y){const u=(y-410)/28;const fo=1-POSE.feet;
+  const w=(u<.8?7+2*u/.8:9*sq(1-((u-.8)/.2)**2))*(1+fo*.45);const v=Math.min(1,u*1.4);const r=u>.85?sq(1-((u-.85)/.15)**2):1;
+  return {cx:25.5+1.5*u+fo*6*u,hw:w,zc:12*v,hd:(7.5+14*v)*(u>.85?.6+.4*r:1)}}
+function partPoly(p,view){const L=[],R=[];const st=1.5;const sg=p.s||1;
+  for(let y=p.y0;;y+=st){const yy=Math.min(y,p.y1);const q=p.f(yy);let a,b;
+    if(view==="side"){a=q.zc-q.hd;b=q.zc+q.hd}else{const cx=q.cx*sg;a=cx-q.hw;b=cx+q.hw}
+    L.push([a,yy]);R.push([b,yy]);if(yy>=p.y1)break}
+  return L.concat(R.reverse())}
+function polyPath(P){ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath()}
+function viewParts(view){const v=view==="back"?"front":view;return PARTS.filter(p=>p.views.indexOf(v)>=0)}
+/* draw a whole figure. view: front | back | side (side faces right: anterior is to the right) */
+function drawFigure(view,ox,oy,s,o){o=o||{};ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);
+  if(o.alpha!=null)ctx.globalAlpha*=o.alpha;
+  const ps=viewParts(view).filter(p=>!o.only||o.only(p));const groups=view==="side"?[ps.filter(p=>!p.limb),ps.filter(p=>p.limb)]:[ps];
+  groups.forEach(g=>{const polys=g.map(p=>[p,partPoly(p,view)]);
+    ctx.lineJoin="round";ctx.strokeStyle=o.edge||C["skin-edge"];ctx.lineWidth=(o.lw||2.2)/s;
+    polys.forEach(pp=>{polyPath(pp[1]);ctx.stroke()});
+    polys.forEach(pp=>{polyPath(pp[1]);ctx.fillStyle=(o.colorOf&&o.colorOf(pp[0]))||o.fill||C.skin;ctx.fill()})});
+  if(o.deco!==false)figDeco(view,s,o);
+  ctx.restore()}
+function figDeco(view,s,o){const e=C["skin-edge"];ctx.lineCap="round";const hx=5*(1-POSE.head);const a0=ctx.globalAlpha;
+  const L=(pts,w,col,a)=>{ctx.globalAlpha=a0*(a==null?.75:a);ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col||e;ctx.lineWidth=(w||1.3)/s;ctx.stroke();ctx.globalAlpha=a0};
+  ctx.save();
+  if(view==="front"){
+    ctx.save();ctx.beginPath();ctx.ellipse(hx,34,24,31,0,0,TAU);ctx.clip();ctx.beginPath();ctx.ellipse(hx,14,27,17,0,0,TAU);ctx.fillStyle=C.hair;ctx.fill();ctx.restore();
+    [-8,8].forEach(x=>{circ(hx+x,33,1.9,C.ink);L([[hx+x-4,28],[hx+x+4,28]],1.2,C.hair,.9)});
+    L([[hx,35],[hx-2,43],[hx+1.5,44]],1.1);ctx.beginPath();ctx.arc(hx,48,5,.25*Math.PI,.75*Math.PI);ctx.strokeStyle=e;ctx.lineWidth=1.3/s;ctx.stroke();
+    L([[-6,90],[-38,94]],1.1,e,.5);L([[6,90],[38,94]],1.1,e,.5);
+    circ(0,196,1.6,null,e,1.1/s);
+    [-1,1].forEach(sg=>{ctx.globalAlpha=a0*.6;ctx.beginPath();ctx.arc(sg*25,338,5,.15*Math.PI,.85*Math.PI);ctx.strokeStyle=e;ctx.lineWidth=1.1/s;ctx.stroke();ctx.globalAlpha=a0;
+      if(POSE.palm>.6){const a=(POSE.palm-.6)/.4*.6;for(let i=0;i<3;i++)L([[sg*(73+i*3.2),289],[sg*(73+i*3.2),299]],.9,e,a);
+        ctx.globalAlpha=a0*a;ctx.beginPath();ctx.arc(sg*77,270,5,.15*Math.PI,.85*Math.PI);ctx.strokeStyle=e;ctx.lineWidth=.9/s;ctx.stroke();ctx.globalAlpha=a0}
+      for(let i=0;i<3;i++)L([[sg*(22+i*3),434],[sg*(22+i*3),437]],.9,e,.5)});
+  } else if(view==="back"){
+    ctx.save();ctx.beginPath();ctx.ellipse(0,34,24,31,0,0,TAU);ctx.clip();ctx.beginPath();ctx.ellipse(0,26,27,29,0,0,TAU);ctx.fillStyle=C.hair;ctx.fill();ctx.restore();
+    L([[0,92],[0,212]],1.2,e,.6);
+    [-1,1].forEach(sg=>{ctx.globalAlpha=a0*.55;ctx.beginPath();ctx.moveTo(sg*14,104);ctx.quadraticCurveTo(sg*38,100,sg*36,126);ctx.quadraticCurveTo(sg*30,138,sg*16,124);ctx.strokeStyle=e;ctx.lineWidth=1.1/s;ctx.stroke();
+      ctx.beginPath();ctx.arc(sg*21,244,12,.2*Math.PI,.8*Math.PI);ctx.stroke();ctx.globalAlpha=a0;
+      L([[sg*20,338],[sg*30,338]],1,e,.55);L([[sg*72,186],[sg*67,190]],1,e,.4)});
+    L([[0,224],[0,250]],1.2,e,.7);
+  } else {
+    ctx.save();ctx.beginPath();ctx.ellipse(2,34,26,31,0,0,TAU);ctx.clip();ctx.beginPath();ctx.ellipse(-6,22,26,24,-.2,0,TAU);ctx.fillStyle=C.hair;ctx.fill();ctx.restore();
+    circ(17,32,1.9,C.ink);L([[13,27],[21,27]],1.2,C.hair,.9);
+    ctx.beginPath();ctx.ellipse(-3,38,3.5,6,0,0,TAU);ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=e;ctx.lineWidth=1.1/s;ctx.stroke();
+    L([[19,50],[24,50]],1.2);L([[22,196],[24,196]],1.1,e,.6);
+  }
+  ctx.restore()}
+/* local point → screen */
+const FP=(ox,oy,s,x,y)=>[ox+x*s,oy+y*s];
+/* ---------- organs and bones for sections ---------- */
+const ORGANS=[
+ {id:"lung",c:[-23,126,1],r:[16,33,15],col:"lung"},
+ {id:"lung",c:[22,128,1],r:[15,32,15],col:"lung"},
+ {id:"heart",c:[7,140,8],r:[13,14,10],col:"heart"},
+ {id:"liver",c:[-13,170,4],r:[25,12,14],col:"liver"},
+ {id:"stomach",c:[15,174,7],r:[12,11,9],col:"stomach"},
+ {id:"gut",c:[0,207,5],r:[30,20,13],col:"gut"},
+ {id:"kidney",c:[-17,192,-9],r:[6.5,11,5.5],col:"kidney"},
+ {id:"kidney",c:[17,188,-9],r:[6.5,11,5.5],col:"kidney"},
+ {id:"bladder",c:[0,238,6],r:[9,7,7],col:"bladder"},
+ {id:"brain",c:[0,28,2],r:[20,19,23],col:"brain"}];
+const BONES=[ // long bones as vertical rods inside a limb part: [part id, y0, y1, radius, dx]
+ ["arm",102,182,3.4,0],["arm",192,252,2,-2.6],["arm",192,252,2,2.6],["leg",228,330,4.6,0],["leg",342,410,3.6,-1],["leg",346,410,1.8,5.5]];
+/* draws the cut face of a section. plane: "S" sagittal (pos = x), "F" frontal (pos = z), "T" transverse (pos = y).
+   S: screen x = z (anterior to the right). F: screen x = x (front view). T: screen x = x, screen y = -z (anterior up). */
+function drawSection(plane,pos,ox,oy,s,o){o=o||{};ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);
+  const sk=C.skin,cu=C.cut;
+  if(o.clipY!=null){ctx.beginPath();ctx.rect(-400,-400,800,o.clipY+400);ctx.clip()}
+  const parts=PARTS.filter(p=>p.views.indexOf("front")>=0||p.id==="nose");
+  if(plane==="T"){
+    const els=[];parts.forEach(p=>{if(p.id==="nose"||pos<p.y0||pos>p.y1)return;const q=p.f(pos);if(q.hw<.4||q.hd<.4)return;els.push({p,x:(p.s||1)*q.cx,y:-q.zc,a:q.hw,b:q.hd})});
+    els.forEach(e=>{ctx.beginPath();ctx.ellipse(e.x,e.y,e.a+1.3,e.b+1.3,0,0,TAU);ctx.fillStyle=C["skin-edge"];ctx.fill()});
+    els.forEach(e=>{ctx.beginPath();ctx.ellipse(e.x,e.y,e.a+.6,e.b+.6,0,0,TAU);ctx.fillStyle=sk;ctx.fill();ctx.beginPath();ctx.ellipse(e.x,e.y,Math.max(.1,e.a-.6),Math.max(.1,e.b-.6),0,0,TAU);ctx.fillStyle=cu;ctx.fill()});
+    // skull ring
+    els.filter(e=>e.p.id==="head").forEach(e=>{if(pos<50){ctx.beginPath();ctx.ellipse(e.x,e.y,Math.max(.1,e.a-1.6),Math.max(.1,e.b-1.6),0,0,TAU);ctx.fillStyle=C.bone;ctx.fill()}});
+    ORGANS.forEach(g=>{const d=(pos-g.c[1])/g.r[1];if(Math.abs(d)>=1)return;const k=sq(1-d*d);
+      ctx.beginPath();ctx.ellipse(g.c[0],-g.c[2],g.r[0]*k,g.r[2]*k,0,0,TAU);ctx.fillStyle=C[g.col];ctx.fill();ctx.strokeStyle="rgba(0,0,0,.25)";ctx.lineWidth=.8/s;ctx.stroke()});
+    if(pos>96&&pos<176){const t=torsoAt(pos);for(let i=0;i<22;i++){const a=i/22*TAU;if(Math.abs(Math.cos(a))<.18)continue;
+      circ(Math.cos(a)*(t.hw-4),-(t.zc+Math.sin(a)*(t.hd-3.5)),1.8,C.bone,C["bone-edge"],.6/s)}
+      if(pos<150){ctx.fillStyle=C.bone;ctx.fillRect(-4,-(t.zF-4.5),8,3.4)}}
+    if(pos>=60&&pos<=250){const z=spineZ(pos);circ(0,-z,6,C.bone,C["bone-edge"],.8/s);if(pos<205)circ(0,-(z-2.5),2.2,C.cord)}
+    BONES.forEach(b=>{if(pos<b[1]||pos>b[2])return;parts.filter(p=>p.id===b[0]).forEach(p=>{const q=p.f(pos);circ((p.s||1)*(q.cx+b[4]),-q.zc,b[3],C.bone,C["bone-edge"],.7/s)})});
+  } else {
+    const st=1.5;const segs=[];
+    parts.forEach(p=>{if(plane==="F"&&p.id==="nose")return;if(plane==="S"&&p.id==="ear")return;
+      for(let y=p.y0;y<=p.y1;y+=st){const q=p.f(y);const cx=(p.s||1)*q.cx;
+        if(plane==="S"){const d=(pos-cx)/q.hw;if(!(q.hw>0)||Math.abs(d)>=1)continue;const h=q.hd*sq(1-d*d);segs.push([q.zc-h,q.zc+h,y])}
+        else{const d=(pos-q.zc)/q.hd;if(!(q.hd>0)||Math.abs(d)>=1)continue;const h=q.hw*sq(1-d*d);segs.push([cx-h,cx+h,y])}}});
+    ctx.fillStyle=C["skin-edge"];segs.forEach(g=>ctx.fillRect(g[0]-1.3,g[2]-1.1,g[1]-g[0]+2.6,2.2));
+    ctx.fillStyle=sk;segs.forEach(g=>ctx.fillRect(g[0]-.6,g[2]-.95,g[1]-g[0]+1.2,1.9));
+    ctx.fillStyle=cu;segs.forEach(g=>{if(g[1]-g[0]>1.4)ctx.fillRect(g[0]+.6,g[2]-.95,g[1]-g[0]-1.2,1.9)});
+    // skull + brain handled as organ with a bone rim
+    if(!o.noOrgans)ORGANS.forEach(g=>{const ax=plane==="S"?0:2;const d=(pos-g.c[ax])/g.r[ax];if(Math.abs(d)>=1)return;const k=sq(1-d*d);
+      const X=plane==="S"?g.c[2]:g.c[0],RX=(plane==="S"?g.r[2]:g.r[0])*k,RY=g.r[1]*k;
+      ctx.beginPath();ctx.ellipse(X,g.c[1],RX,RY,0,0,TAU);ctx.fillStyle=C[g.col];ctx.fill();
+      if(g.id==="brain"){ctx.strokeStyle=C.bone;ctx.lineWidth=3.2;ctx.stroke()}else{ctx.strokeStyle="rgba(0,0,0,.25)";ctx.lineWidth=.8/s;ctx.stroke()}});
+    // spine
+    for(let y=62;y<=250;y+=st){const z=spineZ(y);
+      if(plane==="S"){const d=pos/6;if(Math.abs(d)>=1)break;const h=6*sq(1-d*d);ctx.fillStyle=(Math.floor(y/9)%2)?C.bone:C["bone-edge"];ctx.fillRect(z-h,y-.95,2*h,1.9);
+        if(y<205&&Math.abs(pos)<2.2){ctx.fillStyle=C.cord;ctx.fillRect(z-4.2,y-.95,3.2,1.9)}}
+      else{const d=(pos-z)/6;if(Math.abs(d)>=1)continue;const h=6*sq(1-d*d);ctx.fillStyle=(Math.floor(y/9)%2)?C.bone:C["bone-edge"];ctx.fillRect(-h,y-.95,2*h,1.9);
+        if(y<205&&Math.abs(pos-(z-2.5))<2.2){ctx.fillStyle=C.cord;ctx.fillRect(-1.6,y-.95,3.2,1.9)}}}
+    // long bones
+    BONES.forEach(b=>{parts.filter(p=>p.id===b[0]).forEach(p=>{for(let y=b[1];y<=b[2];y+=st){const q=p.f(y);const cx=(p.s||1)*(q.cx+b[4]);
+      const d=plane==="S"?(pos-cx)/b[3]:(pos-q.zc)/b[3];if(Math.abs(d)>=1)continue;const h=b[3]*sq(1-d*d);
+      ctx.fillStyle=C.bone;if(plane==="S")ctx.fillRect(q.zc-h,y-.95,2*h,1.9);else ctx.fillRect(cx-h,y-.95,2*h,1.9)}})});
+  }
+  ctx.restore()}
+
+/* ---------------- shared scene helpers ---------------- */
+let STATE={};
+function hex2rgb(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");const n=parseInt(h,16);return [(n>>16)&255,(n>>8)&255,n&255]}
+function mix(a,b,t){try{const A=hex2rgb(a),B=hex2rgb(b);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*clamp(t,0,1))).join(",")+")"}catch(e){return a}}
+function bg(col){ctx.fillStyle=col||C.panel;ctx.fillRect(0,0,W,H)}
+function regionPath(reg){const P=new Path2D();
+  (reg.bands||[]).forEach(b=>{PARTS.filter(p=>p.id===b[0]&&p.views.indexOf("front")>=0).forEach(p=>{
+    const y0=Math.max(b[1],p.y0),y1=Math.min(b[2],p.y1);if(y1<=y0)return;const L=[],R=[];const sg=p.s||1;
+    for(let y=y0;;y+=1.5){const yy=Math.min(y,y1);const q=p.f(yy);L.push([sg*q.cx-q.hw,yy]);R.push([sg*q.cx+q.hw,yy]);if(yy>=y1)break}
+    const pts=L.concat(R.reverse());pts.forEach((pt,i)=>i?P.lineTo(pt[0],pt[1]):P.moveTo(pt[0],pt[1]));P.closePath()})});
+  if(reg.circle){P.moveTo(reg.circle[0]+reg.circle[2],reg.circle[1]);P.arc(reg.circle[0],reg.circle[1],reg.circle[2],0,TAU)}
+  (reg.ellipses||[]).forEach(e=>{P.moveTo(e[0]+e[2],e[1]);P.ellipse(e[0],e[1],e[2],e[3],0,0,TAU)});
+  if(reg.rect)P.rect(reg.rect[0],reg.rect[1],reg.rect[2],reg.rect[3]);
+  return P}
+const REGIONS=[
+ {id:"cephalic",name:"Cephalic",plain:"head",view:"A",bands:[["head",3,65]],at:[0,30]},
+ {id:"cervical",name:"Cervical",plain:"neck",view:"AP",bands:[["neck",64,86]],at:[0,76]},
+ {id:"thoracic",name:"Thoracic",plain:"chest",view:"A",bands:[["torso",86,160]],at:[-18,124]},
+ {id:"abdominal",name:"Abdominal",plain:"belly",view:"A",bands:[["torso",160,212]],at:[-14,184]},
+ {id:"brachial",name:"Brachial",plain:"arm (shoulder to elbow)",view:"AP",bands:[["arm",100,180]],at:[-63,140]},
+ {id:"antecubital",name:"Antecubital",plain:"front of the elbow",view:"A",bands:[["arm",180,196]],at:[-68,188]},
+ {id:"antebrachial",name:"Antebrachial",plain:"forearm",view:"AP",bands:[["arm",196,248]],at:[-71,222]},
+ {id:"carpal",name:"Carpal",plain:"wrist",view:"AP",bands:[["arm",248,262],["hand",256,262]],at:[-75,256]},
+ {id:"palmar",name:"Palmar",plain:"palm",view:"A",bands:[["hand",262,284]],at:[-77,273]},
+ {id:"digital",name:"Digital",plain:"fingers",view:"AP",bands:[["hand",284,302],["thumb",262,288]],at:[-77,292]},
+ {id:"femoral",name:"Femoral",plain:"thigh",view:"AP",bands:[["leg",232,324]],at:[-24,278]},
+ {id:"patellar",name:"Patellar",plain:"front of the knee",view:"A",bands:[["leg",324,348]],at:[-25,336]},
+ {id:"crural",name:"Crural",plain:"front of the leg (knee to ankle)",view:"A",bands:[["leg",348,406]],at:[-25,378]},
+ {id:"tarsal",name:"Tarsal",plain:"ankle",view:"A",bands:[["leg",406,418],["foot",410,418]],at:[-25,414]},
+ {id:"pedal",name:"Pedal",plain:"foot",view:"A",bands:[["foot",418,438]],at:[-27,428]},
+ {id:"occipital",name:"Occipital",plain:"back of the head",view:"P",bands:[["head",36,62]],at:[0,50]},
+ {id:"scapular",name:"Scapular",plain:"shoulder blade",view:"P",ellipses:[[-27,118,15,19],[27,118,15,19]],at:[27,118]},
+ {id:"vertebral",name:"Vertebral",plain:"spine",view:"P",rect:[-5,90,10,122],at:[0,150]},
+ {id:"lumbar",name:"Lumbar",plain:"lower back",view:"P",bands:[["torso",170,212]],at:[18,192]},
+ {id:"olecranal",name:"Olecranal",plain:"back of the elbow",view:"P",bands:[["arm",180,196]],at:[68,188]},
+ {id:"gluteal",name:"Gluteal",plain:"buttock",view:"P",bands:[["torso",214,252],["leg",214,252]],at:[22,236]},
+ {id:"popliteal",name:"Popliteal",plain:"back of the knee",view:"P",bands:[["leg",324,348]],at:[25,336]},
+ {id:"sural",name:"Sural",plain:"calf",view:"P",bands:[["leg",348,406]],at:[25,374]},
+ {id:"calcaneal",name:"Calcaneal",plain:"heel",view:"P",bands:[["foot",420,438]],at:[26,430]}];
+const REG={};REGIONS.forEach(r=>REG[r.id]=r);
+function fillRegion(reg,ox,oy,s,col,a){ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);ctx.globalAlpha=a==null?.6:a;ctx.fillStyle=col;ctx.fill(regionPath(reg));
+  ctx.globalAlpha=1;ctx.strokeStyle=col;ctx.lineWidth=1.6/s;ctx.stroke(regionPath(reg));ctx.restore()}
+
+/* ===== Scene: map ===== */
+function sceneMap(t){bg();
+  heading(24,30,"Chapter 1 in four parts");
+  const act=Math.floor(t/2.6)%4;const ph=(t%2.6)/2.6;
+  const B=[["act1","Organization & life"],["act2","Anatomical language"],["act3","Planes & cavities"],["act4","Homeostasis"]];
+  B.forEach((b,i)=>{const x=18+i*194,y=56,w=182,h=380;const on=i===act;
+    panelBox(x,y,w,h,on,C[b[0]]);ctx.fillStyle=C[b[0]];rr(x,y,w,34,8);ctx.fill();ctx.fillRect(x,y+20,w,14);
+    ctx.font=`600 13px ${MONO}`;ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("PART "+(i+1),x+w/2,y+18);
+    label(x+w/2,y+h-22,b[1],{align:"center",weight:600,size:13.5,pill:false});
+    const cx=x+w/2,cy=y+190;const tt=on?t:0;ctx.save();rr(x+1,y+34,w-2,h-70,8);ctx.clip();
+    if(i===0){ // zoom rings: atom inside cell inside body
+      const z=on?ph:0;
+      for(let k=0;k<3;k++){const r=30+k*42+z*20;ctx.globalAlpha=.25+.25*(k===Math.floor(z*3)?1:0);circ(cx,cy,r,null,C.act1,2);ctx.globalAlpha=1}
+      circ(cx,cy,8,C.hot);[0,1].forEach(k=>{const a=tt*3+k*Math.PI;circ(cx+Math.cos(a)*22,cy+Math.sin(a)*12,3.5,C.o2)});
+      ctx.beginPath();ctx.ellipse(cx,cy,22,12,0,0,TAU);ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1;ctx.stroke();
+      label(cx,cy-150,"atom → organism",{align:"center",size:12,color:C["ink-soft"]});
+    } else if(i===1){
+      drawFigure("front",cx-20,y+52,.62,{lw:1.6});
+      const a=on?ease(seg(ph,.1,.6)):1;arrow(cx+56,cy-20,cx+56,cy-20-80*a,C.act2,3);arrow(cx+56,cy-10,cx+56,cy-10+80*a,C.act2,3);
+      label(cx+56,cy-116,"superior",{align:"center",size:11.5,color:C.act2,weight:600});label(cx+56,cy+86,"inferior",{align:"center",size:11.5,color:C.act2,weight:600});
+    } else if(i===2){
+      drawFigure("front",cx-34,y+52,.62,{lw:1.6});
+      const py=y+52+lerp(40,400,on?(Math.sin(tt*1.4)*.5+.5):.35)*.62;
+      ctx.globalAlpha=.25;ctx.fillStyle=C.plane;ctx.beginPath();ctx.moveTo(cx-100,py+8);ctx.lineTo(cx-60,py-10);ctx.lineTo(cx+44,py-10);ctx.lineTo(cx+4,py+8);ctx.closePath();ctx.fill();ctx.globalAlpha=1;
+      line(cx-90,py,cx+30,py,C.plane,2.5);
+      drawSection("T",(py-y-52)/.62,cx+56,y+300,.42);
+      label(cx+56,y+268,"section",{align:"center",size:11,color:C["ink-soft"]});
+    } else {
+      const R=60;circ(cx,cy-20,R,null,C.rule,3);
+      ["stimulus","sensor","control","effector"].forEach((n,k)=>{const a=-Math.PI/2+k*Math.PI/2;const px=cx+Math.cos(a)*R,py=cy-20+Math.sin(a)*R;circ(px,py,9,C["panel-2"],C.act4,2)});
+      const a=-Math.PI/2+tt*1.6;glow(cx+Math.cos(a)*R,cy-20+Math.sin(a)*R,16,C.act4,.8);circ(cx+Math.cos(a)*R,cy-20+Math.sin(a)*R,5,C.act4);
+      ctx.beginPath();for(let k=0;k<=60;k++){const xx=x+18+k*2.4;const v=Math.sin(k*.35+tt*3)*10*Math.exp(-((k%30)/12));ctx.lineTo(xx,cy+90-v)}ctx.strokeStyle=C.act4;ctx.lineWidth=2;ctx.stroke();
+      line(x+18,cy+90,x+w-18,cy+90,C["ink-faint"],1,[4,4]);label(x+w/2,cy+120,"set point",{align:"center",size:11,color:C["ink-soft"]});
+    }
+    ctx.restore();
+  });
+}
+
+/* ===== Scene: levels of organization ===== */
+const LV=["Atom","Molecule","Organelle","Cell","Tissue","Organ","Organ system","Organism"];
+const LVsub=["an oxygen atom (8 protons, 8 neutrons, 8 electrons)","a phospholipid, one of the molecules that build membranes","a mitochondrion, which makes ATP for the cell","a smooth muscle cell","smooth muscle tissue","the stomach","the digestive system","a whole human"];
+let lvLab=true;function lvLabel(){if(lvLab)label.apply(null,arguments)}
+const ANCH=[null,[38,-92],[0,-68],[70,14],[0,0],[48,36],[30,-6],[0,-30]];
+function lvDraw(i,t){
+  if(i===0){ // atom
+    const P=[[0,0],[7,3],[-6,4],[2,-7],[-3,-3],[5,-4],[-7,-4],[1,7],[8,-3],[-2,9],[-8,2],[4,8],[-5,-8],[9,4],[0,-10],[-9,-6]];
+    P.forEach((p,k)=>circ(p[0]*1.3,p[1]*1.3,6.5,k%2?C["ink-faint"]:C.hot,"rgba(0,0,0,.25)",1));
+    [[42,2],[96,6]].forEach(([r,n],j)=>{ctx.beginPath();ctx.ellipse(0,0,r,r*.92,0,0,TAU);ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1.3;ctx.stroke();
+      for(let k=0;k<n;k++){const a=t*(j?1.1:1.8)+k/n*TAU;circ(Math.cos(a)*r,Math.sin(a)*r*.92,5,C.o2,"rgba(0,0,0,.3)",1)}});
+    lvLabel(0,120,"protons (+)  neutrons  electrons (−)",{align:"center",size:12,color:C["ink-soft"]});
+  } else if(i===1){ // phospholipid
+    const wig=Math.sin(t*3)*3;
+    const tails=[[-14,-40],[14,-40]];
+    tails.forEach((tp,k)=>{let px=tp[0],py=tp[1];for(let j=0;j<9;j++){const nx=tp[0]+(j%2?6:-6)+(k?wig:-wig)*j/8+(k&&j>4?8:0),ny=py+18;line(px,py,nx,ny,C["ink-soft"],3);circ(px,py,6.5,C["ink-faint"],"rgba(0,0,0,.25)",1);px=nx;py=ny}circ(px,py,6.5,C["ink-faint"],"rgba(0,0,0,.25)",1)});
+    line(-14,-40,0,-58,C["ink-soft"],3);line(14,-40,0,-58,C["ink-soft"],3);line(0,-58,0,-80,C["ink-soft"],3);
+    [[-24,-90],[24,-90],[0,-104],[0,-58]].forEach(p=>{line(0,-80,p[0],p[1],C["ink-soft"],3)});line(0,-104,0,-128,C["ink-soft"],3);
+    circ(-14,-40,7,C["ink-faint"]);circ(14,-40,7,C["ink-faint"]);
+    circ(0,-80,12,C.gold,"rgba(0,0,0,.3)",1);[[-24,-90],[24,-90],[0,-104],[0,-58]].forEach(p=>circ(p[0],p[1],9,C.hot,"rgba(0,0,0,.3)",1));circ(0,-128,11,C.o2,"rgba(0,0,0,.3)",1);
+    lvLabel(48,-92,"O",{size:12,weight:700,color:C.hot,pill:false});lvLabel(-58,-80,"water-loving head",{align:"right",size:12});lvLabel(40,80,"water-fearing tails",{size:12});
+  } else if(i===2){ // mitochondrion
+    ctx.beginPath();ctx.ellipse(0,0,140,72,0,0,TAU);ctx.fillStyle=C.stomach;ctx.globalAlpha=.35;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.act1;ctx.lineWidth=3;ctx.stroke();
+    ctx.beginPath();ctx.ellipse(0,0,130,62,0,0,TAU);ctx.strokeStyle=C.act1;ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();for(let x=-110;x<=110;x+=2){const k=Math.floor((x+110)/30);const up=k%2===0;const u=((x+110)%30)/30;const amp=up?-1:1;ctx.lineTo(x,amp*(50*Math.sin(Math.PI*u))*(1-Math.abs(x)/180))}ctx.strokeStyle=C.act1;ctx.lineWidth=2;ctx.stroke();
+    for(let k=0;k<5;k++){const q=(t*.5+k/5)%1;const a=k*1.3;const x=Math.cos(a)*lerp(30,190,q),y=Math.sin(a)*lerp(15,110,q);ctx.globalAlpha=1-q;if(lvLab)chipText(x,y,"ATP",C.gold,"#10161A");ctx.globalAlpha=1}
+    lvLabel(0,-92,"double membrane made of phospholipids",{align:"center",size:12});
+  } else if(i===3){ // smooth muscle cell
+    const sx=1-.06*(.5+.5*Math.sin(t*2));ctx.save();ctx.scale(sx,1/Math.sqrt(sx));
+    ctx.beginPath();ctx.moveTo(-180,0);ctx.bezierCurveTo(-80,-58,80,-58,180,0);ctx.bezierCurveTo(80,58,-80,58,-180,0);ctx.fillStyle=C.cut;ctx.globalAlpha=.55;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=2.5;ctx.stroke();
+    ell(0,0,42,13,0,C.glucagon,"rgba(0,0,0,.3)",1);
+    [[70,14],[-80,-12],[-110,8],[110,-6],[40,-24]].forEach((p,k)=>ell(p[0],p[1],11,5,k*.6,C.stomach,C.act1,1.5));
+    ctx.restore();lvLabel(0,-74,"nucleus in the middle, mitochondria around it",{align:"center",size:12});
+  } else if(i===4){ // tissue
+    for(let r=-3;r<=3;r++)for(let c=-2;c<=2;c++){const x=c*120+(r%2?60:0),y=r*34;const ph=Math.sin(t*2-c*.9-r*.3);const sx=1-.05*(ph*.5+.5);
+      ctx.save();ctx.translate(x,y);ctx.scale(sx,1);ctx.beginPath();ctx.moveTo(-64,0);ctx.bezierCurveTo(-30,-20,30,-20,64,0);ctx.bezierCurveTo(30,20,-30,20,-64,0);
+      ctx.fillStyle=C.cut;ctx.globalAlpha=r===0&&c===0?.75:.5;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=1.5;ctx.stroke();ell(0,0,15,4.5,0,C.glucagon);ctx.restore()}
+    lvLabel(0,-140,"many similar cells working together",{align:"center",size:12});
+  } else if(i===5){ // stomach
+    const rip=t*2.2;
+    ctx.beginPath();const pts=[];for(let k=0;k<=40;k++){const u=k/40;const a=lerp(-2.4,1.1,u);const r=lerp(60,105,Math.sin(u*Math.PI))+5*Math.sin(u*12-rip);pts.push([Math.cos(a)*r*1.1+10,Math.sin(a)*r*.95+20])}
+    ctx.moveTo(-30,-130);ctx.lineTo(-20,-90);pts.forEach(p=>ctx.lineTo(p[0],p[1]));ctx.lineTo(120,70);ctx.lineTo(140,60);
+    for(let k=40;k>=0;k--){const u=k/40;const a=lerp(-2.4,1.1,u);const r=lerp(18,52,Math.sin(u*Math.PI))+4*Math.sin(u*12-rip);ctx.lineTo(Math.cos(a)*r*1.1+40,Math.sin(a)*r*.95+10)}
+    ctx.lineTo(0,-90);ctx.lineTo(-8,-130);ctx.closePath();ctx.fillStyle=C.stomach;ctx.fill();ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=2.5;ctx.stroke();
+    ctx.save();ctx.beginPath();ctx.arc(48,36,26,0,TAU);ctx.clip();ctx.fillStyle=C.cut;ctx.fillRect(20,8,60,60);for(let k=0;k<6;k++)line(20,14+k*9,80,14+k*9+Math.sin(t*2+k)*2,C["cut-edge"],1.4);ctx.restore();
+    circ(48,36,26,null,C.act1,2);lvLabel(84,64,"wall: several tissue types",{size:12});
+  } else if(i===6){ // digestive system
+    ctx.globalAlpha=.35;ctx.beginPath();ctx.moveTo(-70,-150);ctx.lineTo(70,-150);ctx.quadraticCurveTo(90,40,80,150);ctx.lineTo(-80,150);ctx.quadraticCurveTo(-90,40,-70,-150);ctx.fillStyle=C.skin;ctx.fill();ctx.globalAlpha=1;
+    line(0,-150,8,-30,C.stomach,7);const bq=(t*.4)%1;circ(lerp(0,8,bq),lerp(-150,-30,bq),5,C.gold);
+    ctx.beginPath();ctx.ellipse(-30,-26,42,20,-.2,0,TAU);ctx.fillStyle=C.liver;ctx.fill();
+    ctx.save();ctx.translate(30,-6);ctx.scale(.28,.28);lvDraw(5,t);ctx.restore();
+    ctx.beginPath();ctx.moveTo(-50,110);ctx.lineTo(-50,40);ctx.lineTo(50,40);ctx.lineTo(50,110);ctx.strokeStyle=C.gut;ctx.lineWidth=13;ctx.lineJoin="round";ctx.stroke();
+    ctx.beginPath();for(let k=0;k<=80;k++){const a=k/80*TAU*3.2;const r=12+k*.28;ctx.lineTo(Math.cos(a+t*.6)*r*.9,74+Math.sin(a+t*.6)*r*.55)}ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=5;ctx.stroke();
+    lvLabel(-80,-60,"liver",{align:"right",size:12});lvLabel(92,-30,"stomach",{size:12});lvLabel(70,122,"intestines",{size:12});
+  } else { // organism
+    drawFigure("front",0,-160,.66,{lw:1.6});
+    ctx.globalAlpha=.6;ctx.save();ctx.translate(0,-160);ctx.scale(.66,.66);
+    ell(-13,170,22,11,0,C.liver);ell(15,175,11,9,0,C.stomach);ell(0,206,24,17,0,C.gut);ctx.restore();ctx.globalAlpha=1;
+  }
+}
+function sceneLevels(t){bg();
+  const per=2.9,n=8;const idx=Math.floor(t/per)%n;const ph=(t%per)/per;const q=ease(seg(ph,.66,1));const Z=6;
+  const cx=400,cy=232;
+  ctx.save();ctx.beginPath();ctx.rect(20,58,760,350);ctx.clip();
+  if(idx<n-1){const A=ANCH[idx+1];const Sn=lerp(Z,1,q);
+    // current picture shrinking into its spot inside the next
+    lvLab=q===0;ctx.save();ctx.globalAlpha=1-q*.85;ctx.translate(cx+A[0]*q*Sn,cy+A[1]*q*Sn);ctx.scale(Sn/Z,Sn/Z);lvDraw(idx,t);ctx.restore();
+    lvLab=q>=1;if(q>0){ctx.save();ctx.globalAlpha=q;ctx.translate(cx-A[0]*(1-q)*Sn,cy-A[1]*(1-q)*Sn);ctx.scale(Sn,Sn);lvDraw(idx+1,t);ctx.restore()}
+  } else {lvLab=q===0;ctx.save();ctx.globalAlpha=1-q;ctx.translate(cx,cy);lvDraw(idx,t);ctx.restore();ctx.save();ctx.globalAlpha=q;ctx.translate(cx,cy);lvDraw(0,t);ctx.restore()}
+  ctx.restore();lvLab=true;
+  const shown=q>.5?(idx+1)%n:idx;
+  heading(24,26,"Level "+(shown+1)+" of 8",C.act1);
+  label(24,48,LV[shown]+": "+LVsub[shown],{size:15,weight:600,pill:false});
+  label(W-20,26,q>0&&q<1?"zooming out…":"",{align:"right",size:12,color:C["ink-soft"],pill:false});
+  // ladder
+  const y=440,x0=26,step=97;
+  LV.forEach((nm,k)=>{const x=x0+k*step;const on=k===shown;ctx.fillStyle=on?C.act1:C["panel-2"];rr(x-4,y-14,86,28,14);ctx.fill();ctx.strokeStyle=on?C.act1:C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    ctx.font=`${on?600:500} 12px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.fillText(nm,x+40,y+.5);
+    if(k<n-1)arrow(x+83,y,x+92,y,C["ink-faint"],1.2)});
+  ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x0-4,y-20);ctx.lineTo(x0-4,y-24);ctx.lineTo(x0+step+82,y-24);ctx.lineTo(x0+step+82,y-20);ctx.stroke();
+  label(x0+step/2+42,y-26,"chemical level",{align:"center",size:11,color:C["ink-soft"]});
+  STATE={level:shown};
+}
+
+/* ===== Scene: functions of life ===== */
+function sceneFunc(t){bg();
+  const on=Math.floor(t/2.6)%6;
+  const names=["Organization","Metabolism","Responsiveness","Movement","Growth & differentiation","Reproduction"];
+  for(let k=0;k<6;k++){const c=k%3,r=Math.floor(k/3);const x=12+c*262,y=14+r*232,w=252,h=220;panelBox(x,y,w,h,k===on,C.act1);
+    badge(x+18,y+20,k+1,k===on?C.act1:C["ink-soft"]);label(x+34,y+20,names[k],{weight:600,size:14,pill:false});
+    const cx=x+w/2,cy=y+122;ctx.save();ctx.beginPath();ctx.rect(x+2,y+36,w-4,h-40);ctx.clip();funcPanel(k,cx,cy,t);ctx.restore()}
+  STATE={func:on};
+}
+function funcPanel(k,cx,cy,t){
+  if(k===0){circ(cx,cy,58,C.cut,C["cut-edge"],4);ctx.globalAlpha=.35;circ(cx,cy,58,C.panel);ctx.globalAlpha=1;circ(cx,cy,52,null,C["cut-edge"],1.5);
+    ell(cx-6,cy,16,12,0,C.glucagon);ell(cx+28,cy-20,9,5,.5,C.stomach,C.act1,1.2);ell(cx+20,cy+26,9,5,-.4,C.stomach,C.act1,1.2);
+    for(let i=0;i<10;i++){const a=i/10*TAU+t*.4;const r=74+8*Math.sin(t*2+i);circ(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.8,4,C.o2)}
+    for(let i=0;i<5;i++){const a=i/5*TAU-t*.7;circ(cx+Math.cos(a)*36,cy+Math.sin(a)*30,3.5,C.gold)}
+    label(cx,cy+86,"a boundary keeps inside separate",{align:"center",size:11.5,color:C["ink-soft"]});
+  } else if(k===1){const u=(t%5)/5;const sp=u<.5?ease(seg(u,.05,.4)):1-ease(seg(u,.55,.9));
+    for(let i=0;i<4;i++){const x=cx-45+i*30+(i-1.5)*sp*22,y=cy-10+(i%2?-1:1)*sp*16;if(i<3&&sp<.3)line(x,y,cx-45+(i+1)*30+(i-.5)*sp*22,cy-10+((i+1)%2?-1:1)*sp*16,C["ink-soft"],3);circ(x,y,11,C.food,"rgba(0,0,0,.3)",1)}
+    for(let i=0;i<5;i++){const q=(t*1.3+i/5)%1;const a=i*1.26;const out=u<.5;const r=out?lerp(10,80,q):lerp(80,10,q);ctx.globalAlpha=sp*.9+.1;
+      ctx.beginPath();const x=cx+Math.cos(a)*r,y=cy-10+Math.sin(a)*r*.7;ctx.moveTo(x,y-6);ctx.lineTo(x+5,y);ctx.lineTo(x,y+6);ctx.lineTo(x-5,y);ctx.closePath();ctx.fillStyle=C.gold;ctx.fill();ctx.globalAlpha=1}
+    label(cx,cy+78,u<.5?"Catabolism: break down, release energy":"Anabolism: build up, use energy",{align:"center",size:11.5,weight:600,color:u<.5?C.warn:C.good});
+  } else if(k===2){const u=(t%3.4)/3.4;const near=u<.45?ease(seg(u,0,.45)):(u<.55?1:1-ease(seg(u,.55,.7)));
+    const fx=cx+60,fy=cy+30;ctx.fillStyle=C.panel;rr(fx-9,fy-6,18,44,3);ctx.fill();ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1.5;ctx.stroke();
+    const fl=1+.15*Math.sin(t*14);glow(fx,fy-22,26,C.glow,.7);ctx.beginPath();ctx.moveTo(fx,fy-44*fl);ctx.quadraticCurveTo(fx+11,fy-18,fx,fy-8);ctx.quadraticCurveTo(fx-11,fy-18,fx,fy-44*fl);ctx.fillStyle=C.hot;ctx.fill();
+    const hx=lerp(cx-90,cx+22,near);rr(cx-130,cy-18,hx-cx+130,20,8);ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.5;ctx.stroke();
+    rr(hx-4,cy-26,28,34,10);ctx.fill();ctx.stroke();for(let i=0;i<3;i++)line(hx+4+i*6,cy-24,hx+4+i*6,cy-14,C["skin-edge"],1);
+    if(u>.45&&u<.62){label(hx+12,cy-50,"Hot! Pull away",{align:"center",size:12,weight:700,color:C.hot,border:C.hot})}
+    label(cx,cy+78,"sense a change, then respond",{align:"center",size:11.5,color:C["ink-soft"]});
+  } else if(k===3){const ang=lerp(.2,1.6,.5+.5*Math.sin(t*2.2));const sx=cx-70,sy=cy-40,ex=cx-10,ey=cy+10;
+    line(sx,sy,ex,ey,C.skin,24);ctx.lineCap="round";line(sx,sy,ex,ey,C.skin,24);
+    const hx=ex+Math.cos(-ang)*70,hy=ey+Math.sin(-ang)*70;line(ex,ey,hx,hy,C.skin,18);circ(hx,hy,11,C.skin);ctx.lineCap="butt";
+    ell((sx+ex)/2+2,(sy+ey)/2-4,20,8+5*(ang-.2)/1.4,.7,C.cut,C["cut-edge"],1.2);
+    const P=[[cx-110,cy+70],[cx-40,cy+60],[cx+40,cy+76],[cx+110,cy+64]];pathLine(P,C.vessel,8);for(let i=0;i<6;i++){const p=along(P,(t*.3+i/6)%1);ell(p[0],p[1],4,2.6,0,C.rbc)}
+    label(cx+50,cy-70,"whole body and inside it",{align:"center",size:11.5,color:C["ink-soft"]});
+  } else if(k===4){const u=(t%7)/7;
+    const n=u<.25?1:u<.45?2:4;const df=ease(seg(u,.55,.85));
+    const pos=n===1?[[0,0]]:n===2?[[-26,0],[26,0]]:[[-50,-26],[50,-26],[-50,30],[50,30]];
+    const kinds=["neuron","muscle","rbc","epi"];
+    pos.forEach((p,i)=>{const x=cx+p[0],y=cy-8+p[1];const r=n===1?30:n===2?24:20;
+      if(n<4||df<.05){circ(x,y,r,C.cut,C["cut-edge"],1.5);circ(x,y,r*.35,C.glucagon)}else{ctx.globalAlpha=1-df;circ(x,y,r,C.cut,C["cut-edge"],1.5);ctx.globalAlpha=df;
+        const kd=kinds[i];if(kd==="neuron"){for(let j=0;j<6;j++){const a=j/6*TAU;line(x,y,x+Math.cos(a)*24,y+Math.sin(a)*24,C.nerve,2.5)}circ(x,y,10,C.nerve)}
+        else if(kd==="muscle"){ell(x,y,30,7,0,C.cut,C["cut-edge"],1.5);ell(x,y,8,2.5,0,C.glucagon)}
+        else if(kd==="rbc"){ell(x,y,14,14,0,C.rbc);ell(x,y,6,6,0,mix(C.rbc,"#ffffff",.35))}
+        else{rr(x-20,y-9,40,18,3);ctx.fillStyle=C.stomach;ctx.fill();ell(x,y,5,3,0,C.glucagon)}ctx.globalAlpha=1}});
+    label(cx,cy+80,df>.5?"cells become specialized":"cells divide and grow",{align:"center",size:11.5,weight:600,color:C["ink-soft"]});
+  } else {const u=(t%4)/4;const sp=ease(seg(u,.1,.75));const pinch=ease(seg(u,.3,.8));
+    const d=lerp(0,34,sp);[-1,1].forEach(s=>{circ(cx+s*d,cy-8,lerp(36,30,sp),C.cut,C["cut-edge"],2);ell(cx+s*d,cy-8,9,9,0,C.glucagon)});
+    if(pinch<.95){ctx.globalAlpha=1-pinch;ell(cx,cy-8,lerp(20,2,pinch),lerp(34,8,pinch),0,C.cut);ctx.globalAlpha=1}
+    label(cx,cy+78,"one cell becomes two",{align:"center",size:11.5,color:C["ink-soft"]});
+  }
+}
+
+/* ===== Scene: survival needs ===== */
+function sceneNeeds(t){bg();
+  const fx=400,fy=40,s=.9;drawFigure("front",fx,fy,s,{lw:1.8});
+  // faint lungs inside
+  ctx.save();ctx.translate(fx,fy);ctx.scale(s,s);ctx.globalAlpha=.55;ell(-22,126,15,30,0,C.lung);ell(21,128,14,29,0,C.lung);ctx.globalAlpha=1;line(0,60,0,96,C.lung,4);ctx.restore();
+  const tiles=[[16,22,"Oxygen","o2"],[16,250,"Nutrients","food"],[574,22,"Temperature","hot"],[574,250,"Air pressure","plane"]];
+  tiles.forEach((tl,k)=>{panelBox(tl[0],tl[1],210,208,false);ctx.fillStyle=C[tl[3]];rr(tl[0],tl[1],210,6,3);ctx.fill();label(tl[0]+14,tl[1]+24,tl[2],{weight:600,size:14,pill:false})});
+  // oxygen: O2 pairs drift to the nose, then down the airway to the lungs
+  const nose=FP(fx,fy,s,0,42),lungs=[FP(fx,fy,s,-22,126),FP(fx,fy,s,21,128)];
+  for(let i=0;i<7;i++){const q=(t*.22+i/7)%1;let x,y;
+    if(q<.55){const u=q/.55;x=lerp(60+(i%3)*40,nose[0]-6,u);y=lerp(90+(i%4)*30,nose[1],u)}else{const u=(q-.55)/.45;const L=lungs[i%2];x=lerp(nose[0],L[0],u)+Math.sin(u*9+i)*3;y=lerp(nose[1],L[1],u)}
+    circ(x-3,y,3.6,C.o2);circ(x+3,y,3.6,C.o2)}
+  label(121,210,"cells use it to release energy",{align:"center",size:11.5,color:C["ink-soft"]});
+  // nutrients: food and water move to the mouth
+  const mouth=FP(fx,fy,s,0,49);
+  for(let i=0;i<4;i++){const q=(t*.18+i/4)%1;const x=lerp(70+i*36,mouth[0],ease(q)),y=lerp(330,mouth[1],ease(q));ctx.globalAlpha=q>.9?(1-q)*10:1;
+    if(i%2===0){circ(x,y,9,C.food);line(x,y-9,x+4,y-14,C["ink-soft"],1.5)}else drop(x,y+2,6,C.sweat);ctx.globalAlpha=1}
+  label(121,438,"water is the most important nutrient",{align:"center",size:11.5,color:C["ink-soft"]});
+  // temperature
+  const temp=37+.25*Math.sin(t*1.3)+.1*Math.sin(t*3.1);
+  thermo(626,64,120,temp,34,40,C.hot,{band:[36.5,37.5],ticks:[35,37,39]});
+  label(700,90,temp.toFixed(1)+" °C",{size:16,weight:700,mono:true});label(700,120,"kept near 37 °C",{size:12,color:C["ink-soft"]});
+  label(700,148,"normal range",{size:12,color:C.good,weight:600});
+  // air pressure: climber on a mountain, arrows shrink with height
+  const cl=.5+.5*Math.sin(t*.6);ctx.beginPath();ctx.moveTo(586,450);ctx.lineTo(700,346);ctx.lineTo(774,450);ctx.closePath();ctx.fillStyle=C.sunk;ctx.fill();
+  ctx.beginPath();ctx.moveTo(686,359);ctx.lineTo(700,346);ctx.lineTo(714,359);ctx.closePath();ctx.fillStyle=C.panel;ctx.fill();
+  const px=lerp(604,694,cl),py=lerp(446,356,cl);circ(px,py-6,5,C.ink);
+  const press=lerp(1,.45,cl);for(let i=0;i<3;i++){const ax=px-20+i*20;arrow(ax,py-44,ax,py-44+24*press,C.plane,2.4)}
+  label(679,300,cl>.6?"high up: low pressure, less O₂ in":"sea level: air pushes O₂ in",{align:"center",size:11.5,weight:600,color:cl>.6?C.warn:C.plane});
+  line(226,126,nose[0]-14,nose[1],C.o2,1.2,[3,4]);line(226,354,mouth[0]-14,mouth[1]+4,C.food,1.2,[3,4]);
+}
+
+/* ===== Scene: anatomical position ===== */
+function scenePos(t){bg();
+  const u=(t%13)/13;const m=ease(seg(u,.1,.42));
+  POSE.palm=m;POSE.feet=m;POSE.head=m;
+  const fx=210,fy=24,s=.98;drawFigure("front",fx,fy,s,{lw:2});
+  POSE.palm=1;POSE.feet=1;POSE.head=1;
+  if(m<.05){const hp=FP(fx,fy,s,-75,280);label(hp[0]-12,hp[1]+40,"palms face the thighs",{align:"center",size:12,weight:600,color:C["dot-a"]})}
+  heading(24,26,m<.02?"Relaxed stance":(m>.98?"Anatomical position":"Turning into anatomical position…"),m>.98?C.good:C.act2);
+  if(m>.7){const a=seg(m,.7,1);ctx.globalAlpha=a;const L=FP(fx,fy,s,-77,273),R=FP(fx,fy,s,77,273);dotPt(L[0],L[1],C["dot-a"],"",t);dotPt(R[0],R[1],C["dot-a"],"",t);
+    label(R[0]+14,R[1]+30,"palms forward",{size:12,weight:600,color:C["dot-a"]});const th=FP(fx,fy,s,-88,276);arrow(th[0]+30,th[1]+48,th[0]-2,th[1]+8,C["ink-soft"],1.5);label(th[0]+30,th[1]+60,"thumbs out",{size:12,align:"center"});ctx.globalAlpha=1}
+  // checklist
+  const items=["Standing upright","Facing forward","Feet forward, about shoulder width apart","Arms at the sides","Palms facing forward"];
+  const x0=420,y0=40;ctx.fillStyle=C["panel-2"];rr(x0-10,y0-18,380,items.length*34+18,8);ctx.fill();
+  items.forEach((it,k)=>{const ok=k<2?true:m>(.25+k*.17);const y=y0+k*34;circ(x0+10,y+4,10,ok?C.good:C.panel,ok?C.good:C.rule,1.5);
+    if(ok){ctx.strokeStyle="#fff";ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(x0+5,y+4);ctx.lineTo(x0+9,y+8);ctx.lineTo(x0+15,y);ctx.stroke()}
+    label(x0+28,y+4,it,{size:13.5,pill:false,color:ok?C.ink:C["ink-soft"],weight:ok?600:500})});
+  // supine and prone
+  const b=ease(seg(u,.55,.7));ctx.globalAlpha=b;
+  [[0,"Supine: lying face up",300],[1,"Prone: lying face down",400]].forEach(([k,txt,y])=>{
+    ctx.fillStyle=C.sunk;rr(430,y+16,350,10,4);ctx.fill();
+    ctx.save();ctx.translate(k?772:440,y+16-(k?2:0));ctx.rotate(k?Math.PI/2:-Math.PI/2);drawFigure("side",k?-4:-4,0,.75,{lw:1.6});ctx.restore();
+    label(605,y-50,txt,{align:"center",size:13,weight:600})});
+  ctx.globalAlpha=1;
+  STATE={morph:m};
+}
+
+/* ===== Scene: directions 1 ===== */
+function sceneDirs1(t){bg();
+  const ph=Math.floor(t/4)%3;const u=(t%4)/4;
+  const F={x:250,y:22,s:.98},S={x:590,y:22,s:.98};
+  drawFigure("front",F.x,F.y,F.s);drawFigure("side",S.x,S.y,S.s);
+  ctx.globalAlpha=.62;ctx.fillStyle=C.panel;if(ph===2)ctx.fillRect(F.x-100,10,200,450);else ctx.fillRect(S.x-45,10,100,450);ctx.globalAlpha=1;
+  label(F.x,470,"front view",{align:"center",size:12,color:C["ink-soft"],pill:false});label(S.x,470,"side view (facing right)",{align:"center",size:12,color:C["ink-soft"],pill:false});
+  const g=ease(seg(u,.02,.3)),d=seg(u,.3,.45),c=ease(seg(u,.45,.7));const col=C.act2;
+  let A,B,sent;
+  if(ph===0){arrow(96,230,96,230-170*g,col,4);arrow(96,240,96,240+170*g,col,4);
+    label(96,46,"SUPERIOR (cranial)",{align:"center",size:12,weight:700,color:col});label(96,428,"INFERIOR (caudal)",{align:"center",size:12,weight:700,color:col});
+    label(96,70,"toward the head",{align:"center",size:11.5,color:C["ink-soft"]});label(96,450,"toward the feet",{align:"center",size:11.5,color:C["ink-soft"]});
+    A=FP(F.x,F.y,F.s,0,22);B=FP(F.x,F.y,F.s,0,130);sent="The head is superior to the chest. The chest is inferior to the head."}
+  else if(ph===1){const m0=FP(F.x,F.y,F.s,0,0),m1=FP(F.x,F.y,F.s,0,440);line(m0[0],m0[1],m0[0],m0[1]+(m1[1]-m0[1])*g,C["ink-soft"],2,[6,5]);
+    label(m0[0]+8,m0[1]+8,"midline",{size:11.5,color:C["ink-soft"]});
+    const yy=F.y+200*F.s;arrow(F.x-6,yy,F.x-6-128*g,yy,col,3.5);arrow(F.x+6,yy,F.x+6+128*g,yy,col,3.5);
+    label(F.x-134,yy-20,"LATERAL",{align:"center",size:12,weight:700,color:col});label(F.x+134,yy-20,"LATERAL",{align:"center",size:12,weight:700,color:col});
+    const y2=F.y+400*F.s;arrow(F.x-125,y2,F.x-125+105*g,y2,C["ink-soft"],2.5);arrow(F.x+125,y2,F.x+125-105*g,y2,C["ink-soft"],2.5);label(F.x,y2+22,"MEDIAL: toward the midline",{align:"center",size:12,weight:700,color:C["ink-soft"]});
+    A=FP(F.x,F.y,F.s,-66,150);B=FP(F.x,F.y,F.s,0,124);sent="The arm is lateral to the breastbone. The breastbone is medial to the arm."}
+  else {const yy=S.y+260*S.s;arrow(S.x+10,yy,S.x+10+150*g,yy,col,4);arrow(S.x-10,yy,S.x-10-150*g,yy,col,4);
+    label(S.x+120,yy-22,"ANTERIOR (ventral)",{align:"center",size:12,weight:700,color:col});label(S.x-120,yy-22,"POSTERIOR (dorsal)",{align:"center",size:12,weight:700,color:col});
+    label(S.x+120,yy+22,"toward the front",{align:"center",size:11.5,color:C["ink-soft"]});label(S.x-120,yy+22,"toward the back",{align:"center",size:11.5,color:C["ink-soft"]});
+    const tz=torsoAt(196);A=FP(S.x,S.y,S.s,tz.zF-1,196);B=FP(S.x,S.y,S.s,tz.zB+2,190);sent="The navel is anterior to the backbone. The backbone is posterior to the navel."}
+  if(d>0){ctx.globalAlpha=d;dotPt(A[0],A[1],C["dot-a"],"A",t);dotPt(B[0],B[1],C["dot-b"],"B",t);ctx.globalAlpha=1}
+  if(c>0){const ex=lerp(B[0],A[0],c),ey=lerp(B[1],A[1],c);const dd=Math.hypot(A[0]-B[0],A[1]-B[1]);const k=Math.max(0,1-12/dd);arrow(B[0],B[1],B[0]+(ex-B[0])*k,B[1]+(ey-B[1])*k,col,2.5)}
+  if(c>.5){ctx.globalAlpha=seg(c,.5,1);label(400,446,sent,{align:"center",size:13.5,weight:600,border:col});ctx.globalAlpha=1}
+  STATE={pair:ph};
+}
+
+/* ===== Scene: directions 2 ===== */
+function sceneDirs2(t){bg();
+  // left: arm close-up
+  const ox=60,oy=-90,s=1.6;
+  ctx.save();ctx.beginPath();ctx.rect(0,0,392,H);ctx.clip();drawFigure("front",ox,oy,s,{lw:2.4});ctx.restore();
+  heading(20,22,"Proximal ↔ distal (along a limb)",C.act2);
+  const P=[[58,98],[68,186],[75,258],[77.5,298]].map(p=>FP(ox,oy,s,p[0],p[1]));
+  const u=(t%5)/5;const q=ease(seg(u,.05,.8));const pt=along(P,q);
+  pathLine(P,C.act2,2,[5,5]);glow(pt[0],pt[1],18,C.glow,.9);circ(pt[0],pt[1],6,C.glow,C.ink,1.2);
+  const sh=P[0];label(sh[0],sh[1]-26,"trunk attachment",{align:"center",size:12});
+  // proximal-distal meter
+  const mx=290,my=60,mh=330;ctx.fillStyle=C["panel-2"];rr(mx-8,my,16,mh,8);ctx.fill();ctx.fillStyle=C.act2;rr(mx-8,my,16,mh*q,8);ctx.fill();
+  label(mx+16,my+6,"PROXIMAL",{size:11.5,weight:700,color:C.act2});label(mx+16,my+mh-6,"DISTAL",{size:11.5,weight:700,color:C.act2});
+  label(mx+16,my+24,"closer to trunk",{size:11,color:C["ink-soft"]});label(mx+16,my+mh-24,"farther away",{size:11,color:C["ink-soft"]});
+  const A=FP(ox,oy,s,75,256),B=FP(ox,oy,s,68,186);const d=seg(u,.2,.35);ctx.globalAlpha=d;dotPt(A[0]-22,A[1],C["dot-a"],"wrist",t);dotPt(B[0]-22,B[1],C["dot-b"],"elbow",t);ctx.globalAlpha=1;
+  if(u>.4){const c=ease(seg(u,.4,.6));arrow(B[0]-22,B[1]+10,B[0]-22+(A[0]-B[0])*c,B[1]+10+(A[1]-B[1]-22)*c,C.act2,2.5)}
+  if(u>.55){label(196,452,"The wrist is distal to the elbow.",{align:"center",size:13,weight:600,border:C.act2})}
+  // right: layers
+  const x0=430,x1=780,top=88;const L=[["Skin",34,"skin"],["Fat (subcutaneous layer)",48,"bladder"],["Muscle",150,"cut"],["Bone",70,"bone"]];
+  heading(x0,22,"Superficial ↔ deep (from the surface)",C.act2);
+  let y=top;L.forEach((l,k)=>{ctx.fillStyle=C[l[2]];ctx.globalAlpha=k===1?.45:1;ctx.fillRect(x0,y,x1-x0,l[1]);ctx.globalAlpha=1;
+    if(k===2)for(let i=0;i<9;i++)line(x0,y+10+i*15,x1,y+10+i*15+Math.sin(t*2+i)*1.5,C["cut-edge"],1.2);
+    if(k===3){ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=2;ctx.strokeRect(x0+1,y+1,x1-x0-2,l[1]-2);ctx.fillStyle=C["bone-edge"];for(let i=0;i<40;i++)circ(x0+10+rnd(i)*(x1-x0-20),y+14+rnd(i+50)*(l[1]-28),2+rnd(i+9)*2,C["bone-edge"])}
+    label(x1-10,y+l[1]/2,l[0],{align:"right",size:12,weight:600});y+=l[1]});
+  line(x0,top,x1,top,C["skin-edge"],2);label(x0+150,top-14,"body surface",{size:11.5,color:C["ink-soft"],pill:false});
+  const v=(t%5)/5;const dep=ease(v<.6?seg(v,.05,.55):1-seg(v,.7,.95));const tipY=top-30+dep*290;
+  line(x0+80,top-60,x0+80,tipY,C.ink,3);ctx.beginPath();ctx.moveTo(x0+74,tipY-6);ctx.lineTo(x0+86,tipY-6);ctx.lineTo(x0+80,tipY+6);ctx.closePath();ctx.fillStyle=C.ink;ctx.fill();
+  let lay="above the skin";let yy=top;for(const l of L){if(tipY>=yy&&tipY<yy+l[1]){lay=l[0]}yy+=l[1]}
+  label(x0+94,Math.max(70,tipY),"probe tip: "+lay,{size:12,weight:600,border:C.act2});
+  arrow(x0-14,250,x0-14,110,C.act2,3);arrow(x0-14,280,x0-14,420,C.act2,3);
+  label(x0-14,96,"SUPERFICIAL",{align:"center",size:11,weight:700,color:C.act2});label(x0-14,436,"DEEP",{align:"center",size:11,weight:700,color:C.act2});
+  dotPt(x0+200,top+17,C["dot-a"],"",t);dotPt(x0+200,top+82+150+35,C["dot-b"],"",t);
+  label(605,456,"The skin is superficial to the bone.",{align:"center",size:13,weight:600,border:C.act2});
+}
+
+/* ===== Scene: axial vs appendicular ===== */
+function sceneAxial(t){bg();
+  const fx=290,fy=22,s=.98;const u=(t%9)/9;
+  drawFigure("front",fx,fy,s);
+  const ax=ease(seg(u,.04,.34)),ap=ease(seg(u,.38,.68));
+  const isAx=p=>["head","ear","neck","torso"].indexOf(p.id)>=0;
+  if(ap>0){ctx.save();ctx.beginPath();ctx.rect(0,fy+80*s,W,ap*370*s);ctx.clip();drawFigure("front",fx,fy,s,{only:p=>!isAx(p),fill:mix(C.skin,C.app,.7),deco:false});ctx.restore()}
+  if(ax>0){ctx.save();ctx.beginPath();ctx.rect(0,0,W,fy+ax*260*s);ctx.clip();drawFigure("front",fx,fy,s,{only:isAx,fill:mix(C.skin,C.ax,.7)});ctx.restore()}
+  const pul=u>.72?(.5+.5*Math.sin(t*4)):1;
+  const a1=FP(fx,fy,s,30,150),a2=FP(fx,fy,s,-70,220),a3=FP(fx,fy,s,24,300);
+  if(ax>.5){ctx.globalAlpha=seg(ax,.5,1);line(a1[0],a1[1],520,120,C.ax,1.5);label(526,110,"AXIAL REGION",{size:13,weight:700,color:C.ax,border:C.ax});label(526,136,"head, neck, and trunk",{size:12.5});
+    label(526,158,"the body's central axis",{size:12,color:C["ink-soft"]});ctx.globalAlpha=1;
+    const m0=FP(fx,fy,s,0,4),m1=FP(fx,fy,s,0,252);ctx.globalAlpha=.5*pul;line(m0[0],m0[1],m1[0],m1[1],C.ax,3,[8,6]);ctx.globalAlpha=1}
+  if(ap>.5){ctx.globalAlpha=seg(ap,.5,1);line(a2[0],a2[1],110,300,C.app,1.5);line(a3[0],a3[1],520,300,C.app,1.5);
+    label(526,290,"APPENDICULAR REGION",{size:13,weight:700,color:C.app,border:C.app});label(526,316,"upper and lower limbs",{size:12.5});label(526,338,"attached (appended) to the axis",{size:12,color:C["ink-soft"]});
+    label(110,312,"upper limb",{align:"center",size:12});label(fx+70,FP(fx,fy,s,0,380)[1],"lower limb",{size:12});ctx.globalAlpha=1}
+  STATE={ax,ap};
+}
+
+/* ===== Scene: regional terms ===== */
+const RSEQ=["cephalic","cervical","thoracic","abdominal","brachial","antebrachial","carpal","femoral","patellar","crural","pedal","occipital","vertebral","lumbar","gluteal","popliteal","sural","calcaneal"];
+function sceneRegions(t){bg();
+  const F={x:215,y:22,s:.98},B={x:585,y:22,s:.98};
+  drawFigure("front",F.x,F.y,F.s);drawFigure("back",B.x,B.y,B.s);
+  label(F.x,468,"anterior view",{align:"center",size:12,color:C["ink-soft"],pill:false});label(B.x,468,"posterior view",{align:"center",size:12,color:C["ink-soft"],pill:false});
+  const per=1.35;const n=RSEQ.length;const k=Math.floor(t/per)%n;const ph=(t%per)/per;
+  RSEQ.forEach((id,i)=>{if(i>k)return;const r=REG[id];const front=r.view!=="P";const V=front?F:B;const on=i===k;
+    const col=on?C.act2:C["ink-faint"];
+    if(on)fillRegion(r,V.x,V.y,V.s,C.act2,.45+.25*Math.sin(ph*Math.PI));
+    const at=r.at;const ax=front?-Math.abs(at[0]):Math.abs(at[0]);const p=FP(V.x,V.y,V.s,ax,at[1]);
+    const axial=["cephalic","cervical","thoracic","abdominal","occipital","vertebral","lumbar","gluteal"].indexOf(id)>=0;
+    let lx,al;if(axial){lx=front?318:482;al=front?"left":"right"}else{lx=front?112:688;al=front?"right":"left"}
+    const ly=at[1]*V.s+V.y;ctx.globalAlpha=on?1:.55;line(p[0],p[1],lx+(al==="left"?-4:4),ly,col,on?1.6:1);circ(p[0],p[1],on?3.5:2.5,col);
+    label(lx,ly,r.name,{align:al,size:on?13:12,weight:on?700:500,color:on?C.ink:C["ink-soft"],border:on?C.act2:null});ctx.globalAlpha=1;
+    if(on)label(400,446,r.name+" = "+r.plain,{align:"center",size:14,weight:600,border:C.act2})});
+  STATE={region:RSEQ[k]};
+}
+
+/* ===== plane + section helpers ===== */
+function planeV(X,y0,y1,col){ctx.globalAlpha=.16;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(X-22,y0-8);ctx.lineTo(X+22,y0+10);ctx.lineTo(X+22,y1+8);ctx.lineTo(X-22,y1-10);ctx.closePath();ctx.fill();
+  ctx.globalAlpha=.7;ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.globalAlpha=1;line(X,y0,X,y1,col,2.5)}
+function planeH(Y,x0,x1,col){ctx.globalAlpha=.16;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x0-24,Y+10);ctx.lineTo(x0+24,Y-10);ctx.lineTo(x1+24,Y-10);ctx.lineTo(x1-24,Y+10);ctx.closePath();ctx.fill();
+  ctx.globalAlpha=.7;ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.globalAlpha=1;line(x0,Y,x1,Y,col,2.5)}
+const ONAME={lung:"Lung",heart:"Heart",liver:"Liver",stomach:"Stomach",gut:"Intestines",kidney:"Kidney",bladder:"Bladder",brain:"Brain"};
+function sectionItems(plane,pos){const out=[];const seen={};
+  ORGANS.forEach(g=>{const ax=plane==="S"?0:plane==="F"?2:1;const d=(pos-g.c[ax])/g.r[ax];if(Math.abs(d)>=1)return;const k=sq(1-d*d);
+    let X,Y,r;if(plane==="S"){X=g.c[2];Y=g.c[1];r=Math.min(g.r[2],g.r[1])*k}else if(plane==="F"){X=g.c[0];Y=g.c[1];r=Math.min(g.r[0],g.r[1])*k}else{X=g.c[0];Y=-g.c[2];r=Math.min(g.r[0],g.r[2])*k}
+    if(r<3.5||seen[g.id])return;seen[g.id]=1;out.push({name:ONAME[g.id],x:X,y:Y,r})});
+  if(plane==="S"&&Math.abs(pos)<5)out.push({name:Math.abs(pos)<2.2?"Spinal cord":"Vertebral column",x:spineZ(150)-2,y:150,r:4});
+  if(plane==="T"&&pos>=60&&pos<=250)out.push({name:"Vertebra",x:0,y:-spineZ(pos),r:5});
+  return out}
+function labelSection(plane,pos,ox,oy,s,lx,align){const it=sectionItems(plane,pos);let used=[];
+  it.forEach(o=>{const p=[ox+o.x*s,oy+o.y*s];let ly=p[1];while(used.some(u=>Math.abs(u-ly)<20))ly+=20;used.push(ly);
+    line(p[0],p[1],lx+(align==="left"?-4:4),ly,C["ink-soft"],1);circ(p[0],p[1],2.4,C.ink);label(lx,ly,o.name,{align,size:12,weight:600})});
+  return it}
+
+/* ===== Scene: sagittal planes ===== */
+function keyf(K,t){for(let i=0;i<K.length-1;i++){if(t<=K[i+1][0]){const u=(t-K[i][0])/(K[i+1][0]-K[i][0]);return lerp(K[i][1],K[i+1][1],ease(u))}}return K[K.length-1][1]}
+function sceneSag(t){bg();
+  const F={x:205,y:22,s:.98};const K=[[0,0],[1.8,0],[3.8,24],[5.6,24],[8.2,-24],[9.8,-24],[11.6,0]];const pos=keyf(K,t%11.6);
+  drawFigure("front",F.x,F.y,F.s);
+  const X=F.x+pos*F.s;planeV(X,F.y-6,F.y+442*F.s,C.plane);
+  label(F.x-118,462,"body's right",{align:"center",size:12,color:C["ink-soft"]});label(F.x+118,462,"body's left",{align:"center",size:12,color:C["ink-soft"]});
+  const mid=Math.abs(pos)<1.5;
+  ctx.fillStyle=C["panel-2"];rr(410,12,378,456,8);ctx.fill();
+  heading(424,32,"The section (cut face), seen from the side");
+  drawSection("S",pos,560,46,.93);
+  labelSection("S",pos,560,46,.93,640,"left");
+  label(560,452,"← posterior   anterior →",{align:"center",size:11.5,color:C["ink-soft"],pill:false});
+  label(F.x,FP(F.x,F.y,F.s,0,-2)[1]+2,mid?"MIDSAGITTAL: equal halves":"PARASAGITTAL: unequal parts",{align:"center",size:13,weight:700,color:mid?C.good:C.plane,border:mid?C.good:C.plane});
+  STATE={pos,mid};
+}
+
+/* ===== Scene: frontal and transverse ===== */
+function levelName(y){return y<62?"the head":y<88?"the neck":y<160?"the chest (and arms)":y<214?"the abdomen (and arms)":y<252?"the pelvis":y<330?"the thighs":y<410?"the legs":"the feet"}
+function sceneFT(t){bg();const cyc=17.5;const tt=t%cyc;
+  ctx.fillStyle=C["panel-2"];rr(410,12,378,456,8);ctx.fill();
+  if(tt<8.5){const u=tt/8.5;const z=u<.6?lerp(18,-15,ease(seg(u,.06,.55))):lerp(-15,3,ease(seg(u,.62,.95)));
+    const S={x:205,y:22,s:.98};drawFigure("side",S.x,S.y,S.s);planeV(S.x+z*S.s,S.y-6,S.y+442*S.s,C.plane);
+    label(S.x-75,462,"← back",{align:"center",size:12,color:C["ink-soft"]});label(S.x+85,462,"front →",{align:"center",size:12,color:C["ink-soft"]});
+    label(S.x,14,"FRONTAL (CORONAL) PLANE",{align:"center",size:13,weight:700,color:C.plane,border:C.plane});
+    heading(424,32,"The section, seen from the front");
+    drawSection("F",z,598,46,.93);labelSection("F",z,598,46,.93,700,"left");
+    label(598,452,z>10?"near the front of the body":z<-8?"near the back of the body":"through the middle",{align:"center",size:12,color:C["ink-soft"],pill:false});
+    STATE={plane:"F",pos:z};
+  } else {const u=(tt-8.5)/9;const y=lerp(16,432,ease(seg(u,.03,.95)));
+    const F={x:205,y:22,s:.98};drawFigure("front",F.x,F.y,F.s);planeH(F.y+y*F.s,F.x-108,F.x+108,C.plane);
+    label(F.x,462,"TRANSVERSE (HORIZONTAL) PLANE",{align:"center",size:13,weight:700,color:C.plane,border:C.plane});
+    heading(424,32,"Cross-section through "+levelName(y));
+    drawSection("T",y,598,262,1.8);labelSection("T",y,598,262,1.8,598,"center");
+    label(598,90,"anterior (front)",{align:"center",size:11.5,color:C["ink-soft"],pill:false});label(598,440,"posterior (back)",{align:"center",size:11.5,color:C["ink-soft"],pill:false});
+    label(428,262,"body's right",{size:11.5,color:C["ink-soft"],pill:false});label(778,262,"body's left",{align:"right",size:11.5,color:C["ink-soft"],pill:false});
+    STATE={plane:"T",pos:y};
+  }
+}
+// transverse labels centred on the organ would overlap; draw them as small tags instead
+const _labelSection=labelSection;
+labelSection=function(plane,pos,ox,oy,s,lx,align){if(plane!=="T")return _labelSection(plane,pos,ox,oy,s,lx,align);
+  const it=sectionItems(plane,pos);it.forEach(o=>{const p=[ox+o.x*s,oy+o.y*s];label(p[0],p[1],o.name,{align:"center",size:11.5,weight:600,bga:.8})});return it};
+
+/* ===== cavity scenes (midsagittal view) ===== */
+const CV={ox:330,oy:6,s:1.75};
+const cvP=(z,y)=>[CV.ox+z*CV.s,CV.oy+y*CV.s];
+function zF(y){return torsoAt(y).zF}
+function diaY(z,br){const zb=spineZ(170)+7,zf=zF(166)-5;const u=clamp((z-zb)/(zf-zb),0,1);return lerp(172,165,u)-13*Math.sin(Math.PI*u)*(1-.35*br)+4*br}
+function cavPoly(kind,br){const P=[];const zb=spineZ(170)+7,zf=zF(166)-5;
+  if(kind==="thor"){for(let y=92;y<=diaY(zf,br);y+=2)P.push([zF(y)-5,y]);for(let z=zf;z>=zb;z-=1)P.push([z,diaY(z,br)]);for(let y=diaY(zb,br);y>=92;y-=2)P.push([spineZ(y)+7,y])}
+  else if(kind==="abd"||kind==="pel"||kind==="ap"){const top=kind==="pel"?null:1;
+    if(kind==="pel"){for(let y=226;y<=246;y+=2)P.push([zF(y)-5,y]);P.push([spineZ(246)+7,246]);for(let y=246;y>=212;y-=2)P.push([spineZ(y)+7,y])}
+    else{for(let z=zb;z<=zf;z+=1)P.push([z,diaY(z,br)]);const yb=kind==="abd"?226:246;for(let y=diaY(zf,br);y<=yb;y+=2)P.push([zF(y)-5,y]);
+      if(kind==="abd")P.push([spineZ(212)+7,212]);else P.push([spineZ(246)+7,246]);for(let y=kind==="abd"?212:246;y>=diaY(zb,br);y-=2)P.push([spineZ(y)+7,y])}}
+  return P}
+function cvPath(P){ctx.beginPath();P.forEach((p,i)=>{const q=cvP(p[0],p[1]);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});ctx.closePath()}
+function cavBody(){ctx.save();ctx.beginPath();ctx.rect(0,0,W,CV.oy+262*CV.s);ctx.clip();drawSection("S",0,CV.ox,CV.oy,CV.s,{noOrgans:true});
+  ctx.translate(CV.ox,CV.oy);ctx.scale(CV.s,CV.s);ell(2,28,23.5,19.5,0,null,C.bone,3.4);ctx.restore()}
+function cavLabel(px,py,lx,ly,txt,col,on,align){ctx.globalAlpha=on?1:.55;line(px,py,lx+(align==="right"?4:-4),ly,col,on?1.8:1);circ(px,py,3,col);label(lx,ly,txt,{align:align||"left",size:on?13:12,weight:on?700:500,border:on?col:null});ctx.globalAlpha=1}
+function tree(x,y,rows,onIdx){rows.forEach((r,i)=>{const on=i===onIdx||(Array.isArray(onIdx)&&onIdx.indexOf(i)>=0);const ind=r[0]*18;
+  if(r[0])line(x+ind-10,y+i*30-12,x+ind-10,y+i*30,C.rule,1.5),line(x+ind-10,y+i*30,x+ind-2,y+i*30,C.rule,1.5);
+  label(x+ind,y+i*30,r[1],{size:12.5,weight:on?700:500,color:on?C.ink:C["ink-soft"],border:on?C.act3:null,bg:on?C.panel:C["panel-2"]})})}
+function sceneCavD(t){bg();const u=(t%9)/9;cavBody();
+  const crOn=u<.36||u>.7,vOn=u>=.33;const g1=ease(seg(u,.04,.3)),g2=ease(seg(u,.36,.66));
+  // faint ventral cavity
+  ctx.globalAlpha=.25;cvPath(cavPoly("thor",0));ctx.fillStyle=C["panel-2"];ctx.fill();cvPath(cavPoly("ap",0));ctx.fill();ctx.globalAlpha=1;
+  // cranial cavity + brain
+  ctx.save();ctx.translate(CV.ox,CV.oy);ctx.scale(CV.s,CV.s);
+  ell(2,28,21.5,17.5,0,C.panel);ell(2,28,21.5*g1,17.5*g1,0,C.brain,C["brain-edge"],.8/CV.s);
+  if(g1>.6){ctx.globalAlpha=seg(g1,.6,1);ell(-11,40,8,5.5,0,C["brain-edge"]);for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(-8+i*5,22+Math.sin(i)*3,4,Math.PI,TAU);ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=.6;ctx.stroke()}ctx.globalAlpha=1}
+  // vertebral canal + cord
+  ctx.beginPath();for(let y=46;y<=240;y+=2)ctx.lineTo(spineZ(y)-2.5,y);ctx.strokeStyle=C.panel;ctx.lineWidth=5;ctx.stroke();
+  const ye=lerp(46,205,g2);ctx.beginPath();for(let y=40;y<=ye;y+=2)ctx.lineTo(spineZ(Math.max(y,46))-2.5,y);ctx.strokeStyle=C.cord;ctx.lineWidth=3;ctx.stroke();
+  ctx.restore();
+  // dashed outline of dorsal cavity
+  ctx.save();ctx.translate(CV.ox,CV.oy);ctx.scale(CV.s,CV.s);ctx.setLineDash([3,2]);ctx.strokeStyle=C.act3;ctx.lineWidth=1.4/CV.s*1.75;
+  ell(2,28,22.5,18.5,0,null,C.act3,1);ctx.beginPath();for(let y=46;y<=240;y+=2)ctx.lineTo(spineZ(y)-5.2,y);ctx.stroke();ctx.beginPath();for(let y=46;y<=240;y+=2)ctx.lineTo(spineZ(y)+.2,y);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+  const b=cvP(-12,24),c=cvP(spineZ(150)-2.5,150);
+  cavLabel(b[0],b[1],60,70,"Cranial cavity: brain",C.act3,crOn&&u<.36||u>.7,"left");
+  cavLabel(c[0],c[1],40,280,"Vertebral cavity: spinal cord",C.act3,vOn,"left");
+  if(g1>.9&&u>.2){const m=cvP(16,10);label(m[0]+30,m[1]+16,"skull",{size:11.5,color:C["ink-soft"]})}
+  ctx.fillStyle=C["panel-2"];rr(500,40,284,170,8);ctx.fill();heading(516,62,"Dorsal (posterior) cavity",C.act3);
+  tree(530,96,[[0,"Dorsal cavity"],[1,"Cranial cavity → brain"],[1,"Vertebral cavity → spinal cord"]],u<.33?1:u<.7?2:[0,1,2]);
+  label(520,190,"Bone all around. Meninges wrap the brain and cord.",{size:11.5,pill:false,color:C["ink-soft"]});
+  label(CV.ox+30,470,"posterior ←   → anterior",{align:"center",size:11.5,color:C["ink-soft"],pill:false});
+  STATE={brain:g1,cord:g2};
+}
+function sceneCavV(t){bg();const u=(t%12)/12;const br=.5+.5*Math.sin(t*1.5);cavBody();
+  const g1=ease(seg(u,.04,.26)),g2=ease(seg(u,.32,.55)),g3=ease(seg(u,.6,.8));const on=u<.3?0:u<.58?1:u<.85?2:3;
+  // cavities
+  [["thor",0,g1],["abd",1,g2],["pel",2,g3]].forEach(([k,i,g])=>{cvPath(cavPoly(k,br));ctx.fillStyle=C.panel;ctx.fill();if(on===i||on===3){ctx.globalAlpha=.18;ctx.fillStyle=C.act3;ctx.fill();ctx.globalAlpha=1}});
+  ctx.save();ctx.translate(CV.ox,CV.oy);ctx.scale(CV.s,CV.s);
+  // dorsal (faint)
+  ell(2,28,21.5,17.5,0,C.brain);ctx.globalAlpha=.6;ctx.beginPath();for(let y=46;y<=205;y+=2)ctx.lineTo(spineZ(y)-2.5,y);ctx.strokeStyle=C.cord;ctx.lineWidth=3;ctx.stroke();ctx.globalAlpha=1;
+  // thoracic organs
+  if(g1>0){ctx.globalAlpha=.35*g1;ell(1,124,13*g1,29*g1,0,C.lung);ctx.setLineDash([2,2]);ell(1,124,13*g1,29*g1,0,null,C["cut-edge"],.6);ctx.setLineDash([]);ctx.globalAlpha=1;
+    const hb=1+.05*Math.sin(t*7);ell(9,140,9*g1*hb,12.5*g1*hb,-.3,C.heart,"rgba(0,0,0,.3)",.5);line(4,128,0,100,C.vessel,2.2*g1)}
+  if(g2>0){ell(5,173,11*g2,9.5*g2,0,C.liver);ctx.globalAlpha=.7;ell(10,178,6*g2,6*g2,0,C.stomach);ctx.globalAlpha=1;
+    ell(4,204,12*g2,15*g2,0,C.gut);if(g2>.5){for(let i=0;i<4;i++){ctx.beginPath();ctx.arc(0+i%2*7,194+i*6,4,0,Math.PI);ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=.7;ctx.stroke()}}}
+  if(g3>0){ell(9,238,6*g3,6*g3,0,C.bladder);line(-6,214,-5,246*g3+214*(1-g3),C.gut,4.5*g3)}
+  // diaphragm
+  ctx.beginPath();const zb=spineZ(170)+7,zf=zF(166)-5;for(let z=zb;z<=zf;z+=.5)ctx.lineTo(z,diaY(z,br));ctx.strokeStyle=C.act3;ctx.lineWidth=2.4;ctx.stroke();
+  // abdominal / pelvic imaginary line
+  ctx.setLineDash([2,2]);line(zF(226)-5,226,spineZ(212)+7,212,C["ink-soft"],.9);ctx.setLineDash([]);
+  ctx.restore();
+  const R=[[cvP(12,110),110,"Thoracic cavity",0],[cvP(14,diaY(14,br)),200,"Diaphragm",4],[cvP(14,195),280,"Abdominal cavity",1],[cvP(10,236),380,"Pelvic cavity",2]];
+  R.forEach(r=>cavLabel(r[0][0],r[0][1],460,r[1],r[2],C.act3,r[3]===on||on===3||(r[3]===4&&on===0),"left"));
+  const im=cvP(14,220);label(im[0]+22,im[1]+32,"imaginary line",{size:11,color:C["ink-soft"]});
+  ctx.fillStyle=C["panel-2"];rr(14,40,250,190,8);ctx.fill();heading(28,62,"Ventral (anterior) cavity",C.act3);
+  tree(34,96,[[0,"Ventral cavity"],[1,"Thoracic cavity"],[1,"Abdominopelvic cavity"],[2,"Abdominal cavity"],[2,"Pelvic cavity"]],on===0?1:on===1?3:on===2?4:[0,1,2]);
+  label(CV.ox+30,470,"posterior ←   → anterior",{align:"center",size:11.5,color:C["ink-soft"],pill:false});
+  label(140,300,br>.5?"breathing in: diaphragm flattens":"breathing out: diaphragm domes up",{align:"center",size:12,color:C["ink-soft"]});
+  STATE={on,br};
+}
+
+/* ===== Scene: thoracic subdivisions ===== */
+function sceneThor(t){bg();const ox=400,oy=-196,s=2.6;const u=(t%10.5)/10.5;const on=Math.floor(u*3);const br=.5+.5*Math.sin(t*1.5);const hb=1+.06*Math.max(0,Math.sin(t*7));
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();drawFigure("front",ox,oy,s,{lw:3,deco:false});ctx.restore();
+  ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);
+  // ribs
+  ctx.globalAlpha=.45;for(let i=0;i<7;i++){const y=98+i*10;const w=lerp(30,46,Math.min(1,i/3));[-1,1].forEach(sg=>{ctx.beginPath();ctx.moveTo(sg*4,y);ctx.quadraticCurveTo(sg*(w+6),y-6,sg*(w-2),y+14);ctx.strokeStyle=C.bone;ctx.lineWidth=3;ctx.stroke()})}ctx.globalAlpha=1;
+  // pleural cavities + lungs
+  [[-27,124,15,32],[28,124,13,31]].forEach(L=>{ell(L[0],L[1],L[2]+3,L[3]+3,0,on===0?mix(C.fluid,C.panel,.2):C.fluid,on===0?C.act3:C["ink-faint"],on===0?1.4:.6);
+    const k=.92+.08*br;ell(L[0],L[1]+(1-k)*10,L[2]*k,L[3]*k,0,C.lung,"rgba(0,0,0,.25)",.5);for(let j=0;j<3;j++){ctx.beginPath();ctx.moveTo(L[0]+(L[0]>0?-6:6),L[1]-10+j*12);ctx.lineTo(L[0]+(L[0]>0?6:-6)*(1.2+j*.2),L[1]-4+j*14);ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=.6;ctx.stroke()}});
+  // mediastinum
+  if(on===1){ctx.globalAlpha=.25+.1*Math.sin(t*4);ctx.beginPath();ctx.moveTo(-9,88);ctx.lineTo(9,88);ctx.lineTo(11,116);ctx.lineTo(15,126);ctx.lineTo(16,158);ctx.lineTo(-12,158);ctx.lineTo(-11,116);ctx.closePath();ctx.fillStyle=C.act3;ctx.fill();ctx.globalAlpha=1}
+  // trachea, esophagus
+  line(-2.5,70,-2.5,108,C.bone,4);line(-2.5,108,-16,116,C.bone,3);line(-2.5,108,13,116,C.bone,3);line(2,72,3,150,C.stomach,2);
+  // pericardial cavity + heart
+  ell(4,142,13.5,15.5,-.35,on===2?mix(C.fluid,C.panel,.2):C.fluid,on===2?C.act3:C["ink-faint"],on===2?1.4:.6);
+  ell(4,142,10.5*hb,12.5*hb,-.35,C.heart,"rgba(0,0,0,.3)",.6);line(2,128,-1,112,C.vessel,3);
+  // diaphragm
+  ctx.beginPath();for(let x=-46;x<=46;x+=1){ctx.lineTo(x,160+3*br-8*Math.cos(x/46*Math.PI/2)*(1-.3*br)+(Math.abs(x)>38?(Math.abs(x)-38)*.6:0))}ctx.strokeStyle=C.act3;ctx.lineWidth=2;ctx.stroke();
+  ctx.restore();
+  const P=(x,y)=>FP(ox,oy,s,x,y);
+  cavLabel(P(-40,112)[0],P(-40,112)[1],40,60,"Right pleural cavity",C.act3,on===0,"left");
+  cavLabel(P(40,112)[0],P(40,112)[1],620,60,"Left pleural cavity",C.act3,on===0,"left");
+  cavLabel(P(-4,152)[0],P(-4,152)[1],330,420,"Mediastinum",C.act3,on===1,"left");
+  cavLabel(P(15,150)[0],P(15,150)[1],600,330,"Pericardial cavity",C.act3,on===2,"left");
+  label(400,466,["Each lung sits in its own pleural cavity.","The mediastinum is the central region between the lungs.","The heart sits in the pericardial cavity, inside the mediastinum."][on],{align:"center",size:13,weight:600,border:C.act3});
+  STATE={on};
+}
+
+/* ===== Scene: quadrants and regions ===== */
+const R9=["Right hypochondriac","Epigastric","Left hypochondriac","Right lumbar","Umbilical","Left lumbar","Right iliac (inguinal)","Hypogastric (pubic)","Left iliac (inguinal)"];
+function sceneQuad(t){bg();const ox=232,oy=-176,s=2.3;const cyc=17;const tt=t%cyc;const quad=tt<7.5;
+  ctx.save();ctx.beginPath();ctx.rect(0,0,470,H);ctx.clip();drawFigure("front",ox,oy,s,{lw:3});ctx.restore();
+  const tor=PARTS.find(p=>p.id==="torso");
+  ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);polyPath(partPoly(tor,"front"));ctx.clip();
+  ctx.globalAlpha=.5;ell(-13,170,25,12,0,C.liver);ell(-6,180,4,3,0,C.insulin);ell(15,174,12,11,0,C.stomach);ell(33,168,5,8,0,C.kidney);
+  ctx.beginPath();ctx.moveTo(-28,232);ctx.lineTo(-28,190);ctx.lineTo(28,190);ctx.lineTo(28,236);ctx.strokeStyle=C.gut;ctx.lineWidth=7;ctx.stroke();
+  for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(-12+(i%3)*12,204+Math.floor(i/3)*12,6,0,TAU);ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=2;ctx.stroke()}
+  line(-28,232,-25,242,C.gut,3);ell(0,240,9,7,0,C.bladder);ctx.globalAlpha=1;
+  if(quad){const g=ease(seg(tt,.2,1.6));line(0,196-55*g,0,196+55*g,C.act3,1.6);line(-50*g,196,50*g,196,C.act3,1.6);
+    const Q=[["RUQ",-24,172],["LUQ",24,172],["RLQ",-24,222],["LLQ",24,222]];
+    Q.forEach((q,i)=>{if(tt<1.6+i*.35)return;const hl=tt>3.6&&i===2;if(hl){ctx.globalAlpha=.25+.15*Math.sin(t*6);ctx.fillStyle=C.act3;ctx.fillRect(-60,196,60,70);ctx.globalAlpha=1}})
+    ctx.restore();
+    Q.forEach((q,i)=>{if(tt<1.6+i*.35)return;const p=FP(ox,oy,s,q[1],q[2]);label(p[0],p[1],q[0],{align:"center",size:15,weight:700,border:i===2&&tt>3.6?C.act3:null})});
+    if(tt>3.6){const ap=FP(ox,oy,s,-25,240);const pu=1+.3*Math.sin(t*6);glow(ap[0],ap[1],22*pu,C.hot,.8);label(ap[0]-6,ap[1]+30,"appendix pain",{align:"center",size:12,weight:600,color:C.hot})}
+    ctx.fillStyle=C["panel-2"];rr(486,40,300,190,8);ctx.fill();heading(500,62,"Four quadrants",C.act3);
+    ["RUQ: right upper quadrant","LUQ: left upper quadrant","RLQ: right lower quadrant","LLQ: left lower quadrant"].forEach((s2,i)=>label(500,96+i*30,s2,{size:13,pill:false,weight:i===2&&tt>3.6?700:500}));
+    STATE={mode:"quad"};
+  } else {const g=ease(seg(tt,7.6,9));
+    const k=tt<9?-1:Math.floor((tt-9)/.85)%9;
+    if(k>=0){const c=k%3,r=Math.floor(k/3);const xs=[-60,-18,18,60],ys=[140,176,214,262];ctx.globalAlpha=.3+.1*Math.sin(t*5);ctx.fillStyle=C.act3;ctx.fillRect(xs[c],ys[r],xs[c+1]-xs[c],ys[r+1]-ys[r]);ctx.globalAlpha=1}
+    [-18,18].forEach(x=>line(x,146,x,146+110*g,C.act3,1.4));[176,214].forEach(y=>line(-50*g,y,50*g,y,C.act3,1.4));
+    ctx.restore();
+    for(let i=0;i<9;i++){const c=i%3,r=Math.floor(i/3);const p=FP(ox,oy,s,[-33,0,33][c],[160,195,232][r]);if(g>.5)badge(p[0],p[1],i+1,i===k?C.act3:C["ink-soft"])}
+    const x0=486,y0=120,cw=100,ch=74;heading(x0,62,"Nine regions",C.act3);label(x0,90,"Grid as you face the patient",{size:12,pill:false,color:C["ink-soft"]});
+    for(let i=0;i<9;i++){const c=i%3,r=Math.floor(i/3);const x=x0+c*cw,y=y0+r*ch;const on=i===k;ctx.fillStyle=on?C.act3:C["panel-2"];rr(x+2,y+2,cw-4,ch-4,6);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+      ctx.font=`700 11px ${MONO}`;ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.textAlign="left";ctx.textBaseline="top";ctx.fillText(String(i+1),x+8,y+8);
+      const words=R9[i].split(" ");ctx.font=`${on?600:500} 12px ${FONT}`;ctx.fillStyle=on?"#fff":C.ink;ctx.textAlign="center";
+      words.forEach((w,j)=>ctx.fillText(w,x+cw/2,y+24+j*15))}
+    STATE={mode:"nine",k};
+  }
+  label(232,14,"The patient's RIGHT is on YOUR left",{align:"center",size:12.5,weight:600,border:C.act3});
+}
+
+/* ===== Scene: serous membranes (fist into balloon) ===== */
+function roundedU(cx,hw,bottom,top,r){const P=[];for(let y=top;y<bottom-r;y+=2)P.push([cx-hw,y]);
+  for(let a=Math.PI;a>=Math.PI/2;a-=.08)P.push([cx-hw+r+Math.cos(a)*r,bottom-r+Math.sin(a)*r]);
+  for(let x=cx-hw+r;x<cx+hw-r;x+=2)P.push([x,bottom]);
+  for(let a=Math.PI/2;a>=0;a-=.08)P.push([cx+hw-r+Math.cos(a)*r,bottom-r+Math.sin(a)*r]);
+  for(let y=bottom-r;y>=top;y-=2)P.push([cx+hw,y]);return P}
+function resample(P,n){const L=[0];for(let i=1;i<P.length;i++)L.push(L[i-1]+Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]));const tot=L[L.length-1]||1;const out=[];let j=0;
+  for(let i=0;i<n;i++){const d=tot*i/Math.max(1,n-1);while(j<L.length-2&&L[j+1]<d)j++;const f=(d-L[j])/((L[j+1]-L[j])||1);out.push([lerp(P[j][0],P[j+1][0],f),lerp(P[j][1],P[j+1][1],f)])}return out}
+let SER=null;
+function buildSerous(){const inner=roundedU(250,50,292,172,26),outer=roundedU(250,68,310,172,44);
+  let mi=0,md=1e9;inner.forEach((p,i)=>{const d=Math.abs(p[0]-250)+Math.abs(p[1]-292);if(d<md){md=d;mi=i}});
+  const arc=(cx,a0,a1)=>{const P=[];for(let k=0;k<=12;k++){const a=lerp(a0,a1,k/12);P.push([cx+Math.cos(a)*9,172+Math.sin(a)*9])}return P};
+  const pieces=[[inner.slice(mi),"v"],[arc(309,Math.PI,TAU),"f"],[outer.slice().reverse(),"p"],[arc(191,Math.PI,TAU),"f"],[inner.slice(0,mi+1),"v"]];
+  const len=P=>{let s=0;for(let i=1;i<P.length;i++)s+=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);return s};
+  const tot=pieces.reduce((s,p)=>s+len(p[0]),0);const N=320;const B=[],tag=[];
+  pieces.forEach(p=>{const n=Math.max(3,Math.round(N*len(p[0])/tot));resample(p[0],n).forEach(q=>{B.push(q);tag.push(p[1])})});
+  const A=B.map((_,i)=>{const a=-Math.PI/2+i/B.length*TAU;return [250+Math.cos(a)*100,232+Math.sin(a)*100]});
+  SER={A,B,tag,mid:roundedU(250,59,301,172,35)}}
+function heartShape(x,y,sc,col){ctx.save();ctx.translate(x,y);ctx.scale(sc,sc);ctx.rotate(-.35);ctx.beginPath();ctx.moveTo(0,52);ctx.bezierCurveTo(-58,10,-52,-44,-16,-46);ctx.bezierCurveTo(-2,-47,0,-34,0,-30);
+  ctx.bezierCurveTo(0,-34,4,-47,18,-46);ctx.bezierCurveTo(54,-44,58,10,0,52);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.5;ctx.stroke();ctx.restore()}
+function sceneSerous(t){bg();if(!SER)buildSerous();const u=(t%14)/14;
+  const push=ease(seg(u,.03,.3));const fb=lerp(60,287,push);const m=clamp((fb-132)/(287-132),0,1);const hf=ease(seg(u,.58,.7));
+  const P=SER.A.map((a,i)=>[lerp(a[0],SER.B[i][0],m),lerp(a[1],SER.B[i][1],m)]);
+  ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.globalAlpha=.5;ctx.fillStyle=C.fluid;ctx.fill();ctx.globalAlpha=1;
+  for(let i=0;i<P.length;i++){const j=(i+1)%P.length;const tg=SER.tag[i];line(P[i][0],P[i][1],P[j][0],P[j][1],tg==="v"?C.visceral:tg==="p"?C.parietal:C["ink-soft"],3.2)}
+  if(m>.95){for(let i=0;i<14;i++){const q=(t*.05+i/14)%1;const p=along(SER.mid,q);circ(p[0],p[1],2.2,C.panel,C.fluid,1)}}
+  // fist / arm
+  ctx.globalAlpha=1-hf;ctx.fillStyle=C.skin;ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=2;
+  rr(218,-20,64,fb-80,10);ctx.fill();ctx.stroke();rr(205,fb-112,90,112,24);ctx.fill();ctx.stroke();
+  for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(214,fb-84+i*26);ctx.quadraticCurveTo(250,fb-76+i*26,286,fb-84+i*26);ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.4;ctx.stroke()}
+  ell(292,fb-70,9,22,.2,C.skin,C["skin-edge"],1.5);ctx.globalAlpha=1;
+  if(hf>0){ctx.globalAlpha=hf;const beat=1+.05*Math.max(0,Math.sin(t*7));heartShape(250,234,.9*beat,C.heart);line(240,180,236,120,C.vessel,8);line(262,182,272,124,C.parietal,7);ctx.globalAlpha=1}
+  const steps=["1  Push a fist into a soft balloon","2  The balloon wraps it in two layers","3  Swap the fist for an organ: the heart"];const st=u<.32?0:u<.6?1:2;
+  heading(20,24,steps[st],C.act3);
+  if(u>.34){const a=seg(u,.34,.42);ctx.globalAlpha=a;
+    cavLabel(300,250,360,212,"Visceral layer",C.visceral,true,"left");label(360,232,"on the organ",{size:11.5,color:C["ink-soft"],pill:false});
+    cavLabel(318,290,360,312,"Parietal layer",C.parietal,true,"left");label(360,332,"lines the wall",{size:11.5,color:C["ink-soft"],pill:false});
+    cavLabel(309,200,360,150,"Serous fluid",C.fluid,true,"left");label(360,170,"thin, slippery film",{size:11.5,color:C["ink-soft"],pill:false});ctx.globalAlpha=1}
+  label(250,440,hf>.5?"The beating heart slides with almost no friction.":(m>.9?"Fluid gap shown much wider than in life.":""),{align:"center",size:12.5,weight:600,pill:hf>.5||m>.9});
+  // example cards
+  const cards=[["Pleura","around each lung","lung"],["Pericardium","around the heart","heart"],["Peritoneum","around abdominal organs","gut"]];
+  const hot=st===2?Math.floor((u-.6)/.4*3)%3:-1;
+  cards.forEach((c,i)=>{const x=520,y=40+i*134;panelBox(x,y,264,118,i===hot,C.act3);const cx=x+52,cy=y+60;
+    ell(cx,cy,34,38,0,C.fluid,C.parietal,2.2);
+    if(c[2]==="heart")heartShape(cx,cy+2,.48,C.heart);else if(c[2]==="lung")ell(cx,cy,24,30,0,C.lung);else{ell(cx,cy,26,28,0,C.gut);for(let k=0;k<3;k++){ctx.beginPath();ctx.arc(cx-8+k*8,cy-6+k*7,6,0,Math.PI);ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=1.5;ctx.stroke()}}
+    ell(cx,cy,c[2]==="heart"?27:c[2]==="lung"?26:28,c[2]==="heart"?31:c[2]==="lung"?32:30,0,null,C.visceral,2);
+    label(x+102,y+44,c[0],{size:15,weight:700,pill:false});label(x+102,y+68,c[1],{size:12.5,pill:false,color:C["ink-soft"]})});
+  STATE={m,hf};
+}
+
+/* ===== Scene: set point ===== */
+function tempSig(tau){const tm=((tau%16)+16)%16;const g=x=>x>0?x*Math.exp(1-x):0;
+  return 37+.11*Math.sin(1.3*tau)+.06*Math.sin(3.1*tau+1)+.95*g((tm-3.5)/1.4)-.9*g((tm-10.5)/1.4)}
+function sceneSetpt(t){bg();const gx0=70,gx1=620,gy0=60,gy1=400,lo=35.5,hi=38.5;const yv=v=>gy1-(v-lo)/(hi-lo)*(gy1-gy0);const win=12;
+  ctx.globalAlpha=.18;ctx.fillStyle=C.good;ctx.fillRect(gx0,yv(37.5),gx1-gx0,yv(36.5)-yv(37.5));ctx.globalAlpha=1;
+  line(gx0,yv(37),gx1,yv(37),C["ink-soft"],1.5,[6,5]);
+  [36,37,38].forEach(v=>label(gx0-8,yv(v),v+" °C",{align:"right",size:11.5,mono:true,pill:false,color:C["ink-soft"]}));
+  line(gx0,gy0,gx0,gy1,C.rule,1.2);line(gx0,gy1,gx1,gy1,C.rule,1.2);
+  label(gx1-4,yv(37.5)-12,"normal range",{align:"right",size:12,weight:600,color:C.good});label(gx1-4,yv(37)-12,"set point 37 °C",{align:"right",size:12,color:C["ink-soft"]});
+  ctx.lineWidth=3;let prev=null;
+  for(let x=gx0;x<=gx1;x+=2){const tau=t-(gx1-x)/(gx1-gx0)*win;const v=tempSig(tau);const y=yv(v);const out=v>37.5||v<36.5;
+    if(prev){ctx.beginPath();ctx.moveTo(prev[0],prev[1]);ctx.lineTo(x,y);ctx.strokeStyle=out?C.warn:C.act4;ctx.stroke()}prev=[x,y]}
+  // events
+  for(let k=Math.floor((t-win)/16)-1;k<=Math.floor(t/16)+1;k++){[[3.5,"exercise","↑"],[10.5,"cold wind","↓"]].forEach(e=>{const tau=k*16+e[0];const x=gx1-(t-tau)/win*(gx1-gx0);if(x<gx0+30||x>gx1)return;
+    line(x,gy1,x,gy1-14,C["ink-soft"],1.5);label(x,gy1+16,e[1],{align:"center",size:11.5,color:C["ink-soft"]})})}
+  const v=tempSig(t);const out=v>37.5||v<36.5;circ(gx1,yv(v),6,out?C.warn:C.act4,C.panel,2);
+  thermo(700,70,280,v,35,39,out?C.warn:C.act4,{band:[36.5,37.5],ticks:[36,37,38]});
+  label(700,40,v.toFixed(1)+" °C",{align:"center",size:16,weight:700,mono:true});
+  label(345,30,out?(v>37?"Too high: the body starts cooling itself":"Too low: the body starts warming itself"):"Inside the normal range",{align:"center",size:13.5,weight:600,color:out?C.warn:C.good,border:out?C.warn:C.good});
+  if(out)arrow(gx1-24,yv(v),gx1-24,yv(37)+(v>37?-6:6),C.warn,2.5);
+  label(345,446,"time →  (sped up)",{align:"center",size:12,color:C["ink-soft"],pill:false});
+  STATE={v,out};
+}
+
+/* ===== Scene: loop parts ===== */
+function wrapText(txt,x,y,maxW,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${FONT}`;ctx.textAlign=o.align||"center";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=txt.split(" ");let ln="",lines=[];words.forEach(w=>{const tst=ln?ln+" "+w:w;if(ctx.measureText(tst).width>maxW&&ln){lines.push(ln);ln=w}else ln=tst});lines.push(ln);
+  const y0=o.top?y:y-(lines.length-1)*lh/2;lines.forEach((l,i)=>ctx.fillText(l,x,y0+i*lh));return lines.length}
+function sceneLoop(t){bg();const u=(t%11)/11;const cx=270,cy=245,R=158;
+  const N=[["Stimulus","a change",-Math.PI/2],["Sensor","detects it",0],["Control center","compares to set point",Math.PI/2],["Effector","acts",Math.PI]];
+  const st=u<.14?0:u<.3?1:u<.48?2:u<.68?3:4;
+  circ(cx,cy,R,null,C.rule,4);
+  for(let i=0;i<4;i++){const a=N[i][2]+.32;const x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;ctx.save();ctx.translate(x,y);ctx.rotate(a+Math.PI/2);ctx.beginPath();ctx.moveTo(8,0);ctx.lineTo(-6,-7);ctx.lineTo(-6,7);ctx.closePath();ctx.fillStyle=C["ink-faint"];ctx.fill();ctx.restore()}
+  const ta=-Math.PI/2+clamp(u/.68,0,1)*TAU*(st===4?1:1);const tx=cx+Math.cos(ta)*R,ty=cy+Math.sin(ta)*R;if(u<.7){glow(tx,ty,22,C.act4,.9);circ(tx,ty,7,C.act4,C.panel,2)}
+  N.forEach((n,i)=>{const x=cx+Math.cos(n[2])*R,y=cy+Math.sin(n[2])*R;const on=i===st;ctx.fillStyle=on?C.act4:C["panel-2"];rr(x-74,y-26,148,52,8);ctx.fill();ctx.strokeStyle=on?C.act4:C.rule;ctx.lineWidth=1.5;ctx.stroke();
+    label(x,y-9,n[0],{align:"center",size:14,weight:700,pill:false,color:on?"#fff":C.ink});label(x,y+11,n[1],{align:"center",size:12,pill:false,color:on?"#fff":C["ink-soft"]})});
+  // value gauge in the middle
+  const val=u<.14?lerp(0,1,ease(seg(u,0,.12))):u<.48?1:u<.8?1-ease(seg(u,.5,.78)):0;
+  const gx=cx,gy0=cy-62,gy1=cy+62;ctx.fillStyle=C.panel;rr(gx-16,gy0,32,gy1-gy0,6);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+  const mid=(gy0+gy1)/2+18;ctx.globalAlpha=.25;ctx.fillStyle=C.good;ctx.fillRect(gx-15,mid-12,30,24);ctx.globalAlpha=1;line(gx-22,mid,gx+22,mid,C["ink-soft"],1.5,[4,3]);
+  const vy=mid-val*48;ctx.fillStyle=val>.3?C.warn:C.good;rr(gx-10,vy-5,20,10,4);ctx.fill();label(gx+30,vy,val>.3?"too high":"in range",{size:11.5,weight:600,color:val>.3?C.warn:C.good});
+  label(gx-30,mid,"set point",{align:"right",size:11,color:C["ink-soft"]});
+  // example panel
+  const ex=[["Stimulus","Body temperature rises above 37 °C during exercise."],["Sensor","Temperature receptors in the skin and brain detect the rise."],["Control center","The hypothalamus in the brain compares it to 37 °C and sends signals."],["Effector","Sweat glands and skin blood vessels respond."],["Response","Temperature falls back toward 37 °C. The stimulus is gone, so the loop quiets down."]];
+  ctx.fillStyle=C["panel-2"];rr(520,40,266,400,8);ctx.fill();heading(534,62,"Example: body temperature",C.act4);
+  ex.forEach((e,i)=>{const y=94+i*69;const on=i===st;if(on){ctx.fillStyle=C.panel;rr(528,y-14,250,64,6);ctx.fill();ctx.strokeStyle=C.act4;ctx.lineWidth=2;ctx.stroke()}
+    label(538,y,(i+1)+". "+e[0],{size:13,weight:700,pill:false,color:on?C.act4:C["ink-soft"]});ctx.globalAlpha=on?1:.6;wrapText(e[1],653,y+19,236,15,{size:12,top:1});ctx.globalAlpha=1});
+  if(st===4)label(cx,cy+R+38,"Response opposes the stimulus = NEGATIVE feedback",{align:"center",size:13,weight:700,color:C.good,border:C.good});
+  STATE={st};
+}
+
+/* ===== Scenes: thermoregulation ===== */
+function thermoScene(t,hot){bg();const tt=t%12;const u=tt/12;
+  const tA=hot?37.9:36.2;const temp=u<.2?lerp(37,tA,ease(seg(u,0,.2))):u<.42?tA+(hot?.06:-.06)*seg(u,.2,.42):lerp(tA+(hot?.06:-.06),hot?37.1:36.9,ease(seg(u,.42,.85)));
+  const e=ease(seg(u,.38,.48))*(1-.75*ease(seg(u,.8,.97)));const st=u<.17?0:u<.29?1:u<.38?2:u<.75?3:4;
+  // backdrop
+  if(hot){const sx=70,sy=48;for(let i=0;i<10;i++){const a=i/10*TAU+t*.4;line(sx+Math.cos(a)*26,sy+Math.sin(a)*26,sx+Math.cos(a)*38,sy+Math.sin(a)*38,C.glow,3)}circ(sx,sy,20,C.glow);label(sx,sy+56,"hot day + exercise",{align:"center",size:11.5})}
+  else{for(let i=0;i<22;i++){const x=(rnd(i)*300+t*30*(.5+rnd(i+9)))%300,y=(rnd(i+3)*460+t*40*(.6+rnd(i+5)))%460;ctx.globalAlpha=.7;label(x,y,"*",{size:16,pill:false,color:C.cold,weight:700});ctx.globalAlpha=1}
+    label(50,30,"cold wind",{align:"center",size:11.5});for(let i=0;i<3;i++){const y=70+i*14;const x=(t*80+i*40)%120-20;line(x,y,x+40,y,C.cold,2)}}
+  const fx=160+(hot?0:Math.sin(t*55)*1.8*e),fy=34,s=.9;
+  drawFigure("front",fx,fy,s,{fill:hot?mix(C.skin,C.hot,.4*e):mix(C.skin,C.cold,.12*e)});
+  const H0=FP(fx,fy,s,0,38);glow(H0[0],H0[1],18+(st===2?8*Math.sin(t*10):0),C.nerve,st>=2&&st<=3?.95:.35);circ(H0[0],H0[1],4,C.nerve,C.ink,1);
+  label(H0[0]+40,H0[1]-26,"hypothalamus",{size:11.5,weight:600});line(H0[0]+5,H0[1]-4,H0[0]+34,H0[1]-20,C["ink-soft"],1);
+  const skinPts=[[-66,150],[22,120],[-25,300]].map(p=>FP(fx,fy,s,p[0],p[1]));const neck=FP(fx,fy,s,0,80);
+  if(st===1||st===3){const q=st===1?seg(u,.17,.29):seg(u,.38,.5);skinPts.forEach((sp,i)=>{for(let j=0;j<3;j++){const f=clamp(q*1.3-j*.15,0,1);if(f<=0||f>=1)continue;const P=st===1?[sp,neck,H0]:[H0,neck,sp];const p=along(P,f);circ(p[0],p[1],4,C.nerve,C.ink,1)}})}
+  if(hot&&e>.05){for(let i=0;i<9;i++){const b=[[-6,22],[8,24],[-12,120],[14,150],[-66,160],[66,200],[-20,180],[24,300],[-25,320]][i];const q=(t*.3+rnd(i))%1;const p=FP(fx,fy,s,b[0],b[1]+q*24);drop(p[0],p[1],5,C.sweat,Math.min(1,e*1.6)*(1-q*.5))}}
+  if(!hot&&e>.05)label(fx,FP(fx,fy,s,0,446)[1]+4,"shivering",{align:"center",size:12,weight:700,color:C.act4,border:C.act4});
+  // skin inset
+  const ix=330,iy=16,iw=458,ih=222;ctx.save();ctx.beginPath();rr(ix,iy,iw,ih,8);ctx.clip();ctx.fillStyle=hot?C.panel:mix(C.panel,C.cold,.08);ctx.fillRect(ix,iy,iw,ih);
+  const sy=iy+58;ctx.fillStyle=C.skin;ctx.fillRect(ix,sy,iw,16);ctx.fillStyle=mix(C.skin,C.cut,.35);ctx.fillRect(ix,sy+16,iw,ih-74);
+  ctx.fillStyle=C.cut;ctx.fillRect(ix,iy+ih-38,iw,38);for(let i=0;i<4;i++){const jit=hot?0:Math.sin(t*55+i)*2*e;line(ix,iy+ih-32+i*9+jit,ix+iw,iy+ih-32+i*9-jit,C["cut-edge"],1.2)}
+  const vr=hot?lerp(10,20,e):lerp(10,4,e);const vy=sy+78;ctx.fillStyle=mix(C.vessel,C.panel,.25);rr(ix-4,vy-vr,iw+8,vr*2,vr);ctx.fill();ctx.strokeStyle=C.vessel;ctx.lineWidth=2;ctx.stroke();
+  const nC=Math.round(4+vr*.8);for(let i=0;i<nC;i++){const x=ix+((t*90+i*iw/nC)%(iw+20))-10;ell(x,vy+Math.sin(i*2.1)*vr*.45,Math.min(7,vr*.6),Math.min(4.5,vr*.4),0,C.rbc)}
+  if(hot){const gx=ix+90;ctx.beginPath();for(let k=0;k<=30;k++){const a=k/30*TAU*2.5;ctx.lineTo(gx+Math.cos(a)*12,sy+118+Math.sin(a)*6+k*.4)}ctx.strokeStyle=C.sweat;ctx.lineWidth=2.5;ctx.stroke();line(gx,sy+110,gx,sy,C.sweat,2.5);
+    if(e>.05){for(let j=0;j<3;j++){const q=(t*.5+j/3)%1;drop(gx+(j-1)*4,sy-2-q*26,4,C.sweat,e*(1-q))}label(gx+20,iy+18,"sweat evaporates",{size:11.5,color:C.sweat,weight:600})}
+    label(gx+16,sy+140,"sweat gland",{size:11.5});
+    if(e>.05)for(let j=0;j<4;j++){const x=ix+220+j*55;const q=(t*.6+j*.25)%1;ctx.globalAlpha=e*(1-q);wiggle(x,sy-4-q*30,x,sy-24-q*30,C.hot,2,3,t*4);ctx.globalAlpha=1}
+    if(e>.05)label(ix+300,iy+18,"heat leaves the skin",{size:11.5,color:C.hot,weight:600})}
+  else{label(ix+300,iy+18,e>.3?"less heat escapes":"heat escapes",{size:11.5,color:C.cold,weight:600});const hn=Math.round(4*(1-e*.8));for(let j=0;j<hn;j++){const x=ix+220+j*55;const q=(t*.6+j*.25)%1;ctx.globalAlpha=(1-q)*.8;wiggle(x,sy-4-q*30,x,sy-24-q*30,C.hot,2,3,t*4);ctx.globalAlpha=1}
+    label(ix+iw-10,iy+ih-48,e>.2?"skeletal muscle shivers: makes heat":"skeletal muscle",{align:"right",size:11.5,weight:600})}
+  label(ix+iw-10,vy-vr-12,hot?(e>.3?"vessel widens (vasodilation)":"skin blood vessel"):(e>.3?"vessel narrows (vasoconstriction)":"skin blood vessel"),{align:"right",size:11.5,weight:600,color:C.vessel});
+  label(ix+8,sy+8,"skin surface",{size:11,pill:false,color:C["ink-soft"]});
+  ctx.restore();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;rr(ix,iy,iw,ih,8);ctx.stroke();
+  // loop strip
+  const names=["Stimulus","Sensor","Control center","Effectors","Response"];
+  const subs=hot?["Temp rises","Skin and brain receptors","Hypothal- amus","Sweat glands; skin vessels widen","Temp falls to 37 °C"]:["Temp falls","Skin and brain receptors","Hypothal- amus","Skin vessels narrow; muscles shiver","Temp rises to 37 °C"];
+  for(let i=0;i<5;i++){const x=ix+i*92,y=250,w=86,h=78;const on=i===st;ctx.fillStyle=on?C.act4:C["panel-2"];rr(x,y,w,h,6);ctx.fill();ctx.strokeStyle=on?C.act4:C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    label(x+w/2,y+14,names[i],{align:"center",size:11.5,weight:700,pill:false,color:on?"#fff":C.ink});wrapText(subs[i],x+w/2,y+48,w-8,13,{size:11,color:on?"#fff":C["ink-soft"]});
+    if(i<4)arrow(x+w,y+h/2,x+w+6,y+h/2,C["ink-faint"],1.2)}
+  // graph
+  const gx0=ix+34,gx1=ix+372,gy0=348,gy1=462,lo=35.8,hi=38.2;const yv=v=>gy1-(v-lo)/(hi-lo)*(gy1-gy0);
+  ctx.globalAlpha=.18;ctx.fillStyle=C.good;ctx.fillRect(gx0,yv(37.5),gx1-gx0,yv(36.5)-yv(37.5));ctx.globalAlpha=1;line(gx0,yv(37),gx1,yv(37),C["ink-soft"],1.2,[5,4]);
+  [36,37,38].forEach(v=>label(gx0-6,yv(v),String(v),{align:"right",size:10.5,mono:true,pill:false,color:C["ink-soft"]}));
+  ctx.beginPath();for(let k=0;k<=60;k++){const uu=k/60*u;const v=uu<.2?lerp(37,tA,ease(seg(uu,0,.2))):uu<.42?tA+(hot?.06:-.06)*seg(uu,.2,.42):lerp(tA+(hot?.06:-.06),hot?37.1:36.9,ease(seg(uu,.42,.85)));ctx.lineTo(lerp(gx0,gx1,uu),yv(v))}
+  ctx.strokeStyle=hot?C.hot:C.cold;ctx.lineWidth=2.5;ctx.stroke();label(gx0+4,gy0-8,"core body temperature (°C)",{size:11,pill:false,color:C["ink-soft"]});
+  thermo(ix+420,352,86,temp,35.5,38.5,hot?C.hot:C.cold,{band:[36.5,37.5]});label(ix+400,340,temp.toFixed(1)+" °C",{align:"right",size:14,weight:700,mono:true});
+  STATE={temp,e,st};
+}
+function sceneHot(t){thermoScene(t,true)}
+function sceneCold(t){thermoScene(t,false)}
+
+/* ===== Scene: blood glucose ===== */
+function glucLevel(u){return u<.18?lerp(90,160,ease(seg(u,.02,.18))):u<.5?lerp(160,95,ease(seg(u,.2,.5))):u<.7?lerp(95,62,ease(seg(u,.5,.7))):lerp(62,90,ease(seg(u,.72,.95)))}
+function sceneGluc(t){bg();const tt=t%16;const u=tt/16;const G=glucLevel(u);
+  // graph
+  const gx0=56,gx1=470,gy0=22,gy1=118,lo=40,hi=180;const yv=v=>gy1-(v-lo)/(hi-lo)*(gy1-gy0);
+  ctx.globalAlpha=.18;ctx.fillStyle=C.good;ctx.fillRect(gx0,yv(110),gx1-gx0,yv(70)-yv(110));ctx.globalAlpha=1;
+  [70,110,150].forEach(v=>label(gx0-6,yv(v),String(v),{align:"right",size:10.5,mono:true,pill:false,color:C["ink-soft"]}));
+  ctx.beginPath();for(let k=0;k<=80;k++){const uu=k/80*u;ctx.lineTo(lerp(gx0,gx1,uu),yv(glucLevel(uu)))}ctx.strokeStyle=C.glucose;ctx.lineWidth=2.5;ctx.stroke();
+  label(gx1,yv(110)-8,"70–110 mg/dL",{align:"right",size:11,color:C.good,weight:600,pill:false});label(gx0+4,gy0-6,"blood glucose (mg/dL)",{size:11,pill:false,color:C["ink-soft"]});
+  const stage=u<.18?"After a meal, blood glucose rises.":u<.5?"Pancreas releases insulin. Cells take in glucose.":u<.7?"Between meals, cells use glucose. It falls.":"Pancreas releases glucagon. The liver releases glucose.";
+  ctx.fillStyle=C["panel-2"];rr(492,14,294,108,8);ctx.fill();label(506,36,G.toFixed(0)+" mg/dL",{size:20,weight:700,mono:true,pill:false,color:G>110||G<70?C.warn:C.good});
+  label(640,36,G>110?"above range":G<70?"below range":"in range",{size:12,weight:600,color:G>110||G<70?C.warn:C.good});wrapText(stage,639,86,270,16,{size:12.5,weight:600});
+  // vessel
+  const vy0=150,vy1=226;ctx.fillStyle=mix(C.vessel,C.panel,.82);ctx.fillRect(0,vy0,W,vy1-vy0);line(0,vy0,W,vy0,C.vessel,3);line(0,vy1,W,vy1,C.vessel,3);
+  label(16,vy0-12,"blood vessel",{size:11.5,color:C.vessel,weight:600});
+  const n=Math.round(G/7);for(let i=0;i<n;i++){const x=((t*60+i*W/n+rnd(i)*30)%(W+20))-10;hexa(x,vy0+12+rnd(i+4)*(vy1-vy0-24),6,C.glucose)}
+  for(let i=0;i<6;i++){const x=((t*60+i*140)%(W+20))-10;ell(x,vy0+20+((i*37)%50),8,5,0,C.rbc,null)}
+  // gut / meal
+  const gutx=70,guty=330;ell(gutx,guty,52,40,0,C.gut,C["cut-edge"],1.5);for(let i=0;i<4;i++){ctx.beginPath();ctx.arc(gutx-18+i*12,guty-6+(i%2)*10,9,0,Math.PI);ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=1.5;ctx.stroke()}
+  label(gutx,guty+56,"intestine (meal)",{align:"center",size:11.5});
+  if(u<.2){for(let i=0;i<5;i++){const q=(tt*.9+i/5)%1;hexa(gutx+lerp(0,30,q),lerp(guty-30,vy1+4,q),6,C.glucose,1-q*.3)}}
+  // pancreas
+  const px=240,py=330;ctx.beginPath();ctx.moveTo(px-80,py+10);ctx.bezierCurveTo(px-60,py-30,px+40,py-34,px+80,py-14);ctx.bezierCurveTo(px+90,py,px+70,py+16,px+40,py+16);ctx.bezierCurveTo(px,py+20,px-50,py+40,px-80,py+10);ctx.fillStyle=C.stomach;ctx.fill();ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  const isl=[px+10,py-6];circ(isl[0],isl[1],15,C.panel,C["ink-soft"],1.2);
+  const betaOn=u>.16&&u<.32,alphaOn=u>.68&&u<.8;
+  [[-5,-4],[4,6],[6,-6]].forEach(c=>circ(isl[0]+c[0],isl[1]+c[1],4.5,C.insulin));[[-6,6],[0,-9]].forEach(c=>circ(isl[0]+c[0],isl[1]+c[1],4,C.glucagon));
+  if(betaOn)glow(isl[0],isl[1],30,C.insulin,.7);if(alphaOn)glow(isl[0],isl[1],30,C.glucagon,.7);
+  label(px,py+44,"pancreas (sensor + control center)",{align:"center",size:11.5});
+  // liver + body cell
+  const lx=500,ly=340;ctx.beginPath();ctx.moveTo(lx-90,ly-30);ctx.quadraticCurveTo(lx,ly-60,lx+80,ly-30);ctx.quadraticCurveTo(lx+40,ly+40,lx-70,ly+30);ctx.closePath();ctx.fillStyle=C.liver;ctx.fill();
+  label(lx,ly+54,"liver (stores glucose)",{align:"center",size:11.5});
+  const cx2=690,cy2=340;circ(cx2,cy2,46,C.cut,C["cut-edge"],2);ell(cx2,cy2,12,12,0,C.glucagon);label(cx2,cy2+64,"body cells (muscle, fat)",{align:"center",size:11.5});
+  // hormones
+  const vmid=(vy0+vy1)/2;
+  if(u>.18&&u<.5){const q=seg(u,.18,.42);for(let i=0;i<5;i++){const f=clamp(q*1.4-i*.08,0,1);if(f<=0||f>=1)continue;const tgt=i%2?[cx2-40,cy2-30]:[lx-20,ly-34];const p=f<.4?[lerp(isl[0],isl[0]+40,f/.4),lerp(isl[1]-14,vmid,f/.4)]:[lerp(isl[0]+40,tgt[0],(f-.4)/.6),lerp(vmid,tgt[1],(f-.4)/.6)];circ(p[0],p[1],5.5,C.insulin,C.ink,1)}
+    const q2=seg(u,.28,.5);for(let i=0;i<8;i++){const f=clamp(q2*1.4-i*.06,0,1);if(f<=0||f>=1)continue;const tgt=i%2?[cx2,cy2]:[lx,ly-6];hexa(lerp(tgt[0]+(i%3-1)*20,tgt[0],f),lerp(vy1,tgt[1],f),5.5,C.glucose)}
+    label(cx2,vy1+24,"insulin opens the door",{align:"center",size:11.5,weight:600,color:C.insulin})}
+  if(u>.7&&u<.96){const q=seg(u,.7,.84);for(let i=0;i<4;i++){const f=clamp(q*1.4-i*.1,0,1);if(f<=0||f>=1)continue;const p=f<.4?[lerp(isl[0],isl[0]+40,f/.4),lerp(isl[1]-14,vmid,f/.4)]:[lerp(isl[0]+40,lx-10,(f-.4)/.6),lerp(vmid,ly-30,(f-.4)/.6)];circ(p[0],p[1],5.5,C.glucagon,C.ink,1)}
+    const q2=seg(u,.8,.95);for(let i=0;i<7;i++){const f=clamp(q2*1.4-i*.07,0,1);if(f<=0||f>=1)continue;hexa(lerp(lx+(i%3-1)*24,lx+(i%3-1)*30,f),lerp(ly-10,vy1-6,f),5.5,C.glucose)}
+    label(lx,vy1+24,"glucagon: liver releases glucose",{align:"center",size:11.5,weight:600,color:C.glucagon})}
+  STATE={G};
+}
+
+/* ===== Scene: childbirth ===== */
+function sceneBirth(t){bg();const tt=t%19;const R=5,per=2.6;const k=Math.min(R-1,Math.floor(tt/per));const ph=tt<R*per?(tt%per)/per:1;const born=ease(seg(tt,R*per+.4,R*per+3.2));
+  const stage=tt>=R*per?4:ph<.25?0:ph<.5?1:ph<.75?2:3;
+  const sq0=stage===3?Math.sin(seg(ph,.75,1)*Math.PI)*(.25+.18*k):0;
+  const desc=(k+(tt>=R*per?1:seg(ph,0,.25)))*11;
+  const ux=230,uy=232;
+  // uterus
+  ctx.save();ctx.translate(ux,uy);ctx.scale(1-.12*sq0,1+.03*sq0);
+  ctx.beginPath();ctx.moveTo(-30,186);ctx.bezierCurveTo(-90,150,-150,40,-140,-40);ctx.bezierCurveTo(-130,-150,130,-150,140,-40);ctx.bezierCurveTo(150,40,90,150,30,186);ctx.closePath();
+  ctx.fillStyle=C.cut;ctx.fill();ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=3;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-16,176);ctx.bezierCurveTo(-74,140,-126,40,-118,-34);ctx.bezierCurveTo(-110,-124,110,-124,118,-34);ctx.bezierCurveTo(126,40,74,140,16,176);ctx.closePath();ctx.fillStyle=mix(C.fluid,C.panel,.4);ctx.fill();
+  ctx.restore();
+  const cw=10+k*5+born*14;ctx.fillStyle=C.panel;ctx.fillRect(ux-cw,uy+168,cw*2,26);line(ux-cw,uy+168,ux-cw,uy+194,C["cut-edge"],3);line(ux+cw,uy+168,ux+cw,uy+194,C["cut-edge"],3);
+  // baby
+  const by=uy+40+desc+born*190;ctx.save();ctx.beginPath();ctx.rect(0,0,470,H);ctx.clip();
+  ell(ux+4,by-50,46,60,.15,C.skin,C["skin-edge"],1.5);circ(ux,by+40,34,C.skin,C["skin-edge"],1.5);line(ux+30,by-40,ux+44,by+4,C["skin-edge"],2);line(ux-30,by-60,ux-40,by-20,C["skin-edge"],2);ctx.restore();
+  label(ux+70,uy+186,"cervix",{size:12});
+  // stretch receptors
+  if(stage===0||stage===1){glow(ux,uy+176,26,C.nerve,.6)}
+  // brain + pituitary
+  const bx=640,bY=86;ell(bx,bY,70,46,0,C.brain,C["brain-edge"],1.5);const pit=[bx-8,bY+50];circ(pit[0],pit[1],7,C.oxy,C.ink,1);line(bx-8,bY+30,pit[0],pit[1]-6,C["brain-edge"],2);
+  label(bx+16,bY+56,"pituitary",{size:11.5});label(bx,bY-58,"brain",{align:"center",size:11.5,pill:false});
+  const NP=[[ux+30,uy+180],[455,uy+180],[455,120],[bx-50,bY+12]];pathLine(NP,C.nerve,2,[5,5]);
+  const OP=[[pit[0],pit[1]+8],[600,214],[470,222],[ux+142,uy-14]];pathLine(OP,C.oxy,2,[2,5]);
+  if(stage===1){const q=seg(ph,.25,.5);for(let j=0;j<3;j++){const p=along(NP,clamp(q*1.3-j*.12,0,1));circ(p[0],p[1],4.5,C.nerve,C.ink,1)}}
+  if(stage===2){const q=seg(ph,.5,.75);const nO=3+k*2;for(let j=0;j<nO;j++){const f=clamp(q*1.5-j*.05,0,1);if(f<=0||f>=1)continue;const p=along(OP,f);circ(p[0]+Math.sin(j*3)*5,p[1]+Math.cos(j*2)*5,4,C.oxy)}}
+  if(stage===3){label(ux,uy-160,"CONTRACTION "+(k+1),{align:"center",size:13,weight:700,color:C.act4,border:C.act4})}
+  const cap=["1 Baby's head stretches the cervix","2 Stretch receptors signal the brain","3 Pituitary releases oxytocin","4 Uterus contracts harder → more stretch","Baby is born: stretch stops, so the loop ends"][stage];
+  label(400,466,cap,{align:"center",size:13.5,weight:600,border:stage===4?C.good:C.act4});
+  // bars
+  const x0=486,y0=262,bw=48;heading(x0,y0-12,"Contraction strength",C.act4);line(x0,y0+120,x0+5*(bw+8),y0+120,C.rule,1.5);
+  for(let i=0;i<R;i++){const shown=i<k||(i===k&&(stage>=3||tt>=R*per));if(!shown)continue;const hgt=(28+i*22)*(i===k&&stage===3?seg(ph,.75,1):1);
+    ctx.fillStyle=C.act4;rr(x0+i*(bw+8),y0+120-hgt,bw,hgt,4);ctx.fill();label(x0+i*(bw+8)+bw/2,y0+132,String(i+1),{align:"center",size:11,mono:true,pill:false,color:C["ink-soft"]})}
+  if(tt>=R*per){label(x0+140,y0+20,"loop ends",{align:"center",size:13,weight:700,color:C.good,border:C.good})}
+  label(x0+140,y0+150,"each round is stronger than the last",{align:"center",size:11.5,pill:false,color:C["ink-soft"]});
+  STATE={k,stage,born};
+}
+
+/* ===== Scene: clotting ===== */
+const PLT=(function(){const P=[];for(let i=0;i<32;i++){const r=i/32;const a=rnd(i+7);P.push([lerp(372,448,a),lerp(300,330,r)+ (rnd(i+3)-.5)*8])}
+  P.sort((p,q)=>Math.abs(p[0]-410)-Math.abs(q[0]-410));P.reverse();return P})();
+function sceneClot(t){bg();const tt=t%15;const r=tt<1.2?-1:Math.min(5,Math.floor((tt-1.2)/1.3));const n=r<0?0:Math.pow(2,r);const sealed=r>=5&&tt>8.2;
+  const vy0=110,vy1=300;ctx.fillStyle=mix(C.vessel,C.panel,.85);ctx.fillRect(0,vy0+30,W,vy1-vy0-30);
+  ctx.fillStyle=C.vessel;ctx.fillRect(0,vy0,W,30);ctx.fillRect(0,vy1,370,30);ctx.fillRect(450,vy1,W-450,30);
+  ctx.fillStyle=mix(C.vessel,C["ink"],.25);[[370,0],[450,0]].forEach(([x])=>{ctx.beginPath();ctx.moveTo(x,vy1);for(let j=0;j<=6;j++)ctx.lineTo(x+(x===370?1:-1)*(j%2?6:0),vy1+j*5);ctx.lineTo(x,vy1+30);ctx.fill()});
+  label(20,vy0-14,"blood vessel wall",{size:11.5,color:C.vessel,weight:600});label(410,vy1+48,"tear",{align:"center",size:11.5});
+  for(let i=0;i<14;i++){const x=((t*80+i*60)%(W+30))-15;const y=vy0+48+(i*29)%130;ell(x,y,9,5.5,0,C.rbc)}
+  const leak=sealed?0:1-n/32;for(let i=0;i<6;i++){const q=(t*.6+i/6)%1;ctx.globalAlpha=leak*(1-q);ell(395+i*6,vy1+10+q*90,7,4.5,0,C.rbc);ctx.globalAlpha=1}
+  if(leak>.05)label(470,vy1+56,"blood leaks out",{size:11.5,color:C.rbc,weight:600});
+  // fibrin
+  if(n>=8){const nf=Math.min(26,(n-4));ctx.globalAlpha=.9;for(let i=0;i<nf;i++){const a=PLT[i%n],b=PLT[(i*7+3)%n];line(a[0],a[1],b[0],b[1],C.fibrin,1.6)}ctx.globalAlpha=1}
+  // platelets
+  const ph=r>=0?((tt-1.2)%1.3)/1.3:0;
+  for(let i=0;i<n;i++){const p=PLT[i];const isNew=r>0&&i>=n/2&&!(r>=5&&tt>8.4);let x=p[0],y=p[1];if(isNew&&ph<.5){const f=ease(ph/.5);x=lerp(p[0]-160,p[0],f);y=lerp(vy0+120,p[1],f)}
+    ell(x,y,9,6,rnd(i)*3,C.platelet,"rgba(0,0,0,.4)",1.2)}
+  if(r>=0&&!sealed&&ph>.45){const q=seg(ph,.45,1);for(let j=0;j<3;j++){circ(410,315,20+q*90+j*14,null,C.glow,2.5*(1-q))}label(410,vy0+60,"chemicals call in more platelets",{align:"center",size:12,weight:600,color:C.warn})}
+  label(560,vy0-14,"platelets at the tear: "+n,{size:13,weight:700,mono:true});
+  if(sealed){label(410,vy0+60,"Tear sealed → signal stops → loop ends",{align:"center",size:13,weight:700,color:C.good,border:C.good})}
+  // chart
+  const x0=90,y0=370;heading(x0,y0,"Platelets at the tear, round by round",C["ink-soft"]);
+  for(let i=0;i<6;i++){const v=Math.pow(2,i);const shown=i<=r;const h=v/32*70;const x=x0+i*80;ctx.globalAlpha=shown?1:.25;ctx.fillStyle=C.platelet;rr(x,y0+86-h,46,Math.max(2,h),3);ctx.fill();ctx.globalAlpha=1;
+    label(x+23,y0+100,String(v),{align:"center",size:11.5,mono:true,pill:false,color:C["ink-soft"]})}
+  label(640,y0+56,"1 → 2 → 4 → 8 → 16 → 32",{align:"center",size:12.5,weight:600,mono:true,pill:false});label(640,y0+80,"each round doubles",{align:"center",size:12,pill:false,color:C["ink-soft"]});
+  STATE={n,sealed};
+}
+
+/* ===== Scene: recap ===== */
+function sceneRecap(t){bg();const cols=["act1","act2","act3","act4"];const nm=["Organization & life","Anatomical language","Planes & cavities","Homeostasis"];
+  for(let i=0;i<4;i++){const c=i%2,r=Math.floor(i/2);const x=14+c*390,y=14+r*232,w=380,h=222;panelBox(x,y,w,h,Math.floor(t/2.5)%4===i,C[cols[i]]);
+    label(x+14,y+20,nm[i],{weight:700,size:14,pill:false,color:C[cols[i]]});ctx.save();ctx.beginPath();rr(x+2,y+34,w-4,h-36,6);ctx.clip();
+    if(i===0){const k=Math.floor(t/1.2)%8;LV.forEach((n,j)=>{const xx=x+20+(j%4)*90,yy=y+80+Math.floor(j/4)*70;ctx.fillStyle=j===k?C.act1:C["panel-2"];rr(xx,yy-16,82,32,16);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+      label(xx+41,yy,n,{align:"center",size:11.5,pill:false,color:j===k?"#fff":C.ink,weight:600})})}
+    else if(i===1){drawFigure("front",x+110,y+40,.4,{lw:1.4});drawFigure("side",x+280,y+40,.4,{lw:1.4});const g=.5+.5*Math.sin(t*2);arrow(x+180,y+130,x+180,y+130-60*g,C.act2,3);arrow(x+330,y+120,x+330+40*g,y+120,C.act2,3);
+      label(x+180,y+200,"superior",{align:"center",size:11.5,pill:false});label(x+340,y+200,"anterior",{align:"center",size:11.5,pill:false})}
+    else if(i===2){drawFigure("front",x+90,y+40,.4,{lw:1.4});const py=lerp(60,400,.5+.5*Math.sin(t*.9));line(x+40,y+40+py*.4,x+140,y+40+py*.4,C.plane,2.5);drawSection("T",py,x+270,y+130,1.1)}
+    else{const cx=x+110,cy=y+130,R=60;circ(cx,cy,R,null,C.rule,3);const a=t*1.6;glow(cx+Math.cos(a)*R,cy+Math.sin(a)*R,14,C.act4,.9);circ(cx+Math.cos(a)*R,cy+Math.sin(a)*R,5,C.act4);
+      ctx.beginPath();for(let k=0;k<=80;k++){const xx=x+200+k*2;ctx.lineTo(xx,cy-tempSig(t-(80-k)/14)*0+(37-tempSig(t-(80-k)/14))*40)}ctx.strokeStyle=C.act4;ctx.lineWidth=2;ctx.stroke();line(x+200,cy,x+360,cy,C["ink-faint"],1,[4,4])}
+    ctx.restore()}
+}
+
+/* ---------------- loop ---------------- */
+const SCENES={map:sceneMap,levels:sceneLevels,func:sceneFunc,needs:sceneNeeds,pos:scenePos,dirs1:sceneDirs1,dirs2:sceneDirs2,axial:sceneAxial,regions:sceneRegions,
+  sag:sceneSag,ft:sceneFT,cavD:sceneCavD,cavV:sceneCavV,thor:sceneThor,quad:sceneQuad,serous:sceneSerous,setpt:sceneSetpt,loop:sceneLoop,hot:sceneHot,cold:sceneCold,
+  gluc:sceneGluc,birth:sceneBirth,clot:sceneClot,recap:sceneRecap};
+let T=0,last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;ctx.lineCap="butt";ctx.lineJoin="miter";
+  const s=STEPS[cur];
+  try{(SCENES[s.scene]||sceneMap)(T)}catch(e){console.error(e)}
+  POSE.palm=1;POSE.feet=1;POSE.head=1;
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+window.__state=()=>Object.assign({step:cur,T},STATE);
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+if(document.fonts)document.fonts.ready.then(()=>{});
+})();
+</script>
+</body>
+</html>

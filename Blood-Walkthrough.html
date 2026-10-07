@@ -1,0 +1,1625 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blood Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
+  /* blood palette */
+  --ecf:#F4EEE6;--plasma:#E9C96A;--plasma-wash:#F8EDC8;
+  --rbc:#C2392F;--rbc-edge:#82231C;--rbc-hi:#E8877C;--deoxy:#7A2433;
+  --wbc:#EEE6F3;--wbc-edge:#9A86B3;--nuc:#5B3F9C;--ngran:#B996CF;--eos:#E06A2F;--baso:#2F2A7A;--lymc:#BFD6EE;--monoc:#D3D6E3;
+  --plt:#9A62C9;--fibrin:#C9A227;--collagen:#A57B4F;
+  --macro:#DCCDB3;--vessel:#F2D6CF;--vessel-edge:#B5655A;--muscle:#D99A88;--tissue:#F6EFE6;--endo:#E7B7AC;
+  --o2:#2F7FC1;--co2:#7E8C95;--bact:#3E8E41;
+  --agA:#2F6FD0;--agB:#C99A12;--agD:#1F9C8A;
+  --epo:#1E9C7A;--kidney:#A9524A;--bone:#EADFC8;--bone-edge:#B9A88C;--marrow:#E6AFA0;--liver:#8E4A3A;
+  --iron:#B4632A;--biliv:#3E8E41;--bili:#D4A017;--chem:#D98A1C;
+  --tf:#A04E8C;--thrombin:#C4644F;--plasmin:#1E9C7A;--ca:#D98A1C;--vitk:#2F8A57;--glob-a:#D9A69C;--glob-b:#C98C8F;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#1A1A1C;--plasma:#9A8236;--plasma-wash:#3A3220;
+  --rbc:#D24C42;--rbc-edge:#F08A80;--rbc-hi:#EE9A90;--deoxy:#9A3A4E;
+  --wbc:#3B3346;--wbc-edge:#A592C2;--nuc:#B49BF0;--ngran:#7F5F9A;--eos:#F28A50;--baso:#8C86E0;--lymc:#2A4058;--monoc:#3C4150;
+  --plt:#C59BEA;--fibrin:#E0BE48;--collagen:#C89A68;
+  --macro:#4A4030;--vessel:#3A2725;--vessel-edge:#D98A7E;--muscle:#7A4A40;--tissue:#211D1A;--endo:#5A3A34;
+  --o2:#5AA9E6;--co2:#9AA8B0;--bact:#6BC26E;
+  --agA:#6FA3F0;--agB:#E8C24A;--agD:#4FD0B8;
+  --epo:#4FD0A8;--kidney:#D47E74;--bone:#4A4234;--bone-edge:#8F7C5E;--marrow:#6E3B33;--liver:#B86E5C;
+  --iron:#E39A5B;--biliv:#6BC26E;--bili:#E8C24A;--chem:#F2A93B;
+  --tf:#D186C0;--thrombin:#E08A74;--plasmin:#4FD0A8;--ca:#F2A93B;--vitk:#4FBF7F;--glob-a:#7A4A44;--glob-b:#6E3F48;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#1A1A1C;--plasma:#9A8236;--plasma-wash:#3A3220;
+  --rbc:#D24C42;--rbc-edge:#F08A80;--rbc-hi:#EE9A90;--deoxy:#9A3A4E;
+  --wbc:#3B3346;--wbc-edge:#A592C2;--nuc:#B49BF0;--ngran:#7F5F9A;--eos:#F28A50;--baso:#8C86E0;--lymc:#2A4058;--monoc:#3C4150;
+  --plt:#C59BEA;--fibrin:#E0BE48;--collagen:#C89A68;
+  --macro:#4A4030;--vessel:#3A2725;--vessel-edge:#D98A7E;--muscle:#7A4A40;--tissue:#211D1A;--endo:#5A3A34;
+  --o2:#5AA9E6;--co2:#9AA8B0;--bact:#6BC26E;
+  --agA:#6FA3F0;--agB:#E8C24A;--agD:#4FD0B8;
+  --epo:#4FD0A8;--kidney:#D47E74;--bone:#4A4234;--bone-edge:#8F7C5E;--marrow:#6E3B33;--liver:#B86E5C;
+  --iron:#E39A5B;--biliv:#6BC26E;--bili:#E8C24A;--chem:#F2A93B;
+  --tf:#D186C0;--thrombin:#E08A74;--plasmin:#4FD0A8;--ca:#F2A93B;--vitk:#4FBF7F;--glob-a:#7A4A44;--glob-b:#6E3F48;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 170px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:14px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.legend b{font-weight:700;font-family:var(--mono);font-size:14px;line-height:1}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Blood &middot; USC Upstate</div>
+    <h1>Blood Walkthrough</h1>
+    <p class="sub">What blood is made of, how it carries oxygen, fights infection, stops bleeding, and why blood type matters. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 18, The Cardiovascular System: Blood (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Practice next in the <a href="Blood-Lab.html">Blood Lab</a>.<br>Diagrams are simplified and not to scale. Cells are drawn far larger than life, the buffy coat is drawn thicker than it really is, molecules are cartoons, and processes that take days are sped up so you can watch them.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · What blood is",col:"act1"},
+            2:{name:"Part 2 · Red blood cells",col:"act2"},
+            3:{name:"Part 3 · White cells & platelets",col:"act3"},
+            4:{name:"Part 4 · Stopping bleeding",col:"act4"},
+            5:{name:"Part 5 · Blood types",col:"act5"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: blood has three jobs",
+ body:`<p><b>Blood</b> is a <b>fluid connective tissue</b>. It is made of a liquid called <b>plasma</b> with <b>formed elements</b> floating in it: red blood cells, white blood cells and platelets. An adult has about 4 to 6 liters.</p>
+ <p>Blood has three big jobs. Watch the loop and the three cards below it:</p>
+ <ol><li><b>Transport.</b> Blood carries O₂ from the lungs to the tissues and CO₂ back to the lungs. It also carries nutrients, hormones, wastes and heat.</li>
+ <li><b>Defense.</b> White blood cells and antibodies fight invaders. Platelets and clotting proteins plug leaks.</li>
+ <li><b>Regulation</b> (homeostasis). Blood helps keep body <b>pH</b> steady (about <b>7.35 to 7.45</b>), moves heat to the skin to control <b>temperature</b>, and helps keep the right amount of <b>fluid</b> in the vessels.</li></ol>`,
+ analogy:"A city's delivery trucks, police force and utility company all rolled into one river. The same moving fluid delivers supplies, guards against intruders and keeps conditions steady.",
+ terms:[["Blood","A fluid connective tissue: plasma plus formed elements."],["Plasma","The liquid part of blood. Mostly water."],["Formed elements","Red blood cells, white blood cells and platelets."],["Homeostasis","Keeping internal conditions steady, such as pH, temperature and fluid volume."]],
+ check:{q:"Which of these is a REGULATION job of blood?",opts:[
+  ["Helping keep pH between about 7.35 and 7.45",1,"Yes. Buffers in blood soak up extra acid or base, so pH stays in a narrow range."],
+  ["Carrying O₂ from the lungs to the tissues",0,"That is transport. Blood moving something from place to place is its transport job."],
+  ["White blood cells eating bacteria",0,"That is defense. Fighting invaders is blood's protective job."],
+  ["Carrying hormones to their target cells",0,"That is transport too. Hormones ride in the plasma to wherever they are needed."]]},
+ caption:"Blood loops between the lungs and the tissues: bright red with O₂ on the way out, darker with CO₂ on the way back. The cards light up its three jobs.",
+ legend:[["rbc","Red blood cell (with O₂)"],["deoxy","Red blood cell (after giving up O₂)"],["o2","O₂"],["co2","CO₂"],["wbc-edge","White blood cell"],["bact","Bacterium","r"]]},
+
+{act:1,scene:"comp",id:"comp",title:"What's in a tube of blood?",
+ body:`<p>If you spin a tube of blood in a <b>centrifuge</b>, the parts separate by weight. The heaviest parts sink to the bottom.</p>
+ <ol><li><b>Plasma</b> on top: about <b>55%</b>. A pale yellow (straw-colored) liquid.</li>
+ <li>The <b>buffy coat</b> in the middle: <b>less than 1%</b>. A thin whitish layer of <b>leukocytes</b> (white blood cells) and <b>platelets</b>.</li>
+ <li><b>Erythrocytes</b> (red blood cells) at the bottom: about <b>45%</b>.</li></ol>
+ <p>The percent of blood volume that is red blood cells is the <b>hematocrit</b>. Normal values in OpenStax are about <b>37 to 47%</b> for women and <b>42 to 52%</b> for men. A low hematocrit can mean anemia. A high one means the blood is thicker than normal.</p>`,
+ analogy:"Shaking a jar of muddy water and letting it sit. The heavy dirt settles to the bottom and the clearer water sits on top. A centrifuge just does it much faster.",
+ terms:[["Hematocrit","The percent of blood volume made up of red blood cells."],["Buffy coat","The thin middle layer of white blood cells and platelets, less than 1% of the tube."],["Erythrocyte","A red blood cell (RBC)."],["Leukocyte","A white blood cell (WBC)."]],
+ check:{q:"A lab reports a hematocrit of 45%. What does that number mean?",opts:[
+  ["45% of the blood's volume is red blood cells.",1,"Right. Hematocrit measures only the red cell layer."],
+  ["45% of the blood's volume is plasma.",0,"Plasma is the top layer. Hematocrit is the bottom, red layer."],
+  ["45% of the blood is white blood cells.",0,"White cells are in the buffy coat, which is less than 1% of the tube."],
+  ["The blood is 45% water.",0,"Plasma is mostly water, but hematocrit is about red blood cells only."]]},
+ caption:"The centrifuge spins; red cells sink. Result: plasma ≈ 55% on top, a thin buffy coat (<1%), red cells ≈ 45% at the bottom = the hematocrit.",
+ legend:[["plasma","Plasma","r"],["wbc-edge","Buffy coat (WBCs + platelets)","r"],["rbc","Erythrocytes","r"]]},
+
+{act:1,scene:"plasma",id:"plasma",title:"Plasma and its proteins",
+ body:`<p><b>Plasma</b> is about <b>92% water</b>, about <b>7% proteins</b>, and about 1% other solutes (ions, nutrients, gases, hormones and wastes). Most plasma proteins are made by the <b>liver</b>.</p>
+ <ol><li><b>Albumin</b> is the most common plasma protein (about 54 to 60%). It is too big to leak out of capillaries, so it creates <b>osmotic pressure</b> that holds water <b>inside</b> the blood vessels. It also carries things like fatty acids and some drugs.</li>
+ <li><b>Globulins</b> (about 35 to 38%). Some are <b>antibodies</b> (immunoglobulins) made by plasma cells. Others are <b>transport proteins</b> that carry lipids, iron and hormones.</li>
+ <li><b>Fibrinogen</b> (about 4 to 7%). A <b>clotting protein</b>. During clotting it is turned into <b>fibrin</b> threads (Part 4).</li></ol>
+ <p>Plasma with the clotting proteins removed is called <b>serum</b>.</p>`,
+ analogy:"Albumin is like a sponge that can't fit through the holes in a hose. Because it stays inside, it keeps soaking water back in, so the hose doesn't lose all its water out the holes.",
+ terms:[["Albumin","The most abundant plasma protein. Holds water in the blood by osmotic pressure."],["Globulins","Plasma proteins that include antibodies and transport proteins."],["Fibrinogen","A clotting protein that becomes fibrin."],["Serum","Plasma without the clotting proteins."]],
+ check:{q:"A patient with liver failure makes very little albumin. What would you expect?",opts:[
+  ["Fluid leaks out of the blood into the tissues (swelling, called edema).",1,"Yes. With less albumin, there is less osmotic pressure to hold water inside the vessels."],
+  ["The patient can't make any antibodies.",0,"Antibodies are globulins made by plasma cells (a type of lymphocyte), not by the liver."],
+  ["The hematocrit becomes 0%.",0,"Hematocrit is about red cells. Albumin is a plasma protein."],
+  ["The blood clots too fast.",0,"Albumin isn't a clotting protein. (Liver failure actually tends to make clotting slower, because the liver also makes clotting factors.)"]]},
+ caption:"Albumin stays inside the capillary and pulls water back in. Globulins include antibodies and carriers. Fibrinogen waits to become fibrin.",
+ legend:[["plasma","Albumin"],["o2","Water"],["agA","Globulin (antibody)","r"],["fibrin","Fibrinogen","l"],["bact","Bacterium","r"]]},
+
+{act:1,scene:"hemo",id:"hemo",title:"Hemopoiesis: where blood cells are made",
+ body:`<p>Blood cells wear out, so the body makes billions of new ones every day. Making blood cells is called <b>hemopoiesis</b>. In adults it happens in <b>red bone marrow</b>, for example in the hip bones, sternum, ribs, vertebrae and the ends of long bones.</p>
+ <p>Every blood cell starts as a <b>hemopoietic stem cell</b>. When it divides, one daughter stays a stem cell (so the supply never runs out). The other becomes one of two kinds of stem cell:</p>
+ <ol><li><b>Myeloid stem cells</b> make red blood cells, platelets (by way of a giant cell, the <b>megakaryocyte</b>), neutrophils, eosinophils, basophils and monocytes.</li>
+ <li><b>Lymphoid stem cells</b> make <b>lymphocytes</b>.</li></ol>
+ <p>Chemical signals called <b>hemopoietic growth factors</b> steer this: <b>EPO</b> (erythropoietin) for red cells, <b>TPO</b> (thrombopoietin) for platelets, and <b>colony-stimulating factors</b> and interleukins for white cells.</p>`,
+ analogy:"A family tree. One great-grandparent (the stem cell) leads to two big branches of the family, and each branch ends in its own set of cousins with different jobs.",
+ terms:[["Hemopoiesis","The making of blood cells."],["Hemopoietic stem cell","The stem cell that every blood cell comes from."],["Myeloid stem cell","Gives rise to RBCs, platelets, and all WBCs except lymphocytes."],["Lymphoid stem cell","Gives rise to lymphocytes."]],
+ check:{q:"Which cells come from the LYMPHOID line?",opts:[
+  ["Lymphocytes",1,"Yes. The lymphoid stem cell makes lymphocytes. Everything else comes from the myeloid line."],
+  ["Red blood cells",0,"Red blood cells come from the myeloid stem cell."],
+  ["Platelets",0,"Platelets come from megakaryocytes, which are part of the myeloid line."],
+  ["Neutrophils",0,"Neutrophils are granulocytes, and all granulocytes come from the myeloid line."]]},
+ caption:"In red bone marrow, a hemopoietic stem cell divides. The myeloid branch makes RBCs, platelets, granulocytes and monocytes; the lymphoid branch makes lymphocytes.",
+ legend:[["rbc","Red blood cell"],["plt","Platelet"],["nuc","Nucleus"],["marrow","Red bone marrow","r"],["epo","Growth factor signal","r"]]},
+
+{act:2,scene:"rbc",id:"rbc",title:"Erythrocytes: built for carrying gases",
+ body:`<p><b>Erythrocytes</b> (red blood cells, RBCs) are the most common cells in blood, about 4.8 million per µL in women and 5.4 million per µL in men. Their shape fits their job:</p>
+ <ol><li>A <b>biconcave disc</b>: thick at the rim, thin in the middle. This gives a lot of <b>surface area</b> for O₂ and CO₂ to move in and out, and no part of the cell is far from the surface.</li>
+ <li><b>No nucleus and no mitochondria</b> when mature. That leaves more room for <b>hemoglobin</b>. Without mitochondria, they make ATP without using oxygen, so they don't use up the O₂ they carry.</li>
+ <li><b>Flexible.</b> They fold and squeeze through capillaries narrower than they are.</li></ol>
+ <p>Without a nucleus, an RBC can't repair itself. After about <b>120 days</b> it becomes stiff and worn out and is removed.</p>`,
+ analogy:"A delivery truck with the driver's cab removed so the whole thing is cargo space. It can carry more, but it can't fix itself, so it gets replaced after about four months.",
+ terms:[["Biconcave disc","A disc that is thinner in the middle than at the rim. Gives more surface area."],["Hemoglobin","The iron-containing protein that carries O₂ inside RBCs."],["Lifespan","About 120 days for an RBC."]],
+ check:{q:"Why does a mature red blood cell only live about 120 days?",opts:[
+  ["It has no nucleus, so it can't make new proteins to repair itself.",1,"Yes. With no nucleus, worn-out parts can't be replaced, so the cell gets stiff and is removed."],
+  ["It uses up all its oxygen.",0,"RBCs carry O₂ for other cells. Without mitochondria, they don't even use the O₂ they carry."],
+  ["It gets eaten by bacteria.",0,"Old RBCs are removed by the body's own macrophages, not by bacteria."],
+  ["Its hemoglobin turns into fibrin.",0,"Fibrin comes from fibrinogen, a plasma protein. Hemoglobin is recycled in other ways (coming up soon)."]]},
+ caption:"Left: a spinning RBC shows its biconcave shape. Right: RBCs fold to squeeze through a narrow capillary. Bottom: one RBC ages for about 120 days.",
+ legend:[["rbc","Erythrocyte (RBC)"],["vessel","Capillary wall","r"],["deoxy","Old, stiff RBC"]]},
+
+{act:2,scene:"hb",id:"hb",title:"Hemoglobin: the oxygen carrier",
+ body:`<p>Each RBC is packed with <b>hemoglobin</b>, about <b>300 million</b> molecules per cell. One hemoglobin molecule has:</p>
+ <ol><li><b>Four globin</b> protein chains (two alpha, two beta).</li>
+ <li><b>Four heme</b> groups, one tucked into each globin chain. Each heme holds one <b>iron ion (Fe²⁺)</b>.</li>
+ <li>Each iron binds <b>one O₂</b>. So one hemoglobin carries up to <b>4 O₂</b>, and one RBC can carry over a billion O₂ molecules.</li></ol>
+ <p>In the <b>lungs</b>, where O₂ is high, O₂ binds and makes <b>oxyhemoglobin</b> (bright red). In the <b>tissues</b>, where O₂ is low, O₂ lets go and leaves <b>deoxyhemoglobin</b> (darker red). Some CO₂ rides back to the lungs bound to the <b>globin</b> part, not the iron.</p>`,
+ analogy:"A bus with four seats. Each seat is an iron atom. At the lungs stop, O₂ passengers fill the seats. At the tissue stop, they get off. The bus itself (globin) can carry some CO₂ on the roof rack.",
+ terms:[["Globin","The protein chains of hemoglobin (2 alpha + 2 beta)."],["Heme","An iron-containing pigment group. One per globin chain."],["Oxyhemoglobin","Hemoglobin with O₂ bound. Bright red."],["Deoxyhemoglobin","Hemoglobin that has released its O₂. Darker red."]],
+ check:{q:"How many O₂ molecules can one hemoglobin molecule carry, and where do they bind?",opts:[
+  ["Four, one on the iron of each heme group",1,"Right. Four hemes, each with one Fe²⁺, each binding one O₂."],
+  ["One, in the center of the molecule",0,"Hemoglobin has four binding sites, one in each heme."],
+  ["Four, on the globin chains",0,"Four is right, but O₂ binds the iron in heme. It's CO₂ that can ride on the globin."],
+  ["About 300 million",0,"That is roughly how many hemoglobin molecules are in one RBC, not how many O₂ one hemoglobin carries."]]},
+ caption:"In the lungs, O₂ binds the iron in each of the 4 hemes (bright red). In the tissues, the O₂ lets go (dark red).",
+ legend:[["glob-a","Alpha globin","r"],["glob-b","Beta globin","r"],["iron","Heme iron (Fe²⁺)"],["o2","O₂"],["co2","CO₂"]]},
+
+{act:2,scene:"epo",id:"epo",title:"Erythropoiesis is controlled by EPO",
+ body:`<p>Making red blood cells is <b>erythropoiesis</b>. The body keeps RBC numbers steady with a <b>negative feedback</b> loop:</p>
+ <ol><li><b>Stimulus:</b> O₂ delivery to the tissues drops (for example, moving to high altitude, losing blood, or having anemia).</li>
+ <li>Cells in the <b>kidneys</b> sense the low O₂ and release the hormone <b>erythropoietin (EPO)</b> into the blood.</li>
+ <li>EPO reaches the <b>red bone marrow</b> and speeds up erythropoiesis.</li>
+ <li>More RBCs carry more O₂. As O₂ delivery returns to normal, the kidneys <b>release less EPO</b>. That is the "negative" part: the response shuts off its own trigger.</li></ol>
+ <p>It takes several days for new RBCs to mature, so the graph lags behind the EPO spike. The marrow also needs raw materials: <b>iron</b>, vitamin <b>B₁₂</b> and <b>folate</b>.</p>`,
+ analogy:"A thermostat. When the room (O₂ level) gets too cold, the thermostat (kidney) turns on the furnace (marrow). When the room warms back up, the thermostat turns the furnace down.",
+ terms:[["Erythropoiesis","The making of red blood cells."],["Erythropoietin (EPO)","A hormone from the kidneys that tells red marrow to make more RBCs."],["Negative feedback","A response that reverses the change that triggered it."]],
+ check:{q:"A person with kidney failure often becomes anemic. Why?",opts:[
+  ["The kidneys can't make enough EPO, so the marrow makes fewer RBCs.",1,"Yes. Without EPO, the marrow never gets the message to keep up RBC production."],
+  ["The kidneys filter RBCs out into the urine.",0,"Healthy or not, the kidneys don't normally remove RBCs. The problem is the missing EPO signal."],
+  ["The kidneys make too much EPO.",0,"Too much EPO would cause too many RBCs, not too few."],
+  ["The bone marrow stops working because it has no blood supply.",0,"The marrow is fine. It just isn't being told to make enough RBCs."]]},
+ caption:"O₂ drops → kidneys release EPO → marrow makes more RBCs (after a few days) → O₂ recovers → EPO falls. The graph tracks it over about a month.",
+ legend:[["o2","O₂ delivered to tissues","l"],["epo","EPO level","l"],["rbc","RBC count","l"],["kidney","Kidney","r"],["marrow","Red marrow","r"]]},
+
+{act:2,scene:"recycle",id:"recycle",title:"Recycling old red blood cells",
+ body:`<p>Worn-out RBCs are removed by <b>macrophages</b>, mostly in the <b>spleen</b> and <b>liver</b>. The macrophage swallows the old cell and takes its hemoglobin apart. Almost nothing is wasted:</p>
+ <ol><li><b>Globin</b> is broken down into <b>amino acids</b>, which are reused to build new proteins.</li>
+ <li><b>Iron</b> is saved. It travels in the blood on a carrier protein called <b>transferrin</b> to the red marrow to build new hemoglobin, or it is stored (as <b>ferritin</b>) in the liver.</li>
+ <li>The rest of the <b>heme</b> becomes <b>biliverdin</b> (green), then <b>bilirubin</b> (yellow). Bilirubin rides on albumin to the <b>liver</b>, which puts it into <b>bile</b>. Bile goes to the intestine, and its breakdown products color feces brown and urine yellow.</li></ol>
+ <p>If bilirubin builds up (for example, when many RBCs are destroyed or the liver is struggling), the skin and eyes turn yellow. This is <b>jaundice</b>.</p>`,
+ analogy:"Taking an old car to the scrapyard. The metal (iron) is melted down and reused, the seats (globin) are stripped for parts, and the paint (heme pigment) goes out with the trash, which is why the trash has a color.",
+ terms:[["Macrophage","A large phagocytic cell. Removes old RBCs in the spleen and liver."],["Transferrin","The blood protein that carries iron."],["Bilirubin","A yellow pigment made from heme. Removed by the liver in bile."],["Jaundice","Yellowing of the skin and eyes from too much bilirubin."]],
+ check:{q:"What happens to the iron from old red blood cells?",opts:[
+  ["It is carried by transferrin to the marrow to make new hemoglobin, or stored.",1,"Yes. Iron is precious, so the body recycles it."],
+  ["It becomes bilirubin and leaves in bile.",0,"Bilirubin comes from the non-iron part of heme. The iron itself is kept."],
+  ["It is broken into amino acids.",0,"Amino acids come from globin, the protein part. Iron is a mineral, not a protein."],
+  ["It is all lost in the urine.",0,"Very little iron is lost. Most is recycled."]]},
+ caption:"A macrophage swallows an old RBC. Globin → amino acids. Iron → transferrin → marrow (or stored). Heme → biliverdin → bilirubin → liver → bile.",
+ legend:[["macro","Macrophage","r"],["glob-a","Globin → amino acids"],["iron","Iron (Fe)"],["biliv","Biliverdin (green)"],["bili","Bilirubin (yellow)"]]},
+
+{act:2,scene:"anemia",id:"anemia",title:"Anemia: when blood can't carry enough O₂",
+ body:`<p><b>Anemia</b> means the blood can't carry enough O₂ to the tissues. People with anemia often feel tired and weak and may look pale. OpenStax groups causes into three kinds: <b>blood loss</b>, <b>not making enough</b> good RBCs, and <b>destroying</b> RBCs too fast.</p>
+ <ol><li><b>Iron-deficiency anemia</b> is the most common. Without enough iron, the marrow can't make enough hemoglobin. RBCs come out <b>small and pale</b>, and each carries less O₂.</li>
+ <li><b>Sickle cell disease</b> is inherited. One change in the beta globin gene makes an abnormal hemoglobin (HbS). When O₂ is low, the RBCs bend into a stiff <b>sickle (crescent) shape</b>. They get stuck in small vessels, causing pain and tissue damage, and they break apart early.</li></ol>
+ <p>Other examples include pernicious anemia (not enough vitamin B₁₂ absorbed) and aplastic anemia (the marrow itself fails).</p>`,
+ analogy:"A delivery company in trouble. Iron deficiency: the trucks are half empty. Sickle cell: some trucks are bent out of shape and jam the narrow streets, so nothing gets through.",
+ terms:[["Anemia","Blood that can't carry enough O₂."],["Iron-deficiency anemia","Not enough iron, so RBCs are small and pale with less hemoglobin."],["Sickle cell disease","Inherited abnormal hemoglobin (HbS); RBCs sickle when O₂ is low."]],
+ check:{q:"In sickle cell disease, why do tissues get too little O₂?",opts:[
+  ["Stiff, sickled RBCs get stuck in small vessels and break apart early.",1,"Yes. Blocked vessels starve the tissue downstream, and the short-lived RBCs leave the person anemic."],
+  ["The person doesn't eat enough iron.",0,"That describes iron-deficiency anemia. Sickle cell disease is inherited: it comes from a change in the globin gene."],
+  ["The RBCs have extra nuclei.",0,"Mature RBCs have no nucleus in sickle cell disease either. The problem is the abnormal hemoglobin inside."],
+  ["Too much EPO is made.",0,"EPO isn't the cause. The kidneys may even make more EPO to try to make up for the loss."]]},
+ caption:"Three capillaries feeding tissue. Normal RBCs deliver plenty of O₂. Small, pale iron-deficient cells carry less. Sickled cells jam the narrow spot.",
+ legend:[["rbc","Normal RBC"],["rbc-hi","Small, pale RBC (iron deficiency)"],["deoxy","Sickled RBC"],["o2","O₂"]]},
+
+{act:3,scene:"wbcmix",id:"wbcmix",title:"Leukocytes: Never Let Monkeys Eat Bananas",
+ body:`<p><b>Leukocytes</b> (white blood cells, WBCs) defend the body. There are only about <b>5,000 to 10,000 per µL</b> of blood, far fewer than RBCs. Unlike RBCs, they have a <b>nucleus</b>, and most of their work happens <b>outside</b> the blood, in the tissues.</p>
+ <p>There are five kinds. From most to least common, remember <b>"Never Let Monkeys Eat Bananas"</b>:</p>
+ <ol><li><b>N</b>eutrophils, about 50 to 70%</li><li><b>L</b>ymphocytes, about 20 to 30%</li><li><b>M</b>onocytes, about 2 to 8%</li><li><b>E</b>osinophils, about 2 to 4%</li><li><b>B</b>asophils, less than 1%</li></ol>
+ <p>They fall into two groups. <b>Granulocytes</b> (neutrophils, eosinophils, basophils) have granules you can see in a stained smear. <b>Agranulocytes</b> (lymphocytes, monocytes) don't have visible granules. A lab test that counts 100 WBCs by type is a <b>differential count</b>.</p>`,
+ analogy:"A town's emergency services. Lots of patrol officers (neutrophils), a good number of detectives (lymphocytes), a few heavy cleanup crews (monocytes), and a handful of specialists (eosinophils and basophils).",
+ terms:[["Leukocyte","A white blood cell. Has a nucleus; defends the body."],["Granulocyte","A WBC with visible granules: neutrophil, eosinophil, basophil."],["Agranulocyte","A WBC without visible granules: lymphocyte, monocyte."],["Differential count","Counting 100 WBCs to find the percent of each kind."]],
+ check:{q:"Which leukocyte is the LEAST common in normal blood?",opts:[
+  ["Basophil",1,"Yes. The B in \"Bananas\" is last: basophils are under 1%."],
+  ["Neutrophil",0,"Neutrophils are the MOST common, about 50 to 70%. They're the \"Never\" at the front."],
+  ["Lymphocyte",0,"Lymphocytes are second most common, about 20 to 30%."],
+  ["Monocyte",0,"Monocytes are about 2 to 8%. Basophils are rarer."]]},
+ caption:"A differential count: 100 white cells fill the grid in their normal proportions. Neutrophils win easily; basophils are rare.",
+ legend:[["ngran","Neutrophil"],["lymc","Lymphocyte"],["monoc","Monocyte"],["eos","Eosinophil"],["baso","Basophil"]]},
+
+{act:3,scene:"gran",id:"gran",title:"Granulocytes: neutrophils, eosinophils, basophils",
+ body:`<p>Each granulocyte has a recognizable look and job:</p>
+ <ol><li><b>Neutrophils</b>: a nucleus with 2 to 5 lobes and pale lilac granules. They are the <b>first responders</b> to infection and are excellent <b>phagocytes</b>, swallowing bacteria. Pus is mostly dead neutrophils.</li>
+ <li><b>Eosinophils</b>: usually a two-lobed nucleus and big <b>red-orange</b> granules. They attack <b>parasitic worms</b> by releasing their granule contents, and they help control <b>allergic</b> reactions.</li>
+ <li><b>Basophils</b>: large <b>dark blue-purple</b> granules that hide the nucleus. They release <b>histamine</b>, which widens vessels and makes them leaky (inflammation), and <b>heparin</b>, which slows clotting.</li></ol>`,
+ analogy:"Neutrophils are the bouncers who grab troublemakers and throw them out. Eosinophils are the pest-control crew for big invaders. Basophils pull the fire alarm, calling in help and opening the doors.",
+ terms:[["Phagocytosis","A cell engulfing (swallowing) a particle, such as a bacterium."],["Histamine","Released by basophils. Widens blood vessels and makes them leaky."],["Heparin","Released by basophils. An anticoagulant (slows clotting)."]],
+ check:{q:"A lab shows high eosinophils. Which problem fits best?",opts:[
+  ["A parasitic worm infection or an allergy",1,"Yes. Eosinophils rise with parasitic worms and allergic conditions."],
+  ["A fresh bacterial infection",0,"A bacterial infection usually raises neutrophils, the first responders."],
+  ["A clotting problem",0,"Eosinophils aren't part of clotting. Platelets and clotting factors are."],
+  ["Low iron",0,"Low iron affects RBCs and hemoglobin, not eosinophils."]]},
+ caption:"Neutrophil swallows bacteria. Eosinophils release granules onto a parasitic worm. Basophil releases histamine (vessel widens) and heparin.",
+ legend:[["ngran","Neutrophil granules"],["eos","Eosinophil granules"],["baso","Basophil granules"],["chem","Histamine"],["plt","Heparin"],["bact","Bacterium","r"]]},
+
+{act:3,scene:"agran",id:"agran",title:"Agranulocytes: lymphocytes and monocytes",
+ body:`<p><b>Lymphocytes</b> have a big round nucleus with just a thin rim of pale blue cytoplasm. They are the cells of <b>specific (adaptive) immunity</b>:</p>
+ <ol><li><b>B cells</b> turn into <b>plasma cells</b> that make <b>antibodies</b>. Antibodies stick to a specific invader and mark it for destruction.</li>
+ <li><b>T cells</b> attack infected cells directly or direct other immune cells.</li>
+ <li><b>Natural killer (NK) cells</b> destroy infected and cancer cells without needing a specific target first.</li></ol>
+ <p><b>Monocytes</b> are the <b>largest</b> leukocytes, with a kidney- or horseshoe-shaped nucleus. They leave the blood, enter the tissues and become <b>macrophages</b>: big, long-lived phagocytes that eat bacteria, debris and old cells (like the old RBCs from Part 2).</p>`,
+ analogy:"Lymphocytes are detectives with a wanted poster: they find one particular suspect. Monocytes are trainees who leave the station and grow into the heavy cleanup crew (macrophages).",
+ terms:[["B cell","A lymphocyte that becomes a plasma cell and makes antibodies."],["T cell","A lymphocyte that attacks infected cells or directs the immune response."],["Antibody","A Y-shaped protein (a globulin) that binds one specific target."],["Macrophage","What a monocyte becomes in the tissues. A large phagocyte."]],
+ check:{q:"A monocyte leaves the bloodstream and enters an infected tissue. What does it become?",opts:[
+  ["A macrophage",1,"Yes. In the tissues, monocytes enlarge into macrophages and eat invaders and debris."],
+  ["A plasma cell",0,"Plasma cells come from B lymphocytes, not monocytes."],
+  ["A platelet",0,"Platelets come from megakaryocytes in the marrow."],
+  ["A neutrophil",0,"Neutrophils are granulocytes. A monocyte stays in its own line."]]},
+ caption:"Left: a B cell becomes a plasma cell and fires antibodies; a T cell kills an infected cell. Right: a monocyte leaves the vessel and grows into a macrophage.",
+ legend:[["lymc","Lymphocyte"],["monoc","Monocyte / macrophage"],["agA","Antibody","r"],["bact","Bacterium","r"],["tf","Infected cell"]]},
+
+{act:3,scene:"diaped",id:"diaped",title:"Leaving the bloodstream: emigration (diapedesis)",
+ body:`<p>Blood is mostly the <b>highway</b> leukocytes use. Their real work is in the tissues. Watch a neutrophil get from the blood to an infection:</p>
+ <ol><li><b>Slowing and rolling.</b> Near an infection, the vessel lining becomes sticky. The WBC slows and rolls along the wall.</li>
+ <li><b>Sticking.</b> It grabs on tightly at one spot.</li>
+ <li><b>Emigration (diapedesis).</b> It squeezes through the small gap between two cells of the vessel wall. Leukocytes are very flexible.</li>
+ <li><b>Chemotaxis.</b> It crawls toward chemicals released by the injured tissue and the bacteria. Moving toward a chemical signal is <b>positive chemotaxis</b>.</li>
+ <li><b>Phagocytosis.</b> It swallows the bacteria.</li></ol>`,
+ analogy:"An ambulance that leaves the highway at the right exit, squeezes down a narrow alley, and follows the smoke to the fire.",
+ terms:[["Emigration (diapedesis)","A leukocyte squeezing out of a capillary between the cells of its wall."],["Positive chemotaxis","Moving toward a chemical signal."],["Endothelium","The thin layer of cells lining a blood vessel."]],
+ check:{q:"What is diapedesis?",opts:[
+  ["A white blood cell squeezing out of a vessel between the cells of the wall",1,"Yes. Diapedesis (also called emigration) is how WBCs leave the blood to reach the tissues."],
+  ["A red blood cell folding to fit through a capillary",0,"RBCs do fold in capillaries, but they stay inside the vessel. Diapedesis means leaving the vessel."],
+  ["A WBC swallowing a bacterium",0,"That is phagocytosis, which comes after the WBC reaches the tissue."],
+  ["Blood leaking out of a cut",0,"That's bleeding. Diapedesis is a single WBC slipping out on purpose."]]},
+ caption:"A neutrophil rolls along the wall, sticks, squeezes between wall cells (diapedesis), follows the chemical signal (chemotaxis) and eats the bacteria.",
+ legend:[["ngran","Neutrophil"],["endo","Vessel wall cells","r"],["chem","Chemical signal"],["bact","Bacterium","r"],["rbc","RBC"]]},
+
+{act:3,scene:"plt",id:"plt",title:"Platelets: pieces of a giant cell",
+ body:`<p><b>Platelets</b> (also called <b>thrombocytes</b>) aren't whole cells. They are <b>fragments</b> of a huge cell in the red marrow called a <b>megakaryocyte</b>.</p>
+ <ol><li>The megakaryocyte pushes long extensions through the wall of a marrow blood vessel.</li>
+ <li>The extensions break into pieces. Each megakaryocyte releases <b>2,000 to 3,000</b> platelets.</li>
+ <li>The hormone <b>thrombopoietin (TPO)</b> speeds up platelet production.</li></ol>
+ <p>Normal blood has about <b>150,000 to 400,000 platelets per µL</b>. Platelets have <b>no nucleus</b> and circulate for only about <b>10 days</b> before macrophages remove them. Their job is <b>hemostasis</b>: helping stop bleeding (Part 4).</p>`,
+ analogy:"A giant loaf of bread being pushed through a fence and broken into thousands of small slices on the other side. Each slice is a platelet.",
+ terms:[["Platelet (thrombocyte)","A cell fragment that helps stop bleeding."],["Megakaryocyte","A giant marrow cell that breaks up into platelets."],["Thrombopoietin (TPO)","A hormone that stimulates platelet production."]],
+ check:{q:"Which statement about platelets is true?",opts:[
+  ["They are fragments of megakaryocytes and have no nucleus.",1,"Right. Platelets are pieces of a giant marrow cell."],
+  ["They are the most common formed element in blood.",0,"RBCs are far more common: millions per µL versus hundreds of thousands of platelets."],
+  ["They live about 120 days.",0,"That's the RBC lifespan. Platelets last only about 10 days."],
+  ["They come from the lymphoid stem cell.",0,"Megakaryocytes come from the myeloid line."]]},
+ caption:"A giant megakaryocyte pushes extensions into a marrow blood vessel; the pieces break off as platelets and are carried away.",
+ legend:[["plt","Platelet / megakaryocyte"],["nuc","Megakaryocyte nucleus"],["vessel","Marrow blood vessel","r"],["rbc","RBC"]]},
+
+{act:4,scene:"spasm",id:"spasm",title:"Hemostasis step 1: vascular spasm",
+ body:`<p><b>Hemostasis</b> means stopping bleeding. It happens in three overlapping steps: <b>vascular spasm</b>, the <b>platelet plug</b>, and <b>coagulation</b> (clotting).</p>
+ <p>The first response is the fastest. When a vessel is cut, the <b>smooth muscle</b> in its wall <b>contracts</b>. This <b>vascular spasm</b> narrows the vessel, so less blood escapes. It is triggered by direct damage to the muscle, chemicals released by the vessel lining and platelets, and pain reflexes.</p>
+ <p>A spasm can last up to about <b>30 minutes</b>. That buys time for the next two steps to seal the hole.</p>`,
+ analogy:"Pinching a garden hose near a leak. It doesn't fix the hole, but it cuts down how much water sprays out while you grab the tape.",
+ terms:[["Hemostasis","Stopping bleeding: vascular spasm, platelet plug, coagulation."],["Vascular spasm","Contraction of the smooth muscle in a damaged vessel's wall."],["Smooth muscle","The muscle layer in vessel walls that can narrow the vessel."]],
+ check:{q:"What does a vascular spasm do?",opts:[
+  ["Narrows the damaged vessel so less blood is lost",1,"Yes. Smooth muscle contracts and squeezes the vessel smaller."],
+  ["Forms a fibrin mesh over the cut",0,"Fibrin comes later, in coagulation. The spasm is a muscle response."],
+  ["Makes platelets sticky",0,"Platelet activation is step 2. The spasm is the vessel wall itself contracting."],
+  ["Dissolves an old clot",0,"That's fibrinolysis, which comes at the very end, after healing."]]},
+ caption:"A cut opens in the vessel wall and blood escapes. The smooth muscle contracts (vascular spasm), the vessel narrows, and the leak slows.",
+ legend:[["muscle","Smooth muscle","r"],["rbc","RBCs"],["vessel-edge","Vessel wall","r"]]},
+
+{act:4,scene:"plug",id:"plug",title:"Step 2: the platelet plug",
+ body:`<p>A cut in a vessel's lining exposes the <b>collagen</b> fibers underneath. Platelets react to collagen right away:</p>
+ <ol><li><b>Adhesion.</b> Platelets stick to the exposed collagen, helped by a plasma protein called <b>von Willebrand factor</b>.</li>
+ <li><b>Activation.</b> The stuck platelets change shape. They swell and grow spiky arms.</li>
+ <li><b>Release.</b> They release chemicals such as <b>ADP</b>, <b>serotonin</b> and <b>thromboxane A₂</b>. These call in more platelets and help keep the vessel constricted.</li>
+ <li><b>Aggregation.</b> Newly arriving platelets get activated and stick to the ones already there. The pile grows into a <b>platelet plug</b>.</li></ol>
+ <p>Steps 3 and 4 feed each other: platelets attract more platelets. This is <b>positive feedback</b>. A plug can seal a small break by itself. For bigger damage, it needs the clot from step 3 to hold it together.</p>`,
+ analogy:"A crowd gathering at an accident. The first few people stop, start waving their arms and shouting, and every new person who comes by stops too, until the street is blocked.",
+ terms:[["Platelet adhesion","Platelets sticking to exposed collagen (with von Willebrand factor)."],["Platelet activation","Platelets changing shape and releasing chemicals."],["Aggregation","More platelets sticking together to build the plug."],["Thromboxane A₂","A chemical released by platelets that recruits more platelets."]],
+ check:{q:"What makes platelets stick at the site of a cut in the first place?",opts:[
+  ["Exposed collagen in the damaged vessel wall",1,"Yes. Platelets adhere to collagen, with help from von Willebrand factor."],
+  ["Fibrin threads",0,"Fibrin forms later, in coagulation. Platelets stick before any fibrin exists."],
+  ["Red blood cells piling up",0,"RBCs get trapped later in the fibrin mesh. They don't start the plug."],
+  ["Plasmin",0,"Plasmin breaks down clots. It works at the end, not the start."]]},
+ caption:"① Adhesion to collagen ② Activation (spiky) ③ Release of ADP, serotonin, thromboxane A₂ ④ Aggregation builds the plug (positive feedback).",
+ legend:[["plt","Platelet"],["collagen","Collagen fibers","l"],["chem","Released chemicals"],["vitk","von Willebrand factor","l"]]},
+
+{act:4,scene:"cascade",id:"cascade",title:"Step 3: coagulation, a cascade",
+ body:`<p><b>Coagulation</b> turns liquid blood into a gel, a <b>clot</b>. It runs on a chain of <b>clotting factors</b> (mostly plasma proteins, numbered with Roman numerals). Each activated factor turns on the next, so a small start becomes a huge response. This is a <b>cascade</b>.</p>
+ <ol><li><b>Extrinsic pathway</b> (faster, fewer steps): damaged tissue outside the blood releases <b>tissue factor</b> (factor III). With factor VII, it activates factor X.</li>
+ <li><b>Intrinsic pathway</b> (slower, more steps): starts inside the blood, when factor XII touches collagen or activated platelets. It runs XII → XI → IX (with VIII) and also activates factor X.</li>
+ <li><b>Common pathway</b>: activated <b>factor X</b> (with factor V) forms <b>prothrombin activator</b>. That turns <b>prothrombin</b> into <b>thrombin</b>. Thrombin turns soluble <b>fibrinogen</b> into insoluble <b>fibrin</b> threads. Factor XIII cross-links the threads into a strong <b>mesh</b> that traps platelets and RBCs.</li></ol>`,
+ analogy:"Dominoes that branch. Two different first dominoes (extrinsic and intrinsic) both knock over the same middle domino (factor X), and from there each domino knocks over more and more, ending in a net of fibrin.",
+ terms:[["Clotting factors","Proteins (and Ca²⁺) that act in sequence to make a clot. Numbered I to XIII."],["Tissue factor (III)","Released by damaged tissue. Starts the extrinsic pathway."],["Thrombin","The enzyme that turns fibrinogen into fibrin."],["Fibrin","Insoluble threads that form the clot's mesh."]],
+ check:{q:"Where do the extrinsic and intrinsic pathways come together?",opts:[
+  ["At the activation of factor X, which starts the common pathway",1,"Yes. Both pathways activate factor X. From there it's one shared route to fibrin."],
+  ["At fibrinogen",0,"Fibrinogen is near the end of the common pathway. The two pathways join earlier, at factor X."],
+  ["At tissue factor",0,"Tissue factor starts only the extrinsic pathway."],
+  ["They never meet; each makes its own fibrin",0,"They share the common pathway, starting at factor X."]]},
+ caption:"Extrinsic (tissue factor, fast) and intrinsic (XII → XI → IX, slower) both activate factor X → prothrombin activator → thrombin → fibrin mesh. Each step multiplies the signal.",
+ legend:[["tf","Extrinsic pathway","r"],["act1","Intrinsic pathway","r"],["thrombin","Common pathway","r"],["fibrin","Fibrin","l"],["ca","Ca²⁺","d"]]},
+
+{act:4,scene:"cavk",id:"cavk",title:"Calcium and vitamin K: the cascade's must-haves",
+ body:`<p>Two things must be present for the cascade to work:</p>
+ <ol><li><b>Calcium ions (Ca²⁺).</b> Ca²⁺ is actually counted as a clotting factor (<b>factor IV</b>). It is needed at many steps in all three pathways. Without it, the cascade stalls. Blood collection tubes that keep blood liquid work by binding up the Ca²⁺.</li>
+ <li><b>Vitamin K.</b> The <b>liver</b> needs vitamin K to make working versions of <b>factors II (prothrombin), VII, IX and X</b>. Vitamin K comes from leafy green foods and is also made by bacteria in the large intestine.</li></ol>
+ <p>Without enough vitamin K, the liver releases factors that don't work, and the person bleeds easily. This is why newborns, who have few gut bacteria yet, get a vitamin K shot at birth. The anticoagulant drug <b>warfarin</b> works by blocking vitamin K's role.</p>`,
+ analogy:"A car factory (the liver) that needs one special part (vitamin K) to finish the engines. Without it, the cars roll off the line but won't start. And even working cars need fuel (Ca²⁺) to run.",
+ terms:[["Calcium (factor IV)","Ca²⁺ ions needed at many steps of coagulation."],["Vitamin K","Needed by the liver to make factors II, VII, IX and X."],["Anticoagulant","A substance that slows or prevents clotting."]],
+ check:{q:"A patient has a vitamin K deficiency. Which factors are most affected?",opts:[
+  ["II, VII, IX and X, made in the liver",1,"Yes. The liver needs vitamin K to make these four working factors."],
+  ["Only factor IV (Ca²⁺)",0,"Ca²⁺ comes from the diet and bones. Vitamin K affects factors made by the liver."],
+  ["Platelets",0,"Platelet numbers and the plug are normal. The problem is the clotting factors."],
+  ["Fibrinogen only",0,"Fibrinogen (factor I) doesn't need vitamin K. The vitamin K ones are II, VII, IX and X."]]},
+ caption:"Normal: vitamin K lets the liver make factors II, VII, IX, X, and Ca²⁺ docks at each step → fibrin. Then watch the cascade stall without vitamin K, and again without Ca²⁺.",
+ legend:[["vitk","Vitamin K","s"],["liver","Liver cell","r"],["ca","Ca²⁺","d"],["fibrin","Fibrin","l"]]},
+
+{act:4,scene:"lysis",id:"lysis",title:"Clot retraction and fibrinolysis",
+ body:`<p>A clot isn't the end of the story.</p>
+ <ol><li><b>Clot retraction.</b> Within about 30 to 60 minutes, platelets in the clot <b>contract</b>, like tiny muscles. This pulls the edges of the wound closer and squeezes fluid (<b>serum</b>) out of the clot, making it smaller and tighter.</li>
+ <li><b>Repair.</b> Chemicals from platelets (such as PDGF) help the vessel wall and its lining grow back.</li>
+ <li><b>Fibrinolysis.</b> Once the vessel has healed, the clot is removed. An inactive plasma protein trapped in the clot, <b>plasminogen</b>, is turned into the enzyme <b>plasmin</b> (with help from <b>tissue plasminogen activator, tPA</b>). Plasmin cuts the fibrin threads apart and the clot dissolves.</li></ol>
+ <p>Doctors use clot-busting drugs based on tPA to dissolve dangerous clots, for example in some strokes.</p>`,
+ analogy:"A drawstring bag pulled tight around a hole (retraction). After the patch underneath has healed, you cut the strings (plasmin) and throw the bag away.",
+ terms:[["Clot retraction","Platelets contract, pulling wound edges together and squeezing out serum."],["Fibrinolysis","Breaking down a clot after the vessel heals."],["Plasmin","The enzyme that digests fibrin. Made from plasminogen."]],
+ check:{q:"Which enzyme dissolves a clot after the vessel has healed?",opts:[
+  ["Plasmin",1,"Yes. Plasmin digests fibrin, so the clot breaks apart."],
+  ["Thrombin",0,"Thrombin makes fibrin. It builds clots rather than dissolving them."],
+  ["Fibrinogen",0,"Fibrinogen is the raw material for fibrin, not an enzyme that breaks it down."],
+  ["Prothrombin activator",0,"That is part of making a clot. Plasmin is the one that removes it."]]},
+ caption:"Platelets contract and squeeze out serum (retraction). New lining grows. Then plasmin snips the fibrin threads and the clot dissolves.",
+ legend:[["fibrin","Fibrin","l"],["plt","Platelet"],["plasma","Serum","r"],["plasmin","Plasmin"],["endo","New lining cells","r"]]},
+
+{act:5,scene:"abo",id:"abo",title:"ABO blood groups: antigens and antibodies",
+ body:`<p>The surface of every RBC carries markers called <b>antigens</b>. Blood type is named for which antigens are there. In the <b>ABO</b> system:</p>
+ <ol><li><b>Type A</b> RBCs carry <b>A antigens</b>. <b>Type B</b> carry <b>B antigens</b>. <b>Type AB</b> carry <b>both</b>. <b>Type O</b> carry <b>neither</b>.</li>
+ <li>The plasma carries <b>antibodies</b> against the antigens your cells <b>don't</b> have. Type A has <b>anti-B</b>. Type B has <b>anti-A</b>. Type AB has <b>neither</b>. Type O has <b>both anti-A and anti-B</b>.</li></ol>
+ <p>These ABO antibodies show up in early childhood, without any exposure to another person's blood. That is why the wrong ABO type can cause a reaction the very first time.</p>`,
+ analogy:"Name tags and bouncers. Your RBCs wear name tags (antigens). Your plasma has bouncers (antibodies) trained to grab anyone wearing a tag you don't wear.",
+ terms:[["Antigen","A marker on a cell surface that antibodies can recognize."],["Antibody","A plasma protein that binds a specific antigen."],["Anti-A / anti-B","Antibodies in plasma against the A or B antigen."]],
+ check:{q:"Which antibodies are in the plasma of a person with type B blood?",opts:[
+  ["Anti-A",1,"Right. Type B cells carry B antigens, so the plasma has antibodies against the one they lack: A."],
+  ["Anti-B",0,"That would attack the person's own B antigens. You only make antibodies against antigens you don't have."],
+  ["Both anti-A and anti-B",0,"That's type O, which has neither antigen."],
+  ["Neither",0,"That's type AB, which has both antigens."]]},
+ caption:"Each type: antigens on the RBC (top) and antibodies in the plasma (bottom). You carry antibodies only against the antigens you don't have.",
+ legend:[["agA","A antigen / anti-A","t"],["agB","B antigen / anti-B"],["rbc","RBC"],["plasma","Plasma","r"]]},
+
+{act:5,scene:"rh",id:"rh",title:"The Rh factor",
+ body:`<p>The second important blood group is the <b>Rh</b> system. Its main antigen is called <b>D</b>.</p>
+ <ol><li>If your RBCs have the D antigen, you are <b>Rh positive (Rh⁺)</b>. Most people are, about 85% in the United States.</li>
+ <li>If they don't, you are <b>Rh negative (Rh⁻)</b>.</li></ol>
+ <p>Here is the key difference from ABO: an Rh⁻ person does <b>not</b> have anti-Rh (anti-D) antibodies to begin with. They make them <b>only after exposure</b> to Rh⁺ blood, for example from a mismatched transfusion or from an Rh⁺ baby during birth. Making antibodies takes time, so the first exposure usually causes little harm. A <b>second</b> exposure triggers a fast, strong reaction.</p>`,
+ analogy:"A security system that doesn't know a face until it sees it once. The first visit, it just takes a photo. The second visit, the alarm goes off right away.",
+ terms:[["Rh factor (D antigen)","An RBC antigen. Present = Rh⁺, absent = Rh⁻."],["Sensitization","An Rh⁻ person's first exposure to Rh⁺ blood, after which they make anti-D."],["Anti-D","The antibody against the Rh (D) antigen."]],
+ check:{q:"An Rh⁻ person who has never been exposed to Rh⁺ blood gets one unit of Rh⁺ blood. What is most likely?",opts:[
+  ["Little reaction now, but they start making anti-D, so a later Rh⁺ exposure is dangerous.",1,"Yes. There are no anti-D antibodies yet. The first exposure sensitizes them."],
+  ["Immediate severe agglutination",0,"That happens with ABO mismatches, because ABO antibodies already exist. Anti-D doesn't exist until after exposure."],
+  ["Nothing ever happens",0,"The immune system will learn the D antigen and make anti-D for next time."],
+  ["Their own cells become Rh⁺",0,"Your RBC antigens are set by your genes. A transfusion doesn't change them."]]},
+ caption:"Rh⁺ cells carry D antigens; Rh⁻ cells don't. An Rh⁻ person makes anti-D only after a first exposure. The second exposure causes clumping.",
+ legend:[["agD","D (Rh) antigen / anti-D","s"],["rbc","RBC"],["lymc","B cell / plasma cell"],["plasma","Plasma","r"]]},
+
+{act:5,scene:"transf",id:"transf",title:"Transfusion reactions and universal donors",
+ body:`<p>If a person gets blood with an antigen their plasma has antibodies against, the antibodies bind the donor RBCs. Each antibody can grab more than one cell, so the cells stick together in clumps. This clumping is <b>agglutination</b>.</p>
+ <p>The clumped cells can block small vessels, and they <b>burst</b> (<b>hemolysis</b>). Free hemoglobin pours into the plasma and can damage the kidneys. This <b>transfusion reaction</b> can be deadly. That's why blood is typed and cross-matched.</p>
+ <p>For a red cell transfusion, ask: does the <b>donor's RBC</b> carry any antigen the <b>recipient</b> has antibodies against?</p>
+ <ol><li><b>O negative</b> RBCs have no A, B or D antigens, so they can be given to almost anyone. O⁻ is the <b>universal donor</b>.</li>
+ <li><b>AB positive</b> people have no anti-A, anti-B or anti-D, so they can receive any type. AB⁺ is the <b>universal recipient</b>.</li></ol>`,
+ analogy:"Bouncers with handcuffs that each have two cuffs. Every bouncer cuffs two strangers together, and soon there's one big pile of handcuffed strangers in the doorway.",
+ terms:[["Agglutination","Clumping of RBCs when antibodies bind their antigens."],["Hemolysis","Bursting of RBCs, releasing hemoglobin."],["Universal donor","O⁻: RBCs with no A, B or D antigens."],["Universal recipient","AB⁺: no anti-A, anti-B or anti-D in plasma."]],
+ check:{q:"A type A⁺ patient is given type B⁺ red cells by mistake. What happens?",opts:[
+  ["The patient's anti-B binds the donor's B antigens: agglutination and hemolysis.",1,"Yes. Type A plasma has anti-B, and the donor cells carry B."],
+  ["Nothing, because both are Rh⁺.",0,"The Rh match is fine, but the ABO mismatch still causes a reaction."],
+  ["The donor's cells turn into type A.",0,"Antigens are set by the donor's genes. They don't change after a transfusion."],
+  ["The patient makes anti-A antibodies.",0,"A type A person never makes anti-A; that would attack their own cells."]]},
+ caption:"Type B donor cells enter type A blood. Anti-B antibodies link them into clumps (agglutination), then they burst (hemolysis). Right: O⁻ gives to all; AB⁺ takes from all.",
+ legend:[["agA","A antigen","t"],["agB","B antigen / anti-B"],["agD","D antigen","s"],["rbc","RBC"]]},
+
+{act:5,scene:"hdn",id:"hdn",title:"Hemolytic disease of the newborn",
+ body:`<p>Rh matters most in pregnancy. Picture an <b>Rh⁻ mother</b> carrying an <b>Rh⁺ baby</b> (the baby got the D antigen gene from the father).</p>
+ <ol><li><b>First pregnancy.</b> The mother's and baby's blood mostly stay separate across the <b>placenta</b>. But at <b>delivery</b>, some of the baby's Rh⁺ cells get into the mother's blood. She becomes <b>sensitized</b> and starts making anti-D. The first baby is usually fine; the antibodies come too late to matter.</li>
+ <li><b>Next pregnancy with an Rh⁺ baby.</b> The mother's anti-D antibodies are small enough to <b>cross the placenta</b>. They attack the baby's RBCs, causing hemolysis, anemia and jaundice. This is <b>hemolytic disease of the newborn (HDN)</b>, also called erythroblastosis fetalis.</li>
+ <li><b>Prevention.</b> An Rh⁻ mother gets a shot of <b>RhoGAM</b> (anti-D antibodies) at about <b>28 weeks</b> and again within <b>72 hours after delivery</b>. RhoGAM coats and removes any Rh⁺ fetal cells before her immune system notices them, so she never makes her own anti-D.</li></ol>`,
+ analogy:"RhoGAM is like sweeping up a stranger's footprints before the guard dog smells them. The dog never learns the scent, so it never attacks the next visitor.",
+ terms:[["HDN","Hemolytic disease of the newborn: the mother's anti-D destroys the fetus's Rh⁺ RBCs."],["Placenta","The organ where maternal and fetal blood exchange materials without mixing."],["RhoGAM","Anti-D given to an Rh⁻ mother so she doesn't become sensitized."]],
+ check:{q:"Which situation puts a baby at risk for HDN?",opts:[
+  ["An Rh⁻ mother, already sensitized, carrying an Rh⁺ baby",1,"Yes. Her anti-D can cross the placenta and attack the baby's Rh⁺ RBCs."],
+  ["An Rh⁺ mother carrying an Rh⁻ baby",0,"An Rh⁺ mother never makes anti-D, because D is her own antigen."],
+  ["An Rh⁻ mother carrying an Rh⁻ baby",0,"The baby has no D antigen, so anti-D has nothing to attack."],
+  ["Any first pregnancy",0,"First pregnancies are usually safe because the mother hasn't been sensitized yet."]]},
+ caption:"① Delivery: baby's Rh⁺ cells enter the Rh⁻ mother and she makes anti-D. ② Next Rh⁺ baby: anti-D crosses the placenta and destroys its RBCs. ③ RhoGAM prevents this.",
+ legend:[["agD","D antigen / anti-D","s"],["rbc","RBC"],["plasmin","RhoGAM (anti-D shot)","r"],["vessel-edge","Placenta","r"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is blood in one view.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · What blood is</li>
+ <li>Blood = plasma (≈55%) + formed elements. Hematocrit ≈ 45% (women 37–47%, men 42–52%).</li><li>Plasma proteins: albumin (osmotic pressure), globulins (antibodies, transport), fibrinogen (clotting).</li><li>Hemopoiesis in red marrow: hemopoietic stem cell → myeloid and lymphoid lines.</li>
+ <li class="h">Part 2 · Red blood cells</li>
+ <li>RBCs: biconcave, no nucleus, ~120 days. Hemoglobin: 4 globins + 4 hemes, each Fe²⁺ binds one O₂.</li><li>Low O₂ → kidneys release EPO → marrow makes more RBCs (negative feedback).</li><li>Old RBCs: globin → amino acids; iron → transferrin → reused; heme → biliverdin → bilirubin → bile.</li>
+ <li class="h">Part 3 · White cells & platelets</li>
+ <li>Never Let Monkeys Eat Bananas: neutrophils > lymphocytes > monocytes > eosinophils > basophils.</li><li>WBCs leave vessels by emigration (diapedesis) and follow chemicals (chemotaxis). Platelets are megakaryocyte fragments.</li>
+ <li class="h">Part 4 · Stopping bleeding</li>
+ <li>Vascular spasm → platelet plug (adhesion, activation, release, aggregation) → coagulation (extrinsic + intrinsic → X → thrombin → fibrin). Needs Ca²⁺ and vitamin K.</li><li>Clot retraction, then fibrinolysis by plasmin.</li>
+ <li class="h">Part 5 · Blood types</li>
+ <li>Antigens on RBCs; antibodies in plasma against the antigens you lack. O⁻ = universal donor; AB⁺ = universal recipient.</li><li>Rh⁻ people make anti-D only after exposure. RhoGAM prevents HDN.</li></ol>
+ <p>Next: type patients' blood, match transfusions, push EPO around, and break clotting on purpose in the <b><a href="Blood-Lab.html">Blood Lab</a></b>.</p>`,
+ analogy:"A river that delivers (RBCs and plasma), defends (WBCs), repairs its own banks (platelets and clotting), and checks everyone's ID (blood types).",
+ terms:[],check:null,caption:"All the formed elements flowing in plasma, with the five parts of the chapter.",
+ legend:[["rbc","Red blood cell"],["ngran","White blood cell"],["plt","Platelet"],["plasma","Plasma","r"]]}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=5;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([6,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===6)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
+  if(sh==="t")return `<span><i class="t" style="border-bottom-color:var(${v})"></i>${l[1]}</span>`;
+  return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=480;
+const cv=document.getElementById("stage");const ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash","act1","act2","act3","act4","act5",
+ "ecf","plasma","plasma-wash","rbc","rbc-edge","rbc-hi","deoxy","wbc","wbc-edge","nuc","ngran","eos","baso","lymc","monoc","macro","plt","fibrin","collagen",
+ "vessel","vessel-edge","muscle","tissue","endo","o2","co2","bact","agA","agB","agD","epo","kidney","bone","bone-edge","marrow","liver",
+ "iron","biliv","bili","chem","tf","thrombin","plasmin","ca","vitk","glob-a","glob-b","glow"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function onFill(){return hx(C.ground)[0]<60?"#0E1519":"#fff"}
+function P(T,L){return ((T%L)+L)%L/L}
+function hx(c){let h=(c||"#888").trim();if(h[0]!=="#")return [136,136,136];h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f)]}d-=ls[i]}return P_[P_.length-1]}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,8);ctx.fillStyle=o.fill||hexA(C.panel,.75);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+
+/* ================= drawing kit: cells and molecules ================= */
+// Red blood cell, face-on (pale centre). o: col, a, sx, sy, ang, pale, cren (0..1 crenation), edge
+function rbc(x,y,r,o){o=o||{};const sx=o.sx||1,sy=o.sy||1;ctx.save();ctx.translate(x,y);if(o.ang)ctx.rotate(o.ang);ctx.scale(sx,sy);
+  ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);const col=o.col||C.rbc;
+  ctx.beginPath();if(o.cren){const N=36;for(let i=0;i<=N;i++){const a=i/N*TAU;const rad=r*(1+o.cren*.12*Math.max(0,Math.sin(a*11)));const X=Math.cos(a)*rad,Y=Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}}else ctx.arc(0,0,r,0,TAU);
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=o.edge||C["rbc-edge"];ctx.lineWidth=Math.max(.8,r*.07)/Math.sqrt(sx*sy);ctx.stroke();
+  const hi=o.pale?C.panel:C["rbc-hi"];const rc=r*(o.pale?.72:.58);const A=hx(hi);
+  const g=ctx.createRadialGradient(0,0,0,0,0,rc);g.addColorStop(0,`rgba(${A},${o.pale?.9:.7})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,rc,0,TAU);ctx.fill();
+  ctx.restore()}
+// biconcave thickness profile (Evans-Fung shape), half-thickness as a fraction of radius
+function bicon(rho){rho=Math.min(1,Math.abs(rho));return .5*Math.sqrt(Math.max(0,1-rho*rho))*(.207+2.003*rho*rho-1.123*Math.pow(rho,4))}
+// RBC tilted about a vertical axis by phi (0 = face-on). Silhouette computed from the biconcave shape.
+function rbcTilt(x,y,r,phi,col){const c=Math.cos(phi),s=Math.sin(phi);const pts=[];const N=40;
+  for(let i=0;i<=N;i++){const yy=-1+2*i/N;const um=Math.sqrt(Math.max(0,1-yy*yy));let mx=0;for(let k=0;k<=12;k++){const u=um*k/12;const rho=Math.sqrt(u*u+yy*yy);const v=Math.abs(u*c)+Math.abs(bicon(rho)*s);if(v>mx)mx=v}pts.push([Math.max(mx,.02),yy])}
+  ctx.beginPath();pts.forEach((p,i)=>{const X=x+p[0]*r,Y=y+p[1]*r;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});for(let i=N;i>=0;i--)ctx.lineTo(x-pts[i][0]*r,y+pts[i][1]*r);ctx.closePath();
+  ctx.fillStyle=col||C.rbc;ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=2;ctx.stroke();
+  // dimple shading
+  const A=hx(C["rbc-hi"]);const vis=Math.abs(c);if(vis>.15){ctx.save();ctx.translate(x,y);ctx.scale(Math.max(.05,vis),1);const g=ctx.createRadialGradient(0,0,0,0,0,r*.58);g.addColorStop(0,`rgba(${A},${.75*vis})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,r*.58,0,TAU);ctx.fill();ctx.restore()}
+  // rim highlight when tilted
+  if(vis<.9){ctx.save();ctx.globalAlpha*=(1-vis)*.5;ctx.strokeStyle=C["rbc-hi"];ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x+r*.12*s,y,Math.max(1,r*vis*.82),r*.82,0,0,TAU);ctx.stroke();ctx.restore()}}
+// cross-section (cut in half) of a biconcave disc
+function rbcSection(x,y,r,col){ctx.beginPath();const N=60;for(let i=0;i<=N;i++){const rho=-1+2*i/N;const X=x+rho*r,Y=y-bicon(rho)*r;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}for(let i=N;i>=0;i--){const rho=-1+2*i/N;ctx.lineTo(x+rho*r,y+bicon(rho)*r)}ctx.closePath();ctx.fillStyle=col||C.rbc;ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=1.6;ctx.stroke()}
+function sickle(x,y,r,ang,col,a){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:a;ctx.beginPath();ctx.arc(0,0,r,-2.3,2.3);ctx.arc(r*.62,0,r*.9,2.05,-2.05,true);ctx.closePath();ctx.fillStyle=col||C.deoxy;ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=1.2;ctx.stroke();ctx.restore()}
+function blobPath(x,y,r,seed,t,amp){amp=amp==null?.06:amp;ctx.beginPath();const N=40;for(let i=0;i<=N;i++){const a=i/N*TAU;const rad=r*(1+amp*Math.sin(a*3+seed+(t||0)*1.7)+amp*.7*Math.sin(a*5+seed*2.3-(t||0)*1.1));const X=x+Math.cos(a)*rad,Y=y+Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath()}
+// White blood cells: neut, eos, baso, lymph, mono, plasma, macro, blast
+function wbc(x,y,type,r,o){o=o||{};const sd=o.seed||3;const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  const cyto=type==="lymph"||type==="plasma"?C.lymc:type==="mono"||type==="macro"?C.monoc:type==="blast"?mix(C.wbc,C.lymc,.4):C.wbc;
+  blobPath(x,y,r,sd,t,type==="macro"?.1:.035);ctx.fillStyle=o.fill||cyto;ctx.fill();ctx.strokeStyle=C["wbc-edge"];ctx.lineWidth=Math.max(1,r*.05);ctx.stroke();
+  const ang=o.ang||0;const ca=Math.cos(ang),sa=Math.sin(ang);const R=(u,v)=>[x+u*ca-v*sa,y+u*sa+v*ca];
+  const GA=ctx.globalAlpha;const gran=(n,sz,col,al)=>{ctx.fillStyle=col;ctx.globalAlpha=GA*(al||1);for(let i=0;i<n;i++){const a=rnd(sd*31+i)*TAU,d=Math.sqrt(rnd(sd*17+i*3))*.82*r;const [gx,gy]=R(Math.cos(a)*d,Math.sin(a)*d);ctx.beginPath();ctx.arc(gx,gy,sz,0,TAU);ctx.fill()}ctx.globalAlpha=GA};
+  const lobes=(L,lr)=>{ctx.strokeStyle=C.nuc;ctx.lineWidth=lr*.7;ctx.lineCap="round";ctx.beginPath();L.forEach((p,i)=>{const [X,Y]=R(p[0]*r,p[1]*r);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke();ctx.lineCap="butt";L.forEach(p=>{const [X,Y]=R(p[0]*r,p[1]*r);circ(X,Y,lr,C.nuc)})};
+  if(type==="neut"){gran(22,Math.max(.8,r*.045),C.ngran);lobes([[-.42,.12],[-.18,-.25],[.18,-.08],[.4,.25]],r*.2)}
+  else if(type==="eos"){gran(26,Math.max(1.1,r*.085),C.eos);lobes([[-.3,0],[.3,0]],r*.27)}
+  else if(type==="baso"){lobes([[-.25,.05],[.25,-.05]],r*.25);gran(18,Math.max(1.4,r*.12),C.baso,.92)}
+  else if(type==="lymph"){circ(x+r*.06,y-r*.04,r*.76,C.nuc);gran(4,r*.07,hexA(C.panel,.25))}
+  else if(type==="plasma"){circ(x-r*.38,y+r*.1,r*.42,C.nuc);ctx.strokeStyle=hexA(C.lymc,.6);ctx.lineWidth=1;for(let k=0;k<3;k++){ctx.beginPath();ctx.arc(x+r*.25,y,r*(.25+k*.14),-1.2,1.2);ctx.stroke()}}
+  else if(type==="mono"){ctx.save();ctx.beginPath();ctx.ellipse(x-r*.05,y,r*.55,r*.42,ang,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();const [kx,ky]=R(r*.5,0);circ(kx,ky,r*.28,cyto);ctx.restore();gran(8,r*.035,hexA(C.nuc,.3))}
+  else if(type==="macro"){ctx.beginPath();ctx.ellipse(x-r*.15,y+r*.05,r*.32,r*.24,ang,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();gran(14,r*.05,hexA(C.nuc,.35))}
+  else if(type==="blast"){circ(x,y,r*.62,mix(C.nuc,C.wbc,.25));circ(x+r*.15,y-r*.15,r*.12,hexA(C.panel,.5))}
+  ctx.restore()}
+function plt(x,y,s,act,ang,a){act=act||0;ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();const N=36;
+  for(let i=0;i<=N;i++){const th=i/N*TAU;let rad=s;if(act>0){const sp=Math.pow(Math.max(0,Math.cos(th*5)),8);rad=s*(1+act*(.15+sp*.9))}const X=Math.cos(th)*rad*(act>0?1:1.25),Y=Math.sin(th)*rad*(act>0?1:.72);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}
+  ctx.closePath();ctx.fillStyle=C.plt;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke();
+  circ(-s*.3,-s*.1,s*.18,hexA(C.nuc,.6));circ(s*.25,s*.12,s*.15,hexA(C.nuc,.6));ctx.restore()}
+function bact(x,y,ang,s,a){s=s||8;ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);rr(-s*1.6,-s*.75,s*3.2,s*1.5,s*.75);ctx.fillStyle=C.bact;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke();
+  line(-s*.9,0,s*.9,0,hexA(C.panel,.6),1.2);ctx.restore()}
+function o2(x,y,a,s){s=s||4.2;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);circ(x-s*.7,y,s,C.o2,hexA(C.ink,.3),.8);circ(x+s*.7,y,s,C.o2,hexA(C.ink,.3),.8);ctx.restore()}
+function co2(x,y,a,s){s=s||3.6;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);circ(x-s*1.3,y,s*.8,C.co2);circ(x+s*1.3,y,s*.8,C.co2);circ(x,y,s,mix(C.co2,C.ink,.4));ctx.restore()}
+function diamond(x,y,s,col,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.3);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+function caIon(x,y,a){diamond(x,y,6,C.ca,a)}
+// antigens: A = triangle, B = round knob, D = square. Drawn pointing outward at angle th from a cell edge.
+function antigen(kind,x,y,s,th,a){ctx.save();ctx.translate(x,y);ctx.rotate(th+Math.PI/2);ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();
+  if(kind==="A"){ctx.moveTo(0,-s);ctx.lineTo(s*.95,s*.65);ctx.lineTo(-s*.95,s*.65);ctx.closePath()}
+  else if(kind==="B"){ctx.arc(0,-s*.1,s*.78,0,TAU)}
+  else{ctx.rect(-s*.72,-s*.85,s*1.44,s*1.44)}
+  ctx.fillStyle=C["ag"+kind];ctx.fill();ctx.strokeStyle=hexA(C.ink,.45);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+function antigensOn(x,y,r,kinds,s,n,a,rot){n=n||10;let k=0;for(let i=0;i<n;i++){if(!kinds.length)break;const kind=kinds[i%kinds.length];const th=i/n*TAU+(rot||0);antigen(kind,x+Math.cos(th)*(r+s*.45),y+Math.sin(th)*(r+s*.45),s,th,a);k++}}
+// antibody: Y shape in the colour of the antigen it targets
+function antibody(kind,x,y,s,ang,a,col){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);const c=col||C["ag"+kind];ctx.strokeStyle=c;ctx.lineWidth=Math.max(2,s*.3);ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(0,s);ctx.lineTo(0,0);ctx.lineTo(-s*.75,-s*.85);ctx.moveTo(0,0);ctx.lineTo(s*.75,-s*.85);ctx.stroke();ctx.lineCap="butt";
+  ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,s);ctx.lineTo(0,0);ctx.stroke();ctx.restore()}
+function flowDots(P_,n,period,T,fn,off){for(let i=0;i<n;i++){const f=P((T+(off||0))/period+i/n,1);const [x,y]=along(P_,f);fn(x,y,f,i)}}
+function kidney(x,y,s,glowA){if(glowA>0)glow(x,y,s*1.6,C.epo,glowA);ctx.save();ctx.translate(x,y);ctx.beginPath();ctx.moveTo(0,-s);ctx.bezierCurveTo(s*1.1,-s*1.15,s*1.25,s*1.1,0,s);ctx.bezierCurveTo(-s*.75,s*.95,-s*.5,s*.35,-s*.22,s*.15);ctx.bezierCurveTo(-s*.42,-s*.05,-s*.6,-s*.95,0,-s);ctx.closePath();
+  ctx.fillStyle=C.kidney;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.moveTo(s*.05,-s*.55);ctx.bezierCurveTo(s*.55,-s*.5,s*.6,s*.5,s*.05,s*.55);ctx.strokeStyle=hexA(C.panel,.45);ctx.lineWidth=2;ctx.stroke();ctx.restore()}
+function boneMarrow(x,y,rx,ry){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,TAU);ctx.fillStyle=C.bone;ctx.fill();ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.ellipse(x,y,rx*.7,ry*.66,0,0,TAU);ctx.fillStyle=C.marrow;ctx.fill();ctx.strokeStyle=hexA(C["bone-edge"],.6);ctx.lineWidth=1;ctx.stroke();
+  for(let i=0;i<10;i++){const a=rnd(i+40)*TAU,d=rnd(i+70)*.55;circ(x+Math.cos(a)*rx*.7*d,y+Math.sin(a)*ry*.66*d,2.2,hexA(C.rbc,.7))}}
+function heme(x,y,s,bound,a){ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);ctx.globalAlpha*=a==null?1:a;rr(-s,-s,2*s,2*s,s*.35);ctx.fillStyle=mix(C.deoxy,C.rbc,bound);ctx.fill();ctx.strokeStyle=hexA(C.ink,.45);ctx.lineWidth=1.2;ctx.stroke();ctx.restore();
+  circ(x,y,s*.45,C.iron,hexA(C.ink,.4),1);ctx.font=`700 ${Math.round(s*.5)}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText("Fe",x,y+.5)}
+
+/* ================= Scene 0: functions map ================= */
+function lungs(x,y){ctx.save();for(const sgn of [-1,1]){ctx.beginPath();ctx.ellipse(x+sgn*18,y+6,20,40,sgn*.15,0,TAU);ctx.fillStyle=mix(C.rbc,C.panel,.72);ctx.fill();ctx.strokeStyle=hexA(C.rbc,.6);ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=0;i<6;i++)circ(x+sgn*(10+rnd(i+sgn*9)*18),y-20+i*9,5,hexA(C.panel,.55),hexA(C.rbc,.35),1)}
+  line(x,y-48,x,y-30,hexA(C.ink,.5),4);line(x,y-30,x-14,y-14,hexA(C.ink,.5),3);line(x,y-30,x+14,y-14,hexA(C.ink,.5),3);ctx.restore()}
+function tissueCells(x,y,T){for(let i=0;i<3;i++)for(let j=0;j<3;j++){const cx=x-26+i*26,cy=y-26+j*26;rr(cx-12,cy-12,24,24,5);ctx.fillStyle=mix(C.tissue,C.act2,.25);ctx.fill();ctx.strokeStyle=hexA(C.act2,.6);ctx.lineWidth=1;ctx.stroke();circ(cx,cy,4,hexA(C.nuc,.6))}}
+function sceneMap(T){
+  const p=P(T,15);const cx=400,cy=150,rx=290,ry=92;
+  ctx.lineWidth=28;ctx.strokeStyle=hexA(C.plasma,.35);ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,TAU);ctx.stroke();
+  ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(cx,cy,rx+14,ry+14,0,0,TAU);ctx.stroke();ctx.beginPath();ctx.ellipse(cx,cy,rx-14,ry-14,0,0,TAU);ctx.stroke();
+  lungs(70,cy);tissueCells(735,cy,T);
+  // gas exchange streams
+  flowDots([[52,cy-22],[106,cy-12]],3,1.6,T,(x,y,f)=>o2(x,y,Math.sin(f*Math.PI)));
+  flowDots([[106,cy+14],[52,cy+24]],3,1.6,T,(x,y,f)=>co2(x,y,Math.sin(f*Math.PI)));
+  flowDots([[694,cy-14],[730,cy-28]],3,1.6,T,(x,y,f)=>o2(x,y,Math.sin(f*Math.PI)));
+  flowDots([[730,cy+28],[694,cy+14]],3,1.6,T,(x,y,f)=>co2(x,y,Math.sin(f*Math.PI)));
+  // cells in the loop
+  for(let i=0;i<22;i++){const th=Math.PI+i/22*TAU+T*.3;const x=cx+rx*Math.cos(th),y=cy+ry*Math.sin(th);const sv=Math.sin(th);const ox=clamp(.5-sv*3,0,1);
+    if(i===5){wbc(x,y,"neut",10,{seed:5,t:T});continue}
+    if(i%7===3){plt(x,y,3.4,0,th);continue}
+    rbc(x,y,9,{col:mix(C.deoxy,C.rbc,ox),sy:.8,ang:th+Math.PI/2});
+    if(ox>.55){o2(x-1,y-10,ox,2.8)}else if(ox<.45)co2(x,y+10,1-ox,2.6)}
+  label(70,40,"Lungs",{size:12.5,weight:600,align:"center",border:C.rule});
+  label(735,40,"Body tissues",{size:12.5,weight:600,align:"center",border:C.rule});
+  label(400,cy-ry-26,"O₂, nutrients, hormones → to the tissues",{size:12,align:"center",color:C.rbc,weight:600});
+  label(400,cy+ry+26,"← CO₂ and wastes back toward the lungs and kidneys",{size:12,align:"center",color:C.deoxy,weight:600});
+  label(400,cy-10,"plasma + formed elements",{size:12.5,align:"center",pill:false,color:C["ink-soft"]});
+  label(400,cy+12,"about 4–6 liters in an adult",{size:12,align:"center",pill:false,color:C["ink-faint"]});
+  // three job cards
+  const act=Math.floor(p*3);const y0=292,h=178,w=250;const XS=[12,275,538];const names=["TRANSPORT","DEFENSE","REGULATION"];const cols=[C.rbc,C.act3,C.act4];
+  XS.forEach((x,i)=>{panelBox(x,y0,w,h,{stroke:i===act?cols[i]:C.rule,lw:i===act?2.5:1.2,fill:i===act?hexA(C.panel,.95):hexA(C.panel,.6)});
+    chipText(x+16+ctx.measureText(names[i]).width/2+18,y0+18,names[i],i===act?cols[i]:C["ink-faint"])});
+  // transport card
+  {const x=XS[0];const vy=y0+82;rr(x+14,vy-26,w-28,52,22);ctx.fillStyle=hexA(C.plasma,.35);ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1.2;ctx.stroke();
+   const items=["o2","co2","glu","hor","urea","heat"];for(let i=0;i<12;i++){const f=P(T*.12+i/12,1);const xx=x+20+f*(w-40);const yy=vy+Math.sin(i*2.1)*12;const k=items[i%6];const a=Math.min(1,Math.sin(f*Math.PI)*3);
+     if(k==="o2")o2(xx,yy,a,3.4);else if(k==="co2")co2(xx,yy,a,3);else if(k==="glu"){ctx.save();ctx.globalAlpha=a;ctx.beginPath();for(let j=0;j<6;j++){const t=j/6*TAU;ctx.lineTo(xx+Math.cos(t)*5,yy+Math.sin(t)*5)}ctx.closePath();ctx.fillStyle=C.act2;ctx.fill();ctx.restore()}
+     else if(k==="hor")diamond(xx,yy,5,C.act1,a);else if(k==="urea"){ctx.save();ctx.globalAlpha=a;ctx.beginPath();ctx.moveTo(xx,yy-5);ctx.lineTo(xx+5,yy+4);ctx.lineTo(xx-5,yy+4);ctx.closePath();ctx.fillStyle=C.co2;ctx.fill();ctx.restore()}
+     else{ctx.save();ctx.globalAlpha=a*.8;ctx.strokeStyle=C.warn;ctx.lineWidth=1.6;ctx.beginPath();for(let j=0;j<=8;j++)ctx.lineTo(xx-6+j*1.5,yy+Math.sin(j*1.4+T*6)*2.5);ctx.stroke();ctx.restore()}}
+   wrapText("Gases (O₂, CO₂), nutrients, hormones, wastes and heat ride in the blood.",x+16,y0+128,w-30,16,{size:12,color:C["ink-soft"]})}
+  // defense card
+  {const x=XS[1];const q=P(T,5);const bx=x+175,by=y0+82;const nx=lerp(x+50,bx-6,ease(seg(q,0,.55))),ny=by+Math.sin(q*9)*3;
+   if(q<.75)bact(bx+Math.sin(T*7)*2,by,.3,7,1-seg(q,.6,.75));else{}
+   wbc(nx,ny,"neut",24,{seed:2,t:T});if(q>.55&&q<.9){ctx.save();ctx.globalAlpha=1-seg(q,.75,.9);bact(nx+6,ny,.3,5);ctx.restore()}
+   for(let k=0;k<3;k++){antibody("A",x+40+k*16,y0+52+Math.sin(T*2+k)*3,7,Math.sin(T+k)*.4,.9,C.act3)}
+   wrapText("White blood cells eat invaders, antibodies tag them, and platelets plus clotting proteins plug leaks.",x+16,y0+128,w-30,16,{size:12,color:C["ink-soft"]})}
+  // regulation card
+  {const x=XS[2];const gx=x+60,gy=y0+96;ctx.lineWidth=7;ctx.strokeStyle=C["rule"];ctx.beginPath();ctx.arc(gx,gy,34,Math.PI,TAU);ctx.stroke();
+   const ang=v=>Math.PI+(v-7.0)/0.8*Math.PI;ctx.strokeStyle=C.good;ctx.beginPath();ctx.arc(gx,gy,34,ang(7.35),ang(7.45));ctx.stroke();
+   const v=7.4+Math.sin(T*1.3)*.035;const a=ang(v);line(gx,gy,gx+Math.cos(a)*28,gy+Math.sin(a)*28,C.ink,2.2);circ(gx,gy,3.5,C.ink);
+   txt(gx,gy+12,"pH "+v.toFixed(2),{size:11.5,align:"center",mono:true,weight:600});
+   const tx=x+140;rr(tx-5,y0+50,10,46,5);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.2;ctx.stroke();circ(tx,y0+100,8,C.bad);rr(tx-2.5,y0+66,5,32,2);ctx.fillStyle=C.bad;ctx.fill();
+   for(let k=0;k<3;k++){const f=P(T*.6+k/3,1);ctx.save();ctx.globalAlpha=Math.sin(f*Math.PI);ctx.strokeStyle=C.warn;ctx.lineWidth=1.5;ctx.beginPath();for(let j=0;j<=10;j++)ctx.lineTo(tx+14+j*2.2,y0+90-f*36+Math.sin(j*.9+T*4)*2);ctx.stroke();ctx.restore()}
+   txt(tx+6,y0+116,"heat",{size:11.5,align:"center",color:C["ink-soft"]});
+   const dx=x+210,dy=y0+82+Math.sin(T*2)*3;ctx.beginPath();ctx.moveTo(dx,dy-16);ctx.bezierCurveTo(dx+14,dy,dx+12,dy+14,dx,dy+14);ctx.bezierCurveTo(dx-12,dy+14,dx-14,dy,dx,dy-16);ctx.fillStyle=C.o2;ctx.fill();
+   txt(dx,dy+30-Math.sin(T*2)*3,"fluid",{size:11.5,align:"center",color:C["ink-soft"]});
+   wrapText("Buffers hold pH near 7.35–7.45; blood carries heat to the skin; plasma proteins keep fluid in the vessels.",x+16,y0+136,w-30,16,{size:12,color:C["ink-soft"]})}
+}
+
+/* ================= Scene 1: centrifuge ================= */
+const TUBE={x:420,w:64,top:70,bot:420};
+let PART=null;
+function makeParts(){PART=[];for(let i=0;i<190;i++){const x=TUBE.x-TUBE.w/2+7+rnd(i*3+1)*(TUBE.w-14);const y0=TUBE.top+8+rnd(i*7+2)*(TUBE.bot-TUBE.top-14);
+  const k=i/190;const y1=TUBE.bot-6-k*(TUBE.bot-TUBE.top)*.43+rnd(i+9)*4;PART.push([x,y0,y1])}}
+function testTube(x,w,top,bot,sep,s){const L=s||1;// draws tube contents at separation sep
+  const lt=top,lb=bot;const plasmaTop=lt;const rbcTop=lerp(lt,lb-(lb-lt)*.45,sep);
+  const tube=()=>{ctx.beginPath();ctx.moveTo(x-w/2,lt-14*L);ctx.lineTo(x-w/2,lb-w/2);ctx.arc(x,lb-w/2,w/2,Math.PI,0,true);ctx.lineTo(x+w/2,lt-14*L)};
+  ctx.save();tube();ctx.closePath();ctx.clip();
+  ctx.fillStyle=mix(C.plasma,C.rbc,1-sep*.98);ctx.fillRect(x-w/2,lt,w,lb-lt+20);
+  ctx.globalAlpha=sep;ctx.fillStyle=C.rbc;ctx.fillRect(x-w/2,rbcTop,w,lb-rbcTop+30);ctx.globalAlpha=1;
+  const bz=seg(sep,.75,1);if(bz>0){ctx.globalAlpha=bz;ctx.fillStyle=mix(C.wbc,"#ffffff",.3);ctx.fillRect(x-w/2,rbcTop-5*L,w,5*L);ctx.globalAlpha=1}
+  ctx.restore();
+  tube();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.6;ctx.stroke();line(x-w/2-5,lt-14*L,x+w/2+5,lt-14*L,C["ink-soft"],2);return rbcTop}
+function sceneComp(T){
+  const p=P(T,15);if(!PART)makeParts();
+  const sep=ease(seg(p,.1,.46));const spinP=seg(p,.06,.5);
+  // left: centrifuge, then fades to hematocrit chart
+  const cf=1-seg(p,.55,.62);
+  if(cf>0){ctx.save();ctx.globalAlpha=cf;const ox=170,oy=230;
+    circ(ox,oy,150,hexA(C.panel,.9),C.rule,2);circ(ox,oy,128,C["panel-2"],C.rule,1);
+    const ang=Math.PI*2*16*(spinP<.5?2*spinP*spinP:1-Math.pow(-2*spinP+2,2)/2);const fast=Math.sin(spinP*Math.PI);
+    for(let g=0;g<(fast>.3?4:1);g++){ctx.globalAlpha=cf*(g?(.18*fast):1);for(let k=0;k<4;k++){const a=ang-g*.12+k*TAU/4;ctx.save();ctx.translate(ox+Math.cos(a)*78,oy+Math.sin(a)*78);ctx.rotate(a+Math.PI/2);
+      ctx.fillStyle=mix(C.plasma,C.rbc,1-sep);rr(-11,-36,22,72,11);ctx.fill();ctx.fillStyle=C.rbc;ctx.globalAlpha*=sep;rr(-11,4,22,32,11);ctx.fill();ctx.globalAlpha=cf*(g?(.18*fast):1);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.2;rr(-11,-36,22,72,11);ctx.stroke();ctx.restore()}}
+    ctx.globalAlpha=cf;circ(ox,oy,16,C["ink-soft"]);label(ox,oy+172,spinP>0&&spinP<1?"Spinning… heavy cells move outward/down":"Centrifuge",{size:12.5,align:"center",weight:600});
+    ctx.restore()}
+  const hc=seg(p,.6,.7);
+  if(hc>0){ctx.save();ctx.globalAlpha=hc;const x0=40,x1=320,ax=v=>x0+(v-30)/30*(x1-x0);
+    label(20,70,"NORMAL HEMATOCRIT (OpenStax)",{size:11.5,mono:true,pill:false,color:C["ink-soft"]});
+    [["Women",37,47,120],["Men",42,52,190]].forEach(r=>{const y=r[3];rr(x0,y-14,x1-x0,28,4);ctx.fillStyle=C["panel-2"];ctx.fill();const w=seg(p,.62,.74);rr(ax(r[1]),y-14,(ax(r[2])-ax(r[1]))*w,28,4);ctx.fillStyle=hexA(C.rbc,.75);ctx.fill();
+      txt(x0,y-26,r[0],{size:12.5,weight:600});txt(ax(r[1])+4,y+.5,`${r[1]}–${r[2]}%`,{size:12,weight:600,mono:true,color:onFill()})});
+    [30,40,50,60].forEach(v=>{line(ax(v),230,ax(v),236,C["ink-soft"],1);txt(ax(v),246,v+"%",{size:11,align:"center",mono:true,color:C["ink-soft"]})});line(x0,230,x1,230,C["ink-soft"],1);
+    const m=seg(p,.72,.8);if(m>0){ctx.globalAlpha=hc*m;line(ax(45),96,ax(45),226,C.ink,2,[4,3]);label(ax(45),268,"This tube: 45%",{size:12,align:"center",weight:600,border:C.ink})}
+    ctx.globalAlpha=hc;wrapText("Low hematocrit: possible anemia. High hematocrit: thicker blood (for example, dehydration, high altitude, or EPO misuse).",20,320,300,17,{size:12.5,color:C["ink-soft"]});
+    ctx.restore()}
+  // right: big tube
+  const rbcTop=testTube(TUBE.x,TUBE.w,TUBE.top,TUBE.bot,sep);
+  ctx.save();ctx.beginPath();ctx.moveTo(TUBE.x-TUBE.w/2,TUBE.top-14);ctx.lineTo(TUBE.x-TUBE.w/2,TUBE.bot-TUBE.w/2);ctx.arc(TUBE.x,TUBE.bot-TUBE.w/2,TUBE.w/2,Math.PI,0,true);ctx.lineTo(TUBE.x+TUBE.w/2,TUBE.top-14);ctx.closePath();ctx.clip();
+  PART.forEach((q,i)=>{const y=lerp(q[1],q[2],ease(clamp(sep*1.1-(1-i/190)*.1,0,1)));const jx=q[0]+Math.sin(T*3+i)*(1-sep)*1.5;
+    if(i%40===7){ctx.globalAlpha=1;circ(jx,lerp(q[1],rbcTop-3,sep),3.6,C.wbc,C["wbc-edge"],1)}else{ctx.globalAlpha=1-sep*.6;rbc(jx,y,4.6,{sy:.9})}});ctx.globalAlpha=1;ctx.restore();
+  // labels
+  const lb=seg(p,.48,.58);if(lb>0){ctx.save();ctx.globalAlpha=lb;const bx=TUBE.x+TUBE.w/2+12;
+    const brk=(y1,y2,col)=>{line(bx,y1+2,bx,y2-2,col,2);line(bx,y1+2,bx-6,y1+2,col,2);line(bx,y2-2,bx-6,y2-2,col,2)};
+    brk(TUBE.top,rbcTop-5,C.plasma);brk(rbcTop,TUBE.bot,C.rbc);
+    label(bx+16,(TUBE.top+rbcTop)/2-12,"Plasma ≈ 55%",{size:14,weight:700});label(bx+16,(TUBE.top+rbcTop)/2+12,"water, proteins, solutes",{size:12,color:C["ink-soft"]});
+    line(TUBE.x+TUBE.w/2-4,rbcTop-3,bx+14,rbcTop-3,C["wbc-edge"],1.4);label(bx+16,rbcTop-3,"Buffy coat < 1%: leukocytes + platelets",{size:12.5,weight:600,border:C["wbc-edge"]});
+    label(bx+16,(rbcTop+TUBE.bot)/2-12,"Erythrocytes ≈ 45%",{size:14,weight:700,color:C.rbc});label(bx+16,(rbcTop+TUBE.bot)/2+12,"= the hematocrit",{size:12.5,weight:600,color:C["ink-soft"]});
+    ctx.restore()}
+  if(p<.1)label(TUBE.x,TUBE.bot+30,"Whole blood: mixed",{size:12.5,align:"center",weight:600});
+}
+
+/* ================= Scene 2: plasma ================= */
+function scenePlasma(T){
+  const p=P(T,16);
+  // composition bars
+  const by0=70,by1=420,bh=by1-by0;const f=ease(seg(p,0,.15));
+  const bar=(x,w,parts)=>{let y=by1;parts.forEach(q=>{const hh=bh*q[1]/100*f;rr(x,y-hh,w,Math.max(0,hh),3);ctx.fillStyle=q[2];ctx.fill();y-=hh});rr(x,by0,w,bh,4);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.2;ctx.stroke()};
+  bar(30,46,[[0,1,C.co2],[0,7,C.act2],[0,92,hexA(C.o2,.45)]]);
+  txt(53,by0-16,"PLASMA",{size:11,mono:true,align:"center",color:C["ink-soft"],weight:600});
+  label(84,by1-bh*.5,"water ≈ 92%",{size:12,weight:600,pill:false});label(84,by1-bh*.04-10,"proteins ≈ 7%",{size:12,weight:600,pill:false,color:C.act2});label(84,by1+12,"other ≈ 1%",{size:11.5,pill:false,color:C["ink-soft"]});
+  const z=seg(p,.08,.2);if(z>0){ctx.save();ctx.globalAlpha=z;poly([[76,by1-bh*.08],[190,by0]],C.act2,1,[3,3]);poly([[76,by1-bh*.01],[190,by1]],C.act2,1,[3,3]);
+    const ph=p<.42?0:p<.7?1:2;const hl=i=>i===ph?1:.45;
+    let y=by1;[[58,C.plasma,"Albumin ≈ 54–60%"],[37,C.agA,"Globulins ≈ 35–38%"],[5,C.fibrin,"Fibrinogen ≈ 4–7%"]].forEach((q,i)=>{const hh=bh*q[0]/100;ctx.globalAlpha=z*hl(i);rr(196,y-hh,46,hh,3);ctx.fillStyle=q[1];ctx.fill();
+      ctx.globalAlpha=z;label(250,y-hh/2,q[2],{size:12,weight:i===ph?700:500,pill:false,color:i===ph?C.ink:C["ink-soft"]});y-=hh});
+    txt(219,by0-16,"PROTEINS",{size:11,mono:true,align:"center",color:C["ink-soft"],weight:600});ctx.restore()}
+  // right: capillary
+  const X0=380,X1=790,cy=150,hh=52;
+  ctx.fillStyle=hexA(C.tissue,.9);rr(X0,40,X1-X0,220,8);ctx.fill();
+  txt(X0+10,54,"tissue fluid",{size:11.5,color:C["ink-soft"]});
+  ctx.fillStyle=hexA(C.plasma,.35);ctx.fillRect(X0,cy-hh,X1-X0,2*hh);
+  for(let i=0;i<14;i++){const x=X0+i*30;rr(x+2,cy-hh-8,26,8,3);ctx.fillStyle=C.endo;ctx.fill();rr(x+2,cy+hh,26,8,3);ctx.fill()}
+  label(X0+10,cy-hh+12,"capillary",{size:11.5,pill:false,color:C["ink-soft"]});
+  const ph=p<.42?0:p<.7?1:2;
+  // water molecules (blue dots) pulled in
+  for(let i=0;i<14;i++){const q=P(T*.35+i/14,1);const x=X0+20+((i*53)%380);const top=i%2===0;const y0=top?cy-hh-36:cy+hh+36;const y1=top?cy-hh+14:cy+hh-14;
+    const a=ph===0?1:.35;circ(x,lerp(y0,y1,ease(q)),3,C.o2,null);if(ph===0&&q<.15&&i%3===0)arrow(x,y0-8,x,y0+12,hexA(C.o2,.7),1.4)}
+  // albumin (straw ovals) flowing inside
+  for(let i=0;i<10;i++){const x=X0+((T*35+i*41)%(X1-X0));const y=cy+Math.sin(i*1.7+T)*30;ctx.save();ctx.globalAlpha=ph===0?1:.4;ctx.beginPath();ctx.ellipse(x,y,9,6,i,0,TAU);ctx.fillStyle=C.plasma;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+  if(ph===0){label(585,cy-hh-22,"Albumin can't leak out → it pulls water IN (osmotic pressure)",{size:12,align:"center",weight:600,border:C.plasma})}
+  // globulins: antibody tagging a bacterium + carrier with lipid
+  const ga=ph===1?1:.3;{const bx=700,byy=cy-14;ctx.save();ctx.globalAlpha=ga;bact(bx,byy,.2,9);const q=seg(p,.45,.6);
+    for(let k=0;k<3;k++){const ax=lerp(560+k*20,bx-18+k*14,ease(q)),ay=lerp(cy+20,byy+14,ease(q));antibody("A",ax,ay,9,-.5+k*.4)}
+    const cx2=(T*40)%400+X0;ctx.beginPath();ctx.ellipse(cx2,cy+28,10,8,0,0,TAU);ctx.fillStyle=C.agA;ctx.fill();circ(cx2+9,cy+22,5,C.act2);ctx.restore();
+    if(ph===1){label(585,cy-hh-22,"Globulins: antibodies tag invaders; carriers haul lipids, iron, hormones",{size:12,align:"center",weight:600,border:C.agA})}}
+  // fibrinogen rods
+  {const fa=ph===2?1:.35;ctx.save();ctx.globalAlpha=fa;const j=seg(p,.78,.92);for(let i=0;i<6;i++){const x0=X0+40+i*58+Math.sin(T+i)*6,y0=cy-28+((i*37)%56);
+      const tx=520+i*24,ty=cy+(i%2?-6:6);const x=lerp(x0,tx,ease(j)),y=lerp(y0,ty,ease(j));const a=lerp(i*.7,(i%2?.25:-.25),ease(j));line(x-14*Math.cos(a),y-14*Math.sin(a),x+14*Math.cos(a),y+14*Math.sin(a),C.fibrin,4.5);circ(x-14*Math.cos(a),y-14*Math.sin(a),3.2,C.fibrin);circ(x+14*Math.cos(a),y+14*Math.sin(a),3.2,C.fibrin)}
+    ctx.restore();if(ph===2)label(585,cy-hh-22,j>.5?"…during clotting, fibrinogen links up into fibrin threads (Part 4)":"Fibrinogen: a clotting protein, waiting for a signal",{size:12,align:"center",weight:600,border:C.fibrin})}
+  // role cards
+  const Y=296;const cards=[["ALBUMIN","Holds water in vessels (osmotic pressure); carries fatty acids and drugs.",C.plasma],["GLOBULINS","Antibodies (from plasma cells) and transport proteins.",C.agA],["FIBRINOGEN","Becomes fibrin, the mesh of a blood clot.",C.fibrin]];
+  cards.forEach((c,i)=>{const x=X0+i*138;panelBox(x,Y,130,158,{stroke:i===ph?c[2]:C.rule,lw:i===ph?2.5:1.2,fill:hexA(C.panel,i===ph?.95:.6)});
+    ctx.save();ctx.globalAlpha=i===ph?1:.6;if(i===0){ctx.beginPath();ctx.ellipse(x+65,Y+40,20,13,0,0,TAU);ctx.fillStyle=C.plasma;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.stroke()}
+    else if(i===1)antibody("A",x+65,Y+42,16,0);else{line(x+40,Y+40,x+90,Y+40,C.fibrin,6);circ(x+40,Y+40,5,C.fibrin);circ(x+90,Y+40,5,C.fibrin);circ(x+65,Y+40,6,C.fibrin)}
+    txt(x+65,Y+78,c[0],{size:11.5,mono:true,weight:700,align:"center"});wrapText(c[1],x+10,Y+100,112,15,{size:11.5,color:C["ink-soft"]});ctx.restore()});
+  txt(X0,Y+172,"Most plasma proteins are made by the liver.",{size:11.5,color:C["ink-faint"]});
+}
+
+/* ================= Scene 3: hemopoiesis ================= */
+const HN={hsc:[80,250],my:[240,165],ly:[240,405],ery:[420,52],meg:[420,118],myb:[420,215],monob:[420,335],lymb:[420,405],
+  rbc:[560,52],plt:[560,118],neut:[560,175],eos:[560,228],baso:[560,281],mono:[560,335],lymph:[560,405]};
+const HE=[["hsc","my",.1,.22],["hsc","ly",.1,.22],["my","ery",.26,.4],["my","meg",.26,.4],["my","myb",.26,.4],["my","monob",.26,.4],["ly","lymb",.26,.4],
+  ["ery","rbc",.44,.6],["meg","plt",.44,.6],["myb","neut",.44,.6],["myb","eos",.46,.62],["myb","baso",.48,.64],["monob","mono",.44,.6],["lymb","lymph",.44,.6]];
+const HNAME={hsc:"Hemopoietic stem cell",my:"Myeloid stem cell",ly:"Lymphoid stem cell",ery:"erythroblast",meg:"megakaryocyte",myb:"myeloblast",monob:"monoblast",lymb:"lymphoblast",
+  rbc:"Erythrocyte (RBC)",plt:"Platelets",neut:"Neutrophil",eos:"Eosinophil",baso:"Basophil",mono:"Monocyte",lymph:"Lymphocyte"};
+function hcell(k,x,y,s,T){s=s==null?1:s;if(s<=0)return;
+  if(k==="rbc")rbc(x,y,15*s);else if(k==="plt"){plt(x-9,y-3,4.5*s,0,.3);plt(x+7,y+5,4.5*s,0,-.5);plt(x+3,y-9,4*s,0,1)}
+  else if(k==="neut"||k==="eos"||k==="baso"||k==="mono"||k==="lymph")wbc(x,y,k,(k==="mono"?19:16)*s,{seed:k.length+3,t:T});
+  else if(k==="meg"){wbc(x,y,"blast",24*s,{fill:mix(C.plt,C.panel,.55),seed:9,t:T});for(let i=0;i<4;i++)circ(x-8+i*5,y-4+(i%2)*8,6*s,C.nuc)}
+  else if(k==="ery"){circ(x,y,13*s,mix(C.rbc,C.wbc,.45),C["rbc-edge"],1.2);circ(x,y,6*s,C.nuc)}
+  else wbc(x,y,"blast",(k==="hsc"?20:k==="my"||k==="ly"?18:13)*s,{seed:k.length,t:T})}
+function sceneHemo(T){
+  const p=P(T,17);
+  // marrow backdrop
+  rr(0,0,700,H,0);ctx.fillStyle=hexA(C.marrow,.28);ctx.fill();
+  for(let i=0;i<9;i++){const x=i*84+20;ctx.beginPath();ctx.ellipse(x,-6,46,22,0,0,TAU);ctx.ellipse(x+40,H+6,46,22,0,0,TAU);ctx.fillStyle=C.bone;ctx.fill()}
+  label(14,24,"RED BONE MARROW",{size:11.5,mono:true,weight:600,color:C["ink-soft"]});
+  // vessel
+  ctx.fillStyle=hexA(C.plasma,.35);ctx.fillRect(712,0,80,H);line(712,0,712,H,C["vessel-edge"],2);line(792,0,792,H,C["vessel-edge"],2);
+  const vf=seg(p,.66,.76);if(vf>0){ctx.save();ctx.globalAlpha=vf;const kinds=["rbc","rbc","rbc","plt","neut","rbc","rbc","lymph","rbc","plt","rbc","mono","rbc","eos","rbc","rbc","plt","baso"];
+    kinds.forEach((k,i)=>{const y=((T*45+i*29)%(H+40))-20;const x=730+((i*23)%46);if(k==="rbc")rbc(x,y,8,{sy:.8});else if(k==="plt")plt(x,y,3.5,0,i);else wbc(x,y,k,9,{seed:i})});ctx.restore()}
+  // edges
+  HE.forEach(e=>{const a=HN[e[0]],b=HN[e[1]];const q=seg(p,e[2],e[3]);ctx.save();ctx.globalAlpha=.35+.65*Math.min(1,q*3);const mx=(a[0]+b[0])/2;
+    ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.bezierCurveTo(mx,a[1],mx,b[1],b[0],b[1]);ctx.strokeStyle=q>0?C["ink-soft"]:C["rule"];ctx.lineWidth=1.6;ctx.setLineDash(q>=1?[]:[4,4]);ctx.stroke();ctx.setLineDash([]);ctx.restore()});
+  // moving cells along edges
+  const bez=(a,b,t)=>{const mx=(a[0]+b[0])/2;const u=1-t;return [u*u*u*a[0]+3*u*u*t*mx+3*u*t*t*mx+t*t*t*b[0],u*u*u*a[1]+3*u*u*t*a[1]+3*u*t*t*b[1]+t*t*t*b[1]]};
+  HE.forEach(e=>{const q=seg(p,e[2],e[3]);if(q<=0||q>=1)return;const [x,y]=bez(HN[e[0]],HN[e[1]],ease(q));
+    if(e[1]==="rbc"){if(q<.6)hcell("ery",x,y,1,T);else{rbc(x,y,14);const nq=seg(q,.6,1);ctx.save();ctx.globalAlpha=1-nq;circ(x-10-nq*20,y+12+nq*24,6,C.nuc);ctx.restore();if(q<.95)label(x,y-26,"nucleus pushed out",{size:11,align:"center"})}}
+    else if(e[1]==="plt"){if(q<.6)hcell("meg",x,y,.8,T);else hcell("plt",x,y,1,T)}
+    else hcell(e[0]==="hsc"?"blast":["neut","eos","baso","mono","lymph"].includes(e[1])?e[1]:"blast",x,y,e[0]==="hsc"?.9:.8,T)});
+  // nodes
+  const shown=k=>{if(k==="hsc")return 1;const e=HE.find(z=>z[1]===k);return seg(p,e[3]-.02,e[3]+.03)};
+  Object.keys(HN).forEach(k=>{const s=shown(k);if(s<=0)return;const [x,y]=HN[k];let sc=s;
+    if(k==="hsc"){const d=seg(p,.02,.1);const pulse=1+.06*Math.sin(T*4);if(d>0&&d<1){hcell("hsc",x-d*10,y,pulse,T);hcell("hsc",x+d*12,y,pulse*.9,T)}else hcell("hsc",x,y,pulse,T)}
+    else hcell(k,x,y,ease(sc),T);
+    const big=["hsc","my","ly"].includes(k);const fin=["rbc","plt","neut","eos","baso","mono","lymph"].includes(k);
+    ctx.save();ctx.globalAlpha=sc;
+    if(big)label(x,y+(k==="ly"?34:-36),HNAME[k],{size:12.5,weight:700,align:"center",border:k==="ly"?C.act1:k==="my"?C.act3:C.accent});
+    else if(fin)label(x+26,y,HNAME[k],{size:12.5,weight:600});
+    else txt(x,y-24,HNAME[k],{size:11,align:"center",color:C["ink-soft"]});
+    ctx.restore()});
+  if(p>.02&&p<.14)label(HN.hsc[0],HN.hsc[1]+38,"divides: one copy stays a stem cell",{size:11.5,align:"center"});
+  label(752,24,"Blood",{size:12,align:"center",weight:600,border:C["vessel-edge"]});
+  // growth factors
+  const gf=seg(p,.46,.55);if(gf>0){ctx.save();ctx.globalAlpha=gf;[["EPO",490,40],["TPO",490,108],["CSFs",490,200],["CSFs",490,322]].forEach(g=>chipText(g[1],g[2],g[0],C.epo));ctx.restore()}
+  if(vf>0){ctx.save();ctx.globalAlpha=vf;[52,118,175,228,281,335,405].forEach(y=>arrow(684,y,708,y,hexA(C["ink-soft"],.8),1.5));ctx.restore()}
+  // branch tags
+  ctx.save();ctx.globalAlpha=seg(p,.22,.3);label(300,286,"MYELOID LINE",{size:11,mono:true,weight:600,color:C.act3,pill:false});label(300,388,"LYMPHOID LINE",{size:11,mono:true,weight:600,color:C.act1,pill:false});ctx.restore();
+}
+
+/* ================= Scene 4: erythrocyte ================= */
+function sceneRbc(T){
+  const p=P(T,14);
+  // left: tilting cell
+  const phi=(Math.sin(T*.8-1.2)*.5+.5)*1.36;
+  rbcTilt(185,140,92,phi,C.rbc);
+  line(93,250,277,250,C["ink-soft"],1.2);line(93,243,93,257,C["ink-soft"],1.2);line(277,243,277,257,C["ink-soft"],1.2);
+  label(185,250,"about 7.5 µm across",{size:12,align:"center",weight:600});
+  label(300,64,"no nucleus",{size:12.5,weight:600,border:C.rule});line(296,72,232,108,C["ink-soft"],1);
+  label(16,24,phi<.6?"face-on: the pale center is the thin middle":"tilted: you can see the thick rim",{size:12,border:C.rule});
+  rbcSection(185,322,92,C.rbc);
+  line(185,280,185,364,hexA(C.ink,.4),1,[3,3]);
+  label(185,384,"cut in half: thick rim, thin center (biconcave)",{size:12,align:"center",weight:600});
+  // right: capillary squeeze
+  const X0=400,X1=790,cy=150;const hh=x=>58-44*Math.exp(-Math.pow((x-610)/70,2));
+  ctx.fillStyle=hexA(C.plasma,.3);ctx.beginPath();for(let x=X0;x<=X1;x+=5)ctx.lineTo(x,cy-hh(x));for(let x=X1;x>=X0;x-=5)ctx.lineTo(x,cy+hh(x));ctx.closePath();ctx.fill();
+  for(const sg of [-1,1]){ctx.beginPath();for(let x=X0;x<=X1;x+=5)ctx.lineTo(x,cy+sg*hh(x));for(let x=X1;x>=X0;x-=5)ctx.lineTo(x,cy+sg*(hh(x)+10));ctx.closePath();ctx.fillStyle=C.endo;ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1.2;ctx.stroke()}
+  for(let i=0;i<5;i++){const x=X0-30+((T*55+i*90)%(X1-X0+60));const room=hh(x)-3;const sy=Math.min(1,room/24);const sx=1/Math.pow(sy,.55);rbc(x,cy,24,{sx:Math.min(1.8,sx),sy:Math.max(.35,sy)})}
+  label(610,40,"capillary narrower than the RBC",{size:12,align:"center",weight:600,border:C.rule});line(610,49,610,cy-hh(610)-10,C["ink-soft"],1);
+  label(610,262,"it folds, squeezes through, and springs back",{size:12,align:"center",border:C.rule});
+  // bottom: lifespan
+  const y=430,x0=430,x1=730;const d=Math.min(120,seg(p,.02,.9)*120);
+  line(x0,y,x1,y,C["ink-soft"],1.5);[0,30,60,90,120].forEach(v=>{const x=x0+(x1-x0)*v/120;line(x,y-5,x,y+5,C["ink-soft"],1.2);txt(x,y+16,v+" d",{size:11,align:"center",mono:true,color:C["ink-soft"]})});
+  txt(x0,y-62,"LIFESPAN",{size:11,mono:true,weight:600,color:C["ink-soft"]});
+  const age=d/120;const cx=x0+(x1-x0)*age;const eaten=seg(p,.9,.98);
+  wbc(764,y-6,"macro",30+6*Math.sin(T*2),{seed:4,t:T});txt(764,y+34,"macrophage",{size:11,align:"center",color:C["ink-soft"]});
+  if(eaten<1){rbc(lerp(cx,764,eaten),y-6-12*(1-eaten),15*(1-eaten*.5),{col:mix(C.rbc,C.deoxy,age*age),cren:seg(age,.7,1),a:1-eaten*.8})}
+  label(Math.min(cx,700),y-36,"day "+Math.round(d),{size:12,align:"center",mono:true,weight:600});
+  label(16,y+2,"about 120 days, then removed",{size:12.5,weight:700,pill:false});
+  if(age>.75)label(16,y+26,"older RBC: stiff and fragile, no nucleus to repair it",{size:11.5});
+}
+
+/* ================= Scene 5: hemoglobin ================= */
+const HBC=[230,240];const GL=[["α",-58,-58,"glob-a"],["β",58,-58,"glob-b"],["β",-58,58,"glob-b"],["α",58,58,"glob-a"]];
+function sceneHb(T){
+  const p=P(T,15);const lungs_=p<.5;
+  const bindT=[.08,.2,.27,.32],relT=[.58,.66,.72,.77];
+  let bound=0;const occ=GL.map((g,i)=>{let b=seg(p,bindT[i]-.012,bindT[i]);if(p>=relT[i])b=1-seg(p,relT[i],relT[i]+.012);return b});occ.forEach(b=>bound+=b>=1?1:0);
+  const frac=occ.reduce((a,b)=>a+b,0)/4;
+  // environment tint
+  ctx.fillStyle=hexA(lungs_?C.o2:C.act2,.07);ctx.fillRect(0,0,460,H);
+  chipText(110,26,lungs_?"IN THE LUNGS · O₂ HIGH":"IN THE TISSUES · O₂ LOW",lungs_?C.o2:C.act2);
+  // globins
+  GL.forEach((g,i)=>{const x=HBC[0]+g[1],y=HBC[1]+g[2];blobPath(x,y,64,i*1.7,T*.4,.06);ctx.fillStyle=mix(C[g[3]],C.rbc,frac*.35);ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1.4;ctx.stroke();
+    txt(x+(g[1]<0?-34:34),y+(g[2]<0?-34:34),g[0],{size:16,weight:700,align:"center",color:hexA(C.ink,.6)})});
+  GL.forEach((g,i)=>{const x=HBC[0]+g[1]*.82,y=HBC[1]+g[2]*.82;heme(x,y,17,occ[i]);
+    const ox=x+(g[1]<0?-1:1)*32,oy=y+(g[2]<0?-1:1)*-6;
+    // O2 arriving / leaving
+    const inq=seg(p,bindT[i]-.07,bindT[i]);const outq=seg(p,relT[i],relT[i]+.08);
+    if(p<relT[i]){if(inq>0){const sx=x+(g[1]<0?-1:1)*170,sy=y+(g[2]<0?-1:1)*120;o2(lerp(sx,x,ease(inq)),lerp(sy,y-2,ease(inq)),1,6)}}
+    else{const sx=x+(g[1]<0?-1:1)*180,sy=y+(g[2]<0?-1:1)*110;o2(lerp(x,sx,ease(outq)),lerp(y-2,sy,ease(outq)),1-outq*.6,6)}});
+  // CO2 on globin in tissues
+  const cq=seg(p,.72,.82)-seg(p,.02,.1)*0;const cOn=p>.72?seg(p,.72,.82):0;
+  if(cOn>0){co2(lerp(80,HBC[0]+70,cOn),lerp(110,HBC[1]-110,cOn),1,5);co2(lerp(390,HBC[0]-80,cOn),lerp(420,HBC[1]+112,cOn),1,5);if(cOn>=1)label(HBC[0],HBC[1]-150,"some CO₂ rides on the globin",{size:11.5,align:"center"})}
+  label(HBC[0],HBC[1]+158,`O₂ bound: ${bound} / 4`,{size:13,mono:true,weight:700,align:"center",border:C.o2});
+  label(HBC[0],HBC[1]+186,bound===4?"Oxyhemoglobin (bright red)":bound===0?"Deoxyhemoglobin (dark red)":"loading / unloading…",{size:12.5,weight:600,align:"center",color:bound===4?C.rbc:bound===0?C.deoxy:C.ink});
+  label(HBC[0]+128,HBC[1]-2,"heme + Fe²⁺",{size:11.5,border:C.iron});line(HBC[0]+70,HBC[1]+44,HBC[0]+118,HBC[1]+8,C["ink-soft"],1);
+  // right panel: zoom chain
+  panelBox(472,40,318,170);
+  rbc(530,118,46);for(let i=0;i<40;i++){const a=rnd(i)*TAU,d=Math.sqrt(rnd(i+50))*38;circ(530+Math.cos(a)*d,118+Math.sin(a)*d,1.6,hexA(C.panel,.4+.4*Math.sin(T*3+i)))}
+  arrow(584,118,620,118,C["ink-soft"],1.5);
+  for(let k=0;k<4;k++)circ(650+(k%2)*12,108+Math.floor(k/2)*12,6,k%3?C["glob-b"]:C["glob-a"],hexA(C.ink,.3),1);
+  txt(690,104,"≈ 300 million",{size:12.5,weight:700});txt(690,120,"hemoglobin",{size:12});txt(690,135,"per RBC",{size:12,color:C["ink-soft"]});
+  wrapText("× up to 4 O₂ each = over a billion O₂ molecules in one red blood cell",486,172,300,15,{size:12,color:C["ink-soft"]});
+  // environment trip
+  panelBox(472,232,318,236);
+  const ax=530,tx=730,ey=340;circ(ax,ey,40,hexA(C.o2,.18),C.o2,1.5);txt(ax,ey-56,"alveolus",{size:11.5,align:"center",color:C["ink-soft"]});
+  for(let k=0;k<3;k++){rr(tx-26+k*20,ey-28,18,56,4);ctx.fillStyle=mix(C.tissue,C.act2,.3);ctx.fill()}txt(tx,ey-56,"tissue cells",{size:11.5,align:"center",color:C["ink-soft"]});
+  const mv=lungs_?(p<.4?0:seg(p,.4,.5)):1-seg(p,.9,1);const rx=lerp(ax+52,tx-48,ease(mv));rbc(rx,ey,16,{col:mix(C.deoxy,C.rbc,frac)});
+  const barH=(x,v,col,t)=>{rr(x-30,420,60,10,5);ctx.fillStyle=C["panel-2"];ctx.fill();rr(x-30,420,60*v,10,5);ctx.fillStyle=col;ctx.fill();txt(x,442,t,{size:11.5,align:"center",color:C["ink-soft"]})};
+  barH(ax,.95,C.o2,"O₂ high");barH(tx,.35,C.o2,"O₂ low");
+}
+
+/* ================= Scene 6: EPO feedback ================= */
+function epoCurves(d){const O=d<2?100:100-20*(1-Math.exp(-(d-2)*2.2))+16*(1-Math.exp(-Math.max(0,d-6)/6.5));
+  const E=1+(100-O)*.12;const R=100+14*(1-Math.exp(-Math.max(0,d-5)/7));return [O,E,R]}
+function sceneEpo(T){
+  const p=P(T,17);const day=Math.min(30,p*33);const [O,E,R]=epoCurves(day);
+  const K_=[150,92],M_=[650,92],V_=[650,262],G_=[150,262];
+  // loop path
+  ctx.save();ctx.strokeStyle=hexA(C["ink-soft"],.5);ctx.lineWidth=2;ctx.setLineDash([6,5]);rr(150,92,500,170,30);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+  arrow(380,92,420,92,C["ink-soft"],2);arrow(650,165,650,195,C["ink-soft"],2);arrow(420,262,380,262,C["ink-soft"],2);arrow(150,190,150,160,C["ink-soft"],2);
+  // EPO particles kidney -> marrow
+  const nE=Math.round(2+(E-1)*5);for(let i=0;i<nE;i++){const f=P(T*.35+i/nE,1);const x=lerp(205,595,f);circ(x,92+Math.sin(f*12+i)*5,4.5,C.epo,hexA(C.ink,.3),1)}
+  // vessel band with RBCs bottom
+  ctx.fillStyle=hexA(C.plasma,.3);ctx.fillRect(200,244,400,36);line(200,244,600,244,C["vessel-edge"],1.2);line(200,280,600,280,C["vessel-edge"],1.2);
+  const nR=Math.round(8*R/100);for(let i=0;i<nR;i++){const f=P(T*.12+i/nR,1);const x=lerp(600,200,f);const sat=O/100;rbc(x,262,9,{sy:.8,col:mix(C.deoxy,C.rbc,sat)});if(i%2===0)o2(x,252,sat*(1-f*.6),2.6)}
+  // nodes
+  kidney(K_[0],K_[1],34,clamp((E-1)/2.5,0,1)*.9);label(K_[0],K_[1]-52,"Kidney",{size:13,weight:700,align:"center"});
+  label(K_[0]+70,K_[1]+52,E>1.3?"senses low O₂ → releases EPO":"EPO at a low, steady level",{size:11.5,align:"center"});
+  boneMarrow(M_[0],M_[1],48,34);label(M_[0],M_[1]-52,"Red bone marrow",{size:13,weight:700,align:"center"});
+  const prod=E;for(let i=0;i<Math.round(prod*2);i++){const f=P(T*.5+i/Math.round(prod*2),1);rbc(lerp(M_[0],V_[0],f)+Math.sin(f*8)*4,lerp(M_[1]+30,V_[1]-22,f),6,{a:Math.sin(f*Math.PI)})}
+  label(M_[0]-74,M_[1]+54,E>1.3?"erythropoiesis speeds up":"steady RBC production",{size:11.5,align:"center"});
+  label(V_[0]+0,V_[1]+40,`RBCs: ${Math.round(R)}% of normal`,{size:12,weight:600,align:"center",border:C.rbc});
+  // O2 gauge
+  {const gx=G_[0],gy=G_[1]+14;ctx.lineWidth=8;ctx.strokeStyle=C.rule;ctx.beginPath();ctx.arc(gx,gy,40,Math.PI,TAU);ctx.stroke();const a=Math.PI+clamp((O-70)/40,0,1)*Math.PI;
+   ctx.strokeStyle=O<92?C.warn:C.good;ctx.beginPath();ctx.arc(gx,gy,40,Math.PI,a);ctx.stroke();line(gx,gy,gx+Math.cos(a)*34,gy+Math.sin(a)*34,C.ink,2.2);circ(gx,gy,4,C.ink);
+   label(gx,gy+18,`O₂ delivery ${Math.round(O)}%`,{size:12,weight:600,align:"center",mono:true,border:O<92?C.warn:C.good})}
+  // trigger
+  ctx.save();const mt=seg(day,1.5,2.5);ctx.globalAlpha=mt;const mx=400,my=204;ctx.beginPath();ctx.moveTo(mx-50,my+18);ctx.lineTo(mx-14,my-26);ctx.lineTo(mx+2,my-6);ctx.lineTo(mx+20,my-30);ctx.lineTo(mx+52,my+18);ctx.closePath();ctx.fillStyle=mix(C.co2,C.panel,.4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx-14,my-26);ctx.lineTo(mx-6,my-16);ctx.lineTo(mx-20,my-16);ctx.closePath();ctx.fillStyle="#fff";ctx.fill();
+  txt(mx,my+28,"Day 2: move to high altitude (less O₂ in the air)",{size:11.5,align:"center",weight:600});ctx.restore();
+  txt(400,124,"NEGATIVE FEEDBACK",{size:12,mono:true,weight:700,align:"center",color:C["ink-soft"]});
+  if(day>20)label(400,150,"O₂ recovering → kidneys ease off EPO",{size:12,align:"center",weight:600,border:C.epo});
+  // graphs
+  const gx0=130,gx1=780;const rows=[["O₂ delivery",0,70,105,C.o2],["EPO",1,0,4,C.epo],["RBC count",2,95,118,C.rbc]];
+  rows.forEach((r,i)=>{const y0=332+i*48,y1=y0+38;rr(gx0,y0,gx1-gx0,y1-y0,4);ctx.fillStyle=hexA(C.panel,.8);ctx.fill();txt(gx0-10,(y0+y1)/2,r[0],{size:12,weight:600,align:"right"});
+    ctx.beginPath();for(let k=0;k<=150;k++){const d=k/150*30;const v=epoCurves(d)[r[1]];const X=gx0+d/30*(gx1-gx0),Y=y1-3-clamp((v-r[2])/(r[3]-r[2]),0,1)*(y1-y0-6);k?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=hexA(r[4],.3);ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();for(let k=0;k<=150;k++){const d=k/150*30;if(d>day)break;const v=epoCurves(d)[r[1]];const X=gx0+d/30*(gx1-gx0),Y=y1-3-clamp((v-r[2])/(r[3]-r[2]),0,1)*(y1-y0-6);k?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=r[4];ctx.lineWidth=2.6;ctx.stroke()});
+  const cx=gx0+day/30*(gx1-gx0);line(cx,328,cx,474,C.ink,1.2,[3,3]);label(16,318,"day "+Math.round(day)+" of 30",{size:12,mono:true,weight:700,border:C.ink});
+}
+
+/* ================= Scene 7: recycling ================= */
+const RP={glob:[[165,205],[300,120],[440,64]],fe:[[215,255],[340,200],[560,170],[640,150]],fe2:[[560,170],[640,240]],
+  hm:[[215,255],[300,330],[420,372],[520,372]],bile:[[520,372],[650,372]],out:[[690,384],[690,432]]};
+function sceneRecycle(T){
+  const p=P(T,17);const mx=190,my=230;
+  // vessel / sinusoid on left
+  ctx.fillStyle=hexA(C.plasma,.25);ctx.fillRect(0,196,110,70);
+  const eat=seg(p,.1,.24);const wob=6*Math.sin(T*2);
+  ctx.save();blobPath(mx,my,82+wob*.3+eat*6,1.3,T*.6,.08);ctx.fillStyle=C.macro;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
+  if(eat>0&&eat<1){ctx.save();ctx.strokeStyle=hexA(C.ink,.4);ctx.fillStyle=C.macro;for(const s of [-1,1]){ctx.beginPath();ctx.ellipse(mx-70+eat*30,my+s*(36-eat*24),30,14,s*.5,0,TAU);ctx.fill();ctx.stroke()}ctx.restore()}
+  ctx.beginPath();ctx.ellipse(mx-42,my+38,22,15,.3,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();
+  label(mx,108,"Macrophage (spleen, liver)",{size:12.5,weight:700,align:"center",border:C.rule});
+  // old rbc in
+  const inq=seg(p,0,.2);const split=seg(p,.24,.32);
+  if(split<1){const x=lerp(10,mx,ease(inq)),y=my;ctx.save();ctx.globalAlpha=1-split;rbc(x,y,22,{col:mix(C.rbc,C.deoxy,.6),cren:1});ctx.restore();if(p<.16)label(60,my-46,"old, stiff RBC",{size:11.5,align:"center"})}
+  if(split>0){ctx.save();ctx.globalAlpha=split;blobPath(165-(1-split)*20,205+(1-split)*25,16,2,T,.12);ctx.fillStyle=C["glob-a"];ctx.fill();ctx.strokeStyle=hexA(C.ink,.3);ctx.stroke();txt(165,182,"globin",{size:11,align:"center"});
+    heme(215+(1-split)*-20,255-(1-split)*25,11,0);txt(215,280,"heme",{size:11,align:"center"});ctx.restore()}
+  const st=seg(p,.32,.4);
+  // boxes
+  const box=(x,y,t,col,a)=>{ctx.save();ctx.globalAlpha=a;label(x,y,t,{size:12,weight:600,align:"center",border:col});ctx.restore()};
+  box(560,62,"Amino acids → build new proteins",C["glob-a"],st);
+  box(705,150,"Red marrow: new hemoglobin",C.iron,st);box(700,240,"Stored as ferritin (liver)",C.iron,st);
+  box(520,372,"Liver",C.liver,st);box(700,372,"Bile → intestine",C.bili,st);box(670,452,"Feces (brown), urine (yellow)",C.bili,st);
+  if(st>0){ctx.save();ctx.globalAlpha=st;
+    poly(RP.glob,hexA(C["glob-a"],.6),1.5,[4,4]);poly(RP.fe,hexA(C.iron,.6),1.5,[4,4]);poly(RP.fe2,hexA(C.iron,.6),1.5,[4,4]);poly(RP.hm,hexA(C.biliv,.6),1.5,[4,4]);poly(RP.bile,hexA(C.bili,.6),1.5,[4,4]);poly(RP.out,hexA(C.bili,.6),1.5,[4,4]);
+    flowDots(RP.glob,6,3,T,(x,y)=>circ(x,y,3.4,C["glob-a"],hexA(C.ink,.3),1));
+    flowDots(RP.fe,5,3.4,T,(x,y,f)=>{if(f>.42&&f<.86){ctx.beginPath();ctx.ellipse(x,y,9,6,0,0,TAU);ctx.fillStyle=hexA(C.agA,.5);ctx.fill()}circ(x,y,3.6,C.iron,hexA(C.ink,.3),1)});
+    flowDots(RP.fe2,2,3,T,(x,y)=>circ(x,y,3.6,C.iron,hexA(C.ink,.3),1),.7);
+    flowDots(RP.hm,6,3.4,T,(x,y,f)=>{const c=mix(C.biliv,C.bili,seg(f,.35,.6));if(f>.6){ctx.beginPath();ctx.ellipse(x,y,8,5,0,0,TAU);ctx.fillStyle=hexA(C.plasma,.8);ctx.fill()}circ(x,y,4,c,hexA(C.ink,.3),1)});
+    flowDots(RP.bile,3,2.4,T,(x,y)=>circ(x,y,3.6,C.bili,hexA(C.ink,.3),1));flowDots(RP.out,2,2.4,T,(x,y,f)=>circ(x,y,3.6,mix(C.bili,C.collagen,f),hexA(C.ink,.3),1));
+    label(470,180,"carried by transferrin",{size:11.5,color:C.iron,pill:true});
+    label(196,330,"biliverdin (green)",{size:11.5,color:C.biliv,weight:600});label(400,402,"bilirubin (yellow), on albumin",{size:11.5,color:C.bili,weight:600,align:"center"});
+    label(330,98,"globin → amino acids",{size:11.5,weight:600});
+    ctx.restore()}
+}
+
+/* ================= Scene 8: anemia ================= */
+function sceneAnemia(T){
+  const lanes=[{y:82,name:"Normal",sub:"plenty of O₂",meter:.92},{y:232,name:"Iron-deficiency",sub:"small, pale RBCs",meter:.5},{y:382,name:"Sickle cell",sub:"sickled cells jam",meter:.28}];
+  const X0=150,X1=640;
+  lanes.forEach((L,li)=>{const y=L.y;const hhAt=x=>li===2?30-16*Math.exp(-Math.pow((x-420)/24,2)):30;
+    ctx.fillStyle=hexA(C.plasma,.3);ctx.beginPath();for(let x=X0;x<=X1;x+=6)ctx.lineTo(x,y-hhAt(x));for(let x=X1;x>=X0;x-=6)ctx.lineTo(x,y+hhAt(x));ctx.closePath();ctx.fill();
+    for(const sg of [-1,1]){ctx.beginPath();for(let x=X0;x<=X1;x+=6)ctx.lineTo(x,y+sg*hhAt(x));ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=2.5;ctx.stroke()}
+    txt(12,y-12,L.name,{size:13.5,weight:700});txt(12,y+10,L.sub,{size:12,color:C["ink-soft"]});
+    // tissue
+    rr(660,y-56,128,112,8);ctx.fillStyle=mix(C.tissue,C.act2,.18);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    txt(724,y-42,"tissue O₂",{size:11.5,align:"center",color:C["ink-soft"]});rr(684,y-28,80,16,8);ctx.fillStyle=C["panel-2"];ctx.fill();
+    const m=L.meter+.03*Math.sin(T*2+li);rr(684,y-28,80*m,16,8);ctx.fillStyle=m>.7?C.good:m>.4?C.warn:C.bad;ctx.fill();
+    txt(724,y+6,m>.7?"healthy":m>.4?"tired, weak, pale":"pain, tissue damage",{size:11.5,align:"center",weight:600,color:m>.7?C.good:m>.4?C.warn:C.bad});
+    for(let k=0;k<4;k++){const f=P(T*.6+k/4+li*.2,1);o2(lerp(642,700+k*12,f),y+18+Math.sin(k)*8,Math.sin(f*Math.PI)*L.meter,3.2)}
+  });
+  // normal
+  for(let i=0;i<11;i++){const x=X0+((T*70+i*46)%(X1-X0));rbc(x,82,13,{sy:.85});for(let k=0;k<3;k++)o2(x-8+k*8,68,1,2.4)}
+  // iron deficiency
+  for(let i=0;i<9;i++){const x=X0+((T*70+i*55)%(X1-X0));rbc(x,232,9,{sy:.85,col:C["rbc-hi"],pale:true});if(i%2===0)o2(x,222,1,2.4)}
+  // sickle
+  const ys=382;
+  for(let i=0;i<9;i++){const x=X0+((T*14+i*28)%(395-X0));const sk=i%3===0;if(sk)sickle(x,ys+Math.sin(i)*8,13,.4+i,C.deoxy);else rbc(x,ys+Math.sin(i*2)*8,12,{sy:.85})}
+  sickle(408,ys-6,14,1.2+Math.sin(T*3)*.08,C.deoxy);sickle(424,ys+4,14,-.6,C.deoxy);sickle(438,ys-2,13,2.2,C.deoxy);
+  for(let i=0;i<3;i++){const x=450+((T*70+i*70)%(X1-450));rbc(x,ys,12,{sy:.85})}
+  label(424,ys-44,"stiff sickled cells stuck here",{size:11.5,align:"center",weight:600,border:C.deoxy});
+  label(300,ys+44,"cells back up behind the block",{size:11.5,align:"center"});
+}
+
+/* ================= Scene 9: leukocyte mix ================= */
+let WGRID=null;
+const WT=[["neut","Neutrophils","50–70%","granulocyte",C=>C.ngran],["lymph","Lymphocytes","20–30%","agranulocyte",C=>C.lymc],["mono","Monocytes","2–8%","agranulocyte",C=>C.monoc],["eos","Eosinophils","2–4%","granulocyte",C=>C.eos],["baso","Basophils","< 1%","granulocyte",C=>C.baso]];
+function sceneWbcmix(T){
+  const p=P(T,16);
+  if(!WGRID){const t=[];[["neut",60],["lymph",30],["mono",6],["eos",3],["baso",1]].forEach(a=>{for(let i=0;i<a[1];i++)t.push(a[0])});WGRID=t.map((x,i)=>[x,rnd(i*5+3)]).sort((a,b)=>a[1]-b[1]).map(a=>a[0])}
+  // mnemonic
+  const wj=p<.62?-1:Math.min(4,Math.floor(seg(p,.62,.92)*5));const words=["Never","Let","Monkeys","Eat","Bananas"];
+  let mx=36;words.forEach((w,j)=>{ctx.font=`700 22px ${FONT}`;const w1=ctx.measureText(w[0]).width;ctx.font=`500 17px ${FONT}`;const w2=ctx.measureText(w.slice(1)).width;
+    if(j===wj){rr(mx-5,14,w1+w2+10,32,6);ctx.fillStyle=hexA(C.act3,.18);ctx.fill()}
+    txt(mx,31,w[0],{size:22,weight:700,color:C.act3});txt(mx+w1,32,w.slice(1),{size:17});mx+=w1+w2+16});
+  // grid
+  const n=Math.floor(seg(p,.05,.6)*100);const gx=36,gy=84,c=29;
+  txt(gx,70,`A differential count: ${n} of 100 white cells sorted`,{size:12,weight:600,color:C["ink-soft"]});
+  const tally={neut:0,lymph:0,mono:0,eos:0,baso:0};
+  for(let i=0;i<100;i++){const x=gx+(i%10)*c+14,y=gy+Math.floor(i/10)*c+14;if(i<n){const k=WGRID[i];tally[k]++;const pop=i===n-1?1+.3*Math.sin(T*20):1;wbc(x,y,k,11.5*pop,{seed:i+1})}else circ(x,y,10,null,C["rule"],1)}
+  // bars
+  WT.forEach((r,i)=>{const y=106+i*64;const on=i===wj;if(on){rr(372,y-28,420,56,8);ctx.fillStyle=hexA(C.act3,.1);ctx.fill()}
+    wbc(400,y,r[0],20,{seed:i+4,t:T});txt(430,y-11,r[1],{size:14,weight:700});txt(430,y+9,r[2]+" · "+r[3],{size:11.5,color:r[3]==="granulocyte"?C.act3:C.act1,weight:600});
+    const pct=n?tally[r[0]]/n*100:0;rr(592,y-10,190,20,4);ctx.fillStyle=C["panel-2"];ctx.fill();rr(592,y-10,190*Math.min(1,pct/70),20,4);ctx.fillStyle=r[4](C);ctx.fill();ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1;rr(592,y-10,190,20,4);ctx.stroke();
+    txt(776,y+.5,n?Math.round(pct)+"%":"",{size:11.5,mono:true,weight:700,align:"right"})});
+  const g=seg(p,.78,.86);if(g>0){ctx.save();ctx.globalAlpha=g;label(36,410,"Granulocytes (visible granules): neutrophils, eosinophils, basophils",{size:12.5,weight:600,border:C.act3});
+    label(36,444,"Agranulocytes (no visible granules): lymphocytes, monocytes",{size:12.5,weight:600,border:C.act1});
+    label(560,428,"Normal total: 5,000–10,000 per µL",{size:12.5,weight:600,border:C.rule});ctx.restore()}
+}
+
+/* ================= Scene 10: granulocytes ================= */
+function sceneGran(T){
+  const p=P(T,15);const PX=[8,272,536],PW=256;
+  const info=[["neut","Neutrophil","50–70% of WBCs","nucleus: 2–5 lobes","granules: pale lilac","JOB: EAT BACTERIA"],
+    ["eos","Eosinophil","2–4% of WBCs","nucleus: 2 lobes","granules: red-orange","JOB: PARASITES, ALLERGY"],
+    ["baso","Basophil","under 1% of WBCs","nucleus: often hidden","granules: dark purple","JOB: HISTAMINE, HEPARIN"]];
+  info.forEach((f,i)=>{const x=PX[i];panelBox(x,8,PW,464);wbc(x+56,72,f[0],42,{seed:i+2,t:T});txt(x+108,36,f[1],{size:15,weight:700});txt(x+108,56,f[2],{size:11.5,mono:true,color:C["ink-soft"]});
+    txt(x+108,78,f[3],{size:11.5});txt(x+108,96,f[4],{size:11.5});line(x+12,128,x+PW-12,128,C["rule-soft"],1);txt(x+PW/2,146,f[5],{size:11.5,weight:700,align:"center",mono:true,color:C.act3})});
+  // neutrophil: phagocytosis
+  {const x=PX[0];const B=[[x+60,230],[x+196,300],[x+84,392]];const q=P(T,12);const k=Math.min(2,Math.floor(q*3));const sub=(q*3)-k;
+    const prev=k===0?[x+190,420]:B[k-1];const tgt=B[k];const mv=ease(seg(sub,0,.45));const nx=lerp(prev[0],tgt[0],mv),ny=lerp(prev[1],tgt[1],mv);
+    B.forEach((b,j)=>{if(j<k)return;if(j===k){const e=seg(sub,.45,.9);if(e<1)bact(lerp(b[0]+Math.sin(T*6+j)*2,nx+4,e),lerp(b[1],ny+4,e),j,7*(1-e*.5),1-e*.8)}else bact(b[0]+Math.sin(T*6+j)*2,b[1],j,7)});
+    wbc(nx,ny,"neut",30,{seed:2,t:T});if(sub>.45){ctx.save();ctx.globalAlpha=1-seg(sub,.85,1);circ(nx+4,ny+4,10,null,C.act3,1.6);ctx.restore()}
+    txt(x+PW/2,452,"swallows bacteria one by one",{size:11.5,align:"center",color:C["ink-soft"]})}
+  // eosinophil vs worm
+  {const x=PX[1];const wy=315;const fade=1-.75*seg(p,.8,.95);
+    ctx.save();ctx.globalAlpha=fade;ctx.lineCap="round";ctx.lineWidth=18;ctx.strokeStyle=mix(C.collagen,C.panel,.35);ctx.beginPath();const wpt=i=>[x+28+i*(PW-56)/40,wy+Math.sin(i*.33+T*2.2)*16];
+    for(let i=0;i<=40;i++){const [a,b]=wpt(i);i?ctx.lineTo(a,b):ctx.moveTo(a,b)}ctx.stroke();ctx.lineCap="butt";
+    for(let i=2;i<40;i+=3){const [a,b]=wpt(i);line(a,b-8,a,b+8,hexA(C.ink,.2),1)}ctx.restore();
+    txt(x+PW/2,198,"parasitic worm (far bigger than any cell)",{size:11.5,align:"center",color:C["ink-soft"]});
+    const E=[[x+84,wy-44,x+30,180],[x+176,wy+46,x+236,460]];
+    E.forEach((e,j)=>{const a=ease(seg(p,.04+j*.05,.24+j*.05));const ex=lerp(e[2],e[0],a),ey=lerp(e[3],e[1],a);
+      if(p>.3&&p<.85){const [tx,ty]=wpt(j?24:12);flowDots([[ex,ey+(j?-20:20)],[tx,ty]],5,1.2,T,(xx,yy,f)=>circ(xx,yy,3,C.eos,null),j*.3)}
+      wbc(ex,ey,"eos",24,{seed:7+j,t:T})});
+    if(p>.3&&p<.85)label(x+PW/2,410,"releasing granule contents onto the worm",{size:11.5,align:"center"});
+    if(p>=.85)label(x+PW/2,410,"worm damaged",{size:11.5,align:"center",weight:600})}
+  // basophil: histamine and heparin
+  {const x=PX[2];const vy=250;const wid=lerp(20,36,ease(seg(p,.2,.6)));
+    ctx.fillStyle=hexA(C.plasma,.3);ctx.fillRect(x+16,vy-wid,PW-32,2*wid);line(x+16,vy-wid,x+PW-16,vy-wid,C["vessel-edge"],3);line(x+16,vy+wid,x+PW-16,vy+wid,C["vessel-edge"],3);
+    for(let i=0;i<5;i++){const xx=x+16+((T*50+i*48)%(PW-32));rbc(xx,vy+Math.sin(i*2)*wid*.4,8,{sy:.8})}
+    txt(x+PW/2,vy-wid-14,wid>30?"vessel widens and gets leaky":"small blood vessel",{size:11.5,align:"center",weight:wid>30?600:500});
+    const bx=x+90,by=400;wbc(bx,by,"baso",30,{seed:6,t:T});
+    if(p>.08){flowDots([[bx,by-30],[bx-10,vy+wid+4]],6,1.6,T,(xx,yy,f)=>circ(xx,yy,3.4,C.chem,hexA(C.ink,.3),1));label(x+60,330,"histamine",{size:11.5,color:C.chem,weight:600})}
+    if(p>.15){flowDots([[bx+30,by],[x+226,by-10]],4,1.8,T,(xx,yy)=>diamond(xx,yy,3.6,C.plt));label(x+168,by+44,"heparin: slows clotting",{size:11.5,align:"center",color:C.plt,weight:600})}
+    if(p>.55){for(let k=0;k<4;k++){const f=P(T*.7+k/4,1);circ(x+60+k*40,vy+wid+6+f*40,3.2,hexA(C.plasma,1-f))}}}
+}
+
+/* ================= Scene 11: agranulocytes ================= */
+function sceneAgran(T){
+  const p=P(T,16);
+  panelBox(8,8,388,464);panelBox(404,8,388,464);
+  wbc(56,64,"lymph",34,{seed:3,t:T});txt(104,40,"Lymphocyte",{size:15,weight:700});txt(104,60,"20–30% · big round nucleus",{size:11.5,color:C["ink-soft"]});txt(104,78,"B cells, T cells, NK cells",{size:11.5});
+  wbc(456,64,"mono",38,{seed:5,t:T,ang:.3});txt(508,40,"Monocyte",{size:15,weight:700});txt(508,60,"2–8% · largest WBC",{size:11.5,color:C["ink-soft"]});txt(508,78,"kidney-shaped nucleus",{size:11.5});
+  line(20,112,384,112,C["rule-soft"],1);line(416,112,780,112,C["rule-soft"],1);
+  // B cell -> plasma cell -> antibodies
+  {const bq=seg(p,.05,.22);const bx=70,by=210;txt(20,132,"B CELL → PLASMA CELL → ANTIBODIES",{size:11,mono:true,weight:700,color:C.act1});
+    if(bq<1)wbc(bx,by,"lymph",22+bq*4,{seed:8,t:T,a:1-bq});if(bq>0)wbc(bx,by,"plasma",26+bq*6,{seed:8,t:T,a:bq});
+    const BAC=[[300,170],[330,222],[286,262]];BAC.forEach((b,j)=>{bact(b[0]+Math.sin(T*4+j)*2,b[1],j*.8,8);});
+    for(let i=0;i<9;i++){const t0=.25+i*.03;const f=seg(p,t0,t0+.2);if(f<=0)continue;const b=BAC[i%3];const ang=(i*1.3);const tx=b[0]+Math.cos(ang)*16,ty=b[1]+Math.sin(ang)*12;
+      const x=lerp(bx+30,tx,ease(f)),y=lerp(by,ty,ease(f));antibody("A",x,y,8,f>=1?ang-Math.PI/2:(Math.atan2(ty-by,tx-bx)+Math.PI/2),1,C.act1)}
+    if(p>.55)label(300,296,"antibodies tag the bacteria",{size:11.5,align:"center",weight:600})}
+  // T cell kills infected cell
+  {txt(20,330,"T CELL → ATTACKS AN INFECTED CELL",{size:11,mono:true,weight:700,color:C.act1});const ix=290,iy=400;const k=seg(p,.72,.9);
+    if(k<1){ctx.save();ctx.globalAlpha=1-k;blobPath(ix,iy,30,4,T,.05);ctx.fillStyle=mix(C.tf,C.panel,.55);ctx.fill();ctx.strokeStyle=C.tf;ctx.lineWidth=1.5;ctx.stroke();for(let i=0;i<6;i++){const a=i/6*TAU+T*.5;circ(ix+Math.cos(a)*14,iy+Math.sin(a)*14,3.5,C.tf)}ctx.restore()}
+    if(k>0)for(let i=0;i<10;i++){const a=i/10*TAU;circ(ix+Math.cos(a)*(20+k*40),iy+Math.sin(a)*(20+k*40),4*(1-k*.5),hexA(C.tf,1-k))}
+    const tx=lerp(70,ix-50,ease(seg(p,.5,.66)));wbc(tx,iy,"lymph",22,{seed:11,t:T});
+    if(p>.62&&p<.74)for(let i=0;i<4;i++){const f=P(T*1.5+i/4,1);circ(lerp(tx+20,ix-24,f),iy-6+i*4,2.5,C.act1)}
+    txt(ix,iy+48,k>0?"infected cell destroyed":"virus-infected cell",{size:11.5,align:"center",color:C["ink-soft"]})}
+  // monocyte -> macrophage
+  {txt(416,132,"MONOCYTE LEAVES THE BLOOD → MACROPHAGE",{size:11,mono:true,weight:700,color:C.act3});
+    const vy0=150,vy1=212;ctx.fillStyle=hexA(C.plasma,.3);ctx.fillRect(416,vy0,364,vy1-vy0);for(let i=0;i<9;i++){rr(418+i*40,vy1,37,12,4);ctx.fillStyle=C.endo;ctx.fill()}
+    for(let i=0;i<5;i++){const x=416+((T*60+i*80)%364);rbc(x,vy0+18+(i%2)*26,8,{sy:.8})}
+    const a=seg(p,0,.15),b=seg(p,.15,.3),g=seg(p,.3,.5),e=seg(p,.55,.9);
+    let mx,my,mr,type="mono";
+    if(b<=0){mx=lerp(430,578,ease(a));my=182;mr=20}
+    else if(g<=0){mx=578;my=lerp(182,252,ease(b));mr=20}
+    else{mx=lerp(578,640,ease(g)+0)+(e>0?lerp(0,60,ease(e)):0);my=lerp(252,330,ease(g))+(e>0?lerp(0,40,ease(e)):0);mr=lerp(20,48,ease(g));type=g>.5?"macro":"mono"}
+    const D=[[730,400],[700,430],[748,440]];D.forEach((d,j)=>{const ee=seg(e,.5+j*.1,.8+j*.06);const dx=lerp(d[0],mx,ee),dy=lerp(d[1],my,ee);if(ee<1)bact(dx,dy,j,7*(1-ee*.5),1-ee*.7)});
+    if(b>0&&b<1){ctx.save();ctx.translate(mx,my);ctx.scale(.6,1.2);wbc(0,0,"mono",mr,{seed:5,t:T});ctx.restore()}else wbc(mx,my,type,mr,{seed:5,t:T});
+    if(b>0&&b<1)label(640,236,"squeezes out",{size:11.5});
+    if(g>.5)label(560,252,"now a macrophage: bigger, a heavy eater",{size:11.5,align:"center",weight:600,border:C.act3});
+    if(e>.4)label(640,456,"eats bacteria, debris and old cells",{size:11.5,align:"center"})}
+}
+
+/* ================= Scene 12: diapedesis ================= */
+function sceneDiaped(T){
+  const p=P(T,17);const WY=212,WB=234,GAP=446;
+  ctx.fillStyle=hexA(C.plasma,.28);ctx.fillRect(0,20,W,WY-20);line(0,20,W,20,C["vessel-edge"],2);
+  ctx.fillStyle=hexA(C.tissue,.9);ctx.fillRect(0,WB,W,H-WB);
+  for(let i=0;i<12;i++){const x=i*70-14;if(x+66<GAP-4||x>GAP+4){}rr(x+2,WY,64,WB-WY,8);ctx.fillStyle=C.endo;ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1;ctx.stroke();circ(x+34,WY+11,4,hexA(C.nuc,.5))}
+  // RBCs fast
+  for(let i=0;i<14;i++){const x=((T*140+i*60)%(W+40))-20;rbc(x,50+((i*37)%120),10,{sy:.8})}
+  // bacteria + chemical signal
+  const BX=640,BY=400;for(let k=0;k<4;k++){const f=P(T*.4+k/4,1);ctx.save();ctx.globalAlpha=(1-f)*.6;circ(BX,BY,20+f*170,null,C.chem,2);ctx.restore()}
+  const eat=seg(p,.84,.97);
+  const BB=[[BX-14,BY-6],[BX+12,BY+8],[BX+4,BY-18],[BX-6,BY+16]];
+  // neutrophil path
+  const a=seg(p,0,.18),b=seg(p,.18,.38),c=seg(p,.38,.46),d=seg(p,.46,.64),e=seg(p,.64,.84);
+  let nx,ny,mode="free";const r=24;
+  if(b<=0){nx=lerp(-30,190,a);ny=lerp(100,WY-r,ease(a))}
+  else if(c<=0){nx=lerp(190,GAP,ease(b));ny=WY-r}
+  else if(d<=0){nx=GAP;ny=WY-r;mode="stick"}
+  else if(e<=0){nx=GAP;ny=WY-r;mode="squeeze"}
+  else{nx=lerp(GAP,BX-40,ease(e));ny=lerp(WB+r+2,BY-6,ease(e))}
+  if(eat>0){nx=BX-40+eat*30;ny=BY-6}
+  BB.forEach((q,j)=>{const ee=seg(eat,j*.15,.5+j*.15);if(ee<1)bact(lerp(q[0],nx,ee),lerp(q[1],ny,ee),j,6.5*(1-ee*.4),1-ee*.8)});
+  if(mode==="squeeze"){const q=ease(d);const r1=r*Math.sqrt(1-q),r2=r*Math.sqrt(q);ctx.save();if(r1>2)wbc(GAP,WY-r1*.9,"neut",r1,{seed:2,t:T});rr(GAP-5,WY-2,10,WB-WY+4,4);ctx.fillStyle=C.wbc;ctx.fill();if(r2>2)wbc(GAP,WB+r2*.9,"neut",r2,{seed:2,t:T});ctx.restore()}
+  else{const ang=mode==="free"&&b>0?nx/r:0;wbc(nx,ny,"neut",r,{seed:2,t:T,ang:b>0&&c<=0?nx/r:0});if(e>0&&eat<=0){ctx.save();ctx.beginPath();ctx.ellipse(nx+r*.9,ny+6,12,6,.6,0,TAU);ctx.fillStyle=C.wbc;ctx.fill();ctx.restore()}}
+  if(mode==="stick")for(let k=0;k<4;k++)line(nx-14+k*9,ny+r-4,nx-16+k*10,WY+2,C.act3,1.5);
+  // step list
+  const st=[["Rolling along the wall",b>0&&c<=0],["Sticking",c>0&&d<=0],["Diapedesis: squeezing out",d>0&&e<=0],["Chemotaxis: following the signal",e>0&&eat<=0],["Phagocytosis",eat>0]];
+  panelBox(16,256,250,206);st.forEach((s,i)=>{const y=282+i*38;badge(38,y,i+1,s[1]?C.act3:C["ink-faint"]);txt(56,y,s[0],{size:12.5,weight:s[1]?700:500,color:s[1]?C.ink:C["ink-soft"]})});
+  label(BX,BY+64,"infection: bacteria release chemicals",{size:11.5,align:"center",border:C.chem});
+  label(150,36,"inside the blood vessel",{size:11.5,pill:false,color:C["ink-soft"]});txt(300,WB+16,"tissue",{size:11.5,color:C["ink-soft"]});
+}
+
+/* ================= Scene 13: platelets ================= */
+function scenePlt(T){
+  const p=P(T,15);
+  ctx.fillStyle=hexA(C.marrow,.25);ctx.fillRect(0,0,470,H);txt(14,22,"RED BONE MARROW",{size:11.5,mono:true,weight:600,color:C["ink-soft"]});
+  const LX0=350,LX1=460;ctx.fillStyle=hexA(C.plasma,.35);ctx.fillRect(LX0,0,LX1-LX0,H);
+  for(let i=0;i<12;i++){rr(LX0-8,i*42+3,8,36,3);ctx.fillStyle=C.endo;ctx.fill()}line(LX1,0,LX1,H,C["vessel-edge"],2);
+  
+  // megakaryocyte
+  const mx=180,my=240;blobPath(mx,my,128,2,T*.4,.04);ctx.fillStyle=mix(C.plt,C.panel,.62);ctx.fill();ctx.strokeStyle=C.plt;ctx.lineWidth=2;ctx.stroke();
+  for(let i=0;i<40;i++){const a=rnd(i+3)*TAU,d=Math.sqrt(rnd(i+9))*110;circ(mx+Math.cos(a)*d,my+Math.sin(a)*d,2,hexA(C.plt,.8))}
+  [[-30,-20,30],[10,-30,28],[30,10,30],[-10,25,30],[-40,20,24]].forEach(n=>circ(mx+n[0],my+n[1],n[2],hexA(C.nuc,.85)));
+  label(mx,my+150,"Megakaryocyte: a giant cell with a many-lobed nucleus",{size:12,align:"center",weight:600,border:C.plt});
+  // proplatelet extensions
+  const ys=[150,240,330];ys.forEach((y,j)=>{const grow=seg(p,.05+j*.05,.3+j*.05);const len=grow*120;const x0=mx+Math.sqrt(Math.max(0,128*128-(y-my)*(y-my)))-6;
+    ctx.strokeStyle=mix(C.plt,C.panel,.3);ctx.lineWidth=7;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(Math.min(x0+len,LX0+70),y+Math.sin(T*2+j)*3);ctx.stroke();ctx.lineCap="butt";
+    for(let k=1;k<6;k++){const bx=x0+k*20;if(bx<x0+len&&bx<LX0+70)circ(bx,y+Math.sin(T*2+j)*3,5,C.plt)}});
+  // shed platelets flowing down
+  const shed=seg(p,.3,.4);if(shed>0){for(let i=0;i<22;i++){const f=P(T*.12+i/22,1);const j=i%3;const x=LX0+50+((i*13)%40);const y=ys[j]+f*(H-ys[j]+40);ctx.save();ctx.globalAlpha=shed*Math.min(1,(1-f)*4);plt(x,y,5,0,i+T);ctx.restore()}
+    for(let i=0;i<6;i++){const y=((T*60+i*90)%(H+30))-15;rbc(LX0+22+(i%2)*60,y,9,{sy:.8,a:.8})}}
+  label((LX0+LX1)/2,H-16,"marrow blood vessel",{size:11,align:"center",color:C["ink-soft"]});
+  const cnt=Math.floor(seg(p,.32,.95)*2500);label(LX0-60,40,`platelets released: ${cnt.toLocaleString()}`,{size:12.5,mono:true,weight:700,align:"center",border:C.plt});
+  if(p>.2)label(LX0-30,96,"extensions push through the wall",{size:11.5,align:"center"});
+  // right: facts
+  panelBox(484,16,304,200);const act=ease(clamp(Math.sin(T*.9)*2.2+.5,0,1));plt(636,112,34,act,0);
+  txt(636,40,act>.95?"ACTIVATED (Part 4): spiky and sticky":act<.05?"RESTING PLATELET: a smooth disc":"changing shape…",{size:11.5,mono:true,weight:700,align:"center",color:C["ink-soft"]});
+  txt(636,196,"(drawn huge; really about 2–4 µm)",{size:11,align:"center",color:C["ink-faint"]});
+  const F=[["150,000–400,000","platelets per µL of blood"],["about 10 days","then removed by macrophages"],["no nucleus","a fragment, not a whole cell"],["TPO","hormone that boosts production"]];
+  F.forEach((f,i)=>{const y=244+i*56;panelBox(484,y,304,48,{fill:hexA(C.panel,.85)});txt(500,y+16,f[0],{size:13.5,weight:700,color:C.plt});txt(500,y+34,f[1],{size:12,color:C["ink-soft"]})});
+}
+
+/* ================= Scene 14: vascular spasm ================= */
+function sceneSpasm(T){
+  const p=P(T,13);const cut=seg(p,.1,.18),sp=ease(seg(p,.3,.55));const cx=420,mid=220;
+  const n=x=>sp*42*Math.exp(-Math.pow((x-cx)/140,2));const top=x=>mid-82+n(x),bot=x=>mid+82-n(x);const WT_=34;
+  ctx.fillStyle=hexA(C.tissue,.9);ctx.fillRect(0,0,W,H);
+  ctx.fillStyle=hexA(C.plasma,.35);ctx.beginPath();for(let x=0;x<=W;x+=8)ctx.lineTo(x,top(x));for(let x=W;x>=0;x-=8)ctx.lineTo(x,bot(x));ctx.closePath();ctx.fill();
+  const gap=16*cut;
+  const wall=(sg,x0,x1)=>{const inner=x=>sg<0?top(x):bot(x);const outer=x=>inner(x)+sg*WT_;
+    ctx.beginPath();for(let x=x0;x<=x1;x+=4)ctx.lineTo(x,inner(x));for(let x=x1;x>=x0;x-=4)ctx.lineTo(x,outer(x));ctx.closePath();ctx.fillStyle=mix(C.muscle,C.act3,sp*.45);ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1.5;ctx.stroke();
+    ctx.beginPath();for(let x=x0;x<=x1;x+=4)ctx.lineTo(x,inner(x)+sg*3);ctx.strokeStyle=C.endo;ctx.lineWidth=5;ctx.stroke();
+    ctx.strokeStyle=hexA(C.ink,.18);ctx.lineWidth=1;for(let x=x0+6;x<x1-4;x+=12){const yi=inner(x)+sg*9,yo=outer(x)-sg*5;line(x,yi,x+6+sp*4,yo,hexA(C.ink,.2),1)}};
+  wall(-1,0,W);if(gap>0){wall(1,0,cx-gap);wall(1,cx+gap,W)}else wall(1,0,W);
+  for(let i=0;i<26;i++){const x=((T*(90-30*sp)+i*34)%(W+40))-20;const rel=(rnd(i)*2-1)*.72;const y=lerp(top(x)+12,bot(x)-12,(rel+1)/2);rbc(x,y,10,{sy:.8})}
+  const leak=cut*(1-.8*sp);
+  for(let j=0;j<18;j++){if(j/18>leak)continue;const f=P(T*.7+j/18,1);const sx=cx+(rnd(j)-.5)*gap*1.2,sy=bot(cx)+4;const ex=cx+(rnd(j+5)-.5)*220,ey=470;rbc(lerp(sx,ex,f),lerp(sy,ey,f*f*.5+f*.5),7,{a:1-f*.5,sy:.8})}
+  // contraction arrows
+  if(sp>0){ctx.save();ctx.globalAlpha=sp;[[cx-120,1],[cx,1],[cx+120,1]].forEach(a=>{arrow(a[0],top(a[0])-WT_-30,a[0],top(a[0])-WT_-6,C.act3,2.4);arrow(a[0],bot(a[0])+WT_+30,a[0],bot(a[0])+WT_+6,C.act3,2.4)});ctx.restore()}
+  panelBox(586,16,200,64);txt(600,34,"Blood escaping",{size:12,weight:600});rr(600,48,170,16,8);ctx.fillStyle=C["panel-2"];ctx.fill();rr(600,48,170*leak,16,8);ctx.fillStyle=C.bad;ctx.fill();
+  if(p>.1&&p<.32)label(cx,bot(cx)+WT_+60,"Cut! Blood escapes",{size:13,align:"center",weight:700,border:C.bad});
+  if(p>=.32)label(250,36,"Smooth muscle contracts → the vessel narrows",{size:13,align:"center",weight:700,border:C.act3});
+  if(p>=.55)label(cx,bot(cx)+WT_+60,"Less blood escapes. A spasm can last up to about 30 minutes.",{size:12.5,align:"center",weight:600,border:C.act4});
+  label(70,mid,"lumen",{size:11.5,pill:false,color:C["ink-soft"]});label(70,top(70)-WT_/2,"smooth muscle",{size:11,color:C["ink-soft"]});
+}
+
+/* ================= Scene 15: platelet plug ================= */
+let PSLOT=null;
+function makeSlots(){PSLOT=[];for(let i=0;i<5;i++)PSLOT.push({x:352+i*30,y:330,t:.12+i*.04,adh:1});
+  const rows=[[306,6,345],[284,5,358],[262,4,371],[242,3,384]];let k=0;rows.forEach(r=>{for(let i=0;i<r[1];i++){PSLOT.push({x:r[2]+i*26+(rnd(k)-.5)*6,y:r[0]+(rnd(k+4)-.5)*6,t:.64+k*.018,adh:0});k++}})}
+function scenePlug(T){
+  const p=P(T,17);if(!PSLOT)makeSlots();const G0=335,G1=480,WY=300;
+  ctx.fillStyle=hexA(C.plasma,.25);ctx.fillRect(0,60,W,WY-60);ctx.fillStyle=hexA(C.tissue,.95);ctx.fillRect(0,WY,W,H-WY);
+  for(let i=0;i<9;i++){const y=WY+20+i*18;ctx.beginPath();for(let x=0;x<=W;x+=10)ctx.lineTo(x,y+Math.sin(x*.05+i)*5);ctx.strokeStyle=hexA(C.collagen,x0(i));ctx.lineWidth=3;ctx.stroke()}
+  function x0(i){return .55}
+  for(let i=0;i<12;i++){const x=i*70-10;if(x+64>G0&&x<G1)continue;rr(x+2,WY,64,22,7);ctx.fillStyle=C.endo;ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1;ctx.stroke()}
+  ctx.beginPath();for(let x=G0;x<=G1;x+=6)ctx.lineTo(x,WY+22+Math.sin(x*.12)*4);ctx.strokeStyle=C.collagen;ctx.lineWidth=5;ctx.stroke();
+  // steps header
+  const ph=p<.12?-1:p<.36?0:p<.5?1:p<.64?2:3;const S=["Adhesion","Activation","Release","Aggregation"];
+  S.forEach((s,i)=>{const x=20+i*192;rr(x,12,180,36,8);ctx.fillStyle=i===ph?C.act4:C["panel-2"];ctx.fill();ctx.strokeStyle=i===ph?C.act4:C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    badge(x+20,30,i+1,i===ph?C.panel:C["ink-faint"]);if(i===ph){ctx.font=`700 11.5px ${MONO}`;ctx.fillStyle=C.act4;ctx.textAlign="center";ctx.fillText(String(i+1),x+20,30.5)}
+    txt(x+38,30,s,{size:13.5,weight:700,color:i===ph?onFill():C["ink-soft"]})});
+  // background flow
+  for(let i=0;i<9;i++){const x=((T*90+i*95)%(W+40))-20;const y=90+((i*53)%170);if(i%3===0)rbc(x,y,10,{sy:.8,a:.8});else plt(x,y,7,0,T+i)}
+  // slot platelets
+  PSLOT.forEach((s,i)=>{const arr=seg(p,s.t,s.t+.08);if(arr<=0)return;const sx=-20,sy=s.adh?180+i*12:120+(i%5)*28;const x=lerp(sx,s.x,ease(arr)),y=lerp(sy,s.y,ease(arr));
+    const act=s.adh?seg(p,.36,.48):seg(p,s.t+.06,s.t+.12);
+    if(s.adh&&arr>=1&&p<.5){line(s.x-5,s.y+6,s.x-6,WY+20,C.vitk,2);line(s.x+5,s.y+6,s.x+7,WY+20,C.vitk,2)}
+    plt(x,y,9,act,i*.7)});
+  // release
+  if(p>.5){const r=seg(p,.5,.64);PSLOT.slice(0,5).forEach((s,i)=>{for(let k=0;k<8;k++){const f=P(T*.8+k/8+i*.13,1);const a=k/8*TAU+i;circ(s.x+Math.cos(a)*(10+f*60),s.y+Math.sin(a)*(10+f*50)-10,2.8,hexA(C.chem,(1-f)*Math.max(r,.4)))}})}
+  if(ph===0)label(G0+70,WY+64,"exposed collagen: platelets stick (von Willebrand factor helps)",{size:12,align:"center",border:C.collagen});
+  if(ph===1)label(G0+70,WY+64,"stuck platelets swell and grow spiky arms",{size:12,align:"center",border:C.plt});
+  if(ph===2)label(G0+70,186,"releasing ADP, serotonin, thromboxane A₂",{size:12.5,align:"center",weight:600,border:C.chem});
+  if(ph===3)label(G0+70,186,"more platelets arrive and pile on: positive feedback",{size:12.5,align:"center",weight:600,border:C.act4});
+  if(p>.92)label(G0+70,WY+64,"platelet plug seals the small break",{size:12.5,align:"center",weight:700,border:C.act4});
+  if(p<.12)label(G0+70,WY+64,"a break in the vessel lining",{size:12,align:"center",border:C.bad});
+}
+
+/* ================= Scene 16: coagulation cascade ================= */
+const CN={tf:[150,82,"Tissue factor (III)","ext",.04],vii:[150,154,"VII → VIIa","ext",.12],xii:[650,70,"XII (contact)","int",.06],xi:[650,122,"XI → XIa","int",.16],ix:[650,174,"IX + VIII","int",.26],
+  x:[400,232,"Factor X → Xa","com",.32],pa:[400,288,"Prothrombin activator (Xa + V)","com",.4],th:[400,344,"Prothrombin (II) → Thrombin","com",.48],fb:[400,400,"Fibrinogen (I) → Fibrin","com",.56],xiii:[400,452,"XIII cross-links the fibrin","com",.64]};
+const CE=[["tf","vii",1],["vii","x",2],["xii","xi",1],["xi","ix",2],["ix","x",3],["x","pa",3],["pa","th",4],["th","fb",6],["fb","xiii",8]];
+let MESH=null;
+function sceneCascade(T){
+  const p=P(T,19);const col=g=>g==="ext"?C.tf:g==="int"?C.act1:C.thrombin;
+  chipText(150,30,"EXTRINSIC PATHWAY · faster",C.tf);chipText(650,30,"INTRINSIC PATHWAY · slower",C.act1);
+  txt(250,288,"COMMON",{size:11,mono:true,weight:700,align:"right",color:C.thrombin});txt(250,304,"PATHWAY",{size:11,mono:true,weight:700,align:"right",color:C.thrombin});
+  // edges
+  CE.forEach(e=>{const a=CN[e[0]],b=CN[e[1]];const on=p>=a[4];const y1=a[1]+13,y2=b[1]-13;arrow(a[0],y1,b[0]+(b[0]-a[0]?0:0),y2,on?col(a[3]):C.rule,on?2:1.4);
+    if(on&&p<b[4]+.02){flowDots([[a[0],y1],[b[0],y2]],e[2],.9,T,(x,y)=>circ(x,y,3.4,col(a[3]),hexA(C.ink,.3),1))}
+    if(on&&(e[1]==="x"||e[1]==="pa"||e[1]==="th"))caIon((a[0]+b[0])/2+(e[0]==="ix"?14:e[0]==="vii"?-14:14),(y1+y2)/2,seg(p,a[4],a[4]+.05))});
+  // positive feedback
+  const fb=seg(p,.5,.56);if(fb>0){ctx.save();ctx.globalAlpha=fb;ctx.strokeStyle=C.thrombin;ctx.lineWidth=1.6;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(500,336);ctx.bezierCurveTo(545,330,540,215,610,184);ctx.stroke();ctx.setLineDash([]);
+    label(612,214,"thrombin speeds earlier steps",{size:11,color:C.thrombin});ctx.restore()}
+  // nodes
+  Object.keys(CN).forEach(k=>{const n=CN[k];const on=p>=n[4];const pulse=on&&p<n[4]+.06?1+.06*Math.sin(T*12):1;ctx.font=`600 12.5px ${FONT}`;const w=ctx.measureText(n[2]).width+20;
+    ctx.save();ctx.translate(n[0],n[1]);ctx.scale(pulse,pulse);rr(-w/2,-13,w,26,13);ctx.fillStyle=on?col(n[3]):C.panel;ctx.fill();ctx.strokeStyle=on?col(n[3]):C.rule;ctx.lineWidth=1.4;ctx.stroke();
+    txt(0,.5,n[2],{size:12.5,weight:600,align:"center",color:on?onFill():C["ink-soft"]});ctx.restore();
+    if(on&&p<n[4]+.08)glow(n[0],n[1],50,col(n[3]),.35*(1-seg(p,n[4],n[4]+.08)))});
+  // amplification panel
+  panelBox(14,232,184,236);txt(28,252,"AMPLIFICATION",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  [[1,"one trigger",.04],[4,"many Xa",.32],[12,"more thrombin",.48],[39,"tons of fibrin",.56]].forEach((r,i)=>{const y=284+i*48;const a=seg(p,r[2],r[2]+.06);ctx.save();ctx.globalAlpha=.25+.75*a;
+    for(let j=0;j<r[0];j++){circ(30+(j%13)*8,y-6+Math.floor(j/13)*8,3,i===3?C.fibrin:i===0?C.tf:C.thrombin)}txt(30,y+12+Math.ceil(r[0]/13)*8,r[1],{size:11.5,color:C["ink-soft"]});ctx.restore()});
+  // mesh
+  panelBox(560,232,228,236);txt(574,252,"THE CLOT",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  if(!MESH){MESH=[];for(let i=0;i<16;i++){const a=rnd(i+2)*TAU;MESH.push([[574+rnd(i+30)*200,262+rnd(i+40)*196],[574+rnd(i+50)*200,262+rnd(i+60)*196]])}}
+  ctx.save();rr(560,232,228,236,8);ctx.clip();
+  const mf=seg(p,.58,.9);for(let i=0;i<7;i++){const x0=600+((i*31)%160),y0=300+((i*47)%140);const free=1-mf;rbc(x0+(free>0?Math.sin(T*2+i)*20*free:0),y0+(free>0?((T*40+i*30)%60-30)*free:0),12,{sy:.85})}
+  for(let i=0;i<4;i++)plt(590+i*50,280+(i%2)*120,6,mf,i);
+  MESH.forEach((m,i)=>{const s=seg(mf,i/16*.8,i/16*.8+.2);if(s<=0)return;const xe=lerp(m[0][0],m[1][0],s),ye=lerp(m[0][1],m[1][1],s);line(m[0][0],m[0][1],xe,ye,C.fibrin,2.6)});
+  ctx.restore();if(mf>=1)label(674,452,"fibrin mesh traps cells",{size:11.5,align:"center",weight:600,border:C.fibrin});
+}
+
+/* ================= Scene 17: Ca2+ and vitamin K ================= */
+function sceneCavk(T){
+  const p=P(T,21);const sub=Math.min(2,Math.floor(p*3));const q=p*3-sub;
+  const banners=["NORMAL: vitamin K + Ca²⁺ → clot forms","NO VITAMIN K: liver makes faulty II, VII, IX, X → no clot","NO Ca²⁺: the cascade can't run → no clot"];
+  const bc=[C.good,C.bad,C.bad];
+  rr(14,10,772,32,8);ctx.fillStyle=hexA(bc[sub],.15);ctx.fill();ctx.strokeStyle=bc[sub];ctx.lineWidth=1.5;ctx.stroke();txt(400,26.5,banners[sub],{size:13.5,weight:700,align:"center",color:sub===0?C.good:C.bad});
+  [0,1,2].forEach(i=>{circ(740+i*14-14,26,4,i===sub?bc[sub]:C.rule)});
+  // liver cell
+  const lx=170,ly=200;ctx.beginPath();for(let i=0;i<6;i++){const a=i/6*TAU+Math.PI/6;ctx.lineTo(lx+Math.cos(a)*112,ly+Math.sin(a)*112)}ctx.closePath();ctx.fillStyle=mix(C.liver,C.panel,.72);ctx.fill();ctx.strokeStyle=C.liver;ctx.lineWidth=2;ctx.stroke();
+  circ(lx-20,ly+10,26,hexA(C.nuc,.8));label(lx,ly+94,"Liver cell",{size:12.5,weight:700,align:"center"});
+  // vitamin K
+  if(sub!==1){for(let i=0;i<5;i++){const f=P(T*.4+i/5,1);const x=lerp(16,lx-40,f),y=lerp(70,ly-50,f);ctx.save();ctx.globalAlpha=Math.min(1,(1-f)*3);rr(x-6,y-6,12,12,3);ctx.fillStyle=C.vitk;ctx.fill();ctx.restore()}label(70,58,"vitamin K (food, gut bacteria)",{size:11.5,weight:600,color:C.vitk})}
+  else{rr(30,50,12,12,3);ctx.fillStyle=hexA(C.vitk,.3);ctx.fill();line(26,46,46,66,C.bad,2.5);line(46,46,26,66,C.bad,2.5);label(110,58,"no vitamin K",{size:11.5,weight:700,color:C.bad})}
+  // factors out to vessel
+  ctx.fillStyle=hexA(C.plasma,.3);ctx.fillRect(312,56,60,410);line(312,56,312,466,C["vessel-edge"],1.5);line(372,56,372,466,C["vessel-edge"],1.5);txt(342,476,"blood",{size:11,align:"center",color:C["ink-soft"]});
+  ["II","VII","IX","X"].forEach((f,i)=>{const a=seg(q,.08+i*.05,.25+i*.05);const x=lerp(lx+40,342,ease(a)),y=lerp(ly,110+i*46,ease(a));ctx.save();ctx.globalAlpha=Math.max(.15,a);
+    const ok=sub!==1;circ(x,y,16,ok?C.thrombin:C["ink-faint"],hexA(C.ink,.35),1);txt(x,y+.5,f,{size:11.5,weight:700,align:"center",color:onFill(),mono:true});if(!ok&&a>.9){line(x-12,y-12,x+12,y+12,C.bad,2);line(x+12,y-12,x-12,y+12,C.bad,2)}ctx.restore()});
+  // Ca2+ source
+  const caOn=sub!==2;
+  if(caOn){for(let i=0;i<6;i++){const f=P(T*.3+i/6,1);caIon(330+((i*13)%26),80+f*370,1)}}
+  label(160,350,"Ca²⁺ is clotting factor IV",{size:12,weight:600,align:"center",border:C.ca});
+  if(sub===2)wrapText("Lab tubes keep blood liquid by binding its Ca²⁺ (for example with citrate or EDTA).",40,392,250,16,{size:12,color:C["ink-soft"]});
+  if(sub===1)wrapText("Newborns get a vitamin K shot. Warfarin, a blood thinner, blocks vitamin K's job.",40,392,250,16,{size:12,color:C["ink-soft"]});
+  if(sub===0)wrapText("Vitamin K lets the liver finish making working factors II, VII, IX and X.",40,392,250,16,{size:12,color:C["ink-soft"]});
+  // cascade
+  const N=[[600,90,"Trigger (tissue factor / XII)"],[600,165,"Factor X → Xa"],[600,240,"Prothrombin → Thrombin"],[600,315,"Fibrinogen → Fibrin"]];
+  const stall=sub===0?9:sub===1?1:0;
+  N.forEach((n,i)=>{const on=i<=stall&&q>.42+i*.08;const blocked=i===stall+1&&q>.42+i*.08;ctx.font=`600 12.5px ${FONT}`;const w=ctx.measureText(n[2]).width+22;rr(n[0]-w/2,n[1]-14,w,28,14);
+    ctx.fillStyle=on?C.thrombin:C.panel;ctx.fill();ctx.strokeStyle=blocked?C.bad:on?C.thrombin:C.rule;ctx.lineWidth=blocked?2.5:1.4;ctx.stroke();txt(n[0],n[1]+.5,n[2],{size:12.5,weight:600,align:"center",color:on?onFill():C["ink-soft"]});
+    if(i<3){const y1=n[1]+15,y2=N[i+1][1]-15;arrow(n[0],y1,n[0],y2,on&&i<stall?C.thrombin:C.rule,1.8);
+      const dock=[n[0]-60,(y1+y2)/2];circ(dock[0],dock[1],9,null,C.ca,1.2);if(caOn){const a=seg(q,.36+i*.08,.42+i*.08);caIon(lerp(380,dock[0],a),lerp(dock[1]-10,dock[1],a),a)}else{txt(dock[0],dock[1],"?",{size:12,weight:700,align:"center",color:C.bad})}}
+    if(blocked&&!on)label(n[0]+120,n[1]-26,"stuck here",{size:12,weight:700,color:C.bad,border:C.bad})});
+  // result
+  panelBox(420,352,366,116);const ok=sub===0&&q>.78;txt(434,370,"RESULT",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  ctx.save();rr(420,352,366,116,8);ctx.clip();for(let i=0;i<6;i++){rbc(470+i*52,420+Math.sin(T*2+i)*(ok?2:16),12,{sy:.85})}
+  if(ok){const m=seg(q,.78,.95);for(let i=0;i<12;i++){if(i/12>m)break;const x=440+i*28;line(x,378,x+(i%2?60:-40),462,C.fibrin,2.4);if(i%3===0)line(430,384+i*6,780,400+((i*17)%60),C.fibrin,2)}}ctx.restore();
+  txt(774,370,ok?"fibrin mesh: clot forms":q>.78?"no fibrin: bleeding continues":"",{size:12,weight:700,align:"right",color:ok?C.good:C.bad});
+}
+
+/* ================= Scene 18: retraction and fibrinolysis ================= */
+let CLOT=null;
+function makeClot(){CLOT={pts:[],str:[],cells:[]};for(let i=0;i<26;i++)CLOT.pts.push([rnd(i+1)*2-1,rnd(i+11)*2-1]);
+  for(let i=0;i<34;i++){const a=Math.floor(rnd(i+21)*26),b=Math.floor(rnd(i+41)*26);if(a!==b)CLOT.str.push([a,b,.62+rnd(i+61)*.26])}
+  for(let i=0;i<9;i++)CLOT.cells.push([rnd(i+81)*1.6-.8,rnd(i+91)*1.4-.7,i%3===0?"plt":"rbc"])}
+function sceneLysis(T){
+  const p=P(T,19);if(!CLOT)makeClot();const WY=292,WB=326;
+  const ret=ease(seg(p,.04,.32)),rep=seg(p,.36,.56),lys=seg(p,.58,.95);
+  ctx.fillStyle=hexA(C.plasma,.25);ctx.fillRect(0,56,W,WY-56);ctx.fillStyle=hexA(C.tissue,.95);ctx.fillRect(0,WB,W,H-WB);
+  for(let i=0;i<8;i++){const x=((T*70+i*110)%(W+40))-20;rbc(x,86+((i*41)%110),11,{sy:.8,a:.85})}
+  const gl=lerp(270,340,ret),gr=lerp(530,460,ret);
+  for(let k=0;k<6;k++){const xl=gl-(k+1)*70+3,xr=gr+k*70+3;[xl,xr].forEach(x=>{rr(x,WY,64,WB-WY,7);ctx.fillStyle=C.endo;ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1;ctx.stroke();circ(x+32,WY+17,4,hexA(C.nuc,.5))})}
+  // new lining under the clot
+  const nNew=Math.floor(rep*4.99);for(let i=0;i<nNew;i++){const w=(gr-gl)/4;const x=gl+i*w;rr(x+2,WY+6,w-4,WB-WY-8,7);ctx.fillStyle=mix(C.endo,C.good,.3);ctx.fill();ctx.strokeStyle=C.good;ctx.lineWidth=1.4;ctx.stroke()}
+  // clot
+  const cx=(gl+gr)/2,cy=WY-6,sx=lerp(150,96,ret),sy=lerp(62,44,ret);const map=q=>[cx+q[0]*sx,cy+q[1]*sy];
+  CLOT.str.forEach(s=>{const a=map(CLOT.pts[s[0]]),b=map(CLOT.pts[s[1]]);const cutq=seg(p,s[2],s[2]+.04);
+    if(cutq<=0)line(a[0],a[1],b[0],b[1],C.fibrin,2.6);
+    else if(cutq<1){ctx.save();ctx.globalAlpha=1-cutq;const m=[(a[0]+b[0])/2,(a[1]+b[1])/2];line(a[0],a[1],m[0]-8*cutq,m[1]-8*cutq,C.fibrin,2.6);line(b[0],b[1],m[0]+8*cutq,m[1]+8*cutq,C.fibrin,2.6);ctx.restore()}});
+  CLOT.cells.forEach((c,i)=>{const [x,y]=map(c);const free=seg(p,.8+i*.012,.92+i*.008);const fx=x+free*(140+i*30),fy=y-free*(90+i*10);
+    if(c[2]==="plt"){const pull=ret>0&&ret<1?Math.sin(T*10)*1.5:0;plt(fx+pull,fy,10,1-free,i,1-free*.9)}else rbc(fx,fy,14,{sy:.85,a:1-free*.3})});
+  // serum squeezed out
+  if(p>.06&&p<.36){for(let k=0;k<10;k++){const f=P(T*.6+k/10,1);const side=k%2?1:-1;ctx.save();ctx.globalAlpha=(1-f)*.95;ctx.beginPath();ctx.ellipse(cx+side*(sx*.7+f*70),cy+30+f*130,4.5,7,0,0,TAU);ctx.fillStyle=C.plasma;ctx.fill();ctx.strokeStyle=hexA(C.ink,.3);ctx.lineWidth=.8;ctx.stroke();ctx.restore()}
+    for(const s of [-1,1])arrow(cx+s*(sx+50),cy-sy-14,cx+s*(sx+10),cy-sy-14,C.act4,2.4);label(cx+sx+80,cy+80,"serum",{size:11.5,color:C.warn,weight:600})}
+  // plasminogen -> plasmin
+  if(p>.5){const act=seg(p,.58,.64);for(let k=0;k<6;k++){const q=CLOT.pts[k*4];const [x,y]=map(q);const jx=x+Math.sin(T*3+k)*3;if(act<1)circ(jx,y,6,null,C.plasmin,2);
+    ctx.save();ctx.globalAlpha=act*(1-seg(p,.95,1));ctx.translate(jx,y);ctx.rotate(T*4+k);ctx.beginPath();ctx.arc(0,0,7,.5,TAU-.5);ctx.lineTo(0,0);ctx.closePath();ctx.fillStyle=C.plasmin;ctx.fill();ctx.restore()}}
+  const ph=p<.34?0:p<.57?1:2;["1 · Clot retraction","2 · Repair","3 · Fibrinolysis"].forEach((s,i)=>{const x=22+i*258;rr(x,10,246,34,8);ctx.fillStyle=i===ph?C.act4:C["panel-2"];ctx.fill();ctx.strokeStyle=i===ph?C.act4:C.rule;ctx.lineWidth=1.2;ctx.stroke();txt(x+123,27.5,s,{size:13.5,weight:700,align:"center",color:i===ph?onFill():C["ink-soft"]})});
+  const msg=ph===0?["Platelets contract: the edges are pulled together and serum is squeezed out",C.act4]:ph===1?["New lining cells grow across the break (platelet PDGF helps)",C.good]:[p<.64?"tPA turns plasminogen into plasmin":"Plasmin cuts the fibrin threads; the clot dissolves",C.plasmin];
+  label(400,442,msg[0],{size:13,align:"center",weight:600,border:msg[1]});
+  label(80,70,"blood vessel",{size:11.5,pill:false,color:C["ink-soft"]});txt(60,WB+20,"tissue",{size:11.5,color:C["ink-soft"]});
+}
+
+/* ================= Scene 19: ABO ================= */
+const ABO=[["A",["A"],["B"],"A antigens","anti-B"],["B",["B"],["A"],"B antigens","anti-A"],["AB",["A","B"],[],"A and B antigens","neither antibody"],["O",[],["A","B"],"no A or B antigens","anti-A and anti-B"]];
+function sceneAbo(T){
+  const p=P(T,15);
+  ABO.forEach((t,i)=>{const x=100+i*200;chipText(x,26,"TYPE "+t[0],C.act5);
+    const ag=seg(p,.06+i*.05,.2+i*.05);rbc(x,128,50);if(t[1].length)antigensOn(x,128,50,t[1],9,12,ag,T*.15);
+    txt(x,206,t[3],{size:12.5,weight:600,align:"center"});
+    rr(x-86,232,172,160,10);ctx.fillStyle=C["plasma-wash"];ctx.fill();ctx.strokeStyle=C.plasma;ctx.lineWidth=1.5;ctx.stroke();txt(x,248,"plasma",{size:11,align:"center",color:C["ink-soft"]});
+    const ab=seg(p,.3+i*.05,.44+i*.05);
+    if(t[2].length){for(let k=0;k<8;k++){const kind=t[2][k%t[2].length];const bx=x-58+(k%4)*39+Math.sin(T*.8+k)*8,by=290+Math.floor(k/4)*52+(k%2)*14+Math.cos(T*.7+k*2)*7;antibody(kind,bx,by,11,Math.sin(T*.5+k)*.8,ab)}}
+    else{ctx.save();ctx.globalAlpha=ab;txt(x,316,"no anti-A",{size:12,align:"center",color:C["ink-soft"]});txt(x,334,"no anti-B",{size:12,align:"center",color:C["ink-soft"]});ctx.restore()}
+    txt(x,412,t[4],{size:13,weight:700,align:"center",color:t[2].length===1?C["ag"+t[2][0]]:C.ink})});
+  const r=seg(p,.66,.74);if(r>0){ctx.save();ctx.globalAlpha=r;label(400,452,"Your plasma has antibodies against the antigens your cells DON'T have.",{size:13.5,align:"center",weight:700,border:C.act5});ctx.restore()}
+}
+
+/* ================= Scene 20: Rh ================= */
+function rhPanel(x,y,w,h,stage,q,T,active){panelBox(x,y,w,h,{stroke:active?C.act5:C.rule,lw:active?2.5:1.2,fill:hexA(C.panel,active?.95:.6)});
+  ctx.save();rr(x,y,w,h,8);ctx.clip();rr(x+10,y+44,w-20,h-100,8);ctx.fillStyle=C["plasma-wash"];ctx.fill();
+  const own=[[x+50,y+80],[x+200,y+130],[x+70,y+150]];own.forEach((c,i)=>rbc(c[0]+Math.sin(T+i)*4,c[1],15,{sy:.9}));
+  if(stage>=1){const inq=seg(q,0,.3);const nAb=stage===1?Math.floor(seg(q,.4,.95)*5):6;
+    if(stage===1){wbc(x+200,y+75,"plasma",17,{seed:3,t:T});}
+    const foreign=[[x+130,y+90],[x+150,y+150],[x+110,y+125]];
+    const clump=stage===2?ease(seg(q,.35,.7)):0;
+    foreign.forEach((c,i)=>{const sx=x+w/2+(i-1)*30,sy=y+40;const fx=lerp(sx,c[0],inq),fy=lerp(sy,c[1],inq);const cx_=x+130,cy_=y+120;const X=lerp(fx,cx_+(i-1)*22,clump),Y=lerp(fy,cy_+(i===1?18:-6),clump);rbc(X,Y,15,{sy:.9});antigensOn(X,Y,15,["D"],5,8,1,T*.2)});
+    for(let k=0;k<nAb;k++){let bx=x+40+((k*53)%(w-80)),by=y+70+((k*37)%90);if(stage===2&&clump>0){const tx=x+130+(k%3-1)*14,ty=y+110+Math.floor(k/3)*20;bx=lerp(bx,tx,clump);by=lerp(by,ty,clump)}
+      antibody("D",bx+Math.sin(T+k)*3,by,9,Math.sin(T*.5+k)*.7*(1-clump),stage===1?seg(q,.4+k*.1,.5+k*.1):1)}}
+  ctx.restore()}
+function sceneRh(T){
+  const p=P(T,18);
+  rbc(110,98,46);antigensOn(110,98,46,["D"],9,12,1,T*.15);rbc(330,98,46);
+  txt(110,170,"Rh⁺: D antigen present",{size:13,weight:700,align:"center"});txt(110,188,"(about 85% of people in the US)",{size:11.5,align:"center",color:C["ink-soft"]});
+  txt(330,170,"Rh⁻: no D antigen",{size:13,weight:700,align:"center"});
+  panelBox(450,16,336,186);txt(466,38,"HOW THIS DIFFERS FROM ABO",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  antibody("A",480,80,10,0);antibody("B",500,80,10,0);wrapText("Anti-A and anti-B are already in plasma from early childhood.",522,72,252,16,{size:12});
+  antibody("D",490,146,10,0,.4+.6*(Math.sin(T*2)*.5+.5));wrapText("Anti-D is made ONLY after an Rh⁻ person is exposed to Rh⁺ blood.",522,138,252,16,{size:12,weight:600});
+  const k=p<.3?0:p<.65?1:2;const titles=["① Before any exposure","② First exposure","③ Second exposure"];const notes=["Rh⁻ person: no anti-D in plasma","Rh⁺ cells get in; B cells start making anti-D (takes time)","anti-D is ready: Rh⁺ cells clump (agglutinate)"];
+  [0,1,2].forEach(i=>{const x=12+i*262,y=222,w=250,h=246;const q=i===0?1:i===1?seg(p,.3,.65):seg(p,.65,.98);const stage=i===0?0:i===1?(p<.3?0:1):(p<.65?0:2);
+    rhPanel(x,y,w,h,i===2&&p<.65?0:stage===0&&i>0?0:i,i===0?1:q,T,i===k);
+    txt(x+12,y+22,titles[i],{size:13,weight:700,color:i===k?C.act5:C.ink});wrapText(notes[i],x+12,y+h-40,w-24,15,{size:12,color:C["ink-soft"]})});
+}
+
+/* ================= Scene 21: transfusion ================= */
+const TYPES=["O−","O+","A−","A+","B−","B+","AB−","AB+"];
+function agOf(t){const s=new Set();if(t.includes("A"))s.add("A");if(t.includes("B"))s.add("B");if(t.includes("+"))s.add("D");return s}
+function compat(d,r){const D=agOf(d),R=agOf(r);for(const a of D)if(!R.has(a))return false;return true}
+function sceneTransf(T){
+  const p=P(T,18);
+  // bag
+  const bx=70,by=60;rr(bx-34,by-40,68,84,14);ctx.fillStyle=mix(C.rbc,C.panel,.25);ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.stroke();rr(bx-20,by-30,40,22,4);ctx.fillStyle=C.panel;ctx.fill();txt(bx,by-19,"Type B",{size:11.5,weight:700,align:"center"});
+  ctx.beginPath();ctx.moveTo(bx,by+44);ctx.bezierCurveTo(bx,by+80,170,110,190,152);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=3;ctx.stroke();
+  txt(bx+46,by-30,"Donor red cells: type B",{size:12,weight:600});
+  rr(14,150,450,318,14);ctx.fillStyle=C["plasma-wash"];ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  txt(28,170,"Recipient's blood: type A (plasma has anti-B)",{size:12,weight:600});
+  const own=[[50,270],[430,300],[90,410],[410,420],[250,440],[60,350]];own.forEach((c,i)=>{const x=c[0]+Math.sin(T*.6+i)*6,y=c[1]+Math.cos(T*.5+i)*5;rbc(x,y,17,{sy:.92});antigensOn(x,y,17,["A"],6,8,1,i)});
+  const CL=[[300,320],[272,300],[328,302],[286,344],[318,346]];const enter=i=>seg(p,.04+i*.05,.16+i*.05);const clump=ease(seg(p,.4,.62));const lysis=seg(p,.68,.86);
+  const drift=(i)=>[200+((i*73)%180)+Math.sin(T*.8+i)*14,230+((i*59)%150)+Math.cos(T*.7+i)*12];
+  CL.forEach((c,i)=>{const e=enter(i);if(e<=0)return;const [dx,dy]=drift(i);const x0=lerp(190,dx,ease(e)),y0=lerp(152,dy,ease(e));const x=lerp(x0,c[0],clump),y=lerp(y0,c[1],clump);
+    if(lysis<1){ctx.save();ctx.globalAlpha=1-lysis;rbc(x,y,17,{sy:.92});antigensOn(x,y,17,["B"],6,8,1,i+T*.1);ctx.restore()}
+    if(lysis>0){for(let k=0;k<6;k++){const a=k/6*TAU+i;circ(x+Math.cos(a)*lysis*(30+k*4),y+Math.sin(a)*lysis*(26+k*3),3,hexA(C.rbc,1-lysis*.6))}}});
+  // antibodies
+  for(let k=0;k<10;k++){const fx=40+((k*83)%400)+Math.sin(T*.9+k)*12,fy=200+((k*47)%240)+Math.cos(T*.8+k)*10;let x=fx,y=fy,ang=Math.sin(T+k);
+    if(k<6&&p>.3){const a=CL[k%5],b=CL[(k+1)%5];const tx=(a[0]+b[0])/2,ty=(a[1]+b[1])/2;const m=ease(seg(p,.3+k*.015,.5+k*.015));x=lerp(fx,tx,m);y=lerp(fy,ty,m);ang=lerp(ang,Math.atan2(b[1]-a[1],b[0]-a[0])+Math.PI/2,m)}
+    if(lysis>.6&&k<6)continue;antibody("B",x,y,10,ang,1)}
+  if(p>.42&&p<.68)label(240,204,"AGGLUTINATION: anti-B links the donor cells",{size:12,align:"center",weight:700,border:C.bad});
+  if(p>=.68)label(240,204,"HEMOLYSIS: the cells burst and spill hemoglobin",{size:12,align:"center",weight:700,border:C.bad});
+  // compat map
+  panelBox(484,16,304,452);txt(500,38,"WHO CAN GIVE RED CELLS TO WHOM?",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  txt(540,62,"donor",{size:11.5,align:"center",color:C["ink-soft"]});txt(740,62,"recipient",{size:11.5,align:"center",color:C["ink-soft"]});
+  const ry=i=>84+i*41;const mode=p<.5?0:1;
+  TYPES.forEach((d,i)=>TYPES.forEach((r,j)=>{if(!compat(d,r))return;const hl=mode===0?d==="O−":r==="AB+";line(566,ry(i),714,ry(j),hl?(mode===0?C.good:C.act5):hexA(C["ink-faint"],.22),hl?2:1)}));
+  TYPES.forEach((t,i)=>{const hl0=mode===0&&t==="O−",hl1=mode===1&&t==="AB+";[[540,hl0],[740,hl1]].forEach(s=>{rr(s[0]-26,ry(i)-12,52,24,12);ctx.fillStyle=s[1]?(mode===0?C.good:C.act5):C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();txt(s[0],ry(i)+.5,t,{size:12.5,weight:700,align:"center",mono:true,color:s[1]?onFill():C.ink})})});
+  label(636,432,mode===0?"O⁻: universal donor (no A, B or D)":"AB⁺: universal recipient (no anti-A, anti-B, anti-D)",{size:11.5,align:"center",weight:700,border:mode===0?C.good:C.act5});
+}
+
+/* ================= Scene 22: HDN ================= */
+function sceneHdn(T){
+  const p=P(T,24);const k=Math.min(2,Math.floor(p*3)),q=p*3-k;
+  ["① First pregnancy","② Next Rh⁺ baby","③ Prevention: RhoGAM"].forEach((s,i)=>{const x=14+i*260;rr(x,8,250,30,8);ctx.fillStyle=i===k?C.act5:C["panel-2"];ctx.fill();ctx.strokeStyle=i===k?C.act5:C.rule;ctx.lineWidth=1.2;ctx.stroke();txt(x+125,23.5,s,{size:13,weight:700,align:"center",color:i===k?onFill():C["ink-soft"]})});
+  const Y0=52,Y1=396;rr(14,Y0,362,Y1-Y0,10);ctx.fillStyle=C["plasma-wash"];ctx.fill();rr(424,Y0,362,Y1-Y0,10);ctx.fillStyle=mix(C["plasma-wash"],C.rbc,.08);ctx.fill();
+  ctx.beginPath();for(let y=Y0;y<=Y1;y+=4)ctx.lineTo(400+Math.sin(y*.08+T)*7,y);ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=6;ctx.stroke();
+  txt(195,Y0+18,"MOTHER'S BLOOD · Rh⁻",{size:11.5,mono:true,weight:700,align:"center",color:C["ink-soft"]});txt(605,Y0+18,"BABY'S BLOOD · Rh⁺",{size:11.5,mono:true,weight:700,align:"center",color:C["ink-soft"]});
+  label(400,Y1+10,"placenta",{size:11.5,align:"center",border:C["vessel-edge"]});
+  const M=[[70,120],[160,170],[250,110],[90,260],[300,250],[200,330],[320,350]];M.forEach((c,i)=>rbc(c[0]+Math.sin(T*.6+i)*5,c[1]+Math.cos(T*.5+i)*4,16,{sy:.92}));
+  const F=[[480,120],[580,100],[700,140],[520,230],[650,240],[560,330],[720,320]];
+  let cross=0,burst=0,coat=0,clear=0;
+  if(k===0)cross=ease(seg(q,.25,.5));if(k===1){burst=seg(q,.55,.8)}if(k===2){cross=ease(seg(q,.3,.5));coat=seg(q,.5,.7);clear=seg(q,.75,.92)}
+  F.forEach((c,i)=>{let x=c[0]+Math.sin(T*.6+i)*5,y=c[1]+Math.cos(T*.5+i)*4;let a=1;
+    const crosses=(k===0||k===2)&&i<3;if(crosses){x=lerp(x,150+i*70,cross);y=lerp(y,200+i*30,cross);if(k===2)a=1-clear}
+    if(k===1&&i<5)a=1-burst;
+    if(a<=0)return;ctx.save();ctx.globalAlpha=a;rbc(x,y,16,{sy:.92});antigensOn(x,y,16,["D"],5,8,1,i+T*.1);ctx.restore();
+    if(k===1&&i<5&&burst>0)for(let j=0;j<5;j++){const t=j/5*TAU+i;circ(x+Math.cos(t)*burst*30,y+Math.sin(t)*burst*26,3,hexA(C.rbc,1-burst*.5))}});
+  // antibodies
+  if(k===0){const n=Math.floor(seg(q,.55,.95)*6);wbc(110,330,"plasma",20,{seed:4,t:T,a:seg(q,.5,.6)});for(let i=0;i<n;i++)antibody("D",60+i*40,190+Math.sin(T+i)*6,10,Math.sin(T*.6+i)*.6)}
+  if(k===1){for(let i=0;i<7;i++){const sx=60+i*42,sy=200+(i%3)*30;const tgt=F[i%5];const m=ease(seg(q,.1+i*.03,.45+i*.03));antibody("D",lerp(sx,tgt[0]-18,m)+Math.sin(T+i)*3*(1-m),lerp(sy,tgt[1]-16,m),10,Math.sin(T*.6+i)*.6*(1-m),i<5&&burst>.8?1-seg(burst,.8,1):1)}}
+  if(k===2){const s=seg(q,.02,.22);ctx.save();ctx.globalAlpha=s;ctx.translate(lerp(-40,40,s),90);ctx.rotate(.5);rr(0,-8,70,16,4);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.stroke();rr(8,-6,40,12,2);ctx.fillStyle=hexA(C.plasmin,.6);ctx.fill();line(70,0,92,0,C["ink-soft"],2);ctx.restore();
+    for(let i=0;i<6;i++){const m=ease(seg(q,.5+i*.02,.68+i*.02));const tgt=[150+(i%3)*70,200+(i%3)*30];const sx=90+i*30,sy=130+(i%2)*20;const fade=1-clear;antibody("D",lerp(sx,tgt[0]-14+(i>2?24:0),m)+Math.sin(T+i)*3*(1-m),lerp(sy,tgt[1]-18,m),10,Math.sin(T*.6+i)*.6*(1-m),s*fade*(i<6?1:0),C.plasmin)}
+    wbc(110,340,"lymph",20,{seed:4,t:T});if(q>.6)label(110,372,"mother's B cells never learn D",{size:11.5,align:"center"})}
+  const cap=k===0?(q<.25?"During pregnancy, the two bloods stay mostly separate.":q<.5?"At delivery, some of the baby's Rh⁺ cells get into the mother.":"She is now sensitized and makes anti-D. Baby #1 is usually fine."):
+    k===1?(q<.5?"Her anti-D antibodies cross the placenta…":"…and destroy the baby's RBCs: anemia and jaundice (HDN)."):
+    (q<.3?"RhoGAM (anti-D) is given at about 28 weeks and within 72 hours after delivery.":q<.75?"RhoGAM coats any Rh⁺ baby cells that get in…":"…and they are cleared before her immune system notices. No anti-D of her own.");
+  rr(14,422,772,48,10);ctx.fillStyle=hexA(C.act5,.12);ctx.fill();ctx.strokeStyle=C.act5;ctx.lineWidth=1.2;ctx.stroke();txt(400,446,cap,{size:14,weight:600,align:"center"});
+}
+
+/* ================= Scene: recap ================= */
+function sceneRecap(T){
+  const p=P(T,14);
+  ctx.fillStyle=hexA(C.plasma,.3);ctx.fillRect(0,40,W,190);line(0,40,W,40,C["vessel-edge"],2.5);line(0,230,W,230,C["vessel-edge"],2.5);
+  for(let i=0;i<34;i++){const x=((T*60+i*41)%(W+60))-30;const y=58+((i*53)%156);if(i%9===4)wbc(x,y,["neut","lymph","mono","eos","neut"][i%5],13,{seed:i,t:T});else if(i%5===2)plt(x,y,4.5,0,i+T);else rbc(x,y,11,{sy:.85,ang:i})}
+  label(400,20,"plasma + red cells + white cells + platelets",{size:12.5,align:"center",weight:600,pill:false,color:C["ink-soft"]});
+  const parts=[["What blood is","act1"],["Red blood cells","act2"],["White cells & platelets","act3"],["Stopping bleeding","act4"],["Blood types","act5"]];
+  const on=Math.floor(p*5.5);
+  parts.forEach((pt,i)=>{const x=12+i*157,y=262,w=148,h=206;const lit=i<=on;panelBox(x,y,w,h,{stroke:lit?C[pt[1]]:C.rule,lw:lit?2.5:1.2,fill:hexA(C.panel,lit?.95:.55)});
+    ctx.save();ctx.globalAlpha=lit?1:.4;const cx=x+w/2,cy=y+82;
+    if(i===0){testTube(cx,34,cy-50,cy+46,1,.6)}
+    else if(i===1){rbcTilt(cx,cy,40,(Math.sin(T)*.5+.5)*1.2,C.rbc)}
+    else if(i===2){wbc(cx-16,cy,"neut",30,{seed:2,t:T});plt(cx+30,cy+26,6,0,0)}
+    else if(i===3){for(let k=0;k<6;k++)line(cx-40+rnd(k)*80,cy-34+rnd(k+3)*68,cx-40+rnd(k+6)*80,cy-34+rnd(k+9)*68,C.fibrin,2.4);rbc(cx-10,cy,12);plt(cx+16,cy+10,6,1,0)}
+    else{rbc(cx,cy,30);antigensOn(cx,cy,30,["A","B","D"],7,9,1,T*.2)}
+    txt(cx,y+160,pt[0],{size:12.5,weight:700,align:"center"});txt(cx,y+182,"Part "+(i+1),{size:11,mono:true,align:"center",color:C[pt[1]]});ctx.restore()});
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+const SCENES={map:sceneMap,comp:sceneComp,plasma:scenePlasma,hemo:sceneHemo,rbc:sceneRbc,hb:sceneHb,epo:sceneEpo,recycle:sceneRecycle,anemia:sceneAnemia,
+  wbcmix:sceneWbcmix,gran:sceneGran,agran:sceneAgran,diaped:sceneDiaped,plt:scenePlt,spasm:sceneSpasm,plug:scenePlug,cascade:sceneCascade,cavk:sceneCavk,lysis:sceneLysis,
+  abo:sceneAbo,rh:sceneRh,transf:sceneTransf,hdn:sceneHdn,recap:sceneRecap};
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;
+  const s=STEPS[cur];
+  try{(SCENES[s.scene]||sceneRecap)(T)}catch(e){console.error(e)}
+  ctx.globalAlpha=1;
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+window.__n=()=>STEPS.length;
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

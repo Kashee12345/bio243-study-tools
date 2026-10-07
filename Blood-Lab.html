@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blood Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
+  /* blood palette */
+  --ecf:#F4EEE6;--plasma:#E9C96A;--plasma-wash:#F8EDC8;
+  --rbc:#C2392F;--rbc-edge:#82231C;--rbc-hi:#E8877C;--deoxy:#7A2433;
+  --wbc:#EEE6F3;--wbc-edge:#9A86B3;--nuc:#5B3F9C;--ngran:#B996CF;--eos:#E06A2F;--baso:#2F2A7A;--lymc:#BFD6EE;--monoc:#D3D6E3;
+  --plt:#9A62C9;--fibrin:#C9A227;--collagen:#A57B4F;
+  --macro:#DCCDB3;--vessel:#F2D6CF;--vessel-edge:#B5655A;--muscle:#D99A88;--tissue:#F6EFE6;--endo:#E7B7AC;
+  --o2:#2F7FC1;--co2:#7E8C95;--bact:#3E8E41;
+  --agA:#2F6FD0;--agB:#C99A12;--agD:#1F9C8A;
+  --epo:#1E9C7A;--kidney:#A9524A;--bone:#EADFC8;--bone-edge:#B9A88C;--marrow:#E6AFA0;--liver:#8E4A3A;
+  --iron:#B4632A;--biliv:#3E8E41;--bili:#D4A017;--chem:#D98A1C;
+  --tf:#A04E8C;--thrombin:#C4644F;--plasmin:#1E9C7A;--ca:#D98A1C;--vitk:#2F8A57;--glob-a:#D9A69C;--glob-b:#C98C8F;
+  --glow:#F2B33B;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#1A1A1C;--plasma:#9A8236;--plasma-wash:#3A3220;
+  --rbc:#D24C42;--rbc-edge:#F08A80;--rbc-hi:#EE9A90;--deoxy:#9A3A4E;
+  --wbc:#3B3346;--wbc-edge:#A592C2;--nuc:#B49BF0;--ngran:#7F5F9A;--eos:#F28A50;--baso:#8C86E0;--lymc:#2A4058;--monoc:#3C4150;
+  --plt:#C59BEA;--fibrin:#E0BE48;--collagen:#C89A68;
+  --macro:#4A4030;--vessel:#3A2725;--vessel-edge:#D98A7E;--muscle:#7A4A40;--tissue:#211D1A;--endo:#5A3A34;
+  --o2:#5AA9E6;--co2:#9AA8B0;--bact:#6BC26E;
+  --agA:#6FA3F0;--agB:#E8C24A;--agD:#4FD0B8;
+  --epo:#4FD0A8;--kidney:#D47E74;--bone:#4A4234;--bone-edge:#8F7C5E;--marrow:#6E3B33;--liver:#B86E5C;
+  --iron:#E39A5B;--biliv:#6BC26E;--bili:#E8C24A;--chem:#F2A93B;
+  --tf:#D186C0;--thrombin:#E08A74;--plasmin:#4FD0A8;--ca:#F2A93B;--vitk:#4FBF7F;--glob-a:#7A4A44;--glob-b:#6E3F48;
+  --glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#1A1A1C;--plasma:#9A8236;--plasma-wash:#3A3220;
+  --rbc:#D24C42;--rbc-edge:#F08A80;--rbc-hi:#EE9A90;--deoxy:#9A3A4E;
+  --wbc:#3B3346;--wbc-edge:#A592C2;--nuc:#B49BF0;--ngran:#7F5F9A;--eos:#F28A50;--baso:#8C86E0;--lymc:#2A4058;--monoc:#3C4150;
+  --plt:#C59BEA;--fibrin:#E0BE48;--collagen:#C89A68;
+  --macro:#4A4030;--vessel:#3A2725;--vessel-edge:#D98A7E;--muscle:#7A4A40;--tissue:#211D1A;--endo:#5A3A34;
+  --o2:#5AA9E6;--co2:#9AA8B0;--bact:#6BC26E;
+  --agA:#6FA3F0;--agB:#E8C24A;--agD:#4FD0B8;
+  --epo:#4FD0A8;--kidney:#D47E74;--bone:#4A4234;--bone-edge:#8F7C5E;--marrow:#6E3B33;--liver:#B86E5C;
+  --iron:#E39A5B;--biliv:#6BC26E;--bili:#E8C24A;--chem:#F2A93B;
+  --tf:#D186C0;--thrombin:#E08A74;--plasmin:#4FD0A8;--ca:#F2A93B;--vitk:#4FBF7F;--glob-a:#7A4A44;--glob-b:#6E3F48;
+  --glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2)}
+.legend i.s{border-radius:2px}
+.legend i.ln{width:20px;height:0;border-radius:0;border:0;border-top:3px solid}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.typebtns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.typebtn{background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 0;cursor:pointer;font-family:var(--mono);font-weight:600;font-size:15px}
+.typebtn:hover{border-color:var(--accent)}
+.typebtn.right{border-color:var(--good);background:var(--good-wash)}
+.typebtn.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.typebtn:disabled{cursor:default}
+.prog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.timer{font-family:var(--mono);font-size:18px;font-weight:600}
+/* bags */
+.bags{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 4px}
+.bag{position:relative;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:6px 4px 4px;cursor:grab;touch-action:none;user-select:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--mono);font-weight:700;font-size:14px}
+.bag svg{width:34px;height:44px;display:block}
+.bag.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.bag.ok{border-color:var(--good);background:var(--good-wash)}
+.bag.no{border-color:var(--warn);background:var(--warn-wash)}
+.bag .mk{position:absolute;top:3px;right:5px;font-size:13px}
+.bag.ghost{position:fixed;z-index:50;pointer-events:none;opacity:.9;box-shadow:0 10px 24px -8px rgba(0,0,0,.4)}
+.droptarget{outline:3px dashed var(--accent);outline-offset:-3px}
+.abbox{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;font-size:14.5px;margin-top:10px}
+/* sim */
+.ctl{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+.ctl label{font-size:14.5px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.ctl output{font-family:var(--mono);font-weight:600;color:var(--accent-ink)}
+.ctl input[type=range]{accent-color:var(--accent);width:100%}
+.ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-faint);font-family:var(--mono)}
+.readouts{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+.readouts th{text-align:left;font-weight:500;color:var(--ink-soft);padding:5px 6px 5px 0;border-top:1px solid var(--rule-soft)}
+.readouts td{padding:5px 0;border-top:1px solid var(--rule-soft);font-family:var(--mono);font-size:13.5px;text-align:right;white-space:nowrap}
+.chal{list-style:none;padding:0;margin:6px 0}
+.chal li{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.chal .ck{flex:0 0 22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:13px;font-family:var(--mono)}
+.chal li.done .ck{background:var(--good);border-color:var(--good);color:#fff}
+.status{font-size:14.5px;padding:8px 10px;border-radius:var(--r);margin-top:8px;border:1px solid var(--rule);background:var(--panel-2)}
+.status.warn{background:var(--warn-wash);border-color:var(--warn)}
+.status.bad{background:var(--bad-wash);border-color:var(--bad)}
+.status.good{background:var(--good-wash);border-color:var(--good)}
+/* sequencer */
+ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.item{display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--rule);border-left:6px solid var(--act4);border-radius:var(--r);padding:7px 8px 7px 10px;touch-action:none;user-select:none;cursor:grab;transition:background .15s,border-color .15s}
+.item.drag{box-shadow:0 10px 24px -8px rgba(0,0,0,.4);cursor:grabbing;border-color:var(--accent);z-index:2;position:relative}
+.item .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);width:20px;text-align:right;flex:0 0 auto}
+.item .grip{color:var(--ink-faint);font-size:18px;line-height:1;flex:0 0 auto}
+.item .txt{flex:1;font-size:15px;line-height:1.35}
+.item .mv{display:flex;flex-direction:column;gap:2px}
+.mv button{width:30px;height:24px;border:1px solid var(--rule);background:var(--panel-2);border-radius:4px;cursor:pointer;font-size:12px;padding:0;line-height:1}
+.mv button:hover{border-color:var(--accent)}
+.item.right{background:var(--good-wash);border-color:var(--good)}
+.item.off{background:var(--warn-wash);border-color:var(--warn)}
+.item.hinted{box-shadow:0 0 0 3px var(--gold)}
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 6px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.subtabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Blood &middot; USC Upstate</div>
+    <h1>Blood Lab</h1>
+    <p class="sub">Type patients' blood, match transfusions, run the EPO feedback loop, and break clotting on purpose. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="type" id="tabbtn-type" type="button">Part 1 &middot; Blood Typing Lab</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="match" id="tabbtn-match" type="button">Part 2 &middot; Transfusion Matcher</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="epo" id="tabbtn-epo" type="button">Part 3 &middot; EPO Simulator</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="hemo" id="tabbtn-hemo" type="button">Part 4 &middot; Hemostasis</button>
+  </div>
+
+  <!-- PART 1: typing -->
+  <section id="tab-type" role="tabpanel" aria-labelledby="tabbtn-type">
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvType" role="img" aria-label="A glass slide with three wells: anti-A, anti-B and anti-Rh serum."></canvas></div>
+        <div class="stagebar">
+          <button class="tbtn" id="tyReplay" type="button">Add the blood again</button>
+          <label class="mode"><input type="checkbox" id="tyRelaxed" checked> Relaxed mode (no timer)</label>
+          <span class="timer" id="tyTimer" hidden>0:00</span>
+          <span class="caption" id="tyCap"></span>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--agA)"></i>Anti-A serum (blue)</span>
+          <span><i style="background:var(--agB)"></i>Anti-B serum (yellow)</span>
+          <span><i style="background:var(--sunk)"></i>Anti-Rh (anti-D) serum (clear)</span>
+          <span><i class="t" style="border-bottom-color:var(--agA)"></i>A antigen</span>
+          <span><i style="background:var(--agB)"></i>B antigen</span>
+          <span><i class="s" style="background:var(--agD)"></i>D (Rh) antigen</span>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="tyN"></div>
+        <div class="prog"><i id="tyProg"></i></div>
+        <h2 class="lvl-t" id="tyT"></h2>
+        <div class="goal"><b class="h">Your job</b>Watch each well. <b>Clumping</b> (agglutination) means the cells carry that antigen. Then choose the blood type.</div>
+        <div class="typebtns" id="tyBtns"></div>
+        <div class="bar">
+          <button class="tbtn" id="tyHint" type="button">Hint</button>
+          <button class="tbtn" id="tyShow" type="button">Show answer</button>
+          <button class="btn" id="tyNext" type="button" hidden>Next patient &rarr;</button>
+        </div>
+        <div class="msg" id="tyMsg" role="status"></div>
+        <h3>How to read the slide</h3>
+        <ul>
+          <li>Anti-A clumps → <b>A antigen</b> present.</li>
+          <li>Anti-B clumps → <b>B antigen</b> present.</li>
+          <li>Anti-Rh clumps → <b>Rh positive</b>. Smooth → Rh negative.</li>
+          <li>No clumping in anti-A or anti-B → type <b>O</b>.</li>
+        </ul>
+        <p class="small" id="tyScore"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2: transfusion -->
+  <section id="tab-match" role="tabpanel" aria-labelledby="tabbtn-match" hidden>
+    <div class="rounds" id="mxRounds" aria-label="Recipients"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder" id="mxDrop"><canvas id="cvMatch" role="img" aria-label="The recipient's blood. Drop a donor bag here."></canvas></div>
+        <div class="stagebar"><span class="caption" id="mxCap">Drag a donor bag onto the patient, or tap a bag and then press Transfuse.</span></div>
+        <div class="bags" id="mxBags" aria-label="Donor bags"></div>
+        <div class="bar"><button class="btn" id="mxGive" type="button" disabled>Transfuse selected bag</button><span class="small" id="mxSel"></span></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="mxN"></div>
+        <h2 class="lvl-t" id="mxT"></h2>
+        <div class="goal"><b class="h">Your goal</b>Find <b>every</b> donor bag this patient can safely receive. Unsafe bags are explained, not punished.</div>
+        <p class="small" id="mxFound"></p>
+        <div class="bar">
+          <button class="tbtn" id="mxHint" type="button">Hint</button>
+          <button class="tbtn" id="mxShow" type="button">Show answer</button>
+          <button class="tbtn" id="mxReset" type="button">Start this patient over</button>
+        </div>
+        <div class="msg" id="mxMsg" role="status"></div>
+        <div class="abbox"><b>Antigens vs antibodies.</b> <b>Antigens</b> are markers on the <b>donor's red cells</b>. <b>Antibodies</b> are proteins in the <b>recipient's plasma</b>. A transfusion is unsafe if the recipient has an antibody that matches any antigen on the donor's cells.</div>
+        <p class="small" style="margin-top:10px">This game is about red cell transfusions. The small amount of donor plasma is ignored, as it is in OpenStax's simple rules.</p>
+        <p class="small" id="mxStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3: EPO -->
+  <section id="tab-epo" role="tabpanel" aria-labelledby="tabbtn-epo" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvEpo" role="img" aria-label="Kidney, red bone marrow and blood vessel responding to the settings."></canvas></div>
+        <div class="canvas-holder" style="margin-top:8px"><canvas id="cvChart" role="img" aria-label="Live chart of hematocrit, oxygen delivery and EPO over days."></canvas></div>
+        <div class="legend">
+          <span><i class="ln" style="border-top-color:var(--rbc)"></i>Hematocrit (%)</span>
+          <span><i class="ln" style="border-top-color:var(--o2)"></i>O₂ delivered to tissues (% of normal)</span>
+          <span><i class="ln" style="border-top-color:var(--epo)"></i>EPO (× normal)</span>
+          <span><i class="s" style="background:var(--good-wash);border-color:var(--good)"></i>Normal hematocrit range</span>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="ctl"><label for="alt">Altitude <output id="altOut">0 m</output></label><input type="range" id="alt" min="0" max="5000" step="100" value="0"><div class="ticks"><span>sea level</span><span>2,500</span><span>5,000 m</span></div></div>
+        <div class="bar">
+          <button class="tbtn" id="bleedBtn" type="button">Lose blood (about 20%)</button>
+          <button class="tbtn" id="kidBtn" type="button" aria-pressed="false">Kidney failure</button>
+          <button class="tbtn" id="dopeBtn" type="button" aria-pressed="false">EPO doping</button>
+        </div>
+        <div class="bar">
+          <button class="tbtn" id="simPause" type="button">Pause</button>
+          <button class="tbtn" id="simReset" type="button">Reset</button>
+          <label class="mode">Speed <select id="simSpeed"><option value="2">2 days/s</option><option value="5" selected>5 days/s</option><option value="10">10 days/s</option></select></label>
+        </div>
+        <table class="readouts" id="readouts"></table>
+        <div class="status" id="simStatus" role="status"></div>
+        <h3>Challenges</h3>
+        <ul class="chal" id="chal"></ul>
+        <p class="small" id="chalStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 4: hemostasis -->
+  <section id="tab-hemo" role="tabpanel" aria-labelledby="tabbtn-hemo" hidden>
+    <div class="subtabs" role="group" aria-label="Choose an activity">
+      <button class="tbtn" id="subSeq" type="button" aria-pressed="true">Sequencer</button>
+      <button class="tbtn" id="subBreak" type="button" aria-pressed="false">What breaks if…?</button>
+    </div>
+    <div id="seqWrap">
+      <div class="rounds" id="sqRounds"></div>
+      <div class="grid">
+        <div class="card stage">
+          <div class="canvas-holder"><canvas id="cvSeq" role="img" aria-label="An injured blood vessel. Your order of steps plays here."></canvas></div>
+          <div class="stagebar"><button class="btn" id="sqPlay" type="button">Play my order</button><span class="caption" id="sqCap"></span></div>
+          <div class="legend">
+            <span><i style="background:var(--plt)"></i>Platelet</span><span><i class="ln" style="border-top-color:var(--fibrin)"></i>Fibrin</span><span><i class="ln" style="border-top-color:var(--collagen)"></i>Collagen</span><span><i style="background:var(--chem)"></i>Released chemicals</span><span><i style="background:var(--tf)"></i>Tissue factor</span><span><i style="background:var(--rbc)"></i>RBC</span>
+          </div>
+        </div>
+        <aside class="card side">
+          <p class="small" id="sqInstr" style="margin-top:0"></p>
+          <ol class="list" id="sqList" aria-label="Cards to put in order"></ol>
+          <div class="bar" style="margin-top:12px">
+            <button class="btn" id="sqCheck" type="button">Check</button>
+            <button class="tbtn" id="sqHint" type="button">Hint</button>
+            <button class="tbtn" id="sqShuffle" type="button">Shuffle again</button>
+            <button class="tbtn" id="sqAnswer" type="button">Show answer</button>
+          </div>
+          <div class="bar"><label class="mode"><input type="checkbox" id="sqRelaxed" checked> Relaxed mode (no timer)</label><span class="timer" id="sqTimer" hidden>0:00</span></div>
+          <div class="msg" id="sqMsg" role="status"></div>
+          <p class="small">Drag a card, or use its ▲ ▼ buttons. Press <b>Play my order</b> to watch your order happen on the vessel.</p>
+        </aside>
+      </div>
+    </div>
+    <div id="brWrap" hidden>
+      <div class="card">
+        <div class="sc-top"><div class="chips" id="brChips"></div><div class="small" id="brScore"></div></div>
+        <div class="canvas-holder"><canvas id="cvBreak" role="img" aria-label="A normal clot next to this patient's clot."></canvas></div>
+        <div class="stagebar"><button class="btn" id="brShow" type="button">Show me</button><span class="caption" id="brCap"></span></div>
+        <div class="grid2" style="margin-top:12px">
+          <div>
+            <div class="sc-n" id="brN"></div>
+            <h2 class="sc-title" id="brTitle"></h2>
+            <p id="brDesc" style="margin:0 0 8px"></p>
+            <p class="qlab">1. Which part of hemostasis is affected?</p>
+            <div class="opts" id="brQ1"></div>
+            <p class="fb" id="brF1"></p>
+          </div>
+          <div>
+            <div id="brQ2wrap" hidden>
+              <p class="qlab">2. What happens when this person is cut?</p>
+              <div class="opts" id="brQ2"></div>
+              <p class="fb" id="brF2"></p>
+            </div>
+            <div class="explain" id="brExp"></div>
+            <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+          </div>
+        </div>
+        <div class="bar" style="margin-top:14px">
+          <button class="tbtn" id="brPrev" type="button">&larr; Previous</button>
+          <button class="btn" id="brNext" type="button">Next scenario &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 18, The Cardiovascular System: Blood (OpenStax A&amp;P 2e) &middot; Pair with the <a href="Blood-Walkthrough.html">Blood Walkthrough</a>.<br>Diagrams are simplified and not to scale. The EPO simulator is a teaching model with rounded numbers, not a medical calculator; it ignores that very thick blood flows more slowly, so its O₂ delivery keeps rising with hematocrit. Real blood typing and cross-matching are done by trained lab staff.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash","act1","act2","act3","act4","act5","gold",
+ "ecf","plasma","plasma-wash","rbc","rbc-edge","rbc-hi","deoxy","wbc","wbc-edge","nuc","ngran","eos","baso","lymc","monoc","macro","plt","fibrin","collagen",
+ "vessel","vessel-edge","muscle","tissue","endo","o2","co2","bact","agA","agB","agD","epo","kidney","bone","bone-edge","marrow","liver",
+ "iron","biliv","bili","chem","tf","thrombin","plasmin","ca","vitk","glob-a","glob-b","glow"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+readColors();
+let ctx;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function onFill(){return hx(C.ground)[0]<60?"#0E1519":"#fff"}
+function P(T,L){return ((T%L)+L)%L/L}
+function hx(c){let h=(c||"#888").trim();if(h[0]!=="#")return [136,136,136];h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f)]}d-=ls[i]}return P_[P_.length-1]}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,8);ctx.fillStyle=o.fill||hexA(C.panel,.75);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+
+/* ================= drawing kit: cells and molecules ================= */
+// Red blood cell, face-on (pale centre). o: col, a, sx, sy, ang, pale, cren (0..1 crenation), edge
+function rbc(x,y,r,o){o=o||{};const sx=o.sx||1,sy=o.sy||1;ctx.save();ctx.translate(x,y);if(o.ang)ctx.rotate(o.ang);ctx.scale(sx,sy);
+  ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);const col=o.col||C.rbc;
+  ctx.beginPath();if(o.cren){const N=36;for(let i=0;i<=N;i++){const a=i/N*TAU;const rad=r*(1+o.cren*.12*Math.max(0,Math.sin(a*11)));const X=Math.cos(a)*rad,Y=Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}}else ctx.arc(0,0,r,0,TAU);
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=o.edge||C["rbc-edge"];ctx.lineWidth=Math.max(.8,r*.07)/Math.sqrt(sx*sy);ctx.stroke();
+  const hi=o.pale?C.panel:C["rbc-hi"];const rc=r*(o.pale?.72:.58);const A=hx(hi);
+  const g=ctx.createRadialGradient(0,0,0,0,0,rc);g.addColorStop(0,`rgba(${A},${o.pale?.9:.7})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,rc,0,TAU);ctx.fill();
+  ctx.restore()}
+// biconcave thickness profile (Evans-Fung shape), half-thickness as a fraction of radius
+function bicon(rho){rho=Math.min(1,Math.abs(rho));return .5*Math.sqrt(Math.max(0,1-rho*rho))*(.207+2.003*rho*rho-1.123*Math.pow(rho,4))}
+// RBC tilted about a vertical axis by phi (0 = face-on). Silhouette computed from the biconcave shape.
+function rbcTilt(x,y,r,phi,col){const c=Math.cos(phi),s=Math.sin(phi);const pts=[];const N=40;
+  for(let i=0;i<=N;i++){const yy=-1+2*i/N;const um=Math.sqrt(Math.max(0,1-yy*yy));let mx=0;for(let k=0;k<=12;k++){const u=um*k/12;const rho=Math.sqrt(u*u+yy*yy);const v=Math.abs(u*c)+Math.abs(bicon(rho)*s);if(v>mx)mx=v}pts.push([Math.max(mx,.02),yy])}
+  ctx.beginPath();pts.forEach((p,i)=>{const X=x+p[0]*r,Y=y+p[1]*r;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});for(let i=N;i>=0;i--)ctx.lineTo(x-pts[i][0]*r,y+pts[i][1]*r);ctx.closePath();
+  ctx.fillStyle=col||C.rbc;ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=2;ctx.stroke();
+  // dimple shading
+  const A=hx(C["rbc-hi"]);const vis=Math.abs(c);if(vis>.15){ctx.save();ctx.translate(x,y);ctx.scale(Math.max(.05,vis),1);const g=ctx.createRadialGradient(0,0,0,0,0,r*.58);g.addColorStop(0,`rgba(${A},${.75*vis})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,r*.58,0,TAU);ctx.fill();ctx.restore()}
+  // rim highlight when tilted
+  if(vis<.9){ctx.save();ctx.globalAlpha*=(1-vis)*.5;ctx.strokeStyle=C["rbc-hi"];ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x+r*.12*s,y,Math.max(1,r*vis*.82),r*.82,0,0,TAU);ctx.stroke();ctx.restore()}}
+// cross-section (cut in half) of a biconcave disc
+function rbcSection(x,y,r,col){ctx.beginPath();const N=60;for(let i=0;i<=N;i++){const rho=-1+2*i/N;const X=x+rho*r,Y=y-bicon(rho)*r;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}for(let i=N;i>=0;i--){const rho=-1+2*i/N;ctx.lineTo(x+rho*r,y+bicon(rho)*r)}ctx.closePath();ctx.fillStyle=col||C.rbc;ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=1.6;ctx.stroke()}
+function sickle(x,y,r,ang,col,a){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:a;ctx.beginPath();ctx.arc(0,0,r,-2.3,2.3);ctx.arc(r*.62,0,r*.9,2.05,-2.05,true);ctx.closePath();ctx.fillStyle=col||C.deoxy;ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=1.2;ctx.stroke();ctx.restore()}
+function blobPath(x,y,r,seed,t,amp){amp=amp==null?.06:amp;ctx.beginPath();const N=40;for(let i=0;i<=N;i++){const a=i/N*TAU;const rad=r*(1+amp*Math.sin(a*3+seed+(t||0)*1.7)+amp*.7*Math.sin(a*5+seed*2.3-(t||0)*1.1));const X=x+Math.cos(a)*rad,Y=y+Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath()}
+// White blood cells: neut, eos, baso, lymph, mono, plasma, macro, blast
+function wbc(x,y,type,r,o){o=o||{};const sd=o.seed||3;const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  const cyto=type==="lymph"||type==="plasma"?C.lymc:type==="mono"||type==="macro"?C.monoc:type==="blast"?mix(C.wbc,C.lymc,.4):C.wbc;
+  blobPath(x,y,r,sd,t,type==="macro"?.1:.035);ctx.fillStyle=o.fill||cyto;ctx.fill();ctx.strokeStyle=C["wbc-edge"];ctx.lineWidth=Math.max(1,r*.05);ctx.stroke();
+  const ang=o.ang||0;const ca=Math.cos(ang),sa=Math.sin(ang);const R=(u,v)=>[x+u*ca-v*sa,y+u*sa+v*ca];
+  const GA=ctx.globalAlpha;const gran=(n,sz,col,al)=>{ctx.fillStyle=col;ctx.globalAlpha=GA*(al||1);for(let i=0;i<n;i++){const a=rnd(sd*31+i)*TAU,d=Math.sqrt(rnd(sd*17+i*3))*.82*r;const [gx,gy]=R(Math.cos(a)*d,Math.sin(a)*d);ctx.beginPath();ctx.arc(gx,gy,sz,0,TAU);ctx.fill()}ctx.globalAlpha=GA};
+  const lobes=(L,lr)=>{ctx.strokeStyle=C.nuc;ctx.lineWidth=lr*.7;ctx.lineCap="round";ctx.beginPath();L.forEach((p,i)=>{const [X,Y]=R(p[0]*r,p[1]*r);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke();ctx.lineCap="butt";L.forEach(p=>{const [X,Y]=R(p[0]*r,p[1]*r);circ(X,Y,lr,C.nuc)})};
+  if(type==="neut"){gran(22,Math.max(.8,r*.045),C.ngran);lobes([[-.42,.12],[-.18,-.25],[.18,-.08],[.4,.25]],r*.2)}
+  else if(type==="eos"){gran(26,Math.max(1.1,r*.085),C.eos);lobes([[-.3,0],[.3,0]],r*.27)}
+  else if(type==="baso"){lobes([[-.25,.05],[.25,-.05]],r*.25);gran(18,Math.max(1.4,r*.12),C.baso,.92)}
+  else if(type==="lymph"){circ(x+r*.06,y-r*.04,r*.76,C.nuc);gran(4,r*.07,hexA(C.panel,.25))}
+  else if(type==="plasma"){circ(x-r*.38,y+r*.1,r*.42,C.nuc);ctx.strokeStyle=hexA(C.lymc,.6);ctx.lineWidth=1;for(let k=0;k<3;k++){ctx.beginPath();ctx.arc(x+r*.25,y,r*(.25+k*.14),-1.2,1.2);ctx.stroke()}}
+  else if(type==="mono"){ctx.save();ctx.beginPath();ctx.ellipse(x-r*.05,y,r*.55,r*.42,ang,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();const [kx,ky]=R(r*.5,0);circ(kx,ky,r*.28,cyto);ctx.restore();gran(8,r*.035,hexA(C.nuc,.3))}
+  else if(type==="macro"){ctx.beginPath();ctx.ellipse(x-r*.15,y+r*.05,r*.32,r*.24,ang,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();gran(14,r*.05,hexA(C.nuc,.35))}
+  else if(type==="blast"){circ(x,y,r*.62,mix(C.nuc,C.wbc,.25));circ(x+r*.15,y-r*.15,r*.12,hexA(C.panel,.5))}
+  ctx.restore()}
+function plt(x,y,s,act,ang,a){act=act||0;ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();const N=36;
+  for(let i=0;i<=N;i++){const th=i/N*TAU;let rad=s;if(act>0){const sp=Math.pow(Math.max(0,Math.cos(th*5)),8);rad=s*(1+act*(.15+sp*.9))}const X=Math.cos(th)*rad*(act>0?1:1.25),Y=Math.sin(th)*rad*(act>0?1:.72);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}
+  ctx.closePath();ctx.fillStyle=C.plt;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke();
+  circ(-s*.3,-s*.1,s*.18,hexA(C.nuc,.6));circ(s*.25,s*.12,s*.15,hexA(C.nuc,.6));ctx.restore()}
+function bact(x,y,ang,s,a){s=s||8;ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);rr(-s*1.6,-s*.75,s*3.2,s*1.5,s*.75);ctx.fillStyle=C.bact;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke();
+  line(-s*.9,0,s*.9,0,hexA(C.panel,.6),1.2);ctx.restore()}
+function o2(x,y,a,s){s=s||4.2;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);circ(x-s*.7,y,s,C.o2,hexA(C.ink,.3),.8);circ(x+s*.7,y,s,C.o2,hexA(C.ink,.3),.8);ctx.restore()}
+function co2(x,y,a,s){s=s||3.6;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);circ(x-s*1.3,y,s*.8,C.co2);circ(x+s*1.3,y,s*.8,C.co2);circ(x,y,s,mix(C.co2,C.ink,.4));ctx.restore()}
+function diamond(x,y,s,col,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.3);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+function caIon(x,y,a){diamond(x,y,6,C.ca,a)}
+// antigens: A = triangle, B = round knob, D = square. Drawn pointing outward at angle th from a cell edge.
+function antigen(kind,x,y,s,th,a){ctx.save();ctx.translate(x,y);ctx.rotate(th+Math.PI/2);ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();
+  if(kind==="A"){ctx.moveTo(0,-s);ctx.lineTo(s*.95,s*.65);ctx.lineTo(-s*.95,s*.65);ctx.closePath()}
+  else if(kind==="B"){ctx.arc(0,-s*.1,s*.78,0,TAU)}
+  else{ctx.rect(-s*.72,-s*.85,s*1.44,s*1.44)}
+  ctx.fillStyle=C["ag"+kind];ctx.fill();ctx.strokeStyle=hexA(C.ink,.45);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+function antigensOn(x,y,r,kinds,s,n,a,rot){n=n||10;let k=0;for(let i=0;i<n;i++){if(!kinds.length)break;const kind=kinds[i%kinds.length];const th=i/n*TAU+(rot||0);antigen(kind,x+Math.cos(th)*(r+s*.45),y+Math.sin(th)*(r+s*.45),s,th,a);k++}}
+// antibody: Y shape in the colour of the antigen it targets
+function antibody(kind,x,y,s,ang,a,col){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);const c=col||C["ag"+kind];ctx.strokeStyle=c;ctx.lineWidth=Math.max(2,s*.3);ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(0,s);ctx.lineTo(0,0);ctx.lineTo(-s*.75,-s*.85);ctx.moveTo(0,0);ctx.lineTo(s*.75,-s*.85);ctx.stroke();ctx.lineCap="butt";
+  ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,s);ctx.lineTo(0,0);ctx.stroke();ctx.restore()}
+function flowDots(P_,n,period,T,fn,off){for(let i=0;i<n;i++){const f=P((T+(off||0))/period+i/n,1);const [x,y]=along(P_,f);fn(x,y,f,i)}}
+function kidney(x,y,s,glowA){if(glowA>0)glow(x,y,s*1.6,C.epo,glowA);ctx.save();ctx.translate(x,y);ctx.beginPath();ctx.moveTo(0,-s);ctx.bezierCurveTo(s*1.1,-s*1.15,s*1.25,s*1.1,0,s);ctx.bezierCurveTo(-s*.75,s*.95,-s*.5,s*.35,-s*.22,s*.15);ctx.bezierCurveTo(-s*.42,-s*.05,-s*.6,-s*.95,0,-s);ctx.closePath();
+  ctx.fillStyle=C.kidney;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.moveTo(s*.05,-s*.55);ctx.bezierCurveTo(s*.55,-s*.5,s*.6,s*.5,s*.05,s*.55);ctx.strokeStyle=hexA(C.panel,.45);ctx.lineWidth=2;ctx.stroke();ctx.restore()}
+function boneMarrow(x,y,rx,ry){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,TAU);ctx.fillStyle=C.bone;ctx.fill();ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.ellipse(x,y,rx*.7,ry*.66,0,0,TAU);ctx.fillStyle=C.marrow;ctx.fill();ctx.strokeStyle=hexA(C["bone-edge"],.6);ctx.lineWidth=1;ctx.stroke();
+  for(let i=0;i<10;i++){const a=rnd(i+40)*TAU,d=rnd(i+70)*.55;circ(x+Math.cos(a)*rx*.7*d,y+Math.sin(a)*ry*.66*d,2.2,hexA(C.rbc,.7))}}
+function heme(x,y,s,bound,a){ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);ctx.globalAlpha*=a==null?1:a;rr(-s,-s,2*s,2*s,s*.35);ctx.fillStyle=mix(C.deoxy,C.rbc,bound);ctx.fill();ctx.strokeStyle=hexA(C.ink,.45);ctx.lineWidth=1.2;ctx.stroke();ctx.restore();
+  circ(x,y,s*.45,C.iron,hexA(C.ink,.4),1);ctx.font=`700 ${Math.round(s*.5)}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText("Fe",x,y+.5)}
+
+
+function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,ctx:cv.getContext("2d"),W,H,K:1};
+  st.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);st.K=cv.width/W};
+  st.toLocal=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};return st}
+function use(st){ctx=st.ctx;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,st.W,st.H);ctx.globalAlpha=1}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fmt(s){s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function setMsg(id,t,c){const m=$(id);m.className="msg"+(t?" show "+c:"");m.innerHTML=t}
+const TYPES=["A+","A−","B+","B−","AB+","AB−","O+","O−"];
+const nice=t=>t.replace("+","⁺").replace("−","⁻");
+function agOf(t){const s=new Set();if(t.includes("A"))s.add("A");if(t.includes("B"))s.add("B");if(t.includes("+"))s.add("D");return s}
+function abOf(t){const a=agOf(t);const s=[];if(!a.has("A"))s.push("A");if(!a.has("B"))s.push("B");return s}
+function compat(d,r){const D=agOf(d),R=agOf(r);for(const a of D)if(!R.has(a))return false;return true}
+const agName={A:"A",B:"B",D:"D (Rh)"};
+const listAnd=a=>a.length===0?"":a.length===1?a[0]:a.slice(0,-1).join(", ")+" and "+a[a.length-1];
+
+/* =====================================================================
+   PART 1 · BLOOD TYPING LAB
+   ===================================================================== */
+const S1=makeStage("cvType",800,470);
+const WELLS=[{x:140,lab:"Anti-A",sub:"blue serum",ag:"A",col:()=>C.agA},{x:400,lab:"Anti-B",sub:"yellow serum",ag:"B",col:()=>C.agB},{x:660,lab:"Anti-Rh (anti-D)",sub:"clear serum",ag:"D",col:()=>C.sunk}];
+const WY_=170,WR=80;
+let DOTS=null;
+function makeDots(){DOTS=WELLS.map((w,wi)=>{const cent=[];for(let k=0;k<13;k++){const a=(k/13+rnd(wi*97+k*13+1)*.06)*TAU*1.0+wi,d=(k%3===0?.2:k%3===1?.55:.85)*(WR-22)+rnd(wi*31+k*7+300)*8;cent.push([Math.cos(a)*d,Math.sin(a)*d])}
+  const pts=[];for(let i=0;i<170;i++){const a=rnd(wi*500+i)*TAU,d=Math.sqrt(rnd(wi*500+i+7))*(WR-6);const c=cent[i%13];const ca=rnd(i*3+wi)*TAU,cd=rnd(i*7+wi)*9;pts.push([Math.cos(a)*d,Math.sin(a)*d,c[0]+Math.cos(ca)*cd,c[1]+Math.sin(ca)*cd])}return pts})}
+let tyList=[],tyI=0,tyT0=0,tyAnswered=false,tyFirst=0,tyTries=0,tyHints=0,tyStart=0,tyRunning=false,tyElapsed=0,tyDone=false;
+const READY=6.6;
+function tyNewSet(){tyList=shuffle(TYPES.concat([TYPES[Math.floor(Math.random()*8)],TYPES[Math.floor(Math.random()*8)]]));tyI=0;tyFirst=0;tyStart=performance.now();tyRunning=true;tyDone=false;tyLoad()}
+function tyLoad(){tyT0=performance.now();tyAnswered=false;tyTries=0;tyHints=0;
+  $("#tyN").textContent=`Patient ${tyI+1} of ${tyList.length}`;$("#tyT").textContent="What is this patient's blood type?";$("#tyProg").style.width=(tyI/tyList.length*100)+"%";
+  const box=$("#tyBtns");box.innerHTML="";TYPES.forEach(t=>{const b=document.createElement("button");b.type="button";b.className="typebtn";b.textContent=nice(t);b.dataset.t=t;b.onclick=()=>tyChoose(t,b);box.appendChild(b)});
+  $("#tyNext").hidden=true;setMsg("#tyMsg","","");tyScore()}
+function tyScore(){const best=store.get("bl-ty-best");$("#tyScore").innerHTML=`Right on the first try: <b>${tyFirst}</b> of ${tyI+(tyAnswered?1:0)} so far.`+(best!=null?` Best set: ${best} of 10.`:"")}
+function wellsText(t){const a=agOf(t);return WELLS.map(w=>`${w.lab}: ${a.has(w.ag)?"clumped":"smooth"}`).join(" · ")}
+function tyWhy(chosen,actual){const c=agOf(chosen),a=agOf(actual);const out=[];
+  ["A","B","D"].forEach(g=>{const w=WELLS.find(x=>x.ag===g);if(c.has(g)&&!a.has(g))out.push(`You picked a type with the ${agName[g]} antigen, but the ${w.lab} well stayed smooth, so these cells don't carry it.`);
+    if(!c.has(g)&&a.has(g))out.push(`The ${w.lab} well clumped, so these cells DO carry the ${agName[g]} antigen.`)});return out.join(" ")}
+function tyChoose(t,b){if(tyAnswered)return;const ready=(performance.now()-tyT0)/1000>READY-.6;if(!ready){setMsg("#tyMsg","Let the wells finish reacting first. Watch for clumping.","info");return}
+  const actual=tyList[tyI];tyTries++;
+  if(t===actual){tyAnswered=true;b.classList.add("right");if(tyTries===1&&tyHints===0)tyFirst++;
+    const a=[...agOf(actual)];setMsg("#tyMsg",`<b>Yes: ${nice(actual)}.</b> ${wellsText(actual)}. So the cells carry ${a.length?listAnd(a.map(x=>agName[x]))+" antigen"+(a.length>1?"s":""):"no A, B or D antigens"}.`,"good");
+    $("#tyBtns").querySelectorAll("button").forEach(x=>x.disabled=true);
+    if(tyI<tyList.length-1)$("#tyNext").hidden=false;else tyFinish();tyScore()}
+  else{b.classList.add("wrong");setMsg("#tyMsg","Not quite. "+tyWhy(t,actual),"warn")}}
+function tyFinish(){tyRunning=false;tyDone=true;const s=tyFirst;const stars=s>=9?3:s>=6?2:1;const best=store.get("bl-ty-best");if(best==null||s>best)store.set("bl-ty-best",s);
+  setMsg("#tyMsg",$("#tyMsg").innerHTML+`<br><span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Set complete.</b> ${s} of ${tyList.length} right on the first try${$("#tyRelaxed").checked?"":" in "+fmt(tyElapsed)}. <button class="tbtn" id="tyAgain" type="button">New set of patients</button>`,"good");
+  $("#tyAgain").onclick=tyNewSet;$("#tyProg").style.width="100%"}
+$("#tyNext").onclick=()=>{tyI++;tyLoad()};
+$("#tyReplay").onclick=()=>{tyT0=performance.now()};
+$("#tyHint").onclick=()=>{if(tyAnswered)return;tyHints++;const a=agOf(tyList[tyI]);
+  if(tyHints===1)setMsg("#tyMsg","Hint: look at one well at a time. Grainy red clumps on a paler background = agglutination. An even, smooth red = no reaction.","info");
+  else setMsg("#tyMsg",`Hint: ${WELLS.map(w=>`<b>${w.lab}</b> ${a.has(w.ag)?"clumped":"smooth"}`).join(", ")}. Clumped wells name the antigens on the cells.`,"info")};
+$("#tyShow").onclick=()=>{if(tyAnswered)return;tyAnswered=true;tyHints++;const actual=tyList[tyI];$("#tyBtns").querySelectorAll("button").forEach(x=>{x.disabled=true;if(x.dataset.t===actual)x.classList.add("right")});
+  setMsg("#tyMsg",`The answer is <b>${nice(actual)}</b>. ${wellsText(actual)}.`,"warn");if(tyI<tyList.length-1)$("#tyNext").hidden=false;else tyFinish();tyScore()};
+$("#tyRelaxed").onchange=e=>{$("#tyTimer").hidden=e.target.checked};
+function dropper(x,y){rr(x-7,y-70,14,52,4);ctx.fillStyle=hexA(C.panel,.95);ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.stroke();rr(x-5,y-48,10,28,3);ctx.fillStyle=hexA(C.rbc,.8);ctx.fill();
+  ctx.beginPath();ctx.ellipse(x,y-78,11,13,0,0,TAU);ctx.fillStyle=C["ink-soft"];ctx.fill();ctx.beginPath();ctx.moveTo(x-4,y-18);ctx.lineTo(x,y-6);ctx.lineTo(x+4,y-18);ctx.closePath();ctx.fillStyle=hexA(C.panel,.95);ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.stroke()}
+function drawType(now){use(S1);if(!DOTS)makeDots();const t=(now-tyT0)/1000;const actual=tyList[tyI]||"O+";const ags=agOf(actual);
+  rr(20,34,760,262,16);ctx.fillStyle=hexA(C.panel,.8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.stroke();
+  txt(36,52,"GLASS SLIDE · patient blood + typing sera",{size:11,mono:true,weight:600,color:C["ink-soft"]});
+  const mixq=seg(t,3.6,4.6),react=ease(seg(t,4.6,6.4));
+  WELLS.forEach((w,i)=>{const cx=w.x,cy=WY_;const add=seg(t,.3+i*1.1,1.2+i*1.1);const clump=ags.has(w.ag);
+    txt(cx,74,w.lab,{size:14,weight:700,align:"center"});
+    const tint=mix(C.panel,w.col(),.45);
+    circ(cx,cy,WR,tint,C.rule,2);
+    if(add>.85){const sp=lerp(22,WR-2,ease(mixq));const redA=clump?.72*(1-.62*react):.72;
+      ctx.save();ctx.beginPath();ctx.arc(cx,cy,WR-1,0,TAU);ctx.clip();
+      blobPath(cx,cy,sp,i,t*1.5,mixq<1?.08:.01);ctx.fillStyle=mix(w.col()===C.sunk?C.panel:tint,C.rbc,redA);ctx.fill();
+      if(mixq>0){DOTS[i].forEach((d,k)=>{const r_=Math.hypot(d[0],d[1]);if(r_>sp)return;const q=clump?react:0;const x=cx+lerp(d[0],d[2],q),y=cy+lerp(d[1],d[3],q);circ(x,y,clump?lerp(2.4,3.4,q):2.2,clump?mix(C.rbc,C["rbc-edge"],q*.6):hexA(C["rbc-edge"],.35))})}
+      ctx.restore()}
+    else if(add>0){circ(cx,cy,Math.max(0,(add-.6)*60),C.rbc)}
+    if(mixq>0&&mixq<1){const a=t*7+i;line(cx+Math.cos(a)*40,cy+Math.sin(a)*40,cx+Math.cos(a)*40+20,cy+Math.sin(a)*40-70,C["ink-soft"],4)}
+    if(add>0&&add<1){const dy=lerp(10,cy-WR-10,ease(Math.min(1,add*1.4)));dropper(cx+30,dy+20);if(add>.6&&add<.86)circ(cx+30,lerp(dy+22,cy,seg(add,.6,.86)),5,C.rbc)}
+    // microscope inset
+    const iy=372;circ(cx,iy,62,hexA(C.plasma,.25),C["ink-faint"],1.5);ctx.save();ctx.beginPath();ctx.arc(cx,iy,61,0,TAU);ctx.clip();
+    if(mixq>.2){const cl=clump?react:0;const P6=[[-30,-22],[24,-28],[-36,20],[30,24],[0,-2],[4,40]];const PC=[[-12,-10],[12,-12],[-14,12],[14,10],[0,0],[0,22]];
+      P6.forEach((pp,k)=>{const x=cx+lerp(pp[0],PC[k][0],cl),y=iy+lerp(pp[1],PC[k][1],cl);rbc(x,y,11,{sy:.95});const a=[...ags];if(a.length)antigensOn(x,y,11,a,4,a.length*3,1,k)});
+      for(let k=0;k<6;k++){const fx=cx-40+((k*29)%80)+Math.sin(now/600+k)*6,fy=iy-36+((k*23)%72)+Math.cos(now/700+k)*5;let x=fx,y=fy,an=Math.sin(now/900+k);
+        if(clump){const a=PC[k%5],b=PC[(k+1)%5];x=lerp(fx,cx+(a[0]+b[0])/2,cl);y=lerp(fy,iy+(a[1]+b[1])/2,cl);an=lerp(an,Math.atan2(b[1]-a[1],b[0]-a[0])+Math.PI/2,cl)}
+        antibody(w.ag,x,y,7,an,1,w.ag==="D"?C.agD:undefined)}}
+    ctx.restore();
+    if(t>READY&&(tyAnswered))label(cx,iy+76,clump?`clumped: ${agName[w.ag]} antigen present`:`smooth: no ${agName[w.ag]} antigen`,{size:12,align:"center",weight:700,border:clump?C.bad:C.good});
+    else txt(cx,iy+76,"under the microscope",{size:11.5,align:"center",color:C["ink-soft"]});
+  });
+  const cap=t<3.5?"Adding a drop of the patient's blood to each well…":t<4.6?"Mixing…":t<READY?"Watch for clumping (agglutination)…":"Ready. Which wells clumped?";
+  if($("#tyCap").textContent!==cap)$("#tyCap").textContent=cap;
+  if(tyRunning){tyElapsed=(performance.now()-tyStart)/1000;$("#tyTimer").textContent=fmt(tyElapsed)}
+}
+
+/* =====================================================================
+   PART 2 · TRANSFUSION MATCHER
+   ===================================================================== */
+const S2=makeStage("cvMatch",800,420);
+let mxOrder=shuffle(TYPES),mxR=0,mxTested={},mxMist=0,mxHints=0,mxSolved=false,mxAnim=null,mxSel=null;
+const mxRes=store.get("bl-mx-res")||{};
+function bagSVG(t){return `<svg viewBox="0 0 34 44" aria-hidden="true"><rect x="5" y="4" width="24" height="32" rx="7" fill="var(--rbc)" stroke="var(--ink-soft)" stroke-width="1.5"/><rect x="9" y="9" width="16" height="10" rx="2" fill="var(--panel)"/><text x="17" y="17" font-size="7.5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-weight="700" fill="var(--ink)">${t.replace("−","-")}</text><path d="M17 36 v7" stroke="var(--ink-soft)" stroke-width="2"/></svg>`}
+function mxBuildRounds(){const box=$("#mxRounds");box.innerHTML="";mxOrder.forEach((t,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===mxR);
+  b.innerHTML=`Patient ${i+1} · ${nice(t)}`+(mxRes[t]?`<span class="ok">${"★".repeat(mxRes[t])}</span>`:"");b.onclick=()=>{mxR=i;mxLoad()};box.appendChild(b)})}
+function mxLoad(){mxTested={};mxMist=0;mxHints=0;mxSolved=false;mxAnim=null;mxSel=null;const r=mxOrder[mxR];
+  $("#mxN").textContent=`Patient ${mxR+1} of 8`;$("#mxT").textContent=`Recipient: type ${nice(r)}`;
+  const bx=$("#mxBags");bx.innerHTML="";TYPES.forEach(t=>{const b=document.createElement("button");b.type="button";b.className="bag";b.dataset.t=t;b.setAttribute("aria-label","Donor bag type "+nice(t));
+    b.innerHTML=bagSVG(t)+`<span>${nice(t)}</span><span class="mk" aria-hidden="true"></span>`;bagDrag(b);bx.appendChild(b)});
+  $("#mxGive").disabled=true;$("#mxSel").textContent="";setMsg("#mxMsg","","");mxFoundText();mxBuildRounds()}
+function mxSafeList(){return TYPES.filter(d=>compat(d,mxOrder[mxR]))}
+function mxFoundText(){const safe=mxSafeList();const found=safe.filter(d=>mxTested[d]==="ok").length;$("#mxFound").innerHTML=`Safe bags found: <b>${found}</b> of ${safe.length}. Unsafe bags tried: ${mxMist}.`;
+  const tot=Object.values(mxRes).reduce((a,b)=>a+b,0);$("#mxStars").innerHTML=`Stars so far: <b style="color:var(--gold)">${tot}</b> of 24.`}
+function mxExplain(d,r){const D=[...agOf(d)],ab=abOf(r);const rRh=agOf(r).has("D");
+  const dTxt=D.length?`Donor ${nice(d)} cells carry the ${listAnd(D.map(x=>agName[x]))} antigen${D.length>1?"s":""}.`:`Donor ${nice(d)} cells carry no A, B or D antigens.`;
+  const rTxt=`Recipient ${nice(r)} plasma has ${ab.length?listAnd(ab.map(x=>"anti-"+x)):"no anti-A or anti-B"}${rRh?"":" (and no anti-D unless they were exposed before)"}.`;
+  const hit=D.filter(a=>a!=="D"&&ab.includes(a));
+  if(hit.length)return {kind:"abo",txt:`<b>Unsafe.</b> ${dTxt} ${rTxt} The recipient's ${listAnd(hit.map(x=>"anti-"+x))} ${hit.length>1?"bind":"binds"} the ${listAnd(hit)} antigens: <b>agglutination</b>, then <b>hemolysis</b>.`};
+  if(D.includes("D")&&!rRh)return {kind:"rh",txt:`<b>Not safe for an Rh⁻ patient.</b> ${dTxt} ${rTxt} Nothing clumps today, but the D antigen will <b>sensitize</b> them: they start making anti-D, so a later Rh⁺ transfusion or pregnancy could be dangerous. Rh⁻ patients get Rh⁻ blood.`};
+  return {kind:"ok",txt:`<b>Safe.</b> ${dTxt} ${rTxt} No antibody in the recipient matches an antigen on these cells.`}}
+function mxGive(d){if(mxSolved||!d)return;const r=mxOrder[mxR];const ex=mxExplain(d,r);mxAnim={d,kind:ex.kind,t0:performance.now()};
+  const b=$(`.bag[data-t="${d}"]`);const first=!mxTested[d];mxTested[d]=ex.kind==="ok"?"ok":"no";b.classList.remove("sel");b.classList.add(ex.kind==="ok"?"ok":"no");b.querySelector(".mk").textContent=ex.kind==="ok"?"✓":"✕";
+  if(ex.kind!=="ok"&&first)mxMist++;mxSel=null;$("#mxGive").disabled=true;$("#mxSel").textContent="";
+  const safe=mxSafeList();const found=safe.filter(x=>mxTested[x]==="ok").length;
+  let html=ex.txt;
+  if(found===safe.length){mxSolved=true;const stars=mxHints>0?1:mxMist===0?3:mxMist<=2?2:1;if(!mxRes[r]||stars>mxRes[r])mxRes[r]=stars;store.set("bl-mx-res",mxRes);
+    html+=`<br><span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br>${safe.length===1?`<b>The only safe donor for ${nice(r)} is ${nice(safe[0])}.</b>`:`<b>All ${safe.length} safe donors found for ${nice(r)}:</b> ${safe.map(nice).join(", ")}.`}`+(mxR<7?` <button class="tbtn" id="mxNextR" type="button">Next patient →</button>`:"");}
+  setMsg("#mxMsg",html,ex.kind==="ok"?"good":"warn");const nb=$("#mxNextR");if(nb)nb.onclick=()=>{mxR++;mxLoad()};mxFoundText();mxBuildRounds()}
+function bagDrag(b){let sx=0,sy=0,moved=false,ghost=null,down=false;
+  b.addEventListener("pointerdown",e=>{if(mxSolved)return;down=true;moved=false;sx=e.clientX;sy=e.clientY;b.setPointerCapture(e.pointerId)});
+  b.addEventListener("pointermove",e=>{if(!down)return;if(!moved&&Math.hypot(e.clientX-sx,e.clientY-sy)>8){moved=true;ghost=b.cloneNode(true);ghost.classList.add("ghost");ghost.style.width=b.offsetWidth+"px";document.body.appendChild(ghost)}
+    if(moved){ghost.style.left=(e.clientX-b.offsetWidth/2)+"px";ghost.style.top=(e.clientY-30)+"px";$("#mxDrop").classList.toggle("droptarget",overDrop(e))}});
+  const end=e=>{if(!down)return;down=false;if(ghost){ghost.remove();ghost=null}$("#mxDrop").classList.remove("droptarget");if(moved&&e&&overDrop(e))mxGive(b.dataset.t)};
+  b.addEventListener("pointerup",end);b.addEventListener("pointercancel",()=>{down=false;if(ghost){ghost.remove();ghost=null}$("#mxDrop").classList.remove("droptarget")});
+  b.addEventListener("click",e=>{if(moved){moved=false;return}if(mxSolved)return;document.querySelectorAll(".bag").forEach(x=>x.classList.remove("sel"));mxSel=b.dataset.t;b.classList.add("sel");$("#mxGive").disabled=false;$("#mxSel").textContent="Selected: "+nice(mxSel)})}
+function overDrop(e){const r=$("#mxDrop").getBoundingClientRect();return e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom}
+$("#mxGive").onclick=()=>mxGive(mxSel);
+$("#cvMatch").addEventListener("click",()=>{if(mxSel)mxGive(mxSel)});
+$("#mxHint").onclick=()=>{if(mxSolved)return;mxHints++;const r=mxOrder[mxR];const ab=abOf(r);const rRh=agOf(r).has("D");
+  setMsg("#mxMsg",`Hint: this patient's plasma has ${ab.length?listAnd(ab.map(x=>"anti-"+x)):"no anti-A or anti-B"}${rRh?"":", and as an Rh⁻ patient they should not get the D antigen"}. Pick bags whose cells carry none of: ${[...ab,...(rRh?[]:["D"])].map(x=>agName[x]).join(", ")||"(nothing to avoid!)"}.`,"info")};
+$("#mxShow").onclick=()=>{if(mxSolved)return;mxHints++;mxSolved=true;const safe=mxSafeList();document.querySelectorAll(".bag").forEach(b=>{const ok=safe.includes(b.dataset.t);b.classList.add(ok?"ok":"no");b.querySelector(".mk").textContent=ok?"✓":"✕"});
+  setMsg("#mxMsg",`Safe donors for ${nice(mxOrder[mxR])}: <b>${safe.map(nice).join(", ")}</b>. Press <b>Start this patient over</b> to try it yourself.`,"warn")};
+$("#mxReset").onclick=mxLoad;
+function drawMatch(now){use(S2);const r=mxOrder[mxR];const rA=[...agOf(r)];const ab=abOf(r);
+  // IV pole + bag
+  line(110,20,110,150,C["ink-faint"],3);line(80,20,140,20,C["ink-faint"],3);
+  const A=mxAnim;const t=A?(now-A.t0)/1000:0;
+  if(A){rr(80,32,60,82,14);ctx.fillStyle=mix(C.rbc,C.panel,.15+.5*seg(t,0,2));ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.stroke();rr(90,42,40,20,4);ctx.fillStyle=C.panel;ctx.fill();txt(110,52.5,nice(A.d),{size:12,weight:700,align:"center",mono:true})}
+  else{rr(80,32,60,82,14);ctx.setLineDash([5,4]);ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1.5;ctx.stroke();ctx.setLineDash([]);txt(110,74,"drop a",{size:11,align:"center",color:C["ink-soft"]});txt(110,88,"bag here",{size:11,align:"center",color:C["ink-soft"]})}
+  ctx.beginPath();ctx.moveTo(110,114);ctx.bezierCurveTo(110,170,180,190,230,200);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=3;ctx.stroke();
+  // recipient
+  rr(230,30,556,374,16);ctx.fillStyle=C["plasma-wash"];ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  txt(248,52,`PATIENT · type ${nice(r)}`,{size:12,mono:true,weight:700});txt(248,72,`RBC antigens: ${rA.length?listAnd(rA.map(x=>agName[x])):"none"}   ·   plasma antibodies: ${ab.length?listAnd(ab.map(x=>"anti-"+x)):"no anti-A, no anti-B"}`,{size:12,color:C["ink-soft"]});
+  const OWN=[[300,130],[740,120],[280,350],[730,340],[520,370],[300,250],[760,240]];
+  OWN.forEach((c,i)=>{const x=c[0]+Math.sin(now/1500+i)*6,y=c[1]+Math.cos(now/1700+i)*5;rbc(x,y,16,{sy:.92});if(rA.length)antigensOn(x,y,16,rA,5,rA.length*3,1,i)});
+  const CL=[[520,220],[492,200],[548,202],[504,246],[540,248]];
+  const enter=i=>seg(t,.1+i*.2,.9+i*.2);const clump=A&&A.kind==="abo"?ease(seg(t,2,3.2)):0;const lys=A&&A.kind==="abo"?seg(t,3.6,4.8):0;
+  const dA=A?[...agOf(A.d)]:[];
+  // free antibodies
+  const hit=A?dA.filter(a=>a!=="D"&&ab.includes(a)):[];
+  for(let k=0;k<10;k++){const kind=ab.length?ab[k%ab.length]:null;if(!kind)break;const fx=270+((k*97)%480)+Math.sin(now/900+k)*14,fy=110+((k*61)%260)+Math.cos(now/800+k)*12;let x=fx,y=fy,an=Math.sin(now/1000+k);
+    if(clump>0&&hit.includes(kind)&&k<7){const a=CL[k%5],b=CL[(k+1)%5];x=lerp(fx,(a[0]+b[0])/2,clump);y=lerp(fy,(a[1]+b[1])/2,clump);an=lerp(an,Math.atan2(b[1]-a[1],b[0]-a[0])+Math.PI/2,clump)}
+    if(lys>.7&&hit.includes(kind)&&k<7)continue;antibody(kind,x,y,10,an,1)}
+  if(A){CL.forEach((c,i)=>{const e=enter(i);if(e<=0)return;const dx=380+((i*83)%260)+Math.sin(now/1200+i)*12,dy=150+((i*57)%180)+Math.cos(now/1100+i)*10;
+      const x0=lerp(232,dx,ease(e)),y0=lerp(200,dy,ease(e));const x=lerp(x0,c[0],clump),y=lerp(y0,c[1],clump);
+      if(lys<1){ctx.save();ctx.globalAlpha=1-lys;rbc(x,y,16,{sy:.92,edge:A.kind==="ok"?C.good:undefined});if(dA.length)antigensOn(x,y,16,dA,5,dA.length*3,1,i+now/4000);ctx.restore()}
+      if(lys>0)for(let k=0;k<6;k++){const a=k/6*TAU+i;circ(x+Math.cos(a)*lys*(28+k*4),y+Math.sin(a)*lys*(24+k*3),3,hexA(C.rbc,1-lys*.6))}});
+    if(A.kind==="rh"){const q=seg(t,2,4.5);wbc(640,300,"plasma",22,{seed:4,t:now/1000,a:seg(t,1.6,2.2)});for(let k=0;k<Math.floor(q*5);k++)antibody("D",600-k*30,330+Math.sin(now/700+k)*6,9,Math.sin(now/900+k)*.5,1)}
+    const msg=A.kind==="ok"?(t>1.5?["Compatible: no reaction",C.good]:null):A.kind==="abo"?(t>2&&t<3.6?["AGGLUTINATION: antibodies link the donor cells",C.bad]:t>=3.6?["HEMOLYSIS: donor cells burst",C.bad]:null):(t>2?["No clumping now, but the patient is SENSITIZED (making anti-D)",C.warn]:null);
+    if(msg)label(508,384,msg[0],{size:13,weight:700,align:"center",border:msg[1]})}
+}
+
+/* =====================================================================
+   PART 3 · EPO FEEDBACK SIMULATOR
+   ===================================================================== */
+const S3=makeStage("cvEpo",800,300),S3c=makeStage("cvChart",800,250);
+let sim,simPaused=false,simSpeed=5;
+function simReset(){sim={day:0,hct:45,prod:1,E:1,Ek:1,D:100,sat:.98,alt:0,kid:false,dope:false,loss:0,bleedAt:-99,hist:[],events:[],done:store.get("bl-chal")||[false,false,false,false],bledRecovered:false};
+  $("#alt").value=0;$("#altOut").textContent="0 m";$("#kidBtn").setAttribute("aria-pressed","false");$("#dopeBtn").setAttribute("aria-pressed","false");simStatus("Normal: about 45% hematocrit, EPO at a low steady level. Change something and watch the loop respond.","good");renderChal()}
+function satAt(alt){return .98-7.5e-9*alt*alt}
+function simStep(dt){const s=sim;s.sat=satAt(s.alt);
+  if(s.loss>0){const take=Math.min(s.loss,s.hct*.2*dt/1.0);s.hct-=take;s.loss-=take}
+  s.D=(s.hct/45)*(s.sat/.98)*100;s.Ek=clamp((s.kid?.2:1)*Math.exp(.045*(100-s.D)),.05,8);s.E=s.Ek+(s.dope?1:0);
+  const target=Math.min(s.E,6);s.prod+=(target-s.prod)*dt/3;s.hct+=((45/120)*s.prod-s.hct/120)*dt;s.hct=clamp(s.hct,10,75);s.day+=dt;
+  if(!s.hist.length||s.day-s.hist[s.hist.length-1][0]>=.5){s.hist.push([s.day,s.hct,s.D,s.E]);if(s.hist.length>600)s.hist.shift()}
+  // challenges
+  const d=s.done;let ch=false;
+  if(!d[0]&&s.alt>=4000&&s.hct>=49){d[0]=true;ch=true;simStatus("Challenge 1 done. Living high up, less O₂ loads onto hemoglobin. The kidneys keep EPO up until the extra RBCs restore O₂ delivery. That is why people who live at altitude have a higher hematocrit.","good")}
+  if(s.bleedAt>0&&s.day-s.bleedAt>2&&s.hct>=43&&!d[1]){d[1]=true;ch=true;simStatus("Challenge 2 done. After blood loss, low O₂ delivery raised EPO, and the marrow rebuilt the RBCs over a couple of weeks. Iron and B vitamins are needed to keep up.","good")}
+  if(!d[2]&&s.kid&&s.hct<37){d[2]=true;ch=true;simStatus("Challenge 3 done. Damaged kidneys can't make enough EPO, so even though O₂ is low, the marrow isn't told to keep up: anemia of kidney disease. Patients are often treated with synthetic EPO.","good")}
+  if(!d[3]&&s.dope&&s.hct>55){d[3]=true;ch=true;simStatus("Challenge 4 done. Hematocrit over 55%: the blood is thick and sticky. The heart has to work harder, and clots, heart attack and stroke become more likely. That is why EPO doping is dangerous, and banned in sport.","bad")}
+  if(ch){store.set("bl-chal",d);renderChal()}}
+function simStatus(t,c){const el=$("#simStatus");el.className="status "+(c||"");el.textContent=t}
+function evt(name){sim.events.push([sim.day,name])}
+const CHAL=["Live at 4,000 m or higher until the hematocrit reaches 49%.","Lose blood, then let the hematocrit recover to 43% or more.","Turn on kidney failure and watch the hematocrit fall below 37% (anemia).","Turn on EPO doping and push the hematocrit above 55%. Why is that dangerous?"];
+function renderChal(){const d=sim.done;$("#chal").innerHTML=CHAL.map((c,i)=>`<li class="${d[i]?"done":""}"><span class="ck">${d[i]?"✓":i+1}</span><span>${c}</span></li>`).join("");const n=d.filter(Boolean).length;$("#chalStars").innerHTML=`Challenges done: <b>${n}</b> of 4 <span class="stars" style="font-size:16px">${"★".repeat(Math.min(3,n))}${"☆".repeat(3-Math.min(3,n))}</span>`}
+$("#alt").oninput=e=>{sim.alt=+e.target.value;$("#altOut").textContent=(+e.target.value).toLocaleString()+" m";};
+$("#alt").onchange=e=>{evt("altitude "+(+e.target.value).toLocaleString()+" m");if(+e.target.value>=2000)simStatus("Higher up, the air holds less O₂, so less loads onto hemoglobin. O₂ delivery drops, the kidneys sense it and release more EPO. Watch the red cell count climb over the next few weeks.","warn");else simStatus("Back near sea level. With more O₂ available, delivery rises above normal, EPO falls, and the hematocrit slowly drifts back down as old RBCs are retired.","")};
+$("#bleedBtn").onclick=()=>{sim.loss+=sim.hct*.2;sim.bleedAt=sim.day;evt("blood loss");simStatus("Blood lost. Fluid is replaced within a day or so, but the RBCs aren't, so the hematocrit drops. Low O₂ delivery → more EPO → the marrow speeds up.","warn")};
+$("#kidBtn").onclick=e=>{sim.kid=!sim.kid;e.target.setAttribute("aria-pressed",sim.kid);evt(sim.kid?"kidney failure":"kidneys recover");simStatus(sim.kid?"Kidney failure: the kidneys make only a fraction of the normal EPO. Watch what happens to the hematocrit over the next few months.":"Kidneys working again. EPO rises in response to the low O₂, and the marrow catches up.",sim.kid?"bad":"")};
+$("#dopeBtn").onclick=e=>{sim.dope=!sim.dope;e.target.setAttribute("aria-pressed",sim.dope);evt(sim.dope?"EPO doping on":"doping stopped");simStatus(sim.dope?"Extra EPO is being injected. The marrow can't tell it apart from the kidney's own EPO. Notice the kidneys turn their own EPO down (negative feedback), but they can't cancel the injected dose.":"Injections stopped. Without the extra EPO, production falls and the hematocrit slowly returns to normal.",sim.dope?"warn":"")};
+$("#simPause").onclick=e=>{simPaused=!simPaused;e.target.textContent=simPaused?"Play":"Pause"};
+$("#simReset").onclick=()=>{const d=sim.done;simReset();sim.done=d;renderChal()};
+$("#simSpeed").onchange=e=>simSpeed=+e.target.value;
+function mountain(x,y,h,alt){ctx.beginPath();ctx.moveTo(x-80,y);ctx.lineTo(x-20,y-h);ctx.lineTo(x+5,y-h*.7);ctx.lineTo(x+30,y-h*.95);ctx.lineTo(x+90,y);ctx.closePath();ctx.fillStyle=mix(C.co2,C.panel,.45);ctx.fill();
+  ctx.beginPath();ctx.moveTo(x-20,y-h);ctx.lineTo(x-30,y-h+24);ctx.lineTo(x-8,y-h+18);ctx.closePath();ctx.fillStyle="#fff";ctx.fill();
+  const fy=y-h*clamp(alt/5000,0,1);line(x-60+60*clamp(alt/5000,0,1),fy,x-60+60*clamp(alt/5000,0,1),fy-30,C.ink,2);ctx.beginPath();const fx=x-60+60*clamp(alt/5000,0,1);ctx.moveTo(fx,fy-30);ctx.lineTo(fx+18,fy-24);ctx.lineTo(fx,fy-18);ctx.closePath();ctx.fillStyle=C.bad;ctx.fill()}
+function drawEpo(now){use(S3);const s=sim;const T=now/1000;
+  mountain(100,180,130,s.alt);txt(100,204,`${s.alt.toLocaleString()} m`,{size:13,weight:700,align:"center",mono:true});txt(100,222,`O₂ saturation ≈ ${Math.round(s.sat*100)}%`,{size:12,align:"center",color:C["ink-soft"]});
+  // kidney
+  const kx=290,ky=80;kidney(kx,ky,30,s.kid?0:clamp((s.Ek-1)/2.5,0,1)*.9);if(s.kid){ctx.save();ctx.globalAlpha=.55;kidney(kx,ky,30,0);ctx.restore();line(kx-20,ky-20,kx+20,ky+20,C.bad,3);line(kx+20,ky-20,kx-20,ky+20,C.bad,3)}
+  txt(kx,ky-46,"Kidneys",{size:13,weight:700,align:"center"});txt(kx,ky+46,`own EPO ×${s.Ek.toFixed(1)}`,{size:12,align:"center",mono:true,color:C.epo,weight:600});
+  // marrow
+  const mx=600,my=80;boneMarrow(mx,my,46,32);txt(mx,my-46,"Red bone marrow",{size:13,weight:700,align:"center"});txt(mx,my+46,`RBC production ×${s.prod.toFixed(1)}`,{size:12,align:"center",mono:true,color:C.rbc,weight:600});
+  // EPO stream
+  const nE=Math.round(clamp(s.E,0,6)*3);for(let i=0;i<nE;i++){const f=P(T*.35+i/nE,1);const fromDope=s.dope&&i%Math.max(1,Math.round(s.E))===0;const x=lerp(fromDope?445:325,560,f),y=fromDope?lerp(40,ky,f):ky+Math.sin(f*10+i)*6;circ(x,y,4.5,C.epo,fromDope?C.bad:hexA(C.ink,.3),fromDope?2:1)}
+  arrow(330,ky,548,ky,hexA(C["ink-soft"],.5),1.5,[5,4]);label(445,ky-16,"EPO in the blood",{size:11.5,align:"center",pill:false,color:C["ink-soft"]});
+  if(s.dope){ctx.save();ctx.translate(430,24);ctx.rotate(.5);rr(0,-7,56,14,4);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.stroke();rr(6,-5,30,10,2);ctx.fillStyle=hexA(C.epo,.7);ctx.fill();line(56,0,74,0,C["ink-soft"],2);ctx.restore();txt(474,22,"injected EPO",{size:11.5,weight:600,color:C.bad})}
+  // marrow -> vessel
+  const nP=Math.round(clamp(s.prod,0,6)*2);for(let i=0;i<nP;i++){const f=P(T*.5+i/nP,1);rbc(mx-58+Math.sin(f*8+i)*5,lerp(my+20,196,f),6,{a:Math.sin(f*Math.PI)})}
+  // vessel
+  const vy=222;ctx.fillStyle=hexA(C.plasma,.35);ctx.fillRect(200,vy-26,500,52);line(200,vy-26,700,vy-26,C["vessel-edge"],1.5);line(200,vy+26,700,vy+26,C["vessel-edge"],1.5);
+  const nR=Math.round(s.hct/45*12);for(let i=0;i<nR;i++){const f=P(T*.12+i/nR,1);const x=lerp(200,700,f);const y=vy+((i*13)%30)-15;rbc(x,y,8,{sy:.8,col:mix(C.deoxy,C.rbc,(s.sat-.75)/.23)});if(i%2===0)o2(x,y-11,clamp((s.sat-.7)/.28,.15,1),2.5)}
+  label(450,vy+44,`Hematocrit ${s.hct.toFixed(1)}%`,{size:12.5,weight:700,align:"center",mono:true,border:s.hct<37?C.warn:s.hct>54?C.bad:C.good});
+  if(s.day-s.bleedAt<1.5&&s.bleedAt>0){for(let k=0;k<8;k++){const f=P(T*1.2+k/8,1);rbc(360+k*6,lerp(vy+26,296,f),5,{a:1-f})}label(400,286,"bleeding",{size:11.5,color:C.bad,weight:600})}
+  // tissue
+  rr(712,150,80,140,8);ctx.fillStyle=mix(C.tissue,C.act2,.2);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();txt(752,166,"tissues",{size:11.5,align:"center",color:C["ink-soft"]});
+  const dv=clamp(s.D/130,0,1);rr(740,182,24,90,6);ctx.fillStyle=C["panel-2"];ctx.fill();rr(740,182+90*(1-dv),24,90*dv,6);ctx.fillStyle=s.D<88?C.warn:C.o2;ctx.fill();line(736,182+90*(1-100/130),768,182+90*(1-100/130),C.ink,1.5,[3,2]);
+  txt(752,282,`O₂ ${Math.round(s.D)}%`,{size:11.5,align:"center",mono:true,weight:700});
+  txt(200,24,`DAY ${Math.floor(s.day)}`,{size:13,mono:true,weight:700})}
+function drawChart(){use(S3c);const s=sim;const h=s.hist;const d1=Math.max(120,s.day),d0=d1-120;const X0=56,X1=740;const xOf=d=>X0+(d-d0)/120*(X1-X0);
+  const pnl=(y0,y1,lo,hi)=>({y0,y1,y:v=>y1-clamp((v-lo)/(hi-lo),0,1)*(y1-y0)});
+  const A=pnl(14,108,20,70),B=pnl(134,226,40,140);
+  [A,B].forEach(p=>{rr(X0,p.y0,X1-X0,p.y1-p.y0,4);ctx.fillStyle=hexA(C.panel,.85);ctx.fill();ctx.strokeStyle=C["rule-soft"];ctx.lineWidth=1;ctx.stroke()});
+  ctx.fillStyle=hexA(C.good,.14);ctx.fillRect(X0,A.y(52),X1-X0,A.y(37)-A.y(52));
+  [20,37,52,70].forEach(v=>txt(X0-6,A.y(v),v+"%",{size:10.5,mono:true,align:"right",color:C["ink-soft"]}));txt(X0+6,A.y0+10,"HEMATOCRIT",{size:10.5,mono:true,weight:600,color:C["ink-soft"]});
+  [40,100,140].forEach(v=>txt(X0-6,B.y(v),v+"%",{size:10.5,mono:true,align:"right",color:C.o2}));line(X0,B.y(100),X1,B.y(100),hexA(C.o2,.4),1,[3,3]);
+  [0,2,4,6].forEach(v=>{const yy=B.y1-v/6*(B.y1-B.y0);txt(X1+6,yy,"×"+v,{size:10.5,mono:true,color:C.epo})});txt(X0+6,B.y0+10,"O₂ DELIVERY · EPO",{size:10.5,mono:true,weight:600,color:C["ink-soft"]});
+  const plot=(idx,p,col,f)=>{ctx.beginPath();let st=false;h.forEach(r=>{if(r[0]<d0)return;const x=xOf(r[0]),y=f?f(r[idx]):p.y(r[idx]);st?ctx.lineTo(x,y):ctx.moveTo(x,y);st=true});ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke()};
+  plot(1,A,C.rbc);plot(2,B,C.o2);plot(3,B,C.epo,v=>B.y1-clamp(v/6,0,1)*(B.y1-B.y0));
+  s.events.forEach(e=>{if(e[0]<d0)return;const x=xOf(e[0]);line(x,A.y0,x,B.y1,hexA(C.ink,.35),1,[2,3]);ctx.save();ctx.translate(x+3,B.y1-4);ctx.rotate(-Math.PI/2);txt(0,0,e[1],{size:10,color:C["ink-soft"]});ctx.restore()});
+  for(let d=Math.ceil(d0/20)*20;d<=d1;d+=20){txt(xOf(d),240,"day "+d,{size:10.5,mono:true,align:"center",color:C["ink-soft"]})}}
+function readouts(){const s=sim;const rows=[["Day",Math.floor(s.day)],["Hematocrit",s.hct.toFixed(1)+"%"],["RBC count",(s.hct/45*5).toFixed(1)+" million/µL"],["O₂ delivery",Math.round(s.D)+"% of normal"],["EPO",s.E.toFixed(1)+"× normal"+(s.dope?" (incl. injected)":"")]];
+  const html=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");if($("#readouts").innerHTML!==html)$("#readouts").innerHTML=html}
+
+/* =====================================================================
+   PART 4 · HEMOSTASIS: shared renderer (local box 400 x 300)
+   ===================================================================== */
+let HSL=null,HMESH=null;
+function hemoInit(){HSL=[];const rows=[[184,5,172],[167,5,175],[150,4,182],[134,3,190]];let k=0;rows.forEach(r=>{for(let i=0;i<r[1];i++){HSL.push([r[2]+i*14+(rnd(k+3)-.5)*4,r[0]+(rnd(k+9)-.5)*4]);k++}});
+  HMESH=[];for(let i=0;i<20;i++)HMESH.push([150+rnd(i+31)*100,122+rnd(i+41)*92,150+rnd(i+51)*100,122+rnd(i+61)*92])}
+function drawHemo(st,df,T,o){if(!HSL)hemoInit();df=df||{plt:1,agg:1,fib:1};o=o||{};const g=k=>clamp(st[k]||0,0,1);
+  const inj=g("inj"),sp=g("spasm"),ret=g("retract"),lys=g("lysis");const gc=200;const gap=70*inj*(1-.35*ret)*(1-seg(lys,0,.4));
+  const bump=x=>Math.exp(-Math.pow((x-gc)/85,2));const wTop=x=>170-24*sp*bump(x)*(1-lys*.7),lTop=x=>32+18*sp*bump(x)*(1-lys*.7);
+  // tissue
+  ctx.fillStyle=hexA(C.tissue,.95);ctx.fillRect(0,170,400,130);
+  for(let i=0;i<5;i++){ctx.beginPath();for(let x=0;x<=400;x+=8)ctx.lineTo(x,206+i*14+Math.sin(x*.06+i)*4);ctx.strokeStyle=hexA(C.collagen,.55);ctx.lineWidth=2.4;ctx.stroke()}
+  for(let i=0;i<7;i++){rr(20+i*54,272,40,22,5);ctx.fillStyle=mix(C.tissue,C.act2,.25);ctx.fill()}
+  // lumen
+  ctx.fillStyle=hexA(C.plasma,.3);ctx.beginPath();for(let x=0;x<=400;x+=8)ctx.lineTo(x,lTop(x));for(let x=400;x>=0;x-=8)ctx.lineTo(x,wTop(x));ctx.closePath();ctx.fill();
+  ctx.beginPath();for(let x=0;x<=400;x+=8)ctx.lineTo(x,lTop(x));for(let x=400;x>=0;x-=8)ctx.lineTo(x,lTop(x)-14);ctx.closePath();ctx.fillStyle=mix(C.muscle,C.act3,sp*.4);ctx.fill();
+  const wall=(x0,x1)=>{if(x1<=x0)return;ctx.beginPath();for(let x=x0;x<=x1;x+=4)ctx.lineTo(x,wTop(x));for(let x=x1;x>=x0;x-=4)ctx.lineTo(x,wTop(x)+24);ctx.closePath();ctx.fillStyle=mix(C.muscle,C.act3,sp*.4);ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=1.2;ctx.stroke();
+    ctx.beginPath();for(let x=x0;x<=x1;x+=4)ctx.lineTo(x,wTop(x)+2);ctx.strokeStyle=C.endo;ctx.lineWidth=4;ctx.stroke()};
+  if(gap<1)wall(0,400);else{wall(0,gc-gap/2);wall(gc+gap/2,400)}
+  if(gap>2){ctx.beginPath();for(let x=gc-gap/2;x<=gc+gap/2;x+=4)ctx.lineTo(x,wTop(x)+22+Math.sin(x*.3)*2);ctx.strokeStyle=C.collagen;ctx.lineWidth=4;ctx.stroke()}
+  // new lining during lysis
+  const lin=seg(lys,0,.4);if(lin>0&&inj>0){ctx.save();ctx.globalAlpha=lin;rr(gc-40,wTop(gc)+2,80,20,6);ctx.fillStyle=mix(C.endo,C.good,.12);ctx.fill();ctx.strokeStyle=C.good;ctx.lineWidth=1.2;ctx.stroke();ctx.restore()}
+  // seal and plug amounts
+  const nAdh=inj>0?Math.round(3*Math.min(1,df.plt*2.2)):0;const wash=st.wash||0;
+  const nAgg=Math.round(HSL.length*g("aggregate")*df.plt*df.agg*(1-wash*.7));
+  const plugAmt=(.2*g("adhere")*Math.min(1,df.plt*2.2)+.8*nAgg/HSL.length);const fibAmt=g("fibrin")*df.fib;
+  const seal=clamp(plugAmt*.56+fibAmt*.56,0,1)*(1-lys*0)+(lin>.9?1:0);
+  const leak=clamp(inj*(1-clamp(seal,0,1))*(1-.35*sp),0,1);
+  // RBC flow
+  for(let i=0;i<8;i++){const x=((T*55+i*55)%440)-20;const y=lerp(lTop(x)+14,wTop(x)-14,((i*37)%100)/100);rbc(x,y,9,{sy:.8})}
+  // leak
+  for(let j=0;j<14;j++){if(j/14>=leak)continue;const f=P(T*.8+j/14,1);const sx=gc+(rnd(j)-.5)*gap*.8,sy=wTop(gc)+16;rbc(lerp(sx,gc+(rnd(j+5)-.5)*180,f),lerp(sy,300,f),6,{a:1-f*.5,sy:.8})}
+  // tissue factor
+  const tf=g("tf");if(tf>0&&tf<1||g("tf")>=1&&g("fibrin")<1){for(let k=0;k<6;k++){const f=P(T*.5+k/6,1);circ(gc-60+k*24+Math.sin(f*6+k)*4,lerp(272,wTop(gc)+20,f),3.4,hexA(C.tf,Math.sin(f*Math.PI)))}}
+  // retraction transform
+  const sc=1-.28*ret;const pc=[gc,170];const M=(x,y)=>[pc[0]+(x-pc[0])*sc,pc[1]+(y-pc[1])*sc];
+  // platelets
+  const act=g("activate");const pa=1-seg(lys,.5,1);
+  for(let i=0;i<nAdh;i++){const arr=seg(g("adhere"),i*.25,i*.25+.5);if(arr<=0)continue;const tx=gc-20+i*20,ty=wTop(gc)+18;const [x,y]=M(lerp(-10,tx,ease(arr)),lerp(80+i*20,ty,ease(arr)));
+    if(arr>=1&&g("adhere")>=1&&g("aggregate")<.2){line(x-4,y+4,x-5,y+10,C.vitk,1.6);line(x+4,y+4,x+5,y+10,C.vitk,1.6)}plt(x,y,8,act,i,pa)}
+  for(let i=0;i<nAgg;i++){const s=HSL[i];const [x,y]=M(s[0],s[1]);plt(x,y,8,1,i+2,pa)}
+  if(g("aggregate")>0&&g("aggregate")<1){for(let k=0;k<2;k++){const f=P(T*.9+k/2,1);plt(lerp(-10,gc,f),lerp(70+k*30,140,f),8,f>.7?1:0,k,1)}}
+  if(wash>0&&nAgg<HSL.length*df.plt*df.agg){for(let k=0;k<3;k++){const f=P(T*.6+k/3,1);plt(gc+f*220,140-k*16-f*20,8,1,k,1-f)}}
+  // fibrin mesh
+  const nF=Math.round(HMESH.length*fibAmt);for(let i=0;i<nF;i++){const m=HMESH[i];const cutT=.45+rnd(i+70)*.45;const a=1-seg(lys,cutT,cutT+.08);if(a<=0)continue;const [x1,y1]=M(m[0],m[1]),[x2,y2]=M(m[2],m[3]);ctx.save();ctx.globalAlpha=a;line(x1,y1,x2,y2,C.fibrin,2+1.4*g("xiii"));if(g("xiii")>.5)circ((x1+x2)/2,(y1+y2)/2,2.2,C.fibrin);ctx.restore()}
+  // release
+  const rel=g("release");if(rel>0&&g("aggregate")<1){for(let i=0;i<nAdh;i++){for(let k=0;k<6;k++){const f=P(T*.9+k/6+i*.2,1);const a=k/6*TAU+i;circ(gc-20+i*20+Math.cos(a)*(8+f*42),wTop(gc)+10+Math.sin(a)*(8+f*30),2.4,hexA(C.chem,(1-f)*rel))}}}
+  // serum drops during retraction
+  if(ret>0&&ret<1){for(let k=0;k<6;k++){const f=P(T*.7+k/6,1);const sd=k%2?1:-1;ctx.save();ctx.globalAlpha=1-f;ctx.beginPath();ctx.ellipse(gc+sd*(36+f*40),180+f*80,3.5,5.5,0,0,TAU);ctx.fillStyle=C.plasma;ctx.fill();ctx.restore()}}
+  // plasmin
+  if(lys>0&&lys<1){for(let k=0;k<4;k++){const x=gc-30+k*20+Math.sin(T*3+k)*4,y=150+((k*23)%50);ctx.save();ctx.translate(x,y);ctx.rotate(T*4+k);ctx.beginPath();ctx.arc(0,0,6,.5,TAU-.5);ctx.lineTo(0,0);ctx.closePath();ctx.fillStyle=C.plasmin;ctx.fill();ctx.restore()}}
+  // cascade chips
+  if(o.chips){const CH=[["TF","tf"],["VIIa","vii"],["Xa","xa"],["Prothrombin activator","pa"],["Thrombin","thrombin"],["Fibrin","fibrin"],["XIII","xiii"]];let x=8;
+    CH.forEach(c=>{ctx.font=`600 11px ${FONT}`;const w=ctx.measureText(c[0]).width+12;const on=g(c[1])>.5;rr(x,4,w,20,10);ctx.fillStyle=on?C.thrombin:C.panel;ctx.fill();ctx.strokeStyle=on?C.thrombin:C.rule;ctx.lineWidth=1;ctx.stroke();txt(x+w/2,14.5,c[0],{size:11,weight:600,align:"center",color:on?onFill():C["ink-faint"]});x+=w+4})}
+  // bleeding meter
+  if(!o.noMeter){const y=o.chips?34:8;rr(300,y,92,26,6);ctx.fillStyle=hexA(C.panel,.92);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();txt(306,y+8,"bleeding",{size:10,color:C["ink-soft"]});rr(306,y+15,80,6,3);ctx.fillStyle=C["panel-2"];ctx.fill();rr(306,y+15,80*leak,6,3);ctx.fillStyle=C.bad;ctx.fill()}
+  return {leak,seal}}
+
+/* ---------------- Sequencer ---------------- */
+const S4=makeStage("cvSeq",800,360);
+const CARDS={
+ h1:["A blood vessel is cut",["inj"]],h2:["Vascular spasm: smooth muscle narrows the vessel",["spasm"]],h3:["Platelet plug forms at the break",["adhere","activate","release","aggregate"]],
+ h4:["Coagulation: a fibrin mesh forms",["tf","vii","xa","pa","thrombin","fibrin","xiii"]],h5:["Clot retraction: platelets contract and squeeze out serum",["retract"]],h6:["Fibrinolysis: plasmin dissolves the healed-over clot",["lysis"]],
+ p1:["Damage to the lining exposes collagen",["inj"]],p2:["Platelets stick to the collagen (von Willebrand factor helps)",["adhere"]],p3:["The stuck platelets activate and grow spiky arms",["activate"]],
+ p4:["They release ADP, serotonin and thromboxane A₂",["release"]],p5:["More platelets arrive and pile on: the plug grows",["aggregate"]],
+ c1:["Damaged tissue releases tissue factor (factor III)",["tf"]],c2:["Factor VII joins tissue factor",["vii"]],c3:["Factor X is activated",["xa"]],c4:["Prothrombin activator forms (Xa with factor V)",["pa"]],
+ c5:["Prothrombin is converted to thrombin",["thrombin"]],c6:["Thrombin converts fibrinogen into fibrin threads",["fibrin"]],c7:["Factor XIII cross-links the fibrin into a strong mesh",["xiii"]]};
+const ROUNDS=[{id:"big",name:"Round 1 · The big picture",order:["h1","h2","h3","h4","h5","h6"],base:{},instr:"Put the whole story of stopping a bleed in order, from the cut to the clot being cleared away."},
+ {id:"plug",name:"Round 2 · The platelet plug",order:["p1","p2","p3","p4","p5"],base:{},instr:"Put the steps of platelet plug formation in order."},
+ {id:"coag",name:"Round 3 · The coagulation cascade",order:["c1","c2","c3","c4","c5","c6","c7"],base:{inj:1,spasm:1,adhere:1,activate:1,release:1,aggregate:1},instr:"The plug is in place. Now order the extrinsic pathway and the common pathway that build the fibrin mesh."}];
+let R=0,sqChecks=0,sqHints=0,sqSolved=false,sqStart=0,sqElapsed=0,sqRunning=false,sqPlayS=null;
+const sqRes=store.get("bl-sq-res")||{};
+const list=$("#sqList");
+function sqRounds(){const box=$("#sqRounds");box.innerHTML="";ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===R);b.innerHTML=r.name+(sqRes[r.id]?`<span class="ok">${"★".repeat(sqRes[r.id])}</span>`:"");b.onclick=()=>{R=i;sqNew()};box.appendChild(b)})}
+function sqNew(){const r=ROUNDS[R];let o;do{o=shuffle(r.order)}while(o.filter((c,i)=>c===r.order[i]).length>1);list.innerHTML="";o.forEach(id=>list.appendChild(sqItem(id)));
+  $("#sqInstr").textContent=r.instr;sqChecks=0;sqHints=0;sqSolved=false;sqStart=performance.now();sqRunning=true;sqPlayS=null;setMsg("#sqMsg","","");renum();sqRounds();$("#sqCap").textContent="Arrange the cards, then press Play my order."}
+function sqItem(id){const li=document.createElement("li");li.className="item";li.dataset.id=id;
+  li.innerHTML=`<span class="pos"></span><span class="grip" aria-hidden="true">⋮⋮</span><span class="txt">${CARDS[id][0]}</span><span class="mv"><button type="button" aria-label="Move up">▲</button><button type="button" aria-label="Move down">▼</button></span>`;
+  const [up,dn]=li.querySelectorAll(".mv button");
+  up.onclick=()=>{const p=li.previousElementSibling;if(p){list.insertBefore(li,p);changed();up.focus()}};
+  dn.onclick=()=>{const n=li.nextElementSibling;if(n){list.insertBefore(n,li);changed();dn.focus()}};
+  let dragging=false;
+  li.addEventListener("pointerdown",e=>{if(e.target.closest("button")||sqSolved)return;dragging=true;li.classList.add("drag");li.setPointerCapture(e.pointerId)});
+  li.addEventListener("pointermove",e=>{if(!dragging)return;const kids=[...list.children];const me=kids.indexOf(li);
+    for(let k=0;k<kids.length;k++){const el=kids[k];if(el===li)continue;const r=el.getBoundingClientRect();if(e.clientY>r.top&&e.clientY<r.bottom){const mid=r.top+r.height/2;
+      if(k>me&&e.clientY>mid){list.insertBefore(el,li);changed()}else if(k<me&&e.clientY<mid){list.insertBefore(el,li.nextElementSibling);changed()}break}}});
+  const end=()=>{if(!dragging)return;dragging=false;li.classList.remove("drag")};li.addEventListener("pointerup",end);li.addEventListener("pointercancel",end);return li}
+function renum(){[...list.children].forEach((li,i)=>li.querySelector(".pos").textContent=i+1)}
+function changed(){renum();[...list.children].forEach(li=>li.classList.remove("right","off","hinted"));sqPlayS=null}
+const cur=()=>[...list.children].map(li=>li.dataset.id);
+$("#sqCheck").onclick=()=>{if(sqSolved)return;sqChecks++;const ans=ROUNDS[R].order,o=cur();let n=0;[...list.children].forEach((li,i)=>{const ok=o[i]===ans[i];if(ok)n++;li.classList.toggle("right",ok);li.classList.toggle("off",!ok)});
+  if(n===ans.length)sqWin();else setMsg("#sqMsg",`<b>${n} of ${ans.length}</b> cards are in the right spot. ${n>=ans.length-2?"So close!":"Ask yourself: what has to be true before this step can happen?"} Press <b>Play my order</b> to see where it gets stuck.`,"warn")};
+$("#sqHint").onclick=()=>{if(sqSolved)return;const ans=ROUNDS[R].order,o=cur();const i=o.findIndex((c,k)=>c!==ans[k]);if(i<0)return;sqHints++;const li=list.querySelector(`[data-id="${ans[i]}"]`);list.insertBefore(li,list.children[i]);changed();li.classList.add("hinted");
+  setMsg("#sqMsg",`Hint: card ${i+1} is <b>${CARDS[ans[i]][0]}</b>.`,"warn")};
+$("#sqShuffle").onclick=sqNew;
+$("#sqAnswer").onclick=()=>{const ans=ROUNDS[R].order;list.innerHTML="";ans.forEach(id=>{const li=sqItem(id);li.classList.add("right");list.appendChild(li)});renum();sqSolved=true;sqRunning=false;sqHints+=9;
+  setMsg("#sqMsg","Here's the correct order. Watch it play, then press <b>Shuffle again</b> and try it yourself.","warn");sqStartPlay()};
+function sqWin(){sqSolved=true;sqRunning=false;const r=ROUNDS[R];const stars=sqHints===0&&sqChecks<=2?3:sqHints<=2?2:1;if(!sqRes[r.id]||stars>sqRes[r.id])sqRes[r.id]=stars;store.set("bl-sq-res",sqRes);
+  const next=R<ROUNDS.length-1?` <button class="tbtn" id="sqNextR" type="button">Next round →</button>`:"";
+  setMsg("#sqMsg",`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Sequence complete!</b> ${$("#sqRelaxed").checked?"":"Time "+fmt(sqElapsed)+". "}Checks: ${sqChecks}. Hints: ${Math.min(sqHints,9)}. Watch it play on the vessel.${next}`,"good");
+  const nb=$("#sqNextR");if(nb)nb.onclick=()=>{R++;sqNew()};sqRounds();sqStartPlay()}
+$("#sqRelaxed").onchange=e=>{$("#sqTimer").hidden=e.target.checked};
+const KEYDUR=.85;
+function sqStartPlay(){const r=ROUNDS[R],o=cur();let fail=o.findIndex((c,i)=>c!==r.order[i]);const segs=[];let t=0;const upto=fail<0?o.length:fail;
+  for(let i=0;i<upto;i++){CARDS[o[i]][1].forEach(k=>{segs.push({i,k,s:t});t+=KEYDUR})}sqPlayS={o,segs,end:t,fail,t0:performance.now()}}
+$("#sqPlay").onclick=sqStartPlay;
+function sqState(now){const r=ROUNDS[R];const st=Object.assign({},r.base);let ci=-1,t=0;if(sqPlayS){t=(now-sqPlayS.t0)/1000;sqPlayS.segs.forEach(s=>{const q=clamp((t-s.s)/KEYDUR,0,1);if(q>0){st[s.k]=Math.max(st[s.k]||0,q);ci=s.i}})}return {st,ci,t}}
+function drawSeq(now){use(S4);const {st,ci,t}=sqState(now);const T=now/1000;
+  ctx.save();ctx.translate(6,8);ctx.scale(1.15,1.15);ctx.beginPath();ctx.rect(0,0,400,300);ctx.clip();drawHemo(st,null,T,{chips:R===2});ctx.restore();
+  panelBox(484,8,308,344);txt(498,26,"YOUR ORDER",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  const o=sqPlayS?sqPlayS.o:cur();const failed=sqPlayS&&sqPlayS.fail>=0&&t>=sqPlayS.end;
+  o.forEach((id,i)=>{const y=48+i*(296/Math.max(o.length,6));let mark="•",col=C["ink-faint"];
+    if(sqPlayS){if(i<ci||(i===ci&&t>=sqPlayS.end))[mark,col]=["✓",C.good];else if(i===ci)[mark,col]=["▶",C.accent];if(failed&&i===sqPlayS.fail)[mark,col]=["✕",C.bad]}
+    circ(508,y,10,mark==="•"?null:col,col,1.4);txt(508,y+.5,mark,{size:11,weight:700,align:"center",color:mark==="•"?col:"#fff"});
+    ctx.save();ctx.beginPath();ctx.rect(524,y-16,262,34);ctx.clip();wrapText(CARDS[id][0],524,y-6,258,14,{size:11.5,weight:i===ci?700:500,color:failed&&i===sqPlayS.fail?C.bad:C.ink});ctx.restore()});
+  let cap;if(!sqPlayS)cap="Arrange the cards, then press Play my order.";else if(failed){cap=`Stuck at card ${sqPlayS.fail+1}: "${CARDS[sqPlayS.o[sqPlayS.fail]][0]}" can't happen yet. Something else has to come first.`;
+    ctx.save();ctx.translate(6,8);ctx.scale(1.15,1.15);rr(60,92,280,58,10);ctx.fillStyle=hexA(C.panel,.94);ctx.fill();ctx.strokeStyle=C.bad;ctx.lineWidth=2;ctx.stroke();txt(200,112,"✕ Stuck: this step can't happen yet",{size:13,weight:700,align:"center",color:C.bad});txt(200,132,"check what must come before it",{size:11.5,align:"center",color:C["ink-soft"]});ctx.restore()}
+  else if(t>=sqPlayS.end)cap=sqSolved?"The whole sequence ran. Bleeding is under control.":"Your order played all the way through.";else cap=`Playing card ${ci+1}: ${ci>=0?CARDS[sqPlayS.o[ci]][0]:"…"}`;
+  if($("#sqCap").textContent!==cap)$("#sqCap").textContent=cap;
+  if(sqRunning){sqElapsed=(performance.now()-sqStart)/1000;$("#sqTimer").textContent=fmt(sqElapsed)}}
+
+/* ---------------- What breaks if ---------------- */
+const S5=makeStage("cvBreak",800,330);
+const Q1=["Vascular spasm","Platelet plug","Coagulation (clotting factors and fibrin)","Fibrinolysis (clot removal)"];
+const BR=[
+{t:"Hemophilia A",d:"A 9-year-old boy bruises easily and has had painful bleeding into his knee joint. Tests show he is missing clotting factor VIII.",def:{plt:1,agg:1,fib:.25},a1:2,
+ f1:["His vessels still constrict normally. The missing protein, factor VIII, is a clotting factor.","His platelets are normal, so a plug still forms. What's missing is the fibrin that should hold it in place.","Yes. Factor VIII is part of the intrinsic pathway. Without it, too little thrombin and fibrin are made.","Clot removal is normal. His problem is making a stable clot in the first place."],
+ q2:[["A platelet plug forms, but little fibrin holds it, so bleeding keeps restarting (often into joints and muscles)",1,"Right. The plug alone can't hold against blood pressure for long."],["No platelet plug forms at all",0,"Platelets are normal in hemophilia, so a plug does form. It just isn't reinforced by fibrin."],["Clots form too easily and block vessels",0,"That's the opposite problem. Missing a clotting factor means too little clotting."],["Bleeding stops normally, but the clot never dissolves",0,"That would be a fibrinolysis problem. Here the clot never gets strong enough."]],
+ res:"Plug forms, but with little fibrin it keeps washing out. Bleeding continues.",
+ exp:"<b>Hemophilia A</b> is an inherited lack of factor VIII. The gene is on the X chromosome, so it mostly affects males. Treatment replaces the missing factor."},
+{t:"Vitamin K deficiency",d:"A newborn did not get the usual vitamin K shot at birth. At one week old she is bleeding from her umbilical stump and into her gut.",def:{plt:1,agg:1,fib:.2},a1:2,
+ f1:["Her vessels constrict normally. Vitamin K matters for clotting factors.","Her platelets are normal. The problem is in the cascade that makes fibrin.","Yes. Without vitamin K, the liver can't make working factors II, VII, IX and X.","Clot removal isn't the issue. She can't build a strong clot to begin with."],
+ q2:[["The liver can't make working factors II, VII, IX and X, so both pathways make little fibrin",1,"Right. Both the extrinsic and intrinsic pathways need these factors."],["Platelets can't stick to collagen",0,"Platelet adhesion doesn't need vitamin K. Her plugs form normally."],["Her vessels can't constrict",0,"Vascular spasm is a smooth muscle response and still works."],["Too much plasmin dissolves every clot",0,"Plasmin is normal. The clots are weak because fibrin is never made well."]],
+ res:"Plug forms, but almost no fibrin is made. Bleeding continues.",
+ exp:"Newborns have few gut bacteria and little stored vitamin K, so they get a <b>vitamin K shot</b> at birth. The blood thinner <b>warfarin</b> works by blocking vitamin K's role, which is why patients on it have their clotting checked."},
+{t:"Daily aspirin",d:"A 60-year-old man takes a low-dose aspirin every day to lower his risk of a heart attack. He notices that small cuts bleed longer than they used to.",def:{plt:1,agg:.35,fib:.85},a1:1,
+ f1:["His vessels still constrict. Aspirin acts on platelets.","Yes. Aspirin stops platelets from making thromboxane A₂, so fewer platelets are called in.","His clotting factors are normal. Aspirin's main target is the platelet.","Fibrinolysis is unchanged. The plug is what's affected."],
+ q2:[["Platelets make less thromboxane A₂, so fewer join in; the plug is smaller and bleeding lasts longer",1,"Right. A weaker plug, but clotting factors still make fibrin, so bleeding does stop eventually."],["No fibrin can form at all",0,"His clotting factors still work, so fibrin forms. The plug is the weak part."],["His platelet count drops to zero",0,"Aspirin doesn't destroy platelets. It changes how they work."],["His vessels can't constrict",0,"Vascular spasm still works. Aspirin acts on platelets."]],
+ res:"Small, slow plug. Fibrin still forms, so bleeding stops, just later than normal.",
+ exp:"Aspirin permanently blocks the platelet enzyme that makes <b>thromboxane A₂</b>. A platelet has no nucleus, so it can't make new enzyme; the effect lasts for that platelet's life (about 10 days). That's why low-dose aspirin helps prevent clots, and why patients may stop it before surgery."},
+{t:"Low platelet count",d:"After chemotherapy, a patient's platelet count is 20,000 per µL (normal is 150,000 to 400,000). She has tiny red-purple dots on her skin and her gums bleed when she brushes.",def:{plt:.2,agg:1,fib:.55},a1:1,
+ f1:["Her vessels constrict normally. The problem is the number of platelets.","Yes. With so few platelets, a plug can't be built. This is thrombocytopenia.","Her clotting factors are there, though clotting works best on the surface of activated platelets, so it is weaker too. The main problem is the plug.","Fibrinolysis is normal. She can't build the plug to begin with."],
+ q2:[["Too few platelets to build a plug, so small vessels leak: pinpoint bleeds (petechiae) and bruising",1,"Right. Tiny daily injuries to capillaries normally get sealed by platelets."],["All her clotting factors are missing",0,"Chemotherapy damaged the marrow (where megakaryocytes live). The liver still makes clotting factors."],["Her blood clots too much",0,"Too few platelets means too little clotting."],["Only large arteries are affected",0,"It's the small vessels, like capillaries in the skin and gums, that leak most."]],
+ res:"Only a few platelets arrive; the plug never closes the gap. Bleeding continues.",
+ exp:"<b>Thrombocytopenia</b> means too few platelets. Chemotherapy damages the red bone marrow, where megakaryocytes make platelets. Treatment can include <b>platelet transfusions</b>."},
+{t:"Heparin in the hospital",d:"After hip surgery, a patient is given the anticoagulant drug heparin to keep clots from forming in her leg veins.",def:{plt:1,agg:1,fib:.12},a1:2,
+ f1:["Heparin doesn't affect the smooth muscle of vessels.","Her platelets still stick and form a plug. Heparin acts on the cascade.","Yes. Heparin helps a natural inhibitor (antithrombin) shut down thrombin and factor Xa.","Heparin doesn't dissolve clots. It keeps new fibrin from forming."],
+ q2:[["Thrombin and factor Xa are blocked, so little fibrin forms and clotting is slowed",1,"Right. That's how heparin prevents dangerous clots, and why bleeding is its main side effect."],["It destroys her platelets",0,"Heparin works on clotting factors, not by destroying platelets."],["It makes her vessels constrict harder",0,"Heparin has no effect on vascular spasm."],["It dissolves existing clots right away, like plasmin",0,"Heparin stops clots from forming or growing. Dissolving clots is the job of plasmin (and tPA-type drugs)."]],
+ res:"Plug forms, but fibrin is blocked. Bleeding continues longer: the price of preventing clots.",
+ exp:"<b>Heparin</b> is a natural anticoagulant (released by basophils and mast cells) and also a drug. It boosts <b>antithrombin</b>, which inactivates thrombin and factor Xa. Patients on heparin are watched closely for bleeding."}];
+let bi=0,brShown=false,brT0=0;const brState=BR.map(()=>({a1:null,a2:null,first:true}));
+function brRender(){const s=BR[bi],S=brState[bi];
+  $("#brChips").innerHTML="";BR.forEach((x,i)=>{const b=document.createElement("button");b.type="button";b.className="chip"+(i===bi?" cur":"")+(brState[i].a2!==null?" done":"");b.textContent=i+1;b.setAttribute("aria-label","Scenario "+(i+1)+": "+x.t);b.onclick=()=>{bi=i;brShown=false;brRender()};$("#brChips").appendChild(b)});
+  $("#brN").textContent=`Scenario ${bi+1} of ${BR.length}`;$("#brTitle").textContent=s.t;$("#brDesc").textContent=s.d;
+  const q1=$("#brQ1");q1.innerHTML="";Q1.forEach((o,i)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o;b.onclick=()=>brA1(i,b);q1.appendChild(b)});
+  $("#brF1").className="fb";$("#brQ2wrap").hidden=true;$("#brExp").className="explain";
+  const q2=$("#brQ2");q2.innerHTML="";s.q2.map((o,i)=>[o,i]).sort((a,b)=>rnd(a[1]+bi*7)-rnd(b[1]+bi*7)).forEach(([o])=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];b.onclick=()=>brA2(o,b);q2.appendChild(b)});
+  $("#brF2").className="fb";$("#brCap").textContent="Press Show me to compare a normal clot with this patient's.";
+  const sc=brState.filter(x=>x.a2!==null).length;const ft=brState.filter(x=>x.a2!==null&&x.first).length;$("#brScore").innerHTML=`Solved: ${sc} of ${BR.length} · both parts right first try: ${ft}`;
+  $("#brPrev").disabled=bi===0;$("#brNext").textContent=bi===BR.length-1?"Back to scenario 1":"Next scenario →"}
+function brA1(i,b){const s=BR[bi],S=brState[bi];const f=$("#brF1");$("#brQ1").querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+  if(i===s.a1){b.classList.add("right");f.className="fb show ok";f.textContent="✓ "+s.f1[i];S.a1=i;$("#brQ2wrap").hidden=false}else{b.classList.add("wrong");f.className="fb show no";f.textContent="Not quite. "+s.f1[i];S.first=false}}
+function brA2(o,b){const s=BR[bi],S=brState[bi];const f=$("#brF2");$("#brQ2").querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+  if(o[1]){b.classList.add("right");f.className="fb show ok";f.textContent="✓ "+o[2];S.a2=1;$("#brExp").innerHTML=s.exp;$("#brExp").className="explain show";if(!brShown)brShow();brRender2()}else{b.classList.add("wrong");f.className="fb show no";f.textContent="Not quite. "+o[2];S.first=false}}
+function brRender2(){const sc=brState.filter(x=>x.a2!==null).length;const ft=brState.filter(x=>x.a2!==null&&x.first).length;$("#brScore").innerHTML=`Solved: ${sc} of ${BR.length} · both parts right first try: ${ft}`;
+  [...$("#brChips").children].forEach((c,i)=>c.classList.toggle("done",brState[i].a2!==null));if(sc===BR.length){const st=ft>=5?3:ft>=3?2:1;$("#brScore").innerHTML+=` <span class="stars" style="font-size:16px">${"★".repeat(st)}${"☆".repeat(3-st)}</span>`}}
+function brShow(){brShown=true;brT0=performance.now()}
+$("#brShow").onclick=brShow;
+$("#brPrev").onclick=()=>{if(bi>0){bi--;brShown=false;brRender()}};
+$("#brNext").onclick=()=>{bi=(bi+1)%BR.length;brShown=false;brRender()};
+const BSCHED=[["inj",0,.6],["spasm",.6,1.3],["adhere",1.3,2],["activate",2,2.5],["release",2.5,3],["aggregate",3,4.6],["tf",3,3.6],["vii",3.6,4],["xa",4,4.4],["pa",4.4,4.8],["thrombin",4.8,5.2],["fibrin",5.2,6.6],["xiii",6.6,7.2]];
+function drawBreak(now){use(S5);const T=now/1000;const t=brShown?(now-brT0)/1000:.35;const st={};BSCHED.forEach(k=>st[k[0]]=seg(t,k[1],k[2]));
+  const s=BR[bi];
+  [[0,"Normal",{plt:1,agg:1,fib:1}],[1,s.t,s.def]].forEach(([i,name,df])=>{const st2=Object.assign({},st);if(i===1)st2.wash=(1-df.fib)*seg(t,7.6,10)*(df.plt<.5?0:1);
+    ctx.save();ctx.translate(8+i*396,30);ctx.scale(.96,.96);rr(0,0,400,300,8);ctx.clip();const r=drawHemo(st2,df,T);ctx.restore();
+    rr(8+i*396,30,384,288,8);ctx.strokeStyle=i?C.warn:C.good;ctx.lineWidth=2;ctx.stroke();
+    chipText(8+i*396+110,16,name.toUpperCase(),i?C.warn:C.good);
+    if(t>7.4){label(200+i*396,300,i?"still bleeding":"bleeding stopped",{size:12.5,weight:700,align:"center",border:i?C.bad:C.good})}});
+  const cap=!brShown?"Press Show me to compare a normal clot with this patient's.":t<7.4?"Watch: spasm, platelet plug, then fibrin…":"Normal: plug + fibrin seal the cut. "+s.res;
+  if($("#brCap").textContent!==cap)$("#brCap").textContent=cap}
+$("#subSeq").onclick=()=>{$("#subSeq").setAttribute("aria-pressed","true");$("#subBreak").setAttribute("aria-pressed","false");$("#seqWrap").hidden=false;$("#brWrap").hidden=true;fitAll()};
+$("#subBreak").onclick=()=>{$("#subSeq").setAttribute("aria-pressed","false");$("#subBreak").setAttribute("aria-pressed","true");$("#seqWrap").hidden=true;$("#brWrap").hidden=false;fitAll()};
+
+/* ---------------- tabs / theme / loop ---------------- */
+let curTab="type";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;
+  ["type","match","epo","hemo"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll()});
+function fitAll(){[S1,S2,S3,S3c,S4,S5].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  try{if(curTab==="type")drawType(now);else if(curTab==="match")drawMatch(now);else if(curTab==="epo"){if(!simPaused&&!window.__manual){let n=Math.ceil(dt*simSpeed/.05);const h=dt*simSpeed/n;for(let i=0;i<n;i++)simStep(h)}drawEpo(now);drawChart();readouts()}
+    else{if(!$("#seqWrap").hidden)drawSeq(now);else drawBreak(now)}}catch(err){console.error(err)}
+  requestAnimationFrame(frame)}
+/* test hooks */
+window.__bl={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),tyAge:s=>{tyT0=performance.now()-s*1000},tyType:()=>tyList[tyI],
+  mx:d=>mxGive(d),mxRound:i=>{mxR=i;mxLoad()},mxAge:s=>{if(mxAnim)mxAnim.t0=performance.now()-s*1000},
+  sim:days=>{for(let i=0;i<days*20;i++)simStep(.05)},simS:()=>({day:sim.day,hct:sim.hct,E:sim.E,D:sim.D,done:sim.done}),
+  sq:i=>{R=i;sqNew()},sqAns:()=>$("#sqAnswer").click(),sqAge:s=>{if(sqPlayS)sqPlayS.t0=performance.now()-s*1000},sqPlay:()=>sqStartPlay(),
+  br:i=>{bi=i;brShown=false;brRender()},brAge:s=>{brShown=true;brT0=performance.now()-s*1000},sub:k=>$(k==="break"?"#subBreak":"#subSeq").click()};
+tyNewSet();mxLoad();simReset();sqNew();brRender();fitAll();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

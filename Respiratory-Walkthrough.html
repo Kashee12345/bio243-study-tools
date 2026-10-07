@@ -1,0 +1,1785 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Respiratory Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
+  /* respiratory palette */
+  --ecf:#EEF4F7;--air:#D6EAF4;--airway-edge:#B5655A;--mucosa:#E8A9A0;--mucus:#CDBF6A;--cart:#E2EBF0;--cart-edge:#8FA3B0;--lung:#F3C9C3;--lung-edge:#B5655A;--pleura:#3F84A8;--pfluid:#BFE3EF;--muscle:#C4644F;--muscle-lite:#EDBFB2;--rib:#EFE5D0;--rib-edge:#B9A88C;--skin:#F1D6C4;--skin-edge:#B88E72;--tissue:#F6EFE6;--rbc:#C2392F;--rbc-edge:#82231C;--rbc-hi:#E8877C;--deoxy:#6E2A3E;--vessel:#F2D6CF;--vessel-edge:#B5655A;--o2:#2F7FC1;--co2:#6F7F8A;--hco3:#2E8A7A;--hplus:#C4644F;--cl:#3E8E41;--h2o:#4FA3C9;--n2:#B9C2C8;--surf:#D9A520;--type1:#F2CFC7;--type2:#E39C82;--macro:#DCCDB3;--nuc:#5B3F9C;--dust:#6B5A45;--warm:#E06A2F;--cold:#4F8FD0;--palv:#2E8A7A;--ppl:#A04E8C;--vol:#D98A1C;--brain:#EAD7E3;--brain-edge:#A07890;--csf:#CFE6EF;--nerve:#C9A227;--enzyme:#7B5CC9;--heart:#C9554A;--glob-a:#D9A69C;--glob-b:#C98C8F;--glow:#F2B33B;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#121C22;--air:#1C3443;--airway-edge:#D98A7E;--mucosa:#7A4440;--mucus:#A89C54;--cart:#3E4C55;--cart-edge:#9FB3C0;--lung:#5A3236;--lung-edge:#D98A7E;--pleura:#6FB0D0;--pfluid:#23495A;--muscle:#E08A74;--muscle-lite:#6A4038;--rib:#5A5140;--rib-edge:#8F7C5E;--skin:#3A2E27;--skin-edge:#A98468;--tissue:#211D1A;--rbc:#D24C42;--rbc-edge:#F08A80;--rbc-hi:#EE9A90;--deoxy:#8A4060;--vessel:#3A2725;--vessel-edge:#D98A7E;--o2:#5AA9E6;--co2:#A8B6BE;--hco3:#3FA592;--hplus:#D9735C;--cl:#4FA052;--h2o:#7CC6E6;--n2:#8A98A2;--surf:#E8C24A;--type1:#6A4640;--type2:#B06A55;--macro:#6A5C44;--nuc:#B49BF0;--dust:#C2AE90;--warm:#F28A50;--cold:#7AB0EA;--palv:#5CC4B0;--ppl:#D186C0;--vol:#F2A93B;--brain:#3E2F3A;--brain-edge:#C59BB5;--csf:#1F3A47;--nerve:#E0BE48;--enzyme:#9A7BE0;--heart:#B85A50;--glob-a:#7A4A44;--glob-b:#6E3F48;--glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#121C22;--air:#1C3443;--airway-edge:#D98A7E;--mucosa:#7A4440;--mucus:#A89C54;--cart:#3E4C55;--cart-edge:#9FB3C0;--lung:#5A3236;--lung-edge:#D98A7E;--pleura:#6FB0D0;--pfluid:#23495A;--muscle:#E08A74;--muscle-lite:#6A4038;--rib:#5A5140;--rib-edge:#8F7C5E;--skin:#3A2E27;--skin-edge:#A98468;--tissue:#211D1A;--rbc:#D24C42;--rbc-edge:#F08A80;--rbc-hi:#EE9A90;--deoxy:#8A4060;--vessel:#3A2725;--vessel-edge:#D98A7E;--o2:#5AA9E6;--co2:#A8B6BE;--hco3:#3FA592;--hplus:#D9735C;--cl:#4FA052;--h2o:#7CC6E6;--n2:#8A98A2;--surf:#E8C24A;--type1:#6A4640;--type2:#B06A55;--macro:#6A5C44;--nuc:#B49BF0;--dust:#C2AE90;--warm:#F28A50;--cold:#7AB0EA;--palv:#5CC4B0;--ppl:#D186C0;--vol:#F2A93B;--brain:#3E2F3A;--brain-edge:#C59BB5;--csf:#1F3A47;--nerve:#E0BE48;--enzyme:#9A7BE0;--heart:#B85A50;--glob-a:#7A4A44;--glob-b:#6E3F48;--glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 170px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:14px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.legend b{font-weight:700;font-family:var(--mono);font-size:14px;line-height:1}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Respiratory System &middot; USC Upstate</div>
+    <h1>Respiratory Walkthrough</h1>
+    <p class="sub">How air gets in, how oxygen and carbon dioxide trade places, how blood carries them, and how your brainstem keeps you breathing. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 22, The Respiratory System (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Practice next in the <a href="Respiratory-Lab.html">Respiratory Lab</a>.<br>Diagrams are simplified and not to scale. Molecules, cells and the pleural space are drawn far larger than life, airways are shown with fewer branches than the real 23 levels, breathing and gas exchange are slowed or sped up so you can watch them, and volumes are OpenStax's typical young adult male values.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · The airways",col:"act1"},
+            2:{name:"Part 2 · Moving air",col:"act2"},
+            3:{name:"Part 3 · Gas exchange",col:"act3"},
+            4:{name:"Part 4 · Carrying the gases",col:"act4"},
+            5:{name:"Part 5 · Control of breathing",col:"act5"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: follow one breath of air",
+ body:`<p>The <b>respiratory system</b> has one main job: get <b>oxygen (O₂)</b> into the blood and get <b>carbon dioxide (CO₂)</b> out. Watch one bit of air travel from your nose all the way to the tiny air sacs called <b>alveoli</b>.</p>
+ <p>The airways are split into two zones:</p>
+ <ol><li>The <b>conducting zone</b> (nose to the <b>terminal bronchioles</b>) only moves, cleans, warms and moistens air. No gas exchange happens here.</li>
+ <li>The <b>respiratory zone</b> (<b>respiratory bronchioles</b>, <b>alveolar ducts</b> and <b>alveoli</b>) is where O₂ and CO₂ actually cross into and out of the blood.</li></ol>
+ <p>This walkthrough has five parts: the airways, moving air in and out, gas exchange, carrying the gases in blood, and how the brain controls breathing.</p>`,
+ analogy:"The conducting zone is the driveway and hallway of a house. The respiratory zone is the kitchen, where the real work happens. You have to pass through the hallway to get to the kitchen, but nothing gets cooked in the hallway.",
+ terms:[["Conducting zone","Airways from the nose to the terminal bronchioles. They move and condition air but do not exchange gases."],["Respiratory zone","Respiratory bronchioles, alveolar ducts and alveoli. Gas exchange happens here."],["Alveolus (plural alveoli)","A tiny air sac where O₂ and CO₂ cross between air and blood."]],
+ check:{q:"Where does gas exchange with the blood actually happen?",opts:[
+  ["In the respiratory zone: respiratory bronchioles, alveolar ducts and alveoli.",1,"Yes. Only these structures have walls thin enough, with enough capillaries, to trade O₂ and CO₂."],
+  ["In the trachea.",0,"The trachea is part of the conducting zone. Its wall is far too thick for gases to cross into blood."],
+  ["In the nasal cavity.",0,"The nasal cavity warms, moistens and filters air, but it is part of the conducting zone."],
+  ["Along the whole airway, equally.",0,"Gas exchange is limited to the respiratory zone, at the very end of the airway tree."]]},
+ caption:"One bit of air travels the whole route. Blue labels are the conducting zone. Red labels are the respiratory zone, where gas exchange happens.",
+ legend:[["accent","Conducting zone"],["bad","Respiratory zone"],["air","Air particle"]]},
+
+{act:1,scene:"upper",id:"upper",title:"Nose, pharynx and larynx",
+ body:`<p>Air enters through the <b>nostrils</b> into the <b>nasal cavity</b>. Three curled shelves of bone, the <b>nasal conchae</b>, make the air swirl. The swirling air rubs against a warm, wet <b>mucous membrane</b>. That does three jobs:</p>
+ <ol><li><b>Warms</b> the air toward body temperature (blood vessels sit just under the lining).</li><li><b>Humidifies</b> (moistens) it.</li><li><b>Filters</b> it. Dust and germs stick to the mucus.</li></ol>
+ <p>Air then passes through the <b>pharynx</b> (throat), which is shared with food, and into the <b>larynx</b> (voice box). When you <b>swallow</b>, the larynx moves up and a flap called the <b>epiglottis</b> folds down over the opening of the larynx. Food is sent into the <b>esophagus</b> instead of the airway.</p>`,
+ analogy:"The nasal cavity is like an air conditioner with a filter and a humidifier. The epiglottis is a trap door that closes over the airway every time you swallow.",
+ terms:[["Nasal conchae","Curled shelves in the nasal cavity that make air swirl against the mucous lining."],["Pharynx","The throat. A passage shared by air and food."],["Larynx","The voice box. It connects the pharynx to the trachea."],["Epiglottis","A flap that covers the larynx during swallowing so food goes into the esophagus."]],
+ check:{q:"Why does breathing through the nose condition air better than breathing through the mouth?",opts:[
+  ["The conchae make air swirl against a warm, wet, sticky mucous lining.",1,"Right. More contact with the lining means air is warmed, moistened and filtered."],
+  ["The nose adds oxygen to the air.",0,"Nothing adds oxygen. The nose only warms, moistens and filters the air."],
+  ["Gas exchange starts in the nose.",0,"The nose is in the conducting zone. Gas exchange happens only in the respiratory zone."],
+  ["The epiglottis is in the nose.",0,"The epiglottis sits at the top of the larynx, below the pharynx."]]},
+ caption:"Air swirls past the conchae: it warms (color shifts), picks up water and drops dust in the mucus. Then a swallow: the epiglottis folds down and food goes to the esophagus.",
+ legend:[["cold","Cool, dry air"],["warm","Warmed, moist air"],["dust","Dust trapped in mucus","s"],["mucus","Mucus"]]},
+
+{act:1,scene:"trachea",id:"trachea",title:"The trachea and the mucus escalator",
+ body:`<p>The <b>trachea</b> (windpipe) runs from the larynx down into the chest. It is held open by about 16 to 20 <b>C-shaped rings of hyaline cartilage</b>. The open part of the C faces the back, where the <b>esophagus</b> sits. A band of smooth muscle, the <b>trachealis</b>, spans the gap so the esophagus can bulge forward when you swallow food.</p>
+ <p>The trachea is lined by <b>pseudostratified ciliated columnar epithelium</b> with <b>goblet cells</b>. Goblet cells make sticky <b>mucus</b> that traps particles. The <b>cilia</b> beat in waves and push the mucus <b>up</b> toward the pharynx, where it is swallowed or coughed out. This is called the <b>mucociliary escalator</b>.</p>`,
+ analogy:"A vacuum hose with stiff rings to keep it from kinking, lined with a moving walkway that carries trash back out the way it came in.",
+ terms:[["C-shaped cartilage","Rings of hyaline cartilage that keep the trachea open. The open part faces the esophagus."],["Goblet cell","A cell that secretes mucus."],["Cilia","Tiny hair-like projections that beat to move mucus."],["Mucociliary escalator","Cilia moving a sheet of mucus and trapped particles up and out of the airway."]],
+ check:{q:"Cigarette smoke paralyzes cilia. What would you expect?",opts:[
+  ["Mucus builds up in the airways, so the person coughs more and gets more infections.",1,"Yes. With no escalator, coughing is the only way left to clear mucus, and trapped germs stay longer."],
+  ["The trachea collapses.",0,"The cartilage rings keep the trachea open. Cilia move mucus; they do not hold the airway open."],
+  ["Less mucus is made.",0,"Smoke actually irritates goblet cells so they make more mucus, not less."],
+  ["Food goes into the trachea.",0,"Keeping food out is the epiglottis's job, not the cilia's."]]},
+ caption:"Front view: C-shaped cartilage rings. Cross section: the open side of the C faces the esophagus. Zoom: cilia beat in waves and carry mucus and dust upward.",
+ legend:[["cart","Hyaline cartilage"],["muscle","Trachealis (smooth muscle)"],["mucus","Mucus"],["dust","Trapped dust","s"]]},
+
+{act:1,scene:"tree",id:"tree",title:"The bronchial tree, down to the alveoli",
+ body:`<p>The trachea splits into the right and left <b>primary bronchi</b>. They keep branching into smaller and smaller tubes: secondary and tertiary bronchi, then <b>bronchioles</b> (less than about 1 mm across). There are about 23 levels of branching, so it is called the <b>bronchial tree</b>.</p>
+ <p>As the tubes get smaller, <b>cartilage</b> goes from rings, to plates, to none at all. <b>Smooth muscle</b> becomes more important, so bronchioles can widen or narrow.</p>
+ <p>The last tubes of the conducting zone are the <b>terminal bronchioles</b>. After them come the <b>respiratory bronchioles</b> (with a few alveoli in their walls), the <b>alveolar ducts</b>, and finally clusters of alveoli called <b>alveolar sacs</b>.</p>`,
+ analogy:"An upside-down tree. The trunk is the trachea, the big branches are bronchi, the twigs are bronchioles, and the grapes hanging at the tips are the alveoli.",
+ terms:[["Bronchi","The large branches of the airway after the trachea. They have cartilage."],["Bronchioles","Small airways with no cartilage and a lot of smooth muscle."],["Terminal bronchiole","The last airway of the conducting zone."],["Respiratory bronchiole","The first airway of the respiratory zone. It has a few alveoli."]],
+ check:{q:"Which is the first structure of the respiratory zone?",opts:[
+  ["The respiratory bronchiole.",1,"Right. It is the first airway with alveoli in its wall, so it is the first place gas exchange can happen."],
+  ["The terminal bronchiole.",0,"Close. The terminal bronchiole is the LAST part of the conducting zone. The next tube, the respiratory bronchiole, starts the respiratory zone."],
+  ["The primary bronchus.",0,"Primary bronchi are big and have cartilage. They are early in the conducting zone."],
+  ["The larynx.",0,"The larynx is far up in the conducting zone."]]},
+ caption:"An air particle travels down the branching tree. Cartilage fades out as the tubes shrink. It crosses from the conducting zone into the respiratory zone and reaches an alveolar sac.",
+ legend:[["cart","Cartilage"],["muscle","Smooth muscle"],["air","Air particle"],["bad","Respiratory zone starts here","dl"]]},
+
+{act:1,scene:"alveoli",id:"alveoli",title:"Inside the alveoli: three kinds of cells",
+ body:`<p>You have about 300 million alveoli. Each one is wrapped in a net of <b>capillaries</b>. Three kinds of cells live here:</p>
+ <ol><li><b>Type I alveolar cells</b> are very thin, flat squamous cells. They make up about 97% of the alveolar surface. Their thinness is what makes gas exchange fast.</li>
+ <li><b>Type II alveolar cells</b> are scattered among them. They secrete <b>surfactant</b>, a mix of phospholipids and proteins. Surfactant lowers the <b>surface tension</b> of the thin water layer lining each alveolus. Without it, the water would pull the alveolus shut and it would <b>collapse</b>.</li>
+ <li><b>Alveolar macrophages</b> wander along the walls and eat (phagocytize) dust and germs that made it past the mucus.</li></ol>`,
+ analogy:"Surfactant is like adding dish soap to water. Soap lowers surface tension, so a soapy bubble can stay open instead of being pulled flat.",
+ terms:[["Type I alveolar cell","Thin squamous cell that forms most of the alveolar wall. The site of gas exchange."],["Type II alveolar cell","Cell that secretes surfactant."],["Surfactant","Phospholipids and proteins that lower surface tension so alveoli do not collapse."],["Alveolar macrophage","Immune cell that eats debris and germs in the alveoli."]],
+ check:{q:"A baby born at 28 weeks has trouble keeping its alveoli open. Which cells are not working well yet?",opts:[
+  ["Type II alveolar cells, which make surfactant.",1,"Yes. Premature babies often lack enough surfactant, so alveoli collapse with each breath (infant respiratory distress syndrome)."],
+  ["Type I alveolar cells, which make surfactant.",0,"Type I cells form the thin wall for gas exchange. Surfactant comes from type II cells."],
+  ["Alveolar macrophages.",0,"Macrophages clean the alveoli. They do not hold them open."],
+  ["Goblet cells in the trachea.",0,"Goblet cells make mucus in the conducting zone. The problem is in the alveoli."]]},
+ caption:"Type I cells form the thin wall. Type II cells release surfactant (gold film). A macrophage crawls over and eats a dust particle. Inset: without surfactant, an alveolus is pulled shut.",
+ legend:[["type1","Type I cell"],["type2","Type II cell"],["surf","Surfactant","s"],["macro","Alveolar macrophage"],["o2","O₂"]]},
+
+{act:1,scene:"membrane",id:"membrane",title:"The respiratory membrane",
+ body:`<p>Between the air in an alveolus and the blood in a capillary is the <b>respiratory membrane</b>. It is only about <b>0.5 micrometers</b> thick, much thinner than a sheet of tissue paper.</p>
+ <p>It has three layers: the <b>alveolar wall</b> (type I cells), the <b>fused basement membranes</b>, and the <b>capillary wall</b> (endothelium). O₂ and CO₂ cross it by <b>simple diffusion</b>, each moving from where its pressure is higher to where it is lower.</p>
+ <p>Diffusion is fastest when the membrane is <b>thin</b>, its <b>surface area</b> is large (your alveoli together cover about 70 square meters), and the pressure difference is big. Anything that thickens the membrane, like fluid or scarring, slows exchange.</p>`,
+ analogy:"A screen door between two rooms. A thin screen with lots of area lets air pass easily. Thicken the screen or shrink the door, and less gets through.",
+ terms:[["Respiratory membrane","Alveolar wall + fused basement membranes + capillary wall. About 0.5 µm thick."],["Simple diffusion","Movement of a substance from higher to lower concentration or pressure, with no energy used."],["Surface area","The total area for exchange. Bigger area means more gas crosses each second."]],
+ check:{q:"Pneumonia fills alveoli with fluid and thickens the respiratory membrane. What happens to O₂ diffusion?",opts:[
+  ["It slows, because O₂ has a longer distance to travel.",1,"Right. Thicker membrane means slower diffusion, so blood can leave the lung less loaded with O₂."],
+  ["It speeds up, because fluid carries O₂ better than air.",0,"Fluid adds distance. Diffusion through a thicker layer is slower."],
+  ["It does not change, because diffusion needs no energy.",0,"Diffusion needs no ATP, but its rate still depends on distance, area and the pressure difference."],
+  ["O₂ starts using active transport instead.",0,"Gases cross the respiratory membrane only by simple diffusion."]]},
+ caption:"Zoomed in on the respiratory membrane. O₂ diffuses down into the blood, CO₂ diffuses up into the alveolus. Red blood cells turn brighter red as they load O₂.",
+ legend:[["air","Alveolar air"],["type1","Alveolar wall (type I cell)"],["rule","Fused basement membranes","s"],["vessel-edge","Capillary wall"],["o2","O₂"],["co2","CO₂"]]},
+
+{act:2,scene:"pressures",id:"pleura",title:"Pleura and the pressures that keep lungs open",
+ body:`<p>Each lung sits in its own <b>pleural cavity</b>. The <b>visceral pleura</b> covers the lung. The <b>parietal pleura</b> lines the chest wall and diaphragm. Between them is a thin film of <b>pleural fluid</b>. It lets the layers slide without friction and makes them stick together, like two wet glass slides.</p>
+ <p>Four pressures matter (OpenStax uses mm Hg):</p>
+ <ol><li><b>Atmospheric pressure</b>: the air around you, about <b>760 mm Hg</b> at sea level.</li>
+ <li><b>Intra-alveolar</b> (intrapulmonary) pressure: the pressure inside the alveoli. Between breaths it equals atmospheric pressure.</li>
+ <li><b>Intrapleural pressure</b>: the pressure in the pleural cavity. It is <b>always lower</b> than intra-alveolar pressure, about <b>4 mm Hg lower</b> (about 756). The lungs' elastic tissue pulls inward while the chest wall pulls outward, and this tug keeps the pleural pressure low.</li>
+ <li><b>Transpulmonary pressure</b> = intra-alveolar minus intrapleural. This difference is what <b>holds the lungs open</b>.</li></ol>`,
+ analogy:"Two panes of wet glass stuck together. You can slide them, but it is hard to pull them apart. The chest wall pulls one pane outward, so the lung (the other pane) is held stretched open.",
+ terms:[["Visceral / parietal pleura","Membrane on the lung surface / membrane lining the chest wall."],["Intrapleural pressure","Pressure in the pleural cavity. Always lower than intra-alveolar pressure."],["Transpulmonary pressure","Intra-alveolar minus intrapleural pressure. It keeps the lungs inflated."]],
+ check:{q:"Intra-alveolar pressure is 760 mm Hg and intrapleural pressure is 756 mm Hg. What is the transpulmonary pressure?",opts:[
+  ["4 mm Hg",1,"Yes. 760 − 756 = 4 mm Hg. That positive difference holds the lung open."],
+  ["1,516 mm Hg",0,"Transpulmonary pressure is a difference, so subtract instead of add."],
+  ["−4 mm Hg",0,"Order matters: intra-alveolar minus intrapleural, 760 − 756 = +4."],
+  ["0 mm Hg",0,"Zero would mean nothing holds the lung open. That is what happens in a collapsed lung."]]},
+ caption:"Pleural fluid (blue) between the pleurae. Gauges: atmospheric 760, intra-alveolar near 760, intrapleural always lower. Arrows: lungs recoil inward, chest wall pulls outward.",
+ legend:[["pleura","Pleura (two layers)"],["pfluid","Pleural fluid","s"],["palv","Intra-alveolar pressure"],["ppl","Intrapleural pressure"]]},
+
+{act:2,scene:"boyle",id:"boyle",title:"Boyle's law: bigger space, lower pressure",
+ body:`<p>Air moves by <b>pressure differences</b>. It always flows from higher pressure to lower pressure.</p>
+ <p><b>Boyle's law</b> says that in a closed container, gas <b>pressure and volume are inversely related</b>. If the volume goes up, the gas molecules are more spread out and hit the walls less often, so <b>pressure goes down</b>. If the volume goes down, pressure goes up.</p>
+ <p>Your lungs use exactly this rule. You never "suck" air in. You make your chest bigger, the pressure inside falls a little below atmospheric pressure, and air flows in by itself.</p>`,
+ analogy:"A syringe. Pull the plunger back and the space gets bigger, the pressure inside drops, and fluid rushes in. Push it in and the pressure rises and pushes fluid out.",
+ terms:[["Boyle's law","At a constant temperature, gas pressure × volume stays constant: P₁V₁ = P₂V₂."],["Pressure gradient","A difference in pressure that makes air flow from high to low."]],
+ check:{q:"The piston pulls back and the volume of the cylinder doubles. What happens to the pressure?",opts:[
+  ["It falls to about half.",1,"Right. Pressure and volume are inversely related, so doubling the volume halves the pressure."],
+  ["It doubles.",0,"That is the opposite. More room means fewer hits on the walls, so pressure drops."],
+  ["It stays the same.",0,"In a closed container, changing the volume always changes the pressure."],
+  ["It drops to zero.",0,"The molecules are still there and still hitting the walls, just less often."]]},
+ caption:"Gas particles bounce inside a cylinder. As the piston moves out, they hit the walls less often and the gauge falls. The point slides along the P–V curve.",
+ legend:[["co2","Gas particle"],["accent","Pressure"]]},
+
+{act:2,scene:"inspire",id:"inspire",title:"Inspiration: breathing in",
+ body:`<p>Quiet <b>inspiration</b> is an <b>active</b> process. It needs muscle contraction:</p>
+ <ol><li>The <b>diaphragm</b> contracts. Its dome <b>flattens</b> and moves down. This does most of the work.</li>
+ <li>The <b>external intercostal muscles</b> contract and lift the ribs up and out.</li>
+ <li>The <b>thoracic cavity gets bigger</b>. Because the pleurae stick together, the lungs are pulled bigger too.</li>
+ <li>By Boyle's law, <b>intra-alveolar pressure falls</b> to about 759 mm Hg, about 1 mm Hg <b>below atmospheric</b>.</li>
+ <li>Air <b>flows in</b> until the pressures are equal again.</li></ol>
+ <p>Intrapleural pressure also becomes a little more negative during inspiration, which stretches the lungs open even more.</p>`,
+ analogy:"Pulling back the plunger on a syringe. The diaphragm is the plunger, and air follows the pressure drop.",
+ terms:[["Diaphragm","Dome-shaped skeletal muscle under the lungs. The main muscle of inspiration."],["External intercostals","Muscles between the ribs that lift the rib cage during inspiration."],["Inspiration","Breathing in. Active: uses muscle contraction."]],
+ check:{q:"Put the cause and effect in order: what makes air flow into the lungs?",opts:[
+  ["Muscles enlarge the chest → lung volume rises → alveolar pressure falls below atmospheric → air flows in.",1,"Yes. Volume change comes first, then the pressure change, then the airflow."],
+  ["Air flows in → the lungs get bigger → the diaphragm is pushed down.",0,"Air cannot flow in until a pressure difference exists. The muscles act first."],
+  ["Alveolar pressure rises above atmospheric → air flows in.",0,"Air flows from high to low. If alveolar pressure were higher, air would flow out."],
+  ["The lungs contract and pull air in.",0,"Lungs have no muscle of their own. They are stretched by the chest wall through the pleurae."]]},
+ caption:"Diaphragm flattens and moves down, external intercostals lift the ribs. Chest and lungs get bigger, alveolar pressure dips to about 759 mm Hg, and air flows in.",
+ legend:[["muscle","Diaphragm (contracting)"],["glow","External intercostals"],["air","Air flowing in"],["palv","Intra-alveolar pressure"]]},
+
+{act:2,scene:"expire",id:"expire",title:"Expiration, quiet and forced",
+ body:`<p>Quiet <b>expiration</b> is <b>passive</b>. The diaphragm and external intercostals simply <b>relax</b>. The stretched elastic fibers in the lungs <b>recoil</b>, like a stretched rubber band snapping back. The chest gets smaller, intra-alveolar pressure rises to about 761 mm Hg, just above atmospheric, and air flows out.</p>
+ <p><b>Forced breathing</b> (exercise, blowing out candles) adds more muscles:</p>
+ <ol><li><b>Forced inspiration</b>: accessory muscles in the neck and chest, such as the <b>scalenes</b>, <b>sternocleidomastoid</b> and <b>pectoralis minor</b>, lift the ribs even higher.</li>
+ <li><b>Forced expiration</b>: the <b>internal intercostals</b> pull the ribs down, and the <b>abdominal muscles</b> squeeze the belly, pushing the diaphragm up. Now expiration is active.</li></ol>`,
+ analogy:"Quiet expiration is letting go of a stretched rubber band. Forced expiration is squeezing a balloon with both hands to empty it faster.",
+ terms:[["Elastic recoil","The lungs' tendency to spring back to a smaller size after being stretched."],["Accessory muscles","Extra muscles (scalenes, sternocleidomastoid, pectoralis minor) used in forced inspiration."],["Internal intercostals","Muscles that pull the ribs down during forced expiration."]],
+ check:{q:"During quiet expiration, which muscles must contract?",opts:[
+  ["None. Muscles relax and the lungs recoil on their own.",1,"Right. Quiet expiration is passive. Only forced expiration uses muscles."],
+  ["The diaphragm.",0,"The diaphragm contracts during inspiration. In quiet expiration it relaxes and domes back up."],
+  ["The internal intercostals and abdominal muscles.",0,"Those are used in FORCED expiration, not quiet breathing."],
+  ["The sternocleidomastoid.",0,"That is an accessory muscle of forced inspiration."]]},
+ caption:"Quiet breath out: muscles relax and the lungs recoil, alveolar pressure rises to about 761 mm Hg. Then a forced breath: neck muscles lift the ribs, then abdominal muscles push the diaphragm up.",
+ legend:[["muscle","Muscle working"],["air","Air flowing out"],["palv","Intra-alveolar pressure"]]},
+
+{act:2,scene:"pneumo",id:"pneumo",title:"Pneumothorax: when the seal breaks",
+ body:`<p>The lung stays inflated only because intrapleural pressure is lower than intra-alveolar pressure. If air gets into the pleural cavity, from a stab wound, a broken rib, or a weak spot that bursts, intrapleural pressure rises to <b>atmospheric pressure</b>.</p>
+ <p>Now transpulmonary pressure is <b>zero</b>. Nothing holds that lung open, and its elastic recoil makes it <b>collapse</b>. This is a <b>pneumothorax</b> ("air in the chest").</p>
+ <p>Each lung has its own pleural cavity, so usually only one lung collapses. Treatment often uses a <b>chest tube</b> to remove the air, so the low pressure returns and the lung re-expands.</p>`,
+ analogy:"Two wet glass slides stick together. Slip a bubble of air between them, and they fall apart.",
+ terms:[["Pneumothorax","Air in the pleural cavity, which can collapse the lung."],["Atelectasis","Collapse of all or part of a lung."],["Chest tube","A tube placed in the pleural cavity to remove air or fluid."]],
+ check:{q:"Why does air in the pleural cavity make the lung collapse?",opts:[
+  ["Intrapleural pressure rises to atmospheric, so transpulmonary pressure becomes zero and the lung recoils.",1,"Yes. The pressure difference that held the lung open is gone."],
+  ["The air crushes the lung with very high pressure.",0,"The air is only at atmospheric pressure. The lung collapses because of its own recoil once nothing holds it open."],
+  ["The diaphragm stops contracting.",0,"The diaphragm still works. The problem is the lost pleural seal."],
+  ["Both lungs always collapse together.",0,"Each lung has its own pleural cavity, so usually only one side collapses."]]},
+ caption:"A puncture lets air into the right pleural cavity. Its pressure rises to 760, the seal breaks and that lung recoils and collapses. A chest tube removes the air and the lung re-expands.",
+ legend:[["ppl","Intrapleural pressure"],["pfluid","Pleural fluid","s"],["panel","Air in the pleural cavity","s"]]},
+
+{act:2,scene:"rc",id:"rc",title:"Airway resistance and lung compliance",
+ body:`<p>Two things decide how easy breathing is:</p>
+ <ol><li><b>Airway resistance</b>: how hard it is for air to flow through the tubes. The main factor is the <b>diameter</b> of the airways. In <b>asthma</b>, bronchiole smooth muscle tightens (bronchoconstriction) and mucus builds up, so resistance rises and air moves slowly, especially out.</li>
+ <li><b>Compliance</b>: how easily the lungs <b>stretch</b>. High compliance means a small push gives a big volume change. Scar tissue (fibrosis) or <b>too little surfactant</b> lowers compliance, so the lungs are stiff and each breath is hard work.</li></ol>
+ <p>Healthy lungs also need <b>elastic recoil</b> to breathe out. In <b>emphysema</b>, elastic fibers are destroyed: the lungs stretch easily but do not spring back, so air gets trapped.</p>`,
+ analogy:"Resistance is drinking through a thin coffee stirrer instead of a wide straw. Compliance is blowing up a new, stiff balloon versus one that has been stretched many times.",
+ terms:[["Airway resistance","Opposition to airflow. Mostly set by airway diameter."],["Bronchoconstriction","Narrowing of bronchioles when their smooth muscle contracts."],["Compliance","How easily the lungs stretch. Low in fibrosis and when surfactant is missing."]],
+ check:{q:"Which change would make a lung LESS compliant (stiffer)?",opts:[
+  ["Losing surfactant.",1,"Right. Without surfactant, surface tension pulls hard on alveoli, so it takes more effort to inflate them."],
+  ["Relaxing bronchiole smooth muscle.",0,"That widens airways and lowers resistance. It does not change how stretchy the lungs are."],
+  ["Destroying elastic fibers, as in emphysema.",0,"That makes lungs MORE compliant (easy to stretch) but with poor recoil."],
+  ["Breathing more slowly.",0,"Breathing rate does not change how stretchy the lung tissue is."]]},
+ caption:"Left: air particles squeeze through a narrowed bronchiole (high resistance) versus a wide one. Right: the same push stretches a compliant lung a lot and a stiff lung only a little.",
+ legend:[["air","Air particles"],["muscle","Bronchiole smooth muscle"],["mucus","Mucus"],["surf","Surfactant","s"]]},
+
+{act:2,scene:"spiro",id:"spiro",title:"Respiratory volumes and capacities",
+ body:`<p>A <b>spirometer</b> measures how much air moves in and out. The trace is a <b>spirogram</b>. OpenStax values for a young adult male:</p>
+ <ol><li><b>Tidal volume (TV)</b>: a normal quiet breath, about <b>500 mL</b>.</li>
+ <li><b>Inspiratory reserve volume (IRV)</b>: the extra you can force in after a normal breath, about <b>3,100 mL</b>.</li>
+ <li><b>Expiratory reserve volume (ERV)</b>: the extra you can force out after a normal breath out, about <b>1,200 mL</b>.</li>
+ <li><b>Residual volume (RV)</b>: air that <b>stays</b> in the lungs even after the hardest breath out, about <b>1,200 mL</b>. It keeps alveoli from collapsing.</li></ol>
+ <p><b>Capacities</b> are sums of volumes: <b>vital capacity</b> = TV + IRV + ERV (about 4,800 mL), <b>inspiratory capacity</b> = TV + IRV, <b>functional residual capacity</b> = ERV + RV, and <b>total lung capacity</b> = all four (about 6,000 mL). Values are lower in females and vary with size and age.</p>`,
+ analogy:"A gas tank you never fully empty. Tidal volume is your daily driving, the reserves are what you can use in an emergency, and residual volume is the gas you can never pump out.",
+ terms:[["Tidal volume","Air moved in one quiet breath, about 500 mL."],["Residual volume","Air left in the lungs after a maximal exhale, about 1,200 mL."],["Vital capacity","TV + IRV + ERV. The most air you can move in one breath."],["Total lung capacity","All four volumes added together, about 6,000 mL."]],
+ check:{q:"Why can a spirometer NOT measure residual volume directly?",opts:[
+  ["Residual volume never leaves the lungs, so it never passes through the spirometer.",1,"Yes. The spirometer only measures air that moves. RV and the capacities that include it (FRC, TLC) need other methods."],
+  ["Residual volume is too small to measure.",0,"It is about 1,200 mL, bigger than tidal volume. It just never comes out."],
+  ["Residual volume is only present during inspiration.",0,"It is present all the time, even after the deepest exhale."],
+  ["Residual volume is measured in the blood, not the air.",0,"It is air. It just cannot be breathed out."]]},
+ caption:"The pen draws quiet breaths, then a maximal breath in and a maximal breath out. Brackets mark each volume, then the capacities. The shaded band at the bottom is residual volume.",
+ legend:[["vol","Spirogram trace"],["act1","Tidal volume"],["act2","Reserve volumes"],["co2","Residual volume","s"]]},
+
+{act:3,scene:"gaslaws",id:"gaslaws",title:"Dalton's law and Henry's law",
+ body:`<p><b>Dalton's law</b>: in a mixture of gases, each gas pushes with its own <b>partial pressure</b>, and they add up to the total pressure. Air at sea level is 760 mm Hg. It is about 78.6% nitrogen and 20.9% oxygen, so the partial pressure of O₂ (<b>PO₂</b>) is about <b>160 mm Hg</b> (0.209 × 760).</p>
+ <p><b>Henry's law</b>: the amount of a gas that <b>dissolves in a liquid</b> depends on its partial pressure and how <b>soluble</b> it is. Raise the partial pressure, and more gas dissolves. CO₂ is about <b>20 times more soluble</b> than O₂ in water and blood.</p>
+ <p>Together these explain gas exchange: each gas moves on its own, from where its partial pressure is higher to where it is lower.</p>`,
+ analogy:"Dalton: a team tug-of-war where each player pulls with their own strength, and the total pull is everyone added up. Henry: a soda bottle. Under high CO₂ pressure, lots of gas stays dissolved. Open the cap, the pressure falls, and bubbles come out.",
+ terms:[["Partial pressure","The pressure from one gas in a mixture. Written PO₂, PCO₂."],["Dalton's law","Total pressure of a gas mixture = the sum of the partial pressures."],["Henry's law","Gas dissolved in a liquid depends on its partial pressure and solubility."]],
+ check:{q:"At the top of a mountain, air is still about 21% O₂, but total pressure is lower. What happens to PO₂?",opts:[
+  ["It falls, because 21% of a smaller total is a smaller number.",1,"Right. That is Dalton's law. Less O₂ partial pressure means less O₂ is pushed into the blood."],
+  ["It stays at 160 mm Hg because the percent is the same.",0,"Partial pressure depends on both the percent and the total pressure."],
+  ["It rises, because cold air holds more oxygen.",0,"Temperature is not the issue. The total pressure is lower, so PO₂ is lower."],
+  ["It falls because the air has less than 21% O₂.",0,"The percent of O₂ is the same at altitude. Only the total pressure changes."]]},
+ caption:"Left: a sample of air. Each gas adds its own partial pressure to the 760 mm Hg total. Right: pressing the piston raises partial pressure, and more gas dissolves. CO₂ dissolves much more than O₂.",
+ legend:[["n2","Nitrogen (N₂)"],["o2","Oxygen (O₂)"],["co2","Carbon dioxide (CO₂)"],["h2o","Water"]]},
+
+{act:3,scene:"external",id:"external",title:"External respiration: in the lungs",
+ body:`<p><b>External respiration</b> is gas exchange between the <b>alveoli</b> and the <b>pulmonary capillaries</b>.</p>
+ <ol><li>Alveolar air has a PO₂ of about <b>104 mm Hg</b>. Blood arriving from the body has a PO₂ of only about <b>40 mm Hg</b>. O₂ diffuses <b>into the blood</b>.</li>
+ <li>Arriving blood has a PCO₂ of about <b>45 mm Hg</b>. Alveolar air has about <b>40 mm Hg</b>. CO₂ diffuses <b>out of the blood</b> into the alveoli.</li></ol>
+ <p>The CO₂ gradient is small (only 5 mm Hg), but CO₂ is so soluble that it still crosses easily. Exchange is so fast that blood is usually fully loaded in the first third of the capillary, so there is spare time during exercise.</p>`,
+ analogy:"Two crowded rooms with a door between them. People drift from the packed room to the emptier one. O₂ is crowded in the alveolus, so it drifts into the blood. CO₂ is crowded in the blood, so it drifts out.",
+ terms:[["External respiration","Gas exchange between alveolar air and pulmonary capillary blood."],["PO₂ gradient","Alveolar 104 vs. arriving blood 40 mm Hg. O₂ moves into blood."],["PCO₂ gradient","Arriving blood 45 vs. alveolar 40 mm Hg. CO₂ moves out of blood."]],
+ check:{q:"Blood arriving at the lungs has PO₂ 40 mm Hg. Alveolar PO₂ is 104 mm Hg. Which way does O₂ move?",opts:[
+  ["From the alveolus into the blood.",1,"Yes. Gas diffuses from higher partial pressure (104) to lower (40)."],
+  ["From the blood into the alveolus.",0,"That is the direction for CO₂. O₂ moves from 104 toward 40."],
+  ["It does not move, because the membrane blocks O₂.",0,"The respiratory membrane is very thin and lets O₂ cross easily."],
+  ["It moves only when the person breathes in.",0,"Exchange goes on all the time, because alveolar air always has a higher PO₂ than arriving blood."]]},
+ caption:"Blood enters at PO₂ 40 / PCO₂ 45 (dark red). O₂ diffuses in, CO₂ diffuses out. Blood leaves near the alveolar values, bright red. The graph shows PO₂ rising fast along the capillary.",
+ legend:[["o2","O₂"],["co2","CO₂"],["deoxy","Blood low in O₂"],["rbc","Blood rich in O₂"]]},
+
+{act:3,scene:"internal",id:"internal",title:"Internal respiration: in the tissues",
+ body:`<p><b>Internal respiration</b> is gas exchange between <b>systemic capillaries</b> and the <b>body's cells</b>. Cells constantly use O₂ and make CO₂ in cellular respiration, so the gradients run the other way:</p>
+ <ol><li>Arriving blood: PO₂ about <b>100 mm Hg</b>. Tissue: PO₂ about <b>40 mm Hg</b>. O₂ diffuses <b>out of the blood</b> into the cells.</li>
+ <li>Tissue PCO₂ is about <b>45 mm Hg</b>, higher than the arriving blood's <b>40 mm Hg</b>. CO₂ diffuses <b>into the blood</b>.</li></ol>
+ <p>Blood leaves the tissues with PO₂ about 40 and PCO₂ about 45, and heads back to the heart and lungs. At rest, blood still has about 75% of its O₂ when it leaves, a reserve for exercise.</p>`,
+ analogy:"A delivery truck dropping off packages (O₂) and picking up trash (CO₂) at every house, then driving back to the depot (the lungs).",
+ terms:[["Internal respiration","Gas exchange between systemic capillary blood and tissue cells."],["Cellular respiration","Using O₂ to make ATP inside cells. It produces CO₂."]],
+ check:{q:"A muscle is working hard and its PO₂ falls to 20 mm Hg. What happens to O₂ delivery?",opts:[
+  ["More O₂ diffuses into the muscle, because the gradient from blood is bigger.",1,"Right. A bigger difference in partial pressure drives faster diffusion."],
+  ["Less O₂ diffuses, because the muscle is out of O₂.",0,"Lower tissue PO₂ actually pulls MORE O₂ out of the blood."],
+  ["O₂ moves backward, from the muscle into the blood.",0,"O₂ always moves from higher PO₂ (blood, about 100) to lower PO₂ (muscle, now 20)."],
+  ["Nothing changes. Delivery is fixed.",0,"Diffusion depends on the gradient, which grows when tissue PO₂ falls."]]},
+ caption:"Blood arrives at PO₂ 100 / PCO₂ 40. Muscle cells use O₂ and make CO₂. O₂ diffuses out of blood, CO₂ diffuses in. Blood leaves at about 40 / 45, darker red.",
+ legend:[["o2","O₂"],["co2","CO₂"],["muscle-lite","Tissue cell","s"],["muscle","Mitochondria"]]},
+
+{act:3,scene:"vq",id:"vq",title:"Matching air to blood (ventilation–perfusion)",
+ body:`<p>Gas exchange works best when the <b>air reaching an alveolus</b> (ventilation) matches the <b>blood flowing past it</b> (perfusion). The lungs adjust both automatically:</p>
+ <ol><li>If an alveolus gets <b>too little air</b>, its PO₂ falls. The small pulmonary arterioles feeding it <b>constrict</b>, sending blood to better-ventilated alveoli. (This is the opposite of the rest of the body, where low O₂ makes arterioles dilate.)</li>
+ <li>If CO₂ builds up in an airway, the <b>bronchioles dilate</b> so more air can reach that area and flush the CO₂ out.</li></ol>`,
+ analogy:"A restaurant manager seating guests only at tables where there are waiters. There is no point sending blood to an alveolus that has no fresh air.",
+ terms:[["Ventilation","Air movement into and out of the alveoli."],["Perfusion","Blood flow through the pulmonary capillaries."],["Ventilation–perfusion coupling","Matching airflow and blood flow so exchange stays efficient."]],
+ check:{q:"A mucus plug blocks air to one group of alveoli. What do their pulmonary arterioles do?",opts:[
+  ["Constrict, so blood is sent to alveoli that still get air.",1,"Yes. Low alveolar PO₂ makes pulmonary arterioles constrict."],
+  ["Dilate, to send more blood there.",0,"That happens in body tissues, but in the lungs low O₂ makes arterioles constrict."],
+  ["Stay the same.",0,"The lungs actively redirect blood away from poorly ventilated alveoli."],
+  ["Close the bronchioles too.",0,"Bronchioles respond to CO₂, and they dilate when CO₂ is high."]]},
+ caption:"Left alveolus gets air; right one is blocked by mucus. Its PO₂ drops, its arteriole squeezes down, and more blood (red dots) is sent to the alveolus that has air.",
+ legend:[["air","Fresh air"],["mucus","Mucus plug"],["rbc","Blood flow"],["muscle","Arteriole smooth muscle"]]},
+
+{act:4,scene:"o2trans",id:"o2trans",title:"How blood carries oxygen",
+ body:`<p>O₂ does not dissolve well in plasma. Only about <b>1.5%</b> of the O₂ in blood is dissolved. About <b>98.5%</b> is bound to <b>hemoglobin (Hb)</b> inside red blood cells.</p>
+ <p>Each hemoglobin molecule has <b>four heme groups</b>, each with an <b>iron</b> atom that can hold one O₂. So one Hb can carry up to four O₂. Hb with O₂ bound is <b>oxyhemoglobin</b>. Each red blood cell holds about 250 million Hb molecules.</p>
+ <p><b>Percent saturation</b> tells how many of the binding sites are full. Blood leaving the lungs is about <b>98% saturated</b>. Binding is <b>cooperative</b>: once one O₂ binds, the next ones bind more easily.</p>`,
+ analogy:"Hemoglobin is a bus with four seats. Plasma is walking: only a few O₂ can travel that way. Almost all of them take the bus.",
+ terms:[["Hemoglobin","Protein in red blood cells that carries O₂. Four hemes, each with an iron."],["Oxyhemoglobin","Hemoglobin with O₂ bound."],["Percent saturation","How full the hemoglobin binding sites are."],["Cooperative binding","Each O₂ that binds makes the next bind more easily."]],
+ check:{q:"About what share of the O₂ in blood is carried bound to hemoglobin?",opts:[
+  ["About 98.5%",1,"Right. Only about 1.5% is dissolved in plasma."],
+  ["About 1.5%",0,"That is the dissolved share. Almost all O₂ rides on hemoglobin."],
+  ["About 50%",0,"Far more than half is bound to hemoglobin. Plasma holds very little O₂."],
+  ["About 70%",0,"70% is the share of CO₂ carried as bicarbonate, coming up in step 19."]]},
+ caption:"A red blood cell passes through a lung capillary. O₂ binds the four hemes of each hemoglobin, one after another. The meter shows saturation rising to about 98%.",
+ legend:[["deoxy","Deoxyhemoglobin"],["rbc","Oxyhemoglobin"],["o2","O₂"],["glob-a","Globin subunit"]]},
+
+{act:4,scene:"ohdc",id:"ohdc",title:"The oxygen–hemoglobin dissociation curve",
+ body:`<p>This S-shaped curve shows how saturated hemoglobin is at each PO₂.</p>
+ <ol><li><b>Flat top</b>: in the lungs (PO₂ about 100), Hb is about 98% full. Even if PO₂ drops a bit, saturation barely changes. That is a safety margin.</li>
+ <li><b>Steep middle</b>: in tissues (PO₂ about 40), Hb is about 75% full, so it has unloaded some O₂. A small drop in PO₂ here releases a lot more O₂.</li></ol>
+ <p>The curve <b>shifts right</b> (Hb holds O₂ less tightly, so it <b>unloads more</b>) when there is: higher <b>temperature</b>, lower <b>pH</b> (more H⁺, the <b>Bohr effect</b>), higher <b>CO₂</b>, and more <b>BPG</b> (2,3-bisphosphoglycerate, made by red blood cells). That is exactly what an exercising muscle looks like, so active tissues get more O₂.</p>`,
+ analogy:"Hemoglobin is a hand holding O₂. In a hot, acidic, CO₂-filled muscle, the grip loosens and O₂ is dropped where it is needed most.",
+ terms:[["Dissociation curve","Graph of hemoglobin saturation versus PO₂."],["Right shift","Lower affinity: Hb releases O₂ more easily. Caused by ↑temperature, ↓pH, ↑CO₂, ↑BPG."],["Bohr effect","Lower pH (more H⁺) makes Hb release O₂."],["BPG","2,3-bisphosphoglycerate. Made by RBCs; helps Hb release O₂."]],
+ check:{q:"Which change shifts the curve to the RIGHT?",opts:[
+  ["A drop in pH in an exercising muscle.",1,"Yes. More H⁺ lowers Hb's affinity for O₂ (Bohr effect), so more O₂ is unloaded."],
+  ["A drop in body temperature.",0,"Cooler temperature shifts the curve LEFT, so Hb holds O₂ more tightly."],
+  ["Less CO₂ in the blood.",0,"Lower CO₂ shifts the curve left."],
+  ["Less BPG in red blood cells.",0,"Less BPG shifts the curve left. More BPG shifts it right."]]},
+ caption:"The dot moves from lungs (about 98%) to resting tissue (about 75%). Then the curve shifts right with heat, acid, CO₂ and BPG. At the same tissue PO₂, Hb now holds less, so more O₂ is unloaded.",
+ legend:[["ink-faint","Normal curve","dl"],["o2","Shifted curve"],["good","O₂ unloaded"]]},
+
+{act:4,scene:"co2",id:"co2",title:"How blood carries carbon dioxide",
+ body:`<p>CO₂ travels in blood three ways:</p>
+ <ol><li><b>Dissolved in plasma</b>: about <b>7 to 10%</b>.</li>
+ <li>Bound to hemoglobin as <b>carbaminohemoglobin</b>: about <b>20%</b>. CO₂ binds to the globin part, not the heme, so it does not compete with O₂.</li>
+ <li>As <b>bicarbonate ions (HCO₃⁻)</b>: about <b>70%</b>. Inside the red blood cell, the enzyme <b>carbonic anhydrase</b> joins CO₂ and water to make carbonic acid (H₂CO₃). It quickly splits into <b>H⁺</b> and <b>HCO₃⁻</b>.</li></ol>
+ <p>Hemoglobin soaks up the H⁺, which buffers the blood. HCO₃⁻ moves out into the plasma, and a <b>chloride ion (Cl⁻)</b> moves in to balance the charge. This swap is the <b>chloride shift</b>. In the lungs, everything runs in <b>reverse</b> and CO₂ is released to be breathed out.</p>`,
+ analogy:"Shipping CO₂ three ways: a few ride loose (dissolved), some ride on the hemoglobin bus, and most are repackaged into a different box (bicarbonate) that travels in the plasma, then unpacked at the lungs.",
+ terms:[["Carbaminohemoglobin","Hemoglobin with CO₂ bound to its globin."],["Carbonic anhydrase","Enzyme in RBCs: CO₂ + H₂O ⇌ H₂CO₃ ⇌ H⁺ + HCO₃⁻."],["Bicarbonate (HCO₃⁻)","The main form of CO₂ in blood, about 70%."],["Chloride shift","Cl⁻ moves into the RBC as HCO₃⁻ moves out."]],
+ check:{q:"Which form carries the MOST carbon dioxide in blood?",opts:[
+  ["Bicarbonate ions in the plasma (about 70%).",1,"Right. Carbonic anhydrase turns most CO₂ into bicarbonate."],
+  ["Dissolved CO₂ (about 7 to 10%).",0,"CO₂ is soluble, but only a small part travels simply dissolved."],
+  ["Carbaminohemoglobin (about 20%).",0,"That is the second-largest share, not the largest."],
+  ["Bound to the heme iron, like O₂.",0,"CO₂ binds to the globin protein, not the iron. Most CO₂ is not on hemoglobin at all."]]},
+ caption:"In the tissues, CO₂ enters a red blood cell. Some stays dissolved, some binds hemoglobin, and most is turned into H⁺ + HCO₃⁻ by carbonic anhydrase. HCO₃⁻ leaves as Cl⁻ enters (chloride shift).",
+ legend:[["co2","CO₂"],["hco3","Bicarbonate (HCO₃⁻)","r"],["hplus","H⁺"],["cl","Cl⁻"],["enzyme","Carbonic anhydrase","d"]]},
+
+{act:5,scene:"centers",id:"centers",title:"The brainstem sets the rhythm",
+ body:`<p>Breathing is controlled by <b>respiratory centers</b> in the brainstem. You can override them for a while (holding your breath, talking), but they run on their own when you are not thinking about it.</p>
+ <ol><li>In the <b>medulla oblongata</b>, the <b>dorsal respiratory group (DRG)</b> sets the basic rhythm. It sends bursts of signals down the <b>phrenic nerve</b> to the diaphragm and the intercostal nerves to the external intercostals. Burst = inspiration. Pause = passive expiration.</li>
+ <li>The <b>ventral respiratory group (VRG)</b> in the medulla helps drive <b>forced breathing</b>, signaling the accessory and expiratory muscles.</li>
+ <li>The <b>pontine respiratory group</b> in the <b>pons</b> fine-tunes the <b>rate and depth</b>, smoothing the switch between breathing in and out.</li></ol>`,
+ analogy:"The DRG is a metronome ticking out each breath. The VRG is the extra drummer who joins in when the song gets intense. The pons is the conductor adjusting the tempo.",
+ terms:[["Dorsal respiratory group (DRG)","Medulla neurons that set the basic breathing rhythm."],["Ventral respiratory group (VRG)","Medulla neurons used mainly in forced breathing."],["Pontine respiratory group","Pons neurons that adjust rate and depth."],["Phrenic nerve","Nerve that carries signals to the diaphragm."]],
+ check:{q:"A spinal cord injury in the neck cuts off signals in the phrenic nerve. Which muscle is affected most?",opts:[
+  ["The diaphragm.",1,"Yes. The phrenic nerve carries the brainstem's signals to the diaphragm, the main breathing muscle."],
+  ["The abdominal muscles.",0,"Those are used in forced expiration and are supplied by other nerves."],
+  ["The tongue.",0,"The tongue is not controlled by the phrenic nerve."],
+  ["The trachealis.",0,"The trachealis is smooth muscle in the trachea. It is not driven by the phrenic nerve."]]},
+ caption:"DRG neurons fire a burst (inspiration), then pause (expiration). Signals travel down the phrenic nerve and the diaphragm contracts in step. The pons adjusts the pace.",
+ legend:[["nerve","Nerve signals"],["act5","DRG / VRG (medulla)"],["act1","Pontine group (pons)"],["muscle","Diaphragm"]]},
+
+{act:5,scene:"chemo",id:"chemo",title:"Chemoreceptors: sensing CO₂, H⁺ and O₂",
+ body:`<p>The respiratory centers change breathing based on blood chemistry. The <b>main driver is CO₂</b>, not O₂.</p>
+ <ol><li><b>Central chemoreceptors</b> are in the medulla. CO₂ crosses the blood–brain barrier easily into the <b>cerebrospinal fluid (CSF)</b>, where it forms H⁺. The receptors sense that <b>H⁺</b>. More CO₂ means more H⁺, which means faster, deeper breathing.</li>
+ <li><b>Peripheral chemoreceptors</b> are in the <b>aortic bodies</b> (aortic arch) and <b>carotid bodies</b> (carotid arteries). They respond to <b>CO₂</b>, <b>H⁺</b>, and <b>low O₂</b>, but O₂ only becomes a strong signal when arterial PO₂ falls <b>below about 60 mm Hg</b>.</li></ol>
+ <p>This is a <b>negative feedback loop</b>: CO₂ rises, breathing increases, extra CO₂ is breathed out, and CO₂ falls back to normal.</p>`,
+ analogy:"A smoke detector in the brain that mostly smells CO₂. The detectors in the neck and chest also check the O₂ gauge, but only sound the alarm when it is getting really low.",
+ terms:[["Central chemoreceptors","Sensors in the medulla that respond to H⁺ in the CSF, formed from CO₂."],["Peripheral chemoreceptors","Sensors in the carotid and aortic bodies. Respond to CO₂, H⁺ and PO₂ below ~60 mm Hg."],["Negative feedback","A change triggers a response that reverses the change."]],
+ check:{q:"For a healthy person at rest, what is the strongest chemical signal to breathe?",opts:[
+  ["Rising CO₂ in the blood, sensed as H⁺.",1,"Right. Even a small rise in PCO₂ strongly increases breathing."],
+  ["Falling O₂, as soon as it drops a little.",0,"Peripheral chemoreceptors do sense O₂, but only respond strongly below about 60 mm Hg."],
+  ["Rising blood glucose.",0,"Glucose does not directly control breathing."],
+  ["The amount of nitrogen in the air.",0,"Nitrogen is not sensed. CO₂ (as H⁺) is the main signal."]]},
+ caption:"Blood CO₂ rises. CO₂ crosses into the CSF and makes H⁺. Central chemoreceptors fire, breathing speeds up, CO₂ is blown off, and the level returns to normal. Peripheral sensors in the carotid and aortic bodies report too.",
+ legend:[["co2","CO₂"],["hplus","H⁺"],["csf","Cerebrospinal fluid","s"],["nerve","Sensor signals"]]},
+
+{act:5,scene:"hyper",id:"hyper",title:"Too fast, too slow, and too high",
+ body:`<p><b>Hyperventilation</b> is breathing faster or deeper than the body needs. It blows off too much CO₂, so blood PCO₂ falls and <b>pH rises</b> (respiratory alkalosis). People may feel dizzy or tingly. Blood O₂ barely changes, because hemoglobin is already about 98% saturated.</p>
+ <p><b>Hypoventilation</b> is breathing too little. CO₂ builds up, so PCO₂ rises and <b>pH falls</b> (respiratory acidosis). Causes include drug overdose (opioids) and severe lung disease.</p>
+ <p>At <b>high altitude</b>, air pressure is lower, so PO₂ is lower. At first, you breathe faster (peripheral chemoreceptors). Over days to weeks, the body <b>acclimatizes</b>: kidneys release more <b>erythropoietin (EPO)</b>, which makes more red blood cells, and red cells make more <b>BPG</b>, which helps unload O₂.</p>`,
+ analogy:"CO₂ in your blood is like the acid level in a pool. Breathe it off too fast and the water turns basic; let it build up and the water turns acidic.",
+ terms:[["Hyperventilation","Breathing more than needed. PCO₂ falls, pH rises."],["Hypoventilation","Breathing too little. PCO₂ rises, pH falls."],["Acclimatization","Body changes over days to weeks at altitude: more RBCs (EPO) and more BPG."]],
+ check:{q:"A person having a panic attack breathes very fast. What happens to their blood?",opts:[
+  ["PCO₂ falls and pH rises.",1,"Yes. They blow off CO₂, so less carbonic acid forms and blood becomes more alkaline."],
+  ["PCO₂ rises and pH falls.",0,"That is hypoventilation. Fast breathing removes CO₂."],
+  ["O₂ saturation rises from 98% to well over 100%.",0,"Saturation cannot go above 100%, and it is already about 98%, so fast breathing barely changes it."],
+  ["Nothing changes.",0,"Breathing rate directly sets how much CO₂ is removed, so PCO₂ and pH change."]]},
+ caption:"Normal breathing keeps CO₂ and pH steady. Hyperventilation blows CO₂ off (pH up). Hypoventilation lets CO₂ build up (pH down). At altitude, fewer O₂ molecules per breath, and the body adapts.",
+ legend:[["co2","CO₂"],["o2","O₂"],["good","Normal pH range","s"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole story.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · The airways</li>
+ <li>Conducting zone (nose to terminal bronchioles) warms, moistens, filters and moves air.</li><li>The epiglottis covers the larynx when you swallow. C-shaped cartilage holds the trachea open; cilia move mucus up.</li><li>Respiratory zone: respiratory bronchioles, alveolar ducts, alveoli. Type I cells (thin wall), type II cells (surfactant), macrophages.</li>
+ <li class="h">Part 2 · Moving air</li>
+ <li>Intrapleural pressure is always lower than intra-alveolar pressure; transpulmonary pressure keeps lungs open.</li><li>Boyle's law: diaphragm and external intercostals enlarge the chest, alveolar pressure falls, air flows in. Quiet expiration is passive recoil.</li><li>Air in the pleural cavity (pneumothorax) collapses the lung. Resistance and compliance set how hard breathing is.</li><li>TV 500, IRV 3,100, ERV 1,200, RV 1,200 mL; VC 4,800; TLC 6,000.</li>
+ <li class="h">Part 3 · Gas exchange</li>
+ <li>Each gas moves down its own partial pressure gradient (Dalton, Henry). Lungs: O₂ 104 → blood at 40; CO₂ 45 → alveoli at 40. Tissues: the reverse.</li>
+ <li class="h">Part 4 · Carrying the gases</li>
+ <li>O₂: 98.5% on hemoglobin. Right shift (heat, acid, CO₂, BPG) unloads more O₂. CO₂: ~70% bicarbonate, ~20% carbaminohemoglobin, 7–10% dissolved.</li>
+ <li class="h">Part 5 · Control</li>
+ <li>Medulla (DRG, VRG) and pons set the rhythm. CO₂ via H⁺ is the main signal; O₂ matters below ~60 mm Hg.</li></ol>
+ <p>Next: run the experiments yourself in the <b>Respiratory Lab</b>.</p>`,
+ analogy:"Move the air, swap the gases, carry them in blood, and let the brainstem keep the beat.",
+ terms:[],check:null,caption:"The whole respiratory system: airways, breathing mechanics, gas exchange, transport and control.",
+ legend:[["act1","Airways"],["act2","Moving air"],["act3","Gas exchange"],["act4","Transport"],["act5","Control"]]}
+];
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=5;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([6,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===6)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
+  if(sh==="t")return `<span><i class="t" style="border-bottom-color:var(${v})"></i>${l[1]}</span>`;
+  return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=480;
+const cv=document.getElementById("stage");const ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+const KEYS=["ground", "panel", "panel-2", "sunk", "ink", "ink-soft", "ink-faint", "rule", "rule-soft", "accent", "accent-wash", "good", "warn", "bad", "good-wash", "warn-wash", "bad-wash", "act1", "act2", "act3", "act4", "act5", "ecf", "air", "airway-edge", "mucosa", "mucus", "cart", "cart-edge", "lung", "lung-edge", "pleura", "pfluid", "muscle", "muscle-lite", "rib", "rib-edge", "skin", "skin-edge", "tissue", "rbc", "rbc-edge", "rbc-hi", "deoxy", "vessel", "vessel-edge", "o2", "co2", "hco3", "hplus", "cl", "h2o", "n2", "surf", "type1", "type2", "macro", "nuc", "dust", "warm", "cold", "palv", "ppl", "vol", "brain", "brain-edge", "csf", "nerve", "enzyme", "heart", "glob-a", "glob-b", "glow", "gold", "gold-wash"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+/* ================= shared helpers ================= */
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function onFill(){return hx(C.ground)[0]<60?"#0E1519":"#fff"}
+function isDark(){return hx(C.ground)[0]<60}
+function P(T,L){return ((T%L)+L)%L/L}
+function hx(c){let h=(c||"#888").trim();if(h.startsWith("rgb")){const m=h.match(/[\d.]+/g)||[136,136,136];return [+m[0],+m[1],+m[2]]}if(h[0]!=="#")return [136,136,136];h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,t,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(t).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y);return ctx.measureText(t).width}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f)]}d-=ls[i]}return P_[P_.length-1]}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function smooth(pts,closed){ctx.beginPath();const n=pts.length;if(n<3){pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));return}
+  if(closed){const m0=[(pts[n-1][0]+pts[0][0])/2,(pts[n-1][1]+pts[0][1])/2];ctx.moveTo(m0[0],m0[1]);
+    for(let i=0;i<n;i++){const a=pts[i],b=pts[(i+1)%n];ctx.quadraticCurveTo(a[0],a[1],(a[0]+b[0])/2,(a[1]+b[1])/2)}ctx.closePath()}
+  else{ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<n-1;i++){const a=pts[i],b=pts[i+1];ctx.quadraticCurveTo(a[0],a[1],(a[0]+b[0])/2,(a[1]+b[1])/2)}ctx.lineTo(pts[n-1][0],pts[n-1][1])}}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,o.r==null?8:o.r);ctx.fillStyle=o.fill||hexA(C.panel,.8);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function bracket(x,y1,y2,col,side,lw){side=side||1;const d=8*side;ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(x+d,y1);ctx.lineTo(x+d,y2);ctx.lineTo(x,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.stroke()}
+function hbracket(x1,x2,y,col,lw){ctx.beginPath();ctx.moveTo(x1,y-6);ctx.lineTo(x1,y);ctx.lineTo(x2,y);ctx.lineTo(x2,y-6);ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.stroke()}
+
+/* ================= molecules ================= */
+// Gas and ion glyphs. Shape differs by kind so colour is never the only signal.
+function gas(x,y,k,r,a){r=r||6;const a0=ctx.globalAlpha;ctx.globalAlpha=a0*(a==null?1:clamp(a,0,1));
+  const edge=hexA(C.ink,.45);
+  if(k==="o2"){circ(x-r*.42,y,r*.72,C.o2,edge,1);circ(x+r*.42,y,r*.72,C.o2,edge,1);circ(x-r*.42,y,r*.72,C.o2);if(r>=9)txt(x,y+.5,"O₂",{size:Math.round(r*.9),weight:700,align:"center",color:"#fff"})}
+  else if(k==="co2"){circ(x-r*.75,y,r*.6,C.co2,edge,1);circ(x+r*.75,y,r*.6,C.co2,edge,1);circ(x,y,r*.68,mix(C.co2,C.ink,.35),edge,1);if(r>=9)txt(x,y+.5,"CO₂",{size:Math.round(r*.72),weight:700,align:"center",color:"#fff"})}
+  else if(k==="n2"){circ(x-r*.4,y,r*.68,C.n2,edge,1);circ(x+r*.4,y,r*.68,C.n2,edge,1)}
+  else if(k==="co"){circ(x-r*.38,y,r*.66,C.bad,edge,1);circ(x+r*.38,y,r*.66,mix(C.co2,C.ink,.35),edge,1);if(r>=9)txt(x,y+.5,"CO",{size:Math.round(r*.8),weight:700,align:"center",color:"#fff"})}
+  else if(k==="h2o"){circ(x,y,r*.7,C.h2o,edge,1);circ(x-r*.6,y+r*.5,r*.38,C.panel,edge,1);circ(x+r*.6,y+r*.5,r*.38,C.panel,edge,1)}
+  else if(k==="hco3"){rr(x-r*1.5,y-r*.75,r*3,r*1.5,r*.6);ctx.fillStyle=C.hco3;ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=1;ctx.stroke();txt(x,y+.5,"HCO₃⁻",{size:Math.max(8,Math.round(r*.78)),weight:700,align:"center",color:"#fff"})}
+  else if(k==="h"){circ(x,y,r*.7,C.hplus,edge,1);txt(x,y+.5,"H⁺",{size:Math.max(8,Math.round(r*.75)),weight:700,align:"center",color:"#fff"})}
+  else if(k==="cl"){circ(x,y,r*.8,C.cl,edge,1);txt(x,y+.5,"Cl⁻",{size:Math.max(8,Math.round(r*.7)),weight:700,align:"center",color:"#fff"})}
+  else if(k==="h2co3"){rr(x-r*1.5,y-r*.75,r*3,r*1.5,r*.6);ctx.fillStyle=mix(C.hco3,C.hplus,.5);ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=1;ctx.stroke();txt(x,y+.5,"H₂CO₃",{size:Math.max(8,Math.round(r*.75)),weight:700,align:"center",color:"#fff"})}
+  else if(k==="dust"){ctx.save();ctx.translate(x,y);ctx.rotate(rnd(Math.round(x))*3);ctx.beginPath();for(let i=0;i<6;i++){const q=i/6*TAU,rad=r*(i%2?.55:1);ctx.lineTo(Math.cos(q)*rad,Math.sin(q)*rad)}ctx.closePath();ctx.fillStyle=C.dust;ctx.fill();ctx.restore()}
+  ctx.globalAlpha=a0}
+// red blood cell, face-on. sat 0..1 mixes deoxy -> oxy colour
+function rbc(x,y,r,o){o=o||{};const sat=o.sat==null?1:o.sat;ctx.save();ctx.translate(x,y);ctx.scale(o.sx||1,o.sy||1);ctx.globalAlpha*=o.a==null?1:o.a;
+  const col=mix(C.deoxy,C.rbc,sat);circ(0,0,r,col,C["rbc-edge"],Math.max(.8,r*.08));
+  const A=hx(C["rbc-hi"]);const g=ctx.createRadialGradient(0,0,0,0,0,r*.58);g.addColorStop(0,`rgba(${A},${.35+.4*sat})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,r*.58,0,TAU);ctx.fill();ctx.restore()}
+// hemoglobin: four globin subunits, each with a heme. filled = number of O2 bound (can be fractional for animation)
+function hbMol(x,y,s,filled,o){o=o||{};const pos=[[-1,-1],[1,-1],[-1,1],[1,1]];
+  ctx.save();ctx.translate(x,y);
+  ctx.beginPath();ctx.ellipse(0,0,s*2.05,s*1.85,0,0,TAU);ctx.fillStyle=hexA(C.panel,.35);ctx.fill();
+  pos.forEach((p,i)=>{const cx=p[0]*s*.95,cy=p[1]*s*.85;const f=clamp(filled-i,0,1);
+    ctx.beginPath();ctx.ellipse(cx,cy,s*.98,s*.86,p[0]*p[1]*.4,0,TAU);ctx.fillStyle=i%2?C["glob-b"]:C["glob-a"];ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke();
+    // heme
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.PI/4);rr(-s*.3,-s*.3,s*.6,s*.6,s*.12);ctx.fillStyle=mix(C.deoxy,C.rbc,f>0.5?1:0);ctx.fill();ctx.restore();
+    if(o.co&&i<o.co){gas(cx+p[0]*s*.55,cy+p[1]*s*.55,"co",s*.55)}
+    else if(f>0){gas(cx+p[0]*s*(.55+.8*(1-f)),cy+p[1]*s*(.55+.8*(1-f)),"o2",s*.5,f)}
+  });
+  ctx.restore()}
+
+/* ================= gauges and graphs ================= */
+function gauge(x,y,r,val,lo,hi,title,col,o){o=o||{};
+  ctx.beginPath();ctx.arc(x,y,r,Math.PI,0);ctx.lineTo(x+r,y+6);ctx.lineTo(x-r,y+6);ctx.closePath();ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=0;i<=10;i++){const a=Math.PI+i/10*Math.PI;const r1=r*(i%5?.84:.76);line(x+Math.cos(a)*r1,y+Math.sin(a)*r1,x+Math.cos(a)*r*.94,y+Math.sin(a)*r*.94,C["ink-faint"],i%5?1:1.6)}
+  const f=clamp((val-lo)/(hi-lo),0,1);const a=Math.PI+f*Math.PI;
+  line(x,y,x+Math.cos(a)*r*.8,y+Math.sin(a)*r*.8,col||C.accent,3);circ(x,y,4,col||C.accent);
+  txt(x,y-r-9,title,{size:o.ts||11.5,weight:600,align:"center",color:C["ink-soft"]});
+  txt(x,y+17,o.text||(Math.round(val*10)/10+""),{size:o.vs||13,weight:700,align:"center",mono:true,color:col||C.ink})}
+function axes(x,y,w,h,o){o=o||{};ctx.fillStyle=o.bg||hexA(C.panel,.85);ctx.fillRect(x,y,w,h);ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.strokeRect(x+.5,y+.5,w,h);
+  if(o.grid){ctx.strokeStyle=hexA(C.rule,.6);ctx.lineWidth=1;o.grid.forEach(g=>{ctx.beginPath();ctx.moveTo(x,g);ctx.lineTo(x+w,g);ctx.stroke()})}
+  if(o.title)txt(x+6,y+11,o.title,{size:11.5,weight:600,color:C["ink-soft"]})}
+
+/* ================= thorax (front view) ================= */
+// side -1 = viewer's left = patient's RIGHT lung; side +1 = patient's LEFT lung (cardiac notch)
+function wallPts(side,r,d){
+  const L=[[-26,36],[-62,44],[-96-6*r,78],[-116-9*r,128],[-124-10*r,186],[-124-10*r,240+10*d],[-112-8*r,266+14*d],
+    [-88,254+22*d],[-60,230+30*d],[-30,236+26*d],[-20,196],[-16,140],[-14,96],[-18,58]];
+  if(side<0)return L;
+  const R=L.map(p=>[-p[0],p[1]]);
+  R[9]=[46,240+24*d];R[10]=[42,196];R[11]=[22,150];
+  return R}
+function lungPts(side,r,d,f){const w=wallPts(side,r,d);const H=[side*30,120];return w.map(p=>[H[0]+(p[0]-H[0])*f,H[1]+(p[1]-H[1])*f])}
+function drawThorax(cx,top,s,st){st=st||{};const r=st.r||0,d=st.d||0;
+  ctx.save();ctx.translate(cx,top);ctx.scale(s,s);
+  // body wall
+  ctx.beginPath();ctx.moveTo(-60,-6);ctx.bezierCurveTo(-120,0,-150-10*r,70,-150-12*r,170);ctx.lineTo(-146-10*r,300);ctx.lineTo(146+10*r,300);ctx.lineTo(150+12*r,170);ctx.bezierCurveTo(150+10*r,70,120,0,60,-6);ctx.closePath();
+  ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  // abdomen hint
+  if(st.abs){ctx.save();ctx.globalAlpha=st.abs;rr(-120,280,240,20,6);ctx.fillStyle=C.muscle;ctx.fill();ctx.restore()}
+  [-1,1].forEach(side=>{
+    const w=wallPts(side,r,d);const ptx=side<0?(st.ptxL||0):(st.ptxR||0);
+    // pleural cavity (between parietal and visceral pleura)
+    smooth(w,true);ctx.fillStyle=ptx>0?mix(C.pfluid,C.panel,ptx):C.pfluid;ctx.fill();
+    if(ptx>0){ctx.save();ctx.globalAlpha=ptx;smooth(w,true);ctx.fillStyle=isDark()?"#2A3A44":"#FFFFFF";ctx.fill();ctx.restore()}
+    smooth(w,true);ctx.strokeStyle=C.pleura;ctx.lineWidth=2.2;ctx.stroke();
+    const f=side<0?(st.fL==null?.955:st.fL):(st.fR==null?.955:st.fR);
+    const lp=lungPts(side,r,d,f);
+    smooth(lp,true);ctx.fillStyle=st.lungCol||C.lung;ctx.fill();
+    // alveolar texture
+    ctx.save();smooth(lp,true);ctx.clip();ctx.globalAlpha=.22;for(let i=0;i<46;i++){const px=side*30+(rnd(i+side*7)-.5)*260*f,py=40+rnd(i*3+side)*230*f;circ(px,py,5+rnd(i+9)*4,null,C["lung-edge"],1)}ctx.restore();
+    smooth(lp,true);ctx.strokeStyle=C["lung-edge"];ctx.lineWidth=1.6;ctx.stroke();
+    if(st.pleuraLines){smooth(lp,true);ctx.strokeStyle=C.pleura;ctx.lineWidth=1.2;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([])}
+    // bronchus
+    ctx.beginPath();ctx.moveTo(side*6,92);ctx.quadraticCurveTo(side*18,104,side*30,120);ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=7;ctx.lineCap="round";ctx.stroke();
+    ctx.strokeStyle=C.cart;ctx.lineWidth=4;ctx.stroke();
+    ctx.lineCap="butt";
+    // branches inside lung
+    ctx.save();smooth(lp,true);ctx.clip();ctx.strokeStyle=hexA(C["cart-edge"],.7);ctx.lineWidth=2;
+    [[-.9,-1.4],[-.5,-.5],[0,.4],[.3,1.1],[.55,1.5]].forEach((q,i)=>{const ex=side*30+side*Math.cos(q[0])*90*f,ey=120+q[1]*55*f;
+      ctx.beginPath();ctx.moveTo(side*30,120);ctx.quadraticCurveTo(side*30+side*30*f,120+q[1]*20*f,ex,ey);ctx.stroke();
+      ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex+side*18*f,ey-12*f);ctx.moveTo(ex,ey);ctx.lineTo(ex+side*20*f,ey+10*f);ctx.stroke();ctx.lineWidth=2});
+    ctx.restore();
+  });
+  // trachea
+  rr(-9,-14,18,108,4);ctx.fillStyle=C.cart;ctx.fill();ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=1.4;ctx.stroke();
+  for(let y=-8;y<88;y+=9)line(-8,y,8,y,C["cart-edge"],1.6);
+  // heart
+  ctx.save();ctx.translate(18,206);ctx.rotate(-.5);ctx.beginPath();ctx.ellipse(0,0,40,30,0,0,TAU);ctx.fillStyle=C.heart;ctx.globalAlpha=.9;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1.2;ctx.stroke();ctx.restore();
+  // diaphragm
+  const wl=wallPts(-1,r,d),wr=wallPts(1,r,d);
+  const dia=[[-142-10*r,272+14*d],wl[6],wl[7],wl[8],wl[9],[0,238+26*d],wr[9],wr[8],wr[7],wr[6],[142+10*r,272+14*d]];
+  ctx.save();if(st.diaGlow)ctx.shadowColor=C.glow,ctx.shadowBlur=14*st.diaGlow;
+  smooth(dia,false);ctx.strokeStyle=st.diaGlow?mix(C.muscle,C.glow,st.diaGlow*.5):C.muscle;ctx.lineWidth=9;ctx.lineCap="round";ctx.stroke();ctx.restore();
+  smooth(dia.slice(3,8),false);ctx.strokeStyle=hexA(C.panel,.55);ctx.lineWidth=3;ctx.stroke();ctx.lineCap="butt";
+  // ribs
+  for(let i=0;i<7;i++){const y=66+i*30;[-1,1].forEach(side=>{
+      ctx.beginPath();ctx.moveTo(side*14,y+4-2*r);
+      ctx.bezierCurveTo(side*(60+6*r),y-26-8*r+i*2,side*(128+10*r),y-14-4*r,side*(132+10*r),y+18);
+      ctx.lineCap="round";ctx.strokeStyle=hexA(C["rib-edge"],.85);ctx.lineWidth=8;ctx.stroke();ctx.strokeStyle=hexA(C.rib,.92);ctx.lineWidth=5;ctx.stroke();
+      if(st.icGlow){ctx.strokeStyle=hexA(st.icCol||C.glow,st.icGlow*.8);ctx.lineWidth=2;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(side*24,y+18-2*r);ctx.bezierCurveTo(side*(66+6*r),y-8-8*r+i*2,side*(124+10*r),y+2-4*r,side*(128+10*r),y+32);ctx.stroke();ctx.setLineDash([])}
+      ctx.lineCap="butt"})}
+  // sternum
+  rr(-10,58-3*r,20,170,6);ctx.fillStyle=hexA(C.rib,.95);ctx.fill();ctx.strokeStyle=C["rib-edge"];ctx.lineWidth=1.2;ctx.stroke();
+  // neck accessory muscles
+  if(st.acc){ctx.save();ctx.globalAlpha=.35+.65*st.acc;[-1,1].forEach(side=>{ctx.beginPath();ctx.moveTo(side*30,-30);ctx.quadraticCurveTo(side*38,10,side*16,58);ctx.strokeStyle=mix(C["muscle-lite"],C.muscle,st.acc);ctx.lineWidth=8;ctx.lineCap="round";ctx.stroke();
+    ctx.beginPath();ctx.moveTo(side*20,-30);ctx.quadraticCurveTo(side*44,0,side*60,44);ctx.lineWidth=6;ctx.stroke();ctx.lineCap="butt"});ctx.restore()}
+  ctx.restore()}
+// local->canvas for thorax points
+function thx(cx,top,s,p){return [cx+p[0]*s,top+p[1]*s]}
+
+/* ================= breathing cycle helper ================= */
+// returns effort 0..1 over a breath of period L (inspiration ~40%)
+function breathE(T,L,ti){ti=ti||.4;const p=P(T,L);if(p<ti)return (1-Math.cos(Math.PI*p/ti))/2;const q=(p-ti)/(1-ti);return Math.max(0,(1+Math.cos(Math.PI*Math.min(1,q*1.6)))/2)}
+// derivative sign helper: +1 inhaling, -1 exhaling
+function breathPhase(T,L,ti){ti=ti||.4;return P(T,L)<ti?1:-1}
+
+/* ================= O2-Hb curve model ================= */
+function p50Of(o){o=o||{};let lp=Math.log10(26.8);lp+=.024*((o.temp==null?37:o.temp)-37);lp+=-.48*((o.ph==null?7.4:o.ph)-7.4);lp+=.10*Math.log2((o.pco2==null?40:o.pco2)/40);lp+=.14*Math.log2((o.bpg==null?1:o.bpg));
+  let p=Math.pow(10,lp);if(o.co)p*=(1-.6*o.co);return p}
+function satOf(po2,p50,n){n=n||2.7;if(po2<=0)return 0;return 1/(1+Math.pow(p50/po2,n))}
+
+/* ================= alveolus-capillary exchange strip ================= */
+// mode 'lung': top = alveolar air, bottom = blood picking up O2. mode 'tissue': top = tissue cells, blood gives up O2.
+function profile(o,x){ // blood PO2 / PCO2 at fraction x of capillary length
+  const kO=5.5/((o.thick||1)*(1+2*(o.fluid||0)));const kC=kO*1.3;
+  return [o.topO2+(o.inO2-o.topO2)*Math.exp(-kO*x),o.topCO2+(o.inCO2-o.topCO2)*Math.exp(-kC*x)]}
+function drawExchange(x,y,w,h,o,T){
+  const mode=o.mode||"lung";const th=(o.thick||1);const memH=8+10*(th-1)+ (o.fluid||0)*6;
+  const topH=h*.46, my=y+topH, by=my+memH, bh=h-topH-memH;
+  ctx.save();rr(x,y,w,h,8);ctx.clip();
+  // top region
+  if(mode==="lung"){ctx.fillStyle=C.air;ctx.fillRect(x,y,w,topH);
+    if(o.fluid){ctx.fillStyle=hexA(C.h2o,.35*o.fluid);ctx.fillRect(x,my-topH*.35*o.fluid,w,topH*.35*o.fluid);
+      for(let i=0;i<14;i++){circ(x+rnd(i+3)*w,my-rnd(i+8)*topH*.3*o.fluid,2+rnd(i)*2,hexA(C.h2o,.5))}}
+  }else{ctx.fillStyle=C.tissue;ctx.fillRect(x,y,w,topH);
+    for(let i=0;i<4;i++){const cx=x+w*(.13+i*.25);rr(cx-w*.1,y+10,w*.2,topH-22,12);ctx.fillStyle=C["muscle-lite"];ctx.fill();ctx.strokeStyle=hexA(C.ink,.25);ctx.lineWidth=1;ctx.stroke();
+      for(let k=0;k<2;k++){ctx.beginPath();ctx.ellipse(cx-w*.04+k*w*.07,y+topH*.42+k*14,9,5,.4,0,TAU);ctx.fillStyle=C.muscle;ctx.fill()}}}
+  // membrane
+  ctx.fillStyle=o.thick>1.3?mix(C.type1,C.warn,.25):C.type1;ctx.fillRect(x,my,w,memH);line(x,my,x+w,my,hexA(C.ink,.3),1);line(x,by,x+w,by,hexA(C.ink,.3),1);
+  if(th>1.3){for(let i=0;i<20;i++)line(x+rnd(i)*w,my+2,x+rnd(i)*w+8,by-2,hexA(C.warn,.5),1.2)}
+  // blood
+  ctx.fillStyle=C.vessel;ctx.fillRect(x,by,w,bh);
+  const sp=o.speed||40;
+  for(let i=0;i<9;i++){const fx=P(T*sp/w+i/9,1);const px=x+fx*w;const pr=profile(o,fx);const s=satOf(pr[0],26.8);
+    rbc(px,by+bh*.5+Math.sin(i*2.1)*bh*.15,Math.min(15,bh*.32),{sat:seg(s,.6,.98),sx:1.1,sy:.75})}
+  // particles
+  const nO=o.nO==null?14:o.nO;
+  for(let i=0;i<nO;i++){const fx=Math.pow(rnd(i*1.7+.3),1.6);const pr=profile(o,fx);const grad=(mode==="lung"?(o.topO2-pr[0]):(pr[0]-o.topO2));
+    const vis=clamp(grad/22,0,1);if(vis<.05)continue;const ph=P(T*.35*(1/(th*(1+(o.fluid||0))))+rnd(i+11),1);
+    const px=x+fx*w+Math.sin(ph*6+i)*4;let py=mode==="lung"?lerp(y+topH*.25,by+bh*.4,ph):lerp(by+bh*.4,y+topH*.3,ph);
+    gas(px,py,"o2",o.r||6,vis*Math.min(1,ph*4,(1-ph)*4))}
+  const nC=o.nC==null?10:o.nC;
+  for(let i=0;i<nC;i++){const fx=Math.pow(rnd(i*2.3+.9),1.6);const pr=profile(o,fx);const grad=(mode==="lung"?(pr[1]-o.topCO2):(o.topCO2-pr[1]));
+    const vis=clamp(grad/2.5,0,1);if(vis<.05)continue;const ph=P(T*.42/th+rnd(i+31),1);
+    const px=x+fx*w+Math.cos(ph*6+i)*4;let py=mode==="lung"?lerp(by+bh*.5,y+topH*.3,ph):lerp(y+topH*.3,by+bh*.5,ph);
+    gas(px,py,"co2",o.r||6,vis*Math.min(1,ph*4,(1-ph)*4))}
+  ctx.restore();
+  rr(x,y,w,h,8);ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+  // flow arrow
+  arrow(x+w*.42,by+bh-8,x+w*.58,by+bh-8,hexA(C.ink,.5),1.5);
+  return {my,by,bh,topH}}
+function drawProfile(x,y,w,h,o,cmp){
+  axes(x,y,w,h,{title:"Blood PO₂ along the capillary"});
+  const top=110;const py=v=>y+h-8-(v/top)*(h-26);
+  [40,100].forEach(v=>{line(x,py(v),x+w,py(v),hexA(C.rule,.8),1,[3,3]);txt(x+w-4,py(v)-7,v+"",{size:10,align:"right",mono:true,color:C["ink-faint"]})});
+  const draw=(oo,col,lw,dash)=>{ctx.beginPath();for(let i=0;i<=40;i++){const f=i/40;const v=profile(oo,f)[0];const X=x+6+f*(w-12),Y=py(v);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])};
+  if(cmp)draw(cmp,C["ink-faint"],2,[5,4]);
+  draw(o,C.o2,3);
+  txt(x+6,y+h-2,"start",{size:10,color:C["ink-faint"]});txt(x+w-6,y+h-2,"end",{size:10,align:"right",color:C["ink-faint"]})}
+/* ================= head (sagittal, facing left) ================= */
+// local coords about 300 x 300. st: epi 0..1 (epiglottis down), lar 0..1 (larynx raised), mucus true
+function headSag(x0,y0,s,st){st=st||{};const lar=st.lar||0,epi=st.epi||0;
+  ctx.save();ctx.translate(x0,y0);ctx.scale(s,s);
+  // outline
+  ctx.beginPath();ctx.moveTo(150,0);ctx.bezierCurveTo(100,0,62,18,56,52);ctx.bezierCurveTo(52,70,50,80,42,94);ctx.lineTo(14,128);ctx.quadraticCurveTo(8,136,22,140);ctx.lineTo(40,142);
+  ctx.quadraticCurveTo(46,152,42,160);ctx.quadraticCurveTo(50,170,44,178);ctx.quadraticCurveTo(52,184,46,194);ctx.bezierCurveTo(48,214,54,228,74,234);ctx.lineTo(126,238);ctx.quadraticCurveTo(142,244,144,262);ctx.lineTo(146,300);
+  ctx.lineTo(262,300);ctx.lineTo(256,232);ctx.bezierCurveTo(286,200,298,150,290,104);ctx.bezierCurveTo(282,40,226,0,150,0);ctx.closePath();
+  ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.6/s;ctx.stroke();
+  // brain hint
+  ctx.beginPath();ctx.ellipse(196,58,78,44,-.1,0,TAU);ctx.fillStyle=hexA(C.brain,.7);ctx.fill();
+  // nasal cavity
+  ctx.beginPath();ctx.moveTo(30,136);ctx.quadraticCurveTo(46,100,74,94);ctx.lineTo(150,94);ctx.quadraticCurveTo(164,96,168,104);ctx.lineTo(168,134);ctx.lineTo(150,138);ctx.lineTo(52,140);ctx.closePath();
+  ctx.fillStyle=C.air;ctx.fill();ctx.strokeStyle=C.mucosa;ctx.lineWidth=3.2/s;ctx.stroke();
+  if(st.mucus!==false){ctx.strokeStyle=hexA(C.mucus,.9);ctx.lineWidth=1.6/s;ctx.stroke()}
+  // conchae
+  [[100,104,46,6],[108,116,44,6],[114,128,40,5]].forEach((c,i)=>{ctx.beginPath();ctx.ellipse(c[0],c[1],c[2]/2+6,c[3],0,0,TAU);ctx.fillStyle=C.mucosa;ctx.fill();ctx.strokeStyle=hexA(C.mucus,.9);ctx.lineWidth=1.2/s;ctx.stroke()});
+  // hairs in vestibule
+  for(let i=0;i<5;i++)line(30+i*3,138,36+i*4,128,hexA(C.ink,.5),.8/s);
+  // pharynx + larynx + esophagus channel
+  const ly=-8*lar;
+  ctx.beginPath();ctx.moveTo(168,100);ctx.quadraticCurveTo(196,100,198,130);ctx.lineTo(198,300);ctx.lineTo(176,300);ctx.lineTo(176,250+ly);ctx.lineTo(172,250+ly);ctx.lineTo(172,300);ctx.lineTo(150,300);ctx.lineTo(150,242+ly);
+  ctx.quadraticCurveTo(150,228+ly,160,222+ly);ctx.lineTo(172,206);ctx.quadraticCurveTo(176,180,168,152);ctx.lineTo(168,104);ctx.closePath();
+  ctx.fillStyle=C.air;ctx.fill();ctx.strokeStyle=C.mucosa;ctx.lineWidth=3/s;ctx.stroke();
+  // esophagus (collapsed tube), posterior
+  rr(176,252+ly,22,48,3);ctx.fillStyle=mix(C.mucosa,C.skin,.4);ctx.fill();
+  if(st.bolusEso!=null){ctx.beginPath();ctx.ellipse(187,lerp(250,296,st.bolusEso),10,12,0,0,TAU);ctx.fillStyle=C.dust;ctx.fill()}
+  // trachea rings
+  for(let y=252+ly;y<300;y+=8){line(150,y,172,y,C["cart-edge"],2/s)}
+  // larynx cartilage (thyroid) and vocal folds
+  rr(140,222+ly,10,26,3);ctx.fillStyle=C.cart;ctx.fill();ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=1.2/s;ctx.stroke();
+  line(151,238+ly,166,238+ly,C["lung-edge"],2/s);
+  // palate + tongue
+  ctx.beginPath();ctx.moveTo(48,142);ctx.lineTo(150,140);ctx.quadraticCurveTo(162,144,166,160);ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=4/s;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(56,176);ctx.bezierCurveTo(80,150,150,150,168,176);ctx.quadraticCurveTo(174,196,166,214);ctx.lineTo(140,224);ctx.quadraticCurveTo(80,214,56,176);ctx.fillStyle=mix(C.mucosa,C.muscle,.35);ctx.fill();
+  // epiglottis: hinge at (166,214+ly)
+  ctx.save();ctx.translate(166,214+ly);ctx.rotate(lerp(-.25,1.25,epi));ctx.beginPath();ctx.moveTo(-2,0);ctx.quadraticCurveTo(6,-14,4,-24);ctx.quadraticCurveTo(10,-14,6,0);ctx.closePath();ctx.fillStyle=C.cart;ctx.fill();ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=1.4/s;ctx.stroke();ctx.restore();
+  ctx.restore()}
+function hp(x0,y0,s,p){return [x0+p[0]*s,y0+p[1]*s]}
+const HEAD_AIR=[[22,138],[56,124],[96,112],[140,112],[168,118],[186,134],[188,170],[180,200],[166,226],[161,260],[161,300]];
+
+/* ===== Scene: map ===== */
+function sceneMap(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const hs=.62,hx0=220-161*hs,hy0=197-300*hs;
+  const ts=.78,tcx=220,ttop=208;
+  drawThorax(tcx,ttop,ts,{r:.15*Math.sin(t*1.3),d:.2+.2*Math.sin(t*1.3)});
+  headSag(hx0,hy0,hs,{});
+  // zoom circle
+  const zx=388,zy=262,zr=60;
+  const lungEnd=thx(tcx,ttop,ts,[-98,206]);
+  line(lungEnd[0],lungEnd[1],zx-zr*.7,zy+zr*.7,C["ink-faint"],1.2,[4,3]);circ(lungEnd[0],lungEnd[1],6,null,C["ink-faint"],1.2);
+  ctx.save();ctx.beginPath();ctx.arc(zx,zy,zr,0,TAU);ctx.fillStyle=C.tissue;ctx.fill();ctx.clip();
+  // terminal -> respiratory bronchiole -> duct -> sac
+  ctx.strokeStyle=C["airway-edge"];ctx.lineWidth=12;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(zx-62,zy+34);ctx.lineTo(zx-20,zy+8);ctx.lineTo(zx+8,zy-6);ctx.stroke();
+  ctx.strokeStyle=C.air;ctx.lineWidth=8;ctx.stroke();ctx.lineCap="butt";
+  [[zx-14,zy-4],[zx-4,zy+14]].forEach(b=>circ(b[0],b[1],5.5,C.air,C["airway-edge"],1.4));
+  for(let i=0;i<7;i++){const a=-1.2+i*.42;circ(zx+20+Math.cos(a)*16,zy-12+Math.sin(a)*16,9,C.air,C["airway-edge"],1.4)}
+  circ(zx+20,zy-12,9,C.air,C["airway-edge"],1.4);
+  ctx.restore();circ(zx,zy,zr,null,C.rule,2);txt(zx,zy+zr+12,"zoom: end of the airway",{size:11,align:"center",color:C["ink-soft"]});
+  // route
+  const R=[[...hp(hx0,hy0,hs,HEAD_AIR[0]),0],[...hp(hx0,hy0,hs,HEAD_AIR[2]),1],[...hp(hx0,hy0,hs,HEAD_AIR[3]),1],[...hp(hx0,hy0,hs,HEAD_AIR[5]),2],[...hp(hx0,hy0,hs,HEAD_AIR[7]),2],[...hp(hx0,hy0,hs,HEAD_AIR[8]),3],
+    [...thx(tcx,ttop,ts,[0,-10]),4],[...thx(tcx,ttop,ts,[0,90]),4],[...thx(tcx,ttop,ts,[-30,120]),5],[...thx(tcx,ttop,ts,[-70,168]),6],[...thx(tcx,ttop,ts,[-98,206]),7],
+    [zx-62,zy+34,7],[zx-30,zy+14,7],[zx-14,zy+2,8],[zx+4,zy-4,9],[zx+20,zy-12,10]];
+  const L=13,p=seg(P(t,L),0,.88);
+  const pts=R.map(r=>[r[0],r[1]]);const [px,py]=along(pts,p);
+  // which item
+  let L2=0;const ls=[];for(let i=0;i<pts.length-1;i++){const l=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);ls.push(l);L2+=l}
+  let d=p*L2,idx=0;for(let i=0;i<ls.length;i++){if(d>=ls[i]){d-=ls[i];idx=i+1}else break}
+  const item=R[Math.min(idx,R.length-1)][2];
+  // trail
+  for(let k=1;k<8;k++){const q=along(pts,Math.max(0,p-k*.012));circ(q[0],q[1],5-k*.5,hexA(C.accent,.25))}
+  glow(px,py,16,C.glow,.5);circ(px,py,6,C.air,C.accent,2);
+  // list
+  const items=["Nostrils (nose)","Nasal cavity","Pharynx (throat)","Larynx (voice box)","Trachea","Bronchi","Bronchioles","Terminal bronchioles","Respiratory bronchioles","Alveolar ducts","Alveoli"];
+  const lx=500,ly0=34,dy=37;
+  items.forEach((nm,i)=>{const y=ly0+i*dy;const resp=i>=8;const on=i===item&&P(t,L)<.95,past=i<item;
+    const col=resp?C.bad:C.accent;
+    rr(lx,y-14,250,28,6);ctx.fillStyle=on?hexA(col,.18):C.panel;ctx.fill();ctx.strokeStyle=on?col:C.rule;ctx.lineWidth=on?2:1;ctx.stroke();
+    circ(lx+16,y,8,past||on?col:C["panel-2"],col,1.5);txt(lx+16,y+.5,String(i+1),{size:10,weight:700,align:"center",mono:true,color:past||on?onFill():col});
+    txt(lx+32,y+.5,nm,{size:13.5,weight:on?700:500,color:C.ink})});
+  bracket(lx+258,ly0-12,ly0+7*dy+12,C.accent,1,2.5);bracket(lx+258,ly0+8*dy-12,ly0+10*dy+12,C.bad,1,2.5);
+  ctx.save();ctx.translate(lx+282,ly0+3.5*dy);ctx.rotate(-Math.PI/2);txt(0,0,"CONDUCTING ZONE",{size:11,weight:700,mono:true,align:"center",color:C.accent});ctx.restore();
+  ctx.save();ctx.translate(lx+282,ly0+9*dy);ctx.rotate(-Math.PI/2);txt(0,0,"RESPIRATORY",{size:11,weight:700,mono:true,align:"center",color:C.bad});ctx.restore();
+  txt(lx,ly0+11*dy-4,"No gas exchange in the conducting zone.",{size:11.5,color:C["ink-soft"]});
+  if(item>=8&&P(t,L)>.8){label(zx,zy-zr-14,"Gas exchange happens here",{size:12,weight:700,align:"center",border:C.bad})}
+}
+
+/* ===== Scene: upper airway ===== */
+function sceneUpper(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=17,tt=P(t,L)*L;
+  const swallow=tt>10&&tt<15.5;
+  const epi=ease(seg(tt,10.6,11.4))*(1-ease(seg(tt,14.2,15)));
+  const lar=epi;
+  const hs=1.42,x0=18,y0=26;
+  let bolusEso=null;if(tt>12.6&&tt<14.6)bolusEso=seg(tt,12.6,14.6);
+  headSag(x0,y0,hs,{epi,lar,bolusEso});
+  const pts=HEAD_AIR.map(p=>hp(x0,y0,hs,p));
+  // air particles
+  const flowOn=!swallow;
+  for(let i=0;i<12;i++){const f=P(t*.11+i/12,1);if(!flowOn&&f>.02&&f<.98){}
+    const [px,py]=along(pts,f);
+    if(swallow)continue;
+    const warm=seg(f,.06,.42);const col=mix(C.cold,C.warm,warm);
+    circ(px,py,6.5,col,hexA(C.ink,.3),1);
+    if(f>.22)circ(px+5,py-5,2.6,C.h2o,hexA(C.ink,.3),.8);}
+  // dust caught on conchae
+  const dustTargets=[[96,98],[120,110],[104,122],[134,132],[70,104]];
+  dustTargets.forEach((d,i)=>{const f0=P(t*.11+i*.21+.03,1);const tgt=hp(x0,y0,hs,d);
+    const start=hp(x0,y0,hs,[14,136]);const k=seg(f0,0,.25);
+    const x=lerp(start[0],tgt[0],ease(k)),y=lerp(start[1],tgt[1],ease(k));
+    gas(x,y,"dust",5);if(k>=1)circ(tgt[0],tgt[1],8,null,hexA(C.mucus,.9),2)});
+  // swallow bolus
+  if(tt>10&&tt<13){const bp=[hp(x0,y0,hs,[96,160]),hp(x0,y0,hs,[150,168]),hp(x0,y0,hs,[180,196]),hp(x0,y0,hs,[190,230]),hp(x0,y0,hs,[187,252])];const [bx,by]=along(bp,seg(tt,10.2,12.8));ctx.beginPath();ctx.ellipse(bx,by,15,11,0,0,TAU);ctx.fillStyle=C.dust;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke();label(bx-20,by-22,"food",{size:11.5,align:"right"})}
+  // labels
+  const L_=(p,t_,o)=>{const q=hp(x0,y0,hs,p);label(q[0],q[1],t_,o||{size:12.5})};
+  L_([60,80],"Nasal cavity",{size:12.5,weight:600,align:"center"});
+  L_([115,104],"Conchae",{size:11.5,align:"center",bga:.8});
+  L_([10,152],"Nostril",{size:11.5,align:"center"});
+  L_([222,118],"Pharynx",{size:12.5,weight:600});
+  L_([116,236],"Larynx",{size:12.5,weight:600,align:"right"});
+  L_([214,282],"Esophagus",{size:12});
+  L_([126,288],"Trachea",{size:12,align:"right"});
+  {const q=hp(x0,y0,hs,[168,208-8*lar]);label(q[0]+40,q[1]-30,epi>.5?"Epiglottis: CLOSED":"Epiglottis: open",{size:12,weight:700,border:epi>.5?C.warn:C.good});line(q[0]+30,q[1]-22,q[0]+4,q[1]-4,C["ink-soft"],1.2)}
+  // side panel
+  const px=468,py=24;panelBox(px,py,316,432);
+  txt(px+14,py+20,swallow?"SWALLOWING":"BREATHING IN THROUGH THE NOSE",{size:12,weight:700,mono:true,color:swallow?C.warn:C.accent});
+  const warmNow=swallow?.0:1;
+  // temperature bar
+  const tb=(y,lab,v,col,txtv)=>{txt(px+14,y,lab,{size:12.5,weight:600});rr(px+14,y+12,288,14,7);ctx.fillStyle=C.sunk;ctx.fill();rr(px+14,y+12,288*v,14,7);ctx.fillStyle=col;ctx.fill();txt(px+302,y,txtv,{size:12,align:"right",mono:true,color:C["ink-soft"]})};
+  const pf=P(t*.11,1);const wv=swallow?1:seg(pf,.06,.42);
+  tb(py+52,"1. Warmed",.35+.65*wv,mix(C.cold,C.warm,wv),Math.round(lerp(20,37,wv))+" °C");
+  tb(py+98,"2. Humidified",.3+.7*seg(pf,.15,.5)*(swallow?0:1)+(swallow?.7:0),C.h2o,Math.round((.3+.7*(swallow?1:seg(pf,.15,.5)))*100)+"% humid");
+  txt(px+14,py+144,"3. Filtered",{size:12.5,weight:600});
+  for(let i=0;i<5;i++){gas(px+26+i*22,py+166,"dust",6);}
+  txt(px+140,py+166,"dust stuck in mucus",{size:12,color:C["ink-soft"]});
+  line(px+14,py+192,px+302,py+192,C.rule,1);
+  txt(px+14,py+214,"When you swallow",{size:12.5,weight:600});
+  const steps=["Tongue pushes food back","Larynx moves up","Epiglottis folds down over larynx","Food slides into the esophagus","Breathing pauses for a moment"];
+  steps.forEach((s_,i)=>{const on=swallow&&tt>10.2+i*.8;const y=py+240+i*30;circ(px+24,y,9,on?C.warn:C["panel-2"],on?C.warn:C.rule,1.5);txt(px+24,y+.5,String(i+1),{size:10,weight:700,align:"center",mono:true,color:on?onFill():C["ink-soft"]});
+    txt(px+40,y+.5,s_,{size:12.5,weight:on?600:400,color:on?C.ink:C["ink-soft"]})});
+  txt(px+14,py+404,swallow?"Air can't enter the larynx now.":"Air flows: nose → pharynx → larynx → trachea",{size:12,color:C["ink-soft"]});
+}
+
+/* ===== Scene: trachea ===== */
+function sceneTrachea(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  // left: front view
+  const cx=110;
+  rr(cx-28,30,56,40,10);ctx.fillStyle=C.cart;ctx.fill();ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=1.5;ctx.stroke();txt(cx,50,"larynx",{size:11,align:"center",color:C["ink-soft"]});
+  rr(cx-20,70,40,250,6);ctx.fillStyle=C.mucosa;ctx.fill();
+  for(let i=0;i<17;i++){const y=78+i*14.2;rr(cx-22,y,44,9,4);ctx.fillStyle=C.cart;ctx.fill();ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=1.2;ctx.stroke()}
+  [[-1],[1]].forEach(([sd])=>{ctx.beginPath();ctx.moveTo(cx,318);ctx.quadraticCurveTo(cx+sd*30,340,cx+sd*70,400);ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=26;ctx.lineCap="round";ctx.stroke();ctx.strokeStyle=C.cart;ctx.lineWidth=22;ctx.stroke();ctx.lineCap="butt"});
+  txt(cx,436,"Front view",{size:12,weight:600,align:"center"});label(cx+30,180,"C-shaped rings",{size:11.5});
+  txt(cx-58,372,"R bronchus",{size:11,align:"center",color:C["ink-soft"]});txt(cx+58,372,"L bronchus",{size:11,align:"center",color:C["ink-soft"]});
+  // middle: cross section, anterior at top
+  const mx=300,my=190;const bol=Math.max(0,Math.sin(P(t,6)*TAU));const bulge=bol*12;
+  ctx.beginPath();ctx.arc(mx,my,62,Math.PI*.78,Math.PI*.22,false);ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=20;ctx.stroke();ctx.strokeStyle=C.cart;ctx.lineWidth=16;ctx.stroke();
+  // trachealis spanning gap
+  const a1=Math.PI*.22,a2=Math.PI*.78;const p1=[mx+Math.cos(a1)*62,my+Math.sin(a1)*62],p2=[mx+Math.cos(a2)*62,my+Math.sin(a2)*62];
+  ctx.beginPath();ctx.moveTo(p1[0],p1[1]);ctx.quadraticCurveTo(mx,my+58-bulge*1.6,p2[0],p2[1]);ctx.strokeStyle=C.muscle;ctx.lineWidth=7;ctx.stroke();
+  // lumen + mucosa
+  ctx.beginPath();ctx.arc(mx,my,50,0,TAU);ctx.fillStyle=C.air;ctx.fill();ctx.strokeStyle=C.mucosa;ctx.lineWidth=5;ctx.stroke();
+  // esophagus below
+  ctx.beginPath();ctx.ellipse(mx,my+96-bulge*.4,34+bulge*.5,18+bulge,0,0,TAU);ctx.fillStyle=mix(C.mucosa,C.skin,.3);ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  if(bol>.1){ctx.beginPath();ctx.ellipse(mx,my+96-bulge*.4,22*bol+4,10*bol+3,0,0,TAU);ctx.fillStyle=C.dust;ctx.fill()}
+  txt(mx,my-84,"front (anterior)",{size:11,align:"center",color:C["ink-faint"]});
+  label(mx,my+96,"Esophagus",{size:11.5,align:"center",bga:.6});
+  label(mx-96,my+60,"Trachealis",{size:11.5,align:"right"});line(mx-92,my+58,mx-30,my+50,C["ink-soft"],1);
+  label(mx,my,"Air",{size:11.5,align:"center",bga:.5});
+  txt(mx,436,"Cross section",{size:12,weight:600,align:"center"});
+  if(bol>.3)txt(mx,my+146,"Food bulges forward into the open side",{size:11,align:"center",color:C["ink-soft"]});
+  // right: epithelium zoom
+  const ex=420,ew=362,ey0=70,eh=300;
+  ctx.save();rr(ex,ey0,ew,eh,10);ctx.clip();ctx.fillStyle=C.air;ctx.fillRect(ex,ey0,ew,eh);
+  // basement + CT
+  ctx.fillStyle=C.tissue;ctx.fillRect(ex,ey0+232,ew,70);
+  const base=ey0+232,top=ey0+130;
+  const nC=13;const cw=ew/nC;
+  for(let i=0;i<nC;i++){const x=ex+i*cw;const gob=i%4===2;
+    rr(x+1,top,cw-2,base-top,4);ctx.fillStyle=gob?mix(C.mucus,C.panel,.4):C.mucosa;ctx.fill();ctx.strokeStyle=hexA(C.ink,.25);ctx.lineWidth=1;ctx.stroke();
+    if(gob){ctx.beginPath();ctx.ellipse(x+cw/2,top+30,cw*.35,26,0,0,TAU);ctx.fillStyle=C.mucus;ctx.fill();
+      // secretion
+      const q=P(t*.6+i,1);circ(x+cw/2,top-q*26,4*(1-q)+1,hexA(C.mucus,1-q))}
+    else{ctx.beginPath();ctx.ellipse(x+cw/2,top+40+((i*37)%50),cw*.25,9,0,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();
+      // cilia with metachronal wave
+      for(let k=0;k<4;k++){const cx0=x+5+k*(cw-10)/3;const ph=t*5-(i*4+k)*.35;const ang=Math.sin(ph)*.6;
+        ctx.beginPath();ctx.moveTo(cx0,top);ctx.quadraticCurveTo(cx0+Math.sin(ang)*8,top-10,cx0+Math.sin(ang)*16,top-20*Math.cos(ang*.6));ctx.strokeStyle=hexA(C.ink,.6);ctx.lineWidth=1.4;ctx.stroke()}}}
+  // short basal cells (pseudostratified)
+  for(let i=0;i<nC;i+=2){circ(ex+i*cw+cw,base-10,7,mix(C.mucosa,C.nuc,.25))}
+  // mucus sheet moving right
+  ctx.fillStyle=hexA(C.mucus,.75);ctx.beginPath();ctx.moveTo(ex,top-34);for(let x=0;x<=ew;x+=10){ctx.lineTo(ex+x,top-34-4*Math.sin(x*.05-t*2))}ctx.lineTo(ex+ew,top-22);ctx.lineTo(ex,top-22);ctx.closePath();ctx.fill();
+  for(let i=0;i<6;i++){const x=ex+P(t*.06+i/6,1)*ew;gas(x,top-30,"dust",5.5)}
+  ctx.restore();rr(ex,ey0,ew,eh,10);ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+  arrow(ex+ew-140,ey0+44,ex+ew-20,ey0+44,C.warn,2.5);label(ex+ew-150,ey0+44,"mucus moves UP toward the pharynx",{size:12,weight:600,align:"right"});
+  label(ex+70,top-48+ey0*0+0,"Mucus + dust",{size:11.5});
+  label(ex+cw*5.5,base-56,"Ciliated cell",{size:11.5,align:"center"});
+  label(ex+2*cw+cw/2,base-14,"Goblet cell",{size:11.5,align:"center"});
+  txt(ex+ew/2,base+30,"basement membrane & connective tissue",{size:11,align:"center",color:C["ink-soft"]});
+  txt(ex+ew/2,436,"Lining: pseudostratified ciliated columnar epithelium",{size:12,weight:600,align:"center"});
+}
+
+/* ===== Scene: bronchial tree ===== */
+function sceneTree(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const segs=[];
+  function br(x,y,ang,len,w,g,path){const x2=x+Math.cos(ang)*len,y2=y+Math.sin(ang)*len;segs.push({x,y,x2,y2,w,g,path});
+    if(g<6){br(x2,y2,ang-.42+(g%2?.06:0),len*.74,w*.7,g+1,path+"L");br(x2,y2,ang+.38,len*.74,w*.7,g+1,path+"R")}}
+  rr(206,14,28,70,6);ctx.fillStyle=C.cart;ctx.fill();
+  br(220,84,Math.PI/2-.55,80,22,1,"R");br(220,84,Math.PI/2+.6,80,22,1,"L");
+  segs.forEach(s=>{ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x2,s.y2);ctx.lineCap="round";
+    const cart=s.g<=2?1:s.g<=4?.5:0;
+    ctx.strokeStyle=cart>0?C["cart-edge"]:C.muscle;ctx.lineWidth=s.w+3;ctx.stroke();ctx.strokeStyle=cart>0?C.cart:mix(C.mucosa,C.panel,.3);ctx.lineWidth=s.w;ctx.stroke();ctx.lineCap="butt";
+    if(cart===1){const n=Math.floor(Math.hypot(s.x2-s.x,s.y2-s.y)/9);for(let k=1;k<n;k++){const f=k/n;const px=lerp(s.x,s.x2,f),py=lerp(s.y,s.y2,f);const a=Math.atan2(s.y2-s.y,s.x2-s.x)+Math.PI/2;line(px-Math.cos(a)*s.w/2,py-Math.sin(a)*s.w/2,px+Math.cos(a)*s.w/2,py+Math.sin(a)*s.w/2,C["cart-edge"],1.4)}}
+    if(cart===.5){const mx=(s.x+s.x2)/2,my=(s.y+s.y2)/2;circ(mx,my,s.w*.35,C["cart-edge"])}
+    if(s.g===6){circ(s.x2,s.y2,3.2,C.lung,C["lung-edge"],1)}});
+  for(let y=20;y<84;y+=9)line(208,y,232,y,C["cart-edge"],1.4);
+  // particle path along "RLRLL"
+  const target="RLRRLL";const path=[[220,14],[220,84]];segs.filter(s=>target.startsWith(s.path)).sort((a,b)=>a.g-b.g).forEach(s=>path.push([s.x2,s.y2]));
+  const L=12,p=P(t,L);const p1=seg(p,0,.55);
+  const tipT=path[path.length-1];
+  if(p<.55){const [x,y]=along(path,p1);glow(x,y,14,C.glow,.5);circ(x,y,6,C.air,C.accent,2)}
+  circ(tipT[0],tipT[1],10,null,C.accent,2);
+  // tree labels
+  label(250,30,"Trachea",{size:12});label(300,118,"Primary bronchus",{size:12});label(330,186,"Secondary / tertiary",{size:11.5});label(312,262,"Bronchioles",{size:12});
+  // cartilage legend strip
+  const lx=20,ly=420;txt(lx,ly-14,"Cartilage as tubes shrink:",{size:11.5,weight:600});
+  ["rings","plates","none (smooth muscle)"].forEach((s_,i)=>{const x=lx+i*120;rr(x,ly,18,14,3);ctx.fillStyle=i===2?C.muscle:C.cart;ctx.fill();ctx.strokeStyle=C["cart-edge"];ctx.stroke();txt(x+24,ly+7,s_,{size:11.5,color:C["ink-soft"]})});
+  // zoom panel
+  const zx=440,zy=40,zw=346,zh=400;
+  line(tipT[0],tipT[1],zx,zy+zh*.5,C["ink-faint"],1.2,[4,3]);
+  panelBox(zx,zy,zw,zh,{fill:C.tissue});
+  const by=zy+200;
+  // terminal bronchiole
+  const pts=[[zx+10,by],[zx+90,by],[zx+170,by-10],[zx+240,by-30],[zx+290,by-70]];
+  ctx.lineCap="round";ctx.strokeStyle=C["airway-edge"];ctx.lineWidth=26;ctx.beginPath();ctx.moveTo(zx+10,by);ctx.lineTo(zx+92,by);ctx.stroke();
+  ctx.strokeStyle=C.muscle;ctx.lineWidth=28;ctx.globalAlpha=.4;ctx.stroke();ctx.globalAlpha=1;
+  ctx.strokeStyle=C.air;ctx.lineWidth=18;ctx.stroke();
+  // respiratory bronchiole
+  ctx.strokeStyle=C["airway-edge"];ctx.lineWidth=22;ctx.beginPath();ctx.moveTo(zx+92,by);ctx.lineTo(zx+170,by-10);ctx.stroke();ctx.strokeStyle=C.air;ctx.lineWidth=16;ctx.stroke();
+  [[zx+118,by-15],[zx+146,by+10]].forEach(b=>circ(b[0],b[1],10,C.air,C["airway-edge"],2));
+  // alveolar duct lined with alveoli
+  ctx.strokeStyle=C["airway-edge"];ctx.lineWidth=20;ctx.beginPath();ctx.moveTo(zx+170,by-10);ctx.lineTo(zx+250,by-40);ctx.stroke();ctx.strokeStyle=C.air;ctx.lineWidth=15;ctx.stroke();ctx.lineCap="butt";
+  for(let i=0;i<5;i++){const f=i/4;const x=lerp(zx+176,zx+246,f),y=lerp(by-12,by-38,f);circ(x-5,y-16,10,C.air,C["airway-edge"],1.8);circ(x+5,y+15,10,C.air,C["airway-edge"],1.8)}
+  // alveolar sac (grapes)
+  const sx=zx+284,sy=by-78;for(let i=0;i<9;i++){const a=i/9*TAU;circ(sx+Math.cos(a)*30,sy+Math.sin(a)*30,17,C.air,C["airway-edge"],2)}circ(sx,sy,18,C.air,C["airway-edge"],2);
+  // capillary net hint
+  ctx.strokeStyle=hexA(C.rbc,.45);ctx.lineWidth=2;for(let i=0;i<6;i++){ctx.beginPath();ctx.arc(sx,sy,52+i*0,i*1.05,i*1.05+.8);ctx.stroke()}
+  // zone boundary
+  line(zx+92,zy+20,zx+92,zy+zh-20,C.bad,2,[6,4]);
+  txt(zx+50,zy+26,"CONDUCTING",{size:11,weight:700,mono:true,align:"center",color:C.accent});
+  txt(zx+220,zy+26,"RESPIRATORY ZONE",{size:11,weight:700,mono:true,align:"center",color:C.bad});
+  // zoom particle
+  const zp=[[zx+10,by],[zx+92,by],[zx+170,by-10],[zx+250,by-40],[sx,sy]];
+  let zi=-1;if(p>=.55){const q=seg(p,.55,.95);const [x,y]=along(zp,q);glow(x,y,14,C.glow,.5);circ(x,y,6,C.air,C.accent,2);zi=q<.25?0:q<.5?1:q<.75?2:3}
+  const zl=[["Terminal bronchiole",zx+64,by-44],["Respiratory bronchiole",zx+140,by+52],["Alveolar duct",zx+230,by+20],["Alveolar sac",sx-10,sy-62]];
+  zl.forEach((l,i)=>{const on=zi===i;label(l[1],l[2],l[0],{size:12,weight:on?700:500,align:"center",border:on?(i===0?C.accent:C.bad):null})});
+  txt(zx+zw/2,zy+zh-24,"zoom: the end of one bronchiole",{size:11.5,align:"center",color:C["ink-soft"]});
+  if(p>=.55&&zi>=1)label(zx+92,zy+zh-50,"First gas exchange here →",{size:11.5,weight:600,align:"left",border:C.bad});
+}
+
+/* ===== Scene: alveoli ===== */
+function sceneAlveoli(t){
+  ctx.fillStyle=C.tissue;ctx.fillRect(0,0,W,H);
+  const A=[[170,200,108],[388,168,96],[292,374,92]];
+  // capillaries behind walls
+  const caps=[[278,186],[230,302],[352,276],[96,316],[470,240],[190,90],[400,62],[180,410],[400,420]];
+  caps.forEach((c,i)=>{circ(c[0],c[1],15,C.vessel,C["vessel-edge"],1.5);rbc(c[0]+Math.sin(t*1.4+i)*3,c[1],8,{sat:.5+.5*Math.sin(t*.7+i)*.5+.25})});
+  A.forEach(a=>{circ(a[0],a[1],a[2],C.air)});
+  // surfactant film spreading from type II cells
+  const sp=seg(P(t,15)*15,3.5,8.5);
+  A.forEach((a,i)=>{ctx.save();ctx.beginPath();ctx.arc(a[0],a[1],a[2]-4,-.6+i,-.6+i+sp*TAU*.98);ctx.strokeStyle=hexA(C.surf,.85);ctx.lineWidth=5;ctx.stroke();ctx.restore()});
+  // type I walls
+  A.forEach(a=>{circ(a[0],a[1],a[2],null,C["type1"],6);circ(a[0],a[1],a[2]+3,null,hexA(C.ink,.25),1);
+    for(let k=0;k<3;k++){const q=k*2.1+.4;ctx.beginPath();ctx.ellipse(a[0]+Math.cos(q)*(a[2]-1),a[1]+Math.sin(q)*(a[2]-1),9,3,q+Math.PI/2,0,TAU);ctx.fillStyle=C.nuc;ctx.fill()}});
+  // type II cells at start angle of surfactant
+  const t2=[];A.forEach((a,i)=>{const q=-.6+i;const x=a[0]+Math.cos(q)*(a[2]-6),y=a[1]+Math.sin(q)*(a[2]-6);t2.push([x,y,q]);
+    ctx.save();ctx.translate(x,y);ctx.rotate(q);rr(-10,-13,20,26,7);ctx.fillStyle=C.type2;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1.2;ctx.stroke();
+    for(let k=0;k<3;k++)circ(-3+k*3,-6+k*6,2.6,hexA(C.surf,.95));ctx.restore();
+    if(sp>0&&sp<1){for(let k=0;k<4;k++){const f=P(t*1.2+k/4,1);const ix=x-Math.cos(q)*f*16,iy=y-Math.sin(q)*f*16;circ(ix,iy,3*(1-f*.5),hexA(C.surf,1-f))}}});
+  // macrophage in alveolus 0
+  const mT=P(t,15)*15;const mp=seg(mT,8.5,12.5);const dust=[110,248];
+  const mx=lerp(232,dust[0]+12,ease(mp)),my=lerp(262,dust[1]-4,ease(mp));
+  const eaten=mT>12.3;
+  if(!eaten)gas(dust[0]+(mT>11.8?seg(mT,11.8,12.3)*14:0),dust[1],"dust",7);
+  ctx.beginPath();for(let k=0;k<=24;k++){const q=k/24*TAU;const rad=22+4*Math.sin(q*3+t*2)+(mp>0&&mp<1&&Math.cos(q-Math.PI)>.7?10*Math.sin(mp*Math.PI):0);const X=mx+Math.cos(q)*rad,Y=my+Math.sin(q)*rad*.7;k?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath();ctx.fillStyle=C.macro;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1.2;ctx.stroke();
+  circ(mx+4,my,7,C.nuc);if(eaten){gas(mx-8,my+2,"dust",6);label(mx,my-30,"dust eaten (phagocytosis)",{size:11.5,align:"center"})}
+  // O2 diffusing from air into capillaries
+  caps.slice(0,4).forEach((c,i)=>{const a=A[i===2?1:i===3?0:i===1?0:0];const f=P(t*.5+i*.3,1);const sx=lerp(a[0],c[0],.55),sy=lerp(a[1],c[1],.55);gas(lerp(sx,c[0],f),lerp(sy,c[1],f),"o2",5.5,Math.min(1,f*5,(1-f)*5))});
+  // labels synced
+  const lt=mT;
+  label(130,140,"Alveolar air",{size:12,align:"center",bga:.6});
+  if(lt>.5)label(60,100,"Type I cell (thin wall)",{size:12,weight:lt<3.5?700:500,border:lt<3.5?C.accent:null});
+  if(lt>3.5){const p=t2[1];label(p[0]-14,p[1]+34,"Type II cell → surfactant",{align:"right",size:12,weight:lt<8.5?700:500,border:lt<8.5?C.surf:null})}
+  if(lt>8.5)label(mx+30,my+34,"Alveolar macrophage",{size:12,weight:700,border:C.macro});
+  label(caps[0][0]+18,caps[0][1]-22,"Capillary",{size:11.5});
+  // inset: with vs without surfactant
+  const ix=560,iy=40,iw=224,ih=400;panelBox(ix,iy,iw,ih);
+  txt(ix+iw/2,iy+18,"Why surfactant matters",{size:12.5,weight:700,align:"center"});
+  const br=Math.sin(t*1.3);
+  const rWith=50+6*br;const col=seg(P(t,6)*6,0,3)-seg(P(t,6)*6,4.5,6);const rWithout=lerp(48,14,ease(clamp(col,0,1)));
+  [[iy+120,rWith,"With surfactant",true],[iy+300,rWithout,"Without surfactant",false]].forEach(([y,r_,nm,ok])=>{
+    circ(ix+iw/2,y,r_,C.air,C.type1,5);if(ok){circ(ix+iw/2,y,r_-4,null,hexA(C.surf,.9),3)}
+    for(let k=0;k<8;k++){const q=k/8*TAU;const x1=ix+iw/2+Math.cos(q)*(r_+(ok?8:18)),y1=y+Math.sin(q)*(r_+(ok?8:18));const x2=ix+iw/2+Math.cos(q)*(r_+(ok?2:4)),y2=y+Math.sin(q)*(r_+(ok?2:4));arrow(x1,y1,x2,y2,ok?hexA(C.ink,.35):C.bad,ok?1.2:2)}
+    txt(ix+iw/2,y+80,nm,{size:12.5,weight:700,align:"center",color:ok?C.good:C.bad});
+    txt(ix+iw/2,y+98,ok?"low surface tension: stays open":"high surface tension: collapses",{size:11.5,align:"center",color:C["ink-soft"]})});
+}
+
+/* ===== Scene: respiratory membrane ===== */
+function sceneMembrane(t){
+  ctx.fillStyle=C.air;ctx.fillRect(0,0,W,H);
+  const y1=176,lay=[["surf",6],["type1",22],["bm",10],["endo",18]];
+  let y=y1;const yy={};lay.forEach(l=>{yy[l[0]]=[y,y+l[1]];y+=l[1]});const bloodTop=y;
+  ctx.fillStyle=hexA(C.surf,.7);ctx.fillRect(0,yy.surf[0],W,6);
+  ctx.fillStyle=C.type1;ctx.fillRect(0,yy.type1[0],W,22);ctx.beginPath();ctx.ellipse(120,yy.type1[0]+11,40,9,0,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();
+  ctx.fillStyle=hexA(C.rule,1);ctx.fillRect(0,yy.bm[0],W,10);for(let x=0;x<W;x+=12)line(x,yy.bm[0]+2,x+8,yy.bm[1]-2,hexA(C.ink,.25),1);
+  ctx.fillStyle=C["vessel-edge"];ctx.globalAlpha=.55;ctx.fillRect(0,yy.endo[0],W,18);ctx.globalAlpha=1;ctx.beginPath();ctx.ellipse(560,yy.endo[0]+9,36,7,0,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();
+  ctx.fillStyle=C.vessel;ctx.fillRect(0,bloodTop,W,H-bloodTop);
+  // RBCs flowing, saturation increases left to right
+  for(let i=0;i<7;i++){const f=P(t*.06+i/7,1);const x=-60+f*(W+120);rbc(x,bloodTop+80+((i*53)%90),30,{sat:seg(f,.05,.6)*.7+.3,sx:1,sy:.8})}
+  // gas crossing
+  for(let i=0;i<16;i++){const x=40+rnd(i)*720;const f=P(t*.33+rnd(i+5),1);gas(x+Math.sin(f*7+i)*5,lerp(80,bloodTop+60,f),"o2",7,Math.min(1,f*5,(1-f)*5))}
+  for(let i=0;i<10;i++){const x=60+rnd(i+40)*680;const f=P(t*.4+rnd(i+9),1);gas(x+Math.cos(f*7+i)*5,lerp(bloodTop+60,80,f),"co2",7,Math.min(1,f*5,(1-f)*5))}
+  // layer labels appear progressively
+  const lt=P(t,12)*12;
+  const labs=[[0,"Alveolar air",60,"air"],[1,"Surfactant + fluid film",yy.surf[0]+3],[2,"Alveolar wall (type I cell)",yy.type1[0]+11],[3,"Fused basement membranes",yy.bm[0]+5],[4,"Capillary wall (endothelium)",yy.endo[0]+9],[5,"Blood plasma + red blood cells",bloodTop+150]];
+  labs.forEach(l=>{if(lt>l[0]*.8){label(786,l[2],l[1],{size:12.5,weight:600,align:"right",bga:.92})}});
+  // thickness ruler
+  bracket(16,yy.type1[0],yy.endo[1],C.ink,1,2);label(30,yy.bm[0]+5,"≈ 0.5 µm",{size:12.5,weight:700,mono:true});
+  if(lt>5){label(300,110,"O₂: high in air → low in blood",{size:12,border:C.o2});label(330,bloodTop+30,"CO₂: high in blood → low in air",{size:12,border:C.co2})}
+  txt(400,H-12,"Simple diffusion. No energy used. Thin + huge area = fast exchange.",{size:12,weight:600,align:"center",color:C.ink});
+}
+/* rolling graph of analytic functions over the last `win` seconds */
+function rollGraph(x,y,w,h,T,win,lo,hi,series,o){o=o||{};axes(x,y,w,h,{title:o.title});
+  const py=v=>y+h-6-(v-lo)/(hi-lo)*(h-24);
+  (o.refs||[]).forEach(r=>{line(x,py(r[0]),x+w,py(r[0]),hexA(C["ink-faint"],.8),1,[3,3]);txt(x+w-4,py(r[0])-7,r[1],{size:10,align:"right",mono:true,color:C["ink-faint"]})});
+  series.forEach(s=>{ctx.beginPath();for(let i=0;i<=80;i++){const tt=T-win+win*i/80;const v=clamp(s.f(tt),lo,hi);const X=x+w*i/80,Y=py(v);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=s.col;ctx.lineWidth=s.lw||2.4;ctx.setLineDash(s.dash||[]);ctx.stroke();ctx.setLineDash([]);
+    const v=clamp(s.f(T),lo,hi);circ(x+w,py(v),3.5,s.col)})}
+
+/* ===== Scene: pleura + pressures ===== */
+function scenePressures(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=5,e=breathE(t,L,.4);
+  const cx=230,top=46,s=1.02;
+  drawThorax(cx,top,s,{r:.35*e,d:.45*e,fL:.92,fR:.92,pleuraLines:true});
+  // recoil arrows (inward) and wall arrows (outward)
+  [-1,1].forEach(side=>{const lp=lungPts(side,.35*e,.45*e,.92);[3,4,5].forEach(k=>{const p=thx(cx,top,s,lp[k]);const H_=thx(cx,top,s,[side*30,120]);const a=Math.atan2(H_[1]-p[1],H_[0]-p[0]);
+      arrow(p[0]-Math.cos(a)*-2,p[1],p[0]+Math.cos(a)*22,p[1]+Math.sin(a)*22,C.ppl,2)});
+    const w=wallPts(side,.35*e,.45*e);[3,4].forEach(k=>{const p=thx(cx,top,s,w[k]);arrow(p[0]+side*4,p[1],p[0]+side*30,p[1],C["ink-soft"],2)})});
+  label(cx-170,top+300*s+6,"Lungs recoil inward",{size:11.5,color:C.ppl});label(cx+60,top+300*s+6,"Chest wall pulls outward",{size:11.5});
+  // pleura labels
+  const pv=thx(cx,top,s,[-118,150]);label(pv[0]-8,pv[1]-40,"Parietal pleura",{size:11.5,align:"right"});line(pv[0]-10,pv[1]-32,pv[0]+2,pv[1]-6,C["ink-soft"],1);
+  const vv=thx(cx,top,s,[-95,190]);label(vv[0]+4,vv[1]+44,"Visceral pleura",{size:11.5,align:"center"});
+  const pf=thx(cx,top,s,[125,170]);label(pf[0]+8,pf[1]-50,"Pleural fluid",{size:11.5,color:C.pleura});line(pf[0]+20,pf[1]-42,pf[0]-2,pf[1],C.pleura,1);
+  // pressures
+  const ph=P(t,L),ti=.4;const dP=ph<ti?-Math.sin(Math.PI*ph/ti):Math.sin(Math.PI*(ph-ti)/(1-ti));
+  const palv=760+dP,ppl=756-2*e;
+  const gx=470;panelBox(gx,22,318,250);
+  gauge(gx+56,98,40,760,750,765,"Atmospheric",C["ink-soft"],{text:"760"});
+  gauge(gx+160,98,40,palv,750,765,"Intra-alveolar",C.palv,{text:palv.toFixed(1)});
+  gauge(gx+264,98,40,ppl,750,765,"Intrapleural",C.ppl,{text:ppl.toFixed(1)});
+  txt(gx+159,150,"mm Hg",{size:11,align:"center",color:C["ink-faint"]});
+  const tp=palv-ppl;
+  txt(gx+14,176,"Transpulmonary = intra-alveolar − intrapleural",{size:12.5,weight:600});
+  txt(gx+14,196,`${palv.toFixed(1)} − ${ppl.toFixed(1)} = ${tp.toFixed(1)} mm Hg`,{size:12.5,mono:true,weight:600,color:C["ink-soft"]});
+  rr(gx+14,212,290,16,8);ctx.fillStyle=C.sunk;ctx.fill();rr(gx+14,212,290*clamp(tp/8,0,1),16,8);ctx.fillStyle=C.good;ctx.fill();
+  txt(gx+14,246,"Positive = lungs held open",{size:12,weight:600,color:C.good});
+  rollGraph(gx,286,318,150,t,12,752,762,[{f:tt=>{const q=P(tt,L);return 760+(q<ti?-Math.sin(Math.PI*q/ti):Math.sin(Math.PI*(q-ti)/(1-ti)))},col:C.palv},{f:tt=>756-2*breathE(tt,L,.4),col:C.ppl}],{title:"Pressure over time (mm Hg)",refs:[[760,"760"],[756,"756"]]});
+  // wet slides inset
+  const sx=20,sy=410;const sl=Math.sin(t*.9)*18;
+  rr(sx+sl,sy,120,10,2);ctx.fillStyle=hexA(C.cart,.9);ctx.fill();ctx.strokeStyle=C["cart-edge"];ctx.stroke();
+  ctx.fillStyle=C.pfluid;ctx.fillRect(sx+10,sy+10,120,3);
+  rr(sx+10-sl*.2,sy+13,120,10,2);ctx.fillStyle=hexA(C.cart,.9);ctx.fill();ctx.strokeStyle=C["cart-edge"];ctx.stroke();
+  txt(sx+150,sy+12,"Wet slides: slide easily, hard to pull apart",{size:11.5,color:C["ink-soft"]});
+}
+
+/* ===== Scene: Boyle's law ===== */
+function sceneBoyle(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const k=(1-Math.cos(TAU*t/8))/2;const Lc=lerp(150,300,k);const x0=50,y0=120,hC=200;
+  // cylinder
+  rr(x0-6,y0-6,330,hC+12,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle=C.air;ctx.fillRect(x0,y0,Lc,hC);
+  // piston
+  rr(x0+Lc,y0-4,16,hC+8,3);ctx.fillStyle=C["ink-soft"];ctx.fill();rr(x0+Lc+16,y0+hC/2-6,140,12,4);ctx.fillStyle=C["ink-faint"];ctx.fill();
+  // particles
+  const tri=v=>{const q=((v%2)+2)%2;return q<1?q:2-q};
+  let hits=0;
+  for(let i=0;i<34;i++){const vx=.35+rnd(i)*.4,vy=.3+rnd(i+50)*.4;const fx=tri(t*vx+rnd(i+9)*2),fy=tri(t*vy+rnd(i+19)*2);
+    const x=x0+8+fx*(Lc-16),y=y0+8+fy*(hC-16);gas(x,y,"n2",7);
+    if(fx>.97||fx<.03||fy>.97||fy<.03){hits++;glow(x+(fx>.97?6:fx<.03?-6:0),y+(fy>.97?6:fy<.03?-6:0),10,C.glow,.7)}}
+  const Pv=760*225/Lc;
+  gauge(200,62,44,Pv,500,1200,"Pressure",C.accent,{text:Math.round(Pv)+" mm Hg"});
+  hbracket(x0,x0+Lc,y0+hC+22,C.vol,2);txt(x0+Lc/2,y0+hC+38,"Volume",{size:12,weight:600,align:"center",color:C.vol});
+  const dir=Math.sin(TAU*t/8);
+  label(x0+Lc/2,y0+hC+64,dir>0?"Volume ↑  →  pressure ↓  (fewer hits on the walls)":"Volume ↓  →  pressure ↑  (more hits on the walls)",{size:12.5,weight:700,align:"center",border:dir>0?C.good:C.warn});
+  arrow(x0+Lc+90,y0+hC/2+26,x0+Lc+90+(dir>0?30:-30),y0+hC/2+26,C.ink,2);
+  // P-V graph
+  const gx=470,gy=60,gw=300,gh=280;axes(gx,gy,gw,gh,{title:"Pressure vs volume"});
+  const vx=v=>gx+20+(v-140)/(320-140)*(gw-40),py=p=>gy+gh-20-(p-450)/(1250-450)*(gh-50);
+  ctx.beginPath();for(let v=140;v<=320;v+=4){const p=760*225/v;v>140?ctx.lineTo(vx(v),py(p)):ctx.moveTo(vx(v),py(p))}ctx.strokeStyle=C.accent;ctx.lineWidth=2.5;ctx.stroke();
+  circ(vx(Lc),py(Pv),7,C.accent,C.panel,2);
+  txt(gx+gw/2,gy+gh+16,"Volume →",{size:12,align:"center",color:C["ink-soft"]});ctx.save();ctx.translate(gx-12,gy+gh/2);ctx.rotate(-Math.PI/2);txt(0,0,"Pressure →",{size:12,align:"center",color:C["ink-soft"]});ctx.restore();
+  txt(gx+gw/2,gy+gh+44,"P₁V₁ = P₂V₂",{size:16,weight:700,align:"center",mono:true});
+  txt(gx+gw/2,gy+gh+68,"Your chest is the cylinder. The diaphragm is the piston.",{size:12,align:"center",color:C["ink-soft"]});
+}
+
+/* ===== shared: breathing thorax with airflow particles ===== */
+function airflow(cx,top,s,dir,amt,t){ // dir +1 in, -1 out
+  if(amt<=.05)return;const pts=[thx(cx,top,s,[0,-60]),thx(cx,top,s,[0,90]),thx(cx,top,s,[-30,120]),thx(cx,top,s,[-70,170])];
+  const pts2=[thx(cx,top,s,[0,-60]),thx(cx,top,s,[0,90]),thx(cx,top,s,[30,120]),thx(cx,top,s,[70,170])];
+  for(let i=0;i<10;i++){const f=P(t*.5*dir+i/10,1);const pp=i%2?pts:pts2;const [x,y]=along(pp,f);circ(x,y,4.5,hexA(C.air,amt),hexA(C.accent,amt),1.3)}
+  const a=thx(cx,top,s,[0,-40]);arrow(a[0]+26,a[1]-(dir>0?20:-20),a[0]+26,a[1]+(dir>0?20:-20),hexA(C.accent,amt),2.5);
+  label(a[0]+40,a[1],dir>0?"air in":"air out",{size:12,weight:700,color:C.accent,bga:.85*amt})}
+function stepList(x,y,items,active,col){items.forEach((s_,i)=>{const on=i<=active;const yy=y+i*34;circ(x+11,yy,10,on?col:C["panel-2"],on?col:C.rule,1.5);txt(x+11,yy+.5,String(i+1),{size:10.5,weight:700,mono:true,align:"center",color:on?onFill():C["ink-soft"]});
+  wrapText(s_,x+28,yy,270,15,{size:12.5,weight:i===active?700:500,color:on?C.ink:C["ink-soft"]})})}
+
+/* ===== Scene: inspiration ===== */
+function sceneInspire(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=7,ti=.55,ph=P(t,L),e=breathE(t,L,ti);
+  const cx=230,top=60,s=1.02;const ins=ph<ti;
+  drawThorax(cx,top,s,{r:e,d:e,diaGlow:ins?Math.sin(Math.PI*ph/ti):0,icGlow:ins?Math.sin(Math.PI*ph/ti):0});
+  airflow(cx,top,s,ins?1:-1,ins?Math.sin(Math.PI*ph/ti):0,t);
+  if(ins){const k=Math.sin(Math.PI*ph/ti);[-60,60].forEach(x=>{const p=thx(cx,top,s,[x,236+30*e]);arrow(p[0],p[1]+6,p[0],p[1]+30,hexA(C.muscle,k),3)});
+    [-1,1].forEach(side=>{const p=thx(cx,top,s,[side*130,150]);arrow(p[0],p[1],p[0]+side*20,p[1]-16,hexA(C.glow,k),3)});
+    label(cx,top+300*s+16,"Diaphragm contracts: dome flattens and moves down",{size:12,weight:600,align:"center",border:C.muscle,bga:k});
+    label(10,40,"External intercostals lift ribs",{size:11.5,weight:600,border:C.glow,bga:k})}
+  // steps
+  const px=470;panelBox(px,20,316,236);txt(px+12,38,"INSPIRATION (ACTIVE)",{size:12,weight:700,mono:true,color:C.act2});
+  const act=ins?Math.floor(seg(ph,0,ti*.9)*5):-1;
+  stepList(px+10,66,["Diaphragm contracts and flattens","External intercostals lift ribs up and out","Chest and lung volume increase","Alveolar pressure falls to about 759 mm Hg","Air flows in until pressures match"],act,C.act2);
+  const palv=760+(ins?-Math.sin(Math.PI*ph/ti):Math.sin(Math.PI*(ph-ti)/(1-ti))*.9);
+  gauge(px+60,316,36,palv,756,764,"Intra-alveolar",C.palv,{text:palv.toFixed(1)});gauge(px+160,316,36,760,756,764,"Atmospheric",C["ink-soft"],{text:"760"});
+  txt(px+250,300,palv<759.8?"lower →":palv>760.2?"higher →":"equal",{size:12,weight:700,align:"center",color:palv<759.8?C.good:palv>760.2?C.warn:C["ink-soft"]});
+  txt(px+250,318,palv<759.8?"air flows IN":palv>760.2?"air flows OUT":"no flow",{size:12,align:"center",color:C["ink-soft"]});
+  rollGraph(px,356,316,104,t,14,0,600,[{f:tt=>breathE(tt,L,ti)*500,col:C.vol}],{title:"Lung volume above resting (mL)",refs:[[500,"500"]]});
+}
+
+/* ===== Scene: expiration (quiet + forced) ===== */
+function sceneExpire(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=17,tt=P(t,L)*L;let r=0,d=0,acc=0,abs=0,ic=0,mode="quiet",palv=760,flow=0,dir=1,vol=0;
+  if(tt<6){ // quiet: in 0-2, out 2-6
+    if(tt<2){const q=tt/2;r=d=(1-Math.cos(Math.PI*q))/2;palv=760-Math.sin(Math.PI*q);flow=Math.sin(Math.PI*q);dir=1;mode="quiet-in"}
+    else{const q=(tt-2)/4;r=d=(1+Math.cos(Math.PI*q))/2;palv=760+Math.sin(Math.PI*q);flow=Math.sin(Math.PI*q);dir=-1;mode="quiet-out"}
+    vol=r*500}
+  else if(tt<9.5){const q=(tt-6)/3.5;const k=(1-Math.cos(Math.PI*Math.min(1,q)))/2;r=d=k*1.9;acc=Math.sin(Math.PI*q);palv=760-3*Math.sin(Math.PI*q);flow=Math.sin(Math.PI*q);dir=1;mode="forced-in";vol=k*3600}
+  else if(tt<14){const q=(tt-9.5)/4.5;const k=(1-Math.cos(Math.PI*q))/2;r=lerp(1.9,-.7,k);d=lerp(1.9,-.8,k);abs=Math.sin(Math.PI*q);ic=abs;palv=760+6*Math.sin(Math.PI*q);flow=Math.sin(Math.PI*q);dir=-1;mode="forced-out";vol=lerp(3600,-1200,k)}
+  else{const q=(tt-14)/3;const k=(1-Math.cos(Math.PI*q))/2;r=lerp(-.7,0,k);d=lerp(-.8,0,k);mode="rest";vol=lerp(-1200,0,k)}
+  const cx=230,top=64,s=.98;
+  drawThorax(cx,top,s,{r,d,acc,abs,icGlow:ic,icCol:C.muscle});
+  airflow(cx,top,s,dir,flow,t);
+  if(mode==="quiet-out"){[-1,1].forEach(side=>{const p=thx(cx,top,s,[side*70,160]);ctx.save();ctx.strokeStyle=C.ppl;ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=30;i++){const yy=p[1]-14+i;const xx=p[0]+side*Math.sin(i*.8)*6*(1-flow*.3);i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.stroke();ctx.restore()});
+    label(cx,top+300*s+16,"Muscles relax. Elastic recoil shrinks the lungs.",{size:12,weight:600,align:"center",border:C.ppl})}
+  if(mode==="forced-in"){const p=thx(cx,top,s,[-40,-28]);label(p[0]-10,p[1],"Scalenes, sternocleidomastoid",{size:11.5,weight:600,align:"right",border:C.muscle,bga:acc});label(cx,top+300*s+16,"Forced inspiration: accessory muscles lift ribs higher",{size:12,weight:600,align:"center",border:C.muscle})}
+  if(mode==="forced-out"){const p=thx(cx,top,s,[0,292]);label(p[0],p[1]+30,"Abdominal muscles push the diaphragm up",{size:12,weight:600,align:"center",border:C.muscle,bga:Math.max(.4,abs)});const q=thx(cx,top,s,[-150,160]);label(q[0]+30,q[1]-60,"Internal intercostals pull ribs down",{size:11.5,weight:600,align:"center",border:C.muscle,bga:Math.max(.4,abs)});
+    [-50,0,50].forEach(x=>{const a=thx(cx,top,s,[x,330]);arrow(a[0],a[1],a[0],a[1]-22,hexA(C.muscle,abs),3)})}
+  // panel
+  const px=470;panelBox(px,20,316,200);
+  const titles={"quiet-in":["QUIET BREATH IN","Diaphragm and external intercostals contract.",C.act2],"quiet-out":["QUIET EXPIRATION: PASSIVE","No muscle contracts. Lungs recoil; pressure rises to about 761.",C.good],
+    "forced-in":["FORCED INSPIRATION","Accessory muscles: scalenes, sternocleidomastoid, pectoralis minor.",C.warn],"forced-out":["FORCED EXPIRATION: ACTIVE","Internal intercostals + abdominal muscles squeeze air out.",C.bad],"rest":["BACK TO QUIET BREATHING","",C["ink-soft"]]};
+  const T_=titles[mode];txt(px+12,40,T_[0],{size:12.5,weight:700,mono:true,color:T_[2]});wrapText(T_[1],px+12,64,290,17,{size:12.5});
+  gauge(px+80,170,36,clamp(palv,754,767),754,767,"Intra-alveolar",C.palv,{text:(Math.round(palv*10)/10).toFixed(1)});gauge(px+220,170,36,760,754,767,"Atmospheric",C["ink-soft"],{text:"760"});
+  rollGraph(px,236,316,220,t,16,-1500,4000,[{f:x=>{const q=P(x,L)*L;if(q<2)return (1-Math.cos(Math.PI*q/2))/2*500;if(q<6)return (1+Math.cos(Math.PI*(q-2)/4))/2*500;if(q<9.5)return (1-Math.cos(Math.PI*Math.min(1,(q-6)/3.5)))/2*3600;if(q<14)return lerp(3600,-1200,(1-Math.cos(Math.PI*(q-9.5)/4.5))/2);return lerp(-1200,0,(1-Math.cos(Math.PI*(q-14)/3))/2)},col:C.vol}],{title:"Volume compared with resting (mL)",refs:[[0,"rest"],[500,"+500"],[3600,"+3,600"],[-1200,"−1,200"]]});
+}
+
+/* ===== Scene: pneumothorax ===== */
+function scenePneumo(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=17,tt=P(t,L)*L;const e=breathE(t,4.5,.4);
+  const air=seg(tt,2.5,4.5)*(1-seg(tt,10.5,13));const col=ease(seg(tt,3,5.5))*(1-ease(seg(tt,11,14)));
+  const cx=240,top=60,s=1.02;
+  drawThorax(cx,top,s,{r:.35*e,d:.45*e,ptxL:air,fL:lerp(.955,.42,col),fR:.955});
+  // puncture
+  const pp=thx(cx,top,s,[-150,170]);
+  if(tt>2.2&&tt<10.5){line(pp[0]-40,pp[1]-30,pp[0]+6,pp[1]+4,C.bad,4);label(pp[0]-40,pp[1]-46,"Puncture",{size:12,weight:700,align:"left",border:C.bad});
+    if(tt<6){for(let i=0;i<6;i++){const f=P(t*1.4+i/6,1);circ(lerp(pp[0]-20,pp[0]+40,f),lerp(pp[1]-14,pp[1]+20,f)+Math.sin(f*9)*6,4,hexA(C.air,1-f),hexA(C.accent,1-f),1)}}}
+  if(tt>10.3&&tt<14.5){ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=7;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(pp[0]-90,pp[1]+60);ctx.quadraticCurveTo(pp[0]-30,pp[1]+40,pp[0]+12,pp[1]-4);ctx.stroke();ctx.lineCap="butt";
+    for(let i=0;i<4;i++){const f=P(t*1.2+i/4,1);circ(lerp(pp[0]+10,pp[0]-90,f),lerp(pp[1]-4,pp[1]+60,f),4,C.air,C.accent,1)}label(10,top+300*s+22,"Chest tube removes the air",{size:12,weight:700,border:C.good})}
+  const lab=thx(cx,top,s,[-75,150]);if(col>.5)label(lab[0]-10,lab[1]+10,"Collapsed lung",{size:12,weight:700,align:"center",border:C.bad});
+  const ok=thx(cx,top,s,[80,150]);label(ok[0],ok[1],"Still inflated",{size:11.5,align:"center"});
+  txt(thx(cx,top,s,[-80,-8])[0],thx(cx,top,s,[-80,-8])[1],"Right lung",{size:12,weight:600,align:"center"});txt(thx(cx,top,s,[80,-8])[0],thx(cx,top,s,[80,-8])[1],"Left lung",{size:12,weight:600,align:"center"});
+  if(air>.3)label(thx(cx,top,s,[-128,250])[0],thx(cx,top,s,[-128,250])[1],"air in pleural cavity",{size:11.5,align:"center",border:C.accent});
+  // gauges
+  const px=480;panelBox(px,20,306,250);
+  const pL=lerp(756-2*e,760,air),pR=756-2*e;
+  txt(px+12,40,"INTRAPLEURAL PRESSURE",{size:12,weight:700,mono:true,color:C.ppl});
+  gauge(px+80,118,40,pL,750,762,"Right side",air>.5?C.bad:C.ppl,{text:pL.toFixed(1)});gauge(px+226,118,40,pR,750,762,"Left side",C.ppl,{text:pR.toFixed(1)});
+  const tpL=760-pL;txt(px+12,180,`Right transpulmonary: ${tpL.toFixed(1)} mm Hg`,{size:12.5,weight:600,mono:true,color:tpL<.5?C.bad:C.ink});
+  txt(px+12,204,`Left transpulmonary: ${(760-pR).toFixed(1)} mm Hg`,{size:12.5,weight:600,mono:true});
+  wrapText(tpL<.5?"Zero difference: nothing holds the right lung open, so it recoils.":"A positive difference holds each lung open.",px+12,234,280,16,{size:12.5,weight:600,color:tpL<.5?C.bad:C.good});
+  rollGraph(px,284,306,170,t,14,750,762,[{f:x=>{const q=P(x,L)*L;const a=seg(q,2.5,4.5)*(1-seg(q,10.5,13));return lerp(756-2*breathE(x,4.5,.4),760,a)},col:C.bad},{f:x=>756-2*breathE(x,4.5,.4),col:C.ppl,dash:[5,4]}],{title:"Intrapleural pressure: right (solid), left (dashed)",refs:[[760,"760 atm"],[756,"756"]]});
+}
+
+/* ===== Scene: resistance and compliance ===== */
+function sceneRC(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  // resistance
+  panelBox(12,14,380,452);txt(24,34,"AIRWAY RESISTANCE",{size:12.5,weight:700,mono:true,color:C.act2});
+  const tube=(y,rad,nm,narrow)=>{ctx.fillStyle=narrow?C.muscle:C["airway-edge"];rr(30,y-rad-10,344,2*rad+20,rad+10);ctx.fill();
+    ctx.fillStyle=C.air;rr(30,y-rad,344,2*rad,rad);ctx.fill();
+    if(narrow){for(let i=0;i<5;i++){ctx.beginPath();ctx.ellipse(70+i*66,y+rad-4,16,6,0,Math.PI,0);ctx.fillStyle=C.mucus;ctx.fill()}
+      for(let i=0;i<14;i++)line(36+i*25,y-rad-9,46+i*25,y-rad-1,hexA(C.ink,.3),1.5)}
+    const n=narrow?5:14,sp=narrow?.12:.32;for(let i=0;i<n;i++){const f=P(t*sp+i/n,1);const yy=y+(rnd(i+(narrow?40:0))-.5)*(rad*1.4);circ(36+f*332,yy,5,C.air,C.accent,1.4)}
+    txt(30,y-rad-24,nm,{size:12.5,weight:600});
+    txt(374,y+rad+26,narrow?"airflow: LOW":"airflow: HIGH",{size:12,weight:700,align:"right",mono:true,color:narrow?C.bad:C.good})};
+  tube(120,40,"Normal bronchiole (wide)",false);tube(290,13,"Asthma: smooth muscle tight + mucus",true);
+  wrapText("Halving an airway's radius raises resistance many times over. Air must be pushed harder, especially to get it out.",24,382,350,16,{size:12,color:C["ink-soft"]});
+  txt(24,440,"Flow = pressure difference ÷ resistance",{size:12.5,weight:700,mono:true});
+  // compliance
+  panelBox(404,14,384,452);txt(416,34,"LUNG COMPLIANCE",{size:12.5,weight:700,mono:true,color:C.act2});
+  const push=(1-Math.cos(TAU*t/4))/2;const cases=[["Normal",1,1,C.good],["Stiff: fibrosis or\nlow surfactant",.4,1,C.bad],["Emphysema: stretchy,\nweak recoil",1.4,.35,C.warn]];
+  cases.forEach((c,i)=>{const x=468+i*120,y=240;const ph=P(t,4);let k=push;if(c[2]<1&&ph>.5){k=Math.max(push,1-(ph-.5)*2*c[2]*1.2)}
+    const v=c[1]*k;const rx=26+v*14,ry=34+v*22;
+    rr(x-5,y-ry-42,10,40,3);ctx.fillStyle=C.cart;ctx.fill();
+    ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,TAU);ctx.fillStyle=C.lung;ctx.fill();ctx.strokeStyle=C["lung-edge"];ctx.lineWidth=c[1]<.6?4:1.6;ctx.stroke();
+    if(c[1]<.6){for(let k2=0;k2<6;k2++)line(x-rx*.6+k2*rx*.24,y-ry*.5,x-rx*.5+k2*rx*.24,y+ry*.5,hexA(C.bad,.6),1.5)}
+    if(c[2]<1){for(let k2=0;k2<4;k2++)circ(x+(rnd(k2)-.5)*rx,y+(rnd(k2+3)-.5)*ry,6+rnd(k2+7)*4,null,hexA(C["lung-edge"],.8),1.2)}
+    rr(x-30,330,60,90,4);ctx.fillStyle=C.sunk;ctx.fill();rr(x-30,330+90*(1-clamp(v/1.4,0,1)),60,90*clamp(v/1.4,0,1),4);ctx.fillStyle=c[3];ctx.fill();
+    txt(x,432,Math.round(v*500)+" mL",{size:12,weight:700,align:"center",mono:true});
+    c[0].split("\n").forEach((ln,j)=>txt(x,74+j*15,ln,{size:11.5,weight:j?400:600,align:"center",color:j?C["ink-soft"]:C.ink}))});
+  txt(596,114,"Same push from the breathing muscles each time",{size:11.5,align:"center",color:C["ink-soft"]});
+  const g=596;arrow(g-60,124,g+60,124,hexA(C.ink,.3),1.2);
+  txt(596,452,"Volume gained per breath",{size:11.5,align:"center",color:C["ink-soft"]});
+}
+
+/* ===== Scene: spirogram ===== */
+const SPIRO=[[0,2400],[1,2900],[2,2400],[3,2900],[4,2400],[5,2900],[6,2400],[8,6000],[9.6,2400],[10.6,2900],[11.6,2400],[13.2,1200],[14.8,2400],[15.8,2900],[16.8,2400]];
+function spiroV(x){for(let i=0;i<SPIRO.length-1;i++){const a=SPIRO[i],b=SPIRO[i+1];if(x<=b[0]){const f=(x-a[0])/(b[0]-a[0]);return lerp(a[1],b[1],(1-Math.cos(Math.PI*clamp(f,0,1)))/2)}}return 2400}
+function sceneSpiro(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=24,tt=P(t,L)*L;const tEnd=16.8,tp=Math.min(tt,tEnd);
+  const gx=70,gy=30,gw=520,gh=400;const X=x=>gx+x/tEnd*gw,Y=v=>gy+gh-v/6500*gh;
+  axes(gx,gy,gw,gh,{grid:[1200,2400,3600,4800,6000].map(Y)});
+  [0,1200,2400,3600,4800,6000].forEach(v=>txt(gx-6,Y(v),v.toLocaleString(),{size:10.5,align:"right",mono:true,color:C["ink-soft"]}));
+  ctx.save();ctx.translate(18,gy+gh/2);ctx.rotate(-Math.PI/2);txt(0,0,"Lung volume (mL)",{size:12,align:"center",color:C["ink-soft"]});ctx.restore();
+  txt(gx+gw/2,gy+gh+16,"Time →",{size:12,align:"center",color:C["ink-soft"]});
+  // RV band
+  ctx.fillStyle=hexA(C.co2,.25);ctx.fillRect(gx,Y(1200),gw,Y(0)-Y(1200));for(let x=gx;x<gx+gw;x+=14)line(x,Y(0),x+12,Y(1200),hexA(C.co2,.35),1);
+  // trace
+  ctx.beginPath();for(let i=0;i<=300;i++){const x=tp*i/300;const v=spiroV(x);i?ctx.lineTo(X(x),Y(v)):ctx.moveTo(X(x),Y(v))}ctx.strokeStyle=C.vol;ctx.lineWidth=3;ctx.stroke();
+  // pen
+  const pv=spiroV(tp);circ(X(tp),Y(pv),6,C.vol,C.panel,2);line(X(tp),Y(pv),X(tp)+30,Y(pv)-30,C["ink-soft"],2);
+  // volume brackets
+  const vb=(x,a,b,col,nm,val,on)=>{if(!on)return;const xx=X(x);line(xx,Y(a),xx,Y(b),col,3);line(xx-6,Y(a),xx+6,Y(a),col,3);line(xx-6,Y(b),xx+6,Y(b),col,3);label(xx+10,(Y(a)+Y(b))/2,nm+" "+val,{size:12,weight:700,border:col})};
+  vb(1,2400,2900,C.act1,"TV","500 mL",tt>1.2);
+  vb(7.6,2900,6000,C.act2,"IRV","3,100 mL",tt>8.2);
+  vb(12.6,2400,1200,C.act2,"ERV","1,200 mL",tt>13.3);
+  if(tt>13.3)label(X(5),Y(600),"RV 1,200 mL: can never be breathed out",{size:12,weight:700,border:C.co2,align:"center"});
+  // capacities
+  const cxs=[["IC",2400,6000,"3,600"],["FRC",0,2400,"2,400"],["VC",1200,6000,"4,800"],["TLC",0,6000,"6,000"]];
+  cxs.forEach((c,i)=>{const on=tt>tEnd+.4+i*1.1;if(!on)return;const x=gx+gw+20+i*48;line(x,Y(c[1]),x,Y(c[2]),C.accent,3);line(x-5,Y(c[1]),x+5,Y(c[1]),C.accent,3);line(x-5,Y(c[2]),x+5,Y(c[2]),C.accent,3);
+    ctx.save();ctx.translate(x+12,(Y(c[1])+Y(c[2]))/2);ctx.rotate(-Math.PI/2);txt(0,0,c[0]+" "+c[3],{size:11.5,weight:700,align:"center",color:C.accent});ctx.restore()});
+  if(tt>tEnd)txt(gx+gw+105,gy+12,"CAPACITIES = SUMS",{size:11,weight:700,mono:true,align:"center",color:C.accent});
+  const phase=tt<6?"Quiet breathing: tidal volume":tt<9.6?"Deepest breath IN":tt<11.6?"Back to quiet breathing":tt<14.8?"Hardest breath OUT":tt<tEnd?"Quiet breathing again":"Capacities: add the volumes";
+  label(gx+10,gy+16,phase,{size:12.5,weight:700,border:C.vol});
+}
+
+/* ===== Scene: Dalton & Henry ===== */
+function sceneGaslaws(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=14,tt=P(t,L)*L;
+  // Dalton box
+  panelBox(12,14,384,452);txt(24,34,"DALTON'S LAW",{size:12.5,weight:700,mono:true,color:C.act3});
+  const bx=34,by=52,bw=340,bh=220;rr(bx,by,bw,bh,6);ctx.fillStyle=C.air;ctx.fill();ctx.strokeStyle=C.rule;ctx.stroke();
+  const tri=v=>{const q=((v%2)+2)%2;return q<1?q:2-q};
+  const hl=tt<4?"all":tt<7?"n2":tt<10?"o2":"all";
+  for(let i=0;i<42;i++){const k=i<33?"n2":i<42?"o2":"x";const kind=i<33?"n2":"o2";const x=bx+10+tri(t*(.2+rnd(i)*.25)+rnd(i+3)*2)*(bw-20),y=by+10+tri(t*(.18+rnd(i+7)*.25)+rnd(i+5)*2)*(bh-20);
+    gas(x,y,kind,8,hl==="all"||hl===kind?1:.2)}
+  gas(bx+bw-30,by+bh-20,"co2",8,hl==="all"?1:.2);
+  // stacked bar
+  const sy=300,sw=340;const parts=[["N₂",597,C.n2,"n2"],["O₂",159,C.o2,"o2"],["other",4,C.co2,"x"]];let x=bx;
+  const grow=seg(tt,.5,3.5);
+  parts.forEach(p=>{const w=sw*p[1]/760*grow;rr(x,sy,w,30,2);ctx.fillStyle=p[2];ctx.fill();if(w>40)txt(x+w/2,sy+15,p[0]+" "+p[1],{size:12,weight:700,align:"center",color:p[3]==="o2"?"#fff":C.ink});x+=w});
+  ctx.strokeStyle=C.rule;ctx.strokeRect(bx,sy,sw,30);
+  txt(bx,sy+48,"Total = 597 + 159 + ≈4 = 760 mm Hg",{size:12.5,weight:700,mono:true});
+  if(tt>=7&&tt<10)label(bx+sw/2,sy+80,"PO₂ = 0.209 × 760 ≈ 159 mm Hg",{size:13,weight:700,align:"center",border:C.o2});
+  else if(tt>=4&&tt<7)label(bx+sw/2,sy+80,"PN₂ = 0.786 × 760 ≈ 597 mm Hg",{size:13,weight:700,align:"center",border:C.n2});
+  else txt(bx+sw/2,sy+80,"Each gas adds its own partial pressure.",{size:12.5,align:"center",color:C["ink-soft"]});
+  txt(bx+sw/2,sy+120,"(values for dry air at sea level, rounded)",{size:11,align:"center",color:C["ink-faint"]});
+  // Henry
+  panelBox(404,14,384,452);txt(416,34,"HENRY'S LAW",{size:12.5,weight:700,mono:true,color:C.act3});
+  const press=ease(seg(tt,4,6))*(1-ease(seg(tt,11,13)));
+  const hx0=470,hw=250,top0=70,liqY=280,pistY=lerp(top0,top0+90,press);
+  rr(hx0,top0-8,hw,400-top0,10);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle=C.air;ctx.fillRect(hx0+2,pistY+10,hw-4,liqY-pistY-10);
+  ctx.fillStyle=hexA(C.h2o,.35);ctx.fillRect(hx0+2,liqY,hw-4,388-liqY);
+  rr(hx0-4,pistY,hw+8,12,3);ctx.fillStyle=C["ink-soft"];ctx.fill();rr(hx0+hw/2-6,pistY-60,12,60,3);ctx.fill();
+  if(press>.2)arrow(hx0+hw/2+26,pistY-50,hx0+hw/2+26,pistY-10,C.warn,3);
+  const gh=liqY-pistY-10;
+  for(let i=0;i<14;i++){const k=i%2?"o2":"co2";const x=hx0+14+tri(t*(.2+rnd(i)*.2)+rnd(i+1)*2)*(hw-28),y=pistY+18+tri(t*(.17+rnd(i+2)*.2)+rnd(i+8)*2)*(gh-16);gas(x,y,k,8)}
+  const nO=1+Math.round(press*1),nC=6+Math.round(press*7);
+  for(let i=0;i<nC;i++){const x=hx0+20+((i*37)%(hw-40)),y=liqY+18+((i*23)%86)+Math.sin(t+i)*3;gas(x,y,"co2",7)}
+  for(let i=0;i<nO;i++){const x=hx0+40+i*90,y=liqY+60+Math.cos(t+i)*3;gas(x,y,"o2",7)}
+  txt(hx0+hw/2,404,`Dissolved: CO₂ × ${nC}   O₂ × ${nO}`,{size:12.5,weight:700,align:"center",mono:true});
+  txt(hx0+hw/2,428,press>.5?"Higher partial pressure → more gas dissolves":"Same gas pressures; CO₂ dissolves far more",{size:12,align:"center",color:C["ink-soft"]});
+  txt(hx0+hw/2,448,"CO₂ is about 20× more soluble than O₂",{size:12,weight:600,align:"center"});
+  label(hx0+hw-4,liqY+8,"liquid (like plasma)",{size:11,align:"right",bga:.7});
+}
+
+/* ===== Scene: external respiration ===== */
+function sceneExternal(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const o={mode:"lung",topO2:104,topCO2:40,inO2:40,inCO2:45,r:8.5,nO:24,nC:14,speed:45};
+  const g=drawExchange(20,24,520,330,o,t);
+  label(280,50,"Alveolus: PO₂ 104 · PCO₂ 40",{size:13,weight:700,align:"center",border:C.accent});
+  label(30,g.by+g.bh-18,"Blood in: PO₂ 40 · PCO₂ 45",{size:12,weight:700,border:C.deoxy});
+  label(530,g.by+g.bh-18,"Blood out: PO₂ ≈ 100–104 · PCO₂ 40",{size:12,weight:700,align:"right",border:C.rbc});
+  label(530,g.my+(g.by-g.my)/2,"Respiratory membrane",{size:11.5,align:"right",bga:.85});
+  // gradient readouts
+  const px=556;panelBox(px,24,232,150);
+  txt(px+12,44,"GRADIENTS",{size:12,weight:700,mono:true,color:C.act3});
+  gas(px+24,72,"o2",9);txt(px+44,72,"104 − 40 = 64 mm Hg",{size:12.5,weight:700,mono:true});txt(px+44,90,"O₂ into blood",{size:12,color:C["ink-soft"]});
+  gas(px+24,122,"co2",9);txt(px+44,122,"45 − 40 = 5 mm Hg",{size:12.5,weight:700,mono:true});txt(px+44,140,"CO₂ out (very soluble)",{size:12,color:C["ink-soft"]});
+  drawProfile(px,186,232,150,o);
+  txt(px+116,356,"Fully loaded within the first third",{size:11.5,align:"center",color:C["ink-soft"]});
+  txt(280,380,"Blood flow →",{size:12,align:"center",color:C["ink-soft"]});
+  wrapText("Each gas moves on its own, from higher partial pressure to lower partial pressure.",24,412,520,17,{size:13,weight:600});
+}
+
+/* ===== Scene: internal respiration ===== */
+function sceneInternal(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const o={mode:"tissue",topO2:40,topCO2:45,inO2:100,inCO2:40,r:8.5,nO:24,nC:14,speed:45};
+  const g=drawExchange(20,24,520,330,o,t);
+  // mitochondria pulses
+  for(let i=0;i<4;i++){const cx=20+520*(.13+i*.25);glow(cx,24+g.topH*.5,24,C.glow,.25+.25*Math.sin(t*3+i))}
+  label(280,44,"Tissue cells: PO₂ 40 · PCO₂ 45",{size:13,weight:700,align:"center",border:C.muscle});
+  label(30,g.by+g.bh-18,"Blood in: PO₂ 100 · PCO₂ 40",{size:12,weight:700,border:C.rbc});
+  label(530,g.by+g.bh-18,"Blood out: PO₂ 40 · PCO₂ 45",{size:12,weight:700,align:"right",border:C.deoxy});
+  label(280,24+g.topH-14,"cells use O₂ and make CO₂ (cellular respiration)",{size:11.5,align:"center",bga:.85});
+  const px=556;panelBox(px,24,232,150);
+  txt(px+12,44,"GRADIENTS",{size:12,weight:700,mono:true,color:C.act3});
+  gas(px+24,72,"o2",9);txt(px+44,72,"100 − 40 = 60 mm Hg",{size:12.5,weight:700,mono:true});txt(px+44,90,"O₂ out of blood",{size:12,color:C["ink-soft"]});
+  gas(px+24,122,"co2",9);txt(px+44,122,"45 − 40 = 5 mm Hg",{size:12.5,weight:700,mono:true});txt(px+44,140,"CO₂ into blood",{size:12,color:C["ink-soft"]});
+  drawProfile(px,186,232,150,o);
+  txt(px+116,356,"Blood PO₂ falls to the tissue level",{size:11.5,align:"center",color:C["ink-soft"]});
+  txt(280,380,"Blood flow →",{size:12,align:"center",color:C["ink-soft"]});
+  wrapText("The gradients run the opposite way from the lungs, because cells keep using O₂ and making CO₂.",24,412,520,17,{size:13,weight:600});
+}
+
+/* ===== Scene: ventilation-perfusion ===== */
+function sceneVQ(t){
+  ctx.fillStyle=C.tissue;ctx.fillRect(0,0,W,H);
+  const L=14,tt=P(t,L)*L;const block=ease(seg(tt,1.5,3.5));const con=ease(seg(tt,4,7));
+  const A=[230,190],B=[570,190],ar=86;
+  // airways
+  ctx.lineCap="round";ctx.strokeStyle=C["airway-edge"];ctx.lineWidth=30;ctx.beginPath();ctx.moveTo(400,0);ctx.lineTo(400,50);ctx.lineTo(A[0],A[1]-ar+10);ctx.moveTo(400,50);ctx.lineTo(B[0],B[1]-ar+10);ctx.stroke();
+  ctx.strokeStyle=C.air;ctx.lineWidth=22;ctx.stroke();ctx.lineCap="butt";
+  // mucus plug
+  const pl=[lerp(400,B[0],.55),lerp(50,B[1]-ar+10,.55)];if(block>0){ctx.beginPath();ctx.ellipse(pl[0],pl[1],16*block,13*block,.5,0,TAU);ctx.fillStyle=C.mucus;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.stroke();label(pl[0]+26,pl[1]-12,"Mucus plug",{size:12,weight:700,border:C.mucus,bga:block})}
+  // air particles
+  for(let i=0;i<10;i++){const f=P(t*.35+i/10,1);const toB=i%2===1;const pts=toB?[[400,0],[400,50],[B[0],B[1]]]:[[400,0],[400,50],[A[0],A[1]]];
+    let [x,y]=along(pts,f);if(toB&&block>.5){const lim=.55*(1)*.72;if(f>lim)continue}circ(x,y,4.5,C.air,C.accent,1.3)}
+  // alveoli
+  const alvB=mix(C.air,C.co2,block*.25);
+  circ(A[0],A[1],ar,C.air,C.type1,6);circ(B[0],B[1],ar,alvB,C.type1,6);
+  const pB=Math.round(lerp(104,40,block));
+  label(A[0],A[1],"PO₂ 104",{size:13,weight:700,align:"center",mono:true,border:C.good});
+  label(B[0],B[1],"PO₂ "+pB,{size:13,weight:700,align:"center",mono:true,border:block>.5?C.bad:C.good});
+  txt(A[0],A[1]+24,"well ventilated",{size:11.5,align:"center",color:C["ink-soft"]});txt(B[0],B[1]+24,block>.5?"no fresh air":"well ventilated",{size:11.5,align:"center",color:C["ink-soft"]});
+  // arterioles from bottom
+  const share=lerp(.5,.18,con);const wA=lerp(16,22,con),wB=lerp(16,6,con);
+  const art=[[400,480],[400,430]];
+  ctx.lineCap="round";
+  [[A,wA],[B,wB]].forEach(([al,w],i)=>{ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=w+6;ctx.beginPath();ctx.moveTo(400,480);ctx.lineTo(400,430);ctx.lineTo(al[0],al[1]+ar+14);ctx.stroke();ctx.strokeStyle=C.vessel;ctx.lineWidth=w;ctx.stroke();
+    if(i===1&&con>0){const m=[lerp(400,al[0],.5),lerp(430,al[1]+ar+14,.5)];for(let k=-2;k<=2;k++){circ(m[0]+k*14,m[1]-k*4,5,C.muscle)}label(m[0]+26,m[1]-36,"Arteriole constricts",{size:12,weight:700,border:C.muscle,bga:con})}});
+  ctx.lineCap="butt";
+  // capillary rings
+  [A,B].forEach(al=>{circ(al[0],al[1],ar+12,null,hexA(C.rbc,.55),5)});
+  // blood dots
+  const nA=Math.round(16*(1-share)),nB=Math.round(16*share);
+  [[A,nA],[B,nB]].forEach(([al,n],i)=>{for(let k=0;k<n;k++){const f=P(t*.3+k/n,1);const pts=[[400,480],[400,430],[al[0],al[1]+ar+12]];if(f<.6){const [x,y]=along(pts,f/.6);rbc(x,y,5,{sat:.3})}else{const q=(f-.6)/.4;const a=Math.PI/2+(i?-1:1)*q*Math.PI;rbc(al[0]+Math.cos(a)*(ar+12),al[1]+Math.sin(a)*(ar+12),5,{sat:i&&con>.5?.35:.3+q*.7})}}});
+  // share bars
+  panelBox(20,330,180,130);txt(30,350,"Blood flow share",{size:12,weight:700});
+  [["left",1-share,C.good],["right",share,C.bad]].forEach((b,i)=>{const y=372+i*40;txt(30,y,b[0],{size:12});rr(76,y-8,110,16,8);ctx.fillStyle=C.sunk;ctx.fill();rr(76,y-8,110*b[1],16,8);ctx.fillStyle=b[2];ctx.fill();txt(190,y+18,Math.round(b[1]*100)+"%",{size:11.5,align:"right",mono:true})});
+  panelBox(600,350,188,116);wrapText("In the lungs, low O₂ makes arterioles CONSTRICT. In body tissues, low O₂ makes them dilate.",612,370,168,15,{size:12,weight:600});
+  wrapText("High CO₂ in an airway makes bronchioles dilate.",612,434,168,15,{size:11.5,color:C["ink-soft"]});
+}
+/* ===== Scene: O2 transport ===== */
+function sceneO2trans(t){
+  ctx.fillStyle=C.air;ctx.fillRect(0,0,W,H);
+  const L=12,tt=P(t,L)*L;const load=seg(tt,1.5,8);
+  // alveolus top, capillary band
+  ctx.fillStyle=C.type1;ctx.fillRect(0,96,560,10);ctx.fillStyle=C.vessel;ctx.fillRect(0,106,560,374);
+  txt(20,40,"Alveolar air (PO₂ 104)",{size:12.5,weight:600});txt(20,128,"Pulmonary capillary: plasma",{size:12,color:C["ink-soft"]});
+  // flowing background marks
+  for(let i=0;i<8;i++){const x=P(t*.08+i/8,1)*600-20;rbc(x,450,14,{sat:.75+.23*seg(x,0,560),sx:1.2,sy:.7,a:.5})}
+  // big RBC
+  const cx=280,cy=280;ctx.beginPath();ctx.ellipse(cx,cy,220,140,0,0,TAU);ctx.fillStyle=mix(C.deoxy,C.rbc,.75+.23*load);ctx.globalAlpha=.3;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=3;ctx.stroke();
+  label(cx,cy-128,"Red blood cell (zoomed way in)",{size:12,weight:600,align:"center"});
+  const start=[3,2,3,4,3,3,2,4,3];
+  let filled=0;
+  start.forEach((s0,i)=>{const x=cx-150+(i%3)*150,y=cy-70+Math.floor(i/3)*70;const f=Math.min(4,s0+load*(4-s0)*1.02);filled+=Math.min(4,f);hbMol(x,y,14,f)});
+  // O2 streams from alveolus to RBC
+  for(let i=0;i<10;i++){const f=P(t*.4+i/10,1);if(load>=1)break;const x=60+rnd(i)*440;gas(x+Math.sin(f*6)*6,lerp(40,cy-20,f),"o2",6.5,Math.min(1,f*4,(1-f)*3))}
+  // dissolved O2 in plasma (few)
+  for(let i=0;i<3;i++){gas(40+i*230+Math.sin(t+i)*10,150+(i%2)*270,"o2",6)}
+  label(70,170,"dissolved O₂ (few)",{size:11.5});
+  const sat=Math.round(lerp(75,98,load));
+  // meter
+  const mx=586;panelBox(mx,20,200,440);
+  txt(mx+100,40,"Hb SATURATION",{size:12,weight:700,align:"center",mono:true,color:C.act4});
+  rr(mx+70,60,60,240,8);ctx.fillStyle=C.sunk;ctx.fill();const fh=240*sat/100;rr(mx+70,60+240-fh,60,fh,8);ctx.fillStyle=mix(C.deoxy,C.rbc,load);ctx.fill();
+  txt(mx+100,316,sat+"%",{size:20,weight:700,align:"center",mono:true});
+  txt(mx+100,338,tt<1.5?"arriving from body":load<1?"loading in the lungs":"leaving the lungs",{size:12,align:"center",color:C["ink-soft"]});
+  // pie
+  const pc=[mx+100,400],pr=38;ctx.beginPath();ctx.moveTo(pc[0],pc[1]);ctx.arc(pc[0],pc[1],pr,-Math.PI/2,-Math.PI/2+TAU*.985);ctx.closePath();ctx.fillStyle=C.rbc;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pc[0],pc[1]);ctx.arc(pc[0],pc[1],pr+4,-Math.PI/2+TAU*.985,-Math.PI/2+TAU);ctx.closePath();ctx.fillStyle=C.o2;ctx.fill();
+  txt(mx+100,448,"98.5% on Hb · 1.5% dissolved",{size:11,weight:600,align:"center"});
+  if(load>.1&&load<1)label(cx,cy+118,"Each O₂ that binds makes the next bind more easily",{size:12,weight:600,align:"center",border:C.act4});
+  if(load>=1)label(cx,cy+118,"About 98% full. Ready for the trip to the tissues.",{size:12,weight:600,align:"center",border:C.good});
+}
+
+/* ===== Scene: dissociation curve ===== */
+function curveGraph(x,y,w,h,p50s,o){o=o||{};axes(x,y,w,h,{});
+  const maxP=110;const X=p=>x+30+p/maxP*(w-44),Y=s=>y+h-28-s*(h-48);
+  for(let p=0;p<=100;p+=20){line(X(p),y+h-28,X(p),y+h-24,C["ink-faint"],1);txt(X(p),y+h-14,p+"",{size:10.5,align:"center",mono:true,color:C["ink-soft"]})}
+  for(let s=0;s<=1;s+=.25){line(x+26,Y(s),x+30,Y(s),C["ink-faint"],1);txt(x+24,Y(s),Math.round(s*100)+"",{size:10.5,align:"right",mono:true,color:C["ink-soft"]});line(x+30,Y(s),x+w-14,Y(s),hexA(C.rule,.5),1)}
+  txt(x+w/2,y+h+4,"PO₂ (mm Hg)",{size:11.5,align:"center",color:C["ink-soft"]});
+  ctx.save();ctx.translate(x+8,y+h/2-10);ctx.rotate(-Math.PI/2);txt(0,0,"% saturation",{size:11.5,align:"center",color:C["ink-soft"]});ctx.restore();
+  p50s.forEach(c=>{ctx.beginPath();for(let i=0;i<=110;i++){const s=satOf(i,c.p50)*(c.cap==null?1:c.cap);i?ctx.lineTo(X(i),Y(s)):ctx.moveTo(X(i),Y(s))}ctx.strokeStyle=c.col;ctx.lineWidth=c.lw||3;ctx.setLineDash(c.dash||[]);ctx.stroke();ctx.setLineDash([])});
+  return {X,Y}}
+function sceneOHDC(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=18,tt=P(t,L)*L;
+  const shift=ease(seg(tt,6,12));const fac=[seg(tt,6,7.5),seg(tt,7.5,9),seg(tt,9,10.5),seg(tt,10.5,12)];
+  const p50=p50Of({temp:37+1.5*fac[0],ph:7.4-.1*fac[1],pco2:40+10*fac[2],bpg:1+.2*fac[3]});
+  const g=curveGraph(30,24,500,420,[{p50:26.8,col:C["ink-faint"],lw:2,dash:[6,5]},{p50,col:C.o2,lw:3.4}]);
+  const sL=satOf(100,26.8),sT=satOf(40,p50),sT0=satOf(40,26.8);
+  // dot travel lungs -> tissue
+  const mv=seg(tt,1.5,5);const pNow=tt<1.5?100:tt<5?lerp(100,40,ease(mv)):40;
+  const sNow=satOf(pNow,26.8);
+  circ(g.X(100),g.Y(sL),7,C.rbc,C.panel,2);label(g.X(100)-8,g.Y(sL)-22,"Lungs ~"+Math.round(sL*100)+"%",{size:12,weight:700,align:"right"});
+  if(tt>=5){circ(g.X(40),g.Y(sT),7,C.deoxy,C.panel,2);label(g.X(40)+12,g.Y(sT)+18,"Tissue (PO₂ 40) ~"+Math.round(sT*100)+"%",{size:12,weight:700});
+    // unloading bracket
+    line(g.X(40)-24,g.Y(sL),g.X(40)-24,g.Y(sT),C.good,4);line(g.X(40)-30,g.Y(sL),g.X(40)-18,g.Y(sL),C.good,3);line(g.X(40)-30,g.Y(sT),g.X(40)-18,g.Y(sT),C.good,3);
+    line(g.X(40),g.Y(sT),g.X(100),g.Y(sL),hexA(C.good,.3),1,[3,3]);
+    label(g.X(40)-30,(g.Y(sL)+g.Y(sT))/2,"O₂ unloaded: "+Math.round((sL-sT)*100)+"%",{size:12,weight:700,align:"right",border:C.good})}
+  else circ(g.X(pNow),g.Y(sNow),8,mix(C.deoxy,C.rbc,sNow),C.panel,2);
+  if(shift>.05)label(g.X(70),g.Y(.35),"Curve shifted RIGHT →",{size:12.5,weight:700,border:C.o2});
+  label(g.X(80),g.Y(.98)+22,"flat top: safety margin",{size:11.5,bga:.8});
+  label(g.X(14),g.Y(.55),"steep part:",{size:11.5,bga:.8});label(g.X(14),g.Y(.49),"big release",{size:11.5,bga:.8});
+  // side panel
+  const px=550;panelBox(px,24,238,420);
+  txt(px+12,44,"RIGHT-SHIFT FACTORS",{size:12,weight:700,mono:true,color:C.act4});
+  const fl=[["Temperature ↑","working muscle is warm"],["pH ↓ (more H⁺)","the Bohr effect"],["CO₂ ↑","from cellular respiration"],["BPG ↑","made by red blood cells"]];
+  fl.forEach((f,i)=>{const on=fac[i]>.2;const y=74+i*52;rr(px+12,y-16,214,44,6);ctx.fillStyle=on?hexA(C.o2,.15):C.panel;ctx.fill();ctx.strokeStyle=on?C.o2:C.rule;ctx.lineWidth=on?2:1;ctx.stroke();
+    txt(px+22,y-2,(on?"✓ ":"")+f[0],{size:13,weight:700,color:on?C.ink:C["ink-soft"]});txt(px+22,y+16,f[1],{size:11.5,color:C["ink-soft"]})});
+  txt(px+12,296,"O₂ released at tissue PO₂ 40:",{size:12,weight:600});
+  const bars=[["normal",sL-sT0,C["ink-faint"]],["shifted",sL-sT,C.good]];
+  bars.forEach((b,i)=>{const y=322+i*36;txt(px+12,y,b[0],{size:12});rr(px+78,y-9,140,18,9);ctx.fillStyle=C.sunk;ctx.fill();rr(px+78,y-9,140*clamp(b[1]/.6,0,1),18,9);ctx.fillStyle=b[2];ctx.fill();
+    txt(px+222,y+20,Math.round(b[1]*100)+"%",{size:11.5,align:"right",mono:true})});
+  wrapText("Active tissue is warm, acidic and full of CO₂, so it gets more O₂.",px+12,410,214,15,{size:12,weight:600,color:C.good});
+}
+
+/* ===== Scene: CO2 transport ===== */
+function sceneCO2(t){
+  ctx.fillStyle=C.vessel;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle=C.tissue;ctx.fillRect(0,0,110,H);for(let i=0;i<3;i++){rr(10,30+i*145,90,125,14);ctx.fillStyle=C["muscle-lite"];ctx.fill();ctx.strokeStyle=hexA(C.ink,.25);ctx.stroke()}
+  txt(55,18,"Tissue",{size:12,weight:700,align:"center"});line(110,0,110,H,C["vessel-edge"],3);
+  txt(130,62,"Plasma",{size:12,weight:600,color:C["ink-soft"]});
+  // percent bar on top
+  const parts=[["HCO₃⁻ ~70%",70,C.hco3],["Hb–CO₂ ~20%",20,C.co2],["dissolved 7–10%",10,C.o2]];let px=130;const pw=520;
+  txt(px,14,"HOW CO₂ IS CARRIED",{size:11,weight:700,mono:true,color:C.act4});
+  parts.forEach(p=>{const w=pw*p[1]/100;rr(px,24,w-2,24,3);ctx.fillStyle=p[2];ctx.fill();txt(px+w/2,36.5,p[1]===10?"7–10%":p[0],{size:11.5,weight:700,align:"center",color:"#fff"});px+=w});
+  const cx=400,cy=232,rx=232,ry=150;ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,TAU);ctx.fillStyle=hexA(C.rbc,.22);ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=3;ctx.stroke();
+  txt(cx-120,cy+ry-34,"Red blood cell",{size:12.5,weight:700,align:"center"});
+  const CA=[350,236],HB=[500,138],EX=[cx+rx-2,cy+40],HBH=[510,320];
+  ctx.save();ctx.translate(CA[0],CA[1]);ctx.rotate(Math.PI/4);rr(-18,-18,36,36,6);ctx.fillStyle=C.enzyme;ctx.fill();ctx.restore();txt(CA[0],CA[1]+.5,"CA",{size:12,weight:700,align:"center",color:"#fff"});
+  label(CA[0],CA[1]+38,"carbonic anhydrase",{size:11.5,align:"center"});
+  hbMol(HB[0],HB[1],16,4);label(HB[0]-40,HB[1]-44,"CO₂ on globin: carbaminohemoglobin",{size:11.5,align:"center"});
+  hbMol(HBH[0],HBH[1],16,0);label(HBH[0]+10,HBH[1]+44,"Hb buffers H⁺",{size:11.5,align:"center"});
+  rr(EX[0]-10,EX[1]-28,20,56,6);ctx.fillStyle=C.cl;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke();label(EX[0]+16,EX[1]-46,"exchanger",{size:11.5});
+  const N=20,per=7;
+  for(let i=0;i<N;i++){const ph=P(t/per+i/N,1);const kind=i%10===0?"dis":i%10<3?"hb":"ca";const y0=80+rnd(i)*340;
+    if(kind==="dis"){const p=[[100,y0],[150,y0+Math.sin(i)*20]];const [x,y]=along(p,seg(ph,0,.4));gas(x,y,"co2",9,ph>.9?(1-ph)*10:1)}
+    else if(kind==="hb"){const p=[[100,y0],[cx-rx+12,cy+(y0-cy)*.5],[HB[0]-30,HB[1]+12]];const [x,y]=along(p,seg(ph,0,.6));gas(x,y,"co2",9,ph>.9?(1-ph)*10:1)}
+    else{const a=seg(ph,0,.4);if(a<1){const p=[[100,y0],[cx-rx+12,cy+(y0-cy)*.4],[CA[0]-26,CA[1]]];const [x,y]=along(p,a);gas(x,y,"co2",9);gas(x+6,y+16,"h2o",7,seg(ph,.15,.3))}
+      else{const b=seg(ph,.4,.55);if(b<1){gas(CA[0]+lerp(20,56,b),CA[1]-lerp(20,46,b),"h2co3",9)}
+        else{const c=seg(ph,.55,1);const [hx,hy]=along([[CA[0]+56,CA[1]-46],[HBH[0]-26,HBH[1]-6]],c);gas(hx,hy,"h",9,c>.9?(1-c)*10:1);
+          const [bx,by]=along([[CA[0]+56,CA[1]-46],[EX[0]-20,EX[1]],[EX[0]+40,EX[1]+16],[W-40,EX[1]+60]],c);gas(bx,by,"hco3",9);
+          const [lx,ly]=along([[W-20,EX[1]-110],[EX[0]+30,EX[1]-20],[EX[0]-40,EX[1]-24]],c);gas(lx,ly,"cl",9)}}}}
+  arrow(EX[0]+28,EX[1]+24,EX[0]+70,EX[1]+40,C.hco3,2);arrow(EX[0]+60,EX[1]-70,EX[0]+28,EX[1]-36,C.cl,2);
+  label(718,402,"chloride shift:",{size:12,weight:700,align:"center",border:C.cl});
+  txt(718,424,"HCO₃⁻ out, Cl⁻ in",{size:11.5,align:"center",color:C["ink-soft"]});
+  panelBox(130,404,500,52);
+  txt(380,422,"CO₂ + H₂O  ⇌  H₂CO₃  ⇌  H⁺ + HCO₃⁻",{size:14,weight:700,align:"center",mono:true});
+  txt(380,442,"carbonic anhydrase speeds the first step · in the lungs it all runs backward",{size:11.5,align:"center",color:C["ink-soft"]});
+}
+
+/* ===== brainstem drawing ===== */
+function brainstem(x,y,s,o){o=o||{};ctx.save();ctx.translate(x,y);ctx.scale(s,s);
+  ctx.beginPath();ctx.ellipse(-30,-110,150,80,-.15,0,TAU);ctx.fillStyle=C.brain;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=0;i<6;i++){ctx.beginPath();ctx.arc(-120+i*40,-130+Math.sin(i)*12,18,Math.PI*1.1,Math.PI*1.9);ctx.strokeStyle=hexA(C["brain-edge"],.6);ctx.stroke()}
+  // cerebellum
+  ctx.beginPath();ctx.ellipse(70,-30,52,36,.2,0,TAU);ctx.fillStyle=mix(C.brain,C["brain-edge"],.2);ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.stroke();
+  // brainstem: midbrain, pons, medulla, cord
+  ctx.beginPath();ctx.moveTo(-10,-60);ctx.lineTo(28,-60);ctx.lineTo(30,-30);ctx.quadraticCurveTo(52,0,32,30);ctx.lineTo(30,90);ctx.lineTo(24,170);ctx.lineTo(4,170);ctx.lineTo(0,90);ctx.lineTo(-6,30);ctx.quadraticCurveTo(-36,0,-12,-30);ctx.closePath();
+  ctx.fillStyle=mix(C.brain,C["brain-edge"],.35);ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  line(-14,-28,32,-28,hexA(C["brain-edge"],.8),1);line(-8,32,34,32,hexA(C["brain-edge"],.8),1);line(-2,92,30,92,hexA(C["brain-edge"],.8),1);
+  ctx.restore()}
+
+/* ===== Scene: brainstem centers ===== */
+function sceneCenters(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=4.5,ph=P(t,L),ti=.4,ins=ph<ti;const e=breathE(t,L,ti);
+  const bx=180,by=200,s=.85;brainstem(bx,by,s);
+  // groups
+  const pons=[bx+10*s,by],drg=[bx+24*s,by+58*s],vrg=[bx+2*s,by+66*s];
+  const ponsOn=Math.max(0,1-Math.abs(ph-ti)*12);
+  glow(pons[0],pons[1],28,C.act1,.3+.6*ponsOn);circ(pons[0],pons[1],8,C.act1,C.panel,1.5);
+  const burst=ins?Math.sin(Math.PI*ph/ti):0;glow(drg[0],drg[1],26,C.act5,.2+.7*burst);circ(drg[0],drg[1],8,C.act5,C.panel,1.5);circ(vrg[0],vrg[1],7,mix(C.act5,C.panel,.4),C.panel,1.5);
+  label(pons[0]-30,pons[1]-6,"Pontine group (pons)",{size:11.5,align:"right",border:ponsOn>.3?C.act1:null});
+  label(drg[0]+20,drg[1]-10,"DRG (rhythm)",{size:11.5,weight:600,border:burst>.3?C.act5:null});
+  label(vrg[0]-24,vrg[1]+16,"VRG (forced breathing)",{size:11.5,align:"right"});
+  txt(bx-30,by+96,"Medulla",{size:11.5,align:"right",color:C["ink-soft"]});
+  // nerves down to diaphragm
+  const nTop=[bx+12,by+144];const dia=[[bx-70,440],[bx+20,404+e*14],[bx+110,440]];
+  ctx.strokeStyle=C.nerve;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(nTop[0],nTop[1]);ctx.quadraticCurveTo(bx+60,320,bx+20,404);ctx.stroke();
+  label(bx+66,330,"Phrenic nerve",{size:11.5});
+  if(ins){for(let k=0;k<3;k++){const f=P(t*2.2+k/3,1);const p=along([[nTop[0],nTop[1]],[bx+50,300],[bx+20,404]],f);glow(p[0],p[1],10,C.nerve,.9)}}
+  // diaphragm
+  ctx.beginPath();ctx.moveTo(dia[0][0],dia[0][1]);ctx.quadraticCurveTo(bx+20,lerp(360,410,e),dia[2][0],dia[2][1]);ctx.strokeStyle=ins?mix(C.muscle,C.glow,burst*.5):C.muscle;ctx.lineWidth=10;ctx.lineCap="round";ctx.stroke();ctx.lineCap="butt";
+  label(20,456,ins?"Diaphragm contracts":"Diaphragm relaxes",{size:12,weight:700,border:C.muscle});
+  // spike trace and volume
+  const gx=400,gw=386;axes(gx,30,gw,170,{title:"DRG activity (nerve impulses)"});
+  for(let i=0;i<240;i++){const tt=t-6+i*6/240;const q=P(tt,L);if(q<ti){const amp=Math.sin(Math.PI*q/ti);if(rnd(Math.floor(tt*60))<amp*.9){const x=gx+i/240*gw;line(x,180,x,180-30-90*amp,C.act5,1.5)}}}
+  txt(gx+gw-6,192,"now",{size:10,align:"right",color:C["ink-faint"]});
+  rollGraph(gx,214,gw,150,t,6,0,600,[{f:x=>breathE(x,L,ti)*500,col:C.vol}],{title:"Lung volume (mL above resting)"});
+  panelBox(gx,378,gw,80);wrapText(ins?"Burst of signals: inspiration. The diaphragm and external intercostals contract.":"Signals stop: quiet expiration is passive recoil. The pons helps switch off each breath in.",gx+12,398,gw-24,16,{size:12.5,weight:600});
+}
+
+/* ===== Scene: chemoreceptors ===== */
+function sceneChemo(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=14,tt=P(t,L)*L;const rise=seg(tt,0,4)*(1-seg(tt,7,11));const pco2=40+8*rise;const vent=seg(tt,3,6)*(1-seg(tt,9,12.5));
+  // central: capillary -> BBB -> CSF -> receptor
+  panelBox(12,14,380,330);txt(24,34,"CENTRAL CHEMORECEPTORS",{size:12,weight:700,mono:true,color:C.act5});
+  ctx.fillStyle=C.vessel;ctx.fillRect(24,60,110,270);txt(79,76,"Blood",{size:12,weight:600,align:"center"});
+  ctx.fillStyle=C["vessel-edge"];ctx.fillRect(134,60,8,270);txt(138,340-8,"barrier",{size:10.5,align:"center",color:C["ink-soft"]});
+  ctx.fillStyle=C.csf;ctx.fillRect(142,60,130,270);txt(207,76,"CSF",{size:12,weight:600,align:"center"});
+  ctx.fillStyle=C.brain;ctx.fillRect(272,60,110,270);txt(327,76,"Medulla",{size:12,weight:600,align:"center"});
+  const nC=Math.round(3+rise*7);
+  for(let i=0;i<nC;i++){const f=P(t*.3+i/nC,1);const y=100+((i*47)%210);const x=lerp(40,250,f);if(f<.75)gas(x,y,"co2",8);else{gas(lerp(220,262,seg(f,.75,1)),y,"h",9);}}
+  // H+ in blood bouncing off barrier
+  for(let i=0;i<2;i++){const f=Math.abs(Math.sin(t*1.2+i));gas(lerp(60,124,f),150+i*120,"h",9)}
+  label(79,300,"H⁺ can't cross",{size:11,align:"center",bga:.8});
+  const rc=[290,200];const fire=clamp(rise*1.4,0,1);glow(rc[0],rc[1],26,C.glow,.2+.7*fire*(.6+.4*Math.sin(t*8)));circ(rc[0],rc[1],12,C.act5,C.panel,2);
+  label(rc[0]+18,rc[1]+30,"receptor",{size:11.5,align:"center"});
+  arrow(rc[0]+20,rc[1]-10,370,130,hexA(C.nerve,.4+.6*fire),2.5);label(330,112,"to DRG",{size:11,align:"center"});
+  // peripheral
+  panelBox(404,14,384,330);txt(416,34,"PERIPHERAL CHEMORECEPTORS",{size:12,weight:700,mono:true,color:C.act5});
+  // heart + arch + carotids
+  const hx0=596,hy0=270;ctx.beginPath();ctx.ellipse(hx0,hy0,48,40,-.3,0,TAU);ctx.fillStyle=C.heart;ctx.fill();
+  ctx.strokeStyle=C.rbc;ctx.lineWidth=16;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(hx0-10,hy0-30);ctx.bezierCurveTo(hx0-20,hy0-110,hx0+90,hy0-110,hx0+90,hy0+20);ctx.stroke();
+  ctx.lineWidth=8;[[hx0+12,-1],[hx0+52,1]].forEach(([x,sd])=>{ctx.beginPath();ctx.moveTo(x,hy0-92);ctx.lineTo(x+sd*6,140);ctx.lineTo(x+sd*6-14,70);ctx.moveTo(x+sd*6,140);ctx.lineTo(x+sd*6+14,70);ctx.stroke()});ctx.lineCap="butt";
+  const cb=[[hx0+6,140],[hx0+58,140]],ab=[[hx0+20,hy0-104],[hx0+46,hy0-100]];
+  const pf=clamp(rise*1.2,0,1);
+  cb.concat(ab).forEach(p=>{glow(p[0],p[1],16,C.glow,.2+.6*pf*(.6+.4*Math.sin(t*8)));circ(p[0],p[1],6,C.cl,C.panel,1.5)});
+  label(hx0-80,140,"Carotid bodies",{size:11.5,align:"right",weight:600});line(hx0-74,140,cb[0][0]-8,cb[0][1],C["ink-soft"],1);
+  label(hx0+110,hy0-118,"Aortic bodies",{size:11.5,weight:600});
+  label(hx0-70,190,"nerves IX and X → medulla",{size:11,align:"right"});
+  wrapText("Sense CO₂, H⁺ and O₂. Low O₂ is a strong signal only below about 60 mm Hg.",416,316,360,15,{size:11.5,color:C["ink-soft"]});
+  // feedback strip
+  panelBox(12,354,776,112);
+  gauge(90,424,36,pco2,35,50,"Blood PCO₂",C.co2,{text:pco2.toFixed(0)+" mm Hg"});
+  const rate=12+8*vent;gauge(250,424,36,rate,8,24,"Breaths/min",C.accent,{text:rate.toFixed(0)});
+  const stepsF=["CO₂ rises","H⁺ rises in CSF","receptors fire","breathe faster/deeper","CO₂ blown off → normal"];
+  const act=tt<2?0:tt<3.5?1:tt<5?2:tt<8?3:tt<12?4:-1;
+  stepsF.forEach((s_,i)=>{const x=330+i*92;const on=i===act;rr(x,394,86,46,6);ctx.fillStyle=on?hexA(C.act5,.2):C.panel;ctx.fill();ctx.strokeStyle=on?C.act5:C.rule;ctx.lineWidth=on?2:1;ctx.stroke();wrapText(s_,x+43,410,78,14,{size:11.5,weight:on?700:500,align:"center"});if(i<4)arrow(x+86,417,x+92,417,C["ink-faint"],1.2)});
+  txt(560,380,"NEGATIVE FEEDBACK LOOP",{size:11.5,weight:700,mono:true,align:"center",color:C.act5});
+}
+
+/* ===== Scene: hyper/hypoventilation and altitude ===== */
+function miniLungs(x,y,s,inf){[-1,1].forEach(sd=>{ctx.beginPath();ctx.ellipse(x+sd*22*s,y,(18+6*inf)*s,(34+8*inf)*s,sd*.12,0,TAU);ctx.fillStyle=C.lung;ctx.fill();ctx.strokeStyle=C["lung-edge"];ctx.lineWidth=1.4;ctx.stroke()});rr(x-4*s,y-56*s,8*s,26*s,3);ctx.fillStyle=C.cart;ctx.fill()}
+function sceneHyper(t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const L=22,tt=P(t,L)*L;const a1=1-seg(tt,10.5,11.5)+seg(tt,21,22),a2=seg(tt,10.5,11.5)*(1-seg(tt,21,22));
+  if(a1>0){ctx.save();ctx.globalAlpha=a1;
+    const cols=[["Normal",4,1,40,7.4,C.good],["Hyperventilation",2.4,1.4,28,7.55,C.warn],["Hypoventilation",7,.45,58,7.28,C.bad]];
+    cols.forEach((c,i)=>{const x=20+i*258,w=246;panelBox(x,16,w,448);txt(x+w/2,38,c[0],{size:14,weight:700,align:"center",color:c[5]});
+      const e=breathE(t,c[1],.45)*c[2];miniLungs(x+w/2,130,1.3,e);
+      txt(x+w/2,214,Math.round(60/c[1])+" breaths/min"+(c[2]>1?", deep":c[2]<1?", shallow":""),{size:12,align:"center",color:C["ink-soft"]});
+      // blood box with CO2
+      rr(x+20,236,w-40,100,8);ctx.fillStyle=C.vessel;ctx.fill();txt(x+30,250,"blood",{size:11,color:C["ink-soft"]});
+      const n=Math.round(c[3]/4);for(let k=0;k<n;k++){gas(x+40+((k*41)%(w-80)),262+((k*29)%62)+Math.sin(t*2+k)*3,"co2",7)}
+      txt(x+w/2,354,"PCO₂ "+c[3]+" mm Hg",{size:13,weight:700,align:"center",mono:true});
+      // pH meter
+      const mx=x+30,mw=w-60,my=392;rr(mx,my,mw,14,7);const gr=ctx.createLinearGradient(mx,0,mx+mw,0);gr.addColorStop(0,C.bad);gr.addColorStop(.5,C.good);gr.addColorStop(1,C.warn);ctx.fillStyle=gr;ctx.fill();
+      const pv=(c[4]-7.1)/(7.7-7.1);const tri=mx+mw*pv;ctx.beginPath();ctx.moveTo(tri,my-2);ctx.lineTo(tri-7,my-14);ctx.lineTo(tri+7,my-14);ctx.closePath();ctx.fillStyle=C.ink;ctx.fill();
+      txt(mx,my+26,"acid",{size:10.5,color:C["ink-soft"]});txt(mx+mw,my+26,"base",{size:10.5,align:"right",color:C["ink-soft"]});
+      txt(x+w/2,my+44,"pH "+c[4].toFixed(2)+(i===1?" (alkalosis)":i===2?" (acidosis)":" (normal)"),{size:12.5,weight:700,align:"center",mono:true,color:c[5]})});
+    ctx.restore()}
+  if(a2>0){ctx.save();ctx.globalAlpha=a2;
+    const boxes=[["Sea level",760,159,1],["High mountain (about 5,500 m)",380,79,.5]];
+    boxes.forEach((b,i)=>{const x=20+i*262,w=250;panelBox(x,16,w,300);txt(x+w/2,38,b[0],{size:13,weight:700,align:"center"});
+      if(i===1){ctx.beginPath();ctx.moveTo(x+20,300);ctx.lineTo(x+110,90);ctx.lineTo(x+150,140);ctx.lineTo(x+200,70);ctx.lineTo(x+240,300);ctx.closePath();ctx.fillStyle=hexA(C["ink-faint"],.2);ctx.fill()}
+      const n=Math.round(40*b[3]);const tri=v=>{const q=((v%2)+2)%2;return q<1?q:2-q};
+      for(let k=0;k<n;k++){const kind=k%5===0?"o2":"n2";gas(x+20+tri(t*(.2+rnd(k)*.2)+rnd(k+3)*2)*(w-40),x*0+60+tri(t*(.18+rnd(k+8)*.2)+rnd(k+1)*2)*170,kind,8)}
+      txt(x+w/2,254,"Total "+b[1]+" mm Hg",{size:13,weight:700,align:"center",mono:true});txt(x+w/2,276,"still 21% O₂ → PO₂ ≈ "+b[2],{size:12.5,weight:600,align:"center",mono:true,color:C.o2})});
+    const px=544;panelBox(px,16,244,448);txt(px+12,38,"ACCLIMATIZATION",{size:12,weight:700,mono:true,color:C.act5});
+    const tl=[["Minutes","Low PO₂ (below ~60) excites peripheral chemoreceptors: breathe faster and deeper."],["Days","Red blood cells make more BPG: hemoglobin unloads O₂ more easily."],["Days to weeks","Kidneys release more EPO → bone marrow makes more red blood cells."]];
+    const k=seg(tt,12,20);tl.forEach((s_,i)=>{const on=k>i/3;const y=74+i*120;circ(px+20,y,9,on?C.act5:C["panel-2"],C.act5,1.5);if(i<2)line(px+20,y+10,px+20,y+110,C.rule,2);
+      txt(px+36,y,s_[0],{size:13,weight:700,color:on?C.ink:C["ink-soft"]});wrapText(s_[1],px+36,y+22,196,15,{size:12,color:on?C.ink:C["ink-soft"]})});
+    for(let i=0;i<Math.round(4+8*k);i++)rbc(px+40+((i*37)%170),436-((i*13)%30),8,{sat:.9});
+    panelBox(20,328,512,136);wrapText("Same percent of O₂, but half the total pressure means half the PO₂ (Dalton's law). Less O₂ is pushed into the blood, so the body adapts over time.",34,350,486,17,{size:13,weight:600});
+    ctx.restore()}
+}
+
+/* ===== Scene: recap ===== */
+function sceneRecap(t){
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const tiles=[["Airways","act1"],["Moving air","act2"],["Gas exchange","act3"],["Transport","act4"],["Control","act5"]];
+  const on=Math.floor(t/2.4)%5;
+  tiles.forEach((tl,i)=>{const x=14+i*156,y=60,w=144,h=330;const lit=i===on;
+    rr(x,y,w,h,10);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=lit?C[tl[1]]:C.rule;ctx.lineWidth=lit?4:1.5;ctx.stroke();
+    ctx.fillStyle=C[tl[1]];rr(x,y,w,34,10);ctx.fill();ctx.fillRect(x,y+20,w,14);txt(x+w/2,y+17,tl[0].toUpperCase(),{size:11.5,weight:700,mono:true,align:"center",color:onFill()});
+    const cx=x+w/2,cy=y+170;
+    if(i===0){const pts=[[cx,y+60],[cx,y+130],[cx-30,y+180],[cx-44,y+240],[cx-30,y+280]];poly(pts,C["cart-edge"],8);poly([[cx,y+130],[cx+30,y+190],[cx+40,y+260]],C["cart-edge"],6);const [px,py]=along(pts,P(t*.3,1));circ(px,py,6,C.air,C.accent,2);for(let k=0;k<5;k++)circ(cx-30+Math.cos(k)*14,y+290+Math.sin(k)*10,8,C.air,C["airway-edge"],1.4)}
+    else if(i===1){const e=breathE(t,4,.4);drawThorax(cx,y+60,.42,{r:e,d:e})}
+    else if(i===2){drawExchange(x+10,y+60,w-20,220,{mode:"lung",topO2:104,topCO2:40,inO2:40,inCO2:45,r:5,nO:8,nC:5,speed:20},t)}
+    else if(i===3){hbMol(cx,cy-30,20,1+3*(.5+.5*Math.sin(t)));rbc(cx,cy+70,30,{sat:.5+.5*Math.sin(t)})}
+    else{brainstem(cx-6,cy+10,.36);glow(cx+2,cy+22,14,C.act5,.4+.4*Math.max(0,Math.sin(t*2.5)))}
+    const sum=["Conduct, clean, warm","Boyle's law + muscles","Down partial pressure gradients","98.5% O₂ on Hb; 70% CO₂ as HCO₃⁻","Medulla + pons; CO₂ is key"][i];
+    wrapText(sum,cx,y+h-40,w-16,15,{size:11.5,weight:600,align:"center"})});
+  txt(W/2,30,"Air in → gases swapped → carried by blood → controlled by the brainstem",{size:14,weight:700,align:"center"});
+  txt(W/2,430,"Next: try the Respiratory Lab to run each system yourself.",{size:13,align:"center",color:C["ink-soft"]});
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+const SCENES={map:sceneMap,upper:sceneUpper,trachea:sceneTrachea,tree:sceneTree,alveoli:sceneAlveoli,membrane:sceneMembrane,pressures:scenePressures,boyle:sceneBoyle,
+  inspire:sceneInspire,expire:sceneExpire,pneumo:scenePneumo,rc:sceneRC,spiro:sceneSpiro,gaslaws:sceneGaslaws,external:sceneExternal,internal:sceneInternal,vq:sceneVQ,
+  o2trans:sceneO2trans,ohdc:sceneOHDC,co2:sceneCO2,centers:sceneCenters,chemo:sceneChemo,hyper:sceneHyper,recap:sceneRecap};
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;ctx.lineCap="butt";ctx.setLineDash([]);
+  const s=STEPS[cur];
+  try{(SCENES[s.scene]||sceneRecap)(T)}catch(e){console.error(e)}
+  ctx.globalAlpha=1;
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+window.__n=()=>STEPS.length;
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

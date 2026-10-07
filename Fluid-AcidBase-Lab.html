@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fluid and Acid-Base Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
+  /* topic palette */
+  --ecf:#EAF1F5;--icf:#F1DCD2;--cell-edge:#B5776A;--isf:#D7E9F2;--plasma:#F0DA8E;--plasma-edge:#B39232;
+  --water:#3E8FD0;--water-wash:#CFE4F4;
+  --na:#6A4FC0;--k:#D98A1C;--cl:#2E8A7A;--ca:#C9A227;--phos:#A04E8C;--hco3:#2F6FB0;--co2:#7D8A92;--hplus:#C4423A;--mg:#6B8E3A;--prot:#8C6A4A;
+  --adh:#2F8A57;--aldo:#B4632A;--anp:#C4644F;--pth:#7B5CC9;--ctn:#2E8A7A;
+  --kidney:#C97B6E;--lung:#EBB3AC;--lung-edge:#B5776A;--tissue:#F5E6DD;--rbc:#C9473E;--rbc-edge:#8E2B24;--bone:#E9DFCB;--bone-edge:#A8946F;
+  --brain:#EDD3D8;--brain-edge:#B27C88;--vessel:#E9B7AE;--vessel-edge:#B5776A;--skin:#E7C3A6;--gut:#E8C5A0;
+  --glow:#F2B33B;--gold:#C9A227;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#14222A;--icf:#3A2622;--cell-edge:#C98A7C;--isf:#16303B;--plasma:#4D4120;--plasma-edge:#C9A84A;
+  --water:#5AA9E6;--water-wash:#1A3446;
+  --na:#A98BEF;--k:#F2A93B;--cl:#5CC4B0;--ca:#E0BE48;--phos:#D186C0;--hco3:#6FA3F0;--co2:#9AA8B0;--hplus:#E07067;--mg:#9BC26A;--prot:#C49A74;
+  --adh:#4FBF7F;--aldo:#E39A5B;--anp:#E08A74;--pth:#A98BEF;--ctn:#5CC4B0;
+  --kidney:#B86A5E;--lung:#6E3F3C;--lung-edge:#D98A7E;--tissue:#2A201D;--rbc:#D24C42;--rbc-edge:#F08A80;--bone:#4A4234;--bone-edge:#8F7C5E;
+  --brain:#4A3138;--brain-edge:#C98A98;--vessel:#4A2C2A;--vessel-edge:#D98A7E;--skin:#5A4232;--gut:#4E3E2C;
+  --glow:#F2B33B;--gold:#E0BE48;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#14222A;--icf:#3A2622;--cell-edge:#C98A7C;--isf:#16303B;--plasma:#4D4120;--plasma-edge:#C9A84A;
+  --water:#5AA9E6;--water-wash:#1A3446;
+  --na:#A98BEF;--k:#F2A93B;--cl:#5CC4B0;--ca:#E0BE48;--phos:#D186C0;--hco3:#6FA3F0;--co2:#9AA8B0;--hplus:#E07067;--mg:#9BC26A;--prot:#C49A74;
+  --adh:#4FBF7F;--aldo:#E39A5B;--anp:#E08A74;--pth:#A98BEF;--ctn:#5CC4B0;
+  --kidney:#B86A5E;--lung:#6E3F3C;--lung-edge:#D98A7E;--tissue:#2A201D;--rbc:#D24C42;--rbc-edge:#F08A80;--bone:#4A4234;--bone-edge:#8F7C5E;
+  --brain:#4A3138;--brain-edge:#C98A98;--vessel:#4A2C2A;--vessel-edge:#D98A7E;--skin:#5A4232;--gut:#4E3E2C;
+  --glow:#F2B33B;--gold:#E0BE48;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2)}
+.legend i.s{border-radius:2px}
+.legend i.ln{width:20px;height:0;border-radius:0;border:0;border-top:3px solid}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.typebtns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.typebtn{background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 0;cursor:pointer;font-family:var(--mono);font-weight:600;font-size:15px}
+.typebtn:hover{border-color:var(--accent)}
+.typebtn.right{border-color:var(--good);background:var(--good-wash)}
+.typebtn.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.typebtn:disabled{cursor:default}
+.prog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.timer{font-family:var(--mono);font-size:18px;font-weight:600}
+/* bags */
+.bags{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 4px}
+.bag{position:relative;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:6px 4px 4px;cursor:grab;touch-action:none;user-select:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--mono);font-weight:700;font-size:14px}
+.bag svg{width:34px;height:44px;display:block}
+.bag.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.bag.ok{border-color:var(--good);background:var(--good-wash)}
+.bag.no{border-color:var(--warn);background:var(--warn-wash)}
+.bag .mk{position:absolute;top:3px;right:5px;font-size:13px}
+.bag.ghost{position:fixed;z-index:50;pointer-events:none;opacity:.9;box-shadow:0 10px 24px -8px rgba(0,0,0,.4)}
+.droptarget{outline:3px dashed var(--accent);outline-offset:-3px}
+.abbox{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;font-size:14.5px;margin-top:10px}
+/* sim */
+.ctl{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+.ctl label{font-size:14.5px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.ctl output{font-family:var(--mono);font-weight:600;color:var(--accent-ink)}
+.ctl input[type=range]{accent-color:var(--accent);width:100%}
+.ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-faint);font-family:var(--mono)}
+.readouts{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+.readouts th{text-align:left;font-weight:500;color:var(--ink-soft);padding:5px 6px 5px 0;border-top:1px solid var(--rule-soft)}
+.readouts td{padding:5px 0;border-top:1px solid var(--rule-soft);font-family:var(--mono);font-size:13.5px;text-align:right;white-space:nowrap}
+.chal{list-style:none;padding:0;margin:6px 0}
+.chal li{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.chal .ck{flex:0 0 22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:13px;font-family:var(--mono)}
+.chal li.done .ck{background:var(--good);border-color:var(--good);color:#fff}
+.status{font-size:14.5px;padding:8px 10px;border-radius:var(--r);margin-top:8px;border:1px solid var(--rule);background:var(--panel-2)}
+.status.warn{background:var(--warn-wash);border-color:var(--warn)}
+.status.bad{background:var(--bad-wash);border-color:var(--bad)}
+.status.good{background:var(--good-wash);border-color:var(--good)}
+/* sequencer */
+ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.item{display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--rule);border-left:6px solid var(--act4);border-radius:var(--r);padding:7px 8px 7px 10px;touch-action:none;user-select:none;cursor:grab;transition:background .15s,border-color .15s}
+.item.drag{box-shadow:0 10px 24px -8px rgba(0,0,0,.4);cursor:grabbing;border-color:var(--accent);z-index:2;position:relative}
+.item .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);width:20px;text-align:right;flex:0 0 auto}
+.item .grip{color:var(--ink-faint);font-size:18px;line-height:1;flex:0 0 auto}
+.item .txt{flex:1;font-size:15px;line-height:1.35}
+.item .mv{display:flex;flex-direction:column;gap:2px}
+.mv button{width:30px;height:24px;border:1px solid var(--rule);background:var(--panel-2);border-radius:4px;cursor:pointer;font-size:12px;padding:0;line-height:1}
+.mv button:hover{border-color:var(--accent)}
+.item.right{background:var(--good-wash);border-color:var(--good)}
+.item.off{background:var(--warn-wash);border-color:var(--warn)}
+.item.hinted{box-shadow:0 0 0 3px var(--gold)}
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 6px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.subtabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+/* lab extras */
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.seg button{border:0;background:var(--panel-2);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:600}
+.vign{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;margin:0 0 10px;font-size:15px}
+.vign b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:2px}
+.qsteps{display:flex;gap:6px;margin:4px 0 8px;flex-wrap:wrap}
+.qs{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:99px;border:1px solid var(--rule);color:var(--ink-soft)}
+.qs.cur{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-wash);font-weight:600}
+.qs.ok{border-color:var(--good);color:var(--good);background:var(--good-wash)}
+.diag{margin-top:10px;padding:10px 12px;border-radius:var(--r);background:var(--good-wash);border:1px solid var(--good);font-size:15px;display:none}
+.diag.show{display:block}
+.evbtns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:6px 0}
+.evbtns .tbtn{text-align:left}
+.autolab{display:inline-flex;align-items:center;gap:5px;font-weight:500;font-size:13.5px;color:var(--ink-soft)}
+.autolab input{accent-color:var(--accent);width:16px;height:16px}
+.warp{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft)}
+.bagbtns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:6px 0}
+.bagbtns .tbtn{display:flex;align-items:center;gap:8px;text-align:left}
+.bagbtns svg{flex:0 0 auto}
+.predict{border:1px solid var(--accent);background:var(--accent-wash);border-radius:var(--r);padding:10px 12px;margin:8px 0}
+.predict p{margin:0 0 8px;font-weight:600}
+.mcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.mcol h3{margin:0 0 6px}
+.mbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:8px 10px;margin:0 0 6px;cursor:pointer;font-size:14.5px;line-height:1.3;min-height:44px}
+.mbtn:hover{border-color:var(--accent)}
+.mbtn[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.mbtn.done{border-color:var(--good);background:var(--good-wash);cursor:default}
+.mbtn.no{border-color:var(--warn);background:var(--warn-wash)}
+.mbtn.hinted{box-shadow:0 0 0 3px var(--gold)}
+.mbtn .tag{font-family:var(--mono);font-size:12px;color:var(--good);margin-left:auto;font-weight:700}
+.mbtn svg{flex:0 0 auto}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Fluid, Electrolyte, and Acid-Base Balance &middot; USC Upstate</div>
+    <h1>Fluid and Acid-Base Lab</h1>
+    <p class="sub">Read arterial blood gases, run the lungs and kidneys yourself, hang IV bags, and match electrolytes to their hormones and symptoms. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="abg" id="tabbtn-abg" aria-controls="tab-abg" type="button">Part 1 &middot; ABG Detective</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="sim" id="tabbtn-sim" aria-controls="tab-sim" type="button">Part 2 &middot; Acid-Base Simulator</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="fluid" id="tabbtn-fluid" aria-controls="tab-fluid" type="button">Part 3 &middot; Fluid Shift Simulator</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="match" id="tabbtn-match" aria-controls="tab-match" type="button">Part 4 &middot; Electrolyte Matcher</button>
+  </div>
+
+  <!-- PART 1: ABG detective -->
+  <section id="tab-abg" role="tabpanel" aria-labelledby="tabbtn-abg">
+    <div class="bar" style="margin:0 0 10px">
+      <div class="seg" role="group" aria-label="Mode"><button type="button" id="mPractice" aria-pressed="true">Practice (all cases, hints)</button><button type="button" id="mChallenge" aria-pressed="false">Challenge (10 random cases)</button></div>
+      <span class="small" id="abgBest"></span>
+    </div>
+    <div class="rounds" id="abgChips" aria-label="Cases"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvAbg" role="img" aria-label="Arterial blood gas values with a bicarbonate versus CO2 seesaw."></canvas></div>
+        <div class="stagebar"><span class="caption" id="abgCap"></span></div>
+        <div class="legend">
+          <span><i style="background:var(--hco3)"></i>HCO₃⁻ (base, set by kidneys)</span>
+          <span><i style="background:var(--co2)"></i>PaCO₂ (acid, set by lungs)</span>
+          <span><i class="s" style="background:var(--good-wash);border-color:var(--good)"></i>Normal range</span>
+          <span>↑ / ↓ = above / below normal</span>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="abgN"></div>
+        <div class="prog"><i id="abgProg"></i></div>
+        <div class="vign"><b class="h">The patient</b><span id="abgVig"></span></div>
+        <div class="qsteps" id="abgSteps"></div>
+        <p class="qlab" id="abgQ"></p>
+        <div class="opts" id="abgOpts"></div>
+        <p class="fb" id="abgFb"></p>
+        <div class="diag" id="abgDiag"></div>
+        <div class="bar">
+          <button class="tbtn" id="abgHint" type="button">Hint</button>
+          <button class="tbtn" id="abgShow" type="button">Show answer</button>
+          <button class="btn" id="abgNext" type="button" hidden>Next case &rarr;</button>
+        </div>
+        <div class="msg" id="abgMsg" role="status"></div>
+        <h3>Normal values</h3>
+        <ul>
+          <li><b>pH</b> 7.35–7.45</li>
+          <li><b>PaCO₂</b> 35–45 mmHg (high = acid)</li>
+          <li><b>HCO₃⁻</b> 22–26 mEq/L (high = base)</li>
+          <li><b>ROME</b>: Respiratory Opposite, Metabolic Equal</li>
+        </ul>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2: acid-base simulator -->
+  <section id="tab-sim" role="tabpanel" aria-labelledby="tabbtn-sim" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvSim" role="img" aria-label="Lungs, kidney and blood with a pH gauge and seesaw responding to the settings."></canvas></div>
+        <div class="canvas-holder" style="margin-top:8px"><canvas id="cvSimChart" role="img" aria-label="Live traces of pH, PaCO2 and HCO3 over time."></canvas></div>
+        <div class="legend">
+          <span><i class="ln" style="border-top-color:var(--hplus)"></i>pH</span>
+          <span><i class="ln" style="border-top-color:var(--co2)"></i>PaCO₂ (mmHg)</span>
+          <span><i class="ln" style="border-top-color:var(--hco3)"></i>HCO₃⁻ (mEq/L)</span>
+          <span><i class="s" style="background:var(--good-wash);border-color:var(--good)"></i>Normal range</span>
+          <span>Dashed line = a change you made</span>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <p class="small" style="margin-top:0">Time speeds up after every change, so you can see the <b>lungs (minutes)</b> and then the <b>kidneys (days)</b>. <span class="warp" id="warpOut"></span></p>
+        <div class="ctl"><label for="rateSl">Breathing rate <output id="rateOut">12 /min</output></label><input type="range" id="rateSl" min="4" max="40" step="1" value="12"><div class="ticks"><span>4</span><span>normal 12–16</span><span>40</span></div>
+          <label class="autolab"><input type="checkbox" id="rateAuto" checked> Automatic (brainstem chemoreceptors). Move the slider to breathe for the patient.</label></div>
+        <div class="ctl"><label for="kidSl">Kidney HCO₃⁻ handling <output id="kidOut">balanced</output></label><input type="range" id="kidSl" min="-1" max="1" step="0.05" value="0"><div class="ticks"><span>excrete HCO₃⁻</span><span>balanced</span><span>keep / make</span></div>
+          <label class="autolab"><input type="checkbox" id="kidAuto" checked> Automatic (kidneys respond to pH). Move the slider to take over.</label></div>
+        <h3>Events (tap to turn on or off)</h3>
+        <div class="evbtns" id="evBtns"></div>
+        <div class="bar">
+          <button class="tbtn" id="simPause" type="button">Pause</button>
+          <button class="tbtn" id="simReset" type="button">Reset to healthy</button>
+        </div>
+        <table class="readouts" id="simRead"></table>
+        <div class="status" id="simStatus" role="status"></div>
+        <h3>Challenges</h3>
+        <ul class="chal" id="simChal"></ul>
+        <p class="small" id="simStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3: fluid shift simulator -->
+  <section id="tab-fluid" role="tabpanel" aria-labelledby="tabbtn-fluid" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvFluid" role="img" aria-label="Intracellular, interstitial and plasma compartments with cells that swell or shrink."></canvas></div>
+        <div class="canvas-holder" style="margin-top:8px"><canvas id="cvFluidChart" role="img" aria-label="Live chart of volume change in each compartment."></canvas></div>
+        <div class="legend">
+          <span><i class="s" style="background:var(--icf)"></i>Intracellular fluid (ICF)</span>
+          <span><i class="s" style="background:var(--isf)"></i>Interstitial fluid</span>
+          <span><i class="s" style="background:var(--plasma)"></i>Plasma</span>
+          <span><i style="background:var(--water)"></i>Water moving</span>
+          <span>Dashed line = starting level</span>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <h3 style="margin-top:0">Hang a 1-liter IV bag</h3>
+        <div class="bagbtns" id="bagBtns"></div>
+        <h3>Or something happens</h3>
+        <div class="bagbtns" id="evtBtns"></div>
+        <div class="bar"><label class="mode"><input type="checkbox" id="predOn" checked> Predict first</label><button class="tbtn" id="flReset" type="button">Reset to normal</button></div>
+        <div class="predict" id="predBox" hidden><p id="predQ"></p><div class="bar" id="predBtns"></div></div>
+        <div class="msg" id="flMsg" role="status"></div>
+        <table class="readouts" id="flRead"></table>
+        <div class="status" id="flStatus"></div>
+        <p class="small" id="flStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 4: electrolyte matcher -->
+  <section id="tab-match" role="tabpanel" aria-labelledby="tabbtn-match" hidden>
+    <div class="rounds" id="emRounds" aria-label="Rounds"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvMatch" role="img" aria-label="Picture of the most recent correct match."></canvas></div>
+        <div class="stagebar"><span class="caption" id="emCap"></span></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="emN"></div>
+        <h2 class="lvl-t" id="emT"></h2>
+        <div class="goal"><b class="h">How to play</b><span id="emGoal"></span></div>
+        <div class="mcols">
+          <div class="mcol"><h3 id="emLH"></h3><div id="emLeft"></div></div>
+          <div class="mcol"><h3 id="emRH"></h3><div id="emRight"></div></div>
+        </div>
+        <div class="bar">
+          <button class="tbtn" id="emHint" type="button">Hint</button>
+          <button class="tbtn" id="emShow" type="button">Show answer</button>
+          <button class="tbtn" id="emAgain" type="button">Start round over</button>
+        </div>
+        <div class="msg" id="emMsg" role="status"></div>
+        <p class="small" id="emScore"></p>
+      </aside>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 26, Fluid, Electrolyte, and Acid-Base Balance (OpenStax A&amp;P 2e) &middot; Learn the steps first in the <a href="Fluid-AcidBase-Walkthrough.html">Fluid and Acid-Base Walkthrough</a>. Calcium, PTH and calcitonin have their own <a href="Calcium-Balance-Sim.html">Calcium Balance Simulator</a>.<br>Simplified teaching models, not medical calculators or advice. ABG pH values are calculated from HCO₃⁻ and PaCO₂ with the Henderson-Hasselbalch equation and rounded. Simulator time is compressed and its numbers are approximate. In the fluid model, 0.9% NaCl and lactated Ringer's are both treated as exactly isotonic, glucose in D5W is assumed to be used up quickly, and blood loss is modeled as loss of isotonic plasma. Cell size changes are exaggerated so you can see them. Diagrams are simplified and not to scale.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let ctx;
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash","act1","act2","act3","act4","act5",
+ "ecf","icf","cell-edge","isf","plasma","plasma-edge","water","water-wash","na","k","cl","ca","phos","hco3","co2","hplus","mg","prot","adh","aldo","anp","pth","ctn",
+ "kidney","lung","lung-edge","tissue","rbc","rbc-edge","bone","bone-edge","brain","brain-edge","vessel","vessel-edge","skin","gut","glow","gold"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function hx(c){let h=(c||"#888").trim();if(h[0]!=="#")return [136,136,136];h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function isDark(){return hx(C.ground)[0]<60}
+function onFill(){return isDark()?"#0E1519":"#fff"}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,t,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(t).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function P(t,L){return ((t%L)+L)%L/L}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f)]}d-=ls[i]}return P_[P_.length-1]}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,8);ctx.fillStyle=o.fill||hexA(C.panel,.8);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function title(t,col){ctx.font=`600 13px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.fillText(t.toUpperCase(),16,22)}
+/* particles */
+const ION={na:["na","Na⁺"],k:["k","K⁺"],cl:["cl","Cl⁻"],hco3:["hco3","HCO₃⁻"],phos:["phos","HPO₄²⁻"],hplus:["hplus","H⁺"],mg:["mg","Mg²⁺"]};
+function ion(x,y,kind,r,a,txtOn){r=r||5;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);
+  if(kind==="ca"){ctx.beginPath();ctx.moveTo(x,y-r*1.2);ctx.lineTo(x+r*1.2,y);ctx.lineTo(x,y+r*1.2);ctx.lineTo(x-r*1.2,y);ctx.closePath();ctx.fillStyle=C.ca;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke()}
+  else if(kind==="co2"){co2m(x,y,r*.75)}
+  else if(kind==="water"){drop(x,y,r*1.15)}
+  else if(kind==="hplus"){circ(x,y,r*.85,C.hplus,hexA(C.ink,.35),1);line(x-r*.45,y,x+r*.45,y,"#fff",1.4);line(x,y-r*.45,x,y+r*.45,"#fff",1.4)}
+  else if(kind==="prot"){ctx.beginPath();for(let i=0;i<=16;i++){const th=i/16*TAU;const rad=r*1.25*(1+.18*Math.sin(th*4));const X=x+Math.cos(th)*rad,Y=y+Math.sin(th)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath();ctx.fillStyle=C.prot;ctx.fill();ctx.strokeStyle=hexA(C.ink,.3);ctx.lineWidth=1;ctx.stroke()}
+  else if(kind==="phos"){ctx.beginPath();for(let i=0;i<4;i++){const th=i/4*TAU+Math.PI/4;const X=x+Math.cos(th)*r*1.15,Y=y+Math.sin(th)*r*1.15;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath();ctx.fillStyle=C.phos;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke()}
+  else if(kind==="cl"){rr(x-r,y-r,2*r,2*r,r*.35);ctx.fillStyle=C.cl;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke()}
+  else if(kind==="hco3"){ctx.beginPath();ctx.moveTo(x,y-r*1.15);ctx.lineTo(x+r*1.1,y+r*.8);ctx.lineTo(x-r*1.1,y+r*.8);ctx.closePath();ctx.fillStyle=C.hco3;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke()}
+  else {circ(x,y,r,C[ION[kind]?ION[kind][0]:kind]||C.ink,hexA(C.ink,.3),1)}
+  if(txtOn&&ION[kind]){ctx.font=`700 ${Math.max(8,r*.9)}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(ION[kind][1].replace(/[⁺⁻²₃₄]/g,""),x,y+.5)}
+  ctx.restore()}
+function co2m(x,y,s){s=s||3.6;circ(x-s*1.3,y,s*.8,C.co2);circ(x+s*1.3,y,s*.8,C.co2);circ(x,y,s,mix(C.co2,C.ink,.35))}
+function drop(x,y,s,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();ctx.moveTo(x,y-s*1.5);ctx.bezierCurveTo(x+s*.9,y-s*.4,x+s,y+s*.2,x,y+s);ctx.bezierCurveTo(x-s,y+s*.2,x-s*.9,y-s*.4,x,y-s*1.5);ctx.closePath();ctx.fillStyle=C.water;ctx.fill();ctx.restore()}
+/* cells */
+function cellBlob(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:o.a;ctx.beginPath();const N=40;const sd=o.seed||1;const cren=o.cren||0;
+  for(let i=0;i<=N;i++){const th=i/N*TAU;let rad=r*(1+.04*Math.sin(th*3+sd)+.03*Math.sin(th*5+sd*2));if(cren>0)rad*=1-cren*.14*Math.pow(Math.abs(Math.sin(th*7)),3);const X=x+Math.cos(th)*rad,Y=y+Math.sin(th)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}
+  ctx.closePath();ctx.fillStyle=o.fill||C.icf;ctx.fill();ctx.strokeStyle=o.edge||C["cell-edge"];ctx.lineWidth=o.lw||2;ctx.stroke();
+  if(o.nuc!==false)circ(x+r*.12,y-r*.08,r*.3,hexA(o.edge||C["cell-edge"],.35));ctx.restore()}
+function rbcCell(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:o.a;ctx.beginPath();const N=48;const cren=o.cren||0;
+  for(let i=0;i<=N;i++){const th=i/N*TAU;const rad=r*(1+cren*.13*Math.max(0,Math.sin(th*11)));const X=x+Math.cos(th)*rad,Y=y+Math.sin(th)*rad*(o.sy||1);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}
+  ctx.closePath();ctx.fillStyle=C.rbc;ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=2;ctx.stroke();
+  const pale=o.pale==null?.55:o.pale;if(pale>0){const A=hx(C.panel);const g=ctx.createRadialGradient(x,y,0,x,y,r*.6);g.addColorStop(0,`rgba(${A},${.5*pale})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r*.6,0,TAU);ctx.fill()}
+  ctx.restore()}
+/* organs */
+function kidney(x,y,s,glowA){if(glowA>0)glow(x,y,s*1.6,C.glow,glowA);ctx.save();ctx.translate(x,y);ctx.beginPath();ctx.moveTo(0,-s);ctx.bezierCurveTo(s*1.1,-s*1.15,s*1.25,s*1.1,0,s);ctx.bezierCurveTo(-s*.75,s*.95,-s*.5,s*.35,-s*.22,s*.15);ctx.bezierCurveTo(-s*.42,-s*.05,-s*.6,-s*.95,0,-s);ctx.closePath();
+  ctx.fillStyle=C.kidney;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.moveTo(s*.05,-s*.55);ctx.bezierCurveTo(s*.55,-s*.5,s*.6,s*.5,s*.05,s*.55);ctx.strokeStyle=hexA(C.panel,.45);ctx.lineWidth=2;ctx.stroke();ctx.restore()}
+function lungs(x,y,s,inf){inf=inf==null?.5:inf;const sc=.88+.18*inf;ctx.save();ctx.translate(x,y);
+  line(0,-s*1.25,0,-s*.55,C["lung-edge"],s*.12);line(0,-s*.55,-s*.3,-s*.3,C["lung-edge"],s*.09);line(0,-s*.55,s*.3,-s*.3,C["lung-edge"],s*.09);
+  [-1,1].forEach(d=>{ctx.save();ctx.translate(d*s*.42,s*.1);ctx.scale(sc,sc);ctx.beginPath();ctx.moveTo(d*s*.05,-s*.75);ctx.bezierCurveTo(d*s*.75,-s*.85,d*s*.75,s*.6,d*s*.5,s*.75);ctx.bezierCurveTo(d*s*.2,s*.85,d*-s*.12,s*.65,d*-s*.1,s*.3);ctx.bezierCurveTo(d*-s*.1,-s*.1,d*-s*.15,-s*.6,d*s*.05,-s*.75);ctx.closePath();
+    ctx.fillStyle=C.lung;ctx.fill();ctx.strokeStyle=C["lung-edge"];ctx.lineWidth=2;ctx.stroke();ctx.restore()});ctx.restore()}
+function heart(x,y,s,beat){const k=1+.06*(beat||0);ctx.save();ctx.translate(x,y);ctx.scale(k,k);ctx.beginPath();ctx.moveTo(0,s*.9);ctx.bezierCurveTo(-s*1.3,s*.1,-s*.9,-s*.95,0,-s*.35);ctx.bezierCurveTo(s*.9,-s*.95,s*1.3,s*.1,0,s*.9);ctx.closePath();ctx.fillStyle=C.rbc;ctx.fill();ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=2;ctx.stroke();ctx.restore()}
+function brainHead(x,y,s,o){o=o||{};ctx.save();ctx.translate(x,y);
+  ctx.beginPath();ctx.ellipse(0,0,s,s*.92,0,0,TAU);ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1.5;ctx.stroke();
+  // face profile bump (nose) to the right
+  ctx.beginPath();ctx.moveTo(s*.92,s*.05);ctx.lineTo(s*1.12,s*.28);ctx.lineTo(s*.9,s*.36);ctx.fillStyle=C.skin;ctx.fill();ctx.stroke();
+  ctx.fillStyle=C.skin;ctx.fillRect(-s*.35,s*.75,s*.6,s*.5);
+  ctx.beginPath();ctx.ellipse(-s*.08,-s*.18,s*.74,s*.55,0,0,TAU);ctx.fillStyle=C.brain;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  ctx.strokeStyle=hexA(C["brain-edge"],.6);ctx.lineWidth=1.2;for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(-s*.45+i*s*.2,-s*.32+(i%2)*s*.1,s*.13,Math.PI*.1,Math.PI*.9);ctx.stroke()}
+  const hx_=s*.12,hy=s*.25;if(o.hglow)glow(hx_,hy,s*.35,C.glow,o.hglow);circ(hx_,hy,s*.11,C.act2,hexA(C.ink,.4),1);
+  circ(hx_+s*.05,hy+s*.25,s*.07,C.adh,hexA(C.ink,.4),1);line(hx_,hy+s*.1,hx_+s*.04,hy+s*.18,hexA(C.ink,.5),1.5);
+  ctx.restore();return {hyp:[x+s*.12,y+s*.25],pit:[x+s*.17,y+s*.5]}}
+/* pH helpers */
+const pHof=(hco3,pco2)=>6.1+Math.log10(hco3/(.03*pco2));
+function gauge(cx,cy,R,pH,o){o=o||{};const lo=6.9,hi=7.9;const ang=v=>Math.PI+(clamp(v,lo,hi)-lo)/(hi-lo)*Math.PI;
+  ctx.lineWidth=R*.22;
+  [[lo,7.35,C.hplus],[7.35,7.45,C.good],[7.45,hi,C.hco3]].forEach(([a,b,col])=>{ctx.beginPath();ctx.arc(cx,cy,R,ang(a),ang(b));ctx.strokeStyle=hexA(col,.75);ctx.stroke()});
+  const a=ang(pH);line(cx,cy,cx+Math.cos(a)*R*1.05,cy+Math.sin(a)*R*1.05,C.ink,3);circ(cx,cy,5,C.ink);
+  txt(cx-R-2,cy+12,"acid",{size:10.5,align:"center",color:C["ink-soft"]});txt(cx+R+2,cy+12,"base",{size:10.5,align:"center",color:C["ink-soft"]});
+  if(o.text!==false)label(cx,cy+(o.dy||26),"pH "+pH.toFixed(2),{align:"center",weight:700,size:o.size||15,mono:true,border:pH<7.35?C.hplus:pH>7.45?C.hco3:C.good})}
+function seesaw(cx,cy,hco3,pco2,o){o=o||{};const pH=pHof(hco3,pco2);const th=clamp(-(pH-7.4)*1.7,-.32,.32);const L=o.L||170;
+  // fulcrum
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx-30,cy+60);ctx.lineTo(cx+30,cy+60);ctx.closePath();ctx.fillStyle=C["ink-soft"];ctx.fill();
+  ctx.fillStyle=C.sunk;rr(cx-L-30,cy+60,2*L+60,8,3);ctx.fill();
+  const ex=Math.cos(th)*L,ey=Math.sin(th)*L;
+  line(cx-ex,cy-ey,cx+ex,cy+ey,C.ink,7);circ(cx,cy,6,C.panel,C.ink,2);
+  // pans hang from ends
+  const pan=(x,y,val,norm,col,name,kind,unit)=>{
+    const hgt=clamp(46*val/norm,8,110);const w=60;const yb=y-5;rr(x-w/2,yb-hgt,w,hgt,6);ctx.fillStyle=hexA(C[col],.85);ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke();
+    for(let i=0;i<Math.floor(hgt/16);i++)ion(x-12+(i%2)*24,yb-9-i*14,kind,5,.95);
+    label(x,yb-hgt-14,name+" "+Math.round(val)+(unit?" "+unit:""),{align:"center",size:12.5,weight:700,color:C[col]});};
+  pan(cx-ex,cy-ey,hco3,24,"hco3","HCO₃⁻","hco3","");
+  pan(cx+ex,cy+ey,pco2,40,"co2","CO₂","co2","");
+  txt(cx-L,cy+80,"BASE side",{size:11,mono:true,align:"center",color:C.hco3,weight:600});txt(cx+L,cy+80,"ACID side",{size:11,mono:true,align:"center",color:C.co2,weight:600});
+  return pH}
+function stateName(pH){return pH<7.35?"ACIDOSIS":pH>7.45?"ALKALOSIS":"NORMAL pH"}
+function personPath(x,yb,s){ctx.beginPath();ctx.arc(x,yb-178*s,22*s,0,TAU);ctx.moveTo(x+1,yb);
+  const pts=[[-30,-150],[30,-150],[42,-140],[56,-70],[46,-66],[34,-118],[30,-62],[26,0],[6,0],[2,-58],[-2,-58],[-6,0],[-26,0],[-30,-62],[-34,-118],[-46,-66],[-56,-70],[-42,-140]];
+  ctx.moveTo(x+pts[0][0]*s,yb+pts[0][1]*s);pts.forEach(p=>ctx.lineTo(x+p[0]*s,yb+p[1]*s));ctx.closePath()}
+function clockIcon(x,y,r,t,lab){circ(x,y,r,C.panel,C.ink,2);const a=t*TAU-Math.PI/2;line(x,y,x+Math.cos(a)*r*.75,y+Math.sin(a)*r*.75,C.ink,2);line(x,y,x+Math.cos(a/12)*r*.5,y+Math.sin(a/12)*r*.5,C.ink,2.5);if(lab)label(x,y+r+14,lab,{align:"center",size:12,weight:600})}
+
+function badge(x,y,n,col){circ(x,y,11,col||C.ink,C.panel,1.5);ctx.font=`700 12px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function abgBox(x,y,pH,pco2,hco3,o){o=o||{};panelBox(x,y,205,104,{fill:hexA(C.panel,.95)});txt(x+12,y+16,o.head||"Arterial blood gas",{size:11.5,weight:700,mono:true,color:C["ink-soft"]});
+  const rows=[["pH",pH.toFixed(2),pH<7.35?"↓":pH>7.45?"↑":"",pH<7.35||pH>7.45],["PaCO₂",Math.round(pco2)+" mmHg",pco2>45?"↑":pco2<35?"↓":"",pco2>45||pco2<35],["HCO₃⁻",Math.round(hco3)+" mEq/L",hco3>26?"↑":hco3<22?"↓":"",hco3>26||hco3<22]];
+  rows.forEach((r,i)=>{const yy=y+40+i*22;const hl=o.hl===i;if(hl){ctx.fillStyle=hexA(C.glow,.35);ctx.fillRect(x+4,yy-10,192,20)}
+    txt(x+12,yy,r[0],{size:13,weight:700});txt(x+120,yy,r[1],{size:13,mono:true,align:"right",color:r[3]?C.bad:C.ink});txt(x+150,yy,r[3]?(r[2]==="↑"?"↑ high":"↓ low"):"normal",{size:11.5,weight:700,color:r[3]?C.bad:C.good})})}
+function ecgY(ph,mode){// ph 0..1 within a beat
+  const g=(c,w,a)=>a*Math.exp(-Math.pow((ph-c)/w,2));
+  if(mode===0)return g(.12,.025,.12)+g(.27,.008,-.1)+g(.3,.01,1)+g(.33,.009,-.25)+g(.55,.05,.28);
+  if(mode===1)return g(.12,.03,.04)+g(.26,.014,-.1)+g(.3,.02,.85)+g(.35,.016,-.3)+g(.5,.03,.75);
+  return g(.12,.025,.13)+g(.27,.008,-.1)+g(.3,.01,.9)+g(.33,.009,-.2)+g(.53,.06,.06)+g(.68,.04,.16)}
+
+function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,ctx:cv.getContext("2d"),W,H,K:1};
+  st.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);st.K=cv.width/W};return st}
+function use(st){ctx=st.ctx;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,st.W,st.H);ctx.globalAlpha=1}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function setMsg(id,t,c){const m=$(id);m.className="msg"+(t?" show "+c:"");m.innerHTML=t||""}
+function starStr(n){return "★".repeat(n)+"☆".repeat(3-n)}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"})[c])}
+
+/* =====================================================================
+   PART 1 · ABG DETECTIVE
+   ===================================================================== */
+const CAUSES={
+ opioid:{n:"Opioid overdose (slow breathing)",d:"RAc",why:"An opioid overdose depresses the brainstem, so breathing slows and CO₂ builds up: respiratory acidosis."},
+ copd:{n:"COPD (chronic lung disease)",d:"RAc",why:"COPD traps CO₂ in damaged lungs, so PaCO₂ rises: respiratory acidosis. Over days the kidneys keep HCO₃⁻."},
+ sedation:{n:"Heavy sedation after surgery",d:"RAc",why:"Sedating drugs slow and shallow the breathing, so CO₂ builds up: respiratory acidosis."},
+ airway:{n:"Choking (blocked airway)",d:"RAc",why:"A blocked airway stops CO₂ from leaving, so PaCO₂ rises quickly: respiratory acidosis."},
+ panic:{n:"Panic attack (hyperventilation)",d:"RAl",why:"Fast, deep breathing in a panic attack blows off CO₂: respiratory alkalosis."},
+ vent:{n:"Ventilator rate set too high",d:"RAl",why:"A ventilator breathing too fast removes too much CO₂: respiratory alkalosis."},
+ altitude:{n:"High altitude",d:"RAl",why:"Low oxygen at altitude makes you breathe faster, which blows off CO₂: respiratory alkalosis. Over days the kidneys excrete HCO₃⁻."},
+ pain:{n:"Severe pain with fast breathing",d:"RAl",why:"Pain and anxiety cause fast breathing, which lowers PaCO₂: respiratory alkalosis."},
+ dka:{n:"Diabetic ketoacidosis",d:"MAc",why:"In DKA, ketone bodies (fixed acids) use up HCO₃⁻: metabolic acidosis. The lungs compensate with deep, fast Kussmaul breathing."},
+ lactic:{n:"Lactic acidosis (shock, sepsis or extreme exercise)",d:"MAc",why:"Cells short of oxygen make lactic acid, which uses up HCO₃⁻: metabolic acidosis."},
+ renal:{n:"Kidney failure",d:"MAc",why:"Failing kidneys cannot excrete H⁺ or make new HCO₃⁻, so HCO₃⁻ falls: metabolic acidosis."},
+ diarrhea:{n:"Severe diarrhea",d:"MAc",why:"Intestinal fluid is rich in bicarbonate, so diarrhea loses base: metabolic acidosis."},
+ vomit:{n:"Prolonged vomiting",d:"MAl",why:"Vomiting loses stomach acid (HCl), so HCO₃⁻ rises: metabolic alkalosis."},
+ ngsuct:{n:"Stomach (NG tube) suction",d:"MAl",why:"Suctioning the stomach removes HCl, like vomiting: metabolic alkalosis."},
+ antacid:{n:"Too many antacids",d:"MAl",why:"Bicarbonate antacids add base to the blood: metabolic alkalosis."},
+ diuretic:{n:"Long-term diuretic use",d:"MAl",why:"Some diuretics make the kidneys lose H⁺ (and K⁺) and keep HCO₃⁻: metabolic alkalosis."},
+ normal:{n:"No acid-base problem",d:"N",why:"All three values are in the normal range, so there is no acid-base imbalance."}
+};
+const DNAME={RAc:"respiratory acidosis",RAl:"respiratory alkalosis",MAc:"metabolic acidosis",MAl:"metabolic alkalosis",N:"a normal ABG"};
+const CASES=[
+ {c:"opioid",p:60,b:24,v:"A 24-year-old is found very drowsy after taking extra oxycodone. Breathing is slow: 6 breaths per minute."},
+ {c:"copd",p:60,b:30,v:"A 68-year-old with COPD has had a flare-up for 3 days. Short of breath, using pursed-lip breathing."},
+ {c:"copd",p:55,b:32,v:"A 72-year-old with long-standing, stable COPD comes in for a routine check-up."},
+ {c:"sedation",p:56,b:25,v:"Two hours after surgery, a patient who received IV morphine is hard to wake and breathing shallowly."},
+ {c:"airway",p:52,b:25,v:"A child choked on a piece of hot dog. The airway was partly blocked for several minutes before it was cleared."},
+ {c:"panic",p:28,b:23,v:"A college student before a big exam has tingling fingers and lips and is breathing fast and deep."},
+ {c:"vent",p:30,b:24,v:"A patient on a mechanical ventilator has the breathing rate set at 28 breaths per minute."},
+ {c:"altitude",p:28,b:20,v:"A hiker has spent 3 days at 4,000 m (about 13,000 ft) and is breathing faster than usual."},
+ {c:"altitude",p:30,b:19,v:"A mountain guide has lived and worked at high altitude for several weeks."},
+ {c:"pain",p:31,b:24,v:"In the emergency department, a patient with a broken leg is in severe pain and breathing rapidly."},
+ {c:"dka",p:28,b:12,v:"A 19-year-old with type 1 diabetes skipped insulin. Blood glucose is very high, the breath smells fruity, and breathing is deep and fast."},
+ {c:"lactic",p:30,b:14,v:"A patient with septic shock has very low blood pressure. Blood lactate is high."},
+ {c:"diarrhea",p:34,b:17,v:"A toddler has had severe watery diarrhea for 2 days."},
+ {c:"renal",p:30,b:15,v:"A patient with kidney failure has missed several dialysis sessions."},
+ {c:"renal",p:29,b:17,v:"A patient with long-term, stable chronic kidney disease comes in for a routine visit."},
+ {c:"lactic",p:40,b:18,v:"A sprinter's blood is drawn the moment she finishes an all-out 400-meter race."},
+ {c:"vomit",p:42,b:34,v:"A patient has been vomiting for 2 days with a stomach virus."},
+ {c:"vomit",p:48,b:36,v:"A patient with a blocked stomach outlet has vomited many times over 4 days. Breathing is a little slow."},
+ {c:"antacid",p:40,b:32,v:"A patient has been taking large amounts of a baking-soda (bicarbonate) antacid for heartburn."},
+ {c:"ngsuct",p:47,b:33,v:"After abdominal surgery, a patient has had a nasogastric (NG) tube on suction for 3 days."},
+ {c:"diuretic",p:47,b:31,v:"A patient with heart failure has taken a strong diuretic for several months."},
+ {c:"normal",p:40,b:24,v:"A healthy 20-year-old volunteer has an arterial blood gas drawn for a research study."}
+];
+CASES.forEach(k=>{k.ph=Math.round(pHof(k.b,k.p)*100)/100});
+function classify(ph,p,b){
+  const st=ph<7.35?"acid":ph>7.45?"alk":"normal";
+  const co2=p>45?"acid":p<35?"alk":null,hc=b<22?"acid":b>26?"alk":null;
+  if(!co2&&!hc&&st==="normal")return {st,side:null,prim:"none",comp:"none",co2,hc};
+  const side=st!=="normal"?st:(ph<7.40?"acid":ph>7.40?"alk":(co2||hc));
+  let prim=co2===side?"resp":hc===side?"met":"none";
+  const other=prim==="resp"?hc:co2;
+  let comp=!other?"uncomp":other!==side?(st==="normal"?"full":"partial"):"mixed";
+  return {st,side,prim,comp,co2,hc}}
+function dxName(k){const c=classify(k.ph,k.p,k.b);if(c.prim==="none")return "Normal ABG (no imbalance)";
+  const comp={uncomp:"Uncompensated",partial:"Partially compensated",full:"Fully compensated",mixed:"Mixed"}[c.comp];
+  return comp+" "+(c.prim==="resp"?"respiratory":"metabolic")+" "+(c.side==="acid"?"acidosis":"alkalosis")}
+const Q=["pH: acid or base?","Respiratory or metabolic?","Compensated?","Likely cause"];
+let abgMode="practice",abgList=[],abgI=0,abgStep=0,abgTries=0,abgScore=0,abgDone=new Set(),abgFirst=[],abgCauseOpts=[];
+const S1=makeStage("cvAbg",800,400);
+let abgVis={ph:7.4,p:40,b:24};
+function abgStart(mode){abgMode=mode;$("#mPractice").setAttribute("aria-pressed",mode==="practice");$("#mChallenge").setAttribute("aria-pressed",mode==="challenge");
+  abgList=mode==="practice"?CASES.map((_,i)=>i):shuffle(CASES.map((_,i)=>i)).slice(0,10);abgI=0;abgScore=0;abgDone=new Set();abgFirst=[];
+  $("#abgHint").hidden=mode!=="practice";buildAbgChips();abgLoad();showBest()}
+function showBest(){const b=store.get("fab-abg-best");$("#abgBest").textContent=b!=null?`Best challenge score: ${b} / 40`:""}
+function buildAbgChips(){const el=$("#abgChips");el.innerHTML="";abgList.forEach((ci,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.textContent="Case "+(i+1);
+  b.setAttribute("aria-pressed",i===abgI);if(abgDone.has(i))b.innerHTML+='<span class="ok">✓</span>';b.onclick=()=>{if(abgMode==="challenge"&&!abgDone.has(i)&&i!==abgI)return;abgI=i;abgLoad()};el.appendChild(b)})}
+function abgLoad(){const k=CASES[abgList[abgI]];abgStep=0;abgTries=0;abgFirst=[];
+  abgCauseOpts=shuffle([k.c].concat(pickDistractors(k)));
+  $("#abgN").textContent=(abgMode==="practice"?"Practice":"Challenge")+" · case "+(abgI+1)+" of "+abgList.length;
+  $("#abgProg").style.width=(abgI/abgList.length*100)+"%";
+  $("#abgVig").textContent=k.v;
+  $("#cvAbg").setAttribute("aria-label",`Arterial blood gas for case ${abgI+1}: pH ${k.ph.toFixed(2)}, PaCO2 ${k.p} mmHg, HCO3 ${k.b} mEq/L, shown on bars with normal ranges and on a bicarbonate versus CO2 seesaw.`);
+  $("#abgDiag").className="diag";$("#abgDiag").innerHTML="";$("#abgNext").hidden=true;setMsg("#abgMsg","");
+  buildAbgChips();abgRenderQ();}
+function pickDistractors(k){const d=CAUSES[k.c].d;const groups={};Object.keys(CAUSES).forEach(key=>{const g=CAUSES[key].d;if(key===k.c)return;(groups[g]=groups[g]||[]).push(key)});
+  const order=shuffle(["RAc","RAl","MAc","MAl","N"].filter(g=>g!==d&&groups[g]));const out=[];
+  // one from the same-disorder family only if there is one, so options are not giveaways
+  for(const g of order){if(out.length>=3)break;if(g==="N"&&Math.random()<.6)continue;out.push(shuffle(groups[g])[0])}
+  while(out.length<3){const g=order[out.length%order.length];const c=shuffle(groups[g]).find(x=>!out.includes(x));if(c)out.push(c);else break}
+  return out.slice(0,3)}
+function optsFor(step,k){const c=classify(k.ph,k.p,k.b);
+  if(step===0)return [["Acidosis (pH below 7.35)","acid"],["Alkalosis (pH above 7.45)","alk"],["pH is in the normal range","normal"]].map(o=>[o[0],o[1]===c.st,expl0(o[1],k,c)]);
+  if(step===1)return [["Respiratory (CO₂ is the cause)","resp"],["Metabolic (HCO₃⁻ is the cause)","met"],["Neither: normal ABG","none"]].map(o=>[o[0],o[1]===c.prim,expl1(o[1],k,c)]);
+  if(step===2)return [["Uncompensated","uncomp"],["Partially compensated","partial"],["Fully compensated","full"],["No imbalance to compensate","none"]].map(o=>[o[0],o[1]===c.comp,expl2(o[1],k,c)]);
+  return abgCauseOpts.map(key=>[CAUSES[key].n,key===k.c,CAUSES[key].why+(key===k.c?"":" That does not match this ABG, which shows "+dxName(k).toLowerCase()+".")])}
+const fmtP=k=>`PaCO₂ ${k.p} mmHg`,fmtB=k=>`HCO₃⁻ ${k.b} mEq/L`;
+function expl0(ch,k,c){const ph=k.ph.toFixed(2);
+  if(ch===c.st){if(c.st==="normal")return `pH ${ph} is inside 7.35–7.45.`+(c.side?` It sits on the ${c.side==="acid"?"acid":"base"} side of 7.40, which matters for the next step.`:"");return `pH ${ph} is ${c.st==="acid"?"below 7.35":"above 7.45"}, so this is ${c.st==="acid"?"acidosis":"alkalosis"}.`}
+  if(ch==="normal")return `pH ${ph} is outside 7.35–7.45, so it is not in the normal range.`;
+  if(c.st==="normal")return `pH ${ph} is inside 7.35–7.45, so the pH itself is still in the normal range.`;
+  return `pH ${ph} is ${c.st==="acid"?"below 7.35 (acid side)":"above 7.45 (base side)"}. Lower pH means more H⁺.`}
+function expl1(ch,k,c){const sideW=c.side==="acid"?"acid":"base";
+  const pDir=k.p>45?"high (acid direction)":k.p<35?"low (base direction)":"normal";const bDir=k.b>26?"high (base direction)":k.b<22?"low (acid direction)":"normal";
+  if(c.prim==="none"){if(ch==="none")return "PaCO₂ and HCO₃⁻ are both normal, so nothing is pushing the pH.";return `${fmtP(k)} and ${fmtB(k)} are both normal, so neither system is causing a problem.`}
+  if(ch===c.prim){return ch==="resp"?`${fmtP(k)} is ${pDir}, which matches the ${sideW} problem. pH and PaCO₂ move opposite: Respiratory Opposite.`:`${fmtB(k)} is ${bDir}, which matches the ${sideW} problem. pH and HCO₃⁻ move the same way: Metabolic Equal.`}
+  if(ch==="none")return "At least one value is outside its normal range, so this is not a normal ABG.";
+  if(ch==="resp")return k.p>=35&&k.p<=45?`${fmtP(k)} is normal, so the lungs did not cause this.`:`${fmtP(k)} is ${pDir}. That pushes toward ${k.p>45?"acid":"base"}, the opposite of this ${sideW} problem, so it is the lungs compensating, not the cause.`;
+  return k.b>=22&&k.b<=26?`${fmtB(k)} is normal, so this did not start with bicarbonate.`:`${fmtB(k)} is ${bDir}. That pushes toward ${k.b<22?"acid":"base"}, the opposite of this ${sideW} problem, so it is the kidneys compensating, not the cause.`}
+function expl2(ch,k,c){const otherName=c.prim==="resp"?"HCO₃⁻":"PaCO₂";const otherVal=c.prim==="resp"?fmtB(k):fmtP(k);
+  if(c.comp==="none")return ch==="none"?"Correct: nothing is out of range, so there is nothing to compensate.":"Every value is normal, so there is no imbalance to compensate.";
+  if(ch==="none")return "There is an imbalance here, so compensation is the question.";
+  const truth={uncomp:`${otherVal} is still normal, so the ${c.prim==="resp"?"kidneys":"lungs"} have not responded yet: uncompensated.`,
+    partial:`${otherVal} has moved to help, but pH ${k.ph.toFixed(2)} is still outside 7.35–7.45: partially compensated.`,
+    full:`${otherVal} has moved to help, and pH ${k.ph.toFixed(2)} is back inside 7.35–7.45: fully compensated.`}[c.comp];
+  if(ch===c.comp)return truth;
+  return `Look at ${otherName}. `+truth}
+function abgRenderQ(){const k=CASES[abgList[abgI]];
+  $("#abgSteps").innerHTML=Q.map((q,i)=>`<span class="qs${i===abgStep?" cur":i<abgStep?" ok":""}">${i+1}. ${q}${i<abgStep?" ✓":""}</span>`).join("");
+  const fb=$("#abgFb");fb.className="fb";fb.textContent="";
+  if(abgStep>3){$("#abgQ").textContent="Case solved.";$("#abgOpts").innerHTML="";return}
+  $("#abgQ").textContent=["Step 1. Look at the pH. Is it acidosis, alkalosis, or in the normal range?","Step 2. Which value matches the direction of the pH problem? (ROME)","Step 3. Is there compensation?","Step 4. What is the most likely cause?"][abgStep];
+  const box=$("#abgOpts");box.innerHTML="";
+  optsFor(abgStep,k).forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+    b.onclick=()=>abgAnswer(b,o);box.appendChild(b)});
+  $("#abgCap").textContent=["Step 1: compare the pH needle with the green 7.35–7.45 band.","Step 2: which of PaCO₂ or HCO₃⁻ is pushing the seesaw the same way as the pH?","Step 3: has the other value moved to push back?","Step 4: match the story to the disorder."][abgStep];}
+function abgAnswer(b,o){const fb=$("#abgFb");
+  if(o[1]){b.classList.add("right");setMsg("#abgMsg","");fb.className="fb show ok";fb.textContent="✓ "+o[2];if(abgFirst[abgStep]==null)abgFirst[abgStep]=abgTries===0;
+    if(abgMode==="challenge"&&abgTries===0)abgScore++;
+    abgTries=0;$("#abgOpts").querySelectorAll(".opt").forEach(x=>x.disabled=true);
+    setTimeout(()=>{abgStep++;if(abgStep>3)abgFinish();else{abgRenderQ();fb.className="fb show ok";fb.textContent="✓ "+o[2]}},abgMode==="practice"?900:700)}
+  else{b.classList.add("wrong");abgTries++;fb.className="fb show no";fb.textContent="Not quite. "+o[2]}}
+function abgFinish(){const k=CASES[abgList[abgI]];abgDone.add(abgI);abgRenderQ();
+  const d=$("#abgDiag");d.className="diag show";d.innerHTML=`<b>${esc(dxName(k))}</b><br>pH ${k.ph.toFixed(2)} · PaCO₂ ${k.p} · HCO₃⁻ ${k.b} → cause: ${esc(CAUSES[k.c].n)}.`;
+  buildAbgChips();
+  if(abgI<abgList.length-1){$("#abgNext").hidden=false}
+  else{$("#abgProg").style.width="100%";
+    if(abgMode==="challenge"){const st=abgScore>=36?3:abgScore>=28?2:abgScore>=18?1:0;const best=store.get("fab-abg-best");if(best==null||abgScore>best)store.set("fab-abg-best",abgScore);showBest();
+      setMsg("#abgMsg",`<span class="stars">${starStr(st)}</span><br>Challenge done: ${abgScore} of 40 steps right on the first try.`+(st===0?" Warm up in <b>Practice</b> mode with hints, then try again.":" Press <b>Challenge</b> again for 10 new cases."),"good")}
+    else setMsg("#abgMsg","You worked through every case. Try <b>Challenge</b> mode for a scored round.","good")}}
+$("#abgNext").onclick=()=>{abgI++;abgLoad()};
+$("#mPractice").onclick=()=>abgStart("practice");$("#mChallenge").onclick=()=>abgStart("challenge");
+$("#abgHint").onclick=()=>{const k=CASES[abgList[abgI]];const c=classify(k.ph,k.p,k.b);
+  const h=[`Compare pH ${k.ph.toFixed(2)} with 7.35 and 7.45.`,
+    c.prim==="none"?"Are PaCO₂ and HCO₃⁻ inside their normal ranges?":`The pH problem is on the ${c.side==="acid"?"ACID":"BASE"} side${c.st==="normal"?" (pH is "+(k.ph<7.4?"below":"above")+" 7.40)":""}. Which value points the same way? High PaCO₂ or low HCO₃⁻ = acid. Low PaCO₂ or high HCO₃⁻ = base.`,
+    "Now look at the OTHER value. Normal? Moved the opposite way? Then ask: is pH back in range?",
+    `This ABG shows ${dxName(k).toLowerCase()}. Which story would cause that?`][abgStep];
+  setMsg("#abgMsg","<b>Hint.</b> "+esc(h),"info")};
+$("#abgShow").onclick=()=>{if(abgStep>3)return;const k=CASES[abgList[abgI]];const right=optsFor(abgStep,k).find(o=>o[1]);abgTries=1;
+  const btn=[...$("#abgOpts").querySelectorAll(".opt")].find(b=>b.textContent===right[0]);if(btn)abgAnswer(btn,right)};
+function drawAbg(now){use(S1);const T=now/1000;const k=CASES[abgList[abgI]];
+  ["ph","p","b"].forEach(key=>{abgVis[key]+=(k[key]-abgVis[key])*.08});
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,400);
+  // lab slip
+  panelBox(16,16,350,368,{fill:C["panel-2"]});txt(30,36,"ARTERIAL BLOOD GAS",{size:12,mono:true,weight:700,color:C["ink-soft"]});txt(352,36,"Case "+(abgI+1),{size:12,mono:true,align:"right",color:C["ink-soft"]});
+  const rows=[["pH",abgVis.ph,k.ph.toFixed(2),7.0,7.8,7.35,7.45,"",C.hplus],["PaCO₂",abgVis.p,String(k.p),15,75,35,45,"mmHg",C.co2],["HCO₃⁻",abgVis.b,String(k.b),8,44,22,26,"mEq/L",C.hco3]];
+  const hlRow=abgStep===0?0:abgStep===1?-2:abgStep===2?-3:-1;const c=classify(k.ph,k.p,k.b);
+  rows.forEach(([n,v,sv,lo,hi,nl,nh,u,col],i)=>{const y=80+i*100;
+    const hl=hlRow===i||(hlRow===-2&&i>0)||(hlRow===-3&&i>0);if(hl){ctx.fillStyle=hexA(C.glow,.18+.08*Math.sin(T*4));rr(24,y-30,334,90,8);ctx.fill()}
+    txt(36,y-8,n,{size:16,weight:700});txt(250,y-8,sv+" "+u,{size:17,mono:true,weight:700,align:"right",color:(v<nl||v>nh)?C.bad:C.ink});
+    const ab=k[["ph","p","b"][i]];const arr=ab<nl?"↓ low":ab>nh?"↑ high":"normal";txt(344,y-8,arr,{size:12.5,weight:700,align:"right",color:arr==="normal"?C.good:C.bad});
+    const bx=36,bw=310,by=y+18;const X=q=>bx+(clamp(q,lo,hi)-lo)/(hi-lo)*bw;
+    ctx.fillStyle=C.sunk;rr(bx,by,bw,10,5);ctx.fill();ctx.fillStyle=hexA(C.good,.55);ctx.fillRect(X(nl),by,X(nh)-X(nl),10);
+    txt(X(nl),by+22,String(nl),{size:10.5,mono:true,align:"center",color:C["ink-soft"]});txt(X(nh),by+22,String(nh),{size:10.5,mono:true,align:"center",color:C["ink-soft"]});
+    ctx.beginPath();ctx.moveTo(X(v),by-2);ctx.lineTo(X(v)-7,by-12);ctx.lineTo(X(v)+7,by-12);ctx.closePath();ctx.fillStyle=C.ink;ctx.fill();
+    if(i===1){txt(bx,by+22,"base ←",{size:10.5,color:C.hco3});txt(bx+bw,by+22,"→ acid",{size:10.5,align:"right",color:C.hplus})}
+    if(i===2){txt(bx,by+22,"acid ←",{size:10.5,color:C.hplus});txt(bx+bw,by+22,"→ base",{size:10.5,align:"right",color:C.hco3})}
+    if(i===0){txt(bx,by+22,"acid",{size:10.5,color:C.hplus});txt(bx+bw,by+22,"base",{size:10.5,align:"right",color:C.hco3})}});
+  // seesaw + gauge
+  const pH=abgVis.ph;
+  gauge(590,92,58,pH,{dy:30});
+  ctx.save();ctx.translate(590,250);ctx.scale(.82,.82);seesaw(0,0,abgVis.b,abgVis.p,{L:170});ctx.restore();
+  // organs
+  lungs(425,70,26,.5+.5*Math.sin(T*2));txt(425,108,"lungs set CO₂",{size:11,align:"center",color:C["ink-soft"]});
+  kidney(752,70,22,0);txt(752,108,"kidneys set HCO₃⁻",{size:11,align:"center",color:C["ink-soft"]});
+  if(abgStep>3){label(590,372,dxName(k),{align:"center",weight:700,size:13.5,border:C.act5})}
+  else if(abgStep>=1&&c.prim!=="none"){const prim=c.prim==="resp"?"PaCO₂":"HCO₃⁻";if(abgStep>=2)label(590,372,"Primary: "+prim+" ("+(c.prim==="resp"?"respiratory":"metabolic")+")",{align:"center",size:12.5,weight:600})}
+}
+
+
+/* =====================================================================
+   PART 2 · ACID-BASE SIMULATOR
+   ===================================================================== */
+const S2=makeStage("cvSim",800,330),S2c=makeStage("cvSimChart",800,300);
+const EVENTS=[
+ {id:"vomit",n:"Vomiting",d:"Loses stomach acid (HCl). HCO₃⁻ climbs.",kind:"met",tgt:42,k:.08},
+ {id:"diarrhea",n:"Diarrhea",d:"Loses bicarbonate-rich intestinal fluid.",kind:"met",tgt:12,k:.06},
+ {id:"dka",n:"Diabetic ketoacidosis",d:"Ketone acids use up HCO₃⁻ fast.",kind:"met",tgt:6,k:.12},
+ {id:"panic",n:"Panic attack",d:"Fast, deep breathing you don't control.",kind:"resp"},
+ {id:"opioid",n:"Opioid overdose",d:"Brainstem drive to breathe is depressed.",kind:"resp"},
+ {id:"copd",n:"COPD",d:"Damaged lungs can't clear CO₂ well.",kind:"resp"}];
+const sim={P:40,B:24,h:0,ev:new Set(),rateAuto:true,kidAuto:true,rateMan:12,kidMan:0,rate:12,kid:0,paused:false,warp0:0,marks:[],hist:[],acc:0,hold:{}};
+let simReal=0;
+function simReset(){Object.assign(sim,{P:40,B:24,h:0,ev:new Set(),rateAuto:true,kidAuto:true,rateMan:12,kidMan:0,rate:12,kid:0,marks:[],hist:[],acc:0,hold:{}});sim.warp0=simReal;
+  $("#rateAuto").checked=true;$("#kidAuto").checked=true;renderEvBtns();simStatus()}
+function markChange(lab){sim.warp0=simReal;sim.marks.push({i:sim.hist.length,lab})}
+function renderEvBtns(){const box=$("#evBtns");box.innerHTML="";EVENTS.forEach(e=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.setAttribute("aria-pressed",sim.ev.has(e.id));
+  b.innerHTML=`<b>${e.n}</b>${sim.ev.has(e.id)?" (on)":""}<br><span class="small">${e.d}</span>`;b.onclick=()=>{if(sim.ev.has(e.id))sim.ev.delete(e.id);else sim.ev.add(e.id);markChange((sim.ev.has(e.id)?"+ ":"− ")+e.n);renderEvBtns()};box.appendChild(b)})}
+function simStep(dh){// dh in hours
+  const pH=pHof(sim.B,sim.P);
+  let drive=1,gain=1,eff=1;
+  if(sim.ev.has("opioid")){drive*=.45;gain*=.25}
+  if(sim.ev.has("copd")){eff*=.62;gain*=.6}
+  if(sim.ev.has("panic")){drive*=2;gain*=.4}
+  const f=pH<7.4?1+4*gain*(7.4-pH):1-1.5*gain*(pH-7.4);
+  const auto=clamp(12*drive*clamp(f,.6,3),4,40);
+  sim.rate=sim.rateAuto?auto:sim.rateMan;
+  const Pt=clamp(40/(sim.rate/12*eff),12,130);
+  sim.P+=(Pt-sim.P)*(1-Math.exp(-dh/.07));
+  const bk=sim.kidAuto?clamp(24+60*(7.4-pH),12,40):24+14*sim.kidMan;sim.kid=(bk-24)/14;
+  let dB=(bk-sim.B)/30;EVENTS.forEach(e=>{if(e.kind==="met"&&sim.ev.has(e.id))dB+=e.k*(e.tgt-sim.B)});
+  sim.B=clamp(sim.B+dB*dh,3,50);sim.h+=dh;}
+function warpRate(){const s=simReal-sim.warp0;return Math.min(6,.04*Math.exp(1.0*s))}
+function fmtH(h){if(h<1)return Math.round(h*60)+" min";if(h<48)return (h<10?h.toFixed(1):Math.round(h))+" h";return "day "+(h/24).toFixed(1)}
+function fmtRate(r){return r<1?("1 s = "+Math.round(r*60)+" min"):("1 s = "+r.toFixed(r<3?1:0)+" h")}
+$("#rateSl").oninput=e=>{sim.rateMan=+e.target.value;if(sim.rateAuto){sim.rateAuto=false;$("#rateAuto").checked=false;markChange("You breathe")}else sim.warp0=simReal};
+$("#kidSl").oninput=e=>{sim.kidMan=+e.target.value;if(sim.kidAuto){sim.kidAuto=false;$("#kidAuto").checked=false;markChange("You run kidneys")}else sim.warp0=simReal};
+$("#rateAuto").onchange=e=>{sim.rateAuto=e.target.checked;if(!sim.rateAuto)sim.rateMan=Math.round(sim.rate);markChange(sim.rateAuto?"Auto breathing":"You breathe")};
+$("#kidAuto").onchange=e=>{sim.kidAuto=e.target.checked;if(!sim.kidAuto)sim.kidMan=Math.round(sim.kid*20)/20;markChange(sim.kidAuto?"Auto kidneys":"You run kidneys")};
+$("#simPause").onclick=()=>{sim.paused=!sim.paused;$("#simPause").textContent=sim.paused?"Play":"Pause"};
+$("#simReset").onclick=()=>{simReset()};
+const CHAL=[
+ {id:"dka",t:"Turn on diabetic ketoacidosis and watch the lungs compensate until PaCO₂ falls below 30 mmHg.",hint:"Leave breathing on Automatic. Watch the breathing rate climb.",test:()=>sim.ev.has("dka")&&sim.rateAuto&&sim.P<30},
+ {id:"opi",t:"Opioid overdose: switch breathing to manual and breathe for the patient until pH stays 7.35–7.45 for 1 hour.",hint:"Turn on Opioid overdose, then drag the breathing slider to about 12–14 breaths/min, like a nurse with a bag-valve mask.",test:()=>sim.ev.has("opioid")&&!sim.rateAuto,hold:1},
+ {id:"copd",t:"COPD: let the kidneys compensate until HCO₃⁻ rises above 27 mEq/L.",hint:"Turn on COPD, keep the kidneys on Automatic, and wait for a few simulated days.",test:()=>sim.ev.has("copd")&&sim.kidAuto&&sim.B>27},
+ {id:"vom",t:"Make a metabolic alkalosis: pH above 7.45 with HCO₃⁻ above 26.",hint:"Which event loses stomach acid?",test:()=>sim.ev.has("vomit")&&pHof(sim.B,sim.P)>7.45&&sim.B>26},
+ {id:"pan",t:"Make a respiratory alkalosis: pH above 7.45 with PaCO₂ below 35.",hint:"Which event makes you breathe fast without meaning to?",test:()=>pHof(sim.B,sim.P)>7.45&&sim.P<35&&sim.B>=22},
+ {id:"dia",t:"Diarrhea: take over the kidneys yourself and hold pH 7.35–7.45 for 12 hours.",hint:"Turn on Diarrhea, then slide the kidneys toward keep / make HCO₃⁻.",test:()=>sim.ev.has("diarrhea")&&!sim.kidAuto,hold:12}];
+const chalDone=new Set(store.get("fab-sim-chal")||[]);
+function renderChal(){$("#simChal").innerHTML=CHAL.map(c=>`<li class="${chalDone.has(c.id)?"done":""}"><span class="ck">${chalDone.has(c.id)?"✓":""}</span><span>${c.t}<br><button class="tbtn" type="button" data-h="${c.id}" style="margin-top:4px;padding:3px 9px;font-size:13px">Hint</button> <span class="small" id="h-${c.id}"></span></span></li>`).join("");
+  $("#simChal").querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{const c=CHAL.find(x=>x.id===b.dataset.h);$("#h-"+c.id).textContent=c.hint});
+  const n=chalDone.size;$("#simStars").innerHTML=`<span class="stars">${starStr(n>=6?3:n>=4?2:n>=2?1:0)}</span> ${n} of 6 challenges done`}
+function checkChal(dh){const pH=pHof(sim.B,sim.P);let changed=false;
+  CHAL.forEach(c=>{if(chalDone.has(c.id))return;if(c.hold){if(c.test()&&pH>=7.35&&pH<=7.45){sim.hold[c.id]=(sim.hold[c.id]||0)+dh;if(sim.hold[c.id]>=c.hold){chalDone.add(c.id);changed=true}}else sim.hold[c.id]=0}
+    else if(c.test()){chalDone.add(c.id);changed=true}});
+  if(changed){store.set("fab-sim-chal",[...chalDone]);renderChal()}}
+function simStatus(){const pH=pHof(sim.B,sim.P);const c=classify(Math.round(pH*100)/100,sim.P,sim.B);let txt_,cls="good";
+  if(c.prim==="none"&&c.st==="normal"){txt_="Normal: pH, PaCO₂ and HCO₃⁻ are all in range.";}
+  else{const nm=(c.comp==="full"?"Fully compensated ":c.comp==="partial"?"Partially compensated ":c.comp==="uncomp"?"Uncompensated ":"")+(c.prim==="resp"?"respiratory ":c.prim==="met"?"metabolic ":"")+(c.side==="acid"?"acidosis":"alkalosis");
+    txt_=nm.charAt(0).toUpperCase()+nm.slice(1)+".";cls=c.st==="normal"?"warn":"bad";if(c.comp==="mixed")txt_="Mixed disorder: both values push the same way.";
+    if(pH<7.2)txt_+=" pH is dangerously low.";if(pH>7.6)txt_+=" pH is dangerously high."}
+  const el=$("#simStatus");if(el.textContent!==txt_){el.textContent=txt_;el.className="status "+cls}
+  const rows=[["pH",pH.toFixed(2),pH<7.35||pH>7.45],["PaCO₂",Math.round(sim.P)+" mmHg",sim.P<35||sim.P>45],["HCO₃⁻",sim.B.toFixed(1)+" mEq/L",sim.B<22||sim.B>26],["Breathing",Math.round(sim.rate)+" /min "+(sim.rateAuto?"(auto)":"(you)"),false],["Kidneys",(sim.kid>.15?"keeping HCO₃⁻":sim.kid<-.15?"excreting HCO₃⁻":"balanced")+(sim.kidAuto?" (auto)":" (you)"),false],["Time",fmtH(sim.h),false]];
+  const html=rows.map(r=>`<tr><th>${r[0]}</th><td style="${r[2]?"color:var(--bad);font-weight:700":""}">${r[1]}${r[2]?" !":""}</td></tr>`).join("");
+  const tb=$("#simRead");if(tb.innerHTML!==html)tb.innerHTML=html;
+  if(sim.rateAuto){$("#rateSl").value=Math.round(sim.rate)}$("#rateOut").textContent=Math.round(sim.rate)+" /min";
+  if(sim.kidAuto){$("#kidSl").value=Math.round(sim.kid*20)/20}$("#kidOut").textContent=sim.kid>.15?"keep / make":sim.kid<-.15?"excrete":"balanced";
+  $("#warpOut").textContent="Time warp now: "+fmtRate(warpRate())+".";}
+let breathPh=0;
+function drawSim(now,dt){use(S2);const T=now/1000;const pH=pHof(sim.B,sim.P);
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,330);
+  breathPh+=dt*Math.min(sim.rate,40)/60*TAU*.6;const inf=.5+.5*Math.sin(breathPh);
+  lungs(110,120,62,inf);label(110,30,"Lungs: "+Math.round(sim.rate)+" breaths/min",{align:"center",size:12.5,weight:700,border:sim.rateAuto?C.rule:C.accent});
+  const nOut=Math.round(clamp(sim.rate/4,1,10));for(let k=0;k<nOut;k++){const q=P(T*(.3+sim.rate/40)+k/nOut,1);ion(110+(k%3-1)*16,lerp(70,8,q),"co2",5,1-q)}
+  kidney(110,265,42,Math.abs(sim.kid)*.4);label(110,320,"Kidneys: "+(sim.kid>.15?"keep / make HCO₃⁻":sim.kid<-.15?"excrete HCO₃⁻":"balanced"),{align:"center",size:12,weight:700,border:sim.kidAuto?C.rule:C.accent});
+  const kq=P(T*.5,1);if(sim.kid>.15)for(let k=0;k<3;k++)ion(lerp(150,215,P(T*.5+k/3,1)),265,"hco3",6);else if(sim.kid<-.15)for(let k=0;k<3;k++)ion(lerp(110,110,1),lerp(285,320,P(T*.5+k/3,1)),"hco3",6,1-P(T*.5+k/3,1));
+  // vessel
+  const vx=215,vw=170;ctx.fillStyle=mix(C.vessel,C.panel,.15);rr(vx,40,vw,250,20);ctx.fill();ctx.strokeStyle=C["vessel-edge"];ctx.lineWidth=2;ctx.stroke();txt(vx+vw/2,30,"Arterial blood",{size:12,weight:700,align:"center"});
+  const nC=Math.round(sim.P/4),nB=Math.round(sim.B/2.4);
+  for(let k=0;k<nC;k++){const y=40+P(T*.08+k/nC,1)*250;ion(vx+20+((k*37)%130),y,"co2",5)}
+  for(let k=0;k<nB;k++){const y=40+P(T*.08+k/nB+.5,1)*250;ion(vx+28+((k*53)%120),y,"hco3",5.5)}
+  const nH=Math.round(clamp((7.6-pH)*25,0,22));for(let k=0;k<nH;k++){const y=40+P(T*.1+k/Math.max(1,nH)+.25,1)*250;ion(vx+16+((k*29)%140),y,"hplus",5)}
+  arrow(150,110,vx-4,110,C.co2,2);arrow(150,255,vx-4,255,C.hco3,2);
+  gauge(510,95,60,pH,{dy:32});
+  ctx.save();ctx.translate(585,240);ctx.scale(.72,.72);seesaw(0,0,sim.B,sim.P,{L:170});ctx.restore();
+  // active events
+  const act=EVENTS.filter(e=>sim.ev.has(e.id)).map(e=>e.n);txt(790,20,act.length?"Active: "+act.join(", "):"No events: healthy",{size:12,weight:600,align:"right",color:act.length?C.bad:C.good});
+  if(sim.paused)label(510,175,"Paused",{align:"center",weight:700});
+}
+function drawSimChart(){use(S2c);ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,300);
+  const strips=[["pH",7.0,7.7,7.35,7.45,C.hplus,"ph",v=>v.toFixed(2)],["PaCO₂",15,90,35,45,C.co2,"P",v=>Math.round(v)],["HCO₃⁻",5,45,22,26,C.hco3,"B",v=>v.toFixed(0)]];
+  const x0=70,x1=780,N=400,H_=80;
+  strips.forEach(([n,lo,hi,nl,nh,col,key,f],i)=>{const y0=12+i*(H_+12);const Y=v=>y0+H_-(clamp(v,lo,hi)-lo)/(hi-lo)*H_;
+    ctx.fillStyle=C["panel-2"];ctx.fillRect(x0,y0,x1-x0,H_);ctx.fillStyle=hexA(C.good,.25);ctx.fillRect(x0,Y(nh),x1-x0,Y(nl)-Y(nh));
+    txt(x0-8,y0+12,n,{size:12,weight:700,align:"right",color:col});txt(x0-8,Y(nl),String(nl),{size:10,mono:true,align:"right",color:C["ink-soft"]});txt(x0-8,Y(nh),String(nh),{size:10,mono:true,align:"right",color:C["ink-soft"]});
+    const h=sim.hist;const st=Math.max(0,h.length-N);ctx.beginPath();for(let j=st;j<h.length;j++){const x=x0+(j-st)/(N-1)*(x1-x0);const y=Y(h[j][key]);j===st?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+    ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();
+    if(h.length){const v=h[h.length-1][key];const xe=x0+(h.length-1-st)/(N-1)*(x1-x0);label(Math.min(xe+8,x1-40),Y(v)-12,f(v),{size:11.5,weight:700,mono:true,color:col})}});
+  // marks and time labels
+  const h=sim.hist;const st=Math.max(0,h.length-N);
+  sim.marks.forEach((m,j)=>{if(m.i<st||m.lab==="test")return;const x=x0+(m.i-st)/(N-1)*(x1-x0);line(x,12,x,12+3*(H_+12)-12,C["ink-soft"],1.2,[4,4]);label(x+4,20+(j%3)*15,m.lab,{size:10.5,weight:600,bga:.95})});
+  for(let j=st;j<h.length;j+=80){const x=x0+(j-st)/(N-1)*(x1-x0);txt(x,290,fmtH(h[j].h),{size:10.5,mono:true,align:"center",color:C["ink-soft"]})}
+}
+function simTick(dt){if(sim.paused)return;const rate=warpRate();const dh=dt*rate;const n=Math.max(1,Math.ceil(dh/.01));for(let i=0;i<n;i++)simStep(dh/n);
+  sim.acc+=dt;if(sim.acc>=.1){sim.acc=0;sim.hist.push({h:sim.h,ph:pHof(sim.B,sim.P),P:sim.P,B:sim.B});if(sim.hist.length>2000){const cut=sim.hist.length-1200;sim.hist=sim.hist.slice(cut);sim.marks=sim.marks.map(m=>({i:m.i-cut,lab:m.lab})).filter(m=>m.i>=0)}}
+  checkChal(dh)}
+
+/* =====================================================================
+   PART 3 · FLUID SHIFT SIMULATOR
+   ===================================================================== */
+const S3=makeStage("cvFluid",800,400),S3c=makeStage("cvFluidChart",800,170);
+const BASE={Vc:28,Vi:11,Vp:3,osm:285};
+const fl={Vc:28,Vi:11,Vp:3,Se:14*285,G:0,Sc:28*285,task:null,hist:[],acc:0,flowC:0,flowP:0,pred:null,lastItem:null,settle:0,shown:true};
+const BAGS=[
+ {id:"ns",n:"0.9% NaCl",s:"normal saline",osm:285,g:0,ex:"stay",col:"good",why:"Normal saline is isotonic. It adds water and salt in the same ratio as plasma, so no water moves into or out of cells. All of it stays in the ECF, and about a quarter stays in the plasma, which is why it is used to raise blood volume."},
+ {id:"lr",n:"Lactated Ringer's",s:"LR",osm:285,g:0,ex:"stay",col:"good",why:"Lactated Ringer's is treated as isotonic. Like normal saline, it expands the ECF (plasma and interstitial fluid) without changing cell size."},
+ {id:"d5w",n:"D5W",s:"5% dextrose in water",osm:0,g:285,ex:"swell",col:"water",why:"D5W starts about isotonic, but cells take up and use the glucose. What is left is free water, which spreads into every compartment, about two-thirds of it into cells. So cells swell a little."},
+ {id:"half",n:"0.45% NaCl",s:"half-normal saline",osm:142,g:0,ex:"swell",col:"water",why:"Half-normal saline is hypotonic. It dilutes the ECF, so water moves into cells and they swell."},
+ {id:"hyper",n:"3% NaCl",s:"hypertonic saline",osm:950,g:0,ex:"shrink",col:"warn",why:"3% saline is hypertonic. It makes the ECF more concentrated, so water is pulled out of cells into the ECF. Cells shrink and plasma volume rises more than the bag's own volume."}];
+const EVTS=[
+ {id:"sweat",n:"Heavy sweating",s:"lose 1 L of dilute sweat",dV:-1,osm:100,ex:"shrink",col:"warn",why:"Sweat has less salt than plasma, so losing it removes more water than salt. The ECF becomes more concentrated and water leaves cells: they shrink. This is dehydration."},
+ {id:"drink",n:"Drink water",s:"absorb 1 L of plain water",dV:1,osm:0,ex:"swell",col:"water",why:"Plain water is absorbed into the blood and spreads by osmosis into every compartment. About two-thirds ends up inside cells, so cells swell slightly until the kidneys remove the extra."},
+ {id:"bleed",n:"Hemorrhage",s:"lose 1 L of blood",dV:-1,osm:285,ex:"stay",col:"bad",why:"Blood loss removes isotonic fluid, so cell size does not change. Plasma volume falls first; then some interstitial fluid moves into the capillaries to refill it. (In this model, lost red cells are ignored.)"}];
+const predDone=new Set(store.get("fab-fl-pred")||[]);
+function bagSvg(col){return `<svg width="22" height="30" viewBox="0 0 22 30" aria-hidden="true"><rect x="2" y="2" width="18" height="20" rx="4" fill="var(--water-wash)" stroke="var(--ink)" stroke-width="1.5"/><rect x="4" y="9" width="14" height="11" rx="3" fill="var(--${col})" opacity=".55"/><line x1="11" y1="22" x2="11" y2="29" stroke="var(--ink)" stroke-width="1.5"/></svg>`}
+function evSvg(id){if(id==="drink")return `<svg width="22" height="30" viewBox="0 0 22 30" aria-hidden="true"><path d="M4 4 L6 27 L16 27 L18 4 Z" fill="var(--water-wash)" stroke="var(--ink)" stroke-width="1.5"/><rect x="6" y="12" width="10" height="14" fill="var(--water)" opacity=".6"/></svg>`;
+  if(id==="sweat")return `<svg width="22" height="30" viewBox="0 0 22 30" aria-hidden="true"><path d="M11 3 C16 11 18 15 18 19 A7 7 0 0 1 4 19 C4 15 6 11 11 3 Z" fill="var(--water)" opacity=".7"/></svg>`;
+  return `<svg width="22" height="30" viewBox="0 0 22 30" aria-hidden="true"><path d="M11 3 C16 11 18 15 18 19 A7 7 0 0 1 4 19 C4 15 6 11 11 3 Z" fill="var(--rbc)"/></svg>`}
+function renderFlBtns(){
+  $("#bagBtns").innerHTML=BAGS.map(b=>`<button class="tbtn" type="button" data-b="${b.id}">${bagSvg(b.col)}<span><b>${b.n}</b>${predDone.has(b.id)?" ✓":""}<br><span class="small">${b.s}</span></span></button>`).join("");
+  $("#evtBtns").innerHTML=EVTS.map(b=>`<button class="tbtn" type="button" data-b="${b.id}">${evSvg(b.id)}<span><b>${b.n}</b>${predDone.has(b.id)?" ✓":""}<br><span class="small">${b.s}</span></span></button>`).join("");
+  document.querySelectorAll("#bagBtns [data-b],#evtBtns [data-b]").forEach(btn=>btn.onclick=()=>flChoose(btn.dataset.b));
+  const n=predDone.size;$("#flStars").innerHTML=`<span class="stars">${starStr(n>=8?3:n>=6?2:n>=4?1:0)}</span> ${n} of 8 correct predictions`}
+function itemOf(id){return BAGS.find(b=>b.id===id)||EVTS.find(b=>b.id===id)}
+function flChoose(id){if(fl.task)return;const it=itemOf(id);setMsg("#flMsg","");
+  if($("#predOn").checked){$("#predBox").hidden=false;$("#predQ").textContent=`${it.n}: what will happen to the cells?`;
+    $("#predBtns").innerHTML=[["swell","Cells swell"],["shrink","Cells shrink"],["stay","Cells stay the same"]].map(o=>`<button class="tbtn" type="button" data-p="${o[0]}">${o[1]}</button>`).join("");
+    $("#predBtns").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{fl.pred=b.dataset.p;$("#predBox").hidden=true;flRun(it)})}
+  else{fl.pred=null;flRun(it)}}
+function flRun(it){fl.lastItem=it;fl.shown=false;fl.settle=0;
+  const isBag=!!BAGS.find(b=>b.id===it.id);const dV=isBag?1:it.dV;
+  fl.task={dur:it.id==="bleed"?1.6:3,left:it.id==="bleed"?1.6:3,dV,osm:it.osm||0,g:it.g||0};
+  document.querySelectorAll("#bagBtns button,#evtBtns button").forEach(b=>b.disabled=true)}
+function flStep(dt){
+  if(fl.task){const tk=fl.task;const h=Math.min(dt,tk.left);const v=tk.dV*h/tk.dur;
+    if(v>0){fl.Vp+=v;fl.Se+=v*tk.osm;fl.G+=v*tk.g}else{const ve=fl.Vp+fl.Vi;const ce=(fl.Se)/ve;fl.Vp+=v;fl.Se+=v*(tk.osm);}
+    tk.left-=h;if(tk.left<=0){fl.task=null;fl.settle=0}}
+  // glucose use
+  if(fl.G>0){const used=fl.G*(1-Math.exp(-dt/3.5));fl.G-=used}
+  const Ve=fl.Vp+fl.Vi;const tot=Ve+fl.Vc;const osm=(fl.Sc+fl.Se+fl.G)/tot;const VcT=fl.Sc/osm;
+  const dVc=(VcT-fl.Vc)*(1-Math.exp(-dt/1.3));fl.Vc+=dVc;
+  const Ve2=Ve-dVc;const frac=fl.Vp/Ve;const dP=-dVc*frac;const dI=-dVc*(1-frac);fl.Vp+=dP;fl.Vi+=dI;
+  const VpT=(fl.Vp+fl.Vi)*3/14;const dPI=(VpT-fl.Vp)*(1-Math.exp(-dt/1.8));fl.Vp+=dPI;fl.Vi-=dPI;
+  fl.flowC=dVc/Math.max(dt,1e-3);fl.flowP=dPI/Math.max(dt,1e-3);
+  fl.acc+=dt;if(fl.acc>=.1){fl.acc=0;fl.hist.push({c:fl.Vc-28,i:fl.Vi-11,p:fl.Vp-3});if(fl.hist.length>300)fl.hist.shift()}
+  if(!fl.task&&fl.lastItem&&!fl.shown){fl.settle+=dt;if(fl.settle>(fl.lastItem.id==="d5w"?9:5.5)||(Math.abs(fl.flowC)<.004&&Math.abs(fl.flowP)<.004&&fl.G<.5&&fl.settle>2.5))flResult()}}
+function flResult(){fl.shown=true;const it=fl.lastItem;document.querySelectorAll("#bagBtns button,#evtBtns button").forEach(b=>b.disabled=false);
+  const res={swell:"Cells swelled.",shrink:"Cells shrank.",stay:"Cell size stayed the same."}[it.ex];
+  if(fl.pred){if(fl.pred===it.ex){predDone.add(it.id);store.set("fab-fl-pred",[...predDone]);setMsg("#flMsg",`✓ Your prediction was right. ${res} ${it.why}`,"good")}
+    else setMsg("#flMsg",`Not quite. ${res} ${it.why}`,"warn")}
+  else setMsg("#flMsg",`${res} ${it.why}`,"info");
+  fl.pred=null;renderFlBtns()}
+$("#flReset").onclick=()=>{Object.assign(fl,{Vc:28,Vi:11,Vp:3,Se:14*285,G:0,task:null,hist:[],pred:null,lastItem:null,shown:true});$("#predBox").hidden=true;setMsg("#flMsg","");renderFlBtns()};
+function flReadouts(){const Ve=fl.Vp+fl.Vi;const osm=(fl.Sc+fl.Se+fl.G)/(Ve+fl.Vc);const ecfOsm=(fl.Se+fl.G)/Ve;const na=Math.round(fl.Se/Ve/2.04);
+  const d=v=>(v>=0?"+":"−")+Math.abs(v).toFixed(2)+" L";
+  const rows=[["ICF",fl.Vc.toFixed(2)+" L ("+d(fl.Vc-28)+")"],["Interstitial",fl.Vi.toFixed(2)+" L ("+d(fl.Vi-11)+")"],["Plasma",fl.Vp.toFixed(2)+" L ("+d(fl.Vp-3)+")"],["Osmolality",Math.round(osm)+" mOsm/L"],["Serum Na⁺ (approx.)",na+" mEq/L"]];
+  const html=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");if($("#flRead").innerHTML!==html)$("#flRead").innerHTML=html;
+  let s="Normal fluid balance.",cls="good";const msgs=[];
+  if(na<135){msgs.push("Hyponatremia: cells are swollen (brain risk)");cls="bad"}else if(na>145){msgs.push("Hypernatremia: cells are shrunken");cls="bad"}
+  if(fl.Vp<2.6){msgs.push("Low plasma volume: blood pressure may fall");cls="bad"}else if(fl.Vp>3.5){msgs.push("High plasma volume: watch for fluid overload");if(cls!=="bad")cls="warn"}
+  if(fl.G>2)msgs.push("Glucose still in the blood; cells are using it");
+  if(msgs.length)s=msgs.join(". ")+".";const el=$("#flStatus");if(el.textContent!==s){el.textContent=s;el.className="status "+cls}}
+function drawFluid(now){use(S3);const T=now/1000;ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,400);
+  const base=360;
+  const tanks=[["ICF",fl.Vc,28,30,200,C.icf,"Inside cells"],["Interstitial",fl.Vi,11,290,120,C.isf,"Between cells"],["Plasma",fl.Vp,3,470,60,C.plasma,"In blood vessels"]];
+  // heights scaled per tank: ref fills 70% of 200 px
+  tanks.forEach(([n,v,ref,x,w,col,sub])=>{const hmax=230;const h0=hmax*.68;const hh=clamp(h0*v/ref,4,hmax);
+    ctx.fillStyle=C["panel-2"];ctx.fillRect(x,base-hmax,w,hmax);
+    ctx.beginPath();ctx.moveTo(x,base);for(let xx=x;xx<=x+w;xx+=4)ctx.lineTo(xx,base-hh+1.8*Math.sin(xx*.12+T*3));ctx.lineTo(x+w,base);ctx.closePath();ctx.fillStyle=col;ctx.fill();
+    line(x-6,base-h0,x+w+6,base-h0,C.ink,1.2,[5,4]);
+    ctx.strokeStyle=C.ink;ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x,base-hmax);ctx.lineTo(x,base);ctx.lineTo(x+w,base);ctx.lineTo(x+w,base-hmax);ctx.stroke();
+    txt(x+w/2,base-hmax-26,n,{size:13,weight:700,align:"center"});txt(x+w/2,base-hmax-10,sub,{size:11,align:"center",color:C["ink-soft"]});
+    const dv=v-ref;txt(x+w/2,base+16,v.toFixed(1)+" L",{size:12.5,mono:true,weight:700,align:"center"});txt(x+w/2,base+32,(dv>=0?"+":"−")+Math.abs(dv).toFixed(2),{size:11.5,mono:true,align:"center",color:Math.abs(dv)<.05?C["ink-soft"]:dv>0?C.water:C.warn})});
+  // cells inside ICF tank
+  const scale=1+(fl.Vc/28-1)*6;const r=24*clamp(scale,.55,1.5);
+  for(let k=0;k<6;k++){const cx=30+38+(k%3)*62,cy=base-50-Math.floor(k/3)*70;cellBlob(cx,cy,r,{seed:k,cren:clamp((1-scale)*2,0,1),a:.95})}
+  label(130,base-180,scale>1.04?"cells swelling":scale<.96?"cells shrinking":"cells normal size",{align:"center",size:12,weight:700,border:scale>1.04?C.water:scale<.96?C.warn:C.good});
+  // flow arrows between tanks
+  const fC=fl.flowC,fP=fl.flowP;
+  const flowDrops=(x1,x2,y,f)=>{const n=Math.round(clamp(Math.abs(f)*25,0,5));for(let k=0;k<n;k++){const q=P(T*1.2+k/n,1);drop(lerp(x1,x2,f>0?q:1-q),y,4.5)}if(n>0)arrow(f>0?x2+8:x1-8,y-14,f>0?x1-4:x2+4,y-14,C.water,2)};
+  ctx.fillStyle=C.sunk;ctx.fillRect(230,base-90,60,10);ctx.fillRect(410,base-60,60,10);
+  flowDrops(232,288,base-85,-fC);// fC>0 means into ICF: drops go from IF(x right) to ICF(left)
+  flowDrops(412,468,base-55,-fP);
+  txt(260,base-100,"membranes",{size:10.5,align:"center",color:C["ink-soft"]});txt(440,base-70,"capillaries",{size:10.5,align:"center",color:C["ink-soft"]});
+  // IV pole / event
+  const px=620;line(px,30,px,330,C["ink-soft"],3);line(px-30,30,px+30,30,C["ink-soft"],3);
+  const it=fl.task?fl.lastItem:null;
+  if(it&&BAGS.find(b=>b.id===it.id)){const left=fl.task.left/fl.task.dur;ctx.fillStyle=hexA(C.water,.2);rr(px-34,40,68,96,12);ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=hexA(C[it.col]||C.water,.45);rr(px-30,44+88*(1-left),60,88*left,10);ctx.fill();txt(px,74,it.n,{size:11,weight:700,align:"center",mono:true});
+    const pth=[[px,136],[px,190],[540,240],[500,250]];poly(pth,C.ink,1.5);for(let k=0;k<4;k++){const [x,y]=along(pth,P(T*.8+k/4,1));drop(x,y,3.5)}}
+  else if(it){const ev=it.id;txt(px+40,60,ev==="bleed"?"Bleeding":ev==="sweat"?"Sweating":"Drinking",{size:13,weight:700,align:"center"});
+    for(let k=0;k<5;k++){const q=P(T*.9+k/5,1);if(ev==="bleed")ion(lerp(500,690,q),lerp(260,330,q),"water",5,1-q);else if(ev==="sweat")drop(lerp(480,700,q),lerp(240,90,q),4.5,1-q);else drop(lerp(700,500,q),lerp(90,240,q),4.5,q)}}
+  else{txt(720,64,"Pick a bag",{size:12,align:"center",color:C["ink-soft"]});txt(720,80,"or an event →",{size:12,align:"center",color:C["ink-soft"]})}
+  // osmolality bar
+  const Ve=fl.Vp+fl.Vi;const eo=(fl.Se+fl.G)/Ve;const io=fl.Sc/fl.Vc;
+  panelBox(660,140,130,120);txt(725,156,"Osmolality",{size:12,weight:700,align:"center"});
+  const bar=(y,v,lab)=>{txt(672,y,lab,{size:11,mono:true,weight:600});ctx.fillStyle=C.sunk;ctx.fillRect(705,y-6,75,12);ctx.fillStyle=v>292?C.warn:v<278?C.water:C.good;ctx.fillRect(705,y-6,clamp((v-240)/90,0,1)*75,12);txt(742,y+16,Math.round(v)+"",{size:11,mono:true,align:"center"})};
+  ctx.fillStyle=C.panel;ctx.fillRect(664,166,122,90);bar(186,eo,"ECF");bar(228,io,"ICF");
+}
+function drawFluidChart(){use(S3c);ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,170);
+  const x0=60,x1=780,y0=14,y1=150,lo=-2,hi=2;const Y=v=>y1-(clamp(v,lo,hi)-lo)/(hi-lo)*(y1-y0);
+  ctx.fillStyle=C["panel-2"];ctx.fillRect(x0,y0,x1-x0,y1-y0);line(x0,Y(0),x1,Y(0),C["ink-soft"],1,[4,4]);
+  [-2,-1,0,1,2].forEach(v=>txt(x0-6,Y(v),(v>0?"+":"")+v+" L",{size:10,mono:true,align:"right",color:C["ink-soft"]}));
+  [["c",C["cell-edge"],"ICF"],["i",C.accent,"Interstitial"],["p",C["plasma-edge"],"Plasma"]].forEach(([k,col,n],j)=>{const h=fl.hist;ctx.beginPath();h.forEach((s,i)=>{const x=x0+i/299*(x1-x0);i?ctx.lineTo(x,Y(s[k])):ctx.moveTo(x,Y(s[k]))});ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();
+    txt(x0+10+j*110,y1+12,"— "+n,{size:11,weight:700,color:col})});
+  txt(x1,y1+12,"last 30 seconds: change from start",{size:10.5,align:"right",color:C["ink-soft"]});}
+
+/* =====================================================================
+   PART 4 · ELECTROLYTE MATCHER
+   ===================================================================== */
+const S4=makeStage("cvMatch",800,360);
+const ROUNDS=[
+ {n:"Where does it live?",lh:"Ion",rh:"Main compartment",goal:"Tap an ion, then tap where most of it is found. Two ions share each answer.",
+  L:[{id:"na",t:"Na⁺ (sodium)",r:"ECF",ex:"Na⁺ is the main positive ion outside cells. The Na⁺/K⁺ pump keeps pushing it out.",clue:"The pump throws 3 of these out of the cell each cycle."},
+     {id:"cl",t:"Cl⁻ (chloride)",r:"ECF",ex:"Cl⁻ is the main negative ion of the ECF. It usually follows Na⁺.",clue:"It follows sodium wherever sodium goes."},
+     {id:"hco3",t:"HCO₃⁻ (bicarbonate)",r:"ECF",ex:"Bicarbonate is the main base buffer of the ECF and blood.",clue:"It is the base you read on an ABG, measured in blood."},
+     {id:"ca",t:"Ca²⁺ (calcium)",r:"ECF",ex:"Free Ca²⁺ is kept very low inside cells; the active ion is in the ECF. Most of the body's calcium is stored in bone.",clue:"Cells keep this ion very low inside; a rush of it into the cytosol is a signal."},
+     {id:"k",t:"K⁺ (potassium)",r:"ICF",ex:"K⁺ is the main positive ion inside cells. The pump brings 2 in each cycle.",clue:"The pump brings 2 of these into the cell each cycle."},
+     {id:"phos",t:"HPO₄²⁻ (phosphate)",r:"ICF",ex:"Phosphate is the main negative ion inside cells (and most body phosphate is in bone).",clue:"Think of ATP and DNA: they are full of this, inside cells."},
+     {id:"mg",t:"Mg²⁺ (magnesium)",r:"ICF",ex:"Magnesium is found mostly inside cells and in bone.",clue:"Like K⁺, it is a positive ion that mostly stays in cells."}],
+  R:[{id:"ECF",t:"Mainly in the ECF (outside cells)"},{id:"ICF",t:"Mainly in the ICF (inside cells)"}]},
+ {n:"Which hormone does it?",lh:"Hormone",rh:"Main effect",goal:"Tap a hormone, then tap what it does. Each effect is used once.",
+  L:[{id:"aldo",t:"Aldosterone",r:"e1",ex:"Aldosterone from the adrenal cortex makes the kidney keep Na⁺ (water follows) and excrete K⁺.",clue:"Made by the adrenal cortex; it trades potassium for sodium."},
+     {id:"anp",t:"ANP",r:"e2",ex:"ANP comes from stretched heart atria and makes the kidneys dump Na⁺ and water.",clue:"Released when the heart's atria are stretched by too much volume."},
+     {id:"adh",t:"ADH",r:"e3",ex:"ADH from the posterior pituitary puts aquaporins in the collecting ducts so water is kept.",clue:"Its name means 'against making urine'."},
+     {id:"pth",t:"PTH",r:"e4",ex:"PTH raises blood Ca²⁺ (bone, kidney, calcitriol) and makes the kidneys excrete phosphate.",clue:"Made by four tiny glands behind the thyroid when calcium is low."},
+     {id:"ctriol",t:"Calcitriol",r:"e5",ex:"Calcitriol (active vitamin D, activated in the kidney) helps the small intestine absorb Ca²⁺.",clue:"It is the active form of vitamin D."},
+     {id:"ctonin",t:"Calcitonin",r:"e6",ex:"Calcitonin from the thyroid lowers blood Ca²⁺ by moving it into bone.",clue:"Made by thyroid C cells when calcium is high."}],
+  R:[{id:"e1",t:"Keeps Na⁺, excretes K⁺ (kidney)"},{id:"e2",t:"Makes the kidneys excrete Na⁺ and water"},{id:"e3",t:"Adds aquaporins so the kidneys keep water"},{id:"e4",t:"Raises blood Ca²⁺; kidneys excrete phosphate"},{id:"e5",t:"Increases Ca²⁺ absorption from the intestine"},{id:"e6",t:"Lowers blood Ca²⁺ (into bone)"}]},
+ {n:"When it goes wrong",lh:"Imbalance",rh:"What you might see",goal:"Tap an imbalance, then tap the sign or cause that fits it. Each answer is used once.",
+  L:[{id:"hyperk",t:"Hyperkalemia (high K⁺)",r:"s1",ex:"High K⁺ disturbs heart cells: peaked T waves and dangerous arrhythmias, even cardiac arrest.",clue:"This ion sets the resting potential of heart cells."},
+     {id:"hypok",t:"Hypokalemia (low K⁺)",r:"s2",ex:"Low K⁺ causes muscle weakness and flat T waves; arrhythmias can follow.",clue:"Low levels make muscles feel weak; diuretics are a common cause."},
+     {id:"hypoca",t:"Hypocalcemia (low Ca²⁺)",r:"s3",ex:"Low Ca²⁺ makes nerves fire too easily, causing tetany: muscle spasms and tingling.",clue:"Low levels make nerves too excitable."},
+     {id:"hyperca",t:"Hypercalcemia (high Ca²⁺)",r:"s4",ex:"High Ca²⁺ causes muscle weakness and can form kidney stones.",clue:"Too much of the bone mineral in the blood can crystallize in the urine."},
+     {id:"hypona",t:"Hyponatremia (low Na⁺)",r:"s5",ex:"Low Na⁺ dilutes the ECF, water moves into brain cells, and confusion or seizures can follow.",clue:"Diluted ECF: which way does water move?"},
+     {id:"hyperna",t:"Hypernatremia (high Na⁺)",r:"s6",ex:"High Na⁺ concentrates the ECF; water leaves cells and the thirst center turns on.",clue:"Concentrated ECF: think osmoreceptors."},
+     {id:"hypocl",t:"Hypochloremia (low Cl⁻)",r:"s7",ex:"Heavy vomiting loses HCl, so Cl⁻ falls (often with metabolic alkalosis).",clue:"Where does the body keep a lot of hydrochloric acid?"}],
+  R:[{id:"s1",t:"Arrhythmia with tall, peaked T waves"},{id:"s2",t:"Muscle weakness with flat T waves"},{id:"s3",t:"Tetany: muscle spasms, tingling"},{id:"s4",t:"Kidney stones, muscle weakness"},{id:"s5",t:"Confusion from swollen brain cells"},{id:"s6",t:"Intense thirst; cells shrink"},{id:"s7",t:"Often follows heavy vomiting"}]}];
+let emR=0,emDone=new Set(),emSelL=null,emSelR=null,emMis=0,emLast=null,emT0=0,emOrderR=[],emOrderL=[];
+const emBest=store.get("fab-em-best")||{};
+function emLoad(){const R=ROUNDS[emR];emDone=new Set();emSelL=null;emSelR=null;emMis=0;emLast=null;emOrderL=shuffle(R.L.map(x=>x.id));emOrderR=emR===0?R.R.map(x=>x.id):shuffle(R.R.map(x=>x.id));
+  $("#emN").textContent="Round "+(emR+1)+" of 3";$("#emT").textContent=R.n;$("#emGoal").textContent=R.goal;$("#emLH").textContent=R.lh;$("#emRH").textContent=R.rh;setMsg("#emMsg","");emRender();emRounds()}
+function emRounds(){const el=$("#emRounds");el.innerHTML="";ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===emR);b.innerHTML=(i+1)+". "+r.n+(emBest[i]?`<span class="ok">${"★".repeat(emBest[i])}</span>`:"");b.onclick=()=>{emR=i;emLoad()};el.appendChild(b)})}
+function emRender(){const R=ROUNDS[emR];
+  $("#emLeft").innerHTML=emOrderL.map(id=>{const l=R.L.find(x=>x.id===id);const d=emDone.has(id);return `<button type="button" class="mbtn${d?" done":""}" data-l="${id}" aria-pressed="${emSelL===id}" ${d?'aria-disabled="true"':""}>${esc(l.t)}${d?`<span class="tag">✓ ${emR===0?l.r:"matched"}</span>`:""}</button>`}).join("");
+  $("#emRight").innerHTML=emOrderR.map(id=>{const r=R.R.find(x=>x.id===id);const used=emR>0&&R.L.some(l=>l.r===id&&emDone.has(l.id));return `<button type="button" class="mbtn${used?" done":""}" data-r="${id}" aria-pressed="${emSelR===id}" ${used?'aria-disabled="true"':""}>${esc(r.t)}${used?'<span class="tag">✓</span>':""}</button>`}).join("");
+  $("#emLeft").querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{if(emDone.has(b.dataset.l))return;emSelL=b.dataset.l;emTry()});
+  $("#emRight").querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{if(b.classList.contains("done"))return;emSelR=b.dataset.r;emTry()});
+  $("#emScore").textContent=`Matched ${emDone.size} of ${R.L.length} · mistakes so far: ${emMis}`;}
+function emTry(){const R=ROUNDS[emR];if(!emSelL||!emSelR){emRender();if(emSelR&&!emSelL)setMsg("#emMsg","Now pick a "+R.lh.toLowerCase()+" on the left to go with it.","info");else if(emSelL)setMsg("#emMsg","Now pick its match on the right.","info");return}
+  const l=R.L.find(x=>x.id===emSelL),r=R.R.find(x=>x.id===emSelR);
+  if(l.r===r.id){emDone.add(l.id);emLast=l.id;emT0=performance.now();setMsg("#emMsg","✓ "+esc(l.ex),"good");emSelL=null;emSelR=null;
+    if(emDone.size===R.L.length){const st=emMis<=1?3:emMis<=3?2:1;if(!emBest[emR]||st>emBest[emR]){emBest[emR]=st;store.set("fab-em-best",emBest)}
+      setMsg("#emMsg",`✓ ${esc(l.ex)}<br><span class="stars">${starStr(st)}</span> Round complete with ${emMis} mistake${emMis===1?"":"s"}.`+(emR<2?" Try the next round above.":" All three rounds done."),"good");emRounds()}}
+  else{emMis++;setMsg("#emMsg",`Not quite. “${esc(r.t)}” does not fit ${esc(l.t)}. Clue: ${esc(l.clue)}`,"warn");const lb=$(`[data-l="${l.id}"]`);emSelR=null;emRender();const b2=$(`[data-l="${l.id}"]`);if(b2){b2.classList.add("no");setTimeout(()=>b2.classList.remove("no"),700)}return}
+  emRender()}
+$("#emHint").onclick=()=>{const R=ROUNDS[emR];const l=R.L.find(x=>x.id===(emSelL||emOrderL.find(i=>!emDone.has(i))));if(!l)return;emSelL=l.id;emRender();
+  setMsg("#emMsg","<b>Hint.</b> "+esc(l.t)+": "+esc(l.clue),"info");const b=$(`[data-r="${l.r}"]`);if(b){b.classList.add("hinted");setTimeout(()=>b.classList.remove("hinted"),2200)}};
+$("#emShow").onclick=()=>{const R=ROUNDS[emR];R.L.forEach(l=>emDone.add(l.id));emMis=Math.max(emMis,4);emLast=R.L[R.L.length-1].id;emT0=performance.now();emSelL=emSelR=null;emRender();
+  setMsg("#emMsg","Here are all the answers. Read each green tag, then press <b>Start round over</b> to try it yourself.","info")};
+$("#emAgain").onclick=()=>emLoad();
+function emPicL(){return ROUNDS[emR].L.find(x=>x.id===emLast)}
+function handIcon(x,y,s,spasm,T){ctx.save();ctx.translate(x,y);const tr=spasm?Math.sin(T*30)*1.2:0;ctx.translate(tr,0);
+  ctx.fillStyle=C.skin;ctx.strokeStyle=hexA(C.ink,.5);ctx.lineWidth=1.5;rr(-s*.5,-s*.1,s,s*.9,s*.25);ctx.fill();ctx.stroke();rr(-s*.35,s*.75,s*.7,s*.6,s*.1);ctx.fill();ctx.stroke();
+  for(let i=0;i<4;i++){const fx=-s*.38+i*s*.25;ctx.save();ctx.translate(fx+s*.05,-s*.08);ctx.rotate(spasm?(1.5-i)*.22:0);ctx.scale(1,spasm?.8:1);rr(-s*.09,-s*.75,s*.18,s*.75,s*.09);ctx.fill();ctx.stroke();ctx.restore()}
+  ctx.save();ctx.translate(-s*.5,s*.35);ctx.rotate(spasm?.4:-.7);rr(-s*.1,-s*.55,s*.2,s*.55,s*.1);ctx.fill();ctx.stroke();ctx.restore();ctx.restore()}
+function drawMatch(now){use(S4);const T=now/1000;const age=(now-emT0)/1000;ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,360);const R=ROUNDS[emR];
+  if(emR===0){// cell with placed ions
+    ctx.fillStyle=C.isf;ctx.fillRect(0,0,800,360);cellBlob(400,190,140,{nuc:false,lw:3});label(400,190+118,"ICF (inside the cell)",{align:"center",weight:700});label(110,40,"ECF (outside)",{align:"center",weight:700});
+    R.L.forEach((l,i)=>{if(!emDone.has(l.id))return;const inside=l.r==="ICF";const n=5;for(let k=0;k<n;k++){const a=(k/n+i*.13)*TAU+T*.15*(inside?1:-1);const d=inside?40+((i*23+k*17)%80):165+((i*19+k*13)%35);
+      ion(400+Math.cos(a)*d*(inside?1:1.7),190+Math.sin(a)*d*(inside?1:.88),l.id,7,1,["na","k","cl","mg"].includes(l.id))}});
+    const l=emPicL();if(l){const hl=Math.max(0,1-age/2.5);label(400,24,l.t+" → "+(l.r==="ICF"?"inside cells":"outside cells"),{align:"center",weight:700,size:14,border:C.good});if(hl>0)glow(400,190,200,C.glow,hl*.3)}
+    else label(400,24,"Placed ions will appear here",{align:"center",size:13,color:C["ink-soft"]});
+    return}
+  const l=emPicL();
+  if(!l){label(400,180,emR===1?"Match a hormone to see it in action":"Match an imbalance to see what it looks like",{align:"center",size:14,color:C["ink-soft"]});
+    // gallery of icons
+    if(emR===1){kidney(250,260,34,0);heart(400,260,32,Math.max(0,Math.sin(T*6)));brainHead(550,250,38,{})}
+    return}
+  label(400,24,l.t,{align:"center",weight:700,size:15,border:C.good});
+  if(emR===1){const src={aldo:"adrenal",anp:"heart",adh:"pit",pth:"parathyroid",ctriol:"kidney",ctonin:"thyroid"}[l.id];const tgt={aldo:"kidney",anp:"kidney",adh:"kidney",pth:"bone",ctriol:"gut",ctonin:"bone"}[l.id];
+    const S=[170,190],Tg=[630,190];
+    const drawOrg=(kind,x,y)=>{if(kind==="kidney"){kidney(x,y,56,0)}else if(kind==="adrenal"){kidney(x,y+20,48,0);ctx.fillStyle=C.aldo;ctx.beginPath();ctx.moveTo(x-30,y-26);ctx.quadraticCurveTo(x,y-70,x+30,y-26);ctx.closePath();ctx.fill();txt(x,y-80,"adrenal cortex",{size:11.5,align:"center",weight:600})}
+      else if(kind==="heart"){heart(x,y,56,Math.max(0,Math.sin(T*6)))}else if(kind==="pit"){brainHead(x,y-10,62,{hglow:.4})}
+      else if(kind==="parathyroid"||kind==="thyroid"){ctx.fillStyle=mix(C.anp,C.panel,.35);ctx.beginPath();ctx.ellipse(x-34,y,32,48,.2,0,TAU);ctx.ellipse(x+34,y,32,48,-.2,0,TAU);ctx.fill();ctx.fillRect(x-24,y+6,48,18);
+        if(kind==="parathyroid")[[-46,-24],[-42,26],[46,-24],[42,26]].forEach(([dx,dy])=>{glow(x+dx,y+dy,18,C.glow,.4);circ(x+dx,y+dy,9,C.pth,hexA(C.ink,.4),1)});else glow(x,y,60,C.glow,.25)}
+      else if(kind==="bone"){ctx.fillStyle=C.bone;rr(x-90,y-20,180,40,20);ctx.fill();[[-90,-14],[-90,14],[90,-14],[90,14]].forEach(([dx,dy])=>circ(x+dx,y+dy,24,C.bone));ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=2;rr(x-90,y-20,180,40,20);ctx.stroke()}
+      else if(kind==="gut"){ctx.strokeStyle=C.gut;ctx.lineWidth=18;ctx.lineCap="round";ctx.beginPath();for(let i=0;i<=40;i++){const xx=x-80+i*4,yy=y+20*Math.sin(i*.45);i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.stroke();ctx.lineCap="butt"}};
+    drawOrg(src,S[0],S[1]);drawOrg(tgt,Tg[0],Tg[1]);
+    const col={aldo:C.aldo,anp:C.anp,adh:C.adh,pth:C.pth,ctriol:C.glow,ctonin:C.ctn}[l.id];
+    arrow(S[0]+90,S[1],Tg[0]-100,Tg[1],hexA(col,.6),3,[6,5]);for(let k=0;k<5;k++){const q=P(T*.5+k/5,1);circ(lerp(S[0]+90,Tg[0]-100,q),S[1]+6*Math.sin(q*9),6,col,hexA(C.ink,.3),1)}
+    txt(S[0],300,{aldo:"Adrenal cortex",anp:"Heart (atria)",adh:"Posterior pituitary",pth:"Parathyroid glands",ctriol:"Kidney (activates vitamin D)",ctonin:"Thyroid C cells"}[l.id],{size:12.5,weight:700,align:"center"});
+    txt(Tg[0],300,{kidney:"Kidney tubules",bone:"Bone",gut:"Small intestine"}[tgt],{size:12.5,weight:700,align:"center"});
+    // effect particles at target
+    const eff={aldo:[["na",1],["k",-1]],anp:[["na",-1],["water",-1]],adh:[["water",1]],pth:[["ca",1],["phos",-1]],ctriol:[["ca",1]],ctonin:[["ca",-1]]}[l.id];
+    eff.forEach(([kind,dir],j)=>{for(let k=0;k<3;k++){const q=P(T*.6+k/3+j*.17,1);ion(Tg[0]-30+j*60+k*8,dir>0?lerp(Tg[1]+10,Tg[1]-90,q):lerp(Tg[1]-10,Tg[1]+80,q),kind,6,1-q*.6,kind!=="phos")}});
+    wrapText(R.R.find(x=>x.id===l.r).t,400,335,600,16,{size:13,align:"center",weight:600});
+    return}
+  // round 3 pictures
+  const id=l.id;
+  if(id==="hyperk"||id==="hypok"){const mx=150,my=60,mw=500,mh=200;ctx.fillStyle="#0E1A14";rr(mx,my,mw,mh,10);ctx.fill();
+    for(let x=mx;x<mx+mw;x+=20)line(x,my,x,my+mh,"rgba(80,200,120,.12)",1);for(let y=my;y<my+mh;y+=20)line(mx,y,mx+mw,y,"rgba(80,200,120,.12)",1);
+    ctx.beginPath();const sweep=(T*120)%mw;const mode=id==="hyperk"?1:2;
+    for(let x=0;x<mw;x+=2){const tm=(x-sweep+mw*4)/120;let ph;if(mode===1){const irr=1+.25*Math.sin(Math.floor(tm/1.1)*2.7);ph=((tm/(1.1*irr))%1+1)%1}else ph=((tm)%1+1)%1;const y=my+mh*.62-ecgY(ph,mode)*mh*.5;x?ctx.lineTo(mx+x,y):ctx.moveTo(mx+x,y)}
+    ctx.strokeStyle="#5EE08A";ctx.lineWidth=2.2;ctx.stroke();ctx.fillStyle="#0E1A14";ctx.fillRect(mx+sweep,my+2,14,mh-4);txt(mx+12,my+16,"ECG (cartoon)",{size:11,mono:true,color:"#5EE08A"});
+    label(400,290,id==="hyperk"?"Tall, peaked T waves; irregular rhythm":"Flat T waves, extra U wave",{align:"center",weight:700,border:id==="hyperk"?C.bad:C.warn});
+    label(400,325,id==="hyperk"?"Common cause: kidney failure":"Common causes: diuretics, vomiting, diarrhea",{align:"center",size:12.5})}
+  else if(id==="hypoca"){handIcon(300,170,110,true,T);handIcon(560,170,110,false,T);label(300,320,"Low Ca²⁺: hand spasm (tetany)",{align:"center",weight:700,border:C.warn});label(560,320,"Normal hand",{align:"center",size:12.5});
+    for(let k=0;k<4;k++){const a=T*3+k*1.6;line(300+Math.cos(a)*120,170+Math.sin(a)*90,300+Math.cos(a)*132,170+Math.sin(a)*100,C.glow,2.5)}}
+  else if(id==="hyperca"){kidney(300,180,90,0);const s=8+3*Math.sin(T*2);ctx.fillStyle=C.bone;ctx.beginPath();for(let i=0;i<=10;i++){const a=i/10*TAU;const r=(i%2?s:s*1.6);ctx.lineTo(300+20+Math.cos(a)*r*1.4,190+Math.sin(a)*r*1.4)}ctx.closePath();ctx.fill();ctx.strokeStyle=C["bone-edge"];ctx.stroke();
+    label(300,64,"Kidney stone (calcium crystals)",{align:"center",weight:700,size:12.5});for(let k=0;k<8;k++)ion(520+(k%4)*45,120+Math.floor(k/4)*50+4*Math.sin(T*2+k),"ca",7);label(590,230,"Too much Ca²⁺ in blood",{align:"center",size:12.5});label(400,320,"Also: muscle weakness, because nerves fire less easily",{align:"center",weight:600,border:C.warn})}
+  else if(id==="hypona"||id==="hyperna"){const sw=id==="hypona";const p=.5+.5*Math.sin(T*1.2);brainHead(170,170,100,{});const r=sw?lerp(50,70,p):lerp(50,36,p);
+    ctx.fillStyle=C.isf;circ(520,180,130,C.isf,C.ink,2);const nNa=sw?8:30;for(let k=0;k<nNa;k++){const a=rnd(k)*TAU,d=80+rnd(k+7)*40;ion(520+Math.cos(a)*d,180+Math.sin(a)*d,"na",5)}
+    cellBlob(520,180,r,{fill:C.brain,edge:C["brain-edge"]});for(let k=0;k<4;k++){const q=P(T*.8+k/4,1);const a=k/4*TAU+.6;const d1=sw?r+30:r-6,d2=sw?r-6:r+30;drop(520+Math.cos(a)*lerp(d1,d2,q),180+Math.sin(a)*lerp(d1,d2,q),5,.9)}
+    label(520,330,sw?"Water rushes into brain cells: headache, confusion, seizures":"Water leaves cells; thirst center turns on",{align:"center",weight:700,size:12.5,border:sw?C.water:C.warn});
+    if(!sw){label(170,300,"THIRST",{align:"center",weight:700,border:C.act2})}}
+  else if(id==="hypocl"){ctx.fillStyle=C.gut;ctx.beginPath();ctx.ellipse(330,190,110,80,-.4,0,TAU);ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=2;ctx.stroke();
+    txt(330,190,"Stomach",{size:13,weight:700,align:"center"});for(let k=0;k<6;k++){const q=P(T*.5+k/6,1);const x=lerp(300,560,q),y=lerp(140,60+30*Math.sin(q*5),q);ion(x,y,k%2?"hplus":"cl",7,1-q*.5,k%2===0)}
+    label(600,80,"HCl lost by vomiting",{align:"center",weight:700});label(400,320,"Cl⁻ falls and HCO₃⁻ rises: metabolic alkalosis often comes with it",{align:"center",weight:700,size:12.5,border:C.warn})}
+}
+
+/* ---------------- tabs / theme / loop ---------------- */
+let curTab="abg";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;
+  ["abg","sim","fluid","match"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll()});
+function fitAll(){[S1,S2,S2c,S3,S3c,S4].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+let last=performance.now();let statusAcc=0;
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  try{if(curTab==="abg")drawAbg(now);
+    else if(curTab==="sim"){if(!window.__manual){simReal+=dt;simTick(dt)}drawSim(now,dt);drawSimChart();statusAcc+=dt;if(statusAcc>.15){statusAcc=0;simStatus()}}
+    else if(curTab==="fluid"){if(!window.__manual)flStep(dt);drawFluid(now);drawFluidChart();flReadouts()}
+    else drawMatch(now)}catch(err){console.error(err)}
+  requestAnimationFrame(frame)}
+/* test hooks */
+window.__fab={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),cases:()=>CASES.map(k=>({ph:k.ph,p:k.p,b:k.b,c:k.c,dx:dxName(k),d:CAUSES[k.c].d})),
+  abgGo:i=>{abgI=i;abgLoad()},
+  sim:(sec,ev)=>{if(ev)ev.forEach(e=>sim.ev.add(e));markChange("test");for(let i=0;i<sec*20;i++){simReal+=.05;simTick(.05)}simStatus();return {P:sim.P,B:sim.B,pH:pHof(sim.B,sim.P),h:sim.h,rate:sim.rate}},
+  simReset:()=>simReset(),
+  fl:(id,sec)=>{flRun(itemOf(id));for(let i=0;i<sec*20;i++)flStep(.05);flReadouts();return {Vc:fl.Vc,Vi:fl.Vi,Vp:fl.Vp,G:fl.G}},
+  em:r=>{emR=r;emLoad()},emShow:()=>$("#emShow").click(),emMatch:(l,r)=>{emSelL=l;emSelR=r;emTry()}};
+readColors();abgStart("practice");simReset();renderEvBtns();renderChal();renderFlBtns();emLoad();fitAll();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

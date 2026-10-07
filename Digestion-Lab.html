@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Digestion Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
+  /* digestive palette */
+  --ecf:#EEF2F4;--skin:#F1D9C4;--skin-edge:#B98E6E;
+  --gut:#F0C9C2;--gut-edge:#B5776A;--lumen:#FBF3EC;--mucosa:#E9A8A0;--submucosa:#F3DCC9;--circ:#C4644F;--longi:#DE9A86;--serosa:#E6D8C3;--perit:#9C8466;
+  --liver:#A0473E;--liver-edge:#6E2A24;--gb:#5E9A48;--bile:#A6A51C;--panc:#ECC092;--panc-edge:#B98652;
+  --saliva:#7DB8E0;--acid:#D93A34;--base:#1E9C96;--water:#3A86D4;--mucus:#BFD9E8;
+  --carb:#D9A21B;--carb-edge:#8F6A0E;--gal:#D06A9C;--fru:#DF6A3F;--amino:#7B5CC9;--amino2:#2F8A8A;--fat:#EE9A3A;--fat-edge:#B4632A;--micelle:#A6A51C;--chylo:#F6E2B3;
+  --enzc:#1B6E88;--enzp:#8E3B8E;--enzl:#B4632A;--enzb:#2F8A57;
+  --blood:#C2453D;--vein:#4A5FA8;--lymph:#8FC48C;--lymph-edge:#4F8A4C;--nerve:#C9A227;--bact:#4F8F6F;
+  --food:#C98B4E;--chyme:#D8B98A;--stool:#7A5230;--tooth:#FBF8F0;--tongue:#E58C8C;--bone:#E9E1CC;
+  --gastrin:#E08A1C;--secretin:#3A6FD8;--cck:#9A4FC0;--vitk:#2F8A57;--glow:#F2B33B;--gold:#C9A227;--gold-wash:#F6EFD3;--stone:#8A7A5C;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#141E24;--skin:#4A3A2E;--skin-edge:#B48D6C;
+  --gut:#4A2C2A;--gut-edge:#C07F72;--lumen:#221A17;--mucosa:#7A3A35;--submucosa:#4A3A2E;--circ:#B65E4B;--longi:#8E4A3D;--serosa:#4F4536;--perit:#B39773;
+  --liver:#B85A50;--liver-edge:#E39A8E;--gb:#7FB35E;--bile:#D5D44A;--panc:#8A6440;--panc-edge:#D1A06E;
+  --saliva:#5AA9E6;--acid:#F0605A;--base:#4FD0C8;--water:#5AA9E6;--mucus:#2F4C5E;
+  --carb:#F2C14B;--carb-edge:#C9A02E;--gal:#F08FC0;--fru:#F08060;--amino:#A98BEF;--amino2:#4FC4C4;--fat:#F2A94B;--fat-edge:#E39A5B;--micelle:#D5D44A;--chylo:#6B5530;
+  --enzc:#4FB3D1;--enzp:#D186C0;--enzl:#E39A5B;--enzb:#4FBF7F;
+  --blood:#E0675E;--vein:#7F9CF0;--lymph:#5E8F5B;--lymph-edge:#9CD199;--nerve:#E0BE48;--bact:#6BC293;
+  --food:#B07A48;--chyme:#6B5A3E;--stool:#A87A4E;--tooth:#D9D4C6;--tongue:#B86A6A;--bone:#4A4536;
+  --gastrin:#F2A93B;--secretin:#7F9CF0;--cck:#C08BEF;--vitk:#4FBF7F;--glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;--stone:#B8A888;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#141E24;--skin:#4A3A2E;--skin-edge:#B48D6C;
+  --gut:#4A2C2A;--gut-edge:#C07F72;--lumen:#221A17;--mucosa:#7A3A35;--submucosa:#4A3A2E;--circ:#B65E4B;--longi:#8E4A3D;--serosa:#4F4536;--perit:#B39773;
+  --liver:#B85A50;--liver-edge:#E39A8E;--gb:#7FB35E;--bile:#D5D44A;--panc:#8A6440;--panc-edge:#D1A06E;
+  --saliva:#5AA9E6;--acid:#F0605A;--base:#4FD0C8;--water:#5AA9E6;--mucus:#2F4C5E;
+  --carb:#F2C14B;--carb-edge:#C9A02E;--gal:#F08FC0;--fru:#F08060;--amino:#A98BEF;--amino2:#4FC4C4;--fat:#F2A94B;--fat-edge:#E39A5B;--micelle:#D5D44A;--chylo:#6B5530;
+  --enzc:#4FB3D1;--enzp:#D186C0;--enzl:#E39A5B;--enzb:#4FBF7F;
+  --blood:#E0675E;--vein:#7F9CF0;--lymph:#5E8F5B;--lymph-edge:#9CD199;--nerve:#E0BE48;--bact:#6BC293;
+  --food:#B07A48;--chyme:#6B5A3E;--stool:#A87A4E;--tooth:#D9D4C6;--tongue:#B86A6A;--bone:#4A4536;
+  --gastrin:#F2A93B;--secretin:#7F9CF0;--cck:#C08BEF;--vitk:#4FBF7F;--glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;--stone:#B8A888;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink);font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.legend i.ln{width:20px;height:0;border-radius:0;border-top:2.5px solid}
+.legend i.dash{width:20px;height:0;border-radius:0;border-top:2.5px dashed}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px;letter-spacing:0}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.together{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:10px 4px 2px;font-size:14px;border-top:1px solid var(--rule-soft);margin-top:8px}
+.together .tl{color:var(--ink-soft);font-size:13.5px}
+.tchk{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--rule);border-radius:99px;padding:3px 10px 3px 6px;background:var(--panel-2);cursor:pointer;font-family:var(--mono);font-size:13.5px}
+.tchk input{accent-color:var(--accent);width:16px;height:16px;margin:0}
+.tchk.E{border-color:var(--exc)}.tchk.I{border-color:var(--inh)}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.budget{font-family:var(--mono);font-size:14px;margin:6px 0 10px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.msg .stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.totstars{font-family:var(--mono);font-size:14px}
+.totstars b{color:var(--gold)}
+.terms{margin:10px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(96px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+/* scenarios */
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 6px}
+.sc-desc{margin:0 0 8px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt .mk{font-family:var(--mono);font-weight:600;margin-right:6px}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.score{font-family:var(--mono);font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.tracecap{font-size:13.5px;color:var(--ink-soft);margin:6px 2px 0}
+/* channel match */
+.qbox{font-size:17px;font-weight:600;margin:4px 0 10px;min-height:52px}
+.qprog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.qprog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.timer{font-family:var(--mono);font-size:18px;font-weight:600}
+.stchips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0;font-family:var(--mono);font-size:13px}
+.stchips span{border:1px solid var(--rule);border-radius:99px;padding:2px 9px;background:var(--panel-2)}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ctl h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.ctl h3:first-child{margin-top:0}
+.tog{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1.5px solid var(--rule);border-radius:var(--r);background:var(--panel-2);margin:0 0 6px;cursor:pointer;font-size:14.5px}
+.tog input{accent-color:var(--accent);width:18px;height:18px;margin:0;flex:0 0 auto}
+.tog.on{border-color:var(--accent);background:var(--accent-wash)}
+.tog small{display:block;color:var(--ink-soft);font-size:12.5px;line-height:1.3}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:5px 11px;cursor:pointer;font-size:13.5px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
+.readouts{width:100%;border-collapse:collapse;font-size:14px}
+.readouts td{padding:5px 4px;border-top:1px solid var(--rule-soft)}
+.readouts td:last-child{text-align:right;font-family:var(--mono);font-weight:600;white-space:nowrap}
+.now{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:9px 11px;font-size:14px;min-height:62px}
+.chal{list-style:none;padding:0;margin:0}
+.chal li{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.chal li .bx{flex:0 0 auto;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:12px;font-family:var(--mono)}
+.chal li.done .bx{background:var(--good);border-color:var(--good);color:#fff}
+.chal li.done span.t{color:var(--ink-soft)}
+.chart-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--panel);margin-top:8px}
+.clock{font-family:var(--mono);font-size:13.5px;color:var(--ink)}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+.big{font-size:15px;padding:10px 14px}
+.qcard{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 4px}
+.qstep{font-size:14.5px;margin:0 0 8px;padding:8px 10px;border-radius:var(--r);background:var(--accent-wash);border-left:4px solid var(--accent)}
+.svg-holder{width:100%;border-radius:4px;border:1px solid var(--rule-soft);background:var(--ecf);overflow:hidden}
+.svg-holder svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.hs{cursor:pointer}
+.hs:focus{outline:none}
+.hs:focus .ring,.hs:hover .ring{stroke:var(--accent);stroke-width:3;stroke-dasharray:none;opacity:1}
+.ring{fill:transparent;stroke:transparent;stroke-width:2}
+.hs.ok .ring{stroke:var(--good);stroke-width:3.5;opacity:1}
+.hs.bad .ring{stroke:var(--warn);stroke-width:3.5;opacity:1}
+.hs.hint .ring{stroke:var(--gold);stroke-width:4;opacity:1;animation:pulse 1s infinite}
+@keyframes pulse{50%{stroke-width:8}}
+.svglab{font-family:var(--sans);font-size:11px;fill:var(--ink-soft);pointer-events:none}
+.namelist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.namelist button{border:1px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:4px 10px;font-size:13px;cursor:pointer}
+.namelist button:hover{border-color:var(--accent)}
+.namelist button.ok{border-color:var(--good);background:var(--good-wash)}
+.namelist button.bad{border-color:var(--warn);background:var(--warn-wash)}
+details.alt summary{cursor:pointer;font-size:13.5px;color:var(--ink-soft);margin-top:8px}
+.legend i.tri{clip-path:polygon(50% 0,100% 100%,0 100%);border-radius:0;width:12px;height:11px}
+.legend i.hex{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0;width:13px;height:12px}
+.legend i.sq{border-radius:2px}
+.legend i.dia{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+/* digestion lab extras */
+.legend i.hex{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0;width:13px;height:12px}
+.legend i.pent{clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%);border-radius:0;width:13px;height:12px}
+.legend i.bar{width:18px;height:11px;border-radius:2px}
+.meals{display:flex;flex-wrap:wrap;gap:6px}
+.meals button{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:var(--r);padding:6px 10px;cursor:pointer;font-size:13.5px;text-align:left;line-height:1.25}
+.meals button small{display:block;color:var(--ink-soft);font-size:11.5px}
+.meals button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash)}
+.meals button .ok{color:var(--gold);margin-left:4px}
+.stn{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0 10px}
+.stn span{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:99px;border:1px solid var(--rule);background:var(--panel-2);color:var(--ink-soft)}
+.stn span.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.stn span.done{background:var(--good-wash);border-color:var(--good);color:var(--good)}
+.picks{display:grid;grid-template-columns:1fr;gap:6px;margin:6px 0}
+.pick{display:flex;align-items:flex-start;gap:8px;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:7px 10px;cursor:pointer;font-size:14px;line-height:1.3}
+.pick .bx{flex:0 0 auto;width:18px;height:18px;border-radius:4px;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:12px;font-family:var(--mono);margin-top:1px}
+.pick[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash)}
+.pick[aria-pressed="true"] .bx{background:var(--accent);border-color:var(--accent);color:#fff}
+.pick.ok{border-color:var(--good);background:var(--good-wash)}
+.pick.ok .bx{background:var(--good);border-color:var(--good);color:#fff}
+.pick.bad{border-color:var(--warn);background:var(--warn-wash)}
+.pick.miss{border-style:dashed;border-color:var(--gold)}
+.pick small{display:block;font-size:12px;color:var(--ink-soft);margin-top:2px}
+.fbl{list-style:none;padding:0;margin:8px 0 0;font-size:13.5px}
+.fbl li{padding:5px 8px;border-radius:4px;margin-bottom:4px}
+.fbl li.g{background:var(--good-wash)}
+.fbl li.w{background:var(--warn-wash)}
+.fbl li.m{background:var(--gold-wash)}
+/* matcher */
+.mtable{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:14px}
+.mtable th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;font-weight:500;padding:0 4px}
+.mtable td{padding:0 3px;vertical-align:middle}
+.mtable td.en{font-weight:600;padding-right:6px}
+.mtable td.en small{display:block;font-weight:400;color:var(--ink-soft);font-size:12px}
+.slot{width:100%;min-height:44px;border:1.5px dashed var(--rule);border-radius:var(--r);background:var(--panel-2);cursor:pointer;font-size:13px;padding:4px 6px;text-align:center;line-height:1.2}
+.slot.sel{border-color:var(--accent);border-style:solid;background:var(--accent-wash)}
+.slot.filled{border-style:solid;background:var(--panel)}
+.slot.ok{border-color:var(--good);background:var(--good-wash)}
+.slot.bad{border-color:var(--warn);background:var(--warn-wash)}
+.slot.hint{border-color:var(--gold);border-style:solid;animation:pulse2 1s infinite}
+@keyframes pulse2{50%{box-shadow:0 0 0 4px var(--gold-wash)}}
+.slot.over{border-color:var(--accent);border-style:solid}
+.bank h4{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin:10px 0 6px;font-weight:500}
+.bank .cl{display:flex;flex-wrap:wrap;gap:6px}
+.chipb{border:1.5px solid var(--rule);background:var(--panel);border-radius:99px;padding:6px 11px;cursor:grab;font-size:13px;touch-action:none;user-select:none;-webkit-user-select:none}
+.chipb:hover{border-color:var(--accent)}
+.chipb[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.ghost{position:fixed;z-index:50;pointer-events:none;border:1.5px solid var(--accent);background:var(--accent-wash);border-radius:99px;padding:6px 11px;font-size:13px;box-shadow:var(--shadow);transform:translate(-50%,-50%)}
+.rxn{display:block;width:100%;height:auto}
+.mtable tr.rowok td.en{color:var(--good)}
+@media (max-width:640px){.mtable td.en{font-size:13px}.slot{font-size:12px;min-height:40px}}
+.wide{overflow-x:auto}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Digestive System &middot; USC Upstate</div>
+    <h1>Digestion Lab</h1>
+    <p class="sub">Send a meal through the tract, match enzymes, run the gut hormones, and solve clinical cases. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist" aria-label="Lab parts">
+    <button class="tab" role="tab" aria-selected="true" data-tab="meal" id="tabbtn-meal" aria-controls="tab-meal" type="button">Part 1 &middot; Meal Journey</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="match" id="tabbtn-match" aria-controls="tab-match" type="button">Part 2 &middot; Enzyme Matcher</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="horm" id="tabbtn-horm" aria-controls="tab-horm" type="button">Part 3 &middot; Hormone Control</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="break" id="tabbtn-break" aria-controls="tab-break" type="button">Part 4 &middot; What breaks if&hellip;?</button>
+  </div>
+
+  <!-- PART 1 -->
+  <section id="tab-meal" role="tabpanel" aria-labelledby="tabbtn-meal">
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvMeal" role="img" aria-label="Meal journey animation"></canvas></div>
+        <div class="stagebar">
+          <button class="tbtn" id="mlReplay" type="button">Replay this station</button>
+          <span class="caption" id="mlCap"></span>
+        </div>
+        <div class="legend" id="mlLegend"></div>
+        <div class="chart-holder"><canvas id="cvMealChart" role="img" aria-label="Live nutrient breakdown chart"></canvas></div>
+        <p class="small" style="margin:6px 2px 0">Bars show how much of each nutrient is still intact food, partly digested, ready to absorb (single units), or already absorbed. Amounts are simplified for teaching.</p>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <h3 style="margin-top:0">1. Choose a meal</h3>
+        <div class="meals" id="mlMeals"></div>
+        <div class="stn" id="mlStations" aria-label="Stations"></div>
+        <div class="lvl-n" id="mlN"></div>
+        <p class="lvl-t" id="mlT"></p>
+        <p class="small" id="mlD" style="margin:0 0 6px"></p>
+        <div class="picks" id="mlPicks"></div>
+        <div class="bar">
+          <button class="btn" id="mlApply" type="button">Apply and check</button>
+          <button class="tbtn" id="mlHint" type="button">Hint</button>
+          <button class="tbtn" id="mlShow" type="button">Show answer</button>
+          <button class="btn" id="mlNext" type="button" hidden>Next station &rarr;</button>
+        </div>
+        <div class="msg" id="mlMsg" role="status"></div>
+        <ul class="fbl" id="mlFb"></ul>
+        <p class="calm">Pick everything that acts on this meal at this station, then press Apply. Wrong picks are explained, and you can change them.</p>
+        <p class="totstars" id="mlTot"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section id="tab-match" role="tabpanel" aria-labelledby="tabbtn-match" hidden>
+    <div class="rounds" id="mxRounds" aria-label="Rounds"></div>
+    <div class="grid">
+      <div class="card">
+        <div class="wide"><table class="mtable" id="mxTable"><thead><tr><th>Enzyme</th><th>Source</th><th>Substrate</th><th>Product</th></tr></thead><tbody></tbody></table></div>
+        <div class="bank" id="mxBank"></div>
+        <div class="bar" style="margin-top:12px">
+          <button class="btn" id="mxCheck" type="button">Check</button>
+          <button class="tbtn" id="mxHint" type="button">Hint</button>
+          <button class="tbtn" id="mxShow" type="button">Show answer</button>
+          <button class="tbtn" id="mxClear" type="button">Clear</button>
+          <label class="mode"><input type="checkbox" id="mxTimed"> Timed (off = relaxed)</label>
+          <span class="timer" id="mxTimer" hidden>0:00</span>
+        </div>
+        <div class="msg" id="mxMsg" role="status"></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <h3 style="margin-top:0">Where it comes from, what it does</h3>
+        <div class="svg-holder" id="mxSvg"></div>
+        <p class="small" id="mxCap" style="margin:6px 2px 0"></p>
+        <h3>How to play</h3>
+        <ul>
+          <li>Tap a card in the bank, then tap a box in the table. Or drag the card onto the box.</li>
+          <li>Cards can be used more than once. Several enzymes share a source.</li>
+          <li>Press <b>Check</b>. Wrong boxes turn orange and explain why.</li>
+        </ul>
+        <h3>Stars</h3>
+        <p class="small" style="margin:0">3 stars: 2 or fewer wrong boxes and no answers shown. 2 stars: 5 or fewer. 1 star: finished.</p>
+        <p class="totstars" id="mxTot"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section id="tab-horm" role="tabpanel" aria-labelledby="tabbtn-horm" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvHorm" role="img" aria-label="Hormone control simulation"></canvas></div>
+        <div class="stagebar">
+          <button class="tbtn" id="hPause" type="button">Pause</button>
+          <label>Speed <input type="range" id="hSpeed" min="0.5" max="3" step="0.5" value="1"></label>
+          <span class="clock" id="hClock">0 min</span>
+        </div>
+        <div class="legend" id="hLegend"></div>
+        <div class="chart-holder"><canvas id="cvHormChart" role="img" aria-label="Live chart of gastrin, secretin, CCK and duodenal pH"></canvas></div>
+        <p class="small" style="margin:6px 2px 0">Hormone levels are relative (1.0&times; is the resting level). pH is for the duodenum. A simplified teaching model with time sped up.</p>
+      </div>
+      <aside class="card side ctl" aria-live="polite">
+        <h3>Mix the chyme</h3>
+        <div id="hSliders"></div>
+        <div class="btnrow">
+          <button class="btn big" id="hDrop" type="button">Drop chyme into the duodenum</button>
+          <button class="tbtn big" id="hEat" type="button">Eat a meal</button>
+          <button class="tbtn big" id="hSmell" type="button">Smell food</button>
+        </div>
+        <h3>Change the body</h3>
+        <label class="tog" id="tgStone"><input type="checkbox" id="hStone"><span>Gallstone in the bile duct<small>Bile cannot get from the gallbladder to the duodenum</small></span></label>
+        <div class="btnrow"><button class="tbtn" id="hReset" type="button">Reset</button></div>
+        <h3>Live readouts</h3>
+        <table class="readouts" id="hRead"></table>
+        <h3>What is happening</h3>
+        <div class="now" id="hNow"></div>
+        <h3>Challenges <span class="totstars" id="hStars"></span></h3>
+        <ul class="chal" id="hChal"></ul>
+        <div class="btnrow"><button class="tbtn" id="hHint" type="button">Hint</button><button class="tbtn" id="hShowMe" type="button">Show me</button></div>
+        <div class="msg info" id="hMsg" role="status"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 4 -->
+  <section id="tab-break" role="tabpanel" aria-labelledby="tabbtn-break" hidden>
+    <div class="card">
+      <div class="sc-top">
+        <div class="chips" id="scChips"></div>
+        <div class="score" id="scScore"></div>
+      </div>
+      <div class="grid2">
+        <div>
+          <div class="sc-n" id="scN"></div>
+          <h2 class="sc-title" id="scTitle"></h2>
+          <p class="sc-desc" id="scDesc"></p>
+          <p class="qlab" id="scQ1t"></p>
+          <div class="opts" id="scQ1"></div>
+          <p class="fb" id="scF1"></p>
+          <div id="q2wrap" hidden>
+            <p class="qlab" id="scQ2t"></p>
+            <div class="opts" id="scQ2"></div>
+            <p class="fb" id="scF2"></p>
+          </div>
+          <div class="explain" id="scExp"></div>
+          <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+        </div>
+        <div>
+          <div class="canvas-holder"><canvas id="cvSc" role="img" aria-label="Before and after picture"></canvas></div>
+          <div class="stagebar">
+            <button class="btn" id="showBtn" type="button">Show me the change</button>
+            <span class="caption" id="scCap" style="font-family:var(--sans)"></span>
+          </div>
+          <p class="tracecap" id="scNote"></p>
+        </div>
+      </div>
+      <div class="bar" style="margin-top:14px">
+        <button class="tbtn" id="scPrev" type="button">&larr; Previous</button>
+        <button class="btn" id="scNext" type="button">Next scenario &rarr;</button>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 23, The Digestive System (OpenStax Anatomy &amp; Physiology 2e) &middot; Learn the steps first in the <a href="Digestion-Walkthrough.html">Digestive System Walkthrough</a>.<br>Simplified teaching models: nutrient amounts and hormone levels are relative, time is sped up, and diagrams are simplified and not to scale. Clinical cases are simplified for learning and are not medical advice.</footer>
+
+<script>
+(function(){
+"use strict";
+let ctx=null;
+const C={};
+function readColors(){const s=getComputedStyle(document.documentElement);
+  const names=[];for(const sh of document.styleSheets){try{for(const r of sh.cssRules){if(r.selectorText===":root"&&r.style)for(const p of r.style)if(p.startsWith("--"))names.push(p.slice(2))}}catch(e){}}
+  names.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function rr(x,y,w,h,r){r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,fill,stroke,lw,rot){ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(!(r>0))return;const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function curveArrow(P,col,lw,dash,head){ctx.beginPath();ctx.moveTo(P[0][0],P[0][1]);if(P.length===3)ctx.quadraticCurveTo(P[1][0],P[1][1],P[2][0],P[2][1]);else ctx.bezierCurveTo(P[1][0],P[1][1],P[2][0],P[2][1],P[3][0],P[3][1]);
+  ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);
+  const n=P.length-1,a=Math.atan2(P[n][1]-P[n-1][1],P[n][0]-P[n-1][0]),x2=P[n][0],y2=P[n][1];
+  if(head==="bar"){ctx.lineCap="round";line(x2-9*Math.sin(a),y2+9*Math.cos(a),x2+9*Math.sin(a),y2-9*Math.cos(a),col,(lw||2)+1.5);ctx.lineCap="butt";return}
+  const h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function bez(P,t){if(P.length===3){const u=1-t;return [u*u*P[0][0]+2*u*t*P[1][0]+t*t*P[2][0],u*u*P[0][1]+2*u*t*P[1][1]+t*t*P[2][1]]}
+  const u=1-t;return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
+function chipText(x,y,txt,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+10}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function plen(P){let L=0;for(let i=0;i<P.length-1;i++)L+=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);return L}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function alongAng(P,p){const a=along(P,clamp(p-.004,0,1)),b=along(P,clamp(p+.004,0,1));return Math.atan2(b[1]-a[1],b[0]-a[0])}
+function wrapText(t,x,y,w,lh){const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function title(x,y,t,col){ctx.font=`600 11.5px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.fillText(t.toUpperCase(),x,y)}
+function panelBox(x,y,w,h,on,col){ctx.fillStyle=on?C["panel-2"]:C.panel;rr(x,y,w,h,8);ctx.fill();ctx.strokeStyle=on?(col||C.accent):C.rule;ctx.lineWidth=on?2.2:1;ctx.stroke()}
+function A(a){ctx.globalAlpha=a==null?1:clamp(a,0,1)}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function smooth(P,closed){ctx.beginPath();if(closed){const n=P.length;const m=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];let s=m(P[n-1],P[0]);ctx.moveTo(s[0],s[1]);for(let i=0;i<n;i++){const q=m(P[i],P[(i+1)%n]);ctx.quadraticCurveTo(P[i][0],P[i][1],q[0],q[1])}ctx.closePath();return}
+  ctx.moveTo(P[0][0],P[0][1]);for(let i=1;i<P.length-1;i++){const q=[(P[i][0]+P[i+1][0])/2,(P[i][1]+P[i+1][1])/2];ctx.quadraticCurveTo(P[i][0],P[i][1],q[0],q[1])}ctx.lineTo(P[P.length-1][0],P[P.length-1][1])}
+function tube(P,w,fill,edge,lw){ctx.lineCap="round";ctx.lineJoin="round";smooth(P);ctx.strokeStyle=edge;ctx.lineWidth=w+(lw||3);ctx.stroke();smooth(P);ctx.strokeStyle=fill;ctx.lineWidth=w;ctx.stroke();ctx.lineCap="butt";ctx.lineJoin="miter"}
+function leader(x1,y1,x2,y2,t,o){o=o||{};line(x1,y1,x2,y2,o.lc||C["ink-soft"],1);circ(x1,y1,2.2,o.lc||C["ink-soft"]);label(x2+(o.align==="right"?-4:4),y2,t,Object.assign({size:12},o))}
+
+/* ---------- molecule shapes (shape + colour, never colour alone) ---------- */
+function hexP(x,y,s,col,a,edge){A(a);ctx.beginPath();for(let i=0;i<6;i++){const an=i*Math.PI/3;const px=x+s*Math.cos(an),py=y+s*Math.sin(an);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=edge||"rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function pentP(x,y,s,col,a){A(a);ctx.beginPath();for(let i=0;i<5;i++){const an=-Math.PI/2+i*TAU/5;const px=x+s*1.05*Math.cos(an),py=y+s*1.05*Math.sin(an);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function sugar(k,x,y,s,a){s=s||6;if(k==="fru")pentP(x,y,s,C.fru,a);else hexP(x,y,s,k==="gal"?C.gal:C.carb,a,k==="gal"?"rgba(0,0,0,.35)":C["carb-edge"])}
+function aaP(x,y,r,i,a){A(a);circ(x,y,r||5,(i%3===1)?C.amino2:C.amino,"rgba(0,0,0,.3)",1);ctx.globalAlpha=1}
+function diamond(x,y,s,col,a){A(a);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function sq(x,y,s,col,a){A(a);rr(x-s,y-s,2*s,2*s,2);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function tri(x,y,s,col,a){A(a);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s*.95,y+s*.7);ctx.lineTo(x-s*.95,y+s*.7);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function hplus(x,y,a,r){A(a);r=r||5;circ(x,y,r,C.acid,"rgba(0,0,0,.3)",1);ctx.strokeStyle="#fff";ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x-r*.5,y);ctx.lineTo(x+r*.5,y);ctx.moveTo(x,y-r*.5);ctx.lineTo(x,y+r*.5);ctx.stroke();ctx.globalAlpha=1}
+function hco3(x,y,a,r){A(a);r=r||5;circ(x,y,r,C.base,"rgba(0,0,0,.3)",1);ctx.strokeStyle="#fff";ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x-r*.5,y);ctx.lineTo(x+r*.5,y);ctx.stroke();ctx.globalAlpha=1}
+function drop(x,y,s,col,a){A(a);s=s||5;ctx.beginPath();ctx.moveTo(x,y-s*1.5);ctx.bezierCurveTo(x+s*.9,y-s*.3,x+s,y+s*.9,x,y+s);ctx.bezierCurveTo(x-s,y+s*.9,x-s*.9,y-s*.3,x,y-s*1.5);ctx.fillStyle=col||C.water;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.25)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function fatDrop(x,y,r,a){A(a);circ(x,y,r,C.fat,C["fat-edge"],1.2);A((a==null?1:a)*.45);circ(x-r*.35,y-r*.35,r*.3,"#fff");ctx.globalAlpha=1}
+function zig(x,y,len,ang,col,lw){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.beginPath();ctx.moveTo(0,0);const n=6;for(let i=1;i<=n;i++)ctx.lineTo(len*i/n,(i%2?-1:1)*2.6);ctx.strokeStyle=col||C["fat-edge"];ctx.lineWidth=lw||2;ctx.lineJoin="round";ctx.stroke();ctx.restore()}
+function triglyceride(x,y,s,a,tails){A(a);s=s||1;tails=tails==null?3:tails;ctx.fillStyle=C.fat;rr(x-3*s,y-10*s,6*s,20*s,2);ctx.fill();ctx.strokeStyle=C["fat-edge"];ctx.lineWidth=1;ctx.stroke();
+  for(let i=0;i<3;i++){if(i<tails||(tails===1&&i===1)){if(tails===1&&i!==1)continue;zig(x+3*s,y+(i-1)*7*s,18*s,0,C["fat-edge"],1.8)}}ctx.globalAlpha=1}
+function monoG(x,y,s,a){A(a);s=s||1;ctx.fillStyle=C.fat;rr(x-3*s,y-10*s,6*s,20*s,2);ctx.fill();ctx.strokeStyle=C["fat-edge"];ctx.lineWidth=1;ctx.stroke();zig(x+3*s,y,18*s,0,C["fat-edge"],1.8);ctx.globalAlpha=1}
+function fattyAcid(x,y,ang,a){A(a);zig(x,y,20,ang,C["fat-edge"],2);circ(x,y,2.6,C.fat,C["fat-edge"],1);ctx.globalAlpha=1}
+function bileSalt(x,y,ang,a,s){A(a);s=s||1;ctx.save();ctx.translate(x,y);ctx.rotate(ang);line(0,0,9*s,0,C.micelle,2.2*s);circ(0,0,3.2*s,C.base,"rgba(0,0,0,.3)",1);ctx.restore();ctx.globalAlpha=1}
+function micelle(x,y,r,t,a,cargo){A(a);circ(x,y,r,C.chylo);for(let i=0;i<10;i++){const an=i/10*TAU+t*.5;bileSalt(x+Math.cos(an)*r,y+Math.sin(an)*r,an+Math.PI,a,.8)}
+  A(a);if(cargo!==false){fattyAcid(x-6,y-2,0,a);zig(x-5,y+4,10,0,C["fat-edge"],1.5)}ctx.globalAlpha=1}
+function chylo(x,y,r,a){A(a);circ(x,y,r,C.chylo,C["fat-edge"],1.5);for(let i=0;i<7;i++){const an=i/7*TAU;circ(x+Math.cos(an)*r*.82,y+Math.sin(an)*r*.82,r*.16,C.amino)}ctx.globalAlpha=1}
+/* enzyme: a "pac-man" that chomps; locked = inactive zymogen */
+function enzyme(x,y,r,col,o){o=o||{};const m=o.locked?0.06:(o.open==null?0.35:o.open);const ang=o.ang||0;A(o.a);
+  ctx.beginPath();ctx.moveTo(x,y);ctx.arc(x,y,r,ang+m,ang+TAU-m);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke();
+  circ(x+Math.cos(ang-1.4)*r*.45,y+Math.sin(ang-1.4)*r*.45,r*.12,"#fff");
+  if(o.locked){const lx=x-Math.cos(ang)*r*.1,ly=y+r*.95;ctx.strokeStyle=C.ink;ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(lx,ly-r*.28,r*.22,Math.PI,0);ctx.stroke();ctx.fillStyle=C.ink;rr(lx-r*.32,ly-r*.28,r*.64,r*.48,2);ctx.fill()}
+  if(o.lab)label(x,y-r-10,o.lab,{align:"center",size:11,weight:600,color:col});
+  ctx.globalAlpha=1}
+function chomp(T,sp){return .05+.45*Math.abs(Math.sin(T*(sp||6)))}
+function bact(x,y,ang,t,a,s){A(a);s=s||1;ctx.save();ctx.translate(x,y);ctx.rotate(ang);ell(0,0,8*s,3.6*s,C.bact,"rgba(0,0,0,.3)",1);ctx.beginPath();ctx.moveTo(-8*s,0);for(let i=1;i<=4;i++)ctx.lineTo(-8*s-i*3*s,Math.sin(t*10+i)*2*s);ctx.strokeStyle=C.bact;ctx.lineWidth=1;ctx.stroke();ctx.restore();ctx.globalAlpha=1}
+function hormoneP(k,x,y,a,s){if(k==="g")diamond(x,y,s||6,C.gastrin,a);else if(k==="s")sq(x,y,s||5,C.secretin,a);else tri(x,y,s||6.5,C.cck,a)}
+function foodBlob(x,y,r,col,seed,a){A(a);ctx.beginPath();for(let i=0;i<=24;i++){const an=i/24*TAU;const w=1+Math.sin(an*3+seed)*.12+Math.cos(an*5+seed*2)*.07;const px=x+Math.cos(an)*r*w,py=y+Math.sin(an)*r*w;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=col||C.food;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function cellRow(x0,x1,y,h,n,fill,edge,nuc){const w=(x1-x0)/n;for(let i=0;i<n;i++){ctx.fillStyle=fill;ctx.fillRect(x0+i*w,y,w,h);ctx.strokeStyle=edge;ctx.lineWidth=1;ctx.strokeRect(x0+i*w,y,w,h);if(nuc)ell(x0+i*w+w/2,y+h*.62,w*.22,h*.16,nuc)}}
+function microvilli(x0,x1,y,h,col){for(let x=x0+3;x<x1-1;x+=5){ctx.strokeStyle=col||C.mucosa;ctx.lineWidth=2.4;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y-h);ctx.stroke();ctx.lineCap="butt"}}
+function sphincterRing(x,y,rx,ry,open,col,lab,o){o=o||{};ctx.save();ctx.translate(x,y);if(o.rot)ctx.rotate(o.rot);
+  const lw=lerp(9,4,open);ctx.strokeStyle=col||C.circ;ctx.lineWidth=lw;ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,TAU);ctx.stroke();ctx.restore();
+  if(lab)label(x+(o.lx||rx+10),y+(o.ly||0),lab+(o.state===false?"":(open>.5?" (open)":" (closed)")),{size:11.5,weight:600,align:o.align||"left"})}
+
+/* ---------- body GI map in local coords (360 x 500) ---------- */
+const CANAL=[[180,70],[180,84],[180,98],[181,130],[183,165],[187,192],[212,204],[236,232],[230,262],[206,274],[189,268],[170,272],[155,290],[158,312],[186,320],[214,308],[224,330],[222,352],[150,354],[144,368],[238,372],[240,388],[146,390],[144,406],[236,408],[232,422],[150,424],[128,426],[114,428],[112,400],[112,340],[118,333],[180,343],[262,333],[266,340],[266,432],[256,452],[228,456],[206,449],[196,458],[190,474],[184,494]];
+const ST_IDX={mouth:0,pharynx:2,esophagus:3,stomach:7,duodenum:12,jejunum:19,ileum:24,cecum:28,colon:32,rectum:39,anus:41};
+const CANAL_F={};(function(){const L=[0];for(let i=1;i<CANAL.length;i++)L.push(L[i-1]+Math.hypot(CANAL[i][0]-CANAL[i-1][0],CANAL[i][1]-CANAL[i-1][1]));const tot=L[L.length-1];for(const k in ST_IDX)CANAL_F[k]=L[ST_IDX[k]]/tot;CANAL_F._L=L.map(v=>v/tot)})();
+const DUOD=[[189,268],[170,272],[155,290],[158,312],[186,320],[214,308]];
+const COLON=[[114,428],[112,400],[112,340],[118,333],[180,343],[262,333],[266,340],[266,432],[256,452],[228,456],[206,449],[196,458],[190,474],[184,494]];
+const SMALL=[[214,308],[224,330],[222,352],[150,354],[144,368],[238,372],[240,388],[146,390],[144,406],[236,408],[232,422],[150,424],[128,426],[114,428]];
+const BILEDUCT=[[160,236],[161,252],[162,272],[160,286],[156,292]];
+const CYSTIC=[[152,252],[161,256]];
+const PDUCT=[[262,284],[232,290],[200,296],[176,298],[156,292]];
+function stomachPathLocal(sq){sq=sq||0;const k=1-sq*.06;ctx.beginPath();ctx.moveTo(186,190);
+  ctx.bezierCurveTo(190,170,236,166,250,190);ctx.bezierCurveTo(268*k+250*(1-k),222,270*k+252*(1-k),262,246,282);ctx.bezierCurveTo(226,296,200,288,190,272);ctx.lineTo(184,262);
+  ctx.bezierCurveTo(198,258,206,240,204,222);ctx.bezierCurveTo(202,206,196,200,192,196);ctx.closePath()}
+function liverPathLocal(){smooth([[74,212],[100,192],[150,184],[205,184],[228,194],[220,210],[190,230],[150,248],[110,254],[82,246]],true)}
+function drawLiverLocal(on,a){A(a);liverPathLocal();ctx.fillStyle=C.liver;ctx.fill();ctx.strokeStyle=on?C.glow:C["liver-edge"];ctx.lineWidth=on?3:1.4;ctx.stroke();
+  ctx.globalAlpha=(a==null?1:a)*.25;line(150,186,138,248,C["liver-edge"],1.2);ctx.globalAlpha=1}
+function drawGBLocal(sq,on,a){A(a);const s=1-.35*(sq||0);ell(150,258,7*s+1,12*s+1,C.gb,on?C.glow:"rgba(0,0,0,.35)",on?2.6:1.2,-.35);ctx.globalAlpha=1}
+function drawPancLocal(on,a){A(a);ctx.lineCap="round";smooth([[170,302],[196,296],[226,291],[250,286],[266,281]]);ctx.strokeStyle=on?C.glow:C["panc-edge"];ctx.lineWidth=on?21:18;ctx.stroke();
+  smooth([[170,302],[196,296],[226,291],[250,286],[266,281]]);ctx.strokeStyle=C.panc;ctx.lineWidth=15;ctx.stroke();ctx.lineCap="butt";circ(172,304,11,C.panc,on?C.glow:C["panc-edge"],on?2.6:1.3);
+  ctx.globalAlpha=(a==null?1:a)*.4;for(let x=180;x<262;x+=9)circ(x,lerp(299,284,(x-180)/82)+((x/9)%2?2:-2),2.2,C["panc-edge"]);ctx.globalAlpha=1}
+function drawStomachLocal(sq,on,a){A(a);stomachPathLocal(sq);ctx.fillStyle=C.gut;ctx.fill();ctx.strokeStyle=on?C.glow:C["gut-edge"];ctx.lineWidth=on?3:1.5;ctx.stroke();ctx.globalAlpha=1}
+function drawGI(ox,oy,s,o){o=o||{};ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);
+  const accA=o.accA==null?1:o.accA,canA=o.canA==null?1:o.canA;
+  // silhouette
+  ctx.globalAlpha=.55;ctx.fillStyle=C.skin;ell(180,46,42,46,C.skin);rr(164,84,32,40,8);ctx.fill();
+  smooth([[104,126],[256,126],[298,150],[300,260],[286,380],[262,480],[98,480],[74,380],[60,260],[62,150]],true);ctx.fill();
+  ctx.globalAlpha=.8;ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.2;ell(180,46,42,46,null,C["skin-edge"],1.2);ctx.globalAlpha=1;
+  // diaphragm
+  ctx.globalAlpha=.5;ctx.beginPath();ctx.moveTo(66,196);ctx.quadraticCurveTo(180,150,296,196);ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1.4;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+  // salivary glands, tongue, teeth
+  const sg=o.hi==="acc";
+  A(accA);[[140,56,9,13],[220,56,9,13],[152,88,9,6],[208,88,9,6],[170,82,6,4],[190,82,6,4]].forEach(g=>ell(g[0],g[1],g[2],g[3],C.saliva,sg?C.glow:"rgba(0,0,0,.3)",sg?2.4:1));
+  ctx.globalAlpha=1;
+  // mouth
+  ell(180,70,15,7,C.gut,C["gut-edge"],1.2);A(accA);ctx.fillStyle=C.tooth;for(let i=-3;i<=3;i++){rr(178+i*4-1.5,64,3.4,4,1);ctx.fill()}ell(180,73,9,3.2,C.tongue);ctx.globalAlpha=1;
+  // liver behind stomach
+  drawLiverLocal(sg,accA);
+  // ducts
+  A(accA);ctx.lineCap="round";smooth(BILEDUCT);ctx.strokeStyle=C.bile;ctx.lineWidth=3;ctx.stroke();smooth(CYSTIC);ctx.stroke();ctx.lineCap="butt";ctx.globalAlpha=1;
+  drawPancLocal(sg,accA);
+  A(accA);smooth(PDUCT);ctx.strokeStyle=C["panc-edge"];ctx.lineWidth=1.6;ctx.stroke();ctx.globalAlpha=1;
+  drawGBLocal(o.gbsq||0,sg,accA);
+  // canal
+  const hc=o.hi==="canal";A(canA);
+  if(hc){ctx.globalAlpha=canA*.5;tube(CANAL.slice(1,6),10,C.glow,C.glow,8);tube(DUOD,11,C.glow,C.glow,8);tube(SMALL,9,C.glow,C.glow,8);tube(COLON,14,C.glow,C.glow,8);ctx.globalAlpha=canA;
+    stomachPathLocal(0);ctx.strokeStyle=C.glow;ctx.lineWidth=7;ctx.stroke()}
+  tube(CANAL.slice(1,6),8,C.gut,C["gut-edge"],2.4);
+  tube(SMALL,8,C.gut,C["gut-edge"],2.4);
+  ell(110,446,3,9,C.gut,C["gut-edge"],1.2,.3);
+  tube(COLON,13,C.gut,C["gut-edge"],2.4);
+  // haustra hints
+  ctx.globalAlpha=canA*.5;for(let i=0;i<20;i++){const p=along(COLON,.04+i*.042);const an=alongAng(COLON,.04+i*.042);line(p[0]-Math.sin(an)*6,p[1]+Math.cos(an)*6,p[0]+Math.sin(an)*6,p[1]-Math.cos(an)*6,C["gut-edge"],1)}ctx.globalAlpha=canA;
+  tube(DUOD,9,C.gut,C["gut-edge"],2.4);
+  drawStomachLocal(o.stsq||0,false,canA);
+  if(hc){stomachPathLocal(0);ctx.strokeStyle=C.glow;ctx.lineWidth=2;ctx.stroke()}
+  ctx.globalAlpha=1;
+  ctx.restore()}
+function toCanvas(ox,oy,s,p){return [ox+p[0]*s,oy+p[1]*s]}
+
+/* ================= shared page plumbing ================= */
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,c:cv.getContext("2d"),W,H,K:1};
+  st.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);st.K=cv.width/W};
+  st.begin=()=>{ctx=st.c;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1};
+  return st}
+let activeTab="meal";
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===b));
+  document.querySelectorAll("[role=tabpanel]").forEach(p=>p.hidden=p.id!=="tab-"+activeTab);
+  fitAll();if(activeTab==="match")mxDrawSvg()});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+const starStr=n=>"★".repeat(n)+"☆".repeat(3-n);
+function legendHTML(l){const sh=l[2]||"c";return `<span><i class="${sh}" style="background:var(--${l[0]})"></i>${l[1]}</span>`}
+
+/* =====================================================================
+   PART 1 - MEAL JOURNEY
+   ===================================================================== */
+const SM=makeStage("cvMeal",800,440),SMC=makeStage("cvMealChart",800,200);
+const MEALS={
+ pizza:{n:"Pizza slice",d:"Crust (starch), cheese (protein and fat), tomato sauce (a little sugar). Aged cheese has very little lactose.",starch:30,lactose:0,sucrose:3,protein:12,fat:10,fiber:2},
+ milk:{n:"Glass of milk",d:"Milk sugar (lactose), milk protein and milk fat. No starch and no fiber.",starch:0,lactose:12,sucrose:0,protein:8,fat:8,fiber:0},
+ salad:{n:"Salad with oil",d:"Lettuce and vegetables (mostly fiber, a little sucrose) with an oil dressing (fat). Almost no starch or protein.",starch:0,lactose:0,sucrose:3,protein:0,fat:14,fiber:6},
+ pancakes:{n:"Pancakes with syrup",d:"Flour (starch), syrup (sucrose), milk and egg in the batter (lactose, protein), butter (fat).",starch:36,lactose:3,sucrose:18,protein:8,fat:10,fiber:1}};
+const STN=[{k:"mouth",n:"Mouth",d:"Food is chewed and mixed with saliva."},{k:"stomach",n:"Stomach",d:"Food is churned with gastric juice into chyme."},{k:"duo",n:"Duodenum",d:"Chyme meets pancreatic juice and bile."},{k:"bb",n:"Jejunum and ileum",d:"The brush border finishes digestion, and nutrients are absorbed."},{k:"large",n:"Large intestine",d:"Leftovers lose water and meet the gut bacteria."}];
+const has=(m,k)=>m[k]>0;
+const OPTS={
+ mouth:[["chew","Chewing (mastication)","teeth and tongue",()=>1,"Chewing breaks food into smaller pieces with more surface for enzymes."],
+  ["samyl","Salivary amylase","from the salivary glands",m=>has(m,"starch"),"Salivary amylase starts cutting starch into shorter chains such as maltose.","Salivary amylase digests starch, and this meal has no starch to work on."],
+  ["llip","Lingual lipase","from glands in the tongue",m=>has(m,"fat"),"Lingual lipase is released here and starts on fats once it reaches stomach acid.","This meal has almost no fat."],
+  ["pepM","Pepsin","protein enzyme",()=>0,"","Pepsin is made in the stomach. No protein is digested in the mouth."],
+  ["bileM","Bile salts","fat emulsifier",()=>0,"","Bile enters the tract at the duodenum, not the mouth."],
+  ["lactM","Lactase","milk sugar enzyme",()=>0,"","Lactase is a brush border enzyme in the small intestine. Saliva has none."]],
+ stomach:[["churn","Churning","three muscle layers",()=>1,"Churning mixes food with gastric juice to make chyme."],
+  ["hcl","Hydrochloric acid (HCl)","from parietal cells",()=>1,"Acid is secreted with every meal. It kills many microbes, unfolds proteins and activates pepsin."],
+  ["pep","Pepsin","from chief cells",m=>has(m,"protein"),"Pepsin starts cutting proteins into polypeptides.","This meal has almost no protein for pepsin to cut."],
+  ["trypS","Trypsin","protein enzyme",()=>0,"","Trypsin comes from the pancreas and works in the small intestine."],
+  ["plipS","Pancreatic lipase","fat enzyme",()=>0,"","Pancreatic lipase arrives in the duodenum, not the stomach."],
+  ["absS","Absorb most nutrients","",()=>0,"","The stomach absorbs very little. Food is still being broken down here."]],
+ duo:[["bicarb","Bicarbonate","from the pancreas",()=>1,"Bicarbonate neutralizes the acid chyme so intestinal enzymes can work."],
+  ["bile","Bile salts emulsify fat","from the liver, via the gallbladder",m=>has(m,"fat"),"Bile salts break fat into tiny droplets so lipase can reach it.","There is almost no fat to emulsify."],
+  ["plip","Pancreatic lipase","fat enzyme",m=>has(m,"fat"),"Lipase splits triglycerides into fatty acids and monoglycerides.","There is almost no fat for lipase."],
+  ["pamyl","Pancreatic amylase","starch enzyme",m=>has(m,"starch"),"Pancreatic amylase cuts the remaining starch into maltose and short chains.","This meal has no starch for amylase."],
+  ["tryp","Trypsin and chymotrypsin","protein enzymes, activated here",m=>has(m,"protein"),"Trypsin and chymotrypsin cut polypeptides into short peptides.","This meal has almost no protein."],
+  ["segm","Segmentation","mixing contractions",()=>1,"Segmentation mixes chyme with the juices."],
+  ["pepD","Pepsin","",()=>0,"","Pepsin stops working as bicarbonate raises the pH in the duodenum."],
+  ["lactD","Lactase from the pancreas","",()=>0,"","Pancreatic juice has no lactase. Lactase sits on the brush border further along."]],
+ bb:[["lact","Lactase","brush border",m=>has(m,"lactose"),"Lactase splits lactose into glucose and galactose.","Lactase is there, but this meal has no lactose to split."],
+  ["sucr","Sucrase","brush border",m=>has(m,"sucrose"),"Sucrase splits sucrose into glucose and fructose.","Sucrase is there, but this meal has no sucrose."],
+  ["malt","Maltase","brush border",m=>has(m,"starch"),"Maltase splits maltose (from starch) into glucose.","This meal had no starch, so there is no maltose to split."],
+  ["pept","Peptidases","brush border",m=>has(m,"protein"),"Aminopeptidase and dipeptidase free single amino acids.","This meal has almost no protein."],
+  ["blood","Absorb into blood capillaries","sugars and amino acids",m=>has(m,"starch")||has(m,"lactose")||has(m,"sucrose")||has(m,"protein"),"Monosaccharides and amino acids enter blood capillaries and travel to the liver.","There are no sugars or amino acids to absorb."],
+  ["lacteal","Micelles, chylomicrons, lacteals","fat absorption",m=>has(m,"fat"),"Micelles carry fat to the cells; it leaves as chylomicrons into the lacteals.","There is almost no fat to absorb."],
+  ["pepB","Pepsin","",()=>0,"","Pepsin only works in the acid of the stomach."]],
+ large:[["water","Absorb water and electrolytes","",()=>1,"The colon takes back water, so the contents become firmer."],
+  ["bact","Bacteria ferment leftovers","and make vitamin K",()=>1,"Gut bacteria ferment leftover carbohydrate and fiber and make vitamin K."],
+  ["mass","Mass movements, then defecation","",()=>1,"Mass movements push feces to the rectum for defecation."],
+  ["pamylL","Pancreatic amylase","",()=>0,"","Digestive enzymes are not secreted in the large intestine. Bacteria do the work here."],
+  ["villiL","Villi absorb glucose","",()=>0,"","The large intestine has no villi, and sugars were absorbed earlier."]]};
+const STATION_POS=[.004,.16,.33,.62,.82]; // along CANAL
+let ML={meal:"pizza",st:0,picks:new Set(),misses:0,shows:0,applied:false,S:null,D:null,prev:null,anim:0,active:[],done:false,ok:new Set()};
+const mlBest=store.get("digMeal")||{};
+function mlState(m){return {starch:[1,0,0,0],lactose:[1,0,0,0],sucrose:[1,0,0,0],protein:[1,0,0,0],fat:[1,0,0,0],fiber:[1,0,0,0],water:0,size:1}}
+function cloneS(s){return JSON.parse(JSON.stringify(s))}
+function mv(arr,from,to,frac){const x=arr[from]*frac;arr[from]-=x;arr[to]+=x}
+function mlApplyStation(S,k,m){
+  if(k==="mouth"){S.size=.6;if(has(m,"starch"))mv(S.starch,0,1,.15)}
+  if(k==="stomach"){S.size=.35;if(has(m,"protein"))mv(S.protein,0,1,.2);if(has(m,"fat"))mv(S.fat,0,1,.1)}
+  if(k==="duo"){S.size=.3;["starch","protein"].forEach(n=>mv(S[n],0,1,1));mv(S.fat,0,2,1);mv(S.fat,1,2,1)}
+  if(k==="bb"){["starch","protein"].forEach(n=>{mv(S[n],1,2,1);mv(S[n],2,3,1)});["lactose","sucrose"].forEach(n=>{mv(S[n],0,2,1);mv(S[n],2,3,1)});mv(S.fat,2,3,1);S.water=.8}
+  if(k==="large"){mv(S.fiber,0,1,.4);mv(S.fiber,0,3,1);S.water=1}
+  return S}
+function mlReset(meal){ML.meal=meal;ML.st=0;ML.picks=new Set();ML.misses=0;ML.shows=0;ML.applied=false;ML.S=mlState();ML.D=cloneS(ML.S);ML.prev=cloneS(ML.S);ML.anim=0;ML.active=[];ML.done=false;ML.ok=new Set();ML.parts=mlParts(MEALS[meal]);mlRender()}
+function mlParts(m){const P=[];const add=(k,n)=>{for(let j=0;j<n;j++)P.push({k,j,n,vis:0,x:0,y:0})};
+  add("starch",m.starch?clamp(Math.round(m.starch/8),2,4):0);add("lactose",m.lactose?clamp(Math.round(m.lactose/4),1,3):0);add("sucrose",m.sucrose?clamp(Math.round(m.sucrose/5),1,4):0);
+  add("protein",m.protein?clamp(Math.round(m.protein/3),2,4):0);add("fat",m.fat?clamp(Math.round(m.fat/3),2,5):0);add("fiber",m.fiber?clamp(Math.round(m.fiber/2),1,3):0);
+  // home positions on a jittered grid
+  const rowY={starch:100,lactose:165,sucrose:165,protein:230,fat:295,fiber:345};
+  const rows={};P.forEach(p=>{const key=p.k==="sucrose"?"lactose":p.k;(rows[key]=rows[key]||[]).push(p)});
+  Object.values(rows).forEach(L=>L.forEach((p,i)=>{p.x=345+(i+.5)*(420/L.length)+(rnd(i+p.j)-.5)*10;p.y=rowY[p.k]+(rnd(i+7)-.5)*10}));return P}
+function mlRequired(){const m=MEALS[ML.meal];return OPTS[STN[ML.st].k].filter(o=>o[3](m)).map(o=>o[0])}
+function mlRender(){
+  const m=MEALS[ML.meal];
+  $("#mlMeals").innerHTML=Object.entries(MEALS).map(([k,v])=>`<button type="button" data-m="${k}" aria-pressed="${k===ML.meal}">${v.n}${mlBest[k]?`<span class="ok">${"★".repeat(mlBest[k])}</span>`:""}<small>${["Starch","Lactose","Sucrose","Protein","Fat","Fiber"].filter((n,i)=>m&&v[["starch","lactose","sucrose","protein","fat","fiber"][i]]>0).join(" · ")}</small></button>`).join("");
+  document.querySelectorAll("#mlMeals button").forEach(b=>b.onclick=()=>mlReset(b.dataset.m));
+  $("#mlStations").innerHTML=STN.map((s,i)=>`<span class="${i===ML.st&&!ML.done?"cur":(i<ML.st||ML.done?"done":"")}">${i+1} ${s.n}</span>`).join("");
+  const s=STN[ML.st];
+  if(ML.done){$("#mlN").textContent="Journey complete";$("#mlT").textContent=m.n+": all the way through";$("#mlD").textContent="Pick another meal to try a new journey, or replay this one.";$("#mlPicks").innerHTML="";
+    $("#mlApply").hidden=$("#mlHint").hidden=$("#mlShow").hidden=true;$("#mlNext").hidden=false;$("#mlNext").textContent="Replay this meal";}
+  else{
+    $("#mlN").textContent=`Station ${ML.st+1} of 5`;$("#mlT").textContent=s.n;$("#mlD").innerHTML=`<b>${m.n}:</b> ${m.d}<br>${s.d} What acts on this meal here?`;
+    $("#mlPicks").innerHTML=OPTS[s.k].map(o=>`<button type="button" class="pick${ML.ok.has(o[0])?" ok":""}" data-id="${o[0]}" aria-pressed="${ML.picks.has(o[0])}"><span class="bx">${ML.picks.has(o[0])?"✓":""}</span><span>${o[1]}${o[2]?`<small>${o[2]}</small>`:""}</span></button>`).join("");
+    document.querySelectorAll("#mlPicks .pick").forEach(b=>b.onclick=()=>{if(ML.applied)return;const id=b.dataset.id;ML.picks.has(id)?ML.picks.delete(id):ML.picks.add(id);b.setAttribute("aria-pressed",ML.picks.has(id));b.querySelector(".bx").textContent=ML.picks.has(id)?"✓":"";b.classList.remove("bad","miss")});
+    $("#mlApply").hidden=$("#mlHint").hidden=$("#mlShow").hidden=ML.applied;$("#mlNext").hidden=!ML.applied;$("#mlNext").textContent=ML.st<4?"Next station →":"Finish the journey →";
+  }
+  const tot=Object.values(mlBest).reduce((a,b)=>a+b,0);$("#mlTot").innerHTML=`Best stars: <b>${tot}</b> / ${Object.keys(MEALS).length*3}`;
+  $("#mlCap").textContent=ML.done?"The journey is done: absorbed nutrients have left the tract, and feces remain.":`${STN[ML.st].n}: ${ML.applied?"watch the food break down.":"choose what acts here."}`;
+  $("#mlLegend").innerHTML=[["carb","Glucose","hex"],["gal","Galactose","hex"],["fru","Fructose","pent"],["amino","Amino acid"],["fat","Fat"],["micelle","Bile salt"],["bact","Fiber / bacteria"]].map(legendHTML).join("");
+}
+function mlMsg(cls,html){const e=$("#mlMsg");e.className="msg show "+cls;e.innerHTML=html}
+$("#mlApply").onclick=()=>{
+  const m=MEALS[ML.meal];const opts=OPTS[STN[ML.st].k];const R=new Set(mlRequired());
+  const wrong=[...ML.picks].filter(x=>!R.has(x)),missing=[...R].filter(x=>!ML.picks.has(x));
+  const fb=$("#mlFb");fb.innerHTML="";
+  document.querySelectorAll("#mlPicks .pick").forEach(b=>{b.classList.remove("bad","miss");if(wrong.includes(b.dataset.id))b.classList.add("bad")});
+  if(wrong.length||missing.length){ML.misses+=wrong.length+(missing.length?1:0);
+    wrong.forEach(id=>{const o=opts.find(q=>q[0]===id);fb.innerHTML+=`<li class="w"><b>${o[1]}:</b> Not quite. ${o[5]}</li>`});
+    if(missing.length)fb.innerHTML+=`<li class="m">${missing.length===1?"One more thing acts here":"There are "+missing.length+" more things that act here"}. Think about each nutrient in this meal. The Hint button highlights one.</li>`;
+    mlMsg("warn",wrong.length?"Some picks do not act on this meal here. Read why below, change your picks, and apply again.":"Good picks so far, but something is missing.");return}
+  // correct
+  ML.applied=true;ML.ok=new Set(R);ML.prev=cloneS(ML.S);ML.S=mlApplyStation(cloneS(ML.S),STN[ML.st].k,m);ML.anim=0;ML.active=[...R];
+  [...R].forEach(id=>{const o=opts.find(q=>q[0]===id);fb.innerHTML+=`<li class="g"><b>${o[1]}:</b> ${o[4]}</li>`});
+  mlMsg("good","Yes. Those are exactly what act here. Watch the food on the left, and the chart below.");mlRender()};
+$("#mlHint").onclick=()=>{const R=mlRequired().filter(x=>!ML.picks.has(x));const wrongPick=[...ML.picks].find(x=>!mlRequired().includes(x));
+  if(wrongPick){const b=document.querySelector(`#mlPicks .pick[data-id="${wrongPick}"]`);if(b)b.classList.add("bad");mlMsg("info","Hint: the orange one does not act on this meal here. Untick it.");return}
+  if(!R.length){mlMsg("info","Hint: your picks look complete. Press Apply and check.");return}
+  const b=document.querySelector(`#mlPicks .pick[data-id="${R[0]}"]`);if(b)b.classList.add("miss");mlMsg("info","Hint: look at the card with the gold dashed border. Does it act on something in this meal here?")};
+$("#mlShow").onclick=()=>{ML.shows++;ML.picks=new Set(mlRequired());mlRender();mlMsg("info","These are the answers. Press Apply and check to watch them work.")};
+$("#mlNext").onclick=()=>{$("#mlFb").innerHTML="";$("#mlMsg").className="msg";
+  if(ML.done){mlReset(ML.meal);return}
+  if(ML.st<4){ML.st++;ML.picks=new Set();ML.applied=false;ML.ok=new Set();ML.active=[];mlRender()}
+  else{ML.done=true;const stars=ML.shows===0&&ML.misses<=1?3:(ML.misses+ML.shows<=4?2:1);mlBest[ML.meal]=Math.max(mlBest[ML.meal]||0,stars);store.set("digMeal",mlBest);
+    const S=ML.S;const pct=a=>Math.round(a*100);
+    mlMsg("good",`<span class="stars">${starStr(stars)}</span> ${MEALS[ML.meal].n} done with ${ML.misses} miss${ML.misses===1?"":"es"}${ML.shows?` and ${ML.shows} shown answer${ML.shows>1?"s":""}`:""}. Carbohydrate, protein and fat were absorbed; ${MEALS[ML.meal].fiber?"fiber was partly fermented by bacteria and the rest left as feces":"almost nothing but water, bacteria and cells was left for feces"}.`);mlRender()}};
+$("#mlReplay").onclick=()=>{if(ML.applied){ML.D=cloneS(ML.prev);ML.parts.forEach(p=>p.vis=Math.max(0,p.vis-1));ML.anim=0}};
+
+function mlTarget(p,D){// which state a particle shows: 0 intact,1 partial,2 ready,3 absorbed
+  const a=D[p.k];if(!a)return 0;const q=(p.j+.5)/p.n;let acc=a[3];if(q<acc)return 3;acc+=a[2];if(q<acc)return 2;acc+=a[1];if(q<acc)return 1;return 0}
+function drawParticle(p,T,size){
+  const v=p.vis;const s=Math.floor(v),f=v-s;const bob=Math.sin(T*1.5+p.j*2+p.x)*3;const x=p.x,y=p.y+bob;
+  const sc=lerp(1,.75,1-size);
+  if(p.k==="fiber"){if(v>=2.5){const q=clamp(v-2.5,0,.5)*2;ctx.globalAlpha=1-q;}const len=lerp(46,26,clamp(v,0,1));ctx.beginPath();for(let i=0;i<=10;i++){const xx=x-len/2+len*i/10;ctx.lineTo(xx,y+Math.sin(i*1.4+T)*4)}ctx.strokeStyle=C.bact;ctx.lineWidth=3;ctx.stroke();
+    if(v>.5)for(let k=0;k<3;k++){const q=((T*.6)+k/3)%1;circ(x+(k-1)*10,y-8-q*16,2.2,null,C.bact,1)}ctx.globalAlpha=1;return}
+  const out=v>2?clamp(v-2,0,1):0;const yy=lerp(y,415,out);const al=1-seg(out,.6,1);if(al<=0)return;ctx.globalAlpha=al;
+  if(p.k==="starch"){const n=6;const xs=[];for(let i=0;i<n;i++)xs.push(x-44*sc+i*14*sc+Math.floor(i/2)*Math.min(v,1)*12+(i%2)*clamp(v-1,0,1)*10);
+    for(let i=0;i<n-1;i++){const keep=i%2===1?v<.3:v<1.3;if(keep)line(xs[i]+5*sc,yy,xs[i+1]-5*sc,yy,C["carb-edge"],1.6)}
+    xs.forEach((xi,i)=>hexP(xi,yy+(v>1.3?(i%2?-1:1)*clamp(v-1.3,0,.7)*8:0),6*sc,C.carb,1,C["carb-edge"]))}
+  else if(p.k==="lactose"||p.k==="sucrose"){const sp=clamp(v-1,0,1)*14;sugar("glu",x-7-sp,yy,6.5,1);sugar(p.k==="lactose"?"gal":"fru",x+7+sp,yy,6.5,1);if(sp<1)line(x-1,yy,x+1,yy,C["carb-edge"],2)}
+  else if(p.k==="protein"){const unf=clamp(v,0,1),sp=clamp(v-1,0,1);for(let i=0;i<8;i++){const an=i*.95;const fx=x+Math.cos(an)*(5+i*1.6),fy=yy+Math.sin(an)*(5+i*1.6);const lx=x-38+i*11+Math.floor(i/2)*sp*6+(i%2)*sp*6,ly=yy+Math.sin(i)*3*(1-sp);aaP(lerp(fx,lx,unf),lerp(fy,ly,unf),5*sc+.5,i,1);
+      if(i<7&&unf>.5){const bond=sp<.5?true:(i%2===0&&sp<1.5);if(bond)line(lerp(fx,lx,unf)+4,lerp(fy,ly,unf),lerp(fx,lx,unf)+7,lerp(fy,ly,unf),C["ink-faint"],1.2)}}}
+  else if(p.k==="fat"){if(v<1){fatDrop(x,yy,lerp(18,14,v)*sc+2)}else if(v<2){const q=v-1;const n=1+Math.round(q*5);for(let i=0;i<n;i++){const a=i*2.4;fatDrop(x+Math.cos(a)*q*16,yy+Math.sin(a)*q*12,lerp(14,6,q))}
+      if(q>.1)for(let i=0;i<8;i++){const a=i/8*TAU;bileSalt(x+Math.cos(a)*24,yy+Math.sin(a)*20,a,q,.7)}}
+    else if(v<2.5||out<.3){monoG(x-8,yy,.7,1);fattyAcid(x+8,yy-8,0,1);fattyAcid(x+8,yy+8,0,1)}else chylo(x,yy,8,1)}
+  ctx.globalAlpha=1}
+function drawMeal(T){
+  SM.begin();ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,440);
+  // left: map
+  const MS={x:-10,y:2,s:.86};drawGI(MS.x,MS.y,MS.s,{});
+  const sp=ML.done?.985:STATION_POS[ML.st];const q=toCanvas(MS.x,MS.y,MS.s,along(CANAL,sp));glow(q[0],q[1],24,C.glow,.7+.3*Math.sin(T*4));foodBlob(q[0],q[1],7,ML.st>=4?C.stool:(ML.st>=1?C.chyme:C.food),3);
+  // right: zoom panel
+  const k=ML.done?"large":STN[ML.st].k;const zx=290,zy=40,zw=500,zh=392;
+  ctx.save();rr(zx,zy,zw,zh,10);ctx.clip();ctx.fillStyle=C.lumen;ctx.fillRect(zx,zy,zw,zh);
+  if(k==="mouth"){ctx.fillStyle=C.mucosa;ctx.fillRect(zx,zy,zw,34);for(let i=0;i<14;i++){ctx.fillStyle=C.tooth;rr(zx+8+i*36,zy+18,28,24,5);ctx.fill()}for(let i=0;i<8;i++){const qq=((T*.4)+i/8)%1;drop(zx+30+i*60,zy+50+qq*300,3.4,C.saliva,1-qq)}}
+  if(k==="stomach"){for(let i=0;i<5;i++){ctx.beginPath();for(let x=zx;x<=zx+zw;x+=6)ctx.lineTo(x,zy+zh-20-i*8+Math.sin(x*.05+i)*6);ctx.strokeStyle=C.mucosa;ctx.lineWidth=2;ctx.stroke()}for(let i=0;i<14;i++){const qq=((T*.3)+i/14)%1;hplus(zx+20+rnd(i)*460,zy+zh-30-qq*320,1-qq,4)}}
+  if(k==="duo"){tube([[zx+60,zy-10],[zx+80,zy+40]],16,C.bile,C["gut-edge"],2);tube([[zx+zw-60,zy-10],[zx+zw-80,zy+40]],16,C.panc,C["panc-edge"],2);txt(zx+96,zy+18,"bile",{size:11.5,weight:600});txt(zx+zw-100,zy+18,"pancreatic juice",{size:11.5,weight:600,align:"right"});
+    for(let i=0;i<6;i++){const qq=((T*.5)+i/6)%1;drop(zx+80+qq*40,zy+40+qq*90,3.4,C.bile,1-qq);hco3(zx+zw-80-qq*40,zy+40+qq*90,1-qq,4)}}
+  if(k==="bb"){microvilli(zx,zx+zw,zy+zh-60,9,C.mucosa);cellRow(zx,zx+zw,zy+zh-60,34,10,C.gut,C["gut-edge"],C.mucosa);ctx.fillStyle=C.blood;ctx.fillRect(zx,zy+zh-24,zw*.62,18);ctx.fillStyle=C.lymph;ctx.fillRect(zx+zw*.64,zy+zh-24,zw*.36,18);
+    txt(zx+10,zy+zh-15,"blood capillary",{size:10.5,weight:600,color:"#fff"});txt(zx+zw*.64+8,zy+zh-15,"lacteal",{size:10.5,weight:600,color:C.ink})}
+  if(k==="large"){for(let i=0;i<10;i++){bact(zx+40+rnd(i)*420,zy+70+rnd(i+5)*280,T*.5+i,T+i,1,1.1)}for(let i=0;i<8;i++){const qq=((T*.4)+i/8)%1;drop(zx+30+i*60,zy+zh-60+qq*50,3.6,C.water,1-qq)}}
+  // feces forming in the large intestine
+  if(k==="large"&&(ML.applied||ML.done)){const g=clamp(ML.D.water,0,1);const fx=zx+zw-90,fy=zy+zh-70;foodBlob(fx,fy,lerp(10,34,g),C.stool,4);
+    if(g>.5)label(fx,fy-48,"feces: fiber, bacteria, water, cells",{align:"center",size:11.5,weight:600})}
+  // particles
+  const size=ML.D.size;ML.parts.forEach(p=>{const tg=mlTarget(p,ML.D);p.vis+=clamp(tg-p.vis,-.03,.03)*1;drawParticle(p,T,size)});
+  // active enzymes / processes row
+  if(ML.applied&&ML.active.length&&!ML.done){const opts=OPTS[k];let x=zx+12;ML.active.forEach((id,i)=>{const o=opts.find(q=>q[0]===id);ctx.font=`600 11px ${MONO}`;const tw=ctx.measureText(o[1]).width+12;if(x+tw>zx+zw-8)return;chipText(x+tw/2,k==="bb"?zy+16:zy+zh-14,o[1],C.accent);x+=tw+6})}
+  ctx.restore();
+  ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;rr(zx,zy,zw,zh,10);ctx.stroke();
+  title(zx,22,(ML.done?"Done: ":"Zoom: ")+(ML.done?"what is left in the large intestine":STN[ML.st].n));
+  label(zx+zw-6,22,MEALS[ML.meal].n,{align:"right",size:12,weight:600,color:C.accent});
+  // tween D toward S
+  ["starch","lactose","sucrose","protein","fat","fiber"].forEach(n=>{for(let i=0;i<4;i++)ML.D[n][i]+=(ML.S[n][i]-ML.D[n][i])*.04});ML.D.size+=(ML.S.size-ML.D.size)*.05;ML.D.water+=(ML.S.water-ML.D.water)*.04;
+}
+function drawMealChart(){
+  SMC.begin();ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,200);
+  const m=MEALS[ML.meal];const D=ML.D;
+  const carbT=m.starch+m.lactose+m.sucrose;
+  const comb=carbT?[0,1,2,3].map(i=>(m.starch*D.starch[i]+m.lactose*D.lactose[i]+m.sucrose*D.sucrose[i])/carbT):null;
+  const rows=[["Carbohydrate",comb,carbT],["Protein",m.protein?D.protein:null,m.protein],["Fat",m.fat?D.fat:null,m.fat],["Fiber",m.fiber?D.fiber:null,m.fiber]];
+  const cols=[C.rule,C.act2,C.good,C.vein];const fibCols=[C.rule,C.bact,C.rule,C.stool];
+  txt(14,16,"Nutrient breakdown (live)",{size:12,weight:700});
+  [["Intact food",cols[0]],["Partly digested",cols[1]],["Ready to absorb",cols[2]],["Absorbed",cols[3]]].forEach((l,i)=>{const x=250+i*135;sq(x,16,5,l[1]);txt(x+10,16,l[0],{size:11.5})});
+  rows.forEach((r,i)=>{const y=40+i*38;txt(14,y+12,r[0],{size:12.5,weight:600});txt(120,y+12,r[2]?"amount "+r[2]:"none",{size:11,color:C["ink-soft"],mono:true});
+    const x0=210,w=570;ctx.fillStyle=C.sunk;rr(x0,y,w,24,5);ctx.fill();if(!r[1])return;let x=x0;
+    r[1].forEach((f,j)=>{const ww=w*f;if(ww<.5){return}ctx.fillStyle=(r[0]==="Fiber"?fibCols:cols)[j];ctx.fillRect(x,y,ww,24);if(ww>60){const lab=r[0]==="Fiber"?["intact","fermented","","leaves as feces"][j]:Math.round(f*100)+"%";txt(x+ww/2,y+12,lab,{size:11,weight:600,align:"center",color:j===0?C.ink:"#fff"})}x+=ww});
+    ctx.strokeStyle=C.rule;ctx.lineWidth=1;rr(x0,y,w,24,5);ctx.stroke()});
+}
+
+/* =====================================================================
+   PART 2 - ENZYME MATCHER
+   ===================================================================== */
+const SRC={sal:"Salivary glands",ling:"Lingual glands (tongue)",chief:"Stomach chief cells",panc:"Pancreas",bb:"Brush border (small intestine)"};
+const SUB={starch:"Starch",maltoseS:"Maltose",sucroseS:"Sucrose",lactoseS:"Lactose",prot:"Proteins and polypeptides",pept:"Short peptides",tg:"Triglycerides",na:"DNA and RNA"};
+const PROD={maltose:"Maltose and short chains",glu:"Glucose",glufru:"Glucose + fructose",glugal:"Glucose + galactose",shortp:"Shorter peptides",aa:"Amino acids",famg:"Fatty acids + monoglycerides",fadg:"Fatty acids + diglycerides",nuc:"Nucleotides"};
+const ENZ={
+ samyl:{n:"Salivary amylase",src:"sal",sub:"starch",prod:"maltose",c:["Its name tells you: it is in saliva.","Amylases digest the main storage carbohydrate in plants.","Amylase leaves two-sugar units and short chains, not single sugars."]},
+ pamyl:{n:"Pancreatic amylase",src:"panc",sub:"starch",prod:"maltose",c:["It is part of pancreatic juice.","It does the same job as the amylase in saliva.","Brush border enzymes still have to finish the job after it."]},
+ malt:{n:"Maltase",src:"bb",sub:"maltoseS",prod:"glu",c:["Sugar-splitting enzymes named after a sugar sit on the microvilli.","Its name is the sugar it splits.","Maltose is two of the same sugar joined together."]},
+ sucr:{n:"Sucrase",src:"bb",sub:"sucroseS",prod:"glufru",c:["Sugar-splitting enzymes named after a sugar sit on the microvilli.","Its name is the sugar it splits (table sugar).","Table sugar is glucose joined to fruit sugar."]},
+ lact:{n:"Lactase",src:"bb",sub:"lactoseS",prod:"glugal",c:["Sugar-splitting enzymes named after a sugar sit on the microvilli.","Its name is the sugar it splits (milk sugar).","Milk sugar is glucose joined to galactose."]},
+ pep:{n:"Pepsin",src:"chief",sub:"prot",prod:"shortp",c:["It is released in the stomach as pepsinogen.","It starts the digestion of one type of nutrient, in the stomach.","It cuts proteins into smaller pieces, not single amino acids."]},
+ tryp:{n:"Trypsin",src:"panc",sub:"prot",prod:"shortp",c:["It is released as trypsinogen in pancreatic juice.","It continues what pepsin started.","It leaves short pieces for the brush border to finish."]},
+ chymo:{n:"Chymotrypsin",src:"panc",sub:"prot",prod:"shortp",c:["It is released as chymotrypsinogen in pancreatic juice.","It works side by side with trypsin.","It leaves short pieces for the brush border to finish."]},
+ carbx:{n:"Carboxypeptidase",src:"panc",sub:"pept",prod:"aa",c:["It is a pancreatic enzyme.","It trims peptides from one end.","Each snip at the end frees one single building block."]},
+ peptid:{n:"Aminopeptidase and dipeptidase",src:"bb",sub:"pept",prod:"aa",c:["They are attached to the microvilli.","They finish off the short pieces.","They free the single building blocks of proteins."]},
+ llip:{n:"Lingual lipase",src:"ling",sub:"tg",prod:"fadg",c:["'Lingual' means 'of the tongue'.","Lipases digest fats.","It works slowly and leaves diglycerides (two fatty acids still attached)."]},
+ plip:{n:"Pancreatic lipase",src:"panc",sub:"tg",prod:"famg",c:["It is part of pancreatic juice.","Lipases digest fats.","It removes two of the three fatty acids, leaving a monoglyceride."]},
+ nuc:{n:"Nucleases",src:"panc",sub:"na",prod:"nuc",c:["Pancreatic juice contains them.","'Nucle-' points to the nucleic acids.","Nucleic acids are chains of these units."]}};
+const ROUNDS=[{n:"Carbohydrates",items:["samyl","pamyl","malt","sucr","lact"]},{n:"Proteins",items:["pep","tryp","chymo","carbx","peptid"]},{n:"Fats and nucleic acids",items:["llip","plip","nuc"]},{n:"Mixed challenge",items:null}];
+const COLS=[["src",SRC,"Source"],["sub",SUB,"Substrate"],["prod",PROD,"Product"]];
+let MX={r:0,items:[],fill:{},state:{},wrong:0,shows:0,sel:null,selSlot:null,focus:null,start:performance.now(),done:false};
+const mxRes=store.get("digMatch")||[];
+function mxStart(r){MX.r=r;let it=ROUNDS[r].items;if(!it){const all=Object.keys(ENZ);it=[];let seed=Math.floor(Math.random()*1000);while(it.length<5){const k=all[Math.floor(rnd(seed++)*all.length)];if(!it.includes(k))it.push(k)}}
+  MX.items=it;MX.fill={};MX.state={};MX.wrong=0;MX.shows=0;MX.sel=null;MX.selSlot=null;MX.focus=it[0];MX.start=performance.now();MX.done=false;$("#mxMsg").className="msg";mxRender()}
+function mxRounds(){$("#mxRounds").innerHTML=ROUNDS.map((R,i)=>`<button type="button" class="round" aria-pressed="${i===MX.r}" data-r="${i}">Round ${i+1}: ${R.n}${mxRes[i]?`<span class="ok">${"★".repeat(mxRes[i])}</span>`:""}</button>`).join("");
+  document.querySelectorAll("#mxRounds .round").forEach(b=>b.onclick=()=>{mxStart(+b.dataset.r);mxRounds()});
+  const tot=mxRes.reduce((a,b)=>a+(b||0),0);$("#mxTot").innerHTML=`Total stars: <b>${tot}</b> / ${ROUNDS.length*3}`}
+function mxRender(){
+  const tb=$("#mxTable tbody");
+  tb.innerHTML=MX.items.map(id=>{const e=ENZ[id];const ok=COLS.every(c=>MX.state[id+"."+c[0]]==="ok");
+    return `<tr data-e="${id}" class="${ok?"rowok":""}"><td class="en">${ok?"✓ ":""}${e.n}</td>${COLS.map(c=>{const key=id+"."+c[0];const v=MX.fill[key];const st=MX.state[key]||"";
+      return `<td><button type="button" class="slot ${v?"filled":""} ${st} ${MX.selSlot===key?"sel":""}" data-key="${key}" aria-label="${e.n} ${c[2]}: ${v?c[1][v]:"empty"}">${v?c[1][v]:"<span style='color:var(--ink-faint)'>"+c[2]+"?</span>"}</button></td>`}).join("")}</tr>`}).join("");
+  $("#mxBank").innerHTML=COLS.map(c=>`<h4>${c[2]}</h4><div class="cl">${Object.entries(c[1]).map(([k,v])=>`<button type="button" class="chipb" data-col="${c[0]}" data-v="${k}" aria-pressed="${MX.sel&&MX.sel[0]===c[0]&&MX.sel[1]===k}">${v}</button>`).join("")}</div>`).join("");
+  document.querySelectorAll("#mxTable .slot").forEach(b=>{b.onclick=()=>mxSlot(b.dataset.key)});
+  document.querySelectorAll("#mxBank .chipb").forEach(b=>{b.addEventListener("pointerdown",e=>mxDragStart(e,b));b.onclick=e=>{if(MX.dragMoved){MX.dragMoved=false;return}mxChip(b.dataset.col,b.dataset.v)}});
+  mxDrawSvg();
+}
+function mxChip(col,v){
+  if(MX.selSlot&&MX.selSlot.split(".")[1]===col){MX.fill[MX.selSlot]=v;delete MX.state[MX.selSlot];MX.focus=MX.selSlot.split(".")[0];MX.selSlot=null;MX.sel=null;mxRender();return}
+  if(MX.selSlot&&MX.selSlot.split(".")[1]!==col){mxMsg("info",`That box needs a ${COLS.find(c=>c[0]===MX.selSlot.split(".")[1])[2].toLowerCase()} card.`);return}
+  MX.sel=(MX.sel&&MX.sel[0]===col&&MX.sel[1]===v)?null:[col,v];mxRender()}
+function mxSlot(key){const col=key.split(".")[1];MX.focus=key.split(".")[0];
+  if(MX.sel&&MX.sel[0]===col){MX.fill[key]=MX.sel[1];delete MX.state[key];MX.sel=null;mxRender();return}
+  if(MX.sel&&MX.sel[0]!==col){mxMsg("info",`That card is a ${COLS.find(c=>c[0]===MX.sel[0])[2].toLowerCase()}. Put it in the ${COLS.find(c=>c[0]===MX.sel[0])[2]} column.`);return}
+  MX.selSlot=MX.selSlot===key?null:key;mxRender()}
+/* drag: a ghost follows the pointer; the chip itself never moves, so pointer capture is never lost */
+function mxDragStart(e,b){if(e.button>0)return;const sx=e.clientX,sy=e.clientY;let ghost=null;MX.dragMoved=false;
+  const move=ev=>{if(!ghost&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>6){ghost=document.createElement("div");ghost.className="ghost";ghost.textContent=b.textContent;document.body.appendChild(ghost);MX.dragMoved=true}
+    if(ghost){ghost.style.left=ev.clientX+"px";ghost.style.top=ev.clientY+"px";document.querySelectorAll(".slot.over").forEach(s=>s.classList.remove("over"));const el=document.elementFromPoint(ev.clientX,ev.clientY);const sl=el&&el.closest(".slot");if(sl&&sl.dataset.key.split(".")[1]===b.dataset.col)sl.classList.add("over");ev.preventDefault()}};
+  const up=ev=>{window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);
+    if(ghost){ghost.remove();const el=document.elementFromPoint(ev.clientX,ev.clientY);const sl=el&&el.closest(".slot");
+      if(sl){const key=sl.dataset.key;if(key.split(".")[1]===b.dataset.col){MX.fill[key]=b.dataset.v;delete MX.state[key];MX.focus=key.split(".")[0];MX.sel=null;MX.selSlot=null;mxRender()}else mxMsg("info","That card belongs in a different column.")}
+      setTimeout(()=>{MX.dragMoved=false},0)}};
+  window.addEventListener("pointermove",move,{passive:false});window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)}
+function mxMsg(cls,html){const e=$("#mxMsg");e.className="msg show "+cls;e.innerHTML=html}
+$("#mxCheck").onclick=()=>{let filled=0,wrongNow=[],okN=0,total=MX.items.length*3;
+  MX.items.forEach(id=>COLS.forEach((c,ci)=>{const key=id+"."+c[0];const v=MX.fill[key];if(!v)return;filled++;if(v===ENZ[id][c[0]]){MX.state[key]="ok";okN++}else{if(MX.state[key]!=="bad")MX.wrong++;MX.state[key]="bad";wrongNow.push([id,ci,v])}}));
+  mxRender();
+  if(!filled){mxMsg("info","Fill some boxes first. Tap a card, then tap a box.");return}
+  if(wrongNow.length){mxMsg("warn","<b>Not quite.</b><ul style='margin:6px 0 0;padding-left:18px'>"+wrongNow.slice(0,4).map(w=>`<li><b>${ENZ[w[0]].n}</b>: "${COLS[w[1]][1][w[2]]}" is not its ${COLS[w[1]][2].toLowerCase()}. Clue: ${ENZ[w[0]].c[w[1]]}</li>`).join("")+"</ul>");return}
+  if(okN<total){mxMsg("good",`All ${okN} filled boxes are right. ${total-okN} to go.`);return}
+  MX.done=true;const stars=MX.shows===0&&MX.wrong<=2?3:(MX.wrong+MX.shows<=5?2:1);mxRes[MX.r]=Math.max(mxRes[MX.r]||0,stars);store.set("digMatch",mxRes);mxRounds();
+  const secs=Math.round((performance.now()-MX.start)/1000);
+  mxMsg("good",`<span class="stars">${starStr(stars)}</span> Round complete with ${MX.wrong} wrong box${MX.wrong===1?"":"es"}${MX.shows?" and "+MX.shows+" shown":""}${$("#mxTimed").checked?" in "+Math.floor(secs/60)+":"+String(secs%60).padStart(2,"0"):""}. ${MX.r<ROUNDS.length-1?"Pick the next round above.":"Play the mixed challenge again for a new set."}`)};
+$("#mxHint").onclick=()=>{let target=null;for(const id of MX.items){for(const c of COLS){const key=id+"."+c[0];if(MX.state[key]==="bad"||!MX.fill[key]){target=[id,c,key];break}}if(target)break}
+  if(!target){mxMsg("info","Everything is filled. Press Check.");return}
+  document.querySelectorAll(".slot.hint").forEach(s=>s.classList.remove("hint"));const sl=document.querySelector(`.slot[data-key="${target[2]}"]`);if(sl)sl.classList.add("hint");
+  MX.focus=target[0];mxDrawSvg();mxMsg("info",`Hint for <b>${ENZ[target[0]].n}</b> (${target[1][2].toLowerCase()}): ${ENZ[target[0]].c[COLS.indexOf(target[1])]}`)};
+$("#mxShow").onclick=()=>{MX.items.forEach(id=>COLS.forEach(c=>{const key=id+"."+c[0];if(MX.fill[key]!==ENZ[id][c[0]]){MX.fill[key]=ENZ[id][c[0]];MX.state[key]="ok";MX.shows++}else MX.state[key]="ok"}));mxRender();mxMsg("info","Here are the answers. Read each row, then try another round.")};
+$("#mxClear").onclick=()=>{MX.fill={};MX.state={};mxRender();$("#mxMsg").className="msg"};
+$("#mxTimed").onchange=e=>{$("#mxTimer").hidden=!e.target.checked;MX.start=performance.now()};
+
+/* ---------- SVG: source map + reaction ---------- */
+const svgHex=(x,y,s,col,edge)=>`<polygon points="${[0,1,2,3,4,5].map(i=>[x+s*Math.cos(i*Math.PI/3),y+s*Math.sin(i*Math.PI/3)].map(v=>v.toFixed(1)).join(",")).join(" ")}" fill="var(--${col})" stroke="${edge||"rgba(0,0,0,.35)"}" stroke-width="1"/>`;
+const svgPent=(x,y,s,col)=>`<polygon points="${[0,1,2,3,4].map(i=>{const a=-Math.PI/2+i*TAU/5;return [x+s*1.05*Math.cos(a),y+s*1.05*Math.sin(a)].map(v=>v.toFixed(1)).join(",")}).join(" ")}" fill="var(--${col})" stroke="rgba(0,0,0,.35)"/>`;
+const svgBead=(x,y,r,i)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="var(--${i%3===1?"amino2":"amino"})" stroke="rgba(0,0,0,.3)"/>`;
+const svgLine=(x1,y1,x2,y2,col,w)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="${w||1.6}"/>`;
+const svgZig=(x,y,len)=>{let d=`M${x} ${y}`;for(let i=1;i<=6;i++)d+=` L${(x+len*i/6).toFixed(1)} ${y+(i%2?-3:3)}`;return `<path d="${d}" fill="none" stroke="var(--fat-edge)" stroke-width="2"/>`};
+const svgGly=(x,y)=>`<rect x="${x-3}" y="${y-12}" width="6" height="24" rx="2" fill="var(--fat)" stroke="var(--fat-edge)"/>`;
+function svgMol(kind,x,y){let s="";const H=(xx,k)=>k==="gal"?svgHex(xx,y,7,"gal"):(k==="fru"?svgPent(xx,y,7,"fru"):svgHex(xx,y,7,"carb","var(--carb-edge)"));
+  switch(kind){
+   case "starch":for(let i=0;i<6;i++){if(i<5)s+=svgLine(x+i*15+6,y,x+i*15+9,y,"var(--carb-edge)");s+=H(x+i*15)}break;
+   case "maltoseS":s+=svgLine(x+6,y,x+9,y,"var(--carb-edge)")+H(x)+H(x+15);break;
+   case "sucroseS":s+=svgLine(x+6,y,x+9,y,"var(--carb-edge)")+H(x)+H(x+15,"fru");break;
+   case "lactoseS":s+=svgLine(x+6,y,x+9,y,"var(--carb-edge)")+H(x)+H(x+15,"gal");break;
+   case "maltose":s+=svgLine(x+6,y,x+9,y,"var(--carb-edge)")+H(x)+H(x+15)+svgLine(x+42,y,x+45,y,"var(--carb-edge)")+svgLine(x+57,y,x+60,y,"var(--carb-edge)")+H(x+36)+H(x+51)+H(x+66);break;
+   case "glu":s+=H(x)+H(x+24);break;
+   case "glufru":s+=H(x)+H(x+24,"fru");break;
+   case "glugal":s+=H(x)+H(x+24,"gal");break;
+   case "prot":for(let i=0;i<8;i++){if(i<7)s+=svgLine(x+i*11,y+Math.sin(i)*4,x+(i+1)*11,y+Math.sin(i+1)*4,"var(--ink-faint)");}for(let i=0;i<8;i++)s+=svgBead(x+i*11,y+Math.sin(i)*4,5,i);break;
+   case "pept":s+=svgLine(x,y,x+22,y,"var(--ink-faint)")+svgBead(x,y,5,0)+svgBead(x+11,y,5,1)+svgBead(x+22,y,5,2);break;
+   case "shortp":s+=svgLine(x,y,x+11,y,"var(--ink-faint)")+svgBead(x,y,5,0)+svgBead(x+11,y,5,1)+svgLine(x+30,y,x+52,y,"var(--ink-faint)")+svgBead(x+30,y,5,2)+svgBead(x+41,y,5,3)+svgBead(x+52,y,5,4);break;
+   case "aa":for(let i=0;i<4;i++)s+=svgBead(x+i*17,y,5,i);break;
+   case "tg":s+=svgGly(x,y)+svgZig(x+3,y-8,26)+svgZig(x+3,y,26)+svgZig(x+3,y+8,26);break;
+   case "famg":s+=svgGly(x,y)+svgZig(x+3,y,26)+svgZig(x+38,y-10,24)+svgZig(x+38,y+10,24);break;
+   case "fadg":s+=svgGly(x,y)+svgZig(x+3,y-6,26)+svgZig(x+3,y+6,26)+svgZig(x+38,y,24);break;
+   case "na":for(let i=0;i<5;i++){s+=`<rect x="${x+i*14-5}" y="${y-5}" width="10" height="10" rx="2" fill="var(--act1)" stroke="rgba(0,0,0,.3)"/>`;if(i<4)s+=svgLine(x+i*14+5,y,x+i*14+9,y,"var(--ink-faint)")}break;
+   case "nuc":for(let i=0;i<4;i++)s+=`<rect x="${x+i*17-5}" y="${y-5}" width="10" height="10" rx="2" fill="var(--act1)" stroke="rgba(0,0,0,.3)"/>`;break;}
+  return s}
+const SPOT={sal:[[96,40],[164,40]],ling:[[130,58]],chief:[[205,150]],panc:[[200,206]],bb:[[130,256]]};
+function mxDrawSvg(){const h=$("#mxSvg");if(!h)return;const id=MX.focus||MX.items[0];const e=ENZ[id];if(!e)return;
+  const row=COLS.map(c=>MX.state[id+"."+c[0]]==="ok");
+  const showSrc=row[0],showSub=row[1],showProd=row[2];
+  const enzCol=["samyl","pamyl"].includes(id)?"enzc":(["pep","tryp","chymo","carbx"].includes(id)?"enzp":(["llip","plip"].includes(id)?"enzl":(id==="nuc"?"act1":"enzb")));
+  let s=`<svg viewBox="0 0 300 400" role="img" aria-label="${e.n}: source and reaction">`;
+  // body map
+  s+=`<ellipse cx="130" cy="44" rx="40" ry="38" fill="var(--skin)" stroke="var(--skin-edge)"/><path d="M60 100 Q130 84 200 100 L230 330 Q130 350 30 330 Z" fill="var(--skin)" stroke="var(--skin-edge)" opacity=".7"/>`;
+  s+=`<ellipse cx="96" cy="44" rx="7" ry="11" fill="var(--saliva)"/><ellipse cx="164" cy="44" rx="7" ry="11" fill="var(--saliva)"/><ellipse cx="130" cy="64" rx="12" ry="5" fill="var(--tongue)"/>`;
+  s+=`<path d="M130 82 L132 130" stroke="var(--gut-edge)" stroke-width="8" stroke-linecap="round"/><path d="M132 128 C150 110 230 110 236 150 C246 190 220 200 190 196 C170 194 160 180 150 170 Z" fill="var(--gut)" stroke="var(--gut-edge)"/>`;
+  s+=`<path d="M120 210 C150 200 220 196 250 200" stroke="var(--panc)" stroke-width="16" stroke-linecap="round"/>`;
+  s+=`<path d="M150 186 C110 190 100 220 120 230 C150 240 190 230 200 246 C210 262 160 270 120 262 C80 256 80 280 110 288 C150 296 190 290 200 300" fill="none" stroke="var(--gut-edge)" stroke-width="12" stroke-linecap="round"/><path d="M150 186 C110 190 100 220 120 230 C150 240 190 230 200 246 C210 262 160 270 120 262 C80 256 80 280 110 288 C150 296 190 290 200 300" fill="none" stroke="var(--gut)" stroke-width="8" stroke-linecap="round"/>`;
+  s+=`<text x="244" y="160" class="svglab">stomach</text><text x="200" y="226" class="svglab">pancreas</text><text x="210" y="276" class="svglab">small int.</text><text x="176" y="30" class="svglab">salivary</text>`;
+  if(showSrc){(SPOT[e.src]||[]).forEach(p=>{s+=`<circle cx="${p[0]}" cy="${p[1]}" r="18" fill="none" stroke="var(--good)" stroke-width="3"><animate attributeName="r" values="14;22;14" dur="1.4s" repeatCount="indefinite"/></circle>`})}
+  // reaction strip
+  s+=`<rect x="6" y="318" width="288" height="76" rx="8" fill="var(--panel)" stroke="var(--rule)"/>`;
+  s+=`<text x="16" y="336" style="font:600 12px var(--sans);fill:var(--ink)">${e.n}</text>`;
+  s+=showSub?`<g>${svgMol(e.sub,22,366)}</g>`:`<text x="22" y="370" class="svglab">substrate ?</text>`;
+  s+=`<g transform="translate(150 366)"><path d="M0 0 L10 -5 A11 11 0 1 0 10 5 Z" fill="var(--${enzCol})"><animateTransform attributeName="transform" type="scale" values="1;0.85;1" dur=".6s" repeatCount="indefinite"/></path></g>`;
+  s+=svgLine(166,366,178,366,"var(--ink-soft)",1.5)+`<polygon points="178,362 185,366 178,370" fill="var(--ink-soft)"/>`;
+  s+=showProd?`<g>${svgMol(e.prod,196,366)}</g>`:`<text x="196" y="370" class="svglab">product ?</text>`;
+  s+=`</svg>`;h.innerHTML=s;
+  $("#mxCap").textContent=row.every(Boolean)?`${e.n}: from ${SRC[e.src].toLowerCase()}, ${SUB[e.sub].toLowerCase()} → ${PROD[e.prod].toLowerCase()}.`:`Showing ${e.n}. Correct boxes light up the picture.`}
+
+/* =====================================================================
+   PART 3 - HORMONE CONTROL SIMULATOR
+   ===================================================================== */
+const SH=makeStage("cvHorm",800,440),SHC=makeStage("cvHormChart",800,200);
+const HO={x:-144.5,y:-363.75,s:2.35};const HOc=p=>[HO.x+p[0]*HO.s,HO.y+p[1]*HO.s];
+const LV=["none","low","medium","high"];
+const HIN={acid:2,fat:0,prot:1};
+function hNew(){return {t:0,F:0,ceph:0,G:1,S:1,K:1,a:0,f:0,p:0,V:.85,b:.1,e:.3,h:.3,P:0,stone:false,hist:[],empt:0,sawAcid:false,pH:7.4,fatTimer:0,meal:{acid:2,fat:1,prot:1}}}
+let HS=hNew();let hPaused=false,hSpeed=1;const hDone=new Set(store.get("digHorm")||[]);
+function hStep(s,dt){
+  s.ceph=Math.max(0,s.ceph-dt/25);
+  const Gt=1+1.6*s.F+1.0*s.ceph;s.G+=(Gt-s.G)*Math.min(1,dt/4);
+  const brake=1/(1+.6*Math.max(0,s.S-1)+.8*Math.max(0,s.K-1));
+  const out=s.F>0?Math.min(s.F,.012*s.F*brake*dt*3+.004*dt*(s.F>.02?1:0)):0;s.F-=out;s.empt=out/dt;
+  s.a+=out*(1+.5*s.G)*1.0;s.f+=out*s.meal.fat*.9;s.p+=out*s.meal.prot*.9;
+  const St=1+2.2*Math.min(1.2,s.a/.7);s.S+=(St-s.S)*Math.min(1,dt/3);
+  const Kt=1+2*Math.min(1.3,(s.f+.6*s.p)/.8);s.K+=(Kt-s.K)*Math.min(1,dt/3);
+  s.h=.15+1.1*Math.max(0,s.S-1);s.a=Math.max(0,s.a-s.a*s.h*dt*.12-dt*.002);
+  s.e=.15+1.0*Math.max(0,s.K-1)+.15*Math.max(0,s.S-1);
+  const cg=clamp((s.K-1.3)/1.4,0,1);
+  if(!s.stone){s.b=.08+1.3*cg*s.V;s.V=clamp(s.V-cg*.03*dt+(1-cg)*.012*dt,.3,1);s.P=Math.max(0,s.P-dt*.2)}
+  else{s.b=.03;s.V=clamp(s.V+.006*dt,.3,1.15);s.P=clamp(s.P+(cg-.1)*dt*.4,0,1)}
+  const emul=Math.min(1,s.b/.6);s.f=Math.max(0,s.f-s.f*dt*(.006+.07*emul*Math.min(1,s.e/1.2)));
+  s.p=Math.max(0,s.p-s.p*dt*(.02+.07*Math.min(1,s.e/1.2)));
+  s.pH=clamp(7.5-5.2*s.a/(s.a+.45),2,8);if(s.pH<4)s.sawAcid=true;
+  if(s.stone&&s.f>.6&&s.K>1.8)s.fatTimer+=dt;
+  s.t+=dt;return s}
+const HCH=[
+ {id:"sec",t:"Send acidic chyme and push secretin above 2.0×.",hint:"Secretin answers acid in the duodenum. Set Acid high and drop some chyme.",show:()=>{setSl("acid",3);setSl("fat",0);setSl("prot",0);hDrop()},test:s=>s.S>2},
+ {id:"neut",t:"After an acid squirt, let bicarbonate bring the duodenal pH back above 6.5.",hint:"Drop acidic chyme, then wait and watch secretin call for bicarbonate.",show:()=>{setSl("acid",3);hDrop()},test:s=>s.sawAcid&&s.pH>6.5},
+ {id:"cck",t:"Make the gallbladder contract (CCK above 1.8×, no gallstone).",hint:"CCK answers fat and protein in the duodenum. Raise Fat and drop chyme.",show:()=>{$("#hStone").checked=false;HS.stone=false;$("#tgStone").classList.remove("on");setSl("fat",3);setSl("prot",2);hDrop()},test:s=>s.K>1.8&&!s.stone&&s.b>.45},
+ {id:"gas",t:"Raise gastrin above 1.8×.",hint:"Gastrin comes from the stomach when food arrives. Eat a meal (and smell it first).",show:()=>{hSmell();hEat()},test:s=>s.G>1.8},
+ {id:"stone",t:"With a gallstone, send fatty chyme and see the fat stay undigested.",hint:"Tick the gallstone box, raise Fat, then drop chyme. Watch the bile and the fat.",show:()=>{$("#hStone").checked=true;HS.stone=true;$("#tgStone").classList.add("on");setSl("fat",3);hDrop()},test:s=>s.fatTimer>15}];
+function hBuildSliders(){$("#hSliders").innerHTML=[["acid","Acid","Low pH from the stomach"],["fat","Fat","Triglycerides"],["prot","Protein","Peptides"]].map(([k,n,d])=>`<label class="tog" style="cursor:default"><span style="flex:1">${n}: <b id="lv-${k}">${LV[HIN[k]]}</b><small>${d}</small></span><input type="range" id="sl-${k}" min="0" max="3" step="1" value="${HIN[k]}" style="width:120px;accent-color:var(--accent)" aria-label="${n} level"></label>`).join("");
+  ["acid","fat","prot"].forEach(k=>{$("#sl-"+k).oninput=e=>{HIN[k]=+e.target.value;$("#lv-"+k).textContent=LV[HIN[k]]}})}
+function setSl(k,v){HIN[k]=v;$("#sl-"+k).value=v;$("#lv-"+k).textContent=LV[v]}
+function hDrop(){HS.a+=HIN.acid*.45;HS.f+=HIN.fat*.45;HS.p+=HIN.prot*.45;HS.dropFx=1.2;hNowMsg(`Chyme dropped: acid ${LV[HIN.acid]}, fat ${LV[HIN.fat]}, protein ${LV[HIN.prot]}.`)}
+function hEat(){HS.F=1;HS.meal={acid:HIN.acid,fat:HIN.fat,prot:HIN.prot};hNowMsg("A meal arrives in the stomach. Watch gastrin and stomach acid.")}
+function hSmell(){HS.ceph=1;hNowMsg("Cephalic phase: smelling food sends vagus nerve signals to the stomach.")}
+let hNowText="";function hNowMsg(t){hNowText=t}
+$("#hDrop").onclick=hDrop;$("#hEat").onclick=hEat;$("#hSmell").onclick=hSmell;
+$("#hStone").onchange=e=>{HS.stone=e.target.checked;$("#tgStone").classList.toggle("on",HS.stone);hNowMsg(HS.stone?"A gallstone now blocks the bile duct.":"The bile duct is clear again.")};
+$("#hReset").onclick=()=>{HS=hNew();$("#hStone").checked=false;$("#tgStone").classList.remove("on");hNowMsg("Reset to a resting gut.")};
+$("#hPause").onclick=()=>{hPaused=!hPaused;$("#hPause").textContent=hPaused?"Play":"Pause"};
+$("#hSpeed").oninput=e=>hSpeed=+e.target.value;
+let hHintI=0;
+$("#hHint").onclick=()=>{const c=HCH.find(c=>!hDone.has(c.id))||HCH[hHintI++%HCH.length];hMsg("info","Hint: "+c.hint)};
+$("#hShowMe").onclick=()=>{const c=HCH.find(c=>!hDone.has(c.id))||HCH[0];c.show();hMsg("info","Showing: "+c.t)};
+function hMsg(cls,h){const e=$("#hMsg");e.className="msg show "+cls;e.innerHTML=h}
+function hChal(){$("#hChal").innerHTML=HCH.map(c=>`<li class="${hDone.has(c.id)?"done":""}"><span class="bx">${hDone.has(c.id)?"✓":""}</span><span class="t">${c.t}</span></li>`).join("");$("#hStars").innerHTML=`<b>${hDone.size}</b> / ${HCH.length}`}
+function hCheck(){HCH.forEach(c=>{if(!hDone.has(c.id)&&c.test(HS)){hDone.add(c.id);store.set("digHorm",[...hDone]);hChal();hMsg("good","Challenge done: "+c.t)}})}
+function hReadouts(){const s=HS;const st=x=>x>1.4?"↑ high":(x<.7?"↓ low":"resting");
+  const gb=s.stone?(s.P>.3?"blocked, squeezing (pain)":"blocked"):(s.K>1.2?"contracting":"filling, storing");
+  $("#hRead").innerHTML=[["Gastrin",s.G.toFixed(1)+"× "+st(s.G)],["Secretin",s.S.toFixed(1)+"× "+st(s.S)],["CCK",s.K.toFixed(1)+"× "+st(s.K)],["Duodenal pH",s.pH.toFixed(1)],["Bicarbonate flow",s.h>.8?"high":(s.h>.4?"some":"low")],["Pancreatic enzymes",s.e>.9?"high":(s.e>.45?"some":"low")],["Bile into duodenum",s.b>.6?"high":(s.b>.2?"some":"very low")],["Gallbladder",gb],["Stomach emptying",s.F<.02?"empty":((s.S>1.3||s.K>1.3)?"slowed":"steady")]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
+  let now=hNowText;
+  if(s.a>.3&&s.S>1.5)now="Acid in the duodenum → secretin → the pancreas sends bicarbonate. "+(s.pH>6?"The pH is recovering.":"");
+  else if(s.f>.3&&s.stone)now="Fat triggers CCK, the gallbladder squeezes, but the stone blocks the bile. The fat is not emulsified, so it digests slowly.";
+  else if(s.f+s.p>.3&&s.K>1.4)now="Fat and protein → CCK → the gallbladder contracts and the pancreas releases enzymes.";
+  else if(s.F>.1&&s.G>1.3)now="Food in the stomach → gastrin → more acid. Chyme leaves through the pyloric sphincter a little at a time.";
+  $("#hNow").textContent=now||"Resting. Mix a chyme and drop it in, or eat a meal.";
+  $("#hClock").textContent=Math.floor(HS.t)+" min (sped up)"}
+function drawHorm(T){
+  SH.begin();ctx.fillStyle=C.ecf;ctx.fillRect(0,0,800,440);const s=HS;
+  ctx.save();ctx.beginPath();ctx.rect(0,0,525,440);ctx.clip();
+  // blood loop
+  const loop=[[40,420],[30,250],[60,60],[300,22],[505,60],[515,300],[470,425],[250,432],[40,420]];
+  ctx.globalAlpha=.4;smooth(loop);ctx.strokeStyle=C.blood;ctx.lineWidth=5;ctx.stroke();ctx.globalAlpha=1;
+  const nH=(v)=>Math.round(clamp(v-.5,0,3)*4);
+  [["g",s.G,0],["s",s.S,.33],["k",s.K,.66]].forEach(([k,v,o])=>{const n=nH(v);for(let i=0;i<n;i++){const q=((T*.05)+o+i/Math.max(n,1)*.33)%1;const p=along(loop,q);hormoneP(k,p[0],p[1],1,6.5)}});
+  ctx.save();ctx.translate(HO.x,HO.y);ctx.scale(HO.s,HO.s);
+  drawLiverLocal(false,1);
+  ctx.lineCap="round";smooth(BILEDUCT);ctx.strokeStyle=C.bile;ctx.lineWidth=2.6;ctx.stroke();smooth(CYSTIC);ctx.stroke();ctx.lineCap="butt";
+  drawPancLocal(s.e>.8||s.h>.8,1);smooth(PDUCT);ctx.strokeStyle=C["panc-edge"];ctx.lineWidth=1.4;ctx.stroke();
+  const cg=clamp((s.K-1.3)/1.4,0,1);const pulse=cg*(.5+.5*Math.sin(T*5));
+  ctx.save();ctx.translate(150,258);ctx.scale(s.V*(1-.18*pulse)+.15,s.V*(1-.18*pulse)+.15);ctx.translate(-150,-258);drawGBLocal(0,cg>.3,1);ctx.restore();
+  tube(DUOD,10,C.gut,C["gut-edge"],1.6);tube(DUOD,5.4,C.lumen,C.lumen,0);
+  drawStomachLocal(s.F>.05?.5+.5*Math.sin(T*3):0,false,1);
+  ctx.restore();
+  // stomach contents
+  for(let i=0;i<Math.round(s.F*14);i++){const p=HOc([205+rnd(i)*45,205+rnd(i+3)*65]);foodBlob(p[0]+Math.sin(T+i)*3,p[1],6,C.food,i)}
+  for(let i=0;i<nH(s.G);i++){const q=((T*.4)+i/8)%1;const p=HOc([212+rnd(i+20)*40,200+rnd(i+30)*70]);hplus(p[0],p[1]-q*16,1-q,4.5)}
+  // pyloric sphincter
+  const pyl=HOc([189,268]);sphincterRing(pyl[0],pyl[1],5,11,clamp(s.empt*30,0,1),C.circ,null,{rot:.3});
+  // duodenum contents
+  const dpts=i=>HOc(along(DUOD,clamp(.12+((i*.137+T*.01)%1)*.8,0,1)));
+  for(let i=0;i<Math.round(s.a*10);i++){const p=dpts(i);hplus(p[0]+Math.sin(T*2+i)*4,p[1]+Math.cos(T+i)*4,1,4.5)}
+  const emul=Math.min(1,s.b/.6);
+  for(let i=0;i<Math.round(s.f*6);i++){const p=dpts(i+40);if(emul>.5){for(let k=0;k<3;k++)fatDrop(p[0]+k*5-5,p[1]+(k%2)*5,3.6)}else fatDrop(p[0],p[1],8)}
+  for(let i=0;i<Math.round(s.p*6);i++){const p=dpts(i+80);aaP(p[0],p[1],4,i);aaP(p[0]+7,p[1],4,i+1)}
+  // flows
+  const pd=k=>HOc(along(PDUCT,k));
+  for(let i=0;i<Math.round(s.h*4);i++){const q=((T*.5)+i/5)%1;const p=pd(q);hco3(p[0],p[1],1,4.2)}
+  for(let i=0;i<Math.round(s.e*3);i++){const q=((T*.45)+i/4+.1)%1;const p=pd(q);enzyme(p[0],p[1]+6,5,i%2?C.enzl:C.enzp,{open:.3})}
+  const bpath=CYSTIC.concat(BILEDUCT.slice(1));
+  const stoneQ=.45;
+  if(s.stone){const sp=HOc(along(bpath,stoneQ));circ(sp[0],sp[1],8,C.stone,C.ink,1.4);ctx.globalAlpha=.6;circ(sp[0]-2,sp[1]-2,2.5,"#fff");ctx.globalAlpha=1;label(sp[0]+14,sp[1]+16,"gallstone",{size:11.5,weight:700,align:"left"});
+    for(let i=0;i<4;i++){const q=((T*.3)+i/4)%1*stoneQ*.9;const p=HOc(along(bpath,q));drop(p[0],p[1],3.6,C.bile)}
+    if(s.P>.2){const g=HOc([150,258]);glow(g[0],g[1],50,C.bad,s.P*.5);label(g[0]-10,g[1]-34,"pain",{size:12,weight:700,color:C.bad,align:"center"})}}
+  else{for(let i=0;i<Math.round(s.b*6);i++){const q=((T*.5)+i/6)%1;const p=HOc(along(bpath,q));drop(p[0],p[1],3.6,C.bile)}}
+  if(s.dropFx>0){s.dropFx-=.016;const p=HOc([175,272]);glow(p[0],p[1],40,C.glow,s.dropFx)}
+  if(s.ceph>.05){label(80,40,"vagus nerve signal",{size:11.5,weight:600,color:C.nerve});const st0=HOc([215,190]);curveArrow([[100,52],[200,40],[st0[0],st0[1]-30]],C.nerve,2.5,[5,4])}
+  // labels
+  const L=(lp,t,o)=>{const p=HOc(lp);label(p[0],p[1],t,Object.assign({size:12,weight:700},o||{}))};
+  L([110,215],"liver",{color:"#fff",pill:false});L([248,190],"stomach",{});L([140,276],"gallbladder",{align:"right"});L([250,300],"pancreas",{});L([170,330],"duodenum",{});
+  ctx.restore();
+  // gauges
+  panelBox(534,10,256,420,false);title(546,28,"Blood hormone levels");
+  [["Gastrin",s.G,C.gastrin,"g"],["Secretin",s.S,C.secretin,"s"],["CCK",s.K,C.cck,"k"]].forEach((g,i)=>{const x=566+i*62;ctx.fillStyle=C.sunk;rr(x-12,52,24,220,6);ctx.fill();const hh=220*clamp(g[1]/3.2,0,1);ctx.fillStyle=g[2];rr(x-12,272-hh,24,hh,6);ctx.fill();
+    line(x-16,272-220/3.2,x+16,272-220/3.2,C.ink,1.2,[3,2]);hormoneP(g[3],x,290,1,7);txt(x,308,g[0],{size:11.5,weight:600,align:"center"});txt(x,324,g[1].toFixed(1)+"×",{size:11.5,mono:true,align:"center"})});
+  txt(746,52+220-220/3.2,"rest",{size:10,color:C["ink-soft"],align:"left"});
+  // pH
+  txt(546,352,"Duodenal pH",{size:12,weight:600});ctx.fillStyle=C.sunk;rr(546,364,232,16,8);ctx.fill();const ph01=(s.pH-1)/7.5;ctx.fillStyle=s.pH<5?C.acid:C.base;rr(546,364,232*ph01,16,8);ctx.fill();
+  txt(778,352,s.pH.toFixed(1),{size:13,weight:700,mono:true,align:"right"});txt(546,394,"acid",{size:10.5,color:C["ink-soft"]});txt(778,394,"neutral",{size:10.5,color:C["ink-soft"],align:"right"});
+  txt(546,416,s.stone?"Gallstone: bile is blocked":"Bile duct clear",{size:11.5,weight:600,color:s.stone?C.bad:C.good});
+}
+function drawHormChart(){SHC.begin();ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,200);const H=HS.hist;const x0=46,x1=780,y0=20,y1=170;
+  ctx.strokeStyle=C["rule-soft"];ctx.lineWidth=1;for(let v=0;v<=3;v++){const y=lerp(y1,y0,v/3);line(x0,y,x1,y,C["rule-soft"],1);txt(x0-6,y,v+"×",{size:10.5,align:"right",color:C["ink-soft"],mono:true})}
+  txt(x1,186,"time →",{size:10.5,align:"right",color:C["ink-soft"]});
+  if(H.length>1){const tEnd=H[H.length-1][0],tStart=tEnd-120;const X=t=>lerp(x0,x1,(t-tStart)/120);
+    [[1,C.gastrin,[]],[2,C.secretin,[]],[3,C.cck,[]],[4,C.base,[5,4]]].forEach(([k,col,dash])=>{ctx.beginPath();H.forEach((h,i)=>{if(h[0]<tStart)return;const v=k===4?(h[4]-2)/6*3:h[k];const y=lerp(y1,y0,clamp(v/3,0,1));ctx.lineTo(X(h[0]),y)});ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.setLineDash(dash);ctx.stroke();ctx.setLineDash([])})}
+  [["Gastrin",C.gastrin],["Secretin",C.secretin],["CCK",C.cck],["pH (2 to 8)",C.base]].forEach((l,i)=>{const x=x0+10+i*110;line(x,192,x+20,192,l[1],2.4,i===3?[5,4]:[]);txt(x+26,192,l[0],{size:11})})}
+
+/* =====================================================================
+   PART 4 - WHAT BREAKS IF...?
+   ===================================================================== */
+const S4=makeStage("cvSc",600,400);
+const SC=[
+ {t:"Lactose intolerance",d:"After a glass of milk, Maya gets bloating, gas and loose stools within a couple of hours. Cheese and lactose-free milk do not bother her.",
+  q1:["Which brush border enzyme is low?",[["Lactase",1,"Yes. Without enough lactase, lactose cannot be split into glucose and galactose."],["Sucrase",0,"Sucrase splits table sugar. Her problem follows milk."],["Pepsin",0,"Pepsin digests protein in the stomach, and it is not a brush border enzyme."],["Pancreatic lipase",0,"Lipase digests fat. Lactose-free milk has the same fat but causes no symptoms."]]],
+  q2:["Why do gas, bloating and diarrhea follow?",[["Undigested lactose reaches the colon. Bacteria ferment it (gas), and it pulls water in by osmosis.",1,"Right. The sugar that should have been absorbed feeds bacteria and holds water in the colon."],["Lactose damages the villi.",0,"That describes celiac disease. In lactose intolerance the villi are normal."],["Milk fat cannot be emulsified.",0,"Bile emulsifies milk fat normally. The problem is the sugar."],["The stomach makes too much acid.",0,"Acid is not the issue here. Symptoms come from the colon."]]],
+  ex:"Lactase normally sits on the brush border. When it is low, lactose stays in the lumen, travels to the colon, and bacteria ferment it. The unabsorbed sugar also draws water in by osmosis, causing diarrhea.",cap:["Lactase splits lactose; sugars are absorbed","Lactose passes to the colon: gas and water"]},
+ {t:"Gallstones",d:"After a fatty dinner, Mr. Ortiz has sharp pain in his upper right abdomen. An ultrasound shows a stone stuck in the duct leaving his gallbladder.",
+  q1:["Which digestion step suffers most after a fatty meal?",[["Emulsifying fat with bile salts",1,"Yes. Bile cannot reach the duodenum, so fat stays in large globules that lipase digests slowly."],["Starch digestion by amylase",0,"Amylase comes from saliva and the pancreas, not the gallbladder."],["Protein digestion by pepsin",0,"Pepsin works in the stomach and does not need bile."],["Water absorption in the colon",0,"The colon is not the main problem here."]]],
+  q2:["Why does the pain often start after a fatty meal?",[["Fat in the duodenum triggers CCK, and the gallbladder contracts against the blocked duct.",1,"Right. CCK squeezes the gallbladder, but the bile has nowhere to go."],["Fat triggers gastrin, which makes the stomach burn.",0,"Gastrin raises stomach acid. The pain here comes from the gallbladder."],["Secretin makes the gallbladder fill with bicarbonate.",0,"Secretin mainly acts on the pancreas."],["Fat scratches the bile duct.",0,"Fat never enters the bile duct. The squeeze against the stone causes the pain."]]],
+  ex:"CCK makes the gallbladder contract when fat arrives. A stone in the cystic or common bile duct blocks the bile, causing pain and poor fat digestion (fatty stools). If the common bile duct is blocked, bilirubin backs up into the blood and can cause jaundice.",cap:["Bile flows; fat is emulsified","Stone blocks bile; fat stays in big globules"]},
+ {t:"Peptic ulcer",d:"Jordan takes ibuprofen (an NSAID) every day for back pain and now has a burning stomach pain. A breath test also finds the bacterium Helicobacter pylori.",
+  q1:["What normally protects the stomach lining from its own acid and pepsin?",[["A thick layer of alkaline mucus, with bicarbonate, from the mucous cells",1,"Yes. That barrier keeps acid and pepsin away from the cells."],["Intrinsic factor",0,"Intrinsic factor is for vitamin B12 absorption."],["Bile from the liver",0,"Bile goes to the duodenum, not the stomach wall."],["The pyloric sphincter",0,"The pylorus controls emptying; it does not coat the lining."]]],
+  q2:["How can H. pylori or regular NSAID use lead to an ulcer?",[["Both weaken the mucus barrier, so acid and pepsin can digest the wall.",1,"Right. H. pylori damages the lining, and NSAIDs reduce the mucus and bicarbonate that protect it."],["Both block pepsinogen from becoming pepsin.",0,"That would protect the wall, not harm it."],["Both stop parietal cells from making acid.",0,"Less acid would help an ulcer heal."],["Both destroy the villi of the stomach.",0,"The stomach has no villi. Villi are in the small intestine."]]],
+  ex:"An ulcer is a sore where acid and pepsin eat into the stomach or duodenal wall. H. pylori infection and long-term NSAID use both weaken the mucus and bicarbonate barrier, so the lining is digested.",cap:["Mucus shields the lining","Thin mucus: acid and pepsin make a crater"]},
+ {t:"Acute pancreatitis",d:"Mrs. Lee has severe upper abdominal pain that goes through to her back. Her blood shows high levels of pancreatic enzymes. A gallstone near the pancreatic duct is suspected.",
+  q1:["Why doesn't a healthy pancreas digest itself?",[["Its protein enzymes are made inactive (like trypsinogen) and only activated in the duodenum.",1,"Yes. Trypsinogen is unlocked by a brush border enzyme in the duodenum, far from the pancreas cells."],["Pancreas cells contain no protein.",0,"All cells contain protein. Inactive enzymes are the protection."],["Bicarbonate destroys trypsin inside the pancreas.",0,"Bicarbonate neutralizes acid. It does not destroy trypsin."],["Bile coats the pancreas.",0,"Bile goes to the duodenum and works on fat."]]],
+  q2:["Which digestion problem would you expect if the pancreas is badly damaged?",[["Poor digestion of fats and proteins, with fatty stools, because less lipase and protease reach the duodenum.",1,"Right. The pancreas supplies most of the digestive enzymes."],["Trouble swallowing.",0,"Swallowing uses the tongue, pharynx and esophagus."],["Too much stomach acid absorbed into blood.",0,"Acid is not absorbed this way. The issue is missing enzymes."],["No water absorbed in the colon.",0,"The colon still absorbs water."]]],
+  ex:"In pancreatitis, enzymes such as trypsin become active inside the pancreas and start digesting it, causing inflammation and pain. Gallstones and heavy alcohol use are common causes. Less pancreatic juice reaches the duodenum, so fats and proteins are poorly digested.",cap:["Trypsinogen activated only in the duodenum","Trypsin active inside the pancreas: self-digestion"]},
+ {t:"Celiac disease",d:"Sam has diarrhea, weight loss and iron-deficiency anemia. A biopsy of his small intestine shows flattened villi. His symptoms improve on a gluten-free diet.",
+  q1:["Which part of the small intestine is damaged?",[["The villi, which become flattened",1,"Yes. An immune reaction to gluten damages the villi."],["The pyloric sphincter",0,"The pylorus is between stomach and duodenum. The biopsy shows the villi."],["The gallbladder",0,"The gallbladder is an accessory organ, not part of the intestinal lining."],["The haustra of the colon",0,"Haustra are in the large intestine."]]],
+  q2:["Why do many nutrients drop, not just one?",[["Flat villi mean much less surface and fewer brush border enzymes for every nutrient.",1,"Right. Iron, vitamins, sugars, amino acids and fats are all absorbed less."],["Gluten blocks only amylase.",0,"The damage is to the lining, so it affects everything absorbed there."],["The stomach stops making acid.",0,"Stomach acid is not the cause here."],["Bile can no longer be made.",0,"The liver still makes bile."]]],
+  ex:"In celiac disease, eating gluten triggers an immune attack on the small intestine lining. Villi flatten, the surface area and brush border enzymes drop, and many nutrients are absorbed poorly. A strict gluten-free diet lets the villi recover.",cap:["Tall villi: lots of surface","Flattened villi: far less absorption"]},
+ {t:"GERD (reflux)",d:"Alex gets a burning feeling behind the breastbone, worse when lying down after a big meal. It eases with antacids.",
+  q1:["Which sphincter is not closing well?",[["The lower esophageal sphincter (cardiac sphincter)",1,"Yes. It should close after food enters the stomach."],["The upper esophageal sphincter",0,"That one is at the top of the esophagus, near the pharynx."],["The pyloric sphincter",0,"That one controls emptying into the duodenum."],["The external anal sphincter",0,"That one is at the far end of the tract."]]],
+  q2:["Why does refluxed acid hurt the esophagus but not the stomach?",[["The esophagus lacks the stomach's thick protective mucus layer.",1,"Right. Its lining is not built to resist acid and pepsin."],["The esophagus has more parietal cells.",0,"Parietal cells are in the stomach's gastric glands."],["Acid becomes stronger in the esophagus.",0,"It is the same acid. The esophagus just is not protected from it."],["The esophagus is lined with bone.",0,"There is no bone in the esophageal wall."]]],
+  ex:"In gastroesophageal reflux disease (GERD), the lower esophageal sphincter does not close well, so acidic chyme splashes back up. The esophagus lacks the stomach's mucus shield, so the acid irritates it (heartburn). Lying down after a large meal makes reflux easier.",cap:["LES closed: acid stays in the stomach","Weak LES: acid splashes up (heartburn)"]}];
+let SCI=0,scAfter=0,scTarget=0;const scRes=store.get("digBreak")||{};const scAns={};
+function scRender(){const s=SC[SCI];$("#scN").textContent=`Case ${SCI+1} of ${SC.length}`;$("#scTitle").textContent=s.t;$("#scDesc").textContent=s.d;
+  $("#scChips").innerHTML=SC.map((x,i)=>`<button type="button" class="chip ${i===SCI?"cur":""} ${scRes[i]?"done":""}" data-i="${i}" aria-label="Case ${i+1}: ${x.t}">${i+1}</button>`).join("");
+  document.querySelectorAll("#scChips .chip").forEach(b=>b.onclick=()=>{SCI=+b.dataset.i;scTarget=0;scAfter=0;scRender()});
+  const solved=Object.keys(scRes).length;$("#scScore").textContent=`Solved: ${solved} / ${SC.length}`;
+  const mk=(box,fb,q,qi)=>{$(box).innerHTML=q[1].map((o,i)=>`<button type="button" class="opt" data-i="${i}"><span class="mk">${"ABCD"[i]}</span>${o[0]}</button>`).join("");$(fb).className="fb";
+    document.querySelectorAll(box+" .opt").forEach(b=>b.onclick=()=>{const o=q[1][+b.dataset.i];document.querySelectorAll(box+" .opt").forEach(x=>x.classList.remove("wrong"));
+      if(o[1]){b.classList.add("right");$(fb).className="fb show ok";$(fb).textContent="✓ "+o[2];if(qi===1){$("#q2wrap").hidden=false}else{scRes[SCI]=1;store.set("digBreak",scRes);$("#scExp").className="explain show";$("#scExp").innerHTML="<b>What is going on.</b> "+s.ex;scTarget=1;$("#showBtn").textContent="Show me the healthy version";scRender2()}}
+      else{b.classList.add("wrong");$(fb).className="fb show no";$(fb).textContent="Not quite. "+o[2]}})};
+  $("#scQ1t").textContent="1. "+s.q1[0];$("#scQ2t").textContent="2. "+s.q2[0];mk("#scQ1","#scF1",s.q1,1);mk("#scQ2","#scF2",s.q2,2);$("#q2wrap").hidden=true;$("#scExp").className="explain";
+  $("#showBtn").textContent=scTarget?"Show me the healthy version":"Show me the change";scRender2()}
+function scRender2(){const s=SC[SCI];$("#scCap").textContent=(scTarget?"After: ":"Healthy: ")+s.cap[scTarget];$("#scNote").textContent="Press the button to switch between the healthy picture and the problem.";
+  const solved=Object.keys(scRes).length;$("#scScore").textContent=`Solved: ${solved} / ${SC.length}`;document.querySelectorAll("#scChips .chip").forEach((b,i)=>b.classList.toggle("done",!!scRes[i]));$("#showBtn").textContent=scTarget?"Show me the healthy version":"Show me the change";
+  S4.cv.setAttribute("aria-label",s.t+": "+(scTarget?"after: ":"healthy: ")+s.cap[scTarget])}
+$("#showBtn").onclick=()=>{scTarget=scTarget?0:1;scRender2()};
+$("#scPrev").onclick=()=>{SCI=(SCI+SC.length-1)%SC.length;scTarget=0;scAfter=0;scRender()};
+$("#scNext").onclick=()=>{SCI=(SCI+1)%SC.length;scTarget=0;scAfter=0;scRender()};
+function drawSc(T){S4.begin();ctx.fillStyle=C.panel;ctx.fillRect(0,0,600,400);scAfter+=(scTarget-scAfter)*.05;const k=scAfter;const i=SCI;
+  label(14,18,k<.5?"HEALTHY":"PROBLEM",{size:11.5,weight:700,mono:true,color:k<.5?C.good:C.bad,pill:false});
+  if(i===0){ // lactose intolerance
+    ctx.fillStyle=C.lumen;ctx.fillRect(10,40,300,220);microvilli(10,310,262,8,C.mucosa);cellRow(10,310,262,50,6,C.gut,C["gut-edge"],C.mucosa);ctx.fillStyle=C.blood;ctx.fillRect(10,320,300,16);txt(20,352,"small intestine",{size:12,weight:600});
+    ctx.fillStyle=C.lumen;ctx.fillRect(320,40,270,300);ctx.strokeStyle=C["gut-edge"];ctx.lineWidth=6;ctx.strokeRect(320,40,270,300);txt(330,356,"colon",{size:12,weight:600});
+    for(let j=0;j<5;j++){const x=40+j*55;enzyme(x,250,7,C.enzb,{open:chomp(T+j,5),ang:-Math.PI/2,a:1-k*.85})}
+    for(let j=0;j<6;j++){const q=((T*.25)+j/6)%1;const x0=30+j*45;
+      if(k<.5){const y=lerp(60,240,Math.min(1,q*1.5));const spl=q>.66?(q-.66)*3:0;hexP(x0-7-spl*6,y+spl*60,6,C.carb,1-seg(q,.9,1),C["carb-edge"]);hexP(x0+7+spl*6,y+spl*60,6,C.gal,1-seg(q,.9,1))}
+      else{const x=lerp(x0,380+j*30,q),y=lerp(100+j*20,120+j*30,q);hexP(x-7,y,6,C.carb,1,C["carb-edge"]);hexP(x+7,y,6,C.gal,1);line(x-1,y,x+1,y,C["carb-edge"],2)}}
+    for(let j=0;j<6;j++){bact(360+rnd(j)*200,200+rnd(j+4)*110,T*.4+j,T+j,1,1)}
+    if(k>.3){ctx.globalAlpha=k;for(let j=0;j<10;j++){const q=((T*.5)+j/10)%1;circ(360+rnd(j+9)*200,lerp(300,60,q),3+rnd(j)*4,null,C.bact,1.5)}for(let j=0;j<6;j++){const q=((T*.4)+j/6)%1;drop(lerp(300,340,q)+((j%2)?260:0)*(1),120+j*35,4,C.water)}ctx.globalAlpha=1;label(455,58,"gas + water pulled in",{align:"center",size:12,weight:600,color:C.bad})}
+    else label(160,58,"lactase splits lactose",{align:"center",size:12,weight:600,color:C.enzb});
+  }else if(i===1){ // gallstones
+    ctx.fillStyle=C.liver;smooth([[20,40],[260,30],[330,60],[300,120],[160,140],[30,120]],true);ctx.fill();
+    if(k>.3){ctx.globalAlpha=k*.35;smooth([[20,40],[260,30],[330,60],[300,120],[160,140],[30,120]],true);ctx.fillStyle=C.bile;ctx.fill();ctx.globalAlpha=1}
+    txt(80,80,"liver",{size:12,weight:700,color:"#fff"});
+    const duct=[[200,130],[205,200],[210,300]];tube(duct,12,C.lumen,C.bile,3);tube([[110,220],[160,214],[205,210]],10,C.lumen,C.bile,3);
+    const gv=1+k*.2+(k>.5?Math.sin(T*6)*.05:0);ell(90,240,36*gv,58*gv,C.gb,"rgba(0,0,0,.35)",1.5,-.5);ctx.globalAlpha=.6;ell(90,244,26*gv,46*gv,C.bile,null,1,-.5);ctx.globalAlpha=1;txt(40,320,"gallbladder",{size:12,weight:600});
+    ctx.fillStyle=C.gut;ctx.fillRect(20,300,560,70);ctx.fillStyle=C.lumen;ctx.fillRect(20,312,560,46);txt(560,380,"duodenum",{size:11.5,align:"right",weight:600});
+    if(k>.3){circ(150,215,10,C.stone,C.ink,1.5);label(150,190,"stone",{align:"center",size:11.5,weight:700});glow(90,240,70,C.bad,k*.4*(.6+.4*Math.sin(T*6)));label(60,160,"pain",{size:12,weight:700,color:C.bad})}
+    for(let j=0;j<6;j++){const q=((T*.4)+j/6)%1;const pth=k<.5?[[110,220],[160,214],[205,210],[210,300],[260+j*40,330]]:[[110,220],[140,216]];const p=along(pth,q);drop(p[0],p[1],3.6,C.bile,k<.5?1:.8)}
+    for(let j=0;j<6;j++){const x=260+j*50,y=335;if(k<.5){for(let m=0;m<3;m++)fatDrop(x+m*7-7,y+(m%2)*6-3,4)}else fatDrop(x,y,12)}
+    label(410,290,k<.5?"fat emulsified into droplets":"fat stays in big globules",{align:"center",size:12,weight:600});
+    for(let j=0;j<3;j++){const q=((T*.3)+j/3)%1;tri(lerp(330,140,q),lerp(330,270,q),6,C.cck,1)}label(330,270,"CCK",{size:11,weight:700,color:C.cck});
+  }else if(i===2){ // ulcer
+    ctx.fillStyle=C.lumen;ctx.fillRect(10,40,580,120);txt(20,56,"stomach lumen: acid and pepsin",{size:11.5,color:C["ink-soft"]});
+    const mth=lerp(40,10,k);ctx.fillStyle=C.mucus;ctx.fillRect(10,160-mth+40,580,mth);
+    ctx.fillStyle=C.mucosa;ctx.beginPath();ctx.moveTo(10,200);for(let x=10;x<=590;x+=4){const crater=k*70*Math.exp(-Math.pow((x-300)/50,2));ctx.lineTo(x,200+crater)}ctx.lineTo(590,300);ctx.lineTo(10,300);ctx.closePath();ctx.fill();
+    ctx.fillStyle=C.submucosa;ctx.fillRect(10,300,580,90);for(let j=0;j<6;j++)circ(60+j*95,340,6,j%2?C.blood:C.vein);
+    for(let j=0;j<14;j++){const q=((T*.4)+j/14)%1;const x=30+j*40;const y=lerp(70,200-mth+(Math.abs(x-300)<60?k*60:0),q);hplus(x,y,(k<.5&&q>.8)?1-(q-.8)*5:1,4.2)}
+    for(let j=0;j<3;j++){enzyme(250+j*50,110+Math.sin(T+j)*10,8,C.enzp,{open:chomp(T+j,5)})}
+    if(k>.3){ctx.globalAlpha=k;for(let j=0;j<6;j++)bact(100+j*80,190-mth+Math.sin(T+j)*4,Math.sin(T*2+j)*.5,T+j,1,1);for(let j=0;j<4;j++){const q=((T*.5)+j/4)%1;circ(290+j*8,lerp(270,320,q),3,C.blood)}ctx.fillStyle=C.panel;rr(470,60,100,30,15);ctx.fill();ctx.fillStyle=C.warn;rr(470,60,50,30,15);ctx.fill();txt(520,104,"NSAID",{size:11.5,weight:700,align:"center"});ctx.globalAlpha=1;label(300,250,"ulcer crater",{align:"center",size:12,weight:700,color:C.bad})}
+    label(80,200-mth/2+0,k<.5?"thick mucus":"thin mucus",{size:11.5,weight:600,color:C.base});
+  }else if(i===3){ // pancreatitis
+    ctx.fillStyle=C.panc;ctx.beginPath();ctx.moveTo(140,180);ctx.bezierCurveTo(200,110,420,100,560,120);ctx.bezierCurveTo(590,150,520,190,420,200);ctx.bezierCurveTo(300,220,220,260,160,250);ctx.closePath();ctx.fill();ctx.strokeStyle=C["panc-edge"];ctx.lineWidth=2;ctx.stroke();
+    if(k>.2){glow(360,170,180,C.bad,k*.45)}
+    ctx.fillStyle=C.gut;rr(20,60,90,320,30);ctx.fill();ctx.fillStyle=C.lumen;rr(36,70,58,300,22);ctx.fill();txt(65,392,"duodenum",{size:11.5,align:"center",weight:600});
+    const duct=[[540,140],[400,160],[260,190],[150,215],[100,220]];smooth(duct);ctx.strokeStyle=C["panc-edge"];ctx.lineWidth=4;ctx.stroke();
+    for(let j=0;j<7;j++){const q=((T*.15)+j/7)%1;const p=along(duct,q);if(k<.5)enzyme(p[0],p[1],7,C.enzp,{locked:true});else{const p2=[300+rnd(j)*220,140+rnd(j+3)*60];enzyme(p2[0]+Math.sin(T+j)*6,p2[1],8,C.enzp,{open:chomp(T+j,6)})}}
+    if(k<.5){for(let j=0;j<3;j++){const q=((T*.3)+j/3)%1;enzyme(65,lerp(230,350,q),8,C.enzp,{open:chomp(T+j,6)})}enzyme(65,230,7,C.enzb,{open:.3,ang:0});label(250,300,"trypsin is unlocked only in the duodenum",{align:"center",size:12,weight:600})}
+    else{for(let j=0;j<4;j++)fatDrop(65,110+j*60,10);label(330,300,"trypsin active inside the pancreas: self-digestion",{align:"center",size:12,weight:700,color:C.bad});label(65,40,"less juice arrives",{align:"center",size:11.5,weight:600})}
+    txt(400,90,"pancreas",{size:12,weight:700});
+  }else if(i===4){ // celiac
+    ctx.fillStyle=C.lumen;ctx.fillRect(10,40,580,320);const base=320;
+    for(let j=0;j<12;j++){const x=40+j*46;const h=lerp(170,26,k);ctx.fillStyle=C.mucosa;ctx.strokeStyle=C["gut-edge"];ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x-16,base);ctx.quadraticCurveTo(x-18,base-h,x,base-h-8);ctx.quadraticCurveTo(x+18,base-h,x+16,base);ctx.closePath();ctx.fill();ctx.stroke();
+      if(k<.7){ctx.strokeStyle=C.blood;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x-6,base);ctx.lineTo(x-6,base-h+20);ctx.stroke()}}
+    ctx.fillStyle=C.submucosa;ctx.fillRect(10,base,580,40);ctx.fillStyle=C.blood;ctx.fillRect(10,base+40,580,16);
+    const nAbs=Math.round(lerp(12,3,k));for(let j=0;j<nAbs;j++){const q=((T*.3)+j/nAbs)%1;const x=50+j*(500/nAbs);const y=lerp(60,base+48,q);if(j%2)hexP(x,y,5.5,C.carb,1,C["carb-edge"]);else aaP(x,y,5,j)}
+    if(k>.3){ctx.globalAlpha=k;for(let j=0;j<6;j++){circ(80+j*90,base+18,6,C.saliva,"rgba(0,0,0,.3)",1)}ctx.globalAlpha=1;label(470,70,"gluten triggers an immune attack",{align:"center",size:11.5,weight:600,color:C.bad})}
+    txt(14,384,"Surface",{size:11.5,weight:600});ctx.fillStyle=C.sunk;rr(80,376,200,14,7);ctx.fill();ctx.fillStyle=C.act3;rr(80,376,200*lerp(1,.2,k),14,7);ctx.fill();
+    label(440,384,k<.5?"tall villi: lots of absorption":"flat villi: little absorption",{align:"center",size:12,weight:600});
+  }else{ // GERD
+    ctx.fillStyle=C.gut;ctx.fillRect(250,20,70,230);ctx.fillStyle=C.lumen;ctx.fillRect(270,20,30,230);txt(330,60,"esophagus",{size:12,weight:600});
+    ctx.fillStyle=C.gut;ctx.beginPath();ctx.moveTo(250,240);ctx.bezierCurveTo(140,250,120,390,300,390);ctx.bezierCurveTo(520,390,560,260,320,240);ctx.closePath();ctx.fill();ctx.strokeStyle=C["gut-edge"];ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=C.lumen;ctx.beginPath();ctx.moveTo(268,258);ctx.bezierCurveTo(170,268,160,372,300,372);ctx.bezierCurveTo(490,372,520,272,302,258);ctx.closePath();ctx.fill();txt(380,360,"stomach",{size:12,weight:600});
+    ctx.fillStyle=C.mucus;ctx.globalAlpha=.8;ctx.beginPath();ctx.moveTo(268,258);ctx.bezierCurveTo(170,268,160,372,300,372);ctx.bezierCurveTo(490,372,520,272,302,258);ctx.lineWidth=8;ctx.strokeStyle=C.mucus;ctx.stroke();ctx.globalAlpha=1;
+    line(120,232,450,232,C["ink-faint"],1.4,[5,4]);txt(456,232,"diaphragm",{size:11,color:C["ink-soft"]});
+    const op=k*(.7+.3*Math.sin(T*3));sphincterRing(285,248,30,7,op,C.circ,"LES",{lx:40,state:true});
+    for(let j=0;j<12;j++){const q=((T*.3)+j/12)%1;const x=200+rnd(j)*200,y=300+rnd(j+3)*60;hplus(x+Math.sin(T+j)*5,y,1,4.2)}
+    if(k>.3){for(let j=0;j<6;j++){const q=((T*.5)+j/6)%1;hplus(285+Math.sin(q*9+j)*8,lerp(250,60,q),k*(1-q*.5),4.5)}glow(285,140,70,C.bad,k*.35);label(150,120,"heartburn",{size:12.5,weight:700,color:C.bad});label(150,140,"(no mucus shield here)",{size:11,color:C["ink-soft"]})}
+  }
+}
+
+/* ================= loop ================= */
+function fitAll(){[SM,SMC,SH,SHC,S4].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+let last=performance.now(),TT=0,uiAcc=0,hT=0;
+function frame(now){
+  const dt=clamp((now-last)/1000,0,.05);last=now;TT+=dt;uiAcc+=dt;
+  try{
+    if(activeTab==="meal"){drawMeal(TT);drawMealChart()}
+    else if(activeTab==="horm"){if(!hPaused){const sd=dt*6*hSpeed;const n=Math.ceil(sd/.1);for(let i=0;i<n;i++)hStep(HS,sd/n);hT+=dt;
+        if(!HS.hist.length||HS.t-HS.hist[HS.hist.length-1][0]>=.5){HS.hist.push([HS.t,HS.G,HS.S,HS.K,HS.pH]);if(HS.hist.length>600)HS.hist.shift()}hCheck()}
+      drawHorm(hT);drawHormChart();if(uiAcc>.25)hReadouts()}
+    else if(activeTab==="break"){drawSc(TT)}
+    else if(activeTab==="match"){if($("#mxTimed").checked&&!MX.done){const s=Math.round((now-MX.start)/1000);$("#mxTimer").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}}
+  }catch(e){console.error(e)}
+  if(uiAcc>.25)uiAcc=0;
+  requestAnimationFrame(frame)}
+readColors();mlReset("pizza");mxRounds();mxStart(0);hBuildSliders();hChal();hReadouts();scRender();fitAll();
+$("#hLegend").innerHTML=[["gastrin","Gastrin","dia"],["secretin","Secretin","sq"],["cck","CCK","tri"],["acid","Acid (H⁺)"],["base","Bicarbonate"],["bile","Bile"],["fat","Fat"]].map(legendHTML).join("");
+requestAnimationFrame(frame);
+window.__lab={ML:()=>ML,HS:()=>HS,MX:()=>MX,run:(sec)=>{for(let i=0;i<sec*10;i++)hStep(HS,.1);HS.hist=[];for(let t=0;t<=120;t+=.5)HS.hist.push([HS.t-120+t,HS.G,HS.S,HS.K,HS.pH])},drop:hDrop,eat:hEat,fit:fitAll,sc:(i,k)=>{SCI=i;scTarget=k;scAfter=k;scRender()}};
+})();
+</script>
+</body>
+</html>

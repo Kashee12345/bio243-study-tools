@@ -1,0 +1,1895 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cell Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
+  /* cell palette */
+  --ecf:#EAF1F5;--cyto:#F6EFE6;--lipid:#E0B967;--lipid-edge:#B8914A;--tail:#F3E7CC;--tail-edge:#C9AE78;
+  --chol:#8A5A2B;--prot:#8FB4D6;--prot-edge:#3E6E96;--pprot:#B9A0E0;--pprot-edge:#6A4FA0;--glyco:#2E9A6E;
+  --o2:#C2412D;--co2:#57666F;--glu:#D98A1C;--water:#4FA9DC;--water-wash:#D3E8F5;--na:#2B5DB8;--k:#7A4FD0;--solute:#A04E8C;
+  --atp:#2F8A57;--pi:#B4632A;--lig:#E0A41C;--ca:#D98A1C;
+  --rbc:#C8433A;--rbc-pale:#EBA39B;--rbc-edge:#8E2A23;
+  --nuc:#E2D7EE;--nuc-edge:#7A5FA8;--nucleolus:#6E5394;--chromatin:#8A6FB8;
+  --rib:#3E5C76;--er:#F2CFC6;--er-edge:#C4644F;--ser:#F4E0B5;--ser-edge:#B8914A;
+  --golgi:#A8D8C8;--golgi-edge:#2E8A7A;--lyso:#C2ABE6;--lyso-edge:#6A4FA0;--perox:#CDE3A8;--perox-edge:#5E8A3E;
+  --mito:#F2C696;--mito-edge:#B4632A;--matrix:#FBE6CC;
+  --mf:#C4644F;--if:#8C7A5A;--mt:#2E8A7A;--motor:#7B5CC9;
+  --bA:#2F8A57;--bT:#C0453A;--bG:#D98A1C;--bC:#2F7FC1;--bU:#7B5CC9;
+  --old:#3B4750;--new:#1B9AAE;--mrna:#7B5CC9;--trna:#D98A1C;--rnap:#9BB7D4;--rnap-edge:#3E6E96;--helic:#E0A030;--dnap:#86BF86;--dnap-edge:#2F6F4F;
+  --chrA:#2C5DB8;--chrB:#C0453A;--spindle:#7F8F98;--glow:#F2B33B;--tumor:#B04A6A;--intron:#A3AAB0;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#14222A;--cyto:#241D18;--lipid:#B8914A;--lipid-edge:#E0B967;--tail:#352E22;--tail-edge:#7E6A44;
+  --chol:#E0A060;--prot:#2C4A66;--prot-edge:#8FB4D6;--pprot:#3D3160;--pprot-edge:#B9A0E0;--glyco:#5CC99A;
+  --o2:#F07A66;--co2:#A3B2BA;--glu:#F2A93B;--water:#6FC0EC;--water-wash:#16303F;--na:#6E9CF0;--k:#B39BF5;--solute:#D186C0;
+  --atp:#4FBF7F;--pi:#E39A5B;--lig:#F2C14B;--ca:#F2A93B;
+  --rbc:#D9584E;--rbc-pale:#7A2E2A;--rbc-edge:#F08A80;
+  --nuc:#2E2640;--nuc-edge:#B39BF5;--nucleolus:#8F75C4;--chromatin:#A98BEF;
+  --rib:#9BB7D4;--er:#3E2622;--er-edge:#E08A74;--ser:#3A3020;--ser-edge:#D6B06A;
+  --golgi:#1E3B33;--golgi-edge:#5CC4B0;--lyso:#33284D;--lyso-edge:#B39BF5;--perox:#26341C;--perox-edge:#9CCB78;
+  --mito:#4A3420;--mito-edge:#E39A5B;--matrix:#30251A;
+  --mf:#E08A74;--if:#C9B48E;--mt:#5CC4B0;--motor:#A98BEF;
+  --bA:#5CC98A;--bT:#EE7B70;--bG:#F2A93B;--bC:#5AA9E6;--bU:#A98BEF;
+  --old:#C8D3D9;--new:#4FD0E0;--mrna:#A98BEF;--trna:#F2A93B;--rnap:#2C4A66;--rnap-edge:#8FB4D6;--helic:#F2B33B;--dnap:#24402A;--dnap-edge:#6BC293;
+  --chrA:#6E9CF0;--chrB:#EE7B70;--spindle:#8A99A2;--glow:#F2B33B;--tumor:#D8749A;--intron:#6E7F88;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#14222A;--cyto:#241D18;--lipid:#B8914A;--lipid-edge:#E0B967;--tail:#352E22;--tail-edge:#7E6A44;
+  --chol:#E0A060;--prot:#2C4A66;--prot-edge:#8FB4D6;--pprot:#3D3160;--pprot-edge:#B9A0E0;--glyco:#5CC99A;
+  --o2:#F07A66;--co2:#A3B2BA;--glu:#F2A93B;--water:#6FC0EC;--water-wash:#16303F;--na:#6E9CF0;--k:#B39BF5;--solute:#D186C0;
+  --atp:#4FBF7F;--pi:#E39A5B;--lig:#F2C14B;--ca:#F2A93B;
+  --rbc:#D9584E;--rbc-pale:#7A2E2A;--rbc-edge:#F08A80;
+  --nuc:#2E2640;--nuc-edge:#B39BF5;--nucleolus:#8F75C4;--chromatin:#A98BEF;
+  --rib:#9BB7D4;--er:#3E2622;--er-edge:#E08A74;--ser:#3A3020;--ser-edge:#D6B06A;
+  --golgi:#1E3B33;--golgi-edge:#5CC4B0;--lyso:#33284D;--lyso-edge:#B39BF5;--perox:#26341C;--perox-edge:#9CCB78;
+  --mito:#4A3420;--mito-edge:#E39A5B;--matrix:#30251A;
+  --mf:#E08A74;--if:#C9B48E;--mt:#5CC4B0;--motor:#A98BEF;
+  --bA:#5CC98A;--bT:#EE7B70;--bG:#F2A93B;--bC:#5AA9E6;--bU:#A98BEF;
+  --old:#C8D3D9;--new:#4FD0E0;--mrna:#A98BEF;--trna:#F2A93B;--rnap:#2C4A66;--rnap-edge:#8FB4D6;--helic:#F2B33B;--dnap:#24402A;--dnap-edge:#6BC293;
+  --chrA:#6E9CF0;--chrB:#EE7B70;--spindle:#8A99A2;--glow:#F2B33B;--tumor:#D8749A;--intron:#6E7F88;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 170px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:14px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.legend b{font-weight:700;font-family:var(--mono);font-size:14px;line-height:1}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+sub,sup{line-height:0}
+footer a{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Cell &middot; USC Upstate</div>
+    <h1>Cell Walkthrough</h1>
+    <p class="sub">The membrane, transport, organelles, DNA to protein, and cell division, one moving picture at a time. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 3, The Cellular Level of Organization (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Pair this with the <a href="Cell-Lab.html">Cell Lab</a>.<br>Diagrams are simplified and not to scale. Molecule counts, speeds and sizes are exaggerated so you can see them. DNA is drawn as a flat ladder instead of a twisted helix, replication is shown without leading and lagging strands, and organelles are not drawn to their real sizes.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · Membrane & passive transport",col:"act1"},
+            2:{name:"Part 2 · Transport that costs energy",col:"act2"},
+            3:{name:"Part 3 · Organelles",col:"act3"},
+            4:{name:"Part 4 · DNA to protein",col:"act4"},
+            5:{name:"Part 5 · Dividing & specializing",col:"act5"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: a tour of the cell",
+ body:`<p>A <b>cell</b> is the smallest living unit of your body. You are built from trillions of them, and every one has three main parts:</p>
+ <ol><li>The <b>plasma membrane</b>: the thin outer edge that controls what gets in and out.</li>
+ <li>The <b>cytoplasm</b>: everything inside the membrane except the nucleus. It is a watery fluid (the <b>cytosol</b>) plus small working parts called <b>organelles</b>.</li>
+ <li>The <b>nucleus</b>: the control center that holds the DNA.</li></ol>
+ <p>This walkthrough has five parts: the membrane and passive transport, transport that costs energy, the organelles, how DNA becomes protein, and how cells divide and specialize. Watch the picture to see where each part happens.</p>`,
+ analogy:"A cell is like a small walled city. The wall with its gates is the membrane, the city hall with the master plans is the nucleus, and the factories, post office, power plants and recycling centers are the organelles.",
+ terms:[["Plasma membrane","The boundary of the cell. It decides what enters and leaves."],["Cytoplasm","Everything between the membrane and the nucleus: cytosol plus organelles."],["Organelle","A small structure inside a cell that does one main job."]],
+ check:{q:"Which part of the cell controls what enters and leaves?",opts:[
+  ["The plasma membrane",1,"Yes. The membrane is the gatekeeper for everything going in or out."],
+  ["The nucleus",0,"The nucleus holds the DNA and directs the cell's work, but the membrane is the gatekeeper."],
+  ["A ribosome",0,"Ribosomes build proteins. They do not guard the cell's edge."],
+  ["A mitochondrion",0,"Mitochondria make ATP. The membrane controls traffic in and out."]]},
+ caption:"A typical body cell. Each part of the walkthrough lights up a different region.",
+ legend:[["lipid","Plasma membrane"],["nuc","Nucleus","s"],["mito","Mitochondrion","s"],["golgi","Golgi","s"],["er","Endoplasmic reticulum","s"]]},
+
+/* ---------- Part 1 ---------- */
+{act:1,scene:"mosaic",id:"mosaic",title:"The plasma membrane: a fluid mosaic",
+ body:`<p>The <b>plasma membrane</b> is built on a <b>phospholipid bilayer</b>: two layers of phospholipid molecules.</p>
+ <p>Each phospholipid has a <b>hydrophilic head</b> ("water-loving") and two <b>hydrophobic tails</b> ("water-fearing"). The heads face the watery fluid inside and outside the cell. The tails hide in the middle, away from water.</p>
+ <p>Mixed in are <b>cholesterol</b> (keeps the membrane from getting too stiff or too runny), <b>integral proteins</b> (go all the way through, often as channels), and <b>peripheral proteins</b> (sit on one surface). Sugar chains on the outside make the <b>glycocalyx</b>, a sugary coat that works like a name tag.</p>
+ <p>It is called a <b>fluid mosaic</b> because all these pieces keep drifting sideways. Watch them move.</p>`,
+ analogy:"A crowded dance floor seen from above. People (phospholipids) keep shuffling around, and a few big tables (proteins) slowly drift through the crowd.",
+ terms:[["Phospholipid bilayer","Two layers of phospholipids, tails in, heads out."],["Hydrophilic / hydrophobic","Water-loving (heads) / water-fearing (tails)."],["Integral protein","A protein that crosses the whole membrane."],["Glycocalyx","The sugar coat on the outside of the cell. It helps cells recognize each other."]],
+ check:{q:"Which part of a phospholipid faces the watery fluid inside and outside the cell?",opts:[
+  ["The hydrophilic head",1,"Right. Heads are water-loving, so they face the fluid on both sides."],
+  ["The hydrophobic tails",0,"Tails are water-fearing, so they hide in the middle of the bilayer."],
+  ["Cholesterol",0,"Cholesterol sits among the tails. It is not part of a phospholipid."],
+  ["The glycocalyx",0,"The glycocalyx is made of sugar chains on the outside only, not part of each phospholipid."]]},
+ caption:"Phospholipids jiggle and drift sideways. Labels appear one at a time.",
+ legend:[["lipid","Hydrophilic head"],["tail-edge","Hydrophobic tails","l"],["chol","Cholesterol","r"],["prot","Integral protein","s"],["pprot","Peripheral protein","s"],["glyco","Glycocalyx (sugars)","d"]]},
+
+{act:1,scene:"diff",id:"diff",title:"Simple diffusion: downhill, no help needed",
+ body:`<p>Molecules are always moving and bumping. On their own they spread from where they are <b>crowded</b> (high concentration) to where they are <b>sparse</b> (low concentration). This is <b>diffusion</b>. The difference in concentration is the <b>concentration gradient</b>.</p>
+ <p>In <b>simple diffusion</b>, a molecule slips right between the phospholipids. Only <b>small, nonpolar (lipid-soluble)</b> molecules can do this, such as <b>oxygen (O₂)</b>, <b>carbon dioxide (CO₂)</b>, and lipids like steroid hormones.</p>
+ <p>Diffusion is <b>passive transport</b>: it uses <b>no ATP</b>. Watch the counters. Movement slows as the two sides get close to equal.</p>`,
+ analogy:"A drop of food coloring in a glass of water. Nobody stirs it, but the color spreads out on its own until it is even.",
+ terms:[["Concentration gradient","A difference in concentration between two areas."],["Simple diffusion","Movement down a gradient straight through the bilayer."],["Passive transport","Movement that needs no ATP from the cell."]],
+ check:{q:"Why can O₂ pass straight through the phospholipid bilayer?",opts:[
+  ["It is small and nonpolar, so it can slip between the lipid tails.",1,"Yes. Small, nonpolar molecules dissolve in the lipid middle and pass right through."],
+  ["The cell pumps it in using ATP.",0,"No ATP is used. O₂ simply moves down its gradient."],
+  ["It rides through a carrier protein.",0,"That would be facilitated diffusion. O₂ does not need a protein."],
+  ["It is large and charged.",0,"Large or charged molecules are exactly the ones that cannot cross the bilayer alone."]]},
+ caption:"O₂ moves in and CO₂ moves out, each from its crowded side to its sparse side. No ATP is used.",
+ legend:[["o2","O₂"],["co2","CO₂"],["lipid","Phospholipid bilayer"]]},
+
+{act:1,scene:"facil",id:"facil",title:"Facilitated diffusion: downhill, with a protein's help",
+ body:`<p>Ions (like Na⁺) and larger polar molecules (like <b>glucose</b>) cannot slip through the oily middle of the membrane. They need a protein to help. This is <b>facilitated diffusion</b>.</p>
+ <p><b>Channel proteins</b> form a tunnel. Ions flow through when the channel is open. <b>Carrier proteins</b> grab a molecule, change shape, and let it go on the other side. Glucose enters most body cells this way.</p>
+ <p>It is still <b>passive</b>. Molecules only move <b>down</b> their concentration gradient, and <b>no ATP</b> is used.</p>`,
+ analogy:"A channel is an open tunnel under a wall. A carrier is a revolving door that takes one guest at a time. Either way, people only move from the crowded side to the empty side.",
+ terms:[["Channel protein","A protein tunnel that lets specific ions through."],["Carrier protein","A protein that binds a molecule and changes shape to move it across."],["Facilitated diffusion","Passive movement down a gradient with help from a protein."]],
+ check:{q:"Glucose enters a red blood cell through a carrier protein, from high to low concentration. Which type of transport is this?",opts:[
+  ["Facilitated diffusion",1,"Right. It needs a protein, but it goes downhill and uses no ATP."],
+  ["Simple diffusion",0,"Glucose is too big and polar to slip through the bilayer. It needs a carrier."],
+  ["Primary active transport",0,"Active transport moves things uphill using ATP. This is downhill with no ATP."],
+  ["Osmosis",0,"Osmosis is the movement of water only."]]},
+ caption:"Left: Na⁺ flows through an open channel. Right: a carrier changes shape to move glucose in.",
+ legend:[["na","Na⁺ ion"],["glu","Glucose","d"],["prot","Channel and carrier proteins","s"]]},
+
+{act:1,scene:"osmo",id:"osmo",title:"Osmosis: water follows solute",
+ body:`<p><b>Osmosis</b> is the diffusion of <b>water</b> across a membrane. Water moves toward the side with <b>more solute</b> (dissolved particles), because that side has less free water.</p>
+ <p>Water crosses mostly through water channels called <b>aquaporins</b>. In this picture the solute particles cannot cross, so only water can move to even things out. Watch the water level rise on the salty side.</p>
+ <p>A short rule to remember: <b>water follows solute</b>.</p>`,
+ analogy:"Salt sprinkled on cucumber slices. Water seeps out of the cucumber toward the salt, and the slices go limp.",
+ terms:[["Osmosis","Diffusion of water across a selectively permeable membrane."],["Solute","A substance dissolved in water, such as salt or glucose."],["Aquaporin","A channel protein that lets water through."]],
+ check:{q:"Side A has 1% salt and side B has 5% salt. Only water can cross the membrane. Which way does water move?",opts:[
+  ["From A to B, toward the higher salt",1,"Yes. Water follows solute, so it moves toward the 5% side."],
+  ["From B to A, toward the lower salt",0,"That is backward. Water moves toward the side with more solute."],
+  ["Salt moves from B to A instead",0,"In this setup the salt cannot cross. Only water can."],
+  ["Nothing moves",0,"The two sides are different, so water moves until they get closer."]]},
+ caption:"Water moves through aquaporins toward the side with more solute. That side's water level rises.",
+ legend:[["water","Water"],["solute","Solute (cannot cross)"],["prot","Aquaporin","s"]]},
+
+{act:1,scene:"tonic",id:"tonic",title:"Tonicity: what happens to a red blood cell",
+ body:`<p><b>Tonicity</b> describes how a solution will make a cell gain or lose water.</p>
+ <ol><li><b>Isotonic</b>: same solute concentration as the cell. Water moves in and out equally, so there is <b>no net change</b>. Normal saline (0.9% NaCl) is isotonic.</li>
+ <li><b>Hypertonic</b>: more solute outside. Water <b>leaves</b> the cell, and a red blood cell shrivels into a spiky shape. This is <b>crenation</b>.</li>
+ <li><b>Hypotonic</b>: less solute outside. Water <b>rushes in</b>. The cell swells and can burst. Bursting is <b>lysis</b> (for red blood cells, <b>hemolysis</b>).</li></ol>`,
+ analogy:"Hyper means over: too much solute outside pulls water out. Hypo means under: too little solute outside lets water flood in. Memory trick: in a hypOtonic solution the cell swells into an O.",
+ terms:[["Isotonic","Same solute concentration as the cell. No net water movement."],["Hypertonic","More solute outside. The cell loses water and shrinks (crenation)."],["Hypotonic","Less solute outside. The cell gains water, swells, and may lyse."]],
+ check:{q:"A patient is given plain distilled water through an IV by mistake. What happens to their red blood cells?",opts:[
+  ["They swell and may burst.",1,"Right. Distilled water is very hypotonic, so water rushes into the cells. This is why plain water is never given IV."],
+  ["They shrink and crenate.",0,"Shrinking happens in a hypertonic solution. Distilled water has almost no solute."],
+  ["Nothing changes.",0,"That would be an isotonic solution, like 0.9% saline."],
+  ["They pump the water out using ATP.",0,"Cells cannot pump water out fast enough. Water moves by osmosis."]]},
+ caption:"Same red blood cell in three solutions. Arrows show the net direction of water.",
+ legend:[["rbc","Red blood cell"],["water","Water"],["solute","Solute"]]},
+
+/* ---------- Part 2 ---------- */
+{act:2,scene:"pump",id:"pump",title:"The sodium-potassium pump: primary active transport",
+ body:`<p><b>Active transport</b> moves a substance <b>up</b> its concentration gradient, from low to high. Going uphill costs energy, so it uses <b>ATP</b>.</p>
+ <p>The best-known example is the <b>sodium-potassium pump (Na⁺/K⁺ ATPase)</b>. For each ATP it uses, it pushes <b>3 Na⁺ out</b> and brings <b>2 K⁺ in</b>:</p>
+ <ol><li>3 Na⁺ bind from inside.</li><li>ATP is split. A phosphate attaches to the pump.</li><li>The pump changes shape and releases 3 Na⁺ outside.</li><li>2 K⁺ bind from outside.</li><li>The phosphate falls off. The pump returns to its first shape.</li><li>2 K⁺ are released inside.</li></ol>
+ <p>This keeps Na⁺ high outside and K⁺ high inside, which nerves and muscles depend on.</p>`,
+ analogy:"A bouncer at a club door who gets paid in ATP. Every time he is paid, he throws three Na⁺ out and lets two K⁺ in.",
+ terms:[["Active transport","Moving a substance up its gradient using energy."],["Na⁺/K⁺ ATPase","The pump that moves 3 Na⁺ out and 2 K⁺ in per ATP."],["Phosphorylation","Adding a phosphate group. Here it changes the pump's shape."]],
+ check:{q:"For each ATP it uses, the Na⁺/K⁺ pump moves:",opts:[
+  ["3 Na⁺ out and 2 K⁺ in",1,"Yes. Three out, two in, one ATP."],
+  ["2 Na⁺ out and 3 K⁺ in",0,"The numbers are flipped. It is 3 Na⁺ out and 2 K⁺ in."],
+  ["3 Na⁺ in and 2 K⁺ out",0,"The directions are flipped. Na⁺ goes out, K⁺ comes in."],
+  ["1 Na⁺ out and 1 K⁺ in",0,"The pump moves more ions than that per ATP: 3 Na⁺ and 2 K⁺."]]},
+ caption:"One pump cycle in six steps. The pump flips shape each time a phosphate is added or removed.",
+ legend:[["na","Na⁺"],["k","K⁺","d"],["atp","ATP"],["pi","Phosphate (P)"]]},
+
+{act:2,scene:"symport",id:"symport",title:"Secondary active transport: riding the sodium gradient",
+ body:`<p>The Na⁺/K⁺ pump builds up a lot of Na⁺ outside the cell. That gradient is stored energy, like water behind a dam.</p>
+ <p>In <b>secondary active transport</b>, a carrier lets Na⁺ flow back in (downhill) and uses that energy to bring another molecule in <b>uphill</b>. The carrier does not use ATP directly. The ATP was spent earlier by the pump.</p>
+ <p>In the small intestine and the kidney, the <b>sodium-glucose symporter</b> moves Na⁺ and glucose in together. When both go the same direction it is a <b>symport</b>. When they go opposite directions it is an <b>antiport</b>.</p>`,
+ analogy:"A water wheel. Water falling downhill (Na⁺) turns the wheel, and the wheel lifts a bucket uphill (glucose).",
+ terms:[["Secondary active transport","Uses an ion gradient made by a pump to move something uphill."],["Symporter","A carrier that moves two substances in the same direction."],["Antiporter","A carrier that moves two substances in opposite directions."]],
+ check:{q:"If the Na⁺/K⁺ pump stopped working, what would happen to the sodium-glucose symporter?",opts:[
+  ["It would slow and stop, because the Na⁺ gradient would run down.",1,"Right. No pump, no gradient. No gradient, no energy to drag glucose in."],
+  ["It would speed up.",0,"Without the pump, Na⁺ builds up inside and the push into the cell gets weaker, not stronger."],
+  ["Nothing. The symporter does not use ATP.",0,"It does not use ATP directly, but it depends on the gradient that the ATP-powered pump makes."],
+  ["It would start moving glucose out instead.",0,"The symporter would mostly just stop moving glucose in. It needs the Na⁺ gradient to work."]]},
+ caption:"Left: the pump keeps Na⁺ high outside. Right: Na⁺ flows in and brings glucose in with it, uphill.",
+ legend:[["na","Na⁺"],["glu","Glucose","d"],["k","K⁺","d"],["atp","ATP (used by the pump only)"]]},
+
+{act:2,scene:"endo",id:"endo",title:"Endocytosis: bringing big things in",
+ body:`<p>Some things are too big for any channel or carrier. The cell wraps them in a piece of its own membrane, making a bubble called a <b>vesicle</b>. This uses ATP. Bringing things in this way is <b>endocytosis</b>.</p>
+ <ol><li><b>Phagocytosis</b> ("cell eating"): the cell reaches out with arms of membrane (<b>pseudopodia</b>) and swallows a large particle, like a white blood cell engulfing a bacterium.</li>
+ <li><b>Pinocytosis</b> ("cell drinking"): the membrane dips in and pinches off a tiny drop of extracellular fluid.</li>
+ <li><b>Receptor-mediated endocytosis</b>: specific molecules (like LDL cholesterol) bind <b>receptors</b>. A coat protein called <b>clathrin</b> gathers under them and helps the pit pinch off.</li></ol>`,
+ analogy:"Phagocytosis is a hug that turns into a swallow. Pinocytosis is a small sip. Receptor-mediated endocytosis is a mail slot that only opens for letters with the right address.",
+ terms:[["Endocytosis","Taking material into the cell in a vesicle made from the membrane."],["Pseudopodia","Arm-like extensions of a cell used in phagocytosis."],["Clathrin","The coat protein that lines pits in receptor-mediated endocytosis."]],
+ check:{q:"A macrophage (a white blood cell) swallows a whole bacterium. Which process is this?",opts:[
+  ["Phagocytosis",1,"Yes. Engulfing a large particle with pseudopodia is cell eating."],
+  ["Pinocytosis",0,"Pinocytosis takes in small drops of fluid, not whole bacteria."],
+  ["Receptor-mediated endocytosis",0,"That brings in specific small molecules like LDL through coated pits, not whole cells."],
+  ["Exocytosis",0,"Exocytosis sends material out of the cell, not in."]]},
+ caption:"Three kinds of endocytosis happening side by side. Each ends with a vesicle inside the cell.",
+ legend:[["lipid","Plasma membrane"],["glyco","Bacterium","r"],["water","Fluid"],["lig","Ligand (e.g., LDL)","d"],["lyso","Lysosome"]]},
+
+{act:2,scene:"exo",id:"exo",title:"Exocytosis: shipping things out",
+ body:`<p>In <b>exocytosis</b>, a vesicle inside the cell moves to the plasma membrane, <b>fuses</b> with it, and releases its contents outside.</p>
+ <p>This is how cells <b>secrete</b>. Neurons release neurotransmitters, pancreas cells release insulin, and goblet cells release mucus.</p>
+ <p>Each fusion also adds the vesicle's membrane to the plasma membrane. Endocytosis takes membrane away and exocytosis adds it back, so the two balance each other.</p>`,
+ analogy:"Two soap bubbles touching and merging into one. The small bubble becomes part of the big one, and whatever was inside spills out.",
+ terms:[["Exocytosis","Releasing material from a vesicle by fusing it with the membrane."],["Secretion","Releasing a useful product, like a hormone or mucus."],["Secretory vesicle","A vesicle carrying a product to the cell surface."]],
+ check:{q:"Which of these is an example of exocytosis?",opts:[
+  ["A neuron releasing neurotransmitter",1,"Right. Neurotransmitter vesicles fuse with the membrane and empty into the synapse."],
+  ["O₂ entering a cell",0,"That is simple diffusion straight through the bilayer."],
+  ["Glucose entering through a carrier",0,"That is facilitated diffusion."],
+  ["A white blood cell engulfing a bacterium",0,"That brings material in. It is phagocytosis, a type of endocytosis."]]},
+ caption:"Vesicles from the Golgi travel up, fuse with the membrane, and spill their contents outside.",
+ legend:[["golgi","Golgi apparatus","s"],["lyso","Secretory vesicle"],["glow","Secreted product"]]},
+
+/* ---------- Part 3 ---------- */
+{act:3,scene:"nucleus",id:"nucleus",title:"The nucleus and ribosomes",
+ body:`<p>The <b>nucleus</b> is the cell's control center. It holds the DNA, loosely packed with proteins as <b>chromatin</b>.</p>
+ <p>It is wrapped in the <b>nuclear envelope</b>, a double membrane dotted with <b>nuclear pores</b>. Messages (mRNA) and ribosome parts leave through the pores.</p>
+ <p>The dark area inside is the <b>nucleolus</b>. It builds the two pieces (subunits) of <b>ribosomes</b>. Out in the cytoplasm, the two pieces join on an mRNA and make protein. <b>Free ribosomes</b> float in the cytosol and make proteins used inside the cell. <b>Bound ribosomes</b> sit on the rough ER.</p>`,
+ analogy:"The nucleus is the head office that keeps the master blueprints. Copies of the plans (mRNA) go out through the doors (pores) to the workers (ribosomes), who build the products.",
+ terms:[["Chromatin","DNA wrapped around proteins. Loose when the cell is not dividing."],["Nuclear pore","An opening in the nuclear envelope."],["Nucleolus","The region of the nucleus that makes ribosome subunits."],["Ribosome","The protein-building machine: a small and a large subunit."]],
+ check:{q:"What does the nucleolus make?",opts:[
+  ["Ribosome subunits",1,"Yes. The nucleolus builds the pieces that become ribosomes."],
+  ["ATP",0,"ATP is mostly made in mitochondria."],
+  ["Lipids",0,"Lipids are made in the smooth ER."],
+  ["The nuclear envelope",0,"The envelope surrounds the nucleus, but the nucleolus's job is making ribosome subunits."]]},
+ caption:"Ribosome pieces leave the nucleolus, exit through pores, and join on mRNA in the cytoplasm.",
+ legend:[["nuc","Nucleus","s"],["nucleolus","Nucleolus"],["rib","Ribosome"],["mrna","mRNA","l"]]},
+
+{act:3,scene:"er",id:"er",title:"Rough ER and smooth ER",
+ body:`<p>The <b>endoplasmic reticulum (ER)</b> is a maze of membrane sacs and tubes connected to the nuclear envelope.</p>
+ <p><b>Rough ER</b> is covered with ribosomes. The proteins they make are threaded into the ER's inside space (the <b>lumen</b>), where they fold. These proteins will be secreted, built into membranes, or sent to lysosomes.</p>
+ <p><b>Smooth ER</b> has no ribosomes. It makes <b>lipids</b> (including phospholipids and steroid hormones), stores <b>calcium ions</b>, and helps <b>detoxify</b> drugs and alcohol, especially in liver cells.</p>`,
+ analogy:"Rough ER is an assembly line with workers (ribosomes) on its walls. Smooth ER is the chemistry lab next door: it makes oils, stores calcium, and cleans up toxins.",
+ terms:[["Rough ER","ER with ribosomes. Makes proteins for export, membranes and lysosomes."],["Smooth ER","ER without ribosomes. Makes lipids, stores Ca²⁺, detoxifies."],["Lumen","The space inside the ER."]],
+ check:{q:"A liver cell is breaking down a lot of alcohol and drugs. Which organelle would you expect it to have more of?",opts:[
+  ["Smooth ER",1,"Right. Smooth ER enzymes help detoxify drugs and alcohol, and liver cells have plenty."],
+  ["Rough ER",0,"Rough ER makes proteins. Detox is a smooth ER job."],
+  ["Nucleolus",0,"The nucleolus makes ribosome subunits."],
+  ["Cilia",0,"Cilia move fluid over a surface. They do not detoxify."]]},
+ caption:"Left: a ribosome on rough ER threads a protein into the lumen. Right: smooth ER makes lipids, stores Ca²⁺, and detoxifies.",
+ legend:[["er","Rough ER","s"],["ser","Smooth ER","s"],["rib","Ribosome"],["ca","Ca²⁺"]]},
+
+{act:3,scene:"golgi",id:"golgi",title:"Golgi, lysosomes and peroxisomes",
+ body:`<p>The <b>Golgi apparatus</b> is a stack of flat sacs. Vesicles from the ER arrive on the receiving side. The Golgi <b>modifies</b> proteins (for example, adds sugar tags), <b>sorts</b> them, and <b>packages</b> them into new vesicles on the shipping side.</p>
+ <p>Some of those vesicles become <b>lysosomes</b>, bags of digestive enzymes. Lysosomes break down worn-out organelles (<b>autophagy</b>) and things the cell has swallowed.</p>
+ <p><b>Peroxisomes</b> are small sacs that break down fatty acids and toxins such as alcohol. This makes <b>hydrogen peroxide (H₂O₂)</b>, which they safely turn into water and oxygen.</p>`,
+ analogy:"The Golgi is the post office: it labels, sorts and ships packages. Lysosomes are the recycling center. Peroxisomes are the hazardous-waste crew.",
+ terms:[["Golgi apparatus","Modifies, sorts and packages proteins into vesicles."],["Lysosome","A vesicle full of digestive enzymes."],["Autophagy","A cell digesting its own worn-out parts."],["Peroxisome","Breaks down fatty acids and toxins; turns H₂O₂ into water and O₂."]],
+ check:{q:"Which organelle labels, sorts and ships proteins?",opts:[
+  ["The Golgi apparatus",1,"Yes. The Golgi is the cell's post office."],
+  ["A lysosome",0,"Lysosomes digest things. The Golgi packages and ships."],
+  ["A peroxisome",0,"Peroxisomes break down fatty acids and toxins."],
+  ["Smooth ER",0,"Smooth ER makes lipids and detoxifies. The Golgi does the shipping."]]},
+ caption:"Proteins move through the Golgi and ship out. A lysosome digests an old mitochondrion. A peroxisome makes harmless water and O₂.",
+ legend:[["golgi","Golgi","s"],["lyso","Lysosome"],["perox","Peroxisome"],["mito","Worn-out mitochondrion","s"]]},
+
+{act:3,scene:"mito",id:"mito",title:"Mitochondria: making ATP",
+ body:`<p><b>Mitochondria</b> are the cell's power plants. They carry out <b>cellular respiration</b>: they use oxygen to break down fuel from food (like glucose) and capture the energy as <b>ATP</b>.</p>
+ <p>Each mitochondrion has a smooth <b>outer membrane</b> and a deeply folded <b>inner membrane</b>. The folds, called <b>cristae</b>, add surface area for making ATP. The fluid inside is the <b>matrix</b>.</p>
+ <p>Hard-working cells, like muscle and liver cells, have many mitochondria. Mitochondria even have their own small loop of DNA.</p>`,
+ analogy:"A power plant. Fuel and oxygen go in, usable energy (ATP) comes out, and exhaust (CO₂ and water) is released.",
+ terms:[["Cellular respiration","Using O₂ to break down fuel and make ATP."],["Cristae","Folds of the inner membrane where most ATP is made."],["Matrix","The fluid inside the inner membrane."]],
+ check:{q:"Why is the inner membrane of a mitochondrion folded into cristae?",opts:[
+  ["The folds add surface area for making ATP.",1,"Right. More membrane means more room for the ATP-making machinery."],
+  ["To store calcium.",0,"Calcium storage is mainly a smooth ER job."],
+  ["To hold the mitochondrial DNA.",0,"The DNA floats in the matrix. The folds are for making ATP."],
+  ["To let the mitochondrion swim.",0,"Mitochondria do not swim. The folds give more surface area."]]},
+ caption:"Fuel and O₂ go in. ATP comes out. CO₂ and water leave as waste.",
+ legend:[["mito","Outer membrane / cristae","s"],["matrix","Matrix","s"],["atp","ATP"],["o2","O₂"],["co2","CO₂"]]},
+
+{act:3,scene:"cyto",id:"cyto",title:"Cytoskeleton, centrosome, cilia and flagella",
+ body:`<p>The <b>cytoskeleton</b> is a network of protein fibers that shapes the cell and moves things around. There are three kinds, thinnest to thickest:</p>
+ <ol><li><b>Microfilaments</b> (actin): thin fibers that help the cell change shape, support microvilli, and pinch the cell in two during division.</li>
+ <li><b>Intermediate filaments</b>: tough ropes (like keratin) that resist pulling and hold organelles in place.</li>
+ <li><b>Microtubules</b>: hollow tubes that act as tracks. Motor proteins walk vesicles along them. They also form the spindle in cell division.</li></ol>
+ <p>Microtubules grow out from the <b>centrosome</b>, which holds a pair of <b>centrioles</b>. <b>Cilia</b> (many, short) sweep fluid across a surface, like mucus in your airways. A <b>flagellum</b> (one, long) moves the whole cell. In humans, only sperm have one.</p>`,
+ analogy:"Microfilaments are thin elastic cords, intermediate filaments are steel cables, and microtubules are railroad tracks with little trains (motor proteins) running on them.",
+ terms:[["Microfilament","Thinnest fiber, made of actin."],["Intermediate filament","Rope-like fiber that resists tension."],["Microtubule","Hollow tube of tubulin. Tracks, spindle, cilia."],["Centrosome","Organizes microtubules. Holds two centrioles."]],
+ check:{q:"Which cytoskeleton fiber forms the mitotic spindle and the core of cilia?",opts:[
+  ["Microtubules",1,"Yes. Microtubules make the spindle, the tracks, and the inside of cilia and flagella."],
+  ["Microfilaments",0,"Microfilaments are actin. They pinch the cell in two, but they do not form the spindle."],
+  ["Intermediate filaments",0,"Those are the tough ropes that resist tension."],
+  ["Chromatin",0,"Chromatin is DNA plus protein, not part of the cytoskeleton."]]},
+ caption:"Left: a motor protein walks a vesicle along a microtubule. Right: cilia beat to move mucus, and a flagellum drives a sperm.",
+ legend:[["mf","Microfilament","l"],["if","Intermediate filament","l"],["mt","Microtubule","l"],["motor","Motor protein"]]},
+
+{act:3,scene:"factory",id:"factory",title:"The factory path of a secreted protein",
+ body:`<p>Now put the organelles together. Follow one protein that will leave the cell, like insulin or a digestive enzyme:</p>
+ <ol><li>The <b>nucleus</b> sends out an mRNA copy of the gene.</li><li>A ribosome on the <b>rough ER</b> makes the protein into the ER.</li><li>A <b>transport vesicle</b> carries it to the <b>Golgi</b>.</li><li>The Golgi modifies it and packs it into a <b>secretory vesicle</b>.</li><li>The vesicle fuses with the plasma membrane: <b>exocytosis</b>.</li></ol>
+ <p>These membrane organelles working together are called the <b>endomembrane system</b>.</p>`,
+ analogy:"Head office (nucleus) to assembly line (rough ER) to delivery truck (vesicle) to post office (Golgi) to mail truck (secretory vesicle) to the customer outside.",
+ terms:[["Endomembrane system","The nuclear envelope, ER, Golgi, vesicles, lysosomes and plasma membrane working together."],["Transport vesicle","Carries proteins from the ER to the Golgi."],["Secretory vesicle","Carries finished product from the Golgi to the surface."]],
+ check:{q:"A secreted protein has just been made in the rough ER. Where does it go next?",opts:[
+  ["Into a transport vesicle that carries it to the Golgi",1,"Right. ER, then vesicle, then Golgi, then secretory vesicle, then out."],
+  ["Straight out of the cell",0,"It has to be packaged by the Golgi first."],
+  ["Back into the nucleus",0,"The nucleus sent the instructions. The protein moves forward to the Golgi."],
+  ["Into a mitochondrion",0,"Mitochondria make ATP. They are not on the shipping route."]]},
+ caption:"Follow the glowing protein from gene to the outside of the cell. The strip at the bottom shows each stop.",
+ legend:[["glow","The protein"],["mrna","mRNA","l"],["er","Rough ER","s"],["golgi","Golgi","s"]]},
+
+/* ---------- Part 4 ---------- */
+{act:4,scene:"rep",id:"rep",title:"DNA replication: copying the code",
+ body:`<p><b>DNA</b> is a double helix: two strands of nucleotides, like a twisted ladder. The rungs are <b>base pairs</b>. <b>A</b> always pairs with <b>T</b>, and <b>G</b> always pairs with <b>C</b>.</p>
+ <p>Before a cell divides, it copies its DNA. <b>Helicase</b> unzips the two strands. <b>DNA polymerase</b> then reads each old strand and adds the matching (complementary) nucleotides to build a new strand.</p>
+ <p>Each new DNA molecule ends up with <b>one old strand and one new strand</b>. This is <b>semi-conservative replication</b>.</p>`,
+ analogy:"Unzipping a zipper, then building a new matching half onto each side. You end up with two whole zippers, each with one original half.",
+ terms:[["Base pairing","A with T, G with C."],["Helicase","The enzyme that unzips DNA."],["DNA polymerase","The enzyme that adds new matching nucleotides."],["Semi-conservative","Each copy keeps one old strand."]],
+ check:{q:"An old DNA strand reads A-G-T-C. What does DNA polymerase build across from it?",opts:[
+  ["T-C-A-G",1,"Yes. A pairs with T, G with C, T with A, C with G."],
+  ["A-G-T-C",0,"That is a copy of the same letters, not the matching partner strand."],
+  ["U-C-A-G",0,"U (uracil) is only in RNA. DNA uses T."],
+  ["T-G-A-C",0,"Close, but G pairs with C, not G. Check the second and fourth letters."]]},
+ caption:"Helicase unzips. DNA polymerase builds a new partner strand on each old strand. The ladder is drawn untwisted.",
+ legend:[["old","Old strand","l"],["new","New strand","l"],["helic","Helicase"],["dnap","DNA polymerase"]]},
+
+{act:4,scene:"tx",id:"tx",title:"Transcription: DNA to mRNA",
+ body:`<p>A <b>gene</b> is a stretch of DNA with the instructions for a protein. DNA stays inside the nucleus, so the cell sends out a copy: <b>messenger RNA (mRNA)</b>.</p>
+ <p>In <b>transcription</b>, <b>RNA polymerase</b> opens the DNA and reads one strand, the <b>template strand</b>. It builds mRNA with matching bases, but RNA uses <b>U (uracil)</b> instead of T. So an A on the template becomes a U in the mRNA.</p>
+ <p>The first copy contains extra pieces called <b>introns</b>. They are cut out, and the useful pieces, the <b>exons</b>, are joined. This is <b>splicing</b>. The finished mRNA leaves through a nuclear pore.</p>`,
+ analogy:"You cannot take the master cookbook out of the library, so you copy one recipe onto a card. Then you cut out the ads in the middle (introns) before taking the card to the kitchen.",
+ terms:[["Transcription","Making mRNA from a DNA template."],["RNA polymerase","The enzyme that builds mRNA."],["Intron / exon","Introns are cut out. Exons are kept and joined."],["Uracil (U)","RNA's base in place of thymine (T)."]],
+ check:{q:"The DNA template strand reads T-A-C. What mRNA does RNA polymerase make?",opts:[
+  ["A-U-G",1,"Right. T pairs with A, A pairs with U (not T), C pairs with G. AUG is the start codon."],
+  ["A-T-G",0,"Close, but RNA has no T. An A on the template pairs with U."],
+  ["T-A-C",0,"That is the same as the template. mRNA is the matching partner."],
+  ["U-A-C",0,"T on the template pairs with A, not U."]]},
+ caption:"RNA polymerase reads the template strand and builds mRNA. Then introns are spliced out and the mRNA leaves the nucleus.",
+ legend:[["rnap","RNA polymerase"],["mrna","mRNA exon","r"],["intron","Intron (cut out)","r"],["bU","U = uracil","s"]]},
+
+{act:4,scene:"tl",id:"tl",title:"Translation: mRNA to protein",
+ body:`<p>In <b>translation</b>, a <b>ribosome</b> reads the mRNA three bases at a time. Each group of three is a <b>codon</b>, and most codons stand for one <b>amino acid</b>.</p>
+ <p><b>Transfer RNA (tRNA)</b> brings the amino acids. Each tRNA has an <b>anticodon</b> that pairs with the codon, so the right amino acid is added.</p>
+ <p>Translation begins at the <b>start codon, AUG</b> (methionine). The ribosome links each new amino acid to the chain with a <b>peptide bond</b> and slides to the next codon. At a <b>stop codon</b> (UAA, UAG or UGA) the finished chain is released.</p>`,
+ analogy:"The ribosome is a reader moving along a sentence three letters at a time. Each tRNA is a delivery driver with a matching address label (the anticodon) and one bead (an amino acid) for the growing necklace.",
+ terms:[["Codon","Three mRNA bases that code for one amino acid (or stop)."],["Anticodon","Three tRNA bases that pair with a codon."],["Peptide bond","The bond that links amino acids together."]],
+ check:{q:"A codon on the mRNA is GCU. Which tRNA anticodon pairs with it?",opts:[
+  ["CGA",1,"Yes. G pairs with C, C with G, and U with A."],
+  ["GCU",0,"That is the same as the codon. The anticodon is the matching partner."],
+  ["CGT",0,"tRNA is RNA, so it uses U, not T. And U on the codon pairs with A."],
+  ["GCA",0,"Check each pair: G with C, C with G, U with A. That gives CGA."]]},
+ caption:"tRNAs bring amino acids to matching codons. The ribosome links them and moves one codon at a time until it reaches a stop codon.",
+ legend:[["mrna","mRNA","l"],["trna","tRNA"],["rib","Ribosome","s"],["glow","New peptide bond"]]},
+
+/* ---------- Part 5 ---------- */
+{act:5,scene:"cycle",id:"cycle",title:"The cell cycle: grow, copy, divide",
+ body:`<p>The <b>cell cycle</b> is the life of a cell from one division to the next. Most of it is <b>interphase</b>, when the cell is working and getting ready:</p>
+ <ol><li><b>G1</b> (first gap): the cell grows and does its normal job.</li><li><b>S</b> (synthesis): the cell <b>copies its DNA</b>. Each chromosome becomes two identical <b>sister chromatids</b>.</li><li><b>G2</b> (second gap): more growth and final checks before dividing.</li></ol>
+ <p>Then comes the <b>mitotic phase</b>: <b>mitosis</b> (dividing the nucleus) and <b>cytokinesis</b> (dividing the cytoplasm). Some cells, like most neurons, leave the cycle and rest in <b>G0</b>.</p>`,
+ analogy:"Getting ready to move house. In G1 you live normally, in S you photocopy every important document, in G2 you pack and double-check, and M is moving day.",
+ terms:[["Interphase","G1 + S + G2. The cell is not dividing yet."],["S phase","When DNA is copied."],["Sister chromatids","The two identical copies of a chromosome, joined at the centromere."],["G0","A resting state outside the cycle."]],
+ check:{q:"In which phase is DNA copied?",opts:[
+  ["S phase",1,"Yes. S stands for synthesis, when the DNA is copied."],
+  ["G1",0,"In G1 the cell grows. The DNA has not been copied yet."],
+  ["G2",0,"By G2 the DNA has already been copied. The cell is getting ready to divide."],
+  ["Mitosis",0,"Mitosis separates DNA that was already copied in S phase."]]},
+ caption:"The pointer moves around the cycle. Watch the cell grow, copy its DNA in S, and divide in M.",
+ legend:[["act1","G1","r"],["act4","S","r"],["act2","G2","r"],["act5","M (mitotic phase)","r"],["chromatin","Chromatin","l"]]},
+
+{act:5,scene:"mitosis",id:"mitosis",title:"Mitosis and cytokinesis",
+ body:`<p><b>Mitosis</b> divides the copied chromosomes evenly into two nuclei. Watch the chromosomes:</p>
+ <ol><li><b>Prophase</b>: chromatin <b>condenses</b> into visible X-shaped chromosomes. The <b>spindle</b> starts to grow from the centrosomes.</li>
+ <li><b>Prometaphase</b>: the nuclear envelope breaks apart. Spindle fibers attach to each chromosome at its <b>kinetochore</b>.</li>
+ <li><b>Metaphase</b>: chromosomes <b>line up</b> in the middle, at the metaphase plate.</li>
+ <li><b>Anaphase</b>: sister chromatids <b>separate</b> and are pulled to opposite poles.</li>
+ <li><b>Telophase</b>: new nuclear envelopes form, and the chromosomes loosen again.</li></ol>
+ <p><b>Cytokinesis</b> pinches the cell in two with a ring of microfilaments (the <b>cleavage furrow</b>). The result is two identical daughter cells.</p>`,
+ analogy:"PMAT: Pack up (prophase), Meet in the middle (metaphase), pull Apart (anaphase), make Two new homes (telophase).",
+ terms:[["Spindle","Microtubules that move the chromosomes."],["Kinetochore","The protein patch at the centromere where spindle fibers attach."],["Metaphase plate","The imaginary line in the middle where chromosomes line up."],["Cleavage furrow","The pinch that splits the cytoplasm."]],
+ check:{q:"Sister chromatids are pulled apart toward opposite poles during:",opts:[
+  ["Anaphase",1,"Yes. A for apart."],
+  ["Metaphase",0,"In metaphase they line up in the middle. They separate in the next phase."],
+  ["Prophase",0,"In prophase the chromosomes condense. They have not lined up or separated yet."],
+  ["Telophase",0,"By telophase they have already reached the poles, and new nuclei are forming."]]},
+ caption:"One cell divides. The strip at the bottom shows the current phase.",
+ legend:[["chrA","Chromosome (blue set)","l"],["chrB","Chromosome (red set)","l"],["spindle","Spindle fibers","l"],["mf","Contractile ring","l"]]},
+
+{act:5,scene:"checkp",id:"checkp",title:"Checkpoints, and what goes wrong in cancer",
+ body:`<p>The cell cycle has <b>checkpoints</b>, like quality-control stops. At each one, the cell checks that it is ready before it moves on:</p>
+ <ol><li><b>G1 checkpoint</b>: Is the cell big enough? Is the DNA undamaged?</li><li><b>G2 checkpoint</b>: Was all the DNA copied correctly?</li><li><b>M checkpoint</b>: Is every chromosome attached to the spindle?</li></ol>
+ <p>If something is wrong, the cycle pauses for repair. If it cannot be fixed, the cell may destroy itself (<b>apoptosis</b>).</p>
+ <p><b>Cancer</b> is uncontrolled cell division. Mutations in genes that control the cycle let damaged cells skip the checkpoints and keep dividing, forming a tumor. Examples are <b>oncogenes</b> (stuck "go" signals) and broken <b>tumor suppressor genes</b> such as p53 (lost brakes).</p>`,
+ analogy:"Checkpoints are the brakes and the inspector on an assembly line. Cancer is a car with the gas pedal stuck down and the brakes cut.",
+ terms:[["Checkpoint","A stop where the cell checks it is ready to continue."],["Apoptosis","Programmed cell death."],["Oncogene","A mutated gene that pushes division too hard."],["Tumor suppressor gene","A gene that normally stops division, such as p53."]],
+ check:{q:"p53 can stop the cycle when DNA is damaged. If p53 is broken, what is more likely?",opts:[
+  ["Cells with damaged DNA keep dividing.",1,"Right. Without that brake, damaged cells slip through the checkpoints. This is why p53 is broken in many cancers."],
+  ["The cell stops dividing forever.",0,"p53 is a brake. Losing a brake makes division harder to stop, not impossible to start."],
+  ["The DNA cannot be copied at all.",0,"DNA can still be copied. It just is not checked carefully."],
+  ["The cell turns into a stem cell.",0,"Losing p53 does not make a stem cell. It lets damaged cells keep dividing."]]},
+ caption:"Left: a normal cell stops at a checkpoint until damage is repaired. Right: a cell with broken checkpoints keeps dividing into a tumor.",
+ legend:[["good","Checkpoint open","r"],["bad","Checkpoint closed","r"],["tumor","Cancer cells"]]},
+
+{act:5,scene:"stem",id:"stem",title:"Cell differentiation: from stem cell to specialist",
+ body:`<p>Almost every cell in your body has the <b>same DNA</b>. A neuron and a red blood cell look different because they <b>turn on different genes</b>. Becoming a specialized cell type is called <b>differentiation</b>.</p>
+ <p>A <b>stem cell</b> can divide to make more of itself (<b>self-renewal</b>) and can also make cells that differentiate.</p>
+ <ol><li><b>Totipotent</b>: can become any cell, including the placenta (the fertilized egg).</li><li><b>Pluripotent</b>: can become any type of body cell (early embryo).</li><li><b>Multipotent</b>: can become several related types, such as the blood stem cells in red bone marrow.</li></ol>`,
+ analogy:"Everyone gets the same giant cookbook (DNA). A baker only opens the bread chapters and a butcher only opens the meat chapters. Same book, different recipes in use.",
+ terms:[["Differentiation","Becoming a specialized cell type."],["Stem cell","A cell that can self-renew and give rise to specialized cells."],["Pluripotent","Can become any body cell type."],["Multipotent","Can become several related cell types."]],
+ check:{q:"Why does a muscle cell make different proteins than a skin cell?",opts:[
+  ["They turn on different genes.",1,"Yes. Same DNA, different genes switched on."],
+  ["They have different DNA.",0,"Almost all body cells have the same DNA. What differs is which genes are used."],
+  ["The muscle cell has no nucleus.",0,"Skeletal muscle cells actually have many nuclei."],
+  ["Skin cells have no ribosomes.",0,"All these cells have ribosomes. The difference is gene expression."]]},
+ caption:"A stem cell divides. One daughter stays a stem cell. The other turns on certain genes and becomes a specialist.",
+ legend:[["accent","Stem cell"],["good","Gene switched on","s"],["rule","Gene switched off","s"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole cell.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · Membrane &amp; passive transport (no ATP)</li>
+ <li>Fluid mosaic: phospholipid bilayer, cholesterol, proteins, glycocalyx.</li><li>Simple diffusion: O₂, CO₂ and lipids slip through the bilayer.</li><li>Facilitated diffusion: channels and carriers, still downhill.</li><li>Osmosis: water follows solute, through aquaporins.</li><li>Isotonic: no change. Hypertonic: crenation. Hypotonic: swelling and lysis.</li>
+ <li class="h">Part 2 · Transport that costs energy</li>
+ <li>Na⁺/K⁺ pump: 3 Na⁺ out, 2 K⁺ in, 1 ATP.</li><li>Secondary active: Na⁺ flowing in drags glucose in (symport).</li><li>Endocytosis (phago-, pino-, receptor-mediated) and exocytosis.</li>
+ <li class="h">Part 3 · Organelles</li>
+ <li>Nucleus, nucleolus, ribosomes, rough and smooth ER, Golgi, lysosomes, peroxisomes, mitochondria, cytoskeleton.</li><li>Secreted protein: rough ER → vesicle → Golgi → secretory vesicle → exocytosis.</li>
+ <li class="h">Part 4 · DNA to protein</li>
+ <li>Replication: helicase unzips, DNA polymerase builds; semi-conservative.</li><li>Transcription: RNA polymerase makes mRNA (U for T); introns spliced out.</li><li>Translation: codons, anticodons, AUG start, stop codon, peptide bonds.</li>
+ <li class="h">Part 5 · Dividing &amp; specializing</li>
+ <li>G1 → S (DNA copied) → G2 → mitosis (PMAT) → cytokinesis.</li><li>Checkpoints stop damaged cells; cancer skips them.</li><li>Stem cells differentiate by turning on different genes.</li></ol>
+ <p>Next: try the <b>Cell Lab</b>. Shrink and swell a red blood cell, sort transport examples, decode a gene, and put mitosis in order.</p>`,
+ analogy:"The membrane is the gate, the nucleus is the head office, the organelles are the factory, DNA is the blueprint, and division makes a new copy of the whole city.",
+ terms:[],check:null,caption:"The whole cell, labeled one part at a time.",
+ legend:[["lipid","Plasma membrane"],["nuc","Nucleus","s"],["er","ER","s"],["golgi","Golgi","s"],["mito","Mitochondrion","s"],["lyso","Lysosome"]]}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+const NACT=5;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=NACT;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([NACT+1,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===NACT+1)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  if(sh==="l")return `<span><i class="l" style="background:var(${v})"></i>${l[1]}</span>`;
+  if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
+  return `<span><i class="${sh==="c"?"":sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=520;
+const cv=document.getElementById("stage");const ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+const KEYS=("ground panel panel-2 sunk ink ink-soft ink-faint rule rule-soft accent accent-wash good good-wash warn bad bad-wash act1 act2 act3 act4 act5 "+
+ "ecf cyto lipid lipid-edge tail tail-edge chol prot prot-edge pprot pprot-edge glyco o2 co2 glu water water-wash na k solute atp pi lig ca "+
+ "rbc rbc-pale rbc-edge nuc nuc-edge nucleolus chromatin rib er er-edge ser ser-edge golgi golgi-edge lyso lyso-edge perox perox-edge mito mito-edge matrix "+
+ "mf if mt motor bA bT bG bC bU old new mrna trna rnap rnap-edge helic dnap dnap-edge chrA chrB spindle glow tumor intron").split(" ");
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const sm=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,rot,fill,stroke,lw){ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2)*1.2;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,txt,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5)}
+function badge(x,y,n,col){circ(x,y,10,col);ctx.font=`700 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(n,x,y+.5)}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function wrapText(t,x,y,w,lh){const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function poly(pts,col,lw,close,fill){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));if(close)ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill()}if(col){ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function along(pts,f){let L=0;const sl=[];for(let i=1;i<pts.length;i++){const s=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);sl.push(s);L+=s}
+  let d=clamp(f,0,1)*L;for(let i=1;i<pts.length;i++){const s=sl[i-1];if(d<=s||i===pts.length-1){const u=s?clamp(d/s,0,1):0;return [pts[i-1][0]+(pts[i][0]-pts[i-1][0])*u,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*u]}d-=s}return pts[pts.length-1]}
+function wander(hx,hy,t,i,ax,ay){return [hx+Math.sin(t*.8+i*1.7)*ax+Math.sin(t*1.9+i*.6)*ax*.35,hy+Math.cos(t*.7+i*2.3)*ay+Math.sin(t*1.6+i*1.1)*ay*.35]}
+/* a particle that wanders at home A, crosses through gate points between tc and tc+dur, then wanders at home B */
+function crosser(i,t,A,B,gate,tc,dur,ax,ay){
+  if(t<tc)return wander(A[0],A[1],t,i,ax,ay);
+  if(t>tc+dur)return wander(B[0],B[1],t,i,ax,ay);
+  const p0=wander(A[0],A[1],tc,i,ax,ay),p1=wander(B[0],B[1],tc+dur,i,ax,ay);
+  return along([p0].concat(gate,[p1]),ease((t-tc)/dur));
+}
+function bg(col){ctx.fillStyle=col;ctx.fillRect(0,0,W,H)}
+function sideLabel(x,y,t,col){ctx.font=`600 11px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.fillText(t,x,y)}
+function infoPanel(x,y,w,h){ctx.globalAlpha=.94;ctx.fillStyle=C.panel;rr(x,y,w,h,8);ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke()}
+function stepList(x,y,w,items,on,col,lh){lh=lh||30;items.forEach((s,i)=>{const yy=y+i*lh;const a=i===on;
+  if(a){ctx.fillStyle=C["panel-2"];rr(x,yy-lh/2+2,w,lh-4,6);ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke()}
+  badge(x+14,yy,i+1,a?col:C["ink-faint"]);ctx.font=`${a?700:500} 12px ${FONT}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=a?C.ink:C["ink-soft"];ctx.fillText(s,x+30,yy+.5)})}
+
+/* ----- molecules ----- */
+function oxy(x,y,a){ctx.globalAlpha=a==null?1:a;circ(x-3.6,y,4.6,C.o2,"rgba(0,0,0,.25)",1);circ(x+3.6,y,4.6,C.o2,"rgba(0,0,0,.25)",1);ctx.globalAlpha=1}
+function cdo(x,y,a){ctx.globalAlpha=a==null?1:a;circ(x-6,y,3.6,C.o2,"rgba(0,0,0,.25)",1);circ(x+6,y,3.6,C.o2,"rgba(0,0,0,.25)",1);circ(x,y,4.6,C.co2,"rgba(0,0,0,.3)",1);ctx.globalAlpha=1}
+function hexa(x,y,r,fill,a){ctx.globalAlpha=a==null?1:a;ctx.beginPath();for(let k=0;k<6;k++){const an=k/6*TAU+Math.PI/6;const px=x+Math.cos(an)*r,py=y+Math.sin(an)*r;k?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function gluc(x,y,a){hexa(x,y,7.5,C.glu,a)}
+function wat(x,y,a,r){ctx.globalAlpha=a==null?1:a;circ(x,y,r||3.4,C.water);ctx.globalAlpha=1}
+function plus(x,y,s,col){line(x-s,y,x+s,y,col||"#fff",1.6);line(x,y-s,x,y+s,col||"#fff",1.6)}
+function naI(x,y,a,r){r=r||6;ctx.globalAlpha=a==null?1:a;circ(x,y,r,C.na,"rgba(0,0,0,.3)",1);plus(x,y,r*.45);ctx.globalAlpha=1}
+function kI(x,y,a,r){r=r||7;ctx.globalAlpha=a==null?1:a;ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x+r,y);ctx.lineTo(x,y+r);ctx.lineTo(x-r,y);ctx.closePath();ctx.fillStyle=C.k;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();plus(x,y,r*.38);ctx.globalAlpha=1}
+function caI(x,y,a,r){ctx.globalAlpha=a==null?1:a;circ(x,y,r||4.5,C.ca,"rgba(0,0,0,.3)",1);ctx.globalAlpha=1}
+function sol(x,y,a,r){ctx.globalAlpha=a==null?1:a;circ(x,y,r||6.5,C.solute,"rgba(0,0,0,.25)",1);ctx.globalAlpha=1}
+function ribo(x,y,s,a){s=s||1;ctx.globalAlpha=a==null?1:a;ell(x,y-3*s,7*s,5*s,0,C.rib);ell(x,y+4*s,5.5*s,3.5*s,0,C.rib);ctx.globalAlpha=1}
+function atpChip(x,y,a,t){ctx.globalAlpha=a==null?1:a;chipText(x,y,t||"ATP",C.atp);ctx.globalAlpha=1}
+function pChip(x,y,a){ctx.globalAlpha=a==null?1:a;circ(x,y,8,C.pi,"rgba(0,0,0,.3)",1);txt(x,y+.5,"P",{align:"center",size:10,weight:700,color:"#fff",mono:true});ctx.globalAlpha=1}
+
+/* ----- membrane pieces ----- */
+function lipid(x,y,dir,a,s){s=s||1;ctx.globalAlpha=a==null?1:a;ctx.strokeStyle=C["tail-edge"];ctx.lineWidth=1.8*s;
+  for(const dx of [-2.6,2.6]){ctx.beginPath();ctx.moveTo(x+dx*s,y+dir*5*s);for(let k=1;k<=4;k++)ctx.lineTo(x+(dx+(k%2?1.3:-1.3)*Math.sign(dx))*s,y+dir*(5+k*5)*s);ctx.stroke()}
+  circ(x,y,5.6*s,C.lipid,C["lipid-edge"],1.1);ctx.globalAlpha=1}
+/* horizontal bilayer between x0 and x1 centred on ym. skip = [[xa,xb],...] */
+function bilayer(x0,x1,ym,t,skip,step){step=step||15;skip=skip||[];
+  ctx.fillStyle=C.tail;ctx.fillRect(x0,ym-22,x1-x0,44);
+  let i=0;for(let x=x0+6;x<=x1-4;x+=step,i++){if(skip.some(s=>x>s[0]-6&&x<s[1]+6))continue;
+    const j1=Math.sin(t*1.7+i*1.3)*1.6,j2=Math.sin(t*1.5+i*2.1+1)*1.6;
+    lipid(x+j1,ym-26,1);lipid(x+j2,ym+26,-1)}}
+function chanProt(cx,ym,gap,h,fill,edge){h=h||40;const w=20;
+  ctx.fillStyle=fill||C.prot;ctx.strokeStyle=edge||C["prot-edge"];ctx.lineWidth=1.8;
+  rr(cx-gap/2-w,ym-h,w,h*2,9);ctx.fill();ctx.stroke();rr(cx+gap/2,ym-h,w,h*2,9);ctx.fill();ctx.stroke()}
+/* gated carrier/pump: o=0 open to inside (bottom), o=1 open to outside (top) */
+function gated(cx,ym,o,w,h,fill,edge){w=w||36;h=h||44;const gT=lerp(3,30,o),gB=lerp(30,3,o);
+  ctx.fillStyle=fill||C.prot;ctx.strokeStyle=edge||C["prot-edge"];ctx.lineWidth=2;ctx.lineJoin="round";
+  [-1,1].forEach(sd=>{ctx.beginPath();ctx.moveTo(cx+sd*(gT/2),ym-h);ctx.lineTo(cx+sd*(gT/2+w),ym-h+6);ctx.lineTo(cx+sd*(gB/2+w),ym+h-6);ctx.lineTo(cx+sd*(gB/2),ym+h);
+    ctx.quadraticCurveTo(cx+sd*(gB/2+8),ym,cx+sd*(gT/2),ym-h);ctx.closePath();ctx.fill();ctx.stroke()});ctx.lineJoin="miter"}
+function memStroke(build,lw){lw=lw||12;ctx.lineCap="round";ctx.lineJoin="round";build();ctx.strokeStyle=C["lipid-edge"];ctx.lineWidth=lw+2;ctx.stroke();build();ctx.strokeStyle=C.lipid;ctx.lineWidth=lw;ctx.stroke();build();ctx.strokeStyle=C.tail;ctx.lineWidth=lw*.38;ctx.stroke();ctx.lineCap="butt";ctx.lineJoin="miter"}
+function memCircle(x,y,r){memStroke(()=>{ctx.beginPath();ctx.arc(x,y,r,0,TAU)},8)}
+function zoneLabels(top,bot){sideLabel(12,16,top||"OUTSIDE THE CELL (EXTRACELLULAR FLUID)");sideLabel(12,H-14,bot||"INSIDE THE CELL (CYTOSOL)")}
+function bar2(x,y,w,lab,a,b,max,col,draw){ // two bars: outside a, inside b
+  txt(x,y,lab,{size:12,weight:700});
+  [["Outside",a],["Inside",b]].forEach((r,i)=>{const yy=y+20+i*22;txt(x,yy,r[0],{size:11.5,color:C["ink-soft"]});
+    ctx.fillStyle=C.sunk;rr(x+56,yy-6,w-90,12,6);ctx.fill();ctx.fillStyle=col;rr(x+56,yy-6,Math.max(6,(w-90)*r[1]/max),12,6);ctx.fill();
+    txt(x+w-28,yy,String(r[1]),{size:12,weight:700,mono:true})})}
+
+/* ================= Whole-cell drawing (map + recap) ================= */
+const CELL={cx:400,cy:262,rx:300,ry:198};
+function mitoSmall(x,y,rx,ry,rot,a){ctx.save();ctx.globalAlpha=a==null?1:a;ctx.translate(x,y);ctx.rotate(rot);ell(0,0,rx,ry,0,C.mito,C["mito-edge"],2);
+  ctx.beginPath();const n=6;for(let i=0;i<=n;i++){const xx=-rx*.75+i*(rx*1.5/n);ctx.lineTo(xx,(i%2?-1:1)*ry*.55)}ctx.strokeStyle=C["mito-edge"];ctx.lineWidth=1.6;ctx.stroke();ctx.restore()}
+function golgiStack(cx,cy,n,sc,rot,a){ctx.save();ctx.globalAlpha=a==null?1:a;ctx.translate(cx,cy);ctx.rotate(rot||0);ctx.lineCap="round";
+  for(let k=0;k<n;k++){const r=(34+k*11)*sc;ctx.beginPath();ctx.arc(46*sc,0,r,Math.PI-0.62,Math.PI+0.62);ctx.strokeStyle=C["golgi-edge"];ctx.lineWidth=9*sc;ctx.stroke();ctx.strokeStyle=C.golgi;ctx.lineWidth=6*sc;ctx.stroke()}
+  ctx.lineCap="butt";ctx.restore()}
+function nucleusDraw(x,y,r,t,a,pores){ctx.globalAlpha=a==null?1:a;circ(x,y,r,C.nuc);circ(x,y,r,null,C["nuc-edge"],2.2);circ(x,y,r-5,null,C["nuc-edge"],1.2);
+  const np=pores||8;for(let i=0;i<np;i++){const an=i/np*TAU+.2;const px=x+Math.cos(an)*(r-2.5),py=y+Math.sin(an)*(r-2.5);circ(px,py,3.2,C.cyto,C["nuc-edge"],1.4)}
+  ctx.strokeStyle=C.chromatin;ctx.lineWidth=1.4;for(let k=0;k<7;k++){ctx.beginPath();const ox=x+(rnd(k)-.5)*r*1.0,oy=y+(rnd(k+9)-.5)*r*1.0;
+    for(let j=0;j<=40;j++){const u=j/40;let px=ox+Math.sin(u*7+k*1.3+t*.25)*r*.22+Math.sin(u*19+k)*r*.04,py=oy+Math.cos(u*5+k*2.1)*r*.22+Math.cos(u*17+k)*r*.04;const d=Math.hypot(px-x,py-y);if(d>r*.84){px=x+(px-x)*r*.84/d;py=y+(py-y)*r*.84/d}j?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.stroke()}
+  ctx.globalAlpha=1}
+function drawCellOverview(t){
+  const {cx,cy,rx,ry}=CELL;
+  ell(cx,cy,rx,ry,0,C.cyto);
+  // faint microtubules
+  for(let k=0;k<10;k++){const an=k/10*TAU;line(455,300,455+Math.cos(an)*230,300+Math.sin(an)*150,C.mt,1,[2,5])}
+  // ER around nucleus
+  ctx.lineCap="round";
+  [104,120,136].forEach((r,i)=>{ctx.beginPath();ctx.arc(310,250,r,-1.05,1.05);ctx.strokeStyle=C["er-edge"];ctx.lineWidth=9;ctx.stroke();ctx.strokeStyle=C.er;ctx.lineWidth=6;ctx.stroke();
+    for(let a=-1;a<=1;a+=.16){circ(310+Math.cos(a)*(r+6),250+Math.sin(a)*(r+6),2.3,C.rib)}});
+  // smooth ER
+  ctx.beginPath();ctx.moveTo(380,395);ctx.bezierCurveTo(410,370,440,420,470,395);ctx.bezierCurveTo(500,370,520,410,545,390);ctx.strokeStyle=C["ser-edge"];ctx.lineWidth=10;ctx.stroke();ctx.strokeStyle=C.ser;ctx.lineWidth=7;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(400,420);ctx.bezierCurveTo(430,440,470,410,510,430);ctx.strokeStyle=C["ser-edge"];ctx.lineWidth=10;ctx.stroke();ctx.strokeStyle=C.ser;ctx.lineWidth=7;ctx.stroke();
+  ctx.lineCap="butt";
+  nucleusDraw(310,250,82,t);
+  circ(292,236,21,C.nucleolus);
+  golgiStack(560,190,4,1,0);
+  // vesicles leaving golgi
+  for(let k=0;k<3;k++){const q=((t*.25)+k/3)%1;const p=along([[600,170],[640,130],[668,112]],q);circ(p[0],p[1],6,C.lyso,C["lyso-edge"],1.2)}
+  mitoSmall(200,150,36,16,.5);mitoSmall(600,345,36,16,-.35);mitoSmall(205,375,32,15,.25);mitoSmall(645,230,26,13,1.3);
+  circ(505,118,11,C.lyso,C["lyso-edge"],1.5);circ(165,262,10,C.lyso,C["lyso-edge"],1.5);
+  circ(480,430,10,C.perox,C["perox-edge"],1.5);rr(476,426,8,8,1);ctx.fillStyle=C["perox-edge"];ctx.fill();
+  // centrosome
+  ctx.save();ctx.translate(455,300);ctx.fillStyle=C.mt;rr(-9,-3,18,6,2);ctx.fill();rr(-3,2,6,16,2);ctx.fill();ctx.restore();
+  for(let i=0;i<26;i++){const a=rnd(i+40)*TAU,d=.55+rnd(i+80)*.38;const x=cx+Math.cos(a)*rx*d,y=cy+Math.sin(a)*ry*d;if(Math.hypot(x-310,y-250)<150)continue;circ(x,y,2.2,C.rib)}
+  memStroke(()=>{ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,TAU)},12);
+}
+function sceneMap(T){
+  bg(C.ecf);
+  const t=T;const part=Math.floor(t/2.8)%5;const ph=(t%2.8)/2.8;
+  drawCellOverview(t);
+  const col=C["act"+(part+1)];
+  const pulse=.55+.45*Math.sin(t*4);
+  ctx.setLineDash([7,6]);ctx.lineWidth=3.5;ctx.strokeStyle=col;
+  if(part===0){ctx.beginPath();ctx.ellipse(400,262,300,198,0,0,TAU);ctx.globalAlpha=pulse;ctx.lineWidth=6;ctx.stroke();ctx.globalAlpha=1;
+    for(let k=0;k<4;k++){const q=(ph+k/4)%1;const y=200+k*30;oxy(lerp(30,150,q),y)}}
+  else if(part===1){ctx.beginPath();ctx.arc(690,262,58,0,TAU);ctx.stroke();
+    gated(700,262,.5+.5*Math.sin(t*3),14,18);
+    const q=ph;naI(lerp(690,740,q),lerp(262,230,q));atpChip(660,300,1)}
+  else if(part===2){ctx.beginPath();ctx.ellipse(500,250,190,170,0,0,TAU);ctx.stroke()}
+  else if(part===3){ctx.beginPath();ctx.arc(310,250,98,0,TAU);ctx.stroke();glow(310,250,90,C.glow,.25*pulse)}
+  else{ctx.beginPath();ctx.ellipse(400,262,316,214,0,0,TAU);ctx.stroke();
+    // mini dividing cell icon
+    const p=sm(ph*1.4);ell(722-p*14,470,22,18,0,C.cyto,C["lipid-edge"],2);ell(722+p*14,470,22,18,0,C.cyto,C["lipid-edge"],2);
+    circ(722-p*16,470,6,C.nuc,C["nuc-edge"],1.2);circ(722+p*16,470,6,C.nuc,C["nuc-edge"],1.2)}
+  ctx.setLineDash([]);
+  const names=["Part 1 · The membrane & passive transport","Part 2 · Transport that costs energy (ATP)","Part 3 · The organelles","Part 4 · DNA in the nucleus → protein","Part 5 · Dividing & specializing"];
+  label(12,22,names[part],{weight:700,size:14,border:col});
+  label(400,505,"Plasma membrane · cytoplasm (cytosol + organelles) · nucleus",{align:"center",size:12.5,color:C["ink-soft"]});
+}
+const RECAP_LABELS=[["Plasma membrane",108,175,"left"],["Nucleus",310,318,"center"],["Nucleolus",292,236,"center"],["Nuclear pore",388,262,"left"],
+ ["Rough ER",446,198,"left"],["Smooth ER",462,452,"center"],["Golgi apparatus",585,150,"center"],["Vesicles",668,96,"center"],
+ ["Mitochondrion",200,118,"center"],["Lysosome",505,96,"center"],["Peroxisome",540,430,"left"],["Centrosome",470,318,"left"],["Ribosomes (free)",620,410,"center"]];
+function sceneRecap(T){
+  bg(C.ecf);drawCellOverview(T);
+  const n=RECAP_LABELS.length;const per=.75;const cyc=n*per+3.5;const t=T%cyc;
+  const k=Math.min(n,Math.floor(t/per)+1);
+  for(let i=0;i<k;i++){const L=RECAP_LABELS[i];const fresh=i===k-1&&t<n*per;
+    label(L[1],L[2],L[0],{align:L[3],size:12.5,weight:fresh?700:600,border:fresh?C.accent:C.rule})}
+  label(12,22,`Labeled: ${k} of ${n}`,{weight:700,size:13});
+}
+
+/* ================= Part 1 scenes ================= */
+const MY=260; // membrane centre in transport scenes
+function sceneMosaic(T){
+  bg(C.ecf);ctx.fillStyle=C.cyto;ctx.fillRect(0,MY,W,H-MY);
+  const t=T,cyc=14,p=(t%cyc)/cyc;
+  // water molecules in fluid (not in the tails)
+  for(let i=0;i<26;i++){const w=wander(40+rnd(i)*720,60+rnd(i+3)*130,t,i,10,8);wat(w[0],w[1],.7)}
+  for(let i=0;i<20;i++){const w=wander(40+rnd(i+50)*720,330+rnd(i+53)*150,t,i+50,10,8);wat(w[0],w[1],.7)}
+  // drifting proteins
+  const ip=210+Math.sin(t*.35)*28, gp=470+Math.sin(t*.28+2)*30, pp=660+Math.sin(t*.4+1)*24;
+  bilayer(0,W,MY,t,[[ip-24,ip+24],[gp-32,gp+32]]);
+  // cholesterol
+  const CH=[90,330,395,580,750];CH.forEach((x,i)=>{const xx=x+Math.sin(t*.9+i)*3;if(Math.abs(xx-ip)<40||Math.abs(xx-gp)<48)return;
+    [-1,1].forEach(sd=>{ctx.fillStyle=C.chol;rr(xx-3+sd*0,MY+sd*13-9,6,18,3);ctx.fill();circ(xx,MY+sd*22,3,C.chol)})});
+  // integral channel protein
+  chanProt(ip,MY,8,40);
+  // big integral glycoprotein
+  ctx.fillStyle=C.prot;ctx.strokeStyle=C["prot-edge"];ctx.lineWidth=2;rr(gp-30,MY-44,60,88,22);ctx.fill();ctx.stroke();
+  // glycocalyx chains
+  function sugar(x0,y0,n,seed){let x=x0,y=y0;for(let k=0;k<n;k++){const nx=x+Math.sin(seed+k*1.3+t*.8)*8,ny=y-14;line(x,y,nx,ny,C.glyco,2);x=nx;y=ny;
+      ctx.beginPath();ctx.moveTo(x,y-5);ctx.lineTo(x+5,y);ctx.lineTo(x,y+5);ctx.lineTo(x-5,y);ctx.closePath();ctx.fillStyle=C.glyco;ctx.fill();
+      if(k===2){const bx=x+10,by=y-8;line(x,y,bx,by,C.glyco,2);ctx.beginPath();ctx.moveTo(bx,by-4);ctx.lineTo(bx+4,by);ctx.lineTo(bx,by+4);ctx.lineTo(bx-4,by);ctx.closePath();ctx.fill()}}}
+  sugar(gp-10,MY-44,5,1);sugar(gp+12,MY-44,4,3);
+  // glycolipid sugars (on lipid at x≈ 130)
+  const gl=136+Math.sin(t*.5)*6;sugar(gl,MY-32,4,5);sugar(560,MY-32,3,7);
+  // peripheral protein on inner face
+  ell(pp,MY+44,34,15,0,C.pprot,C["pprot-edge"],2);
+  // zoomed phospholipid inset
+  infoPanel(600,14,186,150);
+  txt(612,30,"ONE PHOSPHOLIPID",{size:11,weight:600,mono:true,color:C["ink-soft"]});
+  ctx.save();ctx.translate(650,100);ctx.scale(2.6,2.6);lipid(0,-18,1,1,1);ctx.restore();
+  label(676,58,"Head: hydrophilic",{size:11.5,color:C.ink,weight:600});
+  label(676,118,"Tails: hydrophobic",{size:11.5,color:C.ink,weight:600});
+  txt(676,76,"(phosphate group)",{size:10.5,color:C["ink-soft"]});txt(676,136,"(fatty acid chains)",{size:10.5,color:C["ink-soft"]});
+  // labels sequence
+  const L=[[0,"Phospholipid bilayer",14,MY,"left",null],
+           [1,"Hydrophilic heads face water",300,MY-60,"center",[300,MY-28]],
+           [2,"Hydrophobic tails hide inside",340,MY+70,"center",[340,MY+6]],
+           [3,"Cholesterol",395,MY-88,"center",[395,MY-16]],
+           [4,"Integral protein (channel)",ip,MY+108,"center",[ip,MY+40]],
+           [5,"Glycoprotein",gp+40,MY-112,"left",[gp+28,MY-40]],
+           [6,"Glycocalyx (sugar coat)",gp-20,40,"center",[gp-6,MY-100]],
+           [7,"Peripheral protein",pp,MY+90,"center",[pp,MY+58]]];
+  const k=Math.floor(p*12);
+  L.forEach(l=>{if(l[0]>k)return;const fresh=l[0]===k;if(l[5])line(l[2],l[3],l[5][0],l[5][1],C["ink-soft"],1.2);
+    label(l[2],l[3],l[1],{align:l[4],size:12.5,weight:600,border:fresh?C.act1:C.rule})});
+  zoneLabels();
+  label(14,MY+150,"Fluid: pieces drift sideways",{size:12,color:C.act1,weight:600});
+  arrow(80,MY+172,20,MY+172,C.act1,2);arrow(80,MY+172,140,MY+172,C.act1,2);
+}
+
+function sceneDiff(T){
+  bg(C.ecf);ctx.fillStyle=C.cyto;ctx.fillRect(0,MY,640,H-MY);
+  const t=T%13;
+  bilayer(0,640,MY,T);
+  // O2: 18 out, 2 in; 8 cross in
+  let oOut=0,oIn=0,cOut=0,cIn=0;
+  for(let i=0;i<20;i++){let pos;const A=[40+rnd(i)*560,60+rnd(i+1)*140],B=[40+rnd(i+30)*560,320+rnd(i+31)*150];
+    if(i<2)pos=wander(B[0],B[1],T,i,14,10);
+    else if(i<10){const tc=.8+(i-2)*1.25;const gx=A[0]*.5+B[0]*.5;pos=crosser(i,t,A,B,[[gx,MY-34],[gx+6,MY+34]],tc,1.6,14,10);
+      if(t>tc&&t<tc+1.6)glow(pos[0],pos[1],16,C.o2,.35)}
+    else pos=wander(A[0],A[1],T,i,14,10);
+    oxy(pos[0],pos[1]);if(pos[1]<MY)oOut++;else oIn++}
+  for(let i=0;i<18;i++){let pos;const A=[40+rnd(i+70)*560,320+rnd(i+71)*150],B=[40+rnd(i+90)*560,60+rnd(i+91)*140];
+    if(i<2)pos=wander(B[0],B[1],T,i+70,14,10);
+    else if(i<9){const tc=1.4+(i-2)*1.35;const gx=A[0]*.5+B[0]*.5;pos=crosser(i+70,t,A,B,[[gx,MY+34],[gx-6,MY-34]],tc,1.6,14,10);
+      if(t>tc&&t<tc+1.6)glow(pos[0],pos[1],16,C.co2,.3)}
+    else pos=wander(A[0],A[1],T,i+70,14,10);
+    cdo(pos[0],pos[1]);if(pos[1]<MY)cOut++;else cIn++}
+  zoneLabels();
+  // side panel
+  ctx.fillStyle=C.panel;ctx.fillRect(640,0,160,H);line(640,0,640,H,C.rule,1.5);
+  bar2(652,30,146,"O₂",oOut,oIn,20,C.o2);
+  bar2(652,110,146,"CO₂",cOut,cIn,20,C.co2);
+  txt(652,196,"No ATP used",{size:13,weight:700,color:C.good});
+  ctx.font=`500 12px ${FONT}`;ctx.fillStyle=C["ink-soft"];ctx.textAlign="left";
+  wrapText("Each gas moves from the side where it is crowded to the side where it is sparse.",652,222,140,16);
+  arrow(720,300,720,380,C.o2,3);txt(732,340,"O₂ in",{size:12,weight:600,color:C.o2});
+  arrow(690,380,690,300,C.co2,3);txt(612+50,410,"CO₂ out",{size:12,weight:600,color:C.co2});
+  label(320,MY,"Slips straight between the phospholipids",{align:"center",size:12,weight:600,border:C.act1,bga:.8});
+}
+
+function sceneFacil(T){
+  bg(C.ecf);ctx.fillStyle=C.cyto;ctx.fillRect(0,MY,640,H-MY);
+  const t=T;
+  const CX=170,GX=450;
+  bilayer(0,640,MY,t,[[CX-34,CX+34],[GX-46,GX+46]]);
+  // channel with Na+
+  chanProt(CX,MY,22,44);
+  const tl=t%12;
+  for(let i=0;i<12;i++){const A=[30+rnd(i+200)*260,60+rnd(i+201)*140],B=[30+rnd(i+220)*260,330+rnd(i+221)*140];let pos;
+    if(i<6){const tc=.6+i*1.6;pos=crosser(i+200,tl,A,B,[[CX,MY-60],[CX,MY-30],[CX,MY+30],[CX,MY+60]],tc,1.4,12,10)}
+    else pos=wander(A[0],A[1],t,i+200,12,10);
+    naI(pos[0],pos[1])}
+  for(let i=0;i<2;i++){const w=wander(60+i*160,420,t,i+260,12,10);naI(w[0],w[1])}
+  // carrier with glucose
+  const per=2.6,c=Math.floor(t/per),q=(t%per)/per;
+  let o;if(q<.3)o=1;else if(q<.5)o=1-sm((q-.3)/.2);else if(q<.8)o=0;else o=sm((q-.8)/.2);
+  gated(GX,MY,o,34,46);
+  const NG=9;
+  // which glucose is being carried this cycle
+  const cur=c%NG;
+  for(let i=0;i<NG;i++){
+    const homeOut=[340+rnd(i+300)*270,60+rnd(i+301)*130],homeIn=[340+rnd(i+320)*270,340+rnd(i+321)*130];
+    // glucose i is carried in cycle where c%NG===i; before that (this pass) it is outside, after it is inside. Every NG cycles all reset.
+    const passIdx=Math.floor(c/NG);let pos;
+    if(i<cur){pos=wander(homeIn[0],homeIn[1],t,i+300,12,10)}
+    else if(i>cur){pos=wander(homeOut[0],homeOut[1],t,i+300,12,10)}
+    else{const p0=wander(homeOut[0],homeOut[1],c*per,i+300,12,10),p1=wander(homeIn[0],homeIn[1],(c+1)*per,i+300,12,10);
+      if(q<.3)pos=along([p0,[GX,MY-60],[GX,MY-8]],sm(q/.3));else if(q<.5)pos=[GX,lerp(MY-8,MY+8,sm((q-.3)/.2))];else if(q<.8)pos=along([[GX,MY+8],[GX,MY+60],p1],sm((q-.5)/.3));else pos=wander(homeIn[0],homeIn[1],t,i+300,12,10);
+      if(q>.25&&q<.55)glow(pos[0],pos[1],18,C.glu,.4)}
+    gluc(pos[0],pos[1]);void passIdx}
+  zoneLabels();
+  label(CX,MY+80,"Channel protein",{align:"center",size:12.5,weight:600,border:C.rule});
+  label(GX,MY+84,"Carrier protein",{align:"center",size:12.5,weight:600,border:C.rule});
+  const st=q<.3?"1 · Open outside: glucose binds":q<.5?"2 · Carrier changes shape":q<.8?"3 · Open inside: glucose released":"4 · Carrier resets";
+  label(GX,46,st,{align:"center",size:12.5,weight:700,border:C.act1});
+  label(CX,46,"Na⁺ flows through the open tunnel",{align:"center",size:12.5,weight:600,border:C.act1});
+  ctx.fillStyle=C.panel;ctx.fillRect(640,0,160,H);line(640,0,640,H,C.rule,1.5);
+  txt(652,30,"Both are",{size:12,color:C["ink-soft"]});txt(652,50,"PASSIVE",{size:16,weight:700,color:C.act1,mono:true});
+  ctx.font=`500 12px ${FONT}`;ctx.fillStyle=C.ink;ctx.textAlign="left";
+  wrapText("Downhill only: from high concentration to low.",652,80,140,16);
+  txt(652,140,"No ATP used",{size:13,weight:700,color:C.good});
+  // gradient ramp graphic
+  ctx.fillStyle=C.sunk;ctx.beginPath();ctx.moveTo(660,200);ctx.lineTo(780,330);ctx.lineTo(660,330);ctx.closePath();ctx.fill();
+  const bq=(t*.4)%1;const bx=lerp(672,760,bq),by=lerp(205,318,bq)+0;circ(bx,by-8,8,C.glu);
+  txt(664,350,"High",{size:11.5,color:C["ink-soft"]});txt(745,350,"Low",{size:11.5,color:C["ink-soft"]});
+  ctx.font=`500 12px ${FONT}`;ctx.fillStyle=C["ink-soft"];wrapText("Like a ball rolling downhill: no push needed.",652,380,140,16);
+}
+
+function sceneOsmo(T){
+  bg(C.panel);
+  const t=T%12;const f=sm(seg(t,.5,10));
+  const X0=30,X1=620,MX=325,TOP=70,BOT=470;
+  const Ly=lerp(170,230,f),Ry=lerp(170,110,f);
+  // tank
+  ctx.fillStyle=C["water-wash"];ctx.fillRect(X0,Ly,MX-X0,BOT-Ly);ctx.fillRect(MX,Ry,X1-MX,BOT-Ry);
+  line(X0,Ly,MX-6,Ly,C.water,2);line(MX+6,Ry,X1,Ry,C.water,2);
+  ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(X0,TOP);ctx.lineTo(X0,BOT);ctx.lineTo(X1,BOT);ctx.lineTo(X1,TOP);ctx.stroke();
+  // membrane (vertical) with aquaporins
+  const AQ=[220,320,410];
+  ctx.fillStyle=C.lipid;ctx.fillRect(MX-6,TOP+10,12,BOT-TOP-10);
+  for(let y=TOP+16;y<BOT;y+=12){circ(MX-5,y,4,C.lipid,C["lipid-edge"],1);circ(MX+5,y,4,C.lipid,C["lipid-edge"],1)}
+  AQ.forEach(y=>{ctx.fillStyle=C.prot;ctx.strokeStyle=C["prot-edge"];ctx.lineWidth=1.6;rr(MX-12,y-18,24,12,4);ctx.fill();ctx.stroke();rr(MX-12,y+6,24,12,4);ctx.fill();ctx.stroke();ctx.fillStyle=C["water-wash"];ctx.fillRect(MX-12,y-6,24,12)});
+  // water molecules: background
+  for(let i=0;i<40;i++){const left=i<20;const hx=left?X0+20+rnd(i)*(MX-X0-40):MX+20+rnd(i)*(X1-MX-40);const top=left?Ly:Ry;
+    const hy=top+14+rnd(i+5)*(BOT-top-28);const w=wander(hx,hy,T,i,8,6);wat(w[0],clamp(w[1],top+6,BOT-6))}
+  // crossing water left -> right (many) and right->left (few)
+  for(let i=0;i<14;i++){const q=((t*.22)+i/14)%1;const y=AQ[i%3];const a=f<.98?1:.25;
+    const p=along([[MX-110+rnd(i)*40,y+(rnd(i+9)-.5)*60],[MX-14,y],[MX+14,y],[MX+90+rnd(i+4)*60,y+(rnd(i+11)-.5)*60]],q);wat(p[0],p[1],a,3.8)}
+  for(let i=0;i<4;i++){const q=((t*.22)+i/4+.12)%1;const y=AQ[(i+1)%3];
+    const p=along([[MX+100,y+20],[MX+14,y],[MX-14,y],[MX-90,y-20]],q);wat(p[0],p[1],.9,3.8)}
+  // solutes
+  for(let i=0;i<5;i++){const w=wander(X0+30+rnd(i+40)*(MX-X0-70),lerp(Ly,BOT,.25+rnd(i+41)*.65),T,i+40,10,8);sol(w[0],w[1])}
+  for(let i=0;i<18;i++){const w=wander(MX+30+rnd(i+60)*(X1-MX-70),lerp(Ry,BOT,.15+rnd(i+61)*.75),T,i+60,10,8);sol(w[0],clamp(w[1],Ry+10,BOT-10))}
+  // blocked solute bouncing at membrane
+  const bq=(T*.7)%1;const bx=MX+16+Math.abs(Math.sin(bq*Math.PI))*-0+ (bq<.5?lerp(90,22,bq*2):lerp(22,90,(bq-.5)*2));
+  sol(bx,AQ[1]+50);if(bq>.4&&bq<.6){label(MX+40,AQ[1]+76,"✕ too big to cross",{size:11.5,color:C.bad,weight:600})}
+  label((X0+MX)/2,TOP-34,"Less solute (more free water)",{align:"center",size:12.5,weight:600});
+  label((MX+X1)/2,TOP-34,"More solute (less free water)",{align:"center",size:12.5,weight:600});
+  label(MX,BOT+22,"Membrane with aquaporins",{align:"center",size:12,color:C["ink-soft"]});
+  // level markers
+  line(X0,170,X1,170,C["ink-faint"],1.2,[5,5]);label(X1-6,182,"starting level",{align:"right",size:10.5,color:C["ink-soft"],bga:.7});
+  label(X1-8,Ry-14,f>.1?"level rises ↑":"",{align:"right",size:12,weight:700,color:C.water,pill:f>.1});
+  label(X0+8,Ly-14,f>.1?"level falls ↓":"",{align:"left",size:12,weight:700,color:C.water,pill:f>.1});
+  ctx.fillStyle=C["panel-2"];ctx.fillRect(640,0,160,H);line(640,0,640,H,C.rule,1.5);
+  txt(652,32,"NET WATER FLOW",{size:11,weight:600,mono:true,color:C["ink-soft"]});
+  arrow(660,70,780,70,C.water,6);
+  ctx.font=`600 13px ${FONT}`;ctx.fillStyle=C.ink;ctx.textAlign="left";wrapText("Water follows solute.",652,110,140,18);
+  ctx.font=`500 12px ${FONT}`;ctx.fillStyle=C["ink-soft"];wrapText("Water moves toward the side with more dissolved particles until the sides get closer to even (or the water's weight pushes back).",652,140,140,16);
+  txt(652,300,"Solute: 1% vs 5%",{size:12,weight:600});
+  txt(652,320,"(example values)",{size:11,color:C["ink-faint"]});
+}
+
+function rbcShape(cx,cy,r,cren,sphere,a,burst){
+  ctx.globalAlpha=a==null?1:a;
+  ctx.beginPath();const n=120;for(let i=0;i<=n;i++){const th=i/n*TAU;let rad=r+cren*Math.pow(.5+.5*Math.cos(th*13),6)*11-cren*3;
+    const x=cx+Math.cos(th)*rad,y=cy+Math.sin(th)*rad;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();
+  ctx.fillStyle=C.rbc;ctx.fill();
+  if(burst){ctx.setLineDash([10,9]);}
+  ctx.strokeStyle=C["rbc-edge"];ctx.lineWidth=2.5;ctx.stroke();ctx.setLineDash([]);
+  if(sphere<1){ctx.globalAlpha=(a==null?1:a)*(1-sphere);const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r*.55);g.addColorStop(0,C["rbc-pale"]);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r*.55,0,TAU);ctx.fill()}
+  ctx.globalAlpha=1}
+function sceneTonic(T){
+  bg(C.panel);
+  const cyc=9,t=T%cyc,f=sm(seg(t,.6,5.2));
+  const COLS=[{x:135,name:"Isotonic",ex:"0.9% NaCl (normal saline)",nsol:12,res:"No net change",dir:0},
+              {x:400,name:"Hypertonic",ex:"e.g., 3% NaCl",nsol:34,res:"Water leaves → crenation",dir:-1},
+              {x:665,name:"Hypotonic",ex:"e.g., distilled water",nsol:3,res:"Water enters → swells → lysis",dir:1}];
+  COLS.forEach((c,ci)=>{
+    const bx=c.x-120,bw=240,by=70,bh=320;
+    ctx.fillStyle=C["water-wash"];rr(bx,by,bw,bh,10);ctx.fill();ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=2;ctx.stroke();
+    for(let i=0;i<c.nsol;i++){const w=wander(bx+14+rnd(i+ci*50)*(bw-28),by+14+rnd(i+ci*50+7)*(bh-28),T,i+ci*50,6,6);
+      if(Math.hypot(w[0]-c.x,w[1]-230)<88)continue;sol(w[0],w[1],.85,4.5)}
+    let r=60,cren=0,sph=0,burst=false,a=1;
+    if(c.dir<0){r=lerp(60,44,f);cren=f}
+    else if(c.dir>0){r=lerp(60,82,sm(seg(t,.6,4.6)));sph=sm(seg(t,1.5,4.4));const lb=seg(t,5,6.4);if(lb>0){burst=true;a=lerp(1,.25,lb)}}
+    // water arrows
+    for(let i=0;i<10;i++){const th=i/10*TAU+.3;let q=((T*.55)+rnd(i+ci*9))%1;let inward;
+      if(c.dir===0)inward=i%2===0;else inward=c.dir>0;
+      if(c.dir!==0&&f>.97&&!(c.dir>0&&!burst))continue;
+      if(c.dir>0&&burst)continue;
+      const r1=r+44,r2=r-16;const rad=inward?lerp(r1,r2,q):lerp(r2,r1,q);
+      wat(c.x+Math.cos(th)*rad,230+Math.sin(th)*rad,Math.sin(q*Math.PI),4)}
+    rbcShape(c.x,230,r,cren,sph,a,burst);
+    if(burst){const lb=seg(t,5,6.4);for(let i=0;i<14;i++){const th=i/14*TAU;const d=r+lb*40;ctx.globalAlpha=(1-lb)*.8;circ(c.x+Math.cos(th)*d,230+Math.sin(th)*d,3.5,C.rbc);ctx.globalAlpha=1}
+      label(c.x,230,"Lysis!",{align:"center",weight:700,size:14,color:C.bad})}
+    // net arrow
+    const ay=350;if(c.dir===0){arrow(c.x-30,ay,c.x+30,ay,C.water,2.5);arrow(c.x+30,ay+12,c.x-30,ay+12,C.water,2.5)}
+    else if(c.dir<0){arrow(c.x,ay-48+0,c.x+70,ay,C.water,3);label(c.x+20,ay+16,"water out",{align:"center",size:11.5,color:C.water,weight:600})}
+    else{arrow(c.x+80,ay,c.x+20,ay-40,C.water,3);label(c.x+40,ay+16,"water in",{align:"center",size:11.5,color:C.water,weight:600})}
+    txt(c.x,24,c.name.toUpperCase(),{align:"center",size:14,weight:700,mono:true,color:[C.accent,C.warn,C.bad][ci]});
+    txt(c.x,46,c.ex,{align:"center",size:12,color:C["ink-soft"]});
+    label(c.x,418,c.res,{align:"center",size:12.5,weight:700,border:[C.accent,C.warn,C.bad][ci]});
+    txt(c.x,446,["solute outside = inside","more solute outside","less solute outside"][ci],{align:"center",size:12,color:C["ink-soft"]});
+  });
+  txt(400,488,"Solute dots show how concentrated each solution is. The cell's inside starts the same in all three.",{align:"center",size:12,color:C["ink-soft"]});
+}
+
+/* ================= Part 2 scenes ================= */
+function bgMembrane(x1){bg(C.ecf);ctx.fillStyle=C.cyto;ctx.fillRect(0,MY,x1,H-MY)}
+function scenePump(T){
+  bgMembrane(590);
+  const per=9,c=Math.floor(T/per),t=T%per,st=Math.min(5,Math.floor(t/1.5)),q=(t%1.5)/1.5;
+  const CX=300;
+  bilayer(0,590,MY,T,[[CX-60,CX+60]]);
+  // background ions
+  for(let i=0;i<13;i++){const w=wander(30+rnd(i+500)*540,50+rnd(i+501)*150,T,i+500,12,9);if(Math.abs(w[0]-CX)<70&&w[1]>150)continue;naI(w[0],w[1],.85)}
+  for(let i=0;i<3;i++){const w=wander(40+rnd(i+520)*520,60+rnd(i+521)*140,T,i+520,12,9);kI(w[0],w[1],.85)}
+  for(let i=0;i<13;i++){const w=wander(30+rnd(i+540)*540,340+rnd(i+541)*140,T,i+540,12,9);if(Math.abs(w[0]-CX)<70&&w[1]<370)continue;kI(w[0],w[1],.85)}
+  for(let i=0;i<3;i++){const w=wander(40+rnd(i+560)*520,350+rnd(i+561)*130,T,i+560,12,9);naI(w[0],w[1],.85)}
+  // pump shape
+  let o=0;if(st===2)o=sm(q/.45);else if(st===3)o=1;else if(st===4)o=1-sm((q-.3)/.5);
+  gated(CX,MY,o,46,52,C.prot,C["prot-edge"]);
+  const NAS=[[CX-9,MY+6],[CX+9,MY+6],[CX,MY-10]],KS=[[CX-7,MY-4],[CX+7,MY+8]];
+  const naStart=[[CX-90,MY+150],[CX+40,MY+170],[CX-30,MY+200]],naEnd=[[CX-80,MY-150],[CX+60,MY-170],[CX-10,MY-200]];
+  const kStart=[[CX-70,MY-160],[CX+80,MY-140]],kEnd=[[CX-60,MY+160],[CX+70,MY+150]];
+  // Na+
+  NAS.forEach((s,i)=>{let p,a=1;
+    if(st===0)p=along([naStart[i],[CX+(i-1)*8,MY+60],s],sm(q*1.2));
+    else if(st===1)p=s;
+    else if(st===2)p=q<.45?s:along([s,[CX+(i-1)*10,MY-60],naEnd[i]],sm((q-.45)/.55));
+    else{p=naEnd[i];a=1-seg(t,4.5,6)}
+    naI(p[0],p[1],a,6.5)});
+  // K+
+  KS.forEach((s,i)=>{let p=null,a=1;
+    if(st===3)p=along([kStart[i],[CX+(i?8:-8),MY-62],s],sm(q*1.15));
+    else if(st===4)p=s;
+    else if(st===5)p=along([s,[CX+(i?10:-10),MY+60],kEnd[i]],sm(q));
+    else if(st===2&&q>.5){p=kStart[i];a=seg(q,.5,1)}
+    if(p)kI(p[0],p[1],a,7.5)});
+  // ATP / phosphate
+  const PS=[CX+44,MY+40];
+  if(st===1){if(q<.45){const p=along([[CX+170,MY+190],[CX+60,MY+70]],sm(q/.45));atpChip(p[0],p[1])}
+    else{const r=seg(q,.45,1);atpChip(lerp(CX+60,CX+150,r),lerp(MY+70,MY+170,r),1-r*.6,"ADP");pChip(lerp(CX+60,PS[0],sm(r*1.5)),lerp(MY+70,PS[1],sm(r*1.5)));glow(PS[0],PS[1],26,C.glow,(1-r)*.9)}}
+  else if(st===2||st===3)pChip(PS[0],PS[1]);
+  else if(st===4){if(q<.3)pChip(PS[0],PS[1]);else{const r=seg(q,.3,1);pChip(lerp(PS[0],CX+120,r),lerp(PS[1],MY+180,r),1-r)}}
+  zoneLabels();
+  label(CX,46,o>.5?"Pump open to the OUTSIDE":"Pump open to the INSIDE",{align:"center",size:13,weight:700,border:C.act2});
+  label(CX-140,MY,"Na⁺/K⁺ pump",{align:"center",size:12.5,weight:600,border:C.rule});
+  // side panel
+  ctx.fillStyle=C.panel;ctx.fillRect(590,0,210,H);line(590,0,590,H,C.rule,1.5);
+  txt(602,24,"ONE PUMP CYCLE",{size:11,weight:600,mono:true,color:C["ink-soft"]});
+  stepList(600,58,192,["3 Na⁺ bind inside","ATP split: P attaches","Shape flips: 3 Na⁺ out","2 K⁺ bind outside","P leaves: shape flips back","2 K⁺ released inside"],st,C.act2,34);
+  const done=c;txt(602,290,"Running totals",{size:12,weight:700});
+  txt(602,314,`Na⁺ pumped out: ${done*3+(st>=3?3:0)}`,{size:12.5,mono:true});
+  txt(602,336,`K⁺ brought in:  ${done*2+(st>=5&&q>.5?2:0)}`,{size:12.5,mono:true});
+  txt(602,358,`ATP used:       ${done+(st>=1&&!(st===1&&q<.45)?1:0)}`,{size:12.5,mono:true});
+  ctx.font=`500 12px ${FONT}`;ctx.fillStyle=C["ink-soft"];ctx.textAlign="left";
+  wrapText("Both ions move UP their gradients: Na⁺ to where Na⁺ is already high, K⁺ to where K⁺ is already high.",602,392,186,16);
+}
+
+function sceneSymport(T){
+  bgMembrane(600);
+  const PX=120,SX=400;
+  bilayer(0,600,MY,T,[[PX-40,PX+40],[SX-56,SX+56]]);
+  // pump (simplified) on left
+  const pq=(T%3)/3;gated(PX,MY,pq<.5?sm(pq*2):1-sm((pq-.5)*2),30,46,C.prot,C["prot-edge"]);
+  if(pq<.5){for(let i=0;i<3;i++)naI(PX-8+i*8,lerp(MY+40,MY-70,sm(pq*2)),1,5.5)}else{for(let i=0;i<2;i++)kI(PX-6+i*12,lerp(MY-40,MY+70,sm((pq-.5)*2)),1,6.5)}
+  atpChip(PX,MY+80,.95);
+  label(PX,MY-100,"Na⁺/K⁺ pump",{align:"center",size:12.5,weight:600,border:C.rule});txt(PX,MY+104,"spends ATP",{align:"center",size:11.5,color:C["ink-soft"]});
+  // background
+  for(let i=0;i<16;i++){const w=wander(20+rnd(i+600)*560,40+rnd(i+601)*170,T,i+600,12,9);if(Math.abs(w[0]-SX)<70&&w[1]>140)continue;if(Math.abs(w[0]-PX)<50&&w[1]>150)continue;naI(w[0],w[1],.85)}
+  for(let i=0;i<3;i++){const w=wander(20+rnd(i+620)*560,350+rnd(i+621)*120,T,i+620,12,9);naI(w[0],w[1],.85)}
+  for(let i=0;i<3;i++){const w=wander(250+rnd(i+640)*320,60+rnd(i+641)*120,T,i+640,12,9);if(Math.abs(w[0]-SX)<70&&w[1]>140)continue;gluc(w[0],w[1],.9)}
+  for(let i=0;i<12;i++){const w=wander(230+rnd(i+660)*350,330+rnd(i+661)*150,T,i+660,12,9);if(Math.abs(w[0]-SX)<70&&w[1]<370)continue;gluc(w[0],w[1],.9)}
+  // symporter
+  const per=3.2,q=(T%per)/per;let o;if(q<.38)o=1;else if(q<.55)o=1-sm((q-.38)/.17);else if(q<.85)o=0;else o=sm((q-.85)/.15);
+  gated(SX,MY,o,44,52,C.pprot,C["pprot-edge"]);
+  const siteN=[SX-9,MY-2],siteG=[SX+9,MY+2];
+  let pn,pg;
+  if(q<.38){pn=along([[SX-90,MY-150],[SX-6,MY-62],siteN],sm(q/.36));pg=along([[SX+100,MY-130],[SX+8,MY-64],siteG],sm(seg(q,.06,.38)))}
+  else if(q<.55){pn=siteN;pg=siteG}
+  else if(q<.85){const r=sm((q-.55)/.3);pn=along([siteN,[SX-8,MY+64],[SX-80,MY+150]],r);pg=along([siteG,[SX+8,MY+64],[SX+90,MY+140]],r)}
+  else{pn=[SX-80,MY+150];pg=[SX+90,MY+140]}
+  const fade=q>.85?1-seg(q,.85,1):1;
+  naI(pn[0],pn[1],fade,6.5);gluc(pg[0],pg[1],fade);
+  if(q>.3&&q<.6)glow(SX,MY,46,C.glow,.35);
+  zoneLabels("OUTSIDE (e.g., intestine lumen)","INSIDE THE INTESTINE CELL");
+  label(SX,46,q<.38?"Na⁺ and glucose bind from outside":q<.55?"Carrier flips":q<.85?"Both released inside":"Carrier resets",{align:"center",size:13,weight:700,border:C.act2});
+  label(SX,MY+92,"Na⁺-glucose symporter",{align:"center",size:12.5,weight:600,border:C.rule});
+  label(SX,MY+116,"no ATP used here",{align:"center",size:11.5,color:C.good,weight:600});
+  // side panel: gradients
+  ctx.fillStyle=C.panel;ctx.fillRect(600,0,200,H);line(600,0,600,H,C.rule,1.5);
+  txt(612,26,"TWO GRADIENTS",{size:11,weight:600,mono:true,color:C["ink-soft"]});
+  function ramp(y,lab,hiTop,col,dir){txt(612,y,lab,{size:12.5,weight:700});
+    ctx.fillStyle=C.sunk;rr(640,y+16,26,120,6);ctx.fill();ctx.fillStyle=col;const hTop=hiTop?90:22,hBot=hiTop?22:90;
+    ctx.globalAlpha=.85;rr(640,y+16,26,hTop*.6,6);ctx.fill();rr(640,y+136-hBot*.6,26,hBot*.6,6);ctx.fill();ctx.globalAlpha=1;
+    txt(674,y+30,hiTop?"high out":"low out",{size:11.5,color:C["ink-soft"]});txt(674,y+126,hiTop?"low in":"high in",{size:11.5,color:C["ink-soft"]});
+    if(dir==="down")arrow(760,y+26,760,y+126,col,3);else arrow(760,y+26,760,y+126,col,3);
+    txt(712,y+78,dir==="down"?"downhill":"UPHILL",{size:12,weight:700,color:col,align:"center"})}
+  ramp(46,"Na⁺",true,C.na,"down");ramp(206,"Glucose",false,C.glu,"up");
+  ctx.font=`500 12px ${FONT}`;ctx.fillStyle=C["ink-soft"];ctx.textAlign="left";
+  wrapText("Na⁺ rushing in downhill pays for glucose going in uphill. The pump on the left keeps the Na⁺ gradient going.",612,388,180,16);
+}
+
+/* endocytosis */
+const gauss=(x)=>Math.exp(-x*x);
+function sceneEndo(T){
+  bg(C.ecf);
+  const P=[[6,"Phagocytosis","cell eating"],[270,"Pinocytosis","cell drinking"],[534,"Receptor-mediated","with clathrin"]];
+  const MB=210;
+  P.forEach((pp,pi)=>{const x0=pp[0],w=260,cx=x0+w/2;
+    ctx.save();ctx.beginPath();ctx.rect(x0,0,w,H);ctx.clip();
+    ctx.fillStyle=C.ecf;ctx.fillRect(x0,0,w,H);
+    const t=(T+pi*.0)%7,p=t/7;
+    if(pi===0){ // phagocytosis
+      ctx.fillStyle=C.cyto;ctx.fillRect(x0,MB,w,H-MB);
+      const g=sm(seg(p,.05,.45));const close=p>=.45;const down=sm(seg(p,.5,.72));
+      const BX=cx,BY=lerp(132,146,g)+down*170;
+      // membrane flat
+      memStroke(()=>{ctx.beginPath();ctx.moveTo(x0-10,MB);ctx.lineTo(x0+w+10,MB)},11);
+      if(!close){ // arms
+        const R=58,CY=152;
+        [[-1,2.25,4.75],[1,0.89,-1.61]].forEach(([sd,a0,a1])=>{const a=lerp(a0,a1,g);
+          ctx.lineCap="round";ctx.beginPath();ctx.arc(cx,CY,R,a0,a,sd<0?false:true);ctx.strokeStyle=C["lipid-edge"];ctx.lineWidth=30;ctx.stroke();ctx.strokeStyle=C.lipid;ctx.lineWidth=28;ctx.stroke();ctx.strokeStyle=C.cyto;ctx.lineWidth=16;ctx.stroke();ctx.lineCap="butt"});
+        ctx.fillStyle=C.cyto;ctx.fillRect(cx-40,MB-10,80,16);
+      }
+      // bacterium
+      const dig=sm(seg(p,.78,.98));
+      ctx.save();ctx.translate(BX,BY);ctx.globalAlpha=1-dig*.85;ctx.fillStyle=C.glyco;rr(-26*(1-dig*.5),-12*(1-dig*.5),52*(1-dig*.5),24*(1-dig*.5),12);ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.2;ctx.stroke();
+      for(let k=0;k<4;k++)line(-26+k*16,12,-30+k*16,22,C.glyco,1.5);ctx.restore();
+      if(close){const r=40;memCircle(BX,BY,r);
+        if(p>.68){const lq=sm(seg(p,.68,.8));const lx=lerp(cx+90,BX+30,lq),ly=lerp(MB+250,BY+22,lq);if(lq<1)circ(lx,ly,15,C.lyso,C["lyso-edge"],2);else{ctx.globalAlpha=.35*(1-dig*.5);circ(BX,BY,36,C.lyso);ctx.globalAlpha=1}}
+        label(BX,BY+62,p>.78?"Lysosome digests it":"Phagosome (vesicle)",{align:"center",size:12,weight:600,border:C.rule})}
+      if(!close)label(cx,MB+40,"Pseudopodia reach around",{align:"center",size:12,weight:600,border:C.rule});
+    } else if(pi===1){ // pinocytosis
+      const d=p<.5?sm(p/.5)*78:lerp(78,0,sm(seg(p,.5,.62)));
+      const ypath=x=>MB+d*gauss((x-cx)/30);
+      ctx.fillStyle=C.cyto;ctx.beginPath();ctx.moveTo(x0,H);for(let x=x0;x<=x0+w;x+=3)ctx.lineTo(x,ypath(x));ctx.lineTo(x0+w,H);ctx.closePath();ctx.fill();
+      memStroke(()=>{ctx.beginPath();for(let x=x0-10;x<=x0+w+10;x+=3){x===x0-10?ctx.moveTo(x,ypath(x)):ctx.lineTo(x,ypath(x))}},11);
+      // fluid droplets
+      for(let i=0;i<14;i++){const hx=x0+20+rnd(i+700)*(w-40),hy=60+rnd(i+701)*120;let pt=wander(hx,hy,T,i+700,8,6);
+        if(i<4){if(p<.5){const r=sm(p/.5);pt=[lerp(pt[0],cx-10+i*7,r),lerp(pt[1],MB+40+(i%2)*10,r)]}else{const v=sm(seg(p,.5,.9));pt=[cx-10+i*7,lerp(MB+50,MB+190,v)+(i%2)*10]}}
+        wat(pt[0],pt[1],.95,4)}
+      if(p>=.5){const v=sm(seg(p,.5,.9));memCircle(cx,lerp(MB+50,MB+195,v),26);label(cx,lerp(MB+50,MB+195,v)+46,"Vesicle of fluid",{align:"center",size:12,weight:600,border:C.rule})}
+      else label(cx,MB+110,"Membrane dips in",{align:"center",size:12,weight:600,border:C.rule});
+    } else { // receptor mediated
+      const d=p<.55?sm(seg(p,.25,.55))*80:lerp(80,0,sm(seg(p,.55,.66)));
+      const ypath=x=>MB+d*gauss((x-cx)/34);
+      const slope=x=>{const h=.5;return (ypath(x+h)-ypath(x-h))/(2*h)};
+      ctx.fillStyle=C.cyto;ctx.beginPath();ctx.moveTo(x0,H);for(let x=x0;x<=x0+w;x+=3)ctx.lineTo(x,ypath(x));ctx.lineTo(x0+w,H);ctx.closePath();ctx.fill();
+      memStroke(()=>{ctx.beginPath();for(let x=x0-10;x<=x0+w+10;x+=3){x===x0-10?ctx.moveTo(x,ypath(x)):ctx.lineTo(x,ypath(x))}},11);
+      const RX=[-44,-22,0,22,44];
+      const off=p>=.55;
+      if(!off){
+        // clathrin bristles under pit
+        const cq=sm(seg(p,.18,.4));
+        for(let x=cx-56;x<=cx+56;x+=7){const y=ypath(x);const s=slope(x);const nx=-s/Math.hypot(1,s),ny=1/Math.hypot(1,s);ctx.globalAlpha=cq;line(x+nx*8,y+ny*8,x+nx*16,y+ny*16,C.ink,1.6);ctx.globalAlpha=1}
+        RX.forEach((dx,i)=>{const x=cx+dx*(1-d/80*.45);const y=ypath(x);const s=slope(x);const n=Math.hypot(1,s);const nx=s/n,ny=-1/n;
+          // receptor Y
+          const bx=x+nx*6,by=y+ny*6,tx=x+nx*18,ty=y+ny*18;line(bx,by,tx,ty,C["prot-edge"],3);line(tx,ty,tx+nx*6-ny*5,ty+ny*6+nx*5,C["prot-edge"],2.5);line(tx,ty,tx+nx*6+ny*5,ty+ny*6-nx*5,C["prot-edge"],2.5);
+          const lq=sm(seg(p,.02+i*.03,.18+i*.03));const lx0=x+(rnd(i+800)-.5)*80,ly0=40+rnd(i+801)*60;const lx=lerp(lx0,tx+nx*8,lq),ly=lerp(ly0,ty+ny*8,lq);
+          ctx.beginPath();ctx.moveTo(lx,ly-6);ctx.lineTo(lx+6,ly+4);ctx.lineTo(lx-6,ly+4);ctx.closePath();ctx.fillStyle=C.lig;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke()});
+        label(cx,MB+(p<.25?60:120),p<.18?"Ligands bind receptors":"Clathrin-coated pit forms",{align:"center",size:12,weight:600,border:C.rule});
+      } else {
+        const v=sm(seg(p,.55,.95));const vy=lerp(MB+56,MB+200,v);memCircle(cx,vy,30);
+        const coat=1-sm(seg(p,.7,.85));for(let k=0;k<20;k++){const a=k/20*TAU;ctx.globalAlpha=coat;line(cx+Math.cos(a)*35,vy+Math.sin(a)*35,cx+Math.cos(a)*43,vy+Math.sin(a)*43,C.ink,1.6);ctx.globalAlpha=1}
+        for(let i=0;i<4;i++){const a=i/4*TAU+.4;const lx=cx+Math.cos(a)*14,ly=vy+Math.sin(a)*14;ctx.beginPath();ctx.moveTo(lx,ly-5);ctx.lineTo(lx+5,ly+3);ctx.lineTo(lx-5,ly+3);ctx.closePath();ctx.fillStyle=C.lig;ctx.fill()}
+        label(cx,vy+62,coat>.5?"Coated vesicle pinches off":"Coat falls off",{align:"center",size:12,weight:600,border:C.rule});
+      }
+      for(let i=0;i<5;i++){const lw=wander(x0+30+rnd(i+820)*(w-60),50+rnd(i+821)*80,T,i+820,8,6);ctx.beginPath();ctx.moveTo(lw[0],lw[1]-5);ctx.lineTo(lw[0]+5,lw[1]+3);ctx.lineTo(lw[0]-5,lw[1]+3);ctx.closePath();ctx.fillStyle=C.lig;ctx.globalAlpha=.5;ctx.fill();ctx.globalAlpha=1}
+    }
+    ctx.restore();
+    txt(cx,22,pp[1].toUpperCase(),{align:"center",size:13,weight:700,mono:true,color:C.act2});
+    txt(cx,42,pp[2],{align:"center",size:12,color:C["ink-soft"]});
+    if(pi>0)line(x0,0,x0,H,C.rule,2);
+  });
+  txt(12,H-14,"Outside is above each membrane; the cell is below.",{size:11.5,color:C["ink-soft"]});
+}
+
+function sceneExo(T){
+  bg(C.ecf);const MB=150;
+  // cytoplasm below membrane w/ dips for fusing vesicles
+  const V=[{x:200,off:0},{x:400,off:1.6},{x:600,off:3.2}];const per=4.8;
+  const dips=V.map(v=>{const t=((T+per-v.off)%per)/per;return {x:v.x,t,f:sm(seg(t,.5,.8)),fusing:t>=.5}});
+  const yp=x=>{let y=MB;dips.forEach(d=>{if(d.fusing){const depth=36*(1-d.f);y+=depth*gauss((x-d.x)/24)*1}});return y};
+  ctx.fillStyle=C.cyto;ctx.beginPath();ctx.moveTo(0,H);for(let x=0;x<=W;x+=3)ctx.lineTo(x,yp(x));ctx.lineTo(W,H);ctx.closePath();ctx.fill();
+  // golgi
+  golgiStack(360,420,5,1.2,Math.PI/2);
+  label(400,500,"Golgi apparatus",{align:"center",size:12.5,weight:600,border:C.rule});
+  // vesicles
+  dips.forEach((d,i)=>{const src=[400+(i-1)*30,350];
+    if(!d.fusing){const q=sm(d.t/.5);const p=along([src,[lerp(src[0],d.x,.5),260],[d.x,MB+30]],q);memCircle(p[0],p[1],22);
+      for(let k=0;k<5;k++){const a=k/5*TAU+T;glow(p[0]+Math.cos(a)*8,p[1]+Math.sin(a)*8,7,C.glow,.9);circ(p[0]+Math.cos(a)*8,p[1]+Math.sin(a)*8,3,C.glow)}}
+    else{const r=seg(d.t,.55,1);for(let k=0;k<5;k++){const a=k/5*TAU;const px=d.x+Math.cos(a)*10+(k-2)*r*40,py=MB+18-r*(70+k*12)+Math.sin(T*3+k)*3;ctx.globalAlpha=1-r*.6;glow(px,py,8,C.glow,.9);circ(px,py,3,C.glow);ctx.globalAlpha=1}
+      if(d.t<.75)glow(d.x,MB,30,C.glow,.4*(1-d.f))}
+  });
+  memStroke(()=>{ctx.beginPath();for(let x=-10;x<=W+10;x+=3){x===-10?ctx.moveTo(x,yp(x)):ctx.lineTo(x,yp(x))}},12);
+  // stage labels
+  dips.forEach((d,i)=>{const s=d.t<.5?"1 · Vesicle moves up":d.t<.62?"2 · Fuses with membrane":"3 · Contents released";
+    const y=d.t<.5?along([[400+(i-1)*30,350],[lerp(400+(i-1)*30,d.x,.5),260],[d.x,MB+30]],sm(d.t/.5))[1]+0:MB+40;
+    const x=d.t<.5?along([[400+(i-1)*30,350],[lerp(400+(i-1)*30,d.x,.5),260],[d.x,MB+30]],sm(d.t/.5))[0]:d.x;
+    label(x+28,y+(d.t<.5?0:20),s,{size:11.5,weight:600,border:d.t<.5?C.rule:C.act2})});
+  sideLabel(12,16,"OUTSIDE THE CELL");sideLabel(12,MB+30,"INSIDE THE CELL");
+  label(790,40,"Examples: neurotransmitter, insulin, mucus",{align:"right",size:12,weight:600,border:C.act2});
+  label(790,72,"Vesicle membrane becomes part of the plasma membrane",{align:"right",size:11.5,color:C["ink-soft"]});
+}
+
+/* ================= Part 3 scenes ================= */
+function sceneNucleus(T){
+  bg(C.cyto);
+  const NX=270,NY=262,NR=190;
+  nucleusDraw(NX,NY,NR,T,1,10);
+  // nucleolus
+  ctx.beginPath();for(let i=0;i<=30;i++){const a=i/30*TAU;const r=52+Math.sin(a*4+T*.6)*4;const x=NX-20+Math.cos(a)*r,y=NY-6+Math.sin(a)*r;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.fillStyle=C.nucleolus;ctx.fill();
+  label(NX-20,NY-6,"Nucleolus",{align:"center",size:12.5,weight:700,color:"#fff",pill:false});
+  // pore positions (10 pores, angle i/10*TAU+.2)
+  const pore=i=>{const a=i/10*TAU+.2;return [NX+Math.cos(a)*(NR-2.5),NY+Math.sin(a)*(NR-2.5),a]};
+  // ER fragment top right with bound ribosomes
+  ctx.lineCap="round";[0,1].forEach(k=>{ctx.beginPath();ctx.moveTo(560,60+k*36);ctx.bezierCurveTo(620,40+k*36,700,90+k*36,790,64+k*36);ctx.strokeStyle=C["er-edge"];ctx.lineWidth=16;ctx.stroke();ctx.strokeStyle=C.er;ctx.lineWidth=12;ctx.stroke();
+    for(let u=0;u<=1;u+=.08){const x=560+u*230;const y=60+k*36+Math.sin(u*3)*-8-14;ribo(x,y,.8)}});ctx.lineCap="butt";
+  label(680,140,"Bound ribosomes (on rough ER)",{align:"center",size:12,weight:600,border:C.rule});
+  // ribosome subunits leaving: cycle
+  const exits=[0,1,9];// pores on right side: angles .2, .83, -.43
+  for(let k=0;k<6;k++){const per=5,t=((T+k*per/6)%per)/per;const pi=exits[k%3];const pr=pore(pi);
+    const start=[NX-20+Math.cos(k)*30,NY-6+Math.sin(k)*30];const out=[pr[0]+Math.cos(pr[2])*40,pr[1]+Math.sin(pr[2])*40];
+    const dest=[560+((k*37)%160),300+((k*53)%120)];
+    const p=along([start,[pr[0]-Math.cos(pr[2])*20,pr[1]-Math.sin(pr[2])*20],[pr[0],pr[1]],out,dest],sm(t));
+    const a=t>.92?1-seg(t,.92,1):1;
+    ctx.globalAlpha=a;ell(p[0]-5,p[1],7,5,0,C.rib);ell(p[0]+6,p[1]+2,4.5,3.5,0,C.rib);ctx.globalAlpha=1}
+  // mRNA leaving through a pore
+  const pr=pore(1);const mt=(T%6)/6;
+  ctx.strokeStyle=C.mrna;ctx.lineWidth=3;ctx.beginPath();
+  const pts=[];for(let i=0;i<=24;i++){const u=i/24;const s=mt*2.2-u;if(s<0)continue;const d=s*150;
+    let x,y;if(d<40){x=pr[0]-Math.cos(pr[2])*(40-d);y=pr[1]-Math.sin(pr[2])*(40-d)}else{x=pr[0]+Math.cos(pr[2])*(d-40)+ (d-40)*.6;y=pr[1]+Math.sin(pr[2])*(d-40)+Math.sin(d*.08)*8}pts.push([x,y])}
+  pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
+  // polysome: free ribosomes on an mRNA (cytosol)
+  ctx.beginPath();for(let x=520;x<=780;x+=4){const y=420+Math.sin(x*.05)*10;x===520?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.strokeStyle=C.mrna;ctx.lineWidth=3;ctx.stroke();
+  for(let k=0;k<5;k++){const x=540+((T*20+k*52)%240);const y=420+Math.sin(x*.05)*10;ribo(x,y-6,1.3);
+    // growing chain
+    ctx.strokeStyle=C.glow;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y-14);for(let j=1;j<=Math.floor((x-520)/30);j++)ctx.lineTo(x+Math.sin(j)*6,y-14-j*6);ctx.stroke()}
+  label(650,470,"Free ribosomes on mRNA (in the cytosol)",{align:"center",size:12,weight:600,border:C.rule});
+  // labels
+  const lp=(T%10)/10;
+  label(NX,40,"Nuclear envelope (double membrane)",{align:"center",size:12.5,weight:600,border:C.rule});line(NX,52,NX,NY-NR+2,C["ink-soft"],1.2);
+  label(462,300,"Nuclear pore",{align:"left",size:12.5,weight:600,border:C.rule});
+  label(NX+40,NY+120,"Chromatin (DNA + protein)",{align:"center",size:12.5,weight:600,border:C.rule});
+  label(330,496,"mRNA leaves through a pore",{align:"center",size:12,weight:600,color:C.mrna,border:C.mrna});
+  label(560,350,lp<.5?"Ribosome subunits exit pores":"Small + large subunit join",{align:"left",size:12,weight:600,border:C.act3});
+}
+
+function sceneER(T){
+  bg(C.cyto);
+  // ---- rough ER (left) ----
+  const SAC=[110,190,270];ctx.lineCap="round";
+  SAC.forEach((y,k)=>{ctx.beginPath();ctx.moveTo(30,y);ctx.bezierCurveTo(130,y-24,250,y+24,380,y);ctx.strokeStyle=C["er-edge"];ctx.lineWidth=46;ctx.stroke();ctx.strokeStyle=C.er;ctx.lineWidth=40;ctx.stroke()});
+  ctx.lineCap="butt";
+  const sy=(x,y)=>{const u=(x-30)/350;return Math.pow(1-u,3)*y+3*Math.pow(1-u,2)*u*(y-24)+3*(1-u)*u*u*(y+24)+u*u*u*y};
+  SAC.forEach((y,k)=>{for(let x=40;x<=372;x+=17){if(k===0&&Math.abs(x-210)<14)continue;ribo(x,sy(x,y)-27,.9);ribo(x,sy(x,y)+27,.9)}});
+  // highlighted ribosome translating into lumen on top sac at x=210
+  const rx=210,ry=sy(210,110)-27;
+  ctx.strokeStyle=C.mrna;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(120,ry-26);ctx.quadraticCurveTo(210,ry-6,300,ry-30);ctx.stroke();
+  ribo(rx,ry-8,1.9);glow(rx,ry-8,30,C.glow,.25+.15*Math.sin(T*4));
+  const n=Math.floor((T*2.2)%16);
+  ctx.strokeStyle=C.glow;ctx.lineWidth=2.5;let px=rx,py=ry+6;ctx.beginPath();ctx.moveTo(px,py);
+  for(let j=0;j<n;j++){px=rx+Math.sin(j*1.1)*Math.min(18,j*2);py=ry+6+j*3.2;ctx.lineTo(px,py)}ctx.stroke();
+  for(let j=0;j<n;j++){circ(rx+Math.sin(j*1.1)*Math.min(18,j*2),ry+6+j*3.2,2.6,C.glow)}
+  // folded proteins inside lumen drifting
+  for(let k=0;k<4;k++){const x=60+((T*18+k*90)%320),y=sy(x,190);circ(x,y,7,C.glow,C["act2"],1.2);circ(x+5,y-3,4,C.glow)}
+  label(205,26,"ROUGH ER: proteins threaded into the lumen",{align:"center",size:12.5,weight:700,border:C.act3});
+  label(110,330,"Ribosomes stud the surface",{align:"center",size:12,weight:600,border:C.rule});
+  label(300,330,"Proteins fold in the lumen",{align:"center",size:12,weight:600,border:C.rule});
+  ctx.font=`500 12px ${FONT}`;ctx.fillStyle=C["ink-soft"];ctx.textAlign="left";
+  wrapText("Destination: secreted, put into membranes, or sent to lysosomes.",30,370,360,16);
+  // ---- smooth ER (right) ----
+  const tubes=[[[440,120],[520,90],[600,140],[690,110],[770,150]],[[450,220],[540,250],[620,200],[700,240],[780,210]],[[470,330],[560,300],[650,350],[740,320]],[[520,90],[540,250]],[[620,200],[600,140]],[[650,350],[620,200]],[[700,240],[690,110]]];
+  ctx.lineCap="round";ctx.lineJoin="round";
+  tubes.forEach(tb=>{poly(tb,C["ser-edge"],24);});tubes.forEach(tb=>{poly(tb,C.ser,19)});ctx.lineCap="butt";ctx.lineJoin="miter";
+  // lipid droplets budding
+  for(let k=0;k<3;k++){const q=((T*.3)+k/3)%1;const p=along([[600,140],[610,60],[640,30]],q);circ(p[0]+k*30-30,p[1],7*(.4+q*.6),C.lipid,C["lipid-edge"],1.3)}
+  label(610,24,"Makes lipids & steroids",{align:"center",size:12,weight:600,border:C.rule});
+  // Ca2+ storage pulses
+  const cq=(T%4)/4;
+  for(let k=0;k<8;k++){const tb=tubes[1];const u=k/8;const p=along(tb,u);const out=cq>.6&&cq<.9;const d=out?sm(seg(cq,.6,.9))*36:0;caI(p[0]+Math.sin(T*2+k)*3,p[1]+(k%2?1:-1)*(3+d))}
+  label(790,270,cq>.6&&cq<.9?"Ca²⁺ released on signal":"Stores Ca²⁺",{align:"right",size:12,weight:600,border:C.rule});
+  // detox
+  const dq=(T%5)/5;const dp=along([[790,400],[700,345],[650,350],[600,420]],dq);
+  const harmless=dq>.5;
+  if(!harmless){ctx.beginPath();ctx.moveTo(dp[0],dp[1]-8);ctx.lineTo(dp[0]+8,dp[1]+6);ctx.lineTo(dp[0]-8,dp[1]+6);ctx.closePath();ctx.fillStyle=C.bad;ctx.fill();txt(dp[0],dp[1]+1,"!",{align:"center",size:10,weight:700,color:"#fff"})}
+  else{circ(dp[0],dp[1],7,C.good);txt(dp[0],dp[1]+.5,"✓",{align:"center",size:9,weight:700,color:"#fff"})}
+  if(dq>.42&&dq<.6)glow(650,350,30,C.glow,.6);
+  label(630,460,"Detoxifies drugs & alcohol",{align:"center",size:12,weight:600,border:C.rule});
+  label(615,410-15+60,"",{pill:false});
+  label(610,500,"SMOOTH ER: no ribosomes",{align:"center",size:12.5,weight:700,border:C.act3});
+  line(410,0,410,H,C.rule,1.5);
+}
+
+function sceneGolgi(T){
+  bg(C.cyto);
+  // Golgi: stack of 5 cisternae drawn horizontally (cis at bottom, trans at top)
+  const GX=260;const CIS=[380,340,300,260,220];ctx.lineCap="round";
+  CIS.forEach((y,k)=>{ctx.beginPath();ctx.moveTo(GX-120+k*6,y+10);ctx.quadraticCurveTo(GX,y-26,GX+120-k*6,y+10);ctx.strokeStyle=C["golgi-edge"];ctx.lineWidth=24;ctx.stroke();ctx.strokeStyle=C.golgi;ctx.lineWidth=19;ctx.stroke()});ctx.lineCap="butt";
+  label(12,412,"cis face (receives)",{align:"left",size:12,weight:600,border:C.rule});
+  label(12,192,"trans face (ships)",{align:"left",size:12,weight:600,border:C.rule});
+  // ER piece at bottom
+  ctx.lineCap="round";ctx.beginPath();ctx.moveTo(60,490);ctx.bezierCurveTo(160,470,280,510,400,486);ctx.strokeStyle=C["er-edge"];ctx.lineWidth=26;ctx.stroke();ctx.strokeStyle=C.er;ctx.lineWidth=20;ctx.stroke();ctx.lineCap="butt";
+  label(90,450,"From rough ER",{align:"center",size:12,weight:600,border:C.rule});
+  // protein journey
+  const per=6,q=(T%per)/per;
+  const P1=[[GX-30,480],[GX-20,420],[GX,382]];
+  let pos,tag=0,inVes=false;
+  if(q<.2){pos=along(P1,sm(q/.2));inVes=true}
+  else if(q<.65){const u=(q-.2)/.45;const k=Math.min(4,Math.floor(u*5));pos=[GX+Math.sin(u*14)*30,lerp(CIS[0],CIS[4],u)-6];tag=sm(seg(u,.3,.8))}
+  else{tag=1;inVes=true;const u=sm((q-.65)/.35);pos=along([[GX,212],[GX+40,160],[GX+80,80],[GX+110,30]],u)}
+  if(inVes)memCircle(pos[0],pos[1],16);
+  glow(pos[0],pos[1],16,C.glow,.7);circ(pos[0],pos[1],6,C.glow,C.act2,1.2);
+  if(tag>0){ctx.globalAlpha=tag;line(pos[0]+5,pos[1]-4,pos[0]+12,pos[1]-11,C.glyco,2);ctx.beginPath();ctx.moveTo(pos[0]+12,pos[1]-15);ctx.lineTo(pos[0]+16,pos[1]-11);ctx.lineTo(pos[0]+12,pos[1]-7);ctx.lineTo(pos[0]+8,pos[1]-11);ctx.closePath();ctx.fillStyle=C.glyco;ctx.fill();ctx.globalAlpha=1}
+  const stage=q<.2?"Transport vesicle arrives from ER":q<.65?"Modified: sugar tag added":"Packaged into a secretory vesicle";
+  label(GX,150-0,stage,{align:"center",size:12.5,weight:700,border:C.act3});
+  // lysosome budding off trans face toward right panel
+  const lq=((T+3)%per)/per;const lp=along([[GX+110,214],[GX+170,240],[GX+230,260]],sm(lq));
+  ctx.globalAlpha=lq>.9?1-seg(lq,.9,1):1;circ(lp[0],lp[1],13,C.lyso,C["lyso-edge"],2);ctx.globalAlpha=1;
+  label(GX+190,290,"New lysosome",{align:"center",size:12,weight:600,border:C.rule});
+  line(470,0,470,H,C.rule,1.5);
+  // ---- right top: autophagy ----
+  const aq=(T%7)/7;
+  const AX=630,AY=140;
+  const lyX=lerp(760,AX+40,sm(seg(aq,.1,.35))),lyY=lerp(60,AY+10,sm(seg(aq,.1,.35)));
+  const fused=aq>.35;const dig=sm(seg(aq,.4,.9));
+  memCircle(AX,AY,62);
+  ctx.save();ctx.beginPath();ctx.arc(AX,AY,58,0,TAU);ctx.clip();
+  if(fused){ctx.globalAlpha=.55;circ(AX,AY,58,C.lyso);ctx.globalAlpha=1}
+  if(dig<1){ctx.globalAlpha=1-dig*.7;const s=1-dig*.6;mitoSmall(AX,AY,40*s,18*s,.3);ctx.globalAlpha=1}
+  for(let k=0;k<10;k++){if(dig<=0)break;const a=k/10*TAU+T*.4;const d=dig*30;ctx.globalAlpha=dig;circ(AX+Math.cos(a)*d,AY+Math.sin(a)*d,3,C["mito-edge"]);ctx.globalAlpha=1}
+  ctx.restore();
+  if(!fused)circ(lyX,lyY,16,C.lyso,C["lyso-edge"],2);
+  // enzymes dots in lysosome
+  label(AX,AY+84,aq<.35?"Lysosome heads to a worn-out mitochondrion":dig<.95?"Enzymes digest it (autophagy)":"Parts recycled",{align:"center",size:12,weight:600,border:C.act3});
+  txt(AX,22,"LYSOSOME",{align:"center",size:12,weight:700,mono:true,color:C["lyso-edge"]});
+  // ---- right bottom: peroxisome ----
+  const PX=635,PY=380;
+  circ(PX,PY,56,C.perox,C["perox-edge"],2.5);rr(PX-12,PY-12,24,24,3);ctx.fillStyle=C["perox-edge"];ctx.globalAlpha=.5;ctx.fill();ctx.globalAlpha=1;
+  txt(PX,PY+30,"catalase",{align:"center",size:10.5,color:C.ink,mono:true});
+  const pq=(T%4)/4;
+  // fatty acid / alcohol in
+  const fin=along([[500,300],[PX-36,PY-12]],sm(seg(pq,0,.35)));if(pq<.38){ctx.strokeStyle=C.lipid;ctx.lineWidth=3;ctx.beginPath();for(let k=0;k<6;k++)ctx.lineTo(fin[0]+k*5,fin[1]+(k%2?4:-4));ctx.stroke()}
+  if(pq>.3&&pq<.65){label(PX,PY-22,"H₂O₂",{align:"center",size:12,weight:700,color:C.bad,border:C.bad})}
+  if(pq>=.6){const r=seg(pq,.6,1);for(let k=0;k<3;k++){const a=-.6+k*.6;const d=30+r*70;wat(PX+Math.cos(a)*d,PY+Math.sin(a)*d,1-r*.5,5);}
+    oxy(PX+Math.cos(1.6)*(30+r*70),PY+Math.sin(1.6)*(30+r*70)*.6,1-r*.4);txt(PX+66,PY+44,"H₂O + O₂",{size:12,weight:700,color:C.good})}
+  txt(PX,PY-74,"PEROXISOME",{align:"center",size:12,weight:700,mono:true,color:C["perox-edge"]});
+  label(PX,H-18,"Breaks down fatty acids & toxins; H₂O₂ → water + O₂",{align:"center",size:11.5,weight:600,border:C.rule});
+}
+
+function sceneMito(T){
+  bg(C.cyto);
+  const MX=320,MYc=262,RX=270,RY=150;
+  ell(MX,MYc,RX,RY,0,C.mito,C["mito-edge"],3);
+  ell(MX,MYc,RX-14,RY-14,0,C.matrix,C["mito-edge"],2);
+  // cristae
+  ctx.save();ctx.beginPath();ctx.ellipse(MX,MYc,RX-14,RY-14,0,0,TAU);ctx.clip();
+  const CR=[];for(let k=0;k<9;k++){const x=MX-210+k*52;const top=k%2===0;CR.push([x,top])}
+  CR.forEach(([x,top],k)=>{const yEdge=MYc+(top?-1:1)*(RY-14)*Math.sqrt(Math.max(0,1-Math.pow((x-MX)/(RX-14),2)));const len=(RY-14)*1.15;
+    const y0=top?yEdge-10:yEdge-len+10;ctx.fillStyle=C.mito;ctx.strokeStyle=C["mito-edge"];ctx.lineWidth=2;rr(x-9,y0,18,len,9);ctx.fill();ctx.stroke()});
+  // mito DNA + ribosomes
+  ctx.beginPath();for(let i=0;i<=40;i++){const a=i/40*TAU;const r=16+Math.sin(a*6)*3;const x=MX+28+Math.cos(a)*r,y=MYc+40+Math.sin(a)*r*.7;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.strokeStyle=C.chromatin;ctx.lineWidth=2;ctx.stroke();
+  for(let k=0;k<6;k++)circ(MX-120+k*48,MYc+(k%2?50:-46),2.5,C.rib);
+  // ATP from cristae
+  let made=0;
+  for(let k=0;k<12;k++){const per=3,q=((T+k*per/12)%per)/per;const cr=CR[k%9];const sx=cr[0]+ (k%2?9:-9),sy=MYc+(cr[1]?-20:20);
+    const p=along([[sx,sy],[sx+20,sy+(cr[1]?20:-20)],[MX+RX+80,MYc-90+k*16]],sm(q));if(p[0]>MX+RX-10)made++;
+    const a=q>.85?1-seg(q,.85,1):1;
+    if(q<.12)glow(sx,sy,14,C.atp,.6);atpChip(p[0],p[1],a)}
+  ctx.restore();
+  // ATP outside
+  for(let k=0;k<12;k++){const per=3,q=((T+k*per/12)%per)/per;if(q<.62)continue;const p=[lerp(MX+RX-6,MX+RX+130,seg(q,.62,1)),MYc-110+k*18];atpChip(p[0],p[1],1-seg(q,.9,1))}
+  // fuel and O2 in
+  for(let k=0;k<5;k++){const q=((T*.35)+k/5)%1;const p=along([[-10,80+k*24],[MX-RX+30,MYc-40+k*16],[MX-120,MYc-20+k*12]],q);
+    if(k%2){oxy(p[0],p[1],1-seg(q,.85,1))}else{hexa(p[0],p[1],6,C.glu,1-seg(q,.85,1))}}
+  // CO2 + H2O out bottom
+  for(let k=0;k<4;k++){const q=((T*.3)+k/4)%1;const p=along([[MX-60+k*30,MYc+60],[MX-80+k*40,MYc+RY+10],[MX-140+k*60,H+10]],q);if(k%2)cdo(p[0],p[1]);else wat(p[0],p[1],1,4.2)}
+  label(80,40,"IN: fuel from food + O₂",{align:"left",size:12.5,weight:700,border:C.act3});
+  label(MX,H-18,"OUT (waste): CO₂ + H₂O",{align:"center",size:12.5,weight:600,border:C.rule});
+  label(MX+RX+10,MYc-140,"OUT: ATP",{align:"center",size:13,weight:700,color:C.atp,border:C.atp});
+  label(MX-150,MYc-RY-12,"Outer membrane",{align:"center",size:12,weight:600,border:C.rule});
+  label(MX+60,MYc-RY-12,"Inner membrane folds = cristae",{align:"center",size:12,weight:600,border:C.rule});
+  label(MX-60,MYc+8,"Matrix",{align:"center",size:12.5,weight:700});
+  label(MX+28,MYc+80,"Own DNA",{align:"center",size:11.5,weight:600});
+}
+
+function sceneCyto(T){
+  bg(C.ecf);
+  // cell body left
+  const L=20,R=480,TOP=70,BOT=500;
+  ctx.fillStyle=C.cyto;rr(L,TOP,R-L,BOT-TOP,30);ctx.fill();
+  // microvilli on top
+  const MV=[];for(let x=L+40;x<R-30;x+=34)MV.push(x);
+  MV.forEach(x=>{ctx.fillStyle=C.cyto;rr(x-9,TOP-40,18,50,9);ctx.fill();});
+  memStroke(()=>{ctx.beginPath();ctx.moveTo(L+30,TOP);MV.forEach(x=>{ctx.lineTo(x-9,TOP);ctx.lineTo(x-9,TOP-32);ctx.arcTo(x-9,TOP-41,x,TOP-41,9);ctx.arcTo(x+9,TOP-41,x+9,TOP-32,9);ctx.lineTo(x+9,TOP)});
+    ctx.lineTo(R-30,TOP);ctx.arcTo(R,TOP,R,TOP+30,30);ctx.lineTo(R,BOT-30);ctx.arcTo(R,BOT,R-30,BOT,30);ctx.lineTo(L+30,BOT);ctx.arcTo(L,BOT,L,BOT-30,30);ctx.lineTo(L,TOP+30);ctx.arcTo(L,TOP,L+30,TOP,30)},9);
+  // microfilaments: cores of microvilli + cortex
+  MV.forEach(x=>{line(x-3,TOP-34,x-3,TOP+20,C.mf,1.6);line(x+3,TOP-34,x+3,TOP+20,C.mf,1.6)});
+  ctx.strokeStyle=C.mf;ctx.lineWidth=1.3;for(let k=0;k<3;k++){ctx.beginPath();for(let x=L+16;x<R-14;x+=8){const y=TOP+14+k*6+Math.sin(x*.2+k)*2;x===L+16?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke()}
+  for(let k=0;k<3;k++){ctx.beginPath();for(let y=TOP+30;y<BOT-20;y+=8){const x=R-12-k*5+Math.sin(y*.2+k)*2;y===TOP+30?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke()}
+  // nucleus
+  circ(130,380,58,C.nuc,C["nuc-edge"],2);
+  // intermediate filaments (ropes) anchored at plaques
+  const IFs=[[[L+6,200],[150,250],[300,230],[R-6,300]],[[L+6,300],[110,320],[180,330],[260,420],[R-6,440]],[[150,TOP+4],[170,170],[130,322]]];
+  IFs.forEach(pts=>{ctx.strokeStyle=C.if;ctx.lineWidth=3.2;ctx.beginPath();for(let s=0;s<=60;s++){const p=along(pts,s/60);const n=Math.sin(s*1.6+T*.8)*2.2;s?ctx.lineTo(p[0]+n,p[1]-n):ctx.moveTo(p[0],p[1])}ctx.stroke();
+    [pts[0],pts[pts.length-1]].forEach(p=>{ctx.fillStyle=C.if;rr(p[0]-4,p[1]-8,8,16,2);ctx.fill()})});
+  // centrosome + microtubules
+  const CX=300,CY=330;
+  const RAYS=[];for(let k=0;k<11;k++){const a=-2.9+k*.52;RAYS.push(a)}
+  RAYS.forEach(a=>{let ex=CX+Math.cos(a)*400,ey=CY+Math.sin(a)*400;// clip to cell box
+    const tx=a=>{};const sx=Math.cos(a),sy=Math.sin(a);let tmax=400;if(sx>0)tmax=Math.min(tmax,(R-18-CX)/sx);if(sx<0)tmax=Math.min(tmax,(L+18-CX)/sx);if(sy>0)tmax=Math.min(tmax,(BOT-18-CY)/sy);if(sy<0)tmax=Math.min(tmax,(TOP+24-CY)/sy);
+    ex=CX+sx*tmax;ey=CY+sy*tmax;line(CX,CY,ex,ey,C.mt,5);line(CX,CY,ex,ey,C.cyto,1.6)});
+  ctx.save();ctx.translate(CX,CY);ctx.fillStyle=C.mt;ctx.strokeStyle=C.ink;ctx.lineWidth=1;rr(-14,-5,28,10,3);ctx.fill();ctx.stroke();rr(-5,2,10,26,3);ctx.fill();ctx.stroke();ctx.restore();
+  // motor protein walking vesicle along ray 2
+  const a=RAYS[8];const sx=Math.cos(a),sy=Math.sin(a);const q=(T%5)/5;const d=lerp(30,150,q);const mx=CX+sx*d,my=CY+sy*d;
+  const nx=-sy,ny=sx;const step=Math.sin(T*10);
+  line(mx,my,mx+nx*-14+sx*step*5,my+ny*-14+sy*step*5,C.motor,3);line(mx,my,mx+nx*-14-sx*step*5,my+ny*-14-sy*step*5,C.motor,3);
+  circ(mx-nx*14,my-ny*14,4,C.motor);
+  memCircle(mx-nx*30,my-ny*30,13);circ(mx-nx*30,my-ny*30,6,C.glow);
+  // labels
+  label(CX+20,CY+52,"Centrosome (2 centrioles)",{align:"center",size:12,weight:600,border:C.rule});
+  label(220,TOP-56,"Microvilli (microfilament cores)",{align:"center",size:12,weight:600,border:C.mf});
+  label(380,180,"Microtubule track",{align:"center",size:12,weight:600,border:C.mt});
+  label(mx-nx*30+40,my-ny*30-8,"Motor protein + vesicle",{align:"left",size:11.5,weight:600,border:C.motor});
+  label(90,236,"Intermediate filaments",{align:"left",size:12,weight:600,border:C.if});
+  label(130,380,"Nucleus",{align:"center",size:12,weight:600});
+  // ---- right: cilia + flagellum ----
+  line(500,0,500,H,C.rule,1.5);
+  const EY=220;ctx.fillStyle=C.cyto;ctx.fillRect(510,EY,290,70);memStroke(()=>{ctx.beginPath();ctx.moveTo(505,EY);ctx.lineTo(800,EY)},8);
+  for(let x=540;x<=780;x+=60)line(x,EY+4,x,EY+70,C["lipid-edge"],1.5);
+  // cilia
+  for(let k=0;k<14;k++){const bx=520+k*19;const ph=((T*1.4-k*.07)%1+1)%1;const L2=38;let ang,bend,len;
+    if(ph<.35){ang=lerp(-1,1,sm(ph/.35));bend=0;len=L2}else{const r=(ph-.35)/.65;ang=lerp(1,-1,sm(r));bend=Math.sin(r*Math.PI);len=L2*(1-.25*bend)}
+    const tx=bx+Math.sin(ang)*len,ty=EY-3-Math.cos(ang)*len;const mx=(bx+tx)/2+bend*16*Math.cos(ang),my=(EY-3+ty)/2+bend*16*Math.sin(ang)*-.2+bend*6;
+    ctx.strokeStyle=C.mt;ctx.lineWidth=3.2;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(bx,EY-3);ctx.quadraticCurveTo(mx,my,tx,ty);ctx.stroke();ctx.lineCap="butt"}
+  txt(650,EY+88,"power stroke → | ← recovery stroke",{align:"center",size:11,color:C["ink-soft"]});
+  // mucus blob moving right
+  const mq=(T*.12)%1;ell(lerp(500,820,mq),EY-72,40,13,0,C.glyco);ctx.globalAlpha=.5;ell(lerp(500,820,mq),EY-72,40,13,0,C.panel);ctx.globalAlpha=1;
+  txt(lerp(500,820,mq),EY-72,"mucus",{align:"center",size:11,weight:600});
+  txt(650,30,"CILIA",{align:"center",size:12,weight:700,mono:true,color:C.mt});
+  txt(650,48,"many, short; sweep fluid along",{align:"center",size:11.5,color:C["ink-soft"]});
+  // flagellum / sperm
+  const sxh=lerp(820,470,(T*.09)%1)+0;const syh=400;
+  ctx.save();ctx.beginPath();ctx.rect(502,300,298,H-300);ctx.clip();
+  ell(sxh,syh,14,9,0,C.nuc,C["nuc-edge"],2);
+  ctx.strokeStyle=C.mt;ctx.lineWidth=2.6;ctx.beginPath();ctx.moveTo(sxh+13,syh);for(let s=0;s<=60;s++){const x=sxh+13+s*2.6;const y=syh+Math.sin(s*.18-T*9)*Math.min(14,s*.5);ctx.lineTo(x,y)}ctx.stroke();ctx.restore();
+  txt(650,330,"FLAGELLUM",{align:"center",size:12,weight:700,mono:true,color:C.mt});
+  txt(650,348,"one, long; moves the whole cell (sperm)",{align:"center",size:11.5,color:C["ink-soft"]});
+  // fiber sizes
+  txt(650,462,"FIBER WIDTHS (thin → thick)",{align:"center",size:11,weight:600,mono:true,color:C["ink-soft"]});
+  circ(560,490,3.5,C.mf);txt(568,490,"microfilament",{size:10.5});
+  circ(660,490,5,C.if);txt(668,490,"intermediate",{size:10.5});
+  circ(752,490,9,C.mt);circ(752,490,5,C.panel);txt(763,490,"tubule",{size:10.5});
+}
+
+function sceneFactory(T){
+  bg(C.ecf);
+  const CR=700;
+  ctx.fillStyle=C.cyto;rr(10,40,CR-10,400,30);ctx.fill();
+  memStroke(()=>{rr(10,40,CR-10,400,30)},10);
+  const per=11,q=(T%per)/per;
+  // nucleus
+  nucleusDraw(100,240,74,T,1,6);
+  // RER sacs
+  const RER=[[200,160],[214,240],[200,320]];ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(195,150);ctx.quadraticCurveTo(250,240,195,330);ctx.strokeStyle=C["er-edge"];ctx.lineWidth=30;ctx.stroke();ctx.strokeStyle=C.er;ctx.lineWidth=24;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(245,150);ctx.quadraticCurveTo(300,240,245,330);ctx.strokeStyle=C["er-edge"];ctx.lineWidth=30;ctx.stroke();ctx.strokeStyle=C.er;ctx.lineWidth=24;ctx.stroke();
+  ctx.lineCap="butt";
+  for(let u=0;u<=1;u+=.1){const x=(1-u)*(1-u)*245+2*(1-u)*u*300+u*u*245,y=(1-u)*(1-u)*150+2*(1-u)*u*240+u*u*330;ribo(x+18,y,.8)}
+  // Golgi (vertical cisternae, cis on left)
+  ctx.lineCap="round";for(let k=0;k<5;k++){const x=430+k*20;ctx.beginPath();ctx.moveTo(x+18,170);ctx.quadraticCurveTo(x-14,240,x+18,310);ctx.strokeStyle=C["golgi-edge"];ctx.lineWidth=16;ctx.stroke();ctx.strokeStyle=C.golgi;ctx.lineWidth=11;ctx.stroke()}ctx.lineCap="butt";
+  // mitochondria decoration
+  mitoSmall(320,400,30,13,.2,.9);mitoSmall(600,110,30,13,-.3,.9);
+  // stages: 0 mRNA (0-.15),1 RER (.15-.35),2 transport vesicle (.35-.5),3 Golgi (.5-.68),4 secretory vesicle (.68-.85),5 exo (.85-1)
+  const st=q<.15?0:q<.35?1:q<.5?2:q<.68?3:q<.85?4:5;
+  // mRNA
+  if(q<.2){const u=sm(q/.15);ctx.strokeStyle=C.mrna;ctx.lineWidth=3;ctx.beginPath();for(let i=0;i<=12;i++){const s=u*1-i/12*.35;if(s<0)break;const p=along([[100,240],[174,240],[262,240]],s);i?ctx.lineTo(p[0],p[1]+Math.sin(i)*4):ctx.moveTo(p[0],p[1])}ctx.stroke()}
+  let pos,ves=false;
+  if(st===0)pos=null;
+  else if(st===1){const u=seg(q,.15,.35);pos=[lerp(262,232,u),lerp(240,240+Math.sin(u*6)*30,u)];ribo(268,240,1.5);glow(268,240,22,C.glow,.4)}
+  else if(st===2){const u=sm(seg(q,.35,.5));pos=along([[262,250],[330,230],[420,240]],u);ves=true}
+  else if(st===3){const u=seg(q,.5,.68);pos=[lerp(425,515,u),240+Math.sin(u*12)*30]}
+  else if(st===4){const u=sm(seg(q,.68,.85));pos=along([[520,240],[600,220],[CR-24,200]],u);ves=true}
+  else{const u=seg(q,.85,1);pos=[lerp(CR-10,CR+70,sm(u)),200-u*20]}
+  if(st===5){const u=seg(q,.85,1);ctx.globalAlpha=1-u;memCircle(CR-6-u*10,200,18*(1-u)+4);ctx.globalAlpha=1}
+  if(pos){if(ves)memCircle(pos[0],pos[1],17);glow(pos[0],pos[1],18,C.glow,.8);circ(pos[0],pos[1],6.5,C.glow,C.act2,1.2);if(st>=3){line(pos[0]+5,pos[1]-5,pos[0]+11,pos[1]-11,C.glyco,2);circ(pos[0]+12,pos[1]-12,3,C.glyco)}}
+  txt(100,140,"Nucleus",{align:"center",size:12,weight:600});txt(240,128,"Rough ER",{align:"center",size:12,weight:600});txt(475,150,"Golgi",{align:"center",size:12,weight:600});
+  txt(475,330,"cis → trans",{align:"center",size:11,color:C["ink-soft"]});
+  txt(CR+50,60,"OUTSIDE",{align:"center",size:11,weight:600,mono:true,color:C["ink-soft"]});
+  if(st===5)label(CR+50,240,"Secreted!",{align:"center",size:12.5,weight:700,color:C.act2,border:C.act2});
+  // strip
+  const S=["mRNA leaves","Made in rough ER","Transport vesicle","Golgi modifies","Secretory vesicle","Exocytosis"];
+  S.forEach((s,i)=>{const x=10+i*131,y=462,on=i===st;ctx.fillStyle=on?C.act3:C["panel-2"];rr(x,y,124,44,8);ctx.fill();ctx.strokeStyle=on?C.act3:C.rule;ctx.lineWidth=1.5;ctx.stroke();
+    badge(x+16,y+22,i+1,on?C.panel:C["ink-faint"]);if(on){ctx.font=`700 11px ${MONO}`;ctx.fillStyle=C.act3;ctx.textAlign="center";ctx.fillText(i+1,x+16,y+22.5)}
+    ctx.font=`${on?700:500} 11.5px ${FONT}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=on?"#fff":C.ink;wrapText(s,x+30,y+(ctx.measureText(s).width>88?15:22),90,14)});
+}
+
+/* ================= Part 4 scenes ================= */
+const COMP={A:"T",T:"A",G:"C",C:"G"};
+const RCOMP={A:"U",T:"A",G:"C",C:"G"};
+function baseCol(b){return C["b"+b]}
+function baseTile(x,y,b,dir,a,w,h){w=w||16;h=h||14;ctx.globalAlpha=a==null?1:a;ctx.fillStyle=baseCol(b);
+  const y0=dir>0?y:y-h;rr(x-w/2,y0,w,h,3);ctx.fill();ctx.font=`700 10.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(b,x,y0+h/2+.5);ctx.globalAlpha=1}
+const REP_SEQ="ATGCGTACCTAGGCATTC";
+function sceneRep(T){
+  bg(C.nuc);
+  const per=13,t=T%per;const fork=lerp(20,760,sm(seg(t,.4,10.5)));
+  const N=REP_SEQ.length,X0=70,DX=38;
+  const sep=x=>sm((fork-x)/50); // 0 = zipped, 1 = fully separated
+  const topY=x=>lerp(236,118,sep(x)),botY=x=>lerp(288,406,sep(x));
+  // backbones (old)
+  function strand(fy,col,lw,x0,x1){ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.beginPath();for(let x=x0;x<=x1;x+=4){const y=fy(x);x===x0?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke()}
+  strand(topY,C.old,6,40,780);strand(botY,C.old,6,40,780);
+  // new strands up to polymerase position
+  const pol=fork-80;
+  if(pol>50){strand(x=>topY(x)+58,C.new,6,50,Math.min(pol,780));strand(x=>botY(x)-58,C.new,6,50,Math.min(pol,780))}
+  for(let i=0;i<N;i++){const x=X0+i*DX,b=REP_SEQ[i],cb=COMP[b];const s=sep(x);
+    if(s<.02){baseTile(x,topY(x),b,1);baseTile(x,botY(x),cb,-1);line(x,topY(x)+14,x,botY(x)-14,C["ink-faint"],1.2)}
+    else{baseTile(x,topY(x),b,1);baseTile(x,botY(x),cb,-1);
+      // new partner
+      const dk=pol-x;if(dk>-30){const a=clamp((dk+30)/30,0,1);const off=(1-a)*30;
+        baseTile(x,topY(x)+44+off,cb,-1,a);baseTile(x,botY(x)-44-off,b,1,a);
+        if(a>.95){line(x,topY(x)+14,x,topY(x)+30,C["ink-faint"],1);line(x,botY(x)-14,x,botY(x)-30,C["ink-faint"],1)}}}}
+  // free nucleotides
+  for(let k=0;k<10;k++){const w=wander(60+rnd(k+900)*Math.max(10,fork-120),262+(rnd(k+901)-.5)*60,T,k+900,10,10);if(w[0]>fork-60)continue;baseTile(w[0],w[1],"ATGC"[k%4],1,.75,14,12)}
+  // enzymes
+  if(fork<770){ctx.save();ctx.translate(fork,262);ctx.rotate(Math.sin(T*6)*.15);ctx.beginPath();ctx.moveTo(26,0);ctx.lineTo(-18,-26);ctx.lineTo(-26,0);ctx.lineTo(-18,26);ctx.closePath();ctx.fillStyle=C.helic;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
+    if(fork<640)label(fork+34,262,"Helicase unzips",{align:"left",size:12,weight:700,border:C.helic});else label(fork-34,262,"Helicase unzips",{align:"right",size:12,weight:700,border:C.helic})}
+  if(pol>50&&pol<790){[topY(pol)+58,botY(pol)-58].forEach((y,i)=>{ell(pol,y,22,16,0,C.dnap,C["dnap-edge"],2)});
+    label(pol,topY(pol)+92>200?topY(pol)+86:200,"DNA polymerase",{align:"center",size:11.5,weight:700,border:C["dnap-edge"]})}
+  // labels
+  if(fork>420){label(14,92,"Daughter DNA 1: old strand + new strand",{size:12.5,weight:700,border:C.act4});
+    label(14,440,"Daughter DNA 2: new strand + old strand",{size:12.5,weight:700,border:C.act4})}
+  if(t>10.6)label(400,262,"Semi-conservative: each copy keeps one old strand",{align:"center",size:13,weight:700,border:C.act4});
+  label(790,24,"A pairs with T · G pairs with C",{align:"right",size:12.5,weight:600,border:C.rule});
+  if(fork<200)label(400,180,"Original DNA: two strands held by base pairs",{align:"center",size:12.5,weight:600,border:C.rule});
+}
+
+/* transcription */
+const TX_PRE=[["E","AUGGCU"],["I","GUAAAG"],["E","UUCAAA"],["I","GUUCAG"],["E","UGGUAA"]];
+const TX_M=TX_PRE.map(s=>s[1]).join("");
+const TX_CODING=TX_M.replace(/U/g,"T");
+function sceneTx(T){
+  bg(C.nuc);
+  const per=16,t=T%per;
+  const N=TX_CODING.length,X0=46,DX=22;
+  const pol=lerp(20,X0+N*DX+30,sm(seg(t,.4,8)));
+  const open=x=>sm(1-Math.abs(x-pol)/46);
+  const cY=x=>lerp(108,82,open(x)),tY=x=>lerp(150,178,open(x));
+  // DNA
+  ctx.strokeStyle=C.old;ctx.lineWidth=5;
+  [cY,tY].forEach(f=>{ctx.beginPath();for(let x=30;x<=X0+N*DX+10;x+=3){const y=f(x);x===30?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke()});
+  for(let i=0;i<N;i++){const x=X0+i*DX,b=TX_CODING[i];const o=open(x);baseTile(x,cY(x)+3,b,1,1,15,13);baseTile(x,tY(x)-3,COMP[b],-1,1,15,13);if(o<.3)line(x,cY(x)+16,x,tY(x)-16,C["ink-faint"],1)}
+  txt(10,cY(0)+0-16,"Coding strand",{size:11,weight:600,color:C["ink-soft"]});txt(10,196,"Template strand (read by RNA polymerase)",{size:11,weight:600,color:C.act4});
+  // mRNA being built
+  const built=Math.floor(clamp((pol-X0+10)/DX,0,N));
+  const splice=sm(seg(t,9,12.2)),exportq=sm(seg(t,12.6,15.2));
+  if(t<8.8){for(let i=0;i<built;i++){const x=X0+i*DX;const near=pol-x<40;const y=near?tY(x)+16:250;const b=TX_M[i];
+      const seg5=TX_PRE.findIndex((s,k)=>{let st=0;for(let j=0;j<k;j++)st+=6;return i>=st&&i<st+6});
+      baseTile(x,y,b,1,1,15,13);if(!near){ctx.fillStyle=TX_PRE[seg5][0]==="E"?C.mrna:C.intron;ctx.fillRect(x-12,y+15,24,5)}}
+    if(pol<X0+N*DX+20){ctx.save();ctx.globalAlpha=.88;ell(pol,150,50,60,0,C.rnap,C["rnap-edge"],2.5);ctx.restore();label(pol,226,"RNA polymerase",{align:"center",size:12,weight:700,border:C["rnap-edge"]})}
+    if(built>3)label(40,300,"pre-mRNA: grows as A→U, T→A, G→C, C→G",{size:12,weight:600,border:C.rule});
+  } else {
+    // pre-mRNA at y=330 → splice → export
+    const yB=lerp(250,340,sm(seg(t,8.8,9.4)));
+    // compute exon target positions
+    let ex=0;const tiles=[];
+    TX_PRE.forEach((s,k)=>{for(let j=0;j<6;j++){const i=k*6+j;const x0=X0+i*DX;let x=x0,y=yB,a=1;
+      if(s[0]==="E"){const xt=170+ex*DX;ex++;x=lerp(x0,xt,splice);x+=exportq*600}
+      else{const loop=sm(seg(t,9,10.6));y=yB-loop*(40+Math.sin(j/5*Math.PI)*24);a=1-sm(seg(t,10.6,12))}
+      tiles.push([x,y,s[1][j],s[0],a])}});
+    ctx.save();ctx.beginPath();ctx.rect(0,0,742,H);ctx.clip();
+    tiles.forEach(tl=>{if(tl[4]<=0)return;baseTile(tl[0],tl[1],tl[2],1,tl[4],15,13);ctx.globalAlpha=tl[4];ctx.fillStyle=tl[3]==="E"?C.mrna:C.intron;ctx.fillRect(tl[0]-12,tl[1]+15,24,5);ctx.globalAlpha=1});
+    ctx.restore();
+    if(splice<.05)label(400,410,"Exons (purple bar) are kept · introns (gray bar) are cut out",{align:"center",size:12.5,weight:600,border:C.rule});
+    else if(exportq<.05)label(400,410,splice<.99?"Splicing: introns loop out and are removed":"Mature mRNA: exons joined",{align:"center",size:12.5,weight:700,border:C.act4});
+    else label(400,410,"mRNA leaves the nucleus through a nuclear pore",{align:"center",size:12.5,weight:700,border:C.act4});
+  }
+  // nuclear envelope at right with pore
+  ctx.fillStyle=C.cyto;ctx.fillRect(752,0,48,H);
+  ctx.fillStyle=C["nuc-edge"];ctx.fillRect(744,0,4,320);ctx.fillRect(744,360,4,H-360);ctx.fillRect(752,0,3,320);ctx.fillRect(752,360,3,H-360);
+  circ(750,322,5,C["nuc-edge"]);circ(750,358,5,C["nuc-edge"]);
+  ctx.save();ctx.translate(776,260);ctx.rotate(-Math.PI/2);txt(0,0,"CYTOPLASM",{align:"center",size:11,weight:600,mono:true,color:C["ink-soft"]});ctx.restore();
+  txt(12,H-16,"NUCLEUS",{size:11,weight:600,mono:true,color:C["ink-soft"]});
+  label(400,470,"RNA uses U (uracil) instead of T",{align:"center",size:12.5,weight:600,border:C.bU});
+}
+
+/* translation */
+const TL_COD=["AUG","GCU","UUC","AAA","UGG","UAA"];
+const TL_AA=["Met","Ala","Phe","Lys","Trp"];
+const ANTI=c=>c.split("").map(b=>({A:"U",U:"A",G:"C",C:"G"})[b]).join("");
+const AACOL=["act1","act2","act3","act4","act5"];
+function tRNA(x,y,anti,aa,col,a){ctx.globalAlpha=a==null?1:a;
+  // body (simplified cloverleaf as a T)
+  ctx.fillStyle=C.trna;ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.2;
+  rr(x-8,y-74,16,58,6);ctx.fill();ctx.stroke();rr(x-30,y-58,60,16,8);ctx.fill();ctx.stroke();
+  rr(x-24,y-18,48,18,4);ctx.fill();ctx.stroke();
+  ctx.font=`700 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(anti,x,y-8.5);
+  if(aa){circ(x,y-86,15,C[col],"rgba(0,0,0,.3)",1);txt(x,y-86,aa,{align:"center",size:10.5,weight:700,color:"#fff"})}
+  ctx.globalAlpha=1}
+function sceneTl(T){
+  bg(C.cyto);
+  const MRY=372,X0=90,CW=96;
+  const cx=i=>X0+i*CW+CW/2;
+  // timeline: init 0-2; elong k=1..4 each 2.4s (2..11.6); term 11.6-14; hold to 16
+  const per=16,t=T%per;
+  let P=0,phase="init",u=0;
+  if(t<2){phase="init";u=t/2}
+  else if(t<11.6){const k=Math.floor((t-2)/2.4);P=k;u=((t-2)%2.4)/2.4;phase="elong"}
+  else if(t<14){phase="term";P=4;u=(t-11.6)/2.4}
+  else{phase="done";P=4;u=1}
+  // ribosome x (centred between P and A sites)
+  let ribX;if(phase==="elong"){ribX=lerp(cx(P),cx(P+1),u<.62?0:sm((u-.62)/.3))+CW/2}else ribX=cx(P)+CW/2;
+  const ribA=phase==="done"?1-sm(seg(t,14,15)):1;
+  // mRNA
+  ctx.fillStyle=C.mrna;ctx.fillRect(30,MRY+18,W-60,5);
+  ctx.globalAlpha=ribA*.92;ell(ribX,MRY+42,CW+18,18,0,C.rib);ctx.globalAlpha=1;
+  if(ribA>.5){txt(ribX-CW/2,MRY+42,"P site",{align:"center",size:11,weight:700,color:"#fff",mono:true});txt(ribX+CW/2,MRY+42,"A site",{align:"center",size:11,weight:700,color:"#fff",mono:true})}
+  TL_COD.forEach((c,i)=>{for(let j=0;j<3;j++)baseTile(cx(i)-26+j*26,MRY+2,c[j],1,1,22,16);
+    txt(cx(i),MRY+76,i===0?"start":i===5?"stop":"codon "+(i+1),{align:"center",size:11,color:i===0||i===5?C.act4:C["ink-soft"],weight:i===0||i===5?700:500})});
+  txt(30,MRY+36,"5'",{size:11,mono:true,color:C["ink-soft"]});txt(W-40,MRY+36,"3'",{size:11,mono:true,color:C["ink-soft"]});
+  ctx.globalAlpha=ribA*.6;
+  // large subunit
+  const largeIn=phase==="init"?sm(seg(u,.55,1)):1;
+  ell(ribX,lerp(150,MRY-72,largeIn),CW+26,62,0,C.rib);ctx.globalAlpha=1;
+  // chain of amino acids anchored at P-site tRNA top
+  function chain(x,y,n,a){for(let j=n-1;j>=0;j--){const k=n-1-j;const px=x-14-k*20,py=y-4-k*14*(k%2?1:.4)-k*6;circ(px,py,13,C[AACOL[j]],"rgba(0,0,0,.3)",1);txt(px,py,TL_AA[j],{align:"center",size:10,weight:700,color:"#fff"});if(k>0){}}}
+  const tY=MRY;
+  if(phase==="init"){const drop=sm(seg(u,0,.5));tRNA(cx(0),lerp(170,tY,drop),ANTI("AUG"),"Met",AACOL[0]);
+    label(400,30,u<.5?"Start: tRNA (anticodon UAC) brings Met to AUG":"The large subunit joins",{align:"center",size:13,weight:700,border:C.act4})}
+  else if(phase==="elong"){const k=P+1;// incoming to codon k
+    const drop=sm(seg(u,0,.3));const bond=sm(seg(u,.32,.56));const shift=sm(seg(u,.62,.92));
+    const pX=cx(P),aX=cx(k);
+    // P tRNA: holds chain of k amino acids before bond (aa indices 0..k-1); after bond it is empty and exits during shift
+    const exitA=shift;
+    tRNA(pX-exitA*40,tY-exitA*130,ANTI(TL_COD[P]),null,null,1-exitA);
+    // incoming tRNA
+    tRNA(aX,lerp(140,tY,drop),ANTI(TL_COD[k]),TL_AA[k],AACOL[k]);
+    // chain
+    const n=k; // amino acids before the new one
+    const cxp=lerp(pX,aX,bond);
+    const bx=lerp(pX,aX-24,bond),by=lerp(tY-86,tY-100,bond);
+    if(bond>.5)line(bx,by,aX,tY-86,C.glow,4);
+    for(let j=0;j<n;j++){const kk=n-1-j;const px=bx-kk*24,py=by-kk*14;circ(px,py,13,C[AACOL[j]],"rgba(0,0,0,.3)",1);txt(px,py,TL_AA[j],{align:"center",size:10,weight:700,color:"#fff"})}
+    if(bond>.1&&bond<.95)glow((bx+aX)/2,(by+tY-86)/2,26,C.glow,.8);
+    if(drop>.99&&bond<.99){circ(aX,tY-86,13,C[AACOL[k]],"rgba(0,0,0,.3)",1);txt(aX,tY-86,TL_AA[k],{align:"center",size:10.5,weight:700,color:"#fff"})}
+    const msg=u<.3?`tRNA with anticodon ${ANTI(TL_COD[k])} pairs with codon ${TL_COD[k]}`:u<.6?"Peptide bond links the chain to "+TL_AA[k]:"Ribosome slides one codon; empty tRNA leaves";
+    label(400,30,msg,{align:"center",size:13,weight:700,border:C.act4})}
+  else{ // term / done
+    const rel=phase==="term"?sm(seg(u,.35,1)):1;
+    // release factor in A site
+    if(phase==="term"){ctx.globalAlpha=1-rel*.5;ctx.fillStyle=C.bad;rr(cx(5)-20,lerp(160,tY-70,sm(seg(u,0,.35))),40,60,10);ctx.fill();txt(cx(5),lerp(190,tY-40,sm(seg(u,0,.35))),"RF",{align:"center",size:11,weight:700,color:"#fff"});ctx.globalAlpha=1}
+    const pX=cx(4);tRNA(pX,tY,ANTI(TL_COD[4]),null,null,1-rel);
+    for(let j=0;j<5;j++){const kk=4-j;const px=pX-kk*24+rel*(-60),py=tY-86-kk*14-rel*120;circ(px,py,13,C[AACOL[j]],"rgba(0,0,0,.3)",1);txt(px,py,TL_AA[j],{align:"center",size:10,weight:700,color:"#fff"})}
+    label(400,30,rel<.2?"Stop codon UAA: no tRNA matches; a release factor binds":"The finished chain (Met-Ala-Phe-Lys-Trp) is released",{align:"center",size:13,weight:700,border:C.act4})}
+  // amino acid counter
+  label(790,470,"Peptide so far: "+(phase==="init"?"Met":TL_AA.slice(0,Math.min(5,(phase==="elong"?P+1+(u>.45?1:0):5))).join("-")),{align:"right",size:12.5,weight:600,border:C.rule});
+}
+
+/* ================= Part 5 scenes ================= */
+const CYC=[["G1",0,.4,"act1"],["S",.4,.7,"act4"],["G2",.7,.85,"act2"],["M",.85,1,"act5"]];
+function wheel(x,y,r,pos,opts){opts=opts||{};
+  CYC.forEach(c=>{const a0=-Math.PI/2+c[1]*TAU,a1=-Math.PI/2+c[2]*TAU;ctx.beginPath();ctx.arc(x,y,r,a0+.015,a1-.015);ctx.strokeStyle=C[c[3]];ctx.lineWidth=opts.lw||30;ctx.globalAlpha=pos>=c[1]&&pos<c[2]?1:.45;ctx.stroke();ctx.globalAlpha=1;
+    const am=(a0+a1)/2;txt(x+Math.cos(am)*r,y+Math.sin(am)*r,c[0],{align:"center",size:13,weight:700,color:"#fff",mono:true})});
+  const a=-Math.PI/2+pos*TAU;arrow(x,y,x+Math.cos(a)*(r-26),y+Math.sin(a)*(r-26),C.ink,3);circ(x,y,6,C.ink)}
+function chromThreads(cx,cy,R,doubled,t,cond,a){ // two chromosomes as threads
+  ctx.globalAlpha=a==null?1:a;
+  [[C.chrA,-1],[C.chrB,1]].forEach(([col,sd],k)=>{const copies=doubled?2:1;for(let c=0;c<copies;c++){ctx.strokeStyle=col;ctx.lineWidth=lerp(1.6,6,cond);ctx.beginPath();
+    for(let s=0;s<=20;s++){const u=s/20-.5;const amp=(1-cond)*R*.35;const x=cx+sd*R*.3+u*R*lerp(1.1,.25,cond)*0+Math.sin(u*9+k*2+t*.3)*amp+(c?lerp(5,4,cond):0);const y=cy+u*R*lerp(1.2,.9,cond)+Math.cos(u*7+k)*amp*.6;s?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
+    if(doubled)circ(cx+sd*R*.3+2+Math.sin(k*2+t*.3)*(1-cond)*R*.35*0,cy,3,C.ink)});
+  ctx.globalAlpha=1}
+function sceneCycle(T){
+  bg(C.panel);
+  const per=14,t=T%per,pos=t/per;
+  wheel(200,260,150,pos);
+  // G0 exit
+  const g0a=-Math.PI/2+.2*TAU;arrow(200+Math.cos(g0a)*172,260+Math.sin(g0a)*172,200+Math.cos(g0a)*172+36,260+Math.sin(g0a)*172+40,C["ink-faint"],2);
+  label(268,440,"G0: resting (e.g., most neurons)",{align:"center",size:11.5,color:C["ink-soft"]});
+  txt(200,72,"INTERPHASE = G1 + S + G2",{align:"center",size:11.5,weight:600,mono:true,color:C["ink-soft"]});
+  // cell on right
+  const CX=570,CY=250;
+  const cur=CYC.find(c=>pos>=c[1]&&pos<c[2]);
+  let r=80,doubled=false,cond=0,split=0;
+  if(pos<.4)r=lerp(78,100,pos/.4);else if(pos<.7){r=100;doubled=seg(pos,.42,.68)>.5}else if(pos<.85){r=lerp(100,112,seg(pos,.7,.85));doubled=true}else{doubled=true;r=112;cond=sm(seg(pos,.85,.9));split=sm(seg(pos,.9,1))}
+  const dna=pos<.42?1:pos<.68?1+seg(pos,.42,.68):2;
+  if(split<.02){ell(CX,CY,r*1.1,r,0,C.cyto,C["lipid-edge"],3);
+    if(cond<.5){circ(CX,CY,r*.55,C.nuc,C["nuc-edge"],2);
+      if(pos>.4&&pos<.7){const sq=seg(pos,.42,.68);chromThreads(CX,CY,r*.5,true,T,0,1);ctx.globalAlpha=1-sq;chromThreads(CX,CY,r*.5,false,T,0,1);ctx.globalAlpha=1}else chromThreads(CX,CY,r*.5,doubled,T,0)}
+    else{chromThreads(CX,CY,r*.5,true,T,cond)}
+    // centrosome(s)
+    const cs=pos>=.55?2:1;for(let k=0;k<cs;k++){ctx.fillStyle=C.mt;rr(CX+r*.7-6+k*16,CY-r*.6,10,5,2);ctx.fill();rr(CX+r*.7-3+k*16,CY-r*.6+4,5,10,2);ctx.fill()}}
+  else{const d=split*80;[-1,1].forEach(sd=>{ell(CX+sd*d,CY,lerp(r,76,split),lerp(r,70,split),0,C.cyto,C["lipid-edge"],3);circ(CX+sd*d,CY,lerp(30,40,split),C.nuc,C["nuc-edge"],2);chromThreads(CX+sd*d,CY,34,false,T,0,split)})}
+  label(CX,40,cur[0]==="G1"?"G1: the cell grows":cur[0]==="S"?"S: DNA is copied":cur[0]==="G2"?"G2: grows more, gets ready":"M: mitosis + cytokinesis",{align:"center",size:13.5,weight:700,border:C[cur[3]]});
+  // DNA meter
+  txt(440,450,"DNA amount",{size:12,weight:700});ctx.fillStyle=C.sunk;rr(530,442,200,16,8);ctx.fill();ctx.fillStyle=C.act4;rr(530,442,200*dna/2,16,8);ctx.fill();
+  txt(740,450,dna<1.05?"1×":dna>1.95?"2×":"copying…",{size:12,weight:700,mono:true});
+  if(pos>.68&&pos<.9)label(CX,CY+r+30,"Each chromosome = 2 sister chromatids",{align:"center",size:12,weight:600,border:C.rule});
+}
+
+/* mitosis */
+const MIT_PH=[["Interphase",0,1.2],["Prophase",1.2,3.6],["Prometaphase",3.6,5.2],["Metaphase",5.2,6.8],["Anaphase",6.8,8.8],["Telophase",8.8,10.8],["Cytokinesis",10.2,12.6]];
+const CHR=[{col:"chrA",L:24,ip:[355,205]},{col:"chrB",L:24,ip:[440,225]},{col:"chrA",L:16,ip:[370,290]},{col:"chrB",L:16,ip:[445,295]}];
+function chromatid(x,y,L,cond,trail,dirx,col,seed,t){
+  const lw=lerp(1.6,6,cond);const splay=.24*cond*(1-Math.min(1,trail*2));const amp=(1-cond)*16;const len=L*lerp(2,1,cond);
+  ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.lineCap="round";
+  [-1,1].forEach(v=>{ctx.beginPath();ctx.moveTo(x,y);for(let s=1;s<=10;s++){const u=s/10;const bx=x+dirx*Math.sin(trail)*len*u-dirx*Math.sin(splay)*len*u, by=y+v*Math.cos(trail)*len*u;
+      const nx=bx+Math.sin(u*8+seed+v+t*.3)*amp*u,ny=by+Math.cos(u*7+seed*2+v)*amp*u*.6;ctx.lineTo(nx+(cond>.5?v*1.5*u*0:0),ny)}ctx.stroke()});
+  ctx.lineCap="butt"}
+function sceneMitosis(T){
+  bg(C.ecf);
+  const per=14,t=T%per;
+  const cur=MIT_PH.filter(p=>t>=p[1]&&t<p[2]).map(p=>p[0]);
+  const cond=sm(seg(t,1.2,3.2))*(1-sm(seg(t,9.2,11)));
+  const poleOut=sm(seg(t,1.4,3.8));
+  const PL=[lerp(380,175,poleOut),lerp(80,250,poleOut)],PR=[lerp(420,625,poleOut),lerp(80,250,poleOut)];
+  const env=1-sm(seg(t,3.6,4.4));
+  const meta=sm(seg(t,3.8,5.6));
+  const ana=sm(seg(t,6.9,8.8));
+  const tel=sm(seg(t,8.8,10.4));
+  const cyto=sm(seg(t,10.2,12.4));
+  // cell outline (peanut)
+  const CX=400,CY=250,RX=lerp(235,250,ana),RY=lerp(200,180,ana);
+  if(cyto<.98){ctx.beginPath();for(let i=0;i<=120;i++){const th=i/120*TAU;const c=Math.cos(th),s=Math.sin(th);const pinch=1-cyto*.98*Math.pow(1-Math.abs(c),2.2);const x=CX+RX*c*(1+cyto*.06),y=CY+RY*s*pinch;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();
+    ctx.fillStyle=C.cyto;ctx.fill();ctx.strokeStyle=C["lipid-edge"];ctx.lineWidth=4;ctx.stroke();ctx.strokeStyle=C.lipid;ctx.lineWidth=2;ctx.stroke()}
+  else{[-1,1].forEach(sd=>{ell(CX+sd*130,CY,120,RY*.9,0,C.cyto,C["lipid-edge"],4)})}
+  if(cyto>.05&&cyto<.98){const wy=RY*(1-cyto*.98);line(CX-6,CY-wy,CX-6,CY-wy+12,C.mf,5);line(CX-6,CY+wy,CX-6,CY+wy-12,C.mf,5);label(CX,CY+RY+24,"Cleavage furrow (contractile ring)",{align:"center",size:12,weight:600,border:C.mf})}
+  // nucleus (interphase)
+  if(env>0){ctx.globalAlpha=env;circ(CX,CY,118,C.nuc);ctx.globalAlpha=1;
+    if(t<3.6){circ(CX,CY,118,null,C["nuc-edge"],2.5)}else{for(let k=0;k<12;k++){const a0=k/12*TAU,a1=a0+TAU/12*.7;const d=(1-env)*30;ctx.globalAlpha=env;ctx.beginPath();ctx.arc(CX+Math.cos(a0+.2)*d,CY+Math.sin(a0+.2)*d,118,a0,a1);ctx.strokeStyle=C["nuc-edge"];ctx.lineWidth=2.5;ctx.stroke();ctx.globalAlpha=1}}
+    const nuo=1-sm(seg(t,1.4,3));if(nuo>0){ctx.globalAlpha=nuo*env;circ(CX+40,CY-40,20,C.nucleolus);ctx.globalAlpha=1}}
+  // new nuclei
+  if(tel>0){[-1,1].forEach(sd=>{const nx=sd<0?248:552;ctx.globalAlpha=tel;circ(nx,CY,lerp(20,78,tel),C.nuc,C["nuc-edge"],2.5);circ(nx+10,CY-14,10*tel,C.nucleolus);ctx.globalAlpha=1})}
+  // spindle
+  const spA=sm(seg(t,1.6,3.6))*(1-sm(seg(t,9.5,10.8)));
+  if(spA>0){ctx.globalAlpha=spA;[PL,PR].forEach((p,si)=>{for(let k=0;k<9;k++){const a=k/9*TAU;line(p[0],p[1],p[0]+Math.cos(a)*24,p[1]+Math.sin(a)*24,C.spindle,1.4)}
+      // polar fibers
+      for(let k=-2;k<=2;k++)line(p[0],p[1],CX+(si?-40:40),CY+k*34,C.spindle,1.2,[3,3])});ctx.globalAlpha=1}
+  // centrosomes
+  [PL,PR].forEach(p=>{ctx.fillStyle=C.mt;ctx.strokeStyle=C.ink;ctx.lineWidth=1;rr(p[0]-8,p[1]-3,16,6,2);ctx.fill();ctx.stroke();rr(p[0]-3,p[1]-1,6,14,2);ctx.fill();ctx.stroke()});
+  // chromosomes
+  const attach=sm(seg(t,4.2,5.2));
+  CHR.forEach((ch,k)=>{const col=C[ch.col];
+    const mp=[CX,128+k*58];
+    let cen=[lerp(ch.ip[0],mp[0],meta),lerp(ch.ip[1],mp[1],meta)];
+    if(t<1.2)cen=[ch.ip[0]+Math.sin(T*.4+k)*3,ch.ip[1]];
+    [0,1].forEach(s=>{const sd=s?1:-1;const pole=s?PR:PL;
+      const target=[sd<0?262:538,CY+(k-1.5)*30];
+      let x=cen[0]+sd*6,y=cen[1];
+      if(ana>0){x=lerp(cen[0]+sd*6,target[0],ana);y=lerp(cen[1],target[1],ana)}
+      const trail=ana>0&&tel<1?.85*Math.sin(Math.min(1,ana*1.3)*Math.PI/2)*(1-tel*.6):0;
+      chromatid(x,y,ch.L,cond,trail,-sd,col,k*3+s,T);
+      if(attach>0&&spA>0){ctx.globalAlpha=attach*spA;line(pole[0],pole[1],x,y,C.spindle,1.8);ctx.globalAlpha=1;circ(x,y,3,C.ink)}
+    });
+  });
+  // metaphase plate
+  if(t>5&&t<7.2){ctx.globalAlpha=sm(seg(t,5,5.4))*(1-sm(seg(t,6.8,7.2)));line(CX,40,CX,460,C.act5,2,[6,6]);label(CX,34,"Metaphase plate",{align:"center",size:12,weight:700,border:C.act5});ctx.globalAlpha=1}
+  // phase strip
+  const STR=["Interphase","Prophase","Prometaphase","Metaphase","Anaphase","Telophase","Cytokinesis"];
+  STR.forEach((s,i)=>{const x=6+i*113,y=474,on=cur.includes(s);ctx.fillStyle=on?C.act5:C["panel-2"];rr(x,y,108,38,8);ctx.fill();ctx.strokeStyle=on?C.act5:C.rule;ctx.lineWidth=1.5;ctx.stroke();
+    txt(x+54,y+19,s,{align:"center",size:12,weight:on?700:500,color:on?"#fff":C.ink})});
+  const MSG={Interphase:"Interphase (G2): DNA already copied, still loose chromatin",Prophase:"Prophase: chromatin condenses, spindle forms",Prometaphase:"Prometaphase: envelope breaks up, fibers grab kinetochores",
+    Metaphase:"Metaphase: chromosomes line up in the middle",Anaphase:"Anaphase: sister chromatids pulled apart",Telophase:"Telophase: two new nuclei form",Cytokinesis:"Cytokinesis: the cytoplasm pinches in two"};
+  label(12,22,MSG[cur[cur.length-1]]||"",{size:13,weight:700,border:C.act5});
+}
+
+/* checkpoints */
+function bolt(x,y,k){ctx.beginPath();ctx.moveTo(x+2*k,y-9*k);ctx.lineTo(x-4*k,y+1*k);ctx.lineTo(x,y+1*k);ctx.lineTo(x-2*k,y+9*k);ctx.lineTo(x+5*k,y-2*k);ctx.lineTo(x+1*k,y-2*k);ctx.closePath();ctx.fillStyle=C.bad;ctx.fill()}
+function sceneCheckp(T){
+  bg(C.panel);
+  const per=14,t=T%per;
+  // left wheel with gates and token
+  const WX=210,WY=275,R=140;
+  // token position: travel 0..1 over the cycle with a pause at G1 gate
+  const G1p=.38,G2p=.85,Mp=.93;
+  let pos,stop=false;
+  if(t<3)pos=lerp(0,G1p,t/3);else if(t<6.5){pos=G1p;stop=true}else pos=lerp(G1p,1,(t-6.5)/6);
+  if(t>12.5)pos=1;
+  wheel(WX,WY,R,pos%1,{lw:26});
+  const gate=(p,name,closed)=>{const a=-Math.PI/2+p*TAU;const x1=WX+Math.cos(a)*(R-22),y1=WY+Math.sin(a)*(R-22),x2=WX+Math.cos(a)*(R+22),y2=WY+Math.sin(a)*(R+22);
+    line(x1,y1,x2,y2,closed?C.bad:C.good,6);const lx=WX+Math.cos(a)*(R+52),ly=WY+Math.sin(a)*(R+44);label(lx,ly,name+(closed?" ✕ STOP":" ✓"),{align:"center",size:11.5,weight:700,color:closed?C.bad:C.good,border:closed?C.bad:C.good})};
+  gate(G1p,"G1 checkpoint",stop&&t<5.6);gate(G2p,"G2 checkpoint",false);gate(Mp,"M checkpoint",false);
+  const a=-Math.PI/2+pos*TAU;const tx=WX+Math.cos(a)*R,ty=WY+Math.sin(a)*R;
+  circ(tx,ty,15,C.cyto,C["lipid-edge"],2.5);circ(tx,ty,6,C.nuc,C["nuc-edge"],1.5);
+  if(stop&&t<5.6){bolt(tx+20,ty-22,1.2);label(WX,WY+18,t<4.2?"DNA damage found: pause":"Repairing DNA…",{align:"center",size:12,weight:700,color:C.bad})}
+  else if(stop)label(WX,WY+18,"Repaired: continue",{align:"center",size:12,weight:700,color:C.good});
+  txt(WX,22,"NORMAL CELL",{align:"center",size:13,weight:700,mono:true,color:C.good});
+  txt(WX,42,"checkpoints work like brakes",{align:"center",size:12,color:C["ink-soft"]});
+  line(420,0,420,H,C.rule,1.5);
+  // right: cancer
+  txt(610,22,"CANCER CELL",{align:"center",size:13,weight:700,mono:true,color:C.tumor});
+  txt(610,42,"checkpoints ignored: divides again and again",{align:"center",size:12,color:C["ink-soft"]});
+  const gen=Math.min(5,Math.floor(t/2.2));const g=t/2.2-Math.floor(t/2.2);
+  const n=Math.pow(2,gen);
+  // positions on a packed spiral
+  const pts=[];for(let i=0;i<32;i++){const r=Math.sqrt(i)*24,a=i*2.4;pts.push([610+Math.cos(a)*r,280+Math.sin(a)*r*.85])}
+  for(let i=0;i<n;i++){const p=pts[i];const parent=pts[Math.floor(i/2)];const isNew=i>=n/2&&gen>0;const q=isNew?sm(Math.min(1,g*2)):1;
+    const x=lerp(parent[0],p[0],q),y=lerp(parent[1],p[1],q);circ(x,y,13,C.tumor,"rgba(0,0,0,.3)",1.5);circ(x+2,y-1,5,C.nuc);bolt(x+8,y-8,.6)}
+  label(610,452,`${n} cell${n>1?"s":""}: a growing tumor`,{align:"center",size:13,weight:700,border:C.tumor});
+  ctx.font=`500 12px ${FONT}`;ctx.fillStyle=C["ink-soft"];ctx.textAlign="center";
+  txt(610,486,"Oncogene = gas pedal stuck",{align:"center",size:11.5,color:C["ink-soft"]});txt(610,504,"Broken tumor suppressor (p53) = no brakes",{align:"center",size:11.5,color:C["ink-soft"]});
+}
+
+/* stem cells */
+function sceneStem(T){
+  bg(C.panel);
+  const per=16,t=T%per;
+  // potency ladder
+  const LAD=[["Totipotent","zygote: any cell + placenta"],["Pluripotent","early embryo: any body cell"],["Multipotent","adult, e.g., bone marrow"],["Specialized","one job"]];
+  const lv=Math.min(3,Math.floor((T%8)/2));
+  LAD.forEach((l,i)=>{const y=40+i*92;const on=i===lv;ctx.fillStyle=on?C["accent-wash"]:C["panel-2"];rr(12,y,170,64,8);ctx.fill();ctx.strokeStyle=on?C.accent:C.rule;ctx.lineWidth=on?2.5:1;ctx.stroke();
+    txt(24,y+22,l[0],{size:13,weight:700,color:on?C.accent:C.ink});txt(24,y+44,l[1],{size:11,color:C["ink-soft"]});if(i<3)arrow(97,y+66,97,y+90,C["ink-faint"],2)});
+  txt(97,420,"fewer options ↓",{align:"center",size:11.5,color:C["ink-soft"]});
+  // stem cell
+  const SX=330,SY=230;
+  const TG=[["Red blood cell",[690,58],"hemoglobin",1],["Neuron",[690,158],"ion channels",2],["Skeletal muscle",[690,258],"myosin",3],["Skin cell",[690,350],"keratin",4]];
+  const k=Math.floor(t/4),q=(t%4)/4;const tg=TG[k];
+  const pulse=1+Math.sin(T*3)*.03;
+  circ(SX,SY,46*pulse,C["accent-wash"],C.accent,3);circ(SX,SY,20,C.nuc,C["nuc-edge"],2);
+  label(SX,SY+66,"Stem cell",{align:"center",size:12.5,weight:700,border:C.accent});
+  // self renew arrow
+  ctx.beginPath();ctx.arc(SX-58,SY-40,22,.3,TAU-1.2);ctx.strokeStyle=C.accent;ctx.lineWidth=2;ctx.stroke();txt(SX-110,SY-82,"self-renewal",{size:11.5,color:C.accent,weight:600});
+  // division then travel
+  const dq=sm(seg(q,0,.25)),tq=sm(seg(q,.25,.85));
+  const start=[SX+40,SY];const p=along([start,[SX+120,SY+(tg[1][1]-SY)*.3],[tg[1][0]-60,tg[1][1]]],tq);
+  const x=lerp(SX,p[0],dq>0?1:0)*1;const cx=dq<1?lerp(SX,SX+40,dq):p[0],cy=dq<1?SY:p[1];
+  // morph: draw blend of round cell and target
+  const m=tq;
+  drawTarget(TG.indexOf(tg),cx,cy,m,T);
+  TG.forEach((g,i)=>{if(i<k||(i===k&&q>.86)){drawTarget(i,g[1][0],g[1][1],1,T)}});
+  TG.forEach((g,i)=>{label(g[1][0]+0,g[1][1]+(i===0?44:42),g[0],{align:"center",size:11.5,weight:600,border:i===k?C.act5:C.rule})});
+  // gene panel
+  const GY=440;txt(220,GY-14,"SAME DNA IN EVERY CELL. GENES SWITCHED ON:",{size:11,weight:600,mono:true,color:C["ink-soft"]});
+  const GENES=["ATP-making","hemoglobin","ion channels","myosin","keratin"];
+  GENES.forEach((gn,i)=>{const x=220+i*114;const on=i===0||(i===tg[3]&&m>.3);ctx.fillStyle=on?C["good-wash"]:C["panel-2"];rr(x,GY,108,40,6);ctx.fill();ctx.strokeStyle=on?C.good:C.rule;ctx.lineWidth=on?2.5:1;ctx.stroke();
+    txt(x+54,GY+13,gn,{align:"center",size:11.5,weight:600});txt(x+54,GY+29,on?"ON":"off",{align:"center",size:11,weight:700,mono:true,color:on?C.good:C["ink-faint"]})});
+}
+function drawTarget(i,x,y,m,T){
+  // m: 0 = round stem-like cell, 1 = full specialist
+  if(m<1){ctx.globalAlpha=1-m;circ(x,y,30,C["accent-wash"],C.accent,2.5);circ(x,y,13,C.nuc,C["nuc-edge"],1.5);ctx.globalAlpha=1}
+  ctx.globalAlpha=m;
+  if(i===0){rbcShape(x,y,30,0,0,m)}
+  else if(i===1){ctx.strokeStyle=C["nuc-edge"];ctx.lineWidth=3;for(let k=0;k<6;k++){const a=k/6*TAU+.5;line(x,y,x+Math.cos(a)*34,y+Math.sin(a)*30,C["nuc-edge"],3);line(x+Math.cos(a)*34,y+Math.sin(a)*30,x+Math.cos(a+.4)*44,y+Math.sin(a+.4)*38,C["nuc-edge"],2)}
+    line(x,y,x+70,y+4,C["nuc-edge"],4);circ(x,y,16,C.nuc,C["nuc-edge"],2);circ(x,y,6,C.nucleolus)}
+  else if(i===2){ctx.fillStyle=C.er;rr(x-60,y-16,120,32,14);ctx.fill();ctx.strokeStyle=C["er-edge"];ctx.lineWidth=2;ctx.stroke();for(let s=-52;s<=52;s+=8)line(x+s,y-14,x+s,y+14,C["er-edge"],1.2);[-30,10,40].forEach(d=>ell(x+d,y+11,6,3,0,C.nuc,C["nuc-edge"],1))}
+  else{ctx.fillStyle=C.perox;ctx.beginPath();for(let k=0;k<6;k++){const a=k/6*TAU;const px=x+Math.cos(a)*30,py=y+Math.sin(a)*24;k?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fill();ctx.strokeStyle=C["perox-edge"];ctx.lineWidth=2;ctx.stroke();circ(x,y,9,C.nuc,C["nuc-edge"],1.5)}
+  ctx.globalAlpha=1}
+
+/* ---------------- loop ---------------- */
+const SCENES={map:sceneMap,recap:sceneRecap,mosaic:sceneMosaic,diff:sceneDiff,facil:sceneFacil,osmo:sceneOsmo,tonic:sceneTonic,
+  pump:scenePump,symport:sceneSymport,endo:sceneEndo,exo:sceneExo,nucleus:sceneNucleus,er:sceneER,golgi:sceneGolgi,mito:sceneMito,cyto:sceneCyto,factory:sceneFactory,
+  rep:sceneRep,tx:sceneTx,tl:sceneTl,cycle:sceneCycle,mitosis:sceneMitosis,checkp:sceneCheckp,stem:sceneStem};
+let T=0,last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);
+  const s=STEPS[cur];
+  try{ctx.save();SCENES[s.scene](T,s);ctx.restore();ctx.globalAlpha=1;ctx.setLineDash([])}catch(e){console.error(e)}
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+window.__n=()=>STEPS.length;
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+if(document.fonts)document.fonts.ready.then(()=>{});
+})();
+</script>
+</body>
+</html>

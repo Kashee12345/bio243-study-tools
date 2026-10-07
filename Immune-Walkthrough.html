@@ -1,0 +1,1682 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Immune Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;--act6:#4F6F94;
+  /* immune palette */
+  --ecf:#EEF3F1;--tissue:#F6EFE6;--tcell-bg:#F1E7DA;
+  --lymph:#D7EBC4;--lv:#4E9A4A;--lv-edge:#2F6B2C;--water:#3E8FD1;
+  --blood:#C2392F;--blood-edge:#82231C;--vessel:#F2D6CF;--vein:#5E5BA8;--rbc:#C2392F;--rbc-hi:#E8877C;
+  --body:#EADBC8;--body-edge:#B39773;--bone:#EADFC8;--marrow:#E6AFA0;
+  --node:#EADCF0;--node-edge:#8E6AA3;--follicle:#CFE6E1;--germ:#F3F7E6;
+  --bact:#3E8E41;--virus:#B03A8C;
+  --cyto:#EEE6F3;--cell-edge:#9A86B3;--nuc:#5B3F9C;--host:#F3DCCB;--host-edge:#B5866A;
+  --macro:#E6D3B3;--macro-edge:#A5854F;--neut:#EEE6F3;
+  --nk:#F0C9A0;--th:#2F7FC1;--tc:#C4644F;--bcell:#2E8A7A;--plasma:#BFE3DA;--mem:#B8901C;--apc:#D98A1C;
+  --mast:#ECCFE0;--hist:#2F6FD0;--comp:#C9A227;--ifn:#1E9C7A;--pyro:#E06A2F;
+  --ab:#7B5CC9;--abH:#5B3F9C;--abL:#A88BE6;--var:#D98A1C;--fc:#5B3F9C;
+  --mhc1:#A04E8C;--mhc2:#5E7A2A;--ag:#E06A2F;--perf:#A9372F;--gzm:#D98A1C;
+  --fat:#E2B93B;--skin:#EAC9A8;--kera:#F3E3C8;--mucus:#D9E8C4;--cilia:#6F7F88;--lyso:#E07A5F;
+  --igm:#2F6FD0;--igg:#C4644F;--iga:#2E8A7A;--ige:#D98A1C;--igd:#7B5CC9;
+  --heat:#E0563A;--hiv:#A9372F;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#8FB1D9;
+  --ecf:#131C1B;--tissue:#211D1A;--tcell-bg:#2A231C;
+  --lymph:#2B4524;--lv:#7CCB74;--lv-edge:#A8E0A0;--water:#6FB4EC;
+  --blood:#D24C42;--blood-edge:#F08A80;--vessel:#3A2725;--vein:#9C99E6;--rbc:#D24C42;--rbc-hi:#EE9A90;
+  --body:#3A3226;--body-edge:#8F7C5E;--bone:#4A4234;--marrow:#6E3B33;
+  --node:#33283B;--node-edge:#B898CF;--follicle:#1F3A35;--germ:#2C3424;
+  --bact:#6BC26E;--virus:#E07AC4;
+  --cyto:#3B3346;--cell-edge:#A592C2;--nuc:#B49BF0;--host:#3E2E25;--host-edge:#C9997A;
+  --macro:#4A4030;--macro-edge:#C9A66E;--neut:#3B3346;
+  --nk:#5A4030;--th:#5AA9E6;--tc:#E08A74;--bcell:#5CC4B0;--plasma:#22433C;--mem:#E0BE48;--apc:#F2A93B;
+  --mast:#46303C;--hist:#6FA3F0;--comp:#E0BE48;--ifn:#4FD0A8;--pyro:#F28A50;
+  --ab:#A98BEF;--abH:#B49BF0;--abL:#6E58A8;--var:#F2A93B;--fc:#B49BF0;
+  --mhc1:#D186C0;--mhc2:#A3C95A;--ag:#F28A50;--perf:#E07067;--gzm:#F2A93B;
+  --fat:#E8C24A;--skin:#5A4434;--kera:#4A3E2E;--mucus:#34452A;--cilia:#A3B2BA;--lyso:#F09A80;
+  --igm:#6FA3F0;--igg:#E08A74;--iga:#5CC4B0;--ige:#F2A93B;--igd:#A98BEF;
+  --heat:#F27A5E;--hiv:#E07067;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#8FB1D9;
+  --ecf:#131C1B;--tissue:#211D1A;--tcell-bg:#2A231C;
+  --lymph:#2B4524;--lv:#7CCB74;--lv-edge:#A8E0A0;--water:#6FB4EC;
+  --blood:#D24C42;--blood-edge:#F08A80;--vessel:#3A2725;--vein:#9C99E6;--rbc:#D24C42;--rbc-hi:#EE9A90;
+  --body:#3A3226;--body-edge:#8F7C5E;--bone:#4A4234;--marrow:#6E3B33;
+  --node:#33283B;--node-edge:#B898CF;--follicle:#1F3A35;--germ:#2C3424;
+  --bact:#6BC26E;--virus:#E07AC4;
+  --cyto:#3B3346;--cell-edge:#A592C2;--nuc:#B49BF0;--host:#3E2E25;--host-edge:#C9997A;
+  --macro:#4A4030;--macro-edge:#C9A66E;--neut:#3B3346;
+  --nk:#5A4030;--th:#5AA9E6;--tc:#E08A74;--bcell:#5CC4B0;--plasma:#22433C;--mem:#E0BE48;--apc:#F2A93B;
+  --mast:#46303C;--hist:#6FA3F0;--comp:#E0BE48;--ifn:#4FD0A8;--pyro:#F28A50;
+  --ab:#A98BEF;--abH:#B49BF0;--abL:#6E58A8;--var:#F2A93B;--fc:#B49BF0;
+  --mhc1:#D186C0;--mhc2:#A3C95A;--ag:#F28A50;--perf:#E07067;--gzm:#F2A93B;
+  --fat:#E8C24A;--skin:#5A4434;--kera:#4A3E2E;--mucus:#34452A;--cilia:#A3B2BA;--lyso:#F09A80;
+  --igm:#6FA3F0;--igg:#E08A74;--iga:#5CC4B0;--ige:#F2A93B;--igd:#A98BEF;
+  --heat:#F27A5E;--hiv:#E07067;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 150px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:14px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.legend i.y{width:12px;height:12px;border:0;border-radius:0;background:none!important;position:relative}
+.legend i.y::before{content:"Y";position:absolute;left:0;top:-4px;font:700 14px var(--sans);color:var(--yc)}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Lymphatic and Immune System &middot; USC Upstate</div>
+    <h1>Immune Walkthrough</h1>
+    <p class="sub">How lymph moves, where immune cells live, and how your body fights germs fast (innate) and smart (adaptive). Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 21, The Lymphatic and Immune System (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Practice next in the <a href="Immune-Lab.html">Immune Lab</a>.<br>Diagrams are simplified and not to scale. Cells, proteins and viruses are drawn far larger than life and as cartoons, and processes that take hours to weeks are sped up so you can watch them. Antibody titer graphs show the general shape of a response, not real lab values.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · Lymphatic system",col:"act1"},
+            2:{name:"Part 2 · Lymphoid organs",col:"act2"},
+            3:{name:"Part 3 · Innate defenses",col:"act3"},
+            4:{name:"Part 4 · Adaptive: T cells",col:"act4"},
+            5:{name:"Part 5 · Adaptive: antibodies",col:"act5"},
+            6:{name:"Part 6 · Memory & disorders",col:"act6"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: drains, guards and specialists",
+ body:`<p>This chapter is really two systems that work as one team.</p>
+ <ol><li>The <b>lymphatic system</b> is a one-way drain. It collects extra fluid from the tissues and returns it to the blood. Along the way, the fluid passes through <b>lymph nodes</b>, where immune cells inspect it.</li>
+ <li>The <b>immune system</b> defends you in two waves:
+ <ul><li><b>Innate immunity</b>: fast (minutes to hours) and <b>nonspecific</b>. It treats every invader the same way. Skin, phagocytes, inflammation, fever, complement.</li>
+ <li><b>Adaptive immunity</b>: slower the first time (days) but <b>specific</b>. T cells and B cells target one exact invader, and they <b>remember</b> it.</li></ul></li></ol>
+ <p>Watch the body on the left: lymph flows up toward the neck and passes the nodes. The three cards light up in the order the defenses kick in.</p>`,
+ analogy:"A city with storm drains, a police patrol and a detective squad. The drains (lymphatics) carry runoff back to the river. The patrol (innate) answers every call fast. The detectives (adaptive) take time to identify the culprit, but once they have a file on it, they never forget.",
+ terms:[["Lymphatic system","Vessels, lymph and lymphoid organs that return tissue fluid to the blood and house immune cells."],["Innate immunity","Defenses you are born with. Fast and nonspecific."],["Adaptive immunity","Defenses that target one specific invader and form memory. Slower the first time."],["Pathogen","A germ that can cause disease, such as a bacterium or virus."]],
+ check:{q:"Which feature belongs ONLY to adaptive immunity?",opts:[
+  ["Memory: a faster, stronger response the next time",1,"Yes. Memory T and B cells are the trademark of adaptive immunity. It is the reason vaccines work."],
+  ["Acting within minutes of an injury",0,"Speed is the strength of innate immunity. Adaptive immunity takes days the first time."],
+  ["Phagocytes eating bacteria",0,"Phagocytosis is an innate defense. Neutrophils and macrophages eat anything that looks foreign."],
+  ["Skin blocking germs",0,"The skin is an innate barrier. It blocks every germ the same way."]]},
+ caption:"Lymph flows from the limbs toward the neck, passing lymph nodes on the way. Innate defenses act first; adaptive defenses follow and remember.",
+ legend:[["lv","Lymph vessels and flow"],["node-edge","Lymph node"],["blood","Blood (veins at the neck)"]]},
+
+/* ---------- Part 1 ---------- */
+{act:1,scene:"jobs",id:"jobs",title:"Three jobs of the lymphatic system",
+ body:`<p>The lymphatic system has three main jobs. Watch each panel.</p>
+ <ol><li><b>Return extra tissue fluid to the blood.</b> Blood capillaries leak more fluid into the tissues than they take back. Lymphatic vessels pick up the extra and return it. Without them, tissues would swell and blood volume would drop.</li>
+ <li><b>Absorb dietary fats.</b> In the small intestine, each finger-like villus has a tiny lymphatic capillary called a <b>lacteal</b>. Fats are packed into <b>chylomicrons</b>, which are too big to enter blood capillaries, so they enter the lacteal. Fat-rich lymph is milky and is called <b>chyle</b>.</li>
+ <li><b>Immune surveillance.</b> Lymph flows through <b>lymph nodes</b>, where macrophages and lymphocytes catch germs before the fluid returns to the blood.</li></ol>`,
+ analogy:"A storm drain system that also has a recycling truck for fats and security checkpoints (lymph nodes) along the pipes.",
+ terms:[["Lymph","The fluid inside lymphatic vessels. It starts as interstitial fluid."],["Lacteal","A lymphatic capillary inside an intestinal villus. It absorbs fats."],["Chylomicron","A tiny packet of fat and protein made by intestinal cells."],["Chyle","Milky, fat-rich lymph from the intestines."]],
+ check:{q:"Why do dietary fats enter lacteals instead of blood capillaries?",opts:[
+  ["Chylomicrons are too large to pass into blood capillaries.",1,"Right. The leaky, flap-like walls of lymphatic capillaries let large particles in."],
+  ["Lacteals pump fat in using ATP.",0,"There is no fat pump. Chylomicrons simply fit through the loose lymphatic wall but not through the tighter blood capillary wall."],
+  ["Blood capillaries are not found in villi.",0,"Villi do have blood capillaries. Sugars and amino acids enter them. Fats take the lymph route."],
+  ["Fats must be digested by lymphocytes first.",0,"Lymphocytes are immune cells. They do not digest fat."]]},
+ caption:"Panel 1: extra fluid enters lymph vessels. Panel 2: chylomicrons enter the lacteal. Panel 3: a lymph node catches a bacterium.",
+ legend:[["water","Tissue fluid"],["lv","Lymph"],["fat","Chylomicron (fat)"],["bact","Bacterium","r"]]},
+
+{act:1,scene:"lcap",id:"lcap",title:"Lymph forms: flaps that open one way",
+ body:`<p>Fluid filters out of <b>blood capillaries</b> into the spaces between cells. There it is called <b>interstitial fluid</b>. Most of it goes back into the blood capillary, but some is left over.</p>
+ <p><b>Lymphatic capillaries</b> pick up this extra. They have a closed (blind) end, and their walls are made of <b>overlapping endothelial cells</b>. The overlapping edges work like <b>one-way flaps</b> (minivalves). When fluid pressure outside is higher, the flaps swing inward and fluid flows in. When pressure inside rises, the flaps are pushed shut, so lymph cannot leak back out.</p>
+ <p><b>Anchoring filaments</b> tie the cells to the tissue, so the capillary stays open even when the tissue swells. Once fluid is inside, it is called <b>lymph</b>.</p>`,
+ analogy:"A cat flap that only swings inward. Fluid, proteins and even germs can push in, but nothing pushes back out.",
+ terms:[["Interstitial fluid","Fluid in the spaces between cells."],["Lymphatic capillary","The smallest, blind-ended lymph vessel with overlapping flap-like cells."],["Minivalve","The overlapping edge of two endothelial cells. It opens only inward."],["Anchoring filaments","Fibers that hold lymphatic capillaries open in swollen tissue."]],
+ check:{q:"What keeps lymph from leaking back out of a lymphatic capillary?",opts:[
+  ["Overlapping endothelial flaps are pushed shut when pressure inside rises.",1,"Yes. The flaps only open inward, like a one-way door."],
+  ["The capillary has a thick muscle wall.",0,"Lymphatic capillaries are very thin, a single layer of endothelial cells. The flaps do the job."],
+  ["Lymph is too thick to flow backward.",0,"Lymph is mostly water. The overlapping flaps are what stop backflow."],
+  ["The anchoring filaments squeeze it shut.",0,"Anchoring filaments do the opposite. They pull the capillary open."]]},
+ caption:"Fluid leaves the blood capillary. Leftover interstitial fluid pushes the overlapping flaps inward and becomes lymph. The flaps close behind it.",
+ legend:[["water","Interstitial fluid"],["lv","Lymph"],["blood","Blood capillary"],["lv-edge","Endothelial flap","l"]]},
+
+{act:1,scene:"ducts",id:"ducts",title:"Vessels, trunks and two ducts back to the blood",
+ body:`<p>Lymphatic capillaries join to form <b>collecting vessels</b>. These look like veins and have <b>valves</b> that keep lymph moving one way, toward the heart. There is no pump. Lymph is pushed along by <b>skeletal muscles</b> squeezing the vessels, <b>breathing</b> pressure changes, and smooth muscle in the vessel walls.</p>
+ <p>Collecting vessels pass through lymph nodes and then merge into large <b>lymphatic trunks</b>. The trunks drain into just two ducts:</p>
+ <ul><li>The <b>right lymphatic duct</b> drains the <b>upper right</b> part of the body: right arm, right side of the head and chest. It empties into the <b>right subclavian vein</b>.</li>
+ <li>The <b>thoracic duct</b> drains <b>everything else</b>: both legs, the abdomen, the left arm and left side of the head and chest. It starts at a sac called the <b>cisterna chyli</b> and empties into the <b>left subclavian vein</b>.</li></ul>`,
+ analogy:"Garden hoses with check valves. Squeeze the hose anywhere and the water can only go one way.",
+ terms:[["Collecting vessel","A larger lymph vessel with valves."],["Lymphatic trunk","A large vessel formed by many collecting vessels."],["Thoracic duct","The largest lymph vessel. Drains most of the body into the left subclavian vein."],["Right lymphatic duct","Drains the upper right body into the right subclavian vein."]],
+ check:{q:"Lymph from the LEFT foot reaches the blood through which route?",opts:[
+  ["Thoracic duct into the left subclavian vein",1,"Right. Everything below the diaphragm drains to the thoracic duct, which empties at the left subclavian vein."],
+  ["Right lymphatic duct into the right subclavian vein",0,"The right lymphatic duct only drains the upper right quarter of the body."],
+  ["Directly into the femoral vein in the leg",0,"Lymph does not rejoin blood in the leg. It travels all the way up to the veins at the base of the neck."],
+  ["Into the heart's left ventricle",0,"Lymph returns to large veins, never to an arterial chamber like the left ventricle."]]},
+ caption:"Shaded: the upper right region drains to the right lymphatic duct. Everything else drains to the thoracic duct. Inset: a squeezing muscle pushes lymph past one-way valves.",
+ legend:[["lv","Lymph flow"],["mhc2","Right lymphatic duct region","s"],["vein","Subclavian veins"],["body-edge","Skeletal muscle (inset)","s"]]},
+
+/* ---------- Part 2 ---------- */
+{act:2,scene:"primary",id:"primary",title:"Where lymphocytes are born and trained",
+ body:`<p>All blood cells, including <b>lymphocytes</b>, are made from stem cells in <b>red bone marrow</b>. Then they need training:</p>
+ <ul><li><b>B cells</b> mature right in the <b>bone marrow</b> (B for bone marrow is an easy way to remember it).</li>
+ <li><b>T cells</b> travel in the blood to the <b>thymus</b>, a gland in the chest above the heart, and mature there (T for thymus). In the thymus, young T cells are tested. Cells that cannot recognize anything, or that would attack your own body, die. <b>Most</b> fail and die. The survivors leave as CD4 or CD8 T cells.</li></ul>
+ <p>Bone marrow and thymus are the <b>primary lymphoid organs</b>. Mature cells then move to the <b>secondary lymphoid organs</b> (lymph nodes, spleen, MALT), where they wait to meet invaders. The thymus is largest in childhood and shrinks with age.</p>`,
+ analogy:"Bone marrow is the hospital nursery and B-cell school. The thymus is a strict police academy where most recruits do not graduate.",
+ terms:[["Primary lymphoid organs","Red bone marrow and thymus, where lymphocytes are made and mature."],["Secondary lymphoid organs","Lymph nodes, spleen and MALT, where mature lymphocytes meet invaders."],["Thymus","Gland above the heart where T cells mature."],["Self-tolerance","Not attacking your own body. Tested in the thymus."]],
+ check:{q:"Where do T cells mature?",opts:[
+  ["In the thymus",1,"Yes. They are made in the bone marrow but trained in the thymus."],
+  ["In the red bone marrow",0,"That is where T cells are born and where B cells mature. T cells must travel to the thymus to finish."],
+  ["In the lymph nodes",0,"Lymph nodes are where mature T cells wait for invaders. Training happens earlier, in the thymus."],
+  ["In the spleen",0,"The spleen is a secondary lymphoid organ. It holds mature lymphocytes."]]},
+ caption:"Stem cells in red marrow make lymphocytes. B cells mature in the marrow. Young T cells ride the blood to the thymus; most fail the test, survivors leave as CD4 or CD8 T cells.",
+ legend:[["marrow","Red bone marrow","s"],["bcell","B cell"],["th","T cell"],["bad","Failed T cell (dies)"]]},
+
+{act:2,scene:"node",id:"node",title:"Lymph nodes: filters full of guards",
+ body:`<p><b>Lymph nodes</b> are bean-shaped filters, a few millimeters to about 2 cm long, clustered in the neck, armpits and groin. Lymph enters through several <b>afferent vessels</b> on the rounded side and leaves through <b>efferent vessels</b> at the dent, called the <b>hilum</b>. (Afferent = arriving, efferent = exiting.)</p>
+ <p>Inside, lymph trickles slowly through channels called <b>sinuses</b>. <b>Macrophages</b> lining the sinuses eat germs and debris.</p>
+ <ul><li>The outer <b>cortex</b> holds <b>follicles</b> packed with <b>B cells</b>. Active follicles have a pale <b>germinal center</b> where B cells multiply.</li>
+ <li>The deeper cortex (paracortex) holds mostly <b>T cells</b>.</li>
+ <li>The inner <b>medulla</b> has macrophages and antibody-making plasma cells.</li></ul>
+ <p>Swollen, tender nodes during an infection mean the lymphocytes inside are multiplying.</p>`,
+ analogy:"An airport security checkpoint. Every passenger (lymph) walks through, and guards (macrophages and lymphocytes) pull aside anything suspicious.",
+ terms:[["Afferent vessel","Carries lymph INTO a lymph node."],["Efferent vessel","Carries lymph OUT of a node at the hilum."],["Follicle","A cluster of B cells in the outer cortex."],["Germinal center","The pale middle of a follicle where B cells divide."]],
+ check:{q:"In a lymph node, where are B cells mainly found?",opts:[
+  ["In follicles in the outer cortex",1,"Right. Follicles are B-cell zones. T cells sit deeper, in the paracortex."],
+  ["In the efferent vessels",0,"Efferent vessels carry lymph out. B cells live in the follicles."],
+  ["In the deeper cortex (paracortex)",0,"That is the T-cell zone."],
+  ["In the capsule",0,"The capsule is the dense connective tissue covering. It does not hold the lymphocytes."]]},
+ caption:"Lymph enters through afferent vessels, trickles through sinuses past macrophages, and leaves at the hilum. B cells sit in follicles; T cells sit deeper.",
+ legend:[["lv","Lymph"],["bcell","B cell (follicle)"],["th","T cell (paracortex)"],["macro-edge","Macrophage"],["bact","Bacterium","r"]]},
+
+{act:2,scene:"spleen",id:"spleen",title:"The spleen, tonsils and MALT",
+ body:`<p>The <b>spleen</b> sits in the upper left abdomen. It filters <b>blood</b>, not lymph.</p>
+ <ul><li><b>Red pulp</b>: macrophages remove old and damaged red blood cells and germs from the blood.</li>
+ <li><b>White pulp</b>: clusters of lymphocytes around small arteries. They launch immune responses to germs carried in the blood.</li></ul>
+ <p><b>MALT</b> (mucosa-associated lymphoid tissue) guards the openings of the body. The <b>tonsils</b> ring the throat. Their deep pockets (<b>crypts</b>) trap germs we breathe or swallow so lymphocytes can sample them. <b>Peyer's patches</b> in the small intestine and the <b>appendix</b> do the same job in the gut.</p>`,
+ analogy:"The spleen is a filter on the blood's main water line. MALT is a set of guard posts at every door into the body.",
+ terms:[["Spleen","Largest lymphoid organ. Filters blood."],["Red pulp","Spleen tissue where macrophages remove old red blood cells."],["White pulp","Spleen tissue packed with lymphocytes."],["MALT","Lymphoid tissue in mucous membranes: tonsils, Peyer's patches, appendix."]],
+ check:{q:"What is the main job of the spleen's red pulp?",opts:[
+  ["Removing old red blood cells and germs from the blood",1,"Yes. Macrophages in the red pulp recycle worn-out red blood cells."],
+  ["Filtering lymph from the legs",0,"The spleen filters blood, not lymph. Lymph nodes filter lymph."],
+  ["Training T cells",0,"T cells are trained in the thymus."],
+  ["Absorbing dietary fats",0,"That is the job of lacteals in the small intestine."]]},
+ caption:"Spleen: macrophages in the red pulp eat worn-out red blood cells; lymphocytes in the white pulp watch the blood. Tonsil crypts and Peyer's patches trap germs at the body's openings.",
+ legend:[["rbc","Red blood cell"],["macro-edge","Macrophage"],["bcell","Lymphocyte"],["bact","Bacterium","r"]]},
+
+/* ---------- Part 3 ---------- */
+{act:3,scene:"barrier",id:"barrier",title:"Barrier defenses: keep germs out",
+ body:`<p>The first line of innate defense is simply to keep germs out.</p>
+ <ul><li><b>Skin</b>: many layers of dead, <b>keratin</b>-filled cells. It is dry, slightly acidic, and constantly sheds its top cells, carrying germs away.</li>
+ <li><b>Mucous membranes</b> line the airways and gut. Sticky <b>mucus</b> traps germs, and in the airways, <b>cilia</b> sweep the mucus up to the throat to be swallowed or coughed out.</li>
+ <li><b>Secretions</b>: tears and saliva contain <b>lysozyme</b>, an enzyme that breaks down bacterial cell walls. <b>Stomach acid</b> kills most swallowed germs.</li></ul>
+ <p>A cut, a burn or a breathing tube breaks these barriers. That is why open wounds and IV lines are infection risks.</p>`,
+ analogy:"The walls, moat and sprinklers of a castle. Most attackers never get inside.",
+ terms:[["Keratin","Tough protein that fills skin cells and makes them waterproof."],["Mucus","Sticky secretion that traps particles and germs."],["Cilia","Tiny hairs on airway cells that sweep mucus upward."],["Lysozyme","Enzyme in tears and saliva that breaks down bacterial cell walls."]],
+ check:{q:"A patient has a severe burn. Why is infection such a big risk?",opts:[
+  ["The skin barrier is destroyed, so germs can enter the tissues directly.",1,"Right. The burned area has lost its first line of defense."],
+  ["Burns destroy all the white blood cells in the body.",0,"White cells are still there. The problem is that the barrier that keeps germs out is gone."],
+  ["Burns make the stomach stop producing acid.",0,"Stomach acid protects the gut, not the skin. The issue is the broken skin barrier."],
+  ["Burns turn off the adaptive immune system.",0,"Adaptive immunity still works. But with the barrier gone, many more germs get in."]]},
+ caption:"Skin sheds germs and blocks them. Cilia sweep germ-trapping mucus away. Lysozyme in tears chews bacterial walls.",
+ legend:[["kera","Keratinized skin cells","s"],["mucus","Mucus","s"],["cilia","Cilia","l"],["lyso","Lysozyme"],["bact","Bacterium","r"]]},
+
+{act:3,scene:"phago",id:"phago",title:"Phagocytes: eat and digest",
+ body:`<p>If germs get past the barriers, <b>phagocytes</b> (eating cells) are waiting.</p>
+ <ul><li><b>Neutrophils</b> are the most common white blood cells. They rush in first but live only a short time.</li>
+ <li><b>Macrophages</b> are large, long-lived eaters that develop from <b>monocytes</b>. They also show pieces of what they ate to T cells (Part 4).</li></ul>
+ <p>Watch the steps of <b>phagocytosis</b>:</p>
+ <ol><li>The phagocyte is attracted to the germ and sticks to it.</li><li>Arm-like <b>pseudopods</b> wrap around it.</li><li>The germ is pulled inside a bubble called a <b>phagosome</b>.</li><li>A <b>lysosome</b> full of digestive enzymes fuses with it.</li><li>The germ is digested, and leftover debris is pushed out.</li></ol>`,
+ analogy:"A vacuum cleaner with a built-in garbage disposal. Suck it in, seal the bag, grind it up, dump what is left.",
+ terms:[["Phagocytosis","Cell eating: engulfing a particle into a membrane bubble."],["Neutrophil","Most common white blood cell. First phagocyte to arrive."],["Macrophage","Large phagocyte that develops from a monocyte."],["Phagosome / lysosome","The bubble around the eaten germ / the sac of enzymes that digests it."]],
+ check:{q:"What does the lysosome add to the phagosome?",opts:[
+  ["Digestive enzymes that break the germ down",1,"Yes. The fused bubble (phagolysosome) digests the germ."],
+  ["Antibodies that tag the germ",0,"Antibodies are made by plasma cells and work outside cells. Lysosomes contain enzymes."],
+  ["Extra membrane for the pseudopods",0,"Pseudopods come from the cell membrane. Lysosomes bring enzymes."],
+  ["DNA to copy the germ",0,"Phagocytes destroy germs. They do not copy them."]]},
+ caption:"1 stick, 2 wrap with pseudopods, 3 phagosome, 4 lysosome fuses, 5 digest, 6 debris pushed out. A smaller neutrophil does the same at the left.",
+ legend:[["macro-edge","Macrophage"],["neut","Neutrophil"],["bact","Bacterium","r"],["lyso","Lysosome (enzymes)"]]},
+
+{act:3,scene:"nk",id:"nk",title:"Natural killer cells and interferons",
+ body:`<p>Phagocytes cannot reach a virus that is hiding <b>inside</b> a cell. Two innate defenses handle that:</p>
+ <p><b>Natural killer (NK) cells</b> are lymphocytes that patrol for sick cells. Healthy cells show a "normal ID badge" called <b>MHC class I</b>. Many virus-infected cells and cancer cells show <b>fewer</b> badges. When an NK cell finds one, it releases <b>perforin</b>, which punches holes in the membrane, and <b>granzymes</b>, enzymes that slip in and make the cell destroy itself (<b>apoptosis</b>).</p>
+ <p><b>Interferons</b> are warning proteins. A virus-infected cell releases them before it dies. Neighboring cells read the warning and make <b>antiviral proteins</b>, so when new viruses arrive they cannot copy themselves as easily. Interferons also rally NK cells and macrophages.</p>`,
+ analogy:"NK cells are bouncers who check IDs and remove anyone with a missing badge. Interferon is a neighbor shouting \"Lock your doors!\" down the street.",
+ terms:[["NK cell","Innate lymphocyte that kills virus-infected and cancer cells."],["Perforin / granzymes","Pore-forming protein / enzymes that trigger cell suicide."],["Apoptosis","Controlled cell death; the cell shrinks and breaks into tidy pieces."],["Interferon","Protein from virus-infected cells that warns neighbors to resist viruses."]],
+ check:{q:"Interferons protect the body mainly by…",opts:[
+  ["warning neighboring cells to make antiviral proteins.",1,"Yes. Interferon does not kill the virus directly. It helps nearby cells resist it."],
+  ["punching holes in viruses.",0,"Holes are punched in cells by perforin, or in bacteria by complement. Interferons are warning signals."],
+  ["eating virus particles.",0,"Eating is phagocytosis. Interferons are proteins, not cells."],
+  ["making antibodies against the virus.",0,"Antibodies are made by plasma cells in adaptive immunity."]]},
+ caption:"Left: the NK cell passes a healthy cell with MHC I badges but kills an infected cell with few badges. Right: an infected cell releases interferon; warned neighbors resist new viruses.",
+ legend:[["nk","NK cell"],["mhc1","MHC I badge","s"],["virus","Virus"],["perf","Perforin"],["ifn","Interferon","d"]]},
+
+{act:3,scene:"inflam",id:"inflam",title:"Inflammation and fever",
+ body:`<p>A splinter carries bacteria into the skin. Damaged cells and <b>mast cells</b> release chemicals such as <b>histamine</b>. Watch what follows:</p>
+ <ol><li><b>Vasodilation</b>: nearby arterioles widen. More blood arrives, causing <b>redness</b> and <b>heat</b>.</li>
+ <li><b>Increased capillary permeability</b>: gaps open between capillary cells. Fluid and proteins leak out, causing <b>swelling</b> (edema). Pressure and chemicals cause <b>pain</b>.</li>
+ <li><b>Chemotaxis</b>: chemical signals attract neutrophils, which squeeze out of the capillary and crawl toward the bacteria.</li></ol>
+ <p>Redness, heat, swelling and pain are the <b>cardinal signs of inflammation</b>.</p>
+ <p><b>Fever</b> is a body-wide response. Macrophages release <b>pyrogens</b> that travel in the blood to the <b>hypothalamus</b> and raise the body's temperature set point. A moderate fever makes it harder for many germs to grow and speeds up some immune responses.</p>`,
+ analogy:"Opening the gates and widening the roads so emergency crews can reach the scene fast. The traffic jam (swelling) is the price.",
+ terms:[["Histamine","Chemical from mast cells that widens vessels and makes them leaky."],["Vasodilation","Widening of blood vessels."],["Chemotaxis","Movement of cells toward a chemical signal."],["Pyrogen","A fever-causing chemical that resets the hypothalamus."]],
+ check:{q:"What causes the SWELLING in inflammation?",opts:[
+  ["Leaky capillaries let fluid and proteins move into the tissue.",1,"Right. Increased permeability lets plasma leak out, so the tissue swells."],
+  ["More red blood cells are made in the area.",0,"Red blood cells are made in bone marrow. Swelling is leaked fluid."],
+  ["The bacteria multiply and fill the space.",0,"Bacteria are far too small to cause visible swelling. Leaked fluid does."],
+  ["Fever raises the temperature of the tissue.",0,"Heat comes from extra blood flow; swelling comes from leaky capillaries."]]},
+ caption:"Histamine widens the vessel (redness, heat) and opens gaps (swelling). Neutrophils squeeze out and follow the chemical trail. Right: pyrogens reset the hypothalamus and raise body temperature.",
+ legend:[["mast","Mast cell"],["hist","Histamine"],["water","Leaking fluid"],["neut","Neutrophil"],["pyro","Pyrogen","d"]]},
+
+{act:3,scene:"comp",id:"comp",title:"Complement: proteins that tag and punch",
+ body:`<p>The <b>complement system</b> is a family of proteins that float in the plasma in an inactive form. When they touch a bacterial surface (or an antibody stuck to one), they switch on in a chain reaction, a <b>cascade</b>, each protein activating the next.</p>
+ <p>Activated complement does three things:</p>
+ <ol><li><b>Opsonization</b>: complement pieces coat the bacterium like handles, so phagocytes can grab and eat it more easily.</li>
+ <li><b>Membrane attack complex (MAC)</b>: complement proteins assemble into a ring that <b>punches a hole</b> in the bacterial membrane. Water rushes in and the cell bursts (lysis).</li>
+ <li><b>Inflammation</b>: small complement pieces attract phagocytes and boost inflammation.</li></ol>`,
+ analogy:"A line of dominoes that ends in two moves: stick \"EAT ME\" labels on the intruder, or drill holes in its hull.",
+ terms:[["Complement","Plasma proteins that, once activated, help destroy pathogens."],["Cascade","A chain reaction where each protein activates the next."],["Opsonization","Coating a germ so phagocytes can grab it more easily."],["Membrane attack complex","A ring of complement proteins that punches a hole in a cell membrane."]],
+ check:{q:"The membrane attack complex kills bacteria by…",opts:[
+  ["punching a hole so water rushes in and the cell bursts.",1,"Yes. The MAC forms a pore in the bacterial membrane, causing lysis."],
+  ["coating them so phagocytes can grab them.",0,"That is opsonization, the other main complement job."],
+  ["releasing histamine.",0,"Histamine comes from mast cells."],
+  ["warning neighboring cells.",0,"That describes interferons."]]},
+ caption:"Complement proteins light up one after another on the bacterium. Left: coated bacterium is eaten (opsonization). Right: the membrane attack complex punches holes and the bacterium bursts.",
+ legend:[["comp","Complement protein"],["bact","Bacterium","r"],["macro-edge","Phagocyte"],["water","Water rushing in"]]},
+
+/* ---------- Part 4 ---------- */
+{act:4,scene:"clonal",id:"clonal",title:"Antigens, epitopes and clonal selection",
+ body:`<p>An <b>antigen</b> is any molecule the adaptive immune system can recognize, usually a protein on a germ. A receptor does not grab the whole antigen. It fits one small part called an <b>epitope</b>. One antigen can have several epitopes.</p>
+ <p>You have millions of different T cells and B cells. Each one has receptors of <b>one shape only</b>, made before it ever meets a germ. When an antigen arrives, only the cells whose receptors fit it are switched on. This is <b>clonal selection</b>.</p>
+ <p>The selected cell then divides again and again into a <b>clone</b> of identical cells (<b>clonal expansion</b>). Most become <b>effector cells</b> that fight now. Some become long-lived <b>memory cells</b>. This is why the first adaptive response takes days.</p>`,
+ analogy:"A huge key ring with millions of different keys made in advance. The germ is the lock. Only the key that fits gets copied thousands of times.",
+ terms:[["Antigen","A molecule that adaptive immune cells recognize."],["Epitope","The small part of an antigen that a receptor actually binds."],["Clonal selection","The antigen picks the lymphocyte whose receptor fits."],["Clonal expansion","The selected cell divides into many identical effector and memory cells."]],
+ check:{q:"In clonal selection, what does the selecting?",opts:[
+  ["The antigen, by binding the one lymphocyte whose receptor fits",1,"Yes. The receptors existed before the germ arrived. The antigen just finds the match."],
+  ["The lymphocyte reshapes its receptor to fit the antigen",0,"Receptor shapes are fixed. The antigen picks from cells that already exist."],
+  ["Macrophages choose which lymphocytes divide",0,"Antigen-presenting cells help activate T cells, but the receptor match decides which clone grows."],
+  ["Every lymphocyte divides equally",0,"Only the matching cells divide. That is the whole point of being specific."]]},
+ caption:"Only the lymphocyte whose receptor shape fits the epitope binds. It is selected and divides into a clone of effector cells and memory cells.",
+ legend:[["bact","Bacterium","r"],["ag","Epitope"],["bcell","Lymphocyte"],["mem","Memory cell"]]},
+
+{act:4,scene:"mhc",id:"mhc",title:"Showing the evidence: MHC I and MHC II",
+ body:`<p>T cells cannot see a whole germ. Another cell must chop it up and <b>present</b> a piece (a peptide) in a holder called an <b>MHC molecule</b>.</p>
+ <ul><li><b>MHC class II</b> is found on <b>antigen-presenting cells (APCs)</b>: dendritic cells, macrophages and B cells. An APC eats a germ, breaks it into pieces, and shows a piece on MHC II. Only <b>helper T cells</b> can read MHC II. They carry a marker called <b>CD4</b>.</li>
+ <li><b>MHC class I</b> is found on <b>all nucleated cells</b>. Every cell constantly displays samples of the proteins it is making. If a virus is inside, viral pieces show up on MHC I. <b>Cytotoxic T cells</b>, which carry <b>CD8</b>, read MHC I.</li></ul>
+ <p>Easy rule: <b>CD4 × MHC II = 8</b> and <b>CD8 × MHC I = 8</b>.</p>`,
+ analogy:"MHC I is a window display every shop must keep (\"here is what we are making inside\"). MHC II is an evidence board that only detectives (APCs) set up for the police chief (helper T cell).",
+ terms:[["MHC II","Holder on APCs that shows eaten antigen to CD4 helper T cells."],["MHC I","Holder on all nucleated cells that shows inside proteins to CD8 cytotoxic T cells."],["Antigen-presenting cell","Dendritic cell, macrophage or B cell that displays antigen on MHC II."],["CD4 / CD8","Markers on helper T cells / cytotoxic T cells."]],
+ check:{q:"A cell infected with a virus shows viral peptides on MHC I. Which cell responds?",opts:[
+  ["A cytotoxic T cell (CD8)",1,"Right. CD8 cytotoxic T cells read MHC I and kill infected cells."],
+  ["A helper T cell (CD4)",0,"Helper T cells read MHC II on antigen-presenting cells."],
+  ["A plasma cell",0,"Plasma cells make antibodies. They do not read MHC."],
+  ["A neutrophil",0,"Neutrophils are innate phagocytes. They do not read MHC molecules."]]},
+ caption:"Left: a dendritic cell eats a bacterium and shows a piece on MHC II to a CD4 helper T cell. Right: an infected cell shows a viral piece on MHC I to a CD8 cytotoxic T cell.",
+ legend:[["apc","Dendritic cell (APC)"],["mhc2","MHC II","s"],["th","Helper T (CD4)"],["mhc1","MHC I","s"],["tc","Cytotoxic T (CD8)"],["ag","Antigen piece"]]},
+
+{act:4,scene:"helper",id:"helper",title:"Helper T cells rally the team",
+ body:`<p>Once a <b>helper T cell</b> recognizes antigen on MHC II, it is activated, divides, and starts releasing <b>cytokines</b>. These chemical signals (many are called <b>interleukins</b>) switch on the rest of the team:</p>
+ <ul><li><b>B cells</b> that have found the same antigen are told to divide and become antibody factories.</li>
+ <li><b>Cytotoxic T cells</b> that found their target are told to divide and start killing.</li>
+ <li><b>Macrophages</b> are told to eat and kill harder.</li></ul>
+ <p>Helper T cells rarely kill anything themselves, yet without them almost the whole adaptive response stalls. That is why HIV, which destroys helper T cells, is so dangerous.</p>`,
+ analogy:"The coach of a team. The coach never scores, but without the coach calling plays, nobody knows what to do.",
+ terms:[["Helper T cell","CD4 T cell that coordinates the immune response with cytokines."],["Cytokine","A chemical signal that cells use to talk to each other."],["Interleukin","A cytokine made by white blood cells."]],
+ check:{q:"What do helper T cells mainly do?",opts:[
+  ["Release cytokines that activate B cells, cytotoxic T cells and macrophages",1,"Yes. They are the coordinators of adaptive immunity."],
+  ["Make antibodies",0,"Plasma cells (from B cells) make antibodies. Helper T cells tell B cells to do it."],
+  ["Kill infected cells with perforin",0,"That is the job of cytotoxic T cells and NK cells."],
+  ["Eat bacteria",0,"Phagocytes eat bacteria. Helper T cells send signals."]]},
+ caption:"The activated helper T cell (CD4) releases cytokines. The B cell, the cytotoxic T cell and the macrophage light up and get to work.",
+ legend:[["th","Helper T (CD4)"],["glow","Cytokines","d"],["bcell","B cell"],["tc","Cytotoxic T (CD8)"],["macro-edge","Macrophage"]]},
+
+{act:4,scene:"ctl",id:"ctl",title:"Cytotoxic T cells kill infected cells",
+ body:`<p>An activated <b>cytotoxic T cell</b> (CD8) travels to the infection and checks the MHC I on body cells. When its receptor matches a viral piece on MHC I:</p>
+ <ol><li>It locks on to the infected cell.</li>
+ <li>It releases <b>perforin</b>, which forms pores in the target's membrane.</li>
+ <li><b>Granzymes</b> enter through the pores and trigger <b>apoptosis</b>. The cell shrinks and breaks into neat pieces, destroying the viruses inside before they can spread.</li>
+ <li>The T cell lets go and moves on to the next infected cell. One cytotoxic T cell can kill many targets.</li></ol>
+ <p>Cytotoxic T cells also kill some cancer cells and are the main cause of transplant rejection.</p>`,
+ analogy:"A sniper with a target photo. It only fires at cells that match the photo, then moves to the next one.",
+ terms:[["Cytotoxic T cell","CD8 T cell that kills cells showing a matching antigen on MHC I."],["Perforin","Protein that forms pores in the target cell membrane."],["Granzymes","Enzymes that enter through the pores and trigger apoptosis."]],
+ check:{q:"Why kill the whole infected cell instead of just the virus?",opts:[
+  ["The virus is inside the cell, where antibodies cannot reach it, so the cell is destroyed before the virus copies spread.",1,"Right. Killing the cell destroys the virus factory."],
+  ["Cytotoxic T cells cannot recognize viruses at all.",0,"They do recognize viral pieces, shown on MHC I."],
+  ["Infected cells are always cancerous.",0,"Infected cells are not cancer cells. They are killed because they hide and copy viruses."],
+  ["It is faster than making antibodies.",0,"Speed is not the reason. Antibodies cannot get inside cells."]]},
+ caption:"The CD8 cytotoxic T cell docks on MHC I, fires perforin and granzymes, and the infected cell breaks apart by apoptosis. The T cell moves to the next target.",
+ legend:[["tc","Cytotoxic T (CD8)"],["mhc1","MHC I with viral piece","s"],["perf","Perforin"],["gzm","Granzymes","d"],["virus","Virus"]]},
+
+/* ---------- Part 5 ---------- */
+{act:5,scene:"bcell",id:"bcell",title:"B cells become plasma cells and memory cells",
+ body:`<p>A <b>B cell</b> is covered with receptors that are actually antibodies stuck in its membrane. When an antigen fits those receptors, the B cell pulls it in and shows a piece on MHC II. A <b>helper T cell</b> that recognizes the same antigen binds and releases cytokines. Now the B cell is fully activated.</p>
+ <p>It divides into a clone. Most of the clone become <b>plasma cells</b>: large cells packed with rough ER that pour out thousands of <b>antibodies</b> every second. Plasma cells work for days and then die. A few become <b>memory B cells</b> that can live for years and respond fast the next time.</p>
+ <p>Antibodies travel in blood and lymph and attack germs <b>outside</b> cells. This is <b>antibody-mediated (humoral) immunity</b>.</p>`,
+ analogy:"One worker who recognizes the product (B cell) gets the go-ahead from the manager (helper T) and builds a factory full of copies (plasma cells), plus a few trainers who remember how it is done (memory cells).",
+ terms:[["Plasma cell","An activated B cell that secretes large amounts of antibody."],["Memory B cell","Long-lived B cell that responds quickly to a later exposure."],["Humoral immunity","Adaptive immunity carried out by antibodies in body fluids."]],
+ check:{q:"Which cell actually secretes antibodies?",opts:[
+  ["The plasma cell",1,"Yes. Plasma cells are B cells turned into antibody factories."],
+  ["The helper T cell",0,"Helper T cells give the signal. Plasma cells make the antibodies."],
+  ["The memory B cell",0,"Memory B cells wait for the next exposure. When it comes, they quickly become plasma cells."],
+  ["The macrophage",0,"Macrophages eat and present antigen. They do not make antibodies."]]},
+ caption:"The B cell binds antigen and gets the go-ahead from a helper T cell. Its clone becomes plasma cells pouring out antibodies and a few memory B cells.",
+ legend:[["bcell","B cell"],["th","Helper T"],["plasma","Plasma cell"],["ab","Antibody","y"],["mem","Memory B cell"]]},
+
+{act:5,scene:"abstruct",id:"abstruct",title:"Antibody structure: a Y with two hands",
+ body:`<p>An <b>antibody</b> (also called an <b>immunoglobulin</b>, Ig) is a Y-shaped protein made of four chains:</p>
+ <ul><li>two identical long <b>heavy chains</b>, and</li><li>two identical short <b>light chains</b>,</li></ul>
+ <p>held together by <b>disulfide bonds</b>.</p>
+ <p>The tips of the two arms are the <b>variable regions</b>. Their shape is different in every antibody clone, and each tip forms an <b>antigen-binding site</b> that fits one epitope. So one antibody has <b>two</b> binding sites.</p>
+ <p>The rest is the <b>constant region</b>. It is the same within a class and decides what the antibody does: whether it activates complement, binds to phagocytes, or crosses the placenta.</p>`,
+ analogy:"A Y-shaped tool with two custom-cut keys on the arms (variable regions) and a standard handle (constant region) that fits the body's equipment.",
+ terms:[["Heavy chain","One of the two long protein chains of an antibody."],["Light chain","One of the two short protein chains on the arms."],["Variable region","Tips of the arms. Forms the antigen-binding sites."],["Constant region","The stem and lower arms. Same within a class; sets the antibody's job."]],
+ check:{q:"Which part of an antibody binds the epitope?",opts:[
+  ["The variable regions at the tips of the arms",1,"Right. Their shape is unique to each clone, so they fit one epitope."],
+  ["The constant region of the stem",0,"The stem is the same within a class. It binds things like phagocytes and complement, not the epitope."],
+  ["The disulfide bonds",0,"Disulfide bonds hold the four chains together."],
+  ["Only the heavy chain, never the light chain",0,"Both heavy and light chains help form each binding site at the arm tips."]]},
+ caption:"Two heavy chains and two light chains join by disulfide bonds. The variable tips fit the epitope; the constant stem sets the antibody's job.",
+ legend:[["abH","Heavy chain","l"],["abL","Light chain","l"],["var","Variable region"],["comp","Disulfide bond","s"],["ag","Epitope"]]},
+
+{act:5,scene:"abact",id:"abact",title:"What antibodies do",
+ body:`<p>Antibodies do not kill germs by themselves. They <b>mark</b> and <b>block</b> them so other defenses can finish the job. Four main actions:</p>
+ <ol><li><b>Neutralization</b>: antibodies cover the parts of a virus or toxin that it uses to attach to cells, so it cannot bind.</li>
+ <li><b>Agglutination</b>: each antibody has two (or more) binding sites, so it can link germs together into clumps that are easy to catch.</li>
+ <li><b>Opsonization</b>: antibodies coat a germ; phagocytes have receptors for the antibody stem and grab it easily.</li>
+ <li><b>Complement activation</b>: complement binds the antibody stem and starts the cascade, ending with the membrane attack complex.</li></ol>`,
+ analogy:"Putting a cap on a weapon (neutralization), handcuffing suspects together (agglutination), sticking a \"pick me up\" handle on them (opsonization), and calling in the demolition crew (complement).",
+ terms:[["Neutralization","Blocking a virus or toxin so it cannot attach to cells."],["Agglutination","Clumping of germs by antibodies."],["Opsonization","Coating a germ to make it easier to eat."],["Complement activation","Antibody stem triggers the complement cascade."]],
+ check:{q:"Tetanus toxin damages nerve cells by binding to them. Antibodies stop it by…",opts:[
+  ["neutralization: covering the toxin's binding site",1,"Yes. A toxin that cannot bind cannot do harm. This is how the tetanus shot protects you."],
+  ["agglutination of red blood cells",0,"Agglutination clumps germs or cells. Blocking a toxin's binding site is neutralization."],
+  ["punching holes in the toxin",0,"A toxin is a molecule, not a cell. You cannot lyse it."],
+  ["releasing perforin",0,"Perforin comes from cytotoxic T cells and NK cells."]]},
+ caption:"1 Neutralization: covered viruses cannot attach. 2 Agglutination: bacteria clump. 3 Opsonization: coated bacterium is eaten. 4 Complement activation: holes and lysis.",
+ legend:[["ab","Antibody","y"],["virus","Virus"],["bact","Bacterium","r"],["macro-edge","Phagocyte"],["comp","Complement"]]},
+
+{act:5,scene:"classes",id:"classes",title:"Five classes of antibodies",
+ body:`<p>There are five antibody classes, named by their constant region. Remember them as <b>GAMED</b>:</p>
+ <ul><li><b>IgG</b>: a single Y (monomer). The <b>most abundant</b> antibody in blood and the main one in the secondary response. The only class that <b>crosses the placenta</b>, protecting the fetus.</li>
+ <li><b>IgA</b>: usually two Ys joined (a dimer). Found in <b>secretions</b>: tears, saliva, mucus and <b>breast milk</b>.</li>
+ <li><b>IgM</b>: five Ys joined in a star (a <b>pentamer</b>). The <b>first</b> antibody made in a new (primary) response. With 10 binding sites, it is great at agglutination and complement activation.</li>
+ <li><b>IgE</b>: a monomer that sits on <b>mast cells and basophils</b>. Involved in <b>allergies</b> and defense against <b>parasitic worms</b>.</li>
+ <li><b>IgD</b>: a monomer found mainly on the surface of B cells, where it acts as a <b>B-cell receptor</b>.</li></ul>`,
+ analogy:"Five tools with the same kind of business end but different handles: a single Y for the blood (G), a pair for the doors (A), a big star for first contact (M), an alarm wire on mast cells (E), and a doorbell on B cells (D).",
+ terms:[["IgG","Monomer; most abundant; crosses placenta; main secondary-response antibody."],["IgM","Pentamer; first made in a primary response."],["IgA","Dimer; in tears, saliva, mucus and breast milk."],["IgE / IgD","IgE: allergy and parasites, on mast cells. IgD: B-cell receptor."]],
+ check:{q:"A newborn is protected by antibodies that crossed the placenta. Which class?",opts:[
+  ["IgG",1,"Right. IgG is the only class that crosses the placenta."],
+  ["IgM",0,"IgM is a large pentamer. It is too big to cross the placenta."],
+  ["IgA",0,"IgA does protect babies, but it arrives in breast milk, not across the placenta."],
+  ["IgE",0,"IgE is involved in allergies and parasites. It does not cross the placenta."]]},
+ caption:"IgG crosses the placenta. IgA rides in secretions like milk. IgM, a star of five, clumps germs. IgE sits on a mast cell. IgD sits on a B cell.",
+ legend:[["igg","IgG"],["iga","IgA"],["igm","IgM"],["ige","IgE"],["igd","IgD"]]},
+
+/* ---------- Part 6 ---------- */
+{act:6,scene:"titer",id:"titer",title:"Primary and secondary responses",
+ body:`<p>The graph shows <b>antibody titer</b>, the amount of antibody in the blood, over time.</p>
+ <ul><li><b>Primary response</b> (first exposure): there is a <b>lag</b> of several days while the right clones are selected and expand. <b>IgM</b> appears first, then <b>IgG</b>. The peak is modest and comes after one to two weeks. You may feel sick during this time.</li>
+ <li><b>Secondary response</b> (later exposure to the same antigen): <b>memory cells</b> are already waiting, so antibodies rise within a few days, reach a <b>much higher</b> peak, are mostly <b>IgG</b>, and stay high longer. Often the germ is cleared before you notice any symptoms.</li></ul>
+ <p>Vaccines work by giving you the primary response safely, so a real infection meets the secondary response.</p>`,
+ analogy:"The first time you cook a new recipe, you are slow and the result is so-so. The second time you know the steps, so it is faster and better.",
+ terms:[["Antibody titer","The amount of antibody in a blood sample."],["Primary response","First response to an antigen. Slow, smaller, IgM first."],["Secondary response","Response to a repeat exposure. Fast, large, mostly IgG, thanks to memory cells."],["Lag phase","Days before antibodies appear, while clones expand."]],
+ check:{q:"Why is the secondary response faster and bigger?",opts:[
+  ["Memory cells from the first exposure are ready to respond at once.",1,"Yes. The clonal selection and expansion work was already done the first time."],
+  ["The germ is weaker the second time.",0,"The germ is the same. Your immune system has changed."],
+  ["IgM is made in larger amounts the second time.",0,"The secondary response is mostly IgG, not IgM."],
+  ["Innate immunity remembers the germ.",0,"Innate immunity does not form memory. Memory T and B cells are adaptive."]]},
+ caption:"First exposure: a lag, IgM then IgG, a modest peak. Second exposure: memory cells make a fast, much larger IgG response. (Shape only, not real values.)",
+ legend:[["igm","IgM","l"],["igg","IgG","l"],["virus","Exposure to antigen"],["mem","Memory cells"]]},
+
+{act:6,scene:"immtypes",id:"immtypes",title:"Active vs passive, natural vs artificial",
+ body:`<p><b>Active immunity</b>: your own body makes the antibodies and memory cells. It takes time to develop but <b>lasts long</b>.</p>
+ <ul><li><b>Natural active</b>: you catch the disease and recover.</li><li><b>Artificial active</b>: a <b>vaccine</b> shows your body a harmless form or piece of the germ.</li></ul>
+ <p><b>Passive immunity</b>: you receive antibodies made by someone else. It works <b>right away</b> but <b>fades</b> in weeks to months, because no memory cells are made.</p>
+ <ul><li><b>Natural passive</b>: a mother's <b>IgG</b> crosses the placenta, and <b>IgA</b> arrives in breast milk.</li><li><b>Artificial passive</b>: an injection of ready-made antibodies, such as <b>antivenom</b> after a snakebite.</li></ul>`,
+ analogy:"Active immunity is learning to cook: slow to learn, but you keep the skill. Passive immunity is a friend dropping off meals: instant, but it runs out.",
+ terms:[["Active immunity","Your own immune system makes antibodies and memory."],["Passive immunity","You receive ready-made antibodies. Fast, temporary, no memory."],["Vaccine","Harmless antigen that triggers active immunity."],["Antivenom","Ready-made antibodies against a venom: artificial passive immunity."]],
+ check:{q:"A hiker bitten by a rattlesnake gets antivenom. What type of immunity is this?",opts:[
+  ["Artificial passive",1,"Right. Ready-made antibodies given by injection act at once but fade, with no memory."],
+  ["Artificial active",0,"Active means your body makes its own antibodies, as after a vaccine. Antivenom antibodies are pre-made."],
+  ["Natural passive",0,"Natural passive comes from mother to baby, across the placenta or in milk."],
+  ["Natural active",0,"That would mean making your own antibodies after surviving an exposure. Antivenom gives antibodies directly."]]},
+ caption:"Top: active immunity (infection or vaccine) builds your own memory, so protection lasts. Bottom: passive immunity (from mother, or antivenom) gives ready-made antibodies that fade.",
+ legend:[["ab","Antibody","y"],["mem","Memory cell"],["good","Protection level","l"]]},
+
+{act:6,scene:"disorders",id:"disorders",title:"When the immune system goes wrong",
+ body:`<ul><li><b>Hypersensitivity</b> is an overreaction to something harmless. In an <b>allergy</b>, IgE antibodies sit on mast cells. When the allergen (pollen, peanut, bee venom) links them, the mast cell dumps <b>histamine</b>, causing sneezing, hives or swelling. <b>Anaphylaxis</b> is a body-wide reaction: airways narrow and blood pressure falls. It is an emergency treated with <b>epinephrine</b>.</li>
+ <li><b>Autoimmunity</b>: the immune system loses <b>self-tolerance</b> and attacks the body's own cells. Examples: type 1 diabetes (insulin-making cells), rheumatoid arthritis (joints), lupus.</li>
+ <li><b>Immunodeficiency</b>: the immune system is too weak. <b>HIV</b> infects and destroys <b>CD4 helper T cells</b>. As their numbers fall, B cells and cytotoxic T cells are no longer coordinated, and infections that a healthy person would fight off become deadly. This late stage is <b>AIDS</b>.</li></ul>`,
+ analogy:"Too much (an alarm that goes off at a falling leaf), misdirected (guards attacking their own city), or too little (the coach has been taken out of the game).",
+ terms:[["Hypersensitivity","An exaggerated immune response to a harmless antigen."],["Anaphylaxis","Severe, body-wide allergic reaction. Treated with epinephrine."],["Autoimmune disease","The immune system attacks the body's own tissues."],["Immunodeficiency","A weak or missing immune response, such as from HIV."]],
+ check:{q:"Why does HIV weaken BOTH antibody responses and cytotoxic T-cell responses?",opts:[
+  ["It destroys helper T cells, which activate both B cells and cytotoxic T cells.",1,"Right. Remove the coach and the whole team falls apart."],
+  ["It destroys all B cells directly.",0,"HIV's main target is CD4 helper T cells. B cells fail because they lose their helpers."],
+  ["It destroys the bone marrow.",0,"HIV targets cells with CD4, mainly helper T cells."],
+  ["It causes the body to make too much IgE.",0,"That describes allergy. HIV is an immunodeficiency."]]},
+ caption:"Allergy: allergen links IgE on a mast cell and histamine pours out. Autoimmunity: a T cell attacks a healthy self cell. HIV: viruses destroy CD4 helper T cells and their count falls.",
+ legend:[["ige","IgE"],["hist","Histamine"],["tc","Self-attacking T cell"],["hiv","HIV"],["th","Helper T (CD4)"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole defense system.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · Lymphatic system</li>
+ <li>Returns extra tissue fluid to the blood, absorbs fats through lacteals, and carries lymph past immune checkpoints.</li><li>One-way flaps let fluid into blind-ended lymphatic capillaries; valves and squeezing muscles push lymph on.</li><li>Right lymphatic duct (upper right body) and thoracic duct (everything else) empty into the subclavian veins.</li>
+ <li class="h">Part 2 · Lymphoid organs</li>
+ <li>Primary: red marrow (B cells mature) and thymus (T cells mature). Secondary: lymph nodes, spleen, MALT and tonsils.</li><li>Lymph nodes: afferent in, efferent out; B cells in follicles, T cells deeper.</li>
+ <li class="h">Part 3 · Innate defenses</li>
+ <li>Barriers, phagocytes, NK cells and interferons, inflammation and fever, complement.</li>
+ <li class="h">Part 4 · Adaptive: T cells</li>
+ <li>Clonal selection and expansion. MHC II → CD4 helper T; MHC I → CD8 cytotoxic T. Helpers send cytokines; cytotoxic T cells use perforin and granzymes.</li>
+ <li class="h">Part 5 · Adaptive: antibodies</li>
+ <li>B cells → plasma cells (antibodies) + memory cells. Y-shaped: 2 heavy + 2 light chains, variable tips. Neutralize, agglutinate, opsonize, activate complement. GAMED classes.</li>
+ <li class="h">Part 6 · Memory &amp; disorders</li>
+ <li>Secondary response is faster and bigger. Active vs passive, natural vs artificial. Allergy, autoimmunity, immunodeficiency (HIV kills helper T cells).</li></ol>
+ <p>Next: run an infection, sort the defenses, time a booster, and play with antibodies in the <b><a href="Immune-Lab.html">Immune Lab</a></b>.</p>`,
+ analogy:"Drains and checkpoints (lymphatics), a fast patrol (innate), and a detective squad that never forgets a face (adaptive).",
+ terms:[],check:null,caption:"The six parts of the chapter, from lymph flow to immune disorders.",
+ legend:[["lv","Lymph"],["neut","Innate cells"],["th","T cells"],["bcell","B cells"],["ab","Antibody","y"]]}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+const NA=6;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=NA;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([NA+1,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===NA+1)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
+  if(sh==="t")return `<span><i class="t" style="border-bottom-color:var(${v})"></i>${l[1]}</span>`;
+  if(sh==="y")return `<span><i class="y" style="--yc:var(${v})"></i>${l[1]}</span>`;
+  return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=480;
+const cv=document.getElementById("stage");let ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash","act1","act2","act3","act4","act5","act6",
+ "ecf","tissue","tcell-bg","lymph","lv","lv-edge","water","blood","blood-edge","vessel","vein","rbc","rbc-hi","body","body-edge","bone","marrow","node","node-edge","follicle","germ",
+ "bact","virus","cyto","cell-edge","nuc","host","host-edge","macro","macro-edge","neut","nk","th","tc","bcell","plasma","mem","apc","mast","hist","comp","ifn","pyro",
+ "ab","abH","abL","var","fc","mhc1","mhc2","ag","perf","gzm","fat","skin","kera","mucus","cilia","lyso","igm","igg","iga","ige","igd","heat","hiv","glow"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+
+/* ================= drawing kit ================= */
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function hx(c){let h=(c||"#888").trim();if(h[0]!=="#"){const m=h.match(/\d+/g);return m&&m.length>=3?[+m[0],+m[1],+m[2]]:[136,136,136]}h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function isDark(){return hx(C.ground)[0]<60}
+function onFill(){return isDark()?"#0E1519":"#fff"}
+function P(T,L){return ((T%L)+L)%L/L}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,t,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(t).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function chipL(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;const w=ctx.measureText(t).width;return chipText(x+w/2+6,y,t,col,fg)}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f)]}d-=ls[i]}return P_[P_.length-1]}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.lineJoin="round";ctx.lineCap="round";ctx.stroke();ctx.setLineDash([]);ctx.lineCap="butt"}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,8);ctx.fillStyle=o.fill||hexA(C.panel,.8);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function blobPath(x,y,r,seed,t,amp){amp=amp==null?.06:amp;ctx.beginPath();const N=44;for(let i=0;i<=N;i++){const a=i/N*TAU;const rad=r*(1+amp*Math.sin(a*3+seed+(t||0)*1.7)+amp*.7*Math.sin(a*5+seed*2.3-(t||0)*1.1));const X=x+Math.cos(a)*rad,Y=y+Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath()}
+function withA(a,fn){ctx.save();ctx.globalAlpha*=clamp(a==null?1:a,0,1);fn();ctx.restore()}
+function title(x,y,t,col){txt(x,y,t.toUpperCase(),{size:11.5,mono:true,weight:700,color:col||C["ink-soft"]})}
+
+function beanNode(x,y,rx,ry,o){o=o||{};ctx.save();ctx.beginPath();ctx.ellipse(x,y,rx,ry,o.ang||0,0,TAU);ctx.fillStyle=o.fill||C.node;ctx.fill();ctx.strokeStyle=o.edge||C["node-edge"];ctx.lineWidth=o.lw||1.6;ctx.stroke();
+  if(o.notch!==false){ctx.beginPath();ctx.ellipse(x+rx*.98,y,rx*.22,ry*.3,0,0,TAU);ctx.fillStyle=o.bgc||C.panel;ctx.fill()}ctx.restore()}
+/* ---- germs ---- */
+function bact(x,y,ang,s,a,o){o=o||{};s=s||8;ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);
+  const sw=o.swell||0;const L=s*1.6*(1+sw*.25),Hh=s*.75*(1+sw*.6);
+  rr(-L,-Hh,L*2,Hh*2,Hh);ctx.fillStyle=o.col||C.bact;ctx.fill();ctx.strokeStyle=hexA(C.ink,.45);ctx.lineWidth=1;ctx.stroke();
+  line(-L*.55,0,L*.55,0,hexA(C.panel,.55),1.2);
+  if(o.flag){ctx.strokeStyle=hexA(o.col||C.bact,.8);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(L,0);for(let k=1;k<=6;k++)ctx.lineTo(L+k*3,Math.sin(k*1.6+(o.t||0)*8)*2.5);ctx.stroke()}
+  ctx.restore()}
+function virus(x,y,r,a,t,col){r=r||7;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);col=col||C.virus;
+  for(let k=0;k<10;k++){const an=k/10*TAU+(t||0)*.3;line(x+Math.cos(an)*r,y+Math.sin(an)*r,x+Math.cos(an)*(r+r*.45),y+Math.sin(an)*(r+r*.45),col,1.4);circ(x+Math.cos(an)*(r+r*.5),y+Math.sin(an)*(r+r*.5),r*.16,col)}
+  ctx.beginPath();for(let k=0;k<=6;k++){const an=k/6*TAU+(t||0)*.3;const X=x+Math.cos(an)*r,Y=y+Math.sin(an)*r;k?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke();circ(x,y,r*.4,hexA(C.panel,.45));ctx.restore()}
+function diamond(x,y,s,col,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.3);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+function dotM(x,y,r,col,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);circ(x,y,r,col,hexA(C.ink,.25),.8);ctx.restore()}
+
+/* ---- epitope / receptor shapes ---- */
+function shapePath(kind,x,y,s,ang){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.beginPath();
+  if(kind==="tri"){ctx.moveTo(-s,s*.8);ctx.lineTo(0,-s*.9);ctx.lineTo(s,s*.8);ctx.closePath()}
+  else if(kind==="sq"){ctx.rect(-s*.8,-s*.8,s*1.6,s*1.6)}
+  else if(kind==="dia"){ctx.moveTo(0,-s);ctx.lineTo(s,0);ctx.lineTo(0,s);ctx.lineTo(-s,0);ctx.closePath()}
+  else if(kind==="half"){ctx.arc(0,s*.3,s,Math.PI,0);ctx.closePath()}
+  else {ctx.arc(0,0,s*.85,0,TAU)}
+  ctx.restore()}
+function epi(kind,x,y,s,col,ang,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);shapePath(kind,x,y,s,ang);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.45);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+// receptor: stalk pointing in direction ang (radians, 0 = right), ending in a cup holding the outline of kind
+function receptor(x,y,ang,len,kind,col){const ex=x+Math.cos(ang)*len,ey=y+Math.sin(ang)*len;line(x,y,ex,ey,col,2.4);
+  ctx.save();ctx.translate(ex,ey);ctx.rotate(ang+Math.PI/2);ctx.beginPath();ctx.moveTo(-7,0);ctx.lineTo(-7,-7);ctx.moveTo(7,0);ctx.lineTo(7,-7);ctx.moveTo(-7,0);ctx.lineTo(7,0);ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke();
+  if(kind){ctx.setLineDash([2,2]);shapePath(kind,0,-6,4.6,Math.PI);ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.setLineDash([])}ctx.restore()}
+
+function socket(x,y,ang,len,kind,col,sz){const ex=x+Math.cos(ang)*len,ey=y+Math.sin(ang)*len;line(x,y,ex,ey,col,2.6);const cx=ex+Math.cos(ang)*sz*.9,cy=ey+Math.sin(ang)*sz*.9;
+  shapePath(kind,cx,cy,sz,ang+Math.PI*1.5);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();return [cx,cy]}
+/* ---- antibody (Y) ---- local: stem down from (0,0); arms up. ang rotates so arms point toward ang direction (default up = -PI/2) ---- */
+function ab(x,y,s,ang,col,o){o=o||{};ctx.save();ctx.translate(x,y);ctx.rotate((ang==null?-Math.PI/2:ang)+Math.PI/2);ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  const lw=o.lw||Math.max(1.6,s*.16);col=col||C.ab;ctx.lineCap="round";
+  ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(0,s*.9);ctx.lineTo(0,0);ctx.lineTo(-s*.62,-s*.72);ctx.moveTo(0,0);ctx.lineTo(s*.62,-s*.72);ctx.stroke();
+  if(o.tips){ctx.strokeStyle=o.tips;ctx.beginPath();ctx.moveTo(-s*.42,-s*.49);ctx.lineTo(-s*.62,-s*.72);ctx.moveTo(s*.42,-s*.49);ctx.lineTo(s*.62,-s*.72);ctx.stroke()}
+  ctx.lineCap="butt";ctx.restore()}
+// tip positions of an antibody drawn with ab(x,y,s,ang)
+function abTips(x,y,s,ang){ang=ang==null?-Math.PI/2:ang;const r=ang+Math.PI/2;const c=Math.cos(r),sn=Math.sin(r);const f=(u,v)=>[x+u*c-v*sn,y+u*sn+v*c];return [f(-s*.62,-s*.72),f(s*.62,-s*.72),f(0,s*.9)]}
+function pentamer(x,y,s,col,rot,a){for(let k=0;k<5;k++){const an=rot+k/5*TAU;ab(x+Math.cos(an)*s*.55,y+Math.sin(an)*s*.55,s*.62,an,col,{a})}circ(x,y,s*.18,col)}
+
+/* ---- MHC holder: stalk on membrane at (x,y), pointing outward along ang ---- */
+function mhc(x,y,ang,col,pep,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.translate(x,y);ctx.rotate(ang+Math.PI/2);
+  ctx.strokeStyle=col;ctx.lineWidth=3;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-9);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-7,-17);ctx.quadraticCurveTo(-7,-9,0,-9);ctx.quadraticCurveTo(7,-9,7,-17);ctx.stroke();ctx.lineCap="butt";
+  if(pep){circ(0,-15,3.6,pep,hexA(C.ink,.4),.8)}ctx.restore()}
+
+/* ---- cells ---- */
+const KIND={th:["th","Th"],tc:["tc","Tc"],b:["bcell","B"],mem:["mem","M"],nk:["nk","NK"],t:["th","T"],naive:["bcell",""]};
+function lymph(x,y,r,kind,o){o=o||{};const kk=KIND[kind]||KIND.t;const col=o.col||C[kk[0]];const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  if(o.glow)glow(x,y,r*2.1,C.glow,.55*o.glow);
+  if(kind==="nk"){blobPath(x,y,r,o.seed||2,t,.05);ctx.fillStyle=C.nk;ctx.fill();ctx.strokeStyle=mix(C.nk,C.ink,.45);ctx.lineWidth=1.6;ctx.stroke();
+    circ(x-r*.1,y,r*.55,mix(C.nk,C.ink,.55));for(let i=0;i<9;i++){const an=rnd(i*3+1)*TAU,d=r*(.62+rnd(i)*.25);circ(x+Math.cos(an)*d,y+Math.sin(an)*d,Math.max(1.3,r*.08),C.perf)}}
+  else{blobPath(x,y,r,o.seed||1,t,.035);ctx.fillStyle=mix(col,C.panel,.62);ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.4,r*.07);ctx.stroke();
+    circ(x+r*.04,y-r*.03,r*.7,col);
+    // surface receptors
+    if(!o.norec){const n=o.nrec||10;for(let i=0;i<n;i++){const an=i/n*TAU+(o.rot||0);const px=x+Math.cos(an)*r,py=y+Math.sin(an)*r;
+      if(kind==="b"||kind==="naive"&&o.brec)ab(px+Math.cos(an)*r*.12,py+Math.sin(an)*r*.12,Math.max(4,r*.22),an,col,{lw:1.4});
+      else if(!o.rec){line(px,py,px+Math.cos(an)*r*.22,py+Math.sin(an)*r*.22,col,1.6);const ex=px+Math.cos(an)*r*.22,ey=py+Math.sin(an)*r*.22;line(ex-Math.sin(an)*3,ey+Math.cos(an)*3,ex+Math.sin(an)*3,ey-Math.cos(an)*3,col,1.6)}}}
+    if(o.rec){[0,1,2,3].forEach(i=>{const an=(o.rot||0)+i*TAU/4-Math.PI/2;receptor(x+Math.cos(an)*r,y+Math.sin(an)*r,an,r*.28,o.rec,col)})}
+  }
+  const lab=o.label!=null?o.label:kk[1];if(lab){ctx.font=`700 ${Math.max(9,Math.round(r*.55))}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=kind==="nk"?C.panel:onFill();ctx.fillText(lab,x+r*.04,y)}
+  ctx.restore()}
+function neut(x,y,r,o){o=o||{};const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);blobPath(x,y,r,o.seed||3,t,.07);ctx.fillStyle=C.neut;ctx.fill();ctx.strokeStyle=C["cell-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=0;i<16;i++){const an=rnd(i*7+(o.seed||3))*TAU,d=Math.sqrt(rnd(i*5+2))*r*.8;circ(x+Math.cos(an)*d,y+Math.sin(an)*d,Math.max(.8,r*.05),hexA(C["cell-edge"],.8))}
+  const L=[[-.42,.12],[-.16,-.24],[.18,-.08],[.4,.24]];ctx.strokeStyle=C.nuc;ctx.lineWidth=r*.14;ctx.lineCap="round";ctx.beginPath();L.forEach((p,i)=>i?ctx.lineTo(x+p[0]*r,y+p[1]*r):ctx.moveTo(x+p[0]*r,y+p[1]*r));ctx.stroke();ctx.lineCap="butt";L.forEach(p=>circ(x+p[0]*r,y+p[1]*r,r*.19,C.nuc));
+  ctx.restore()}
+function macro(x,y,r,o){o=o||{};const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);if(o.glow)glow(x,y,r*1.8,C.glow,.5*o.glow);
+  blobPath(x,y,r,o.seed||5,t,o.amp==null?.11:o.amp);ctx.fillStyle=C.macro;ctx.fill();ctx.strokeStyle=C["macro-edge"];ctx.lineWidth=Math.max(1.5,r*.05);ctx.stroke();
+  ctx.beginPath();ctx.ellipse(x-r*.18,y+r*.08,r*.3,r*.22,.4,0,TAU);ctx.fillStyle=mix(C["macro-edge"],C.nuc,.5);ctx.fill();
+  if(!o.nolyso)for(let i=0;i<6;i++){const an=rnd(i*11+(o.seed||5))*TAU,d=r*(.35+rnd(i*3)*.35);circ(x+Math.cos(an)*d,y+Math.sin(an)*d,Math.max(1.5,r*.07),C.lyso)}
+  if(o.lab!==false&&r>14){ctx.font=`700 ${Math.max(9,Math.round(r*.32))}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.ink;ctx.fillText(o.lab||"Mφ",x+r*.25,y-r*.35)}
+  ctx.restore()}
+function dendritic(x,y,r,o){o=o||{};const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  ctx.beginPath();const N=7;for(let i=0;i<=N*12;i++){const a=i/(N*12)*TAU;const arm=Math.pow(Math.max(0,Math.cos(a*N/2+(o.seed||0))),6);const rad=r*(.62+.75*arm+.04*Math.sin(t*2+a*3));const X=x+Math.cos(a)*rad,Y=y+Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath();
+  ctx.fillStyle=mix(C.apc,C.panel,.62);ctx.fill();ctx.strokeStyle=C.apc;ctx.lineWidth=1.6;ctx.stroke();circ(x,y,r*.32,mix(C.apc,C.nuc,.35));
+  if(o.lab!==false){ctx.font=`700 ${Math.max(9,Math.round(r*.3))}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText("DC",x,y)}ctx.restore()}
+function plasmaC(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);ctx.beginPath();ctx.ellipse(x,y,r*1.2,r*.9,o.ang||0,0,TAU);ctx.fillStyle=C.plasma;ctx.fill();ctx.strokeStyle=C.bcell;ctx.lineWidth=1.6;ctx.stroke();
+  const nx=x-r*.55,ny=y;circ(nx,ny,r*.45,C.bcell);for(let k=0;k<6;k++){const an=k/6*TAU;circ(nx+Math.cos(an)*r*.28,ny+Math.sin(an)*r*.28,r*.07,hexA(C.panel,.6))}
+  ctx.strokeStyle=hexA(C.bcell,.7);ctx.lineWidth=1.2;for(let k=0;k<4;k++){ctx.beginPath();ctx.arc(x-r*.2,y,r*(.55+k*.15),-0.9,0.9);ctx.stroke()}
+  if(o.lab!==false){ctx.font=`700 ${Math.max(9,Math.round(r*.32))}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.ink;ctx.fillText("Plasma",x+r*.35,y+r*.62)}ctx.restore()}
+function mastC(x,y,r,deg,o){o=o||{};const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);blobPath(x,y,r,o.seed||4,t,.05);ctx.fillStyle=C.mast;ctx.fill();ctx.strokeStyle=mix(C.mast,C.ink,.45);ctx.lineWidth=1.6;ctx.stroke();
+  circ(x,y,r*.32,mix(C.mast,C.nuc,.5));const n=Math.round(18*(1-(deg||0)*.8));for(let i=0;i<n;i++){const an=rnd(i*9+2)*TAU,d=r*(.42+rnd(i*4)*.45);circ(x+Math.cos(an)*d,y+Math.sin(an)*d,Math.max(1.5,r*.08),C.hist)}
+  if(o.lab!==false){txt(x,y+r+10,"Mast cell",{size:11,weight:600,align:"center",color:C["ink-soft"]})}ctx.restore()}
+// generic body (host) cell: rounded blob with nucleus
+function hostCell(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);const sh=o.shrink||0;const rr_=r*(1-sh*.45);
+  if(o.bleb){for(let k=0;k<7;k++){const an=k/7*TAU+.3;const d=rr_*(1+o.bleb*.45);circ(x+Math.cos(an)*d,y+Math.sin(an)*d,rr_*.32*(o.bleb),C.host,C["host-edge"],1)}}
+  blobPath(x,y,rr_,o.seed||7,o.t||0,.04);ctx.fillStyle=o.fill||C.host;ctx.fill();ctx.strokeStyle=o.edge||C["host-edge"];ctx.lineWidth=1.6;ctx.stroke();
+  circ(x+rr_*.05,y+rr_*.05,rr_*.32,o.nuc||mix(C["host-edge"],C.nuc,.35));ctx.restore()}
+function rbc(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);circ(x,y,r,o.col||C.rbc,C["blood-edge"],1);glow(x,y,r*.6,o.pale?C.panel:C["rbc-hi"],.6);ctx.restore()}
+
+/* ---- body figure (anterior view: body's right is viewer's left) ---- */
+function bodyFig(cx,top,s,o){o=o||{};ctx.save();ctx.translate(cx,top);ctx.scale(s,s);ctx.lineCap="round";ctx.lineJoin="round";
+  const col=o.col||C.body,ed=o.edge||C["body-edge"];
+  const limbs=[[-38,40,-80,175],[38,40,80,175],[-20,170,-28,330],[20,170,28,330]];
+  ctx.strokeStyle=ed;ctx.lineWidth=31;limbs.forEach(l=>{ctx.beginPath();ctx.moveTo(l[0],l[1]);ctx.lineTo(l[2],l[3]);ctx.stroke()});
+  ctx.strokeStyle=col;ctx.lineWidth=28;limbs.forEach(l=>{ctx.beginPath();ctx.moveTo(l[0],l[1]);ctx.lineTo(l[2],l[3]);ctx.stroke()});
+  rr(-45,26,90,155,22);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=ed;ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle=col;ctx.fillRect(-11,8,22,22);circ(0,-12,26,col,ed,1.5);
+  ctx.restore()}
+
+/* ================= scenes: start + Part 1 + Part 2 ================= */
+function bg(col){ctx.fillStyle=col||C.panel;ctx.fillRect(0,0,W,H)}
+
+/* ---------- map ---------- */
+function sceneMap(t){bg();
+  const S=1.02,X0=175,Y0=62;const B=(u,v)=>[X0+u*S,Y0+v*S];
+  bodyFig(X0,Y0,S);
+  // veins at neck + heart
+  const vein=[B(-58,30),B(-16,26),B(-4,40),B(-4,66)],vein2=[B(58,30),B(16,26),B(-4,40)];
+  poly(vein,C.vein,4);poly(vein2,C.vein,4);poly([B(-16,-6),B(-16,26)],C.vein,3);poly([B(16,-6),B(16,26)],C.vein,3);
+  const hb=1+.08*Math.max(0,Math.sin(t*6));circ(...B(-4,76),11*hb,C.blood,C["blood-edge"],1.2);
+  // lymph paths
+  const paths=[
+    [B(-80,175),B(-62,112),B(-44,56),B(-16,26)],[B(80,175),B(62,112),B(44,56),B(16,26)],
+    [B(-28,322),B(-25,250),B(-22,174),B(0,138),B(4,96),B(10,58),B(16,26)],[B(28,322),B(25,250),B(22,174),B(0,138)],
+    [B(-12,-24),B(-14,0),B(-16,26)],[B(12,-24),B(14,0),B(16,26)]];
+  paths.forEach(p=>poly(p,C.lv,2.2));
+  const nodes=[[-15,8],[15,8],[-42,52],[42,52],[-22,172],[22,172],[0,110]];
+  nodes.forEach((n,i)=>{const [x,y]=B(n[0],n[1]);const pulse=.5+.5*Math.sin(t*3+i);ctx.beginPath();ctx.ellipse(x,y,7.5+pulse*1.2,5.2,.4,0,TAU);ctx.fillStyle=C.node;ctx.fill();ctx.strokeStyle=C["node-edge"];ctx.lineWidth=1.6;ctx.stroke()});
+  paths.forEach((p,pi)=>{for(let k=0;k<5;k++){const q=P(t*.16+k/5+pi*.13,1);const [x,y]=along(p,q);dotM(x,y,3.2,C.lv,Math.min(1,q*6,(1-q)*6))}});
+  label(...B(-60,-36),"R",{size:12,weight:700,align:"center",mono:true});label(...B(60,-36),"L",{size:12,weight:700,align:"center",mono:true});
+  label(B(0,0)[0],452,"Lymph flows up toward the neck veins",{size:12,align:"center",color:C["ink-soft"]});
+  // cards
+  const on=Math.floor(P(t,9)*3);
+  const cards=[["act1","Lymphatic system","Drains extra tissue fluid, passes it","through lymph nodes, returns it to blood.","all day, every day"],
+    ["act3","Innate immunity","Fast and general: skin, phagocytes,","inflammation, fever, complement.","minutes to hours"],
+    ["act5","Adaptive immunity","Slow the first time, but specific:","T cells, B cells, antibodies, memory.","days, then remembers"]];
+  cards.forEach((c,i)=>{const x=360,y=22+i*150,w=424,h=134;const lit=i===on;panelBox(x,y,w,h,{stroke:lit?C[c[0]]:C.rule,lw:lit?3:1.2,fill:hexA(C["panel-2"],lit?1:.7)});
+    const ix=x+68,iy=y+h/2;ctx.save();ctx.globalAlpha=lit?1:.55;
+    if(i===0){rr(ix-52,iy-16,104,32,16);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2;ctx.stroke();for(let k=0;k<6;k++){const q=P(t*.4+k/6,1);dotM(ix-46+q*92,iy+Math.sin(k*2)*6,3.2,C.lv)}
+      for(let k=0;k<3;k++){const q=P(t*.5+k/3,1);dotM(ix-30+k*26,iy-40+q*24,3,C.water,1-q*.5)}}
+    else if(i===1){const q=P(t,3);const bx=ix+lerp(30,0,ease(seg(q,0,.45)));if(q<.7)bact(bx,iy,0,7,1-seg(q,.55,.7));neut(ix-14,iy,26,{t,seed:4})}
+    else{lymph(ix-26,iy,22,"b",{t});for(let k=0;k<4;k++){const q=P(t*.45+k/4,1);const ax=ix-4+q*50,ay=iy-24+k*16;ab(ax,ay,9,0,C.ab,{a:Math.min(1,q*5)})}virus(ix+52,iy-6,7,1,t)}
+    ctx.restore();
+    txt(x+150,y+28,c[1],{size:17,weight:700,color:lit?C[c[0]]:C.ink});txt(x+150,y+58,c[2],{size:13,color:C.ink});txt(x+150,y+78,c[3],{size:13,color:C.ink});
+    chipL(x+150,y+108,c[4],C[c[0]])});
+}
+
+/* ---------- three jobs ---------- */
+function sceneJobs(t){bg(C.tissue);
+  const px=[8,272,536];px.forEach((x,i)=>{panelBox(x,8,256,464,{fill:hexA(C.panel,.55)});badge(x+20,30,i+1,C.act1)});
+  title(40,30,"Return fluid");title(304,30,"Absorb fats");title(568,30,"Surveillance");
+  // panel 1
+  { const x0=8; rr(x0+16,70,224,26,13);ctx.fillStyle=C.vessel;ctx.fill();ctx.strokeStyle=C["blood-edge"];ctx.lineWidth=1.5;ctx.stroke();
+    for(let k=0;k<6;k++){const q=P(t*.35+k/6,1);rbc(x0+24+q*208,83,6)}
+    txt(x0+128,58,"Blood capillary",{size:11.5,align:"center",weight:600,color:C["ink-soft"]});
+    [[60,190],[130,170],[200,200],[95,260],[175,270]].forEach((c,i)=>hostCell(x0+c[0],c[1],18,{seed:i+2,t}));
+    for(let k=0;k<14;k++){const q=P(t*.3+k/14,1);const sx=x0+30+rnd(k)*120,ex=x0+40+rnd(k+9)*180;
+      if(k%3===0){const yy=lerp(100,190,1-q);dotM(x0+150+rnd(k+3)*80,yy,2.6,C.water,Math.min(1,q*4))}
+      else{const yy=lerp(100,358,q);dotM(lerp(sx,ex,q),yy,2.6,q>.92?C.lv:C.water,Math.min(1,(1-q)*8))}}
+    rr(x0+16,350,224,30,15);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2;ctx.stroke();
+    for(let k=0;k<7;k++){const q=P(t*.3+k/7,1);dotM(x0+24+q*208,365,3,C.lv)}
+    txt(x0+128,395,"Lymphatic vessel",{size:11.5,align:"center",weight:600,color:C.lv});
+    arrow(x0+236,365,x0+236,422,C.lv,2);label(x0+128,440,"→ back to the veins",{size:12,align:"center",weight:600});
+    label(x0+74,125,"most fluid returns",{size:10.5,align:"center",color:C["ink-soft"]});label(x0+176,320,"extra fluid → lymph",{size:10.5,align:"center",color:C["ink-soft"]});}
+  // panel 2: villus
+  { const x0=272,cx=x0+128;ctx.fillStyle=hexA(C.fat,.12);ctx.fillRect(x0+6,46,244,60);
+    ctx.beginPath();ctx.moveTo(cx-62,470);ctx.lineTo(cx-62,170);ctx.arc(cx,170,62,Math.PI,0);ctx.lineTo(cx+62,470);ctx.fillStyle=C.host;ctx.fill();ctx.strokeStyle=C["host-edge"];ctx.lineWidth=2;ctx.stroke();
+    for(let y=130;y<460;y+=26){line(cx-62,y,cx-46,y,hexA(C["host-edge"],.5),1);line(cx+46,y,cx+62,y,hexA(C["host-edge"],.5),1)}
+    ctx.strokeStyle=C.blood;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(cx-40,460);ctx.lineTo(cx-40,180);ctx.arc(cx,180,40,Math.PI,0);ctx.lineTo(cx+40,460);ctx.stroke();
+    rr(cx-13,150,26,320,13);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2;ctx.stroke();
+    for(let k=0;k<10;k++){const q=P(t*.22+k/10,1);let x,y;const side=k%2?1:-1;
+      if(q<.3){x=cx+side*(30+rnd(k)*60);y=lerp(60,118,q/.3)}else if(q<.5){const u=(q-.3)/.2;x=lerp(cx+side*(30+rnd(k)*60)*1,cx+side*14,u);y=lerp(118,170+rnd(k)*80,u)}else{x=cx+side*3;y=lerp(170+rnd(k)*80,470,(q-.5)/.5)}
+      circ(x,y,q<.3?5:4,C.fat,hexA(C.ink,.3),1)}
+    for(let k=0;k<4;k++){const q=P(t*.5+k/4,1);rbc(cx+(k%2?40:-40),lerp(460,190,q),4.5)}
+    label(cx,64,"Fat from food",{size:11.5,align:"center",weight:600});
+    label(cx+70,300,"Blood capillary",{size:11,align:"left",color:C.blood});label(cx,128,"Villus",{size:11.5,align:"center",weight:600});
+    label(cx-20,400,"Lacteal",{size:12,align:"right",weight:700,color:C.lv});label(cx,452,"chyle flows away",{size:11,align:"center"});}
+  // panel 3: node
+  { const x0=536,cx=x0+128,cy=250;beanNode(cx,cy,62,46,{bgc:hexA(C.panel,.55),notch:false});
+    ctx.beginPath();ctx.ellipse(cx,cy,44,30,0,0,TAU);ctx.strokeStyle=hexA(C["node-edge"],.5);ctx.setLineDash([3,3]);ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);
+    [[-28,-16],[-10,-26],[14,-24],[-34,10],[-12,22],[12,26]].forEach((p,i)=>lymph(cx+p[0],cy+p[1],7,i<3?"b":"t",{norec:true,label:"",glow:.5+.5*Math.sin(t*3+i)}));
+    macro(cx+22,cy-2,15,{t,seed:3,lab:false});
+    const inP=[[x0+12,130],[cx-46,cy-28],[cx+8,cy-4]],outP=[[cx+60,cy],[x0+246,cy]];
+    poly([[x0+12,130],[cx-50,cy-30]],C.lv,10);poly([[x0+12,130],[cx-50,cy-30]],C.lymph,7);poly([[cx+60,cy],[x0+248,cy]],C.lv,10);poly([[cx+60,cy],[x0+248,cy]],C.lymph,7);
+    let trapped=0;for(let k=0;k<6;k++){const q=P(t*.25+k/6,1);const [x,y]=along(inP.concat(outP),q);dotM(x,y,2.6,C.lv)}
+    for(let k=0;k<3;k++){const q=P(t*.2+k/3,1);if(q<.7){const [x,y]=along(inP,q/.7);bact(x,y,.6,5,q>.62?1-seg(q,.62,.7):1)}else trapped++}
+    label(x0+40,112,"lymph in",{size:11,align:"left"});label(x0+248,cy-26,"lymph out",{size:11,align:"right"});
+    label(cx,cy+86,"Macrophage eats the bacterium",{size:11.5,align:"center",weight:600});label(cx,cy+108,"lymphocytes inside wake up",{size:11,align:"center",color:C["ink-soft"]});}
+}
+
+/* ---------- lymphatic capillary ---------- */
+function sceneLcap(t){bg(C.tissue);
+  // blood capillary
+  rr(30,58,740,40,20);ctx.fillStyle=C.vessel;ctx.fill();ctx.strokeStyle=C["blood-edge"];ctx.lineWidth=2;ctx.stroke();
+  for(let k=0;k<12;k++){const q=P(t*.18+k/12,1);rbc(40+q*720,78,8)}
+  txt(40,40,"Blood capillary · arterial end",{size:12,weight:600,color:C.blood});txt(760,40,"venous end",{size:12,weight:600,color:C.blood,align:"right"});
+  // tissue cells
+  const cells=[[90,170],[200,150],[330,180],[460,150],[590,175],[710,150],[150,250],[400,250],[650,255]];
+  cells.forEach((c,i)=>hostCell(c[0],c[1],22,{seed:i,t:t*.5}));
+  // outflow at left, return at right
+  for(let k=0;k<16;k++){const q=P(t*.3+k/16,1);const x=60+rnd(k)*330;dotM(x+q*30,lerp(100,280,q),2.8,C.water,Math.min(1,(1-q)*5))}
+  for(let k=0;k<10;k++){const q=P(t*.3+k/10,1);const x=440+rnd(k+4)*300;dotM(x,lerp(240,102,q),2.8,C.water,Math.min(1,(1-q)*5,q*5))}
+  arrow(160,108,160,138,C.water,2);arrow(600,140,600,108,C.water,2);
+  label(230,128,"fluid filters out",{size:11.5});label(670,128,"most returns",{size:11.5});
+  // lymphatic capillary
+  const LY=330,LB=420,xL=120,xR=790;const cyc=P(t,8),closing=seg(cyc,.72,.78)*(1-seg(cyc,.97,1));
+  ctx.beginPath();ctx.moveTo(xR,LY);ctx.lineTo(xL+45,LY);ctx.arc(xL+45,(LY+LB)/2,(LB-LY)/2,-Math.PI/2,Math.PI/2,true);ctx.lineTo(xR,LB);ctx.closePath();
+  ctx.fillStyle=mix(C.lymph,C.lv,closing*.25);ctx.fill();
+  // anchoring filaments
+  for(let x=170;x<780;x+=70){line(x+6,LY-2,x-24,290,hexA(C.lv,.55),1.2,[4,3]);line(x+20,LB+2,x-6,470,hexA(C.lv,.45),1.2,[4,3])}
+  // flaps
+  const flaps=[];for(let i=0;i<9;i++)flaps.push(150+i*68);
+  const DOTS=[];for(let k=0;k<18;k++){const fi=k%9;const te=.12+.5*rnd(k*3+1);DOTS.push({fi,te,sx:flaps[fi]+20+rnd(k)*60-30,sy:210+rnd(k+7)*70,big:k===5?"prot":k===11?"bact":null})}
+  const open=flaps.map(()=>0);
+  DOTS.forEach(d=>{const u=(cyc-d.te)/.08;if(u>-1&&u<1.2)open[d.fi]=Math.max(open[d.fi],clamp(1-Math.abs(u-.2)/1,0,1))});
+  // bottom wall
+  line(xL+45,LB,xR,LB,C.lv,3);ctx.beginPath();ctx.arc(xL+45,(LY+LB)/2,(LB-LY)/2,Math.PI/2,Math.PI*1.5);ctx.strokeStyle=C.lv;ctx.lineWidth=3;ctx.stroke();
+  // dots
+  DOTS.forEach((d,k)=>{const gx=flaps[d.fi]+50;let x,y,col=C.water,a=1;
+    if(cyc<d.te-.25){const u=cyc/(d.te-.25);x=lerp(d.sx-20,d.sx,u);y=lerp(d.sy-30,d.sy,u)}
+    else if(cyc<d.te){const u=ease((cyc-(d.te-.25))/.25);x=lerp(d.sx,gx,u);y=lerp(d.sy,LY-8,u)}
+    else if(cyc<d.te+.06){const u=(cyc-d.te)/.06;x=gx;y=lerp(LY-8,LY+18,u);col=mix(C.water,C.lv,u)}
+    else{const u=(cyc-d.te-.06);x=gx+u*(closing>0?520:230)+(k%3)*4;y=LY+18+((k*13)%60);col=C.lv;a=clamp((xR-x)/30,0,1)}
+    if(d.big==="bact")bact(x,y,.3,6,a);else if(d.big==="prot")diamond(x,y,5,C.ab,a);else dotM(x,y,3.2,col,a)});
+  flaps.forEach((fx,i)=>{const op=open[i]*(1-closing);const ang=op*.6;ctx.save();ctx.translate(fx-6,LY);ctx.rotate(ang);
+    rr(0,-4,70,8,4);ctx.fillStyle=mix(C.lymph,C.lv,.35);ctx.fill();ctx.strokeStyle=C["lv-edge"];ctx.lineWidth=1.6;ctx.stroke();circ(32,0,2.5,C["lv-edge"]);ctx.restore()});
+  txt(xL+40,LB+26,"Lymphatic capillary (blind end)",{size:12,weight:700,color:C.lv});
+  const ofi=open.indexOf(Math.max(...open));if(open[ofi]>.4&&closing<.1){label(flaps[ofi]+30,LY-46,"flap swings in",{size:11.5,align:"center",border:C.lv});}
+  label(260,300,"anchoring filament",{size:10.5,color:C["ink-soft"]});
+  if(closing>.2){withA(closing,()=>{label(470,LY-46,"Pressure inside rises → flaps pushed shut",{size:12.5,weight:700,align:"center",border:C.lv});label(470,(LY+LB)/2,"lymph moves on → no backflow",{size:12,weight:600,align:"center"})})}
+  else label(560,(LY+LB)/2+28,"now it is called lymph",{size:11.5,align:"center"});
+  label(110,200,"interstitial fluid",{size:11.5,weight:600,color:C.water});
+}
+
+/* ---------- vessels, trunks, ducts ---------- */
+function sceneDucts(t){bg();
+  const S=1.0,X0=230,Y0=64;const B=(u,v)=>[X0+u*S,Y0+v*S];
+  bodyFig(X0,Y0,S);
+  // shade right-upper region
+  ctx.save();ctx.globalAlpha=.32;ctx.fillStyle=C.mhc2;ctx.translate(X0,Y0);ctx.scale(S,S);
+  ctx.beginPath();ctx.arc(0,-12,26,Math.PI/2,Math.PI*1.5);ctx.closePath();ctx.fill();ctx.fillRect(-11,8,11,22);rr(-45,26,45,74,0);ctx.fill();
+  ctx.lineCap="round";ctx.strokeStyle=C.mhc2;ctx.lineWidth=28;ctx.beginPath();ctx.moveTo(-38,40);ctx.lineTo(-80,175);ctx.stroke();ctx.restore();
+  line(...B(-45,100),...B(45,100),hexA(C.ink,.35),1,[5,4]);txt(B(48,100)[0],B(0,100)[1],"diaphragm",{size:10.5,color:C["ink-soft"]});
+  // veins
+  poly([B(-70,28),B(-16,26),B(-4,42),B(-4,70)],C.vein,4.5);poly([B(70,28),B(16,26),B(-4,42)],C.vein,4.5);poly([B(-16,-8),B(-16,26)],C.vein,3);poly([B(16,-8),B(16,26)],C.vein,3);
+  circ(...B(-4,80),11,C.blood,C["blood-edge"],1.2);
+  // lymph paths
+  const RD=[B(-80,175),B(-62,112),B(-44,56),B(-24,30),B(-16,26)],RH=[B(-12,-26),B(-14,2),B(-16,26)];
+  const TD=[B(-28,322),B(-25,250),B(-22,174),B(0,140),B(3,100),B(8,60),B(12,32),B(16,26)];
+  const L2=[B(28,322),B(25,250),B(22,174),B(0,140)],LA=[B(80,175),B(62,112),B(44,56),B(16,26)],LH=[B(12,-26),B(14,2),B(16,26)];
+  [RD,RH].forEach(p=>poly(p,C.lv,2.4));[TD,L2,LA,LH].forEach(p=>poly(p,C.lv,2.4));poly(TD.slice(3),C.lv,4.5);poly([B(-24,30),B(-16,26)],C.lv,4.5);
+  ctx.beginPath();ctx.ellipse(...B(0,140),7,12,0,0,TAU);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2;ctx.stroke();
+  [[-42,54],[42,54],[-22,172],[22,172],[-14,6],[14,6]].forEach(n=>{const [x,y]=B(n[0],n[1]);ctx.beginPath();ctx.ellipse(x,y,6,4.5,.4,0,TAU);ctx.fillStyle=C.node;ctx.fill();ctx.strokeStyle=C["node-edge"];ctx.lineWidth=1.4;ctx.stroke()});
+  [[RD,0],[RH,.3],[TD,.1],[L2,.6],[LA,.4],[LH,.8]].forEach(([p,o],pi)=>{for(let k=0;k<4;k++){const q=P(t*.14+k/4+o,1);const [x,y]=along(p,q);dotM(x,y,3.2,C.lv,Math.min(1,q*8,(1-q)*8))}});
+  // junction pulses
+  [B(-16,26),B(16,26)].forEach(p=>glow(p[0],p[1],14+3*Math.sin(t*4),C.lv,.5));
+  // labels
+  const lab=(p,tx,ty,s,al,col)=>{line(p[0],p[1],tx,ty,hexA(C.ink,.4),1);label(tx,ty,s,{size:11.5,align:al,weight:600,color:col||C.ink})};
+  lab(B(-20,28),40,40,"Right lymphatic duct",  "left",C.lv);
+  lab(B(-60,27),40,70,"Right subclavian vein","left",C.vein);
+  lab(B(14,27),330,30,"Thoracic duct empties here","left",C.lv);
+  lab(B(60,27),330,58,"Left subclavian vein","left",C.vein);
+  lab(B(5,80),330,150,"Thoracic duct","left",C.lv);
+  lab(B(6,140),330,205,"Cisterna chyli","left",C.lv);
+  label(...B(-62,-34),"R",{size:12,weight:700,align:"center",mono:true});label(...B(62,-34),"L",{size:12,weight:700,align:"center",mono:true});
+  label(B(0,0)[0],448,"shaded = drains to right lymphatic duct",{size:11.5,align:"center",border:C.mhc2});
+  // inset: collecting vessel
+  panelBox(520,14,268,452,{fill:hexA(C["panel-2"],.9)});title(536,34,"Inset: collecting vessel");
+  const cx=650,yT=80,yB=430,L=2.6,ph=P(t,L);const sq=Math.sin(Math.PI*seg(ph,.05,.55));
+  const segW=y=>{let w=26;if(y>250&&y<350)w-=10*sq*Math.sin(Math.PI*(y-250)/100);return w};
+  ctx.beginPath();for(let y=yT;y<=yB;y+=5)ctx.lineTo(cx-segW(y),y);for(let y=yB;y>=yT;y-=5)ctx.lineTo(cx+segW(y),y);ctx.closePath();ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2;ctx.stroke();
+  // muscle bellies
+  [-1,1].forEach(sd=>{ctx.beginPath();ctx.ellipse(cx+sd*(46+14*(1-sq)),300,22+8*sq,62-6*sq,0,0,TAU);ctx.fillStyle=mix(C.blood,C.body,.55);ctx.fill();ctx.strokeStyle=C["body-edge"];ctx.lineWidth=1.5;ctx.stroke();
+    for(let k=-2;k<=2;k++)line(cx+sd*(46+14*(1-sq))-10,300+k*18,cx+sd*(46+14*(1-sq))+10,300+k*18,hexA(C["body-edge"],.6),1)});
+  // valves at 150, 250, 350: upper two open during squeeze, lowest shut
+  [[150,sq],[250,sq],[350,1-sq]].forEach(([vy,op],i)=>{const o=clamp(op,0,1);const w=segW(vy);
+    [-1,1].forEach(sd=>{line(cx+sd*w,vy+10,cx+sd*lerp(2,w-6,o),vy-12,C["lv-edge"],3)});
+    txt(cx+40,vy-6,o>.5?"open":"shut",{size:11,weight:700,color:o>.5?C.good:C.warn,mono:true})});
+  // dots
+  for(let k=0;k<26;k++){const base=k*13;const cyc=Math.floor(t/L)+ease(seg(ph,.05,.55));const back=ph>.6?2.2*Math.sin(Math.PI*seg(ph,.6,.95)):0;
+    const d=((base+cyc*100-back)%340+340)%340;const y=yB-d;const w=segW(y);dotM(cx+(rnd(k)-.5)*(w*1.1),y,3,C.lv,Math.min(1,(y-yT)/20,(yB-y)/20))}
+  arrow(cx+66,140,cx+66,96,C.lv,2.5);txt(cx+76,118,"to heart",{size:11,color:C.lv,weight:600});
+  label(cx,yB+18,sq>.3?"Muscle squeezes: lymph pushed up":"Muscle relaxes: lower valve opens, refills",{size:11,align:"center",weight:600});
+}
+
+/* ---------- primary lymphoid organs ---------- */
+function scenePrimary(t){bg();
+  // bone
+  ctx.save();ctx.beginPath();ctx.moveTo(70,470);ctx.lineTo(70,170);ctx.bezierCurveTo(40,110,60,40,150,40);ctx.bezierCurveTo(240,40,260,110,230,170);ctx.lineTo(230,470);ctx.closePath();
+  ctx.fillStyle=C.bone;ctx.fill();ctx.strokeStyle=C["body-edge"];ctx.lineWidth=2;ctx.stroke();ctx.clip();
+  ctx.beginPath();ctx.ellipse(150,150,72,92,0,0,TAU);ctx.fillStyle=C.marrow;ctx.fill();
+  ctx.strokeStyle=hexA(C["body-edge"],.6);ctx.lineWidth=1.2;for(let i=0;i<16;i++){const a=rnd(i)*TAU,b=rnd(i+20)*TAU;line(150+Math.cos(a)*60,150+Math.sin(a)*78,150+Math.cos(b)*60,150+Math.sin(b)*78,hexA(C["body-edge"],.5),1.5)}
+  ctx.restore();title(80,24,"Red bone marrow");
+  // vessels
+  const vesselPts=[[210,240],[330,240],[330,140],[515,140]];poly(vesselPts,C.vessel,16);poly(vesselPts,hexA(C.blood,.5),1.5);
+  const bPath=[[175,250],[330,250],[330,400],[400,400]];poly([[330,240],[330,400],[400,400]],C.vessel,16);
+  // thymus + heart
+  const hx_=620,hy=140;[-1,1].forEach(sd=>{ctx.beginPath();ctx.ellipse(hx_+sd*44,hy,52,84,sd*.18,0,TAU);ctx.fillStyle=mix(C.node,C.th,.12);ctx.fill();ctx.strokeStyle=C["node-edge"];ctx.lineWidth=1.8;ctx.stroke()});
+  title(570,30,"Thymus");ctx.beginPath();ctx.ellipse(hx_,300,46,40,0,0,TAU);ctx.fillStyle=mix(C.blood,C.panel,.45);ctx.fill();txt(hx_,300,"heart",{size:11,align:"center",color:C["ink-soft"]});
+  const tOut=[[690,150],[750,150],[750,400],[560,400]];poly(tOut,C.vessel,16);
+  // secondary box
+  panelBox(400,350,160,104,{fill:hexA(C["panel-2"],.95)});txt(480,368,"Secondary organs",{size:11.5,weight:700,align:"center"});
+  beanNode(450,410,26,18,{bgc:C["panel-2"]});ctx.beginPath();ctx.ellipse(515,410,14,24,.5,0,TAU);ctx.fillStyle=mix(C.blood,C.node,.5);ctx.fill();
+  txt(450,442,"nodes",{size:10,align:"center",color:C["ink-soft"]});txt(518,442,"spleen",{size:10,align:"center",color:C["ink-soft"]});
+  // stem cell
+  const sp=1+.08*Math.sin(t*5);circ(150,130,16*sp,mix(C.cyto,C.panel,.3),C["cell-edge"],1.5);circ(150,130,9,C.nuc);label(150,96,"stem cell",{size:11,align:"center"});
+  // B cells: mature in marrow then leave
+  const L=12,ph=P(t,L);
+  for(let k=0;k<3;k++){const st=k*.12,u=seg(ph,st,st+.3),v=seg(ph,st+.38,st+.62);if(ph<st)continue;
+    let x,y;if(v<=0){x=lerp(150,110+k*32,ease(u));y=lerp(130,205,ease(u))}else{[x,y]=along([[110+k*32,205]].concat(bPath),v)}
+    const a=v>=1?0:1;const mat=seg(u,.5,1);lymph(x,y,10,"b",{a,norec:mat<.5,nrec:8,label:"B",t})}
+  if(ph>.2&&ph<.5)label(150,232,"B cells mature here",{size:11,align:"center",weight:600,border:C.bcell});
+  // T cells: travel to thymus, tested
+  const fails=[1,3];
+  for(let k=0;k<5;k++){const st=.05+k*.09;if(ph<st)continue;const u=seg(ph,st,st+.22),w=seg(ph,st+.24,st+.36),v=seg(ph,st+.4,st+.62);
+    let x,y,kind="t",lab="T",a=1;const tx=620+(k-2)*18,ty=110+(k%2)*50;
+    if(u<1){[x,y]=along([[150,130]].concat(vesselPts),u);lab="";}
+    else if(w<1||fails.includes(k)){x=lerp(515,tx,ease(Math.min(1,w*2)));y=lerp(140,ty,ease(Math.min(1,w*2)));lab="?"}
+    else{[x,y]=along([[tx,ty]].concat(tOut),v);kind=k%2?"tc":"th";lab=k%2?"8":"4";a=v>=1?0:1}
+    if(fails.includes(k)&&w>=.5){const f=seg(ph,st+.3,st+.4);if(f>=1)continue;
+      withA(1-f,()=>{lymph(x,y,10*(1-f*.5),"t",{label:"",norec:true,col:C.bad});ctx.font=`700 14px ${FONT}`;ctx.fillStyle=C.bad;ctx.textAlign="center";ctx.fillText("✕",x,y-18)});continue}
+    lymph(x,y,10,kind,{a,label:lab,nrec:7,norec:u<1})}
+  label(620,250,"most fail and die; survivors become CD4 or CD8",{size:11,align:"center"});
+  txt(250,226,"blood",{size:10.5,color:C["ink-soft"]});
+}
+
+/* ---------- lymph node ---------- */
+function sceneNode(t){bg();
+  const cx=400,cy=250,RX=250,RY=170;
+  // efferent + hilum vessels
+  // capsule
+  ctx.beginPath();ctx.ellipse(cx,cy,RX,RY,0,0,TAU);ctx.fillStyle=C.node;ctx.fill();ctx.strokeStyle=C["node-edge"];ctx.lineWidth=5;ctx.stroke();
+  // subcapsular sinus
+  ctx.beginPath();ctx.ellipse(cx,cy,RX-14,RY-12,0,0,TAU);ctx.strokeStyle=hexA(C.lv,.45);ctx.lineWidth=9;ctx.stroke();
+  // paracortex band
+  ctx.beginPath();ctx.ellipse(cx-20,cy,RX*.62,RY*.62,0,0,TAU);ctx.fillStyle=mix(C.node,C.th,.12);ctx.fill();
+  // medulla
+  ctx.beginPath();ctx.ellipse(cx+40,cy,RX*.38,RY*.36,0,0,TAU);ctx.fillStyle=mix(C.node,C.panel,.4);ctx.fill();
+  for(let k=0;k<5;k++){ctx.beginPath();for(let x=-70;x<=90;x+=6){const y=-40+k*20+Math.sin(x*.08+k)*6;x===-70?ctx.moveTo(cx+40+x,cy+y):ctx.lineTo(cx+40+x,cy+y)}ctx.strokeStyle=hexA(C.lv,.5);ctx.lineWidth=4;ctx.stroke()}
+  // hilum notch
+  ctx.beginPath();ctx.ellipse(cx+RX+4,cy+8,42,52,0,0,TAU);ctx.fillStyle=C.panel;ctx.fill();
+  poly([[cx+RX-40,cy+6],[cx+RX+80,cy+10],[790,cy+10]],C.lv,16);poly([[cx+RX-40,cy+6],[cx+RX+80,cy+10],[790,cy+10]],C.lymph,12);
+  line(cx+RX-34,cy-14,cx+RX+70,cy-40,C.blood,5);line(cx+RX-34,cy+28,cx+RX+70,cy+56,C.vein,5);
+  // follicles
+  const fol=[];for(let i=0;i<7;i++){const a=Math.PI*.62+i*(Math.PI*.76/6)*1.0+ (i>3?0:0);fol.push(a)}
+  const folPos=[[cx-190,cy-60],[cx-140,cy-122],[cx-50,cy-140],[cx+50,cy-138],[cx-200,cy+40],[cx-140,cy+116],[cx-50,cy+138],[cx+50,cy+136]];
+  folPos.forEach((p,i)=>{circ(p[0],p[1],30,C.follicle,hexA(C.bcell,.6),1.4);const g=.6+.4*Math.sin(t*1.5+i);circ(p[0]+2,p[1]+2,13*g+4,C.germ);
+    for(let k=0;k<9;k++){const an=k/9*TAU+t*.2,d=21;circ(p[0]+Math.cos(an)*d,p[1]+Math.sin(an)*d,4,C.bcell)}});
+  // T cells
+  for(let k=0;k<22;k++){const an=k/22*TAU;const d=.5+.08*rnd(k);const x=cx-20+Math.cos(an)*RX*d*.95,y=cy+Math.sin(an)*RY*d;if(x>cx+60&&Math.abs(y-cy)<70)continue;
+    circ(x+Math.sin(t+k)*1.5,y,4.2,C.th)}
+  // macrophages along sinuses
+  const MAC=[[cx-205,cy-10],[cx+90,cy-90],[cx+120,cy+40]];MAC.forEach((m,i)=>macro(m[0],m[1],17,{t,seed:i+2,lab:false}));
+  // afferents
+  const AFF=[[[30,90],[cx-196,cy-104]],[[20,250],[cx-RX+4,cy]],[[60,420],[cx-170,cy+128]]];
+  AFF.forEach(a=>{poly(a,C.lv,14);poly(a,C.lymph,10);const mx=lerp(a[0][0],a[1][0],.5),my=lerp(a[0][1],a[1][1],.5);const an=Math.atan2(a[1][1]-a[0][1],a[1][0]-a[0][0]);
+    ctx.save();ctx.translate(mx,my);ctx.rotate(an);line(-6,-6,3,0,C["lv-edge"],2);line(-6,6,3,0,C["lv-edge"],2);ctx.restore()});
+  // flow particles: enter, through sinus, medulla, hilum, out
+  const routes=AFF.map((a,i)=>[a[0],a[1],[cx-40+i*10,cy-40+i*40],[cx+80,cy+(i-1)*24],[cx+RX-30,cy+6],[cx+RX+80,cy+10],[800,cy+10]]);
+  let caught=0;
+  routes.forEach((r,i)=>{for(let k=0;k<5;k++){const q=P(t*.08+k/5+i*.21,1);const [x,y]=along(r,q);dotM(x,y,3,C.lv,Math.min(1,q*10))}
+    const q=P(t*.08+i*.33,1);const stop=[.32,.4,.36][i];const m=MAC[[0,0,2][i]];
+    if(q<stop){const [x,y]=along(r,q);bact(x,y,.4,6)}else if(q<stop+.06){const u=(q-stop)/.06;const [x,y]=along(r,stop);bact(lerp(x,m[0],u),lerp(y,m[1],u),.4,6*(1-u*.6),1-u*.7)}else caught++});
+  // labels
+  const L=(x,y,s,o)=>label(x,y,s,Object.assign({size:11.5,weight:600},o||{}));
+  L(70,70,"Afferent vessels (in)",{color:C.lv});L(cx+RX+60,cy+36,"Efferent (out)",{color:C.lv,align:"center"});L(cx+RX+44,cy-62,"Hilum",{align:"center"});
+  L(cx-50,cy-196,"Capsule",{align:"center"});L(cx+50,cy-196,"Follicles: B cells",{align:"left",color:C.bcell});
+  L(cx-120,cy+200-26,"Germinal center = B cells dividing",{align:"left",size:10.5});
+  L(cx-40,cy+60,"Paracortex: T cells",{align:"center",color:C.th});L(cx+50,cy-8,"Medulla",{align:"center"});
+  L(cx-205,cy+22,"Macrophage",{align:"center",size:10.5});
+  label(640,452,"Bacteria trapped: "+caught+" of 3 this pass",{size:11.5,mono:true,align:"center"});
+}
+
+/* ---------- spleen + MALT ---------- */
+function sceneSpleen(t){bg();
+  // left: spleen
+  title(16,22,"Spleen: filters blood");
+  ctx.save();ctx.translate(90,110);ctx.rotate(-.5);ctx.beginPath();ctx.ellipse(0,0,62,36,0,0,TAU);ctx.fillStyle=mix(C.blood,C.node,.5);ctx.fill();ctx.strokeStyle=C["blood-edge"];ctx.lineWidth=2;ctx.stroke();
+  for(let k=0;k<7;k++)circ(-40+k*13,(k%2?8:-8),4,mix(C.panel,C.bcell,.3));ctx.restore();
+  line(145,140,190,170,hexA(C.ink,.3),1,[4,3]);line(110,160,80,230,hexA(C.ink,.3),1,[4,3]);
+  const zx=210,zy=310,zr=150;ctx.save();ctx.beginPath();ctx.arc(zx,zy,zr,0,TAU);ctx.clip();ctx.fillStyle=mix(C.blood,C.panel,.7);ctx.fillRect(zx-zr,zy-zr,zr*2,zr*2);
+  // RBCs flowing
+  for(let k=0;k<26;k++){const q=P(t*.08+k/26,1);const x=zx-zr+q*zr*2,y=zy-zr+20+((k*37)%260);rbc(x,y,7,{a:.95})}
+  // white pulp
+  circ(zx+50,zy-40,54,mix(C.follicle,C.panel,.2),hexA(C.bcell,.6),1.4);circ(zx+50,zy-40,7,C.blood);
+  for(let k=0;k<14;k++){const an=k/14*TAU+t*.15;circ(zx+50+Math.cos(an)*(20+(k%2)*14),zy-40+Math.sin(an)*(20+(k%2)*14),5,k%3?C.bcell:C.th)}
+  // macrophage eats old RBC
+  const mx=zx-60,my=zy+60,q=P(t,5);macro(mx,my,30,{t,seed:6,lab:false});
+  if(q<.8){const u=ease(seg(q,.1,.6));const ox=lerp(mx+90,mx+10,u),oy=lerp(my-40,my,u);withA(1-seg(q,.6,.8),()=>{rbc(ox,oy,9*(1-seg(q,.6,.8)*.4),{col:mix(C.rbc,C["ink-faint"],.45),pale:true})})}
+  ctx.restore();circ(zx,zy,zr,null,C.rule,2);
+  label(zx+50,zy+24,"White pulp",{size:11.5,weight:700,align:"center",color:C.bcell});label(zx+50,zy+42,"lymphocytes",{size:10.5,align:"center"});
+  label(mx,my+48,"Red pulp macrophage",{size:11.5,weight:700,align:"center"});label(mx,my+66,"eats an old red cell",{size:10.5,align:"center"});
+  // right: tonsil
+  panelBox(410,12,380,220,{fill:hexA(C["panel-2"],.9)});title(426,32,"Tonsil: crypts trap germs");
+  ctx.beginPath();ctx.moveTo(430,210);ctx.bezierCurveTo(440,70,760,70,770,210);ctx.closePath();ctx.fillStyle=mix(C.node,C.blood,.15);ctx.fill();ctx.strokeStyle=C["node-edge"];ctx.lineWidth=2;ctx.stroke();
+  const crypts=[520,600,680];crypts.forEach(x=>{ctx.beginPath();ctx.moveTo(x-8,96);ctx.quadraticCurveTo(x,170,x+8,96);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C["node-edge"];ctx.lineWidth=1.5;ctx.stroke()});
+  for(let k=0;k<6;k++){const x=470+k*55;circ(x,180,13,C.follicle,hexA(C.bcell,.5),1)}
+  for(let k=0;k<3;k++){const q=P(t*.25+k/3,1);const x=crypts[k];const y=q<.5?lerp(50,92,q/.5):lerp(92,150,ease(seg(q,.5,.8)));bact(x+(q<.5?(1-q*2)*40:0),y,1.57,5,q>.9?1-(q-.9)*10:1)}
+  for(let k=0;k<3;k++){const ph=P(t*.25+k/3,1);lymph(crypts[k]+18,170-seg(ph,.6,.85)*14,8,"b",{norec:true,label:"",glow:seg(ph,.75,.95)})}
+  label(600,222,"germs breathed or swallowed get stuck in crypts; lymphocytes sample them",{size:10.5,align:"center"});
+  // right bottom: Peyer's patch
+  panelBox(410,244,380,224,{fill:hexA(C["panel-2"],.9)});title(426,264,"Peyer's patch (MALT) in the small intestine");
+  ctx.fillStyle=hexA(C.fat,.15);ctx.fillRect(412,276,376,40);
+  for(let x=430;x<780;x+=40){if(Math.abs(x-600)<70)continue;ctx.beginPath();ctx.moveTo(x-14,350);ctx.lineTo(x-14,300);ctx.arc(x,300,14,Math.PI,0);ctx.lineTo(x+14,350);ctx.fillStyle=C.host;ctx.fill();ctx.strokeStyle=C["host-edge"];ctx.lineWidth=1.3;ctx.stroke()}
+  ctx.beginPath();ctx.moveTo(530,350);ctx.quadraticCurveTo(600,300,670,350);ctx.fillStyle=C.host;ctx.fill();ctx.strokeStyle=C["host-edge"];ctx.lineWidth=1.3;ctx.stroke();
+  ctx.fillStyle=C.host;ctx.fillRect(412,350,376,30);
+  circ(600,400,46,C.follicle,hexA(C.bcell,.6),1.4);circ(600,402,18,C.germ);for(let k=0;k<12;k++){const an=k/12*TAU;circ(600+Math.cos(an)*32,400+Math.sin(an)*32,4.5,C.bcell)}
+  const q3=P(t,6);const bx=600,by=q3<.4?lerp(290,326,q3/.4):q3<.7?lerp(326,370,seg(q3,.4,.7)):370;if(q3<.85)bact(bx+(q3<.4?(.4-q3)*120:0),by,1.57,5,1-seg(q3,.75,.85));
+  if(q3>.7)glow(600,400,60,C.glow,.35*(1-seg(q3,.9,1)));
+  label(782,330,"M cell passes germ down",{size:10.5,align:"right"});label(660,452,"lymphoid follicle wakes up",{size:10.5,align:"center"});
+}
+
+/* ================= scenes: Part 3 innate ================= */
+function sceneBarrier(t){bg(C.tissue);
+  const px=[8,272,536];px.forEach((x,i)=>{panelBox(x,8,256,464,{fill:hexA(C.panel,.6)});badge(x+20,30,i+1,C.act3)});
+  title(40,30,"Skin");title(304,30,"Mucous membrane");title(568,30,"Secretions");
+  // skin
+  { const x0=8;const shed=P(t,4);
+    for(let r=0;r<5;r++){const y=170+r*16;for(let c=0;c<5;c++){const x=x0+12+c*44+(r%2)*18;let dy=0,a=1;if(r===0&&c===2){dy=-ease(seg(shed,.4,1))*70;a=1-seg(shed,.75,1)}
+      withA(a,()=>{rr(x,y+dy,40,12,5);ctx.fillStyle=C.kera;ctx.fill();ctx.strokeStyle=mix(C.kera,C.ink,.35);ctx.lineWidth=1;ctx.stroke()});
+      if(r===0&&c===2){withA(a,()=>bact(x+20,y+dy-8,0,5))}}}
+    for(let r=0;r<3;r++)for(let c=0;c<5;c++){const x=x0+40+c*46+(r%2)*18,y=270+r*40;hostCell(x,y,17,{seed:r*5+c,fill:C.skin})}
+    for(let k=0;k<4;k++){const q=P(t*.35+k/4,1);const x=x0+40+k*55;const y=q<.5?lerp(60,160,q/.5):160-Math.sin(Math.PI*seg(q,.5,.8))*30;if(k===2)continue;bact(x+(q>.5?(q-.5)*40:0),y,.3+k,5,1-seg(q,.85,1))}
+    label(x0+128,140,"dead keratin-filled cells",{size:11,align:"center",weight:600});
+    label(x0+128,410,"germs bounce off or",{size:11,align:"center"});label(x0+128,430,"are shed with old cells",{size:11,align:"center"});
+    chipText(x0+200,70,"dry + acidic",C.act3);}
+  // mucous membrane
+  { const x0=272;const cellTop=360;
+    for(let c=0;c<6;c++){const x=x0+18+c*38;rr(x,cellTop,36,100,6);ctx.fillStyle=C.host;ctx.fill();ctx.strokeStyle=C["host-edge"];ctx.lineWidth=1.2;ctx.stroke();circ(x+18,cellTop+66,8,mix(C["host-edge"],C.nuc,.35));
+      if(c===3){ctx.beginPath();ctx.ellipse(x+18,cellTop+30,13,22,0,0,TAU);ctx.fillStyle=C.mucus;ctx.fill();ctx.strokeStyle=C.cilia;ctx.lineWidth=1;ctx.stroke()}
+      else for(let k=0;k<5;k++){const bx=x+5+k*6.5;const ph=t*7-bx*.08;ctx.beginPath();ctx.moveTo(bx,cellTop);ctx.quadraticCurveTo(bx+Math.sin(ph)*8,cellTop-14,bx+Math.sin(ph)*14,cellTop-26);ctx.strokeStyle=C.cilia;ctx.lineWidth=1.6;ctx.stroke()}}
+    ctx.fillStyle=hexA(C.mucus,.85);ctx.beginPath();ctx.moveTo(x0+10,330);for(let x=x0+10;x<=x0+246;x+=8)ctx.lineTo(x,250+Math.sin(x*.05+t*1.5)*5);ctx.lineTo(x0+246,330);ctx.closePath();ctx.fill();
+    for(let k=0;k<6;k++){const q=P(t*.18+k/6,1);const sx=x0+20+rnd(k)*80;let x,y;if(q<.25){x=sx;y=lerp(60,270,q/.25)}else{x=sx+(q-.25)*260;y=270+rnd(k+2)*40}bact(x,y,.4+k,5,Math.min(1,(x0+246-x)/20))}
+    arrow(x0+130,300,x0+220,300,mix(C.cilia,C.ink,.3),2);
+    label(x0+128,226,"sticky mucus traps germs",{size:11,align:"center",weight:600});label(x0+90,345,"cilia sweep",{size:11,align:"center"});
+    label(x0+128,430,"toward the throat",{size:11,align:"center"});label(x0+128,448,"to be swallowed or coughed",{size:11,align:"center"});
+    label(x0+132,cellTop+16,"goblet",{size:10,align:"center",color:C["ink-soft"],pill:false});}
+  // secretions
+  { const x0=536,cx=x0+128;const q=P(t,5);
+    ctx.beginPath();ctx.moveTo(cx,60);ctx.bezierCurveTo(cx+70,140,cx+80,220,cx,226);ctx.bezierCurveTo(cx-80,220,cx-70,140,cx,60);ctx.fillStyle=hexA(C.water,.2);ctx.fill();ctx.strokeStyle=C.water;ctx.lineWidth=1.6;ctx.stroke();
+    const bx=cx+14,by=170;const chew=seg(q,.25,.85);
+    ctx.save();ctx.translate(bx,by);rr(-22,-11,44,22,11);ctx.setLineDash([Math.max(1,10*(1-chew)),1+chew*12]);ctx.strokeStyle=C.bact;ctx.lineWidth=3;ctx.stroke();ctx.setLineDash([]);withA(1-chew*.8,()=>{rr(-20,-9,40,18,9);ctx.fillStyle=hexA(C.bact,.6);ctx.fill()});ctx.restore();
+    const lx=lerp(cx-60,bx-28,ease(seg(q,0,.25))),m=.2+.25*Math.abs(Math.sin(t*7));ctx.beginPath();ctx.moveTo(lx,by);ctx.arc(lx,by,12,m,TAU-m);ctx.closePath();ctx.fillStyle=C.lyso;ctx.fill();
+    label(cx,110,"Tears and saliva",{size:11.5,align:"center",weight:600});label(cx,250,"lysozyme breaks the cell wall",{size:11,align:"center"});
+    // stomach
+    ctx.beginPath();ctx.moveTo(cx-30,286);ctx.bezierCurveTo(cx+110,280,cx+100,430,cx+10,440);ctx.bezierCurveTo(cx-90,450,cx-90,380,cx-50,360);ctx.bezierCurveTo(cx-30,340,cx-50,300,cx-30,286);
+    ctx.fillStyle=mix(C.host,C.blood,.15);ctx.fill();ctx.strokeStyle=C["host-edge"];ctx.lineWidth=2;ctx.stroke();
+    ctx.save();ctx.clip();ctx.fillStyle=hexA(C.fat,.35);ctx.fillRect(cx-90,370,200,90);ctx.restore();
+    for(let k=0;k<3;k++){const u=P(t*.3+k/3,1);const y=lerp(300,400,u);bact(cx-10+k*14,y,1.2,5,1-seg(u,.6,1))}
+    for(let k=0;k<6;k++){const u=P(t*.6+k/6,1);circ(cx-40+k*16,lerp(440,380,u),2.5,null,hexA(C.ink,.4),1)}
+    label(cx,462,"stomach acid kills swallowed germs",{size:11,align:"center"});}
+}
+
+/* ---------- phagocytosis ---------- */
+function scenePhago(t){bg(C.tissue);
+  const L=11,q=P(t,L);const steps=["1 stick","2 wrap","3 phagosome","4 lysosome fuses","5 digest","6 debris out"];
+  const bounds=[0,.15,.32,.45,.6,.78,1];const si=bounds.findIndex((b,i)=>q>=b&&q<bounds[i+1]);
+  steps.forEach((s,i)=>{const x=14+i*130;rr(x,12,124,26,13);ctx.fillStyle=i===si?C.act3:hexA(C["panel-2"],.95);ctx.fill();ctx.strokeStyle=i===si?C.act3:C.rule;ctx.lineWidth=1.2;ctx.stroke();txt(x+62,25,s,{size:12,weight:i===si?700:500,align:"center",color:i===si?onFill():C.ink})});
+  const mx=430,my=270,mr=120;
+  // chemical trail
+  for(let k=0;k<12;k++){const a=1-seg(q,.15,.3);dotM(560+k*18,270+Math.sin(k)*14,2,hexA(C.bact,.5),a*.6)}
+  macro(mx,my,mr,{t:t*.4,seed:2,amp:.06,lab:false,nolyso:true});
+  txt(mx-40,my+mr+22,"Macrophage",{size:13,weight:700,align:"center",color:mix(C["macro-edge"],C.ink,.3)});
+  // bacterium position
+  let bx,by=my,inside=false;const att=mx+mr+18;
+  if(q<.15)bx=lerp(760,att,ease(q/.15));else if(q<.32)bx=att;else if(q<.45)bx=lerp(att,mx+40,ease(seg(q,.32,.45)));else bx=mx+40;
+  if(q>=.32)inside=true;
+  // pseudopods
+  if(q>=.15&&q<.4){const th=lerp(.5,Math.PI*.98,ease(seg(q,.15,.32)));const fade=1-seg(q,.34,.4);withA(fade,()=>{ctx.lineCap="round";
+      [[1],[-1]].forEach(([sd])=>{ctx.beginPath();ctx.arc(bx,by,30,Math.PI,Math.PI+sd*th,sd<0);ctx.strokeStyle=C["macro-edge"];ctx.lineWidth=17;ctx.stroke();ctx.strokeStyle=C.macro;ctx.lineWidth=13;ctx.stroke()});ctx.lineCap="butt"})}
+  // lysosomes
+  const lys=[[mx-20,my-60],[mx+70,my+70],[mx-10,my+80]];
+  const fuse=seg(q,.45,.6);const dig=seg(q,.6,.78);const out=seg(q,.78,.98);
+  lys.forEach((l,i)=>{const x=lerp(l[0],bx,ease(fuse)),y=lerp(l[1],by,ease(fuse));if(fuse<1){circ(x,y,9,C.lyso,mix(C.lyso,C.ink,.3),1);for(let k=0;k<3;k++)circ(x-3+k*3,y,1.2,hexA(C.panel,.8))}});
+  if(inside&&out<.2){const pr=lerp(38,30,fuse);circ(bx,by,pr,fuse>0?hexA(C.lyso,.18+.25*fuse):hexA(C.ecf,.6),fuse>0?C.lyso:C["macro-edge"],2)}
+  if(dig<1&&!(inside&&out>0)){if(dig<.05)bact(bx,by,0,12,1,{flag:!inside,t});else for(let k=0;k<6;k++){const an=k/6*TAU+dig*2,d=dig*16;withA(1-dig*.6,()=>bact(bx+Math.cos(an)*d,by+Math.sin(an)*d,an,12*(1-dig*.7)/2.2))}}
+  if(out>0){const ex=lerp(bx,mx-mr+10,ease(out)),ey=lerp(by,my+20,ease(out));if(out<.85){circ(ex,ey,14,hexA(C.lyso,.2),C.lyso,1.5);for(let k=0;k<4;k++)circ(ex-4+k*3,ey+(k%2?3:-3),2,hexA(C.bact,.7))}
+    else{for(let k=0;k<4;k++){const u=seg(out,.85,1);circ(mx-mr+10-u*40-k*6,my+20+(k-1.5)*8,2,hexA(C.bact,.7),null,1)}}}
+  // labels
+  if(q<.15)label(640,220,"chemotaxis: drawn toward the germ",{size:12,align:"center",border:C.act3});
+  if(q>=.15&&q<.34)label(att,124,"pseudopods wrap around",{size:12,align:"center",border:C.act3});
+  if(q>=.34&&q<.45)label(bx,124,"phagosome",{size:12,align:"center",border:C.act3});
+  if(q>=.45&&q<.6)label(bx,124,"lysosome + phagosome",{size:12,align:"center",border:C.act3});
+  if(q>=.6&&q<.78)label(bx,124,"enzymes digest the bacterium",{size:12,align:"center",border:C.act3});
+  if(q>=.78)label(mx-mr-20,my-150,"debris pushed out",{size:12,align:"center",border:C.act3});
+  if(fuse<.2)label(lys[0][0],lys[0][1]-22,"lysosome",{size:11,align:"center",color:C.lyso,weight:600});
+  // neutrophil mini
+  const nq=P(t,3.2);const nbx=lerp(150,104,ease(seg(nq,0,.4)));neut(80,400,30,{t,seed:5});if(nq<.7)bact(nbx,400,0,6,1-seg(nq,.5,.7));
+  txt(80,450,"Neutrophil (first to arrive)",{size:11.5,align:"center",weight:600});
+}
+
+/* ---------- NK cells + interferon ---------- */
+function sceneNK(t){bg(C.tissue);
+  line(400,10,400,470,C.rule,1.5);title(16,24,"Natural killer cell checks ID");title(416,24,"Interferon warns the neighbors");
+  // NK side
+  const L=12,q=P(t,L);const cells=[[80,330,"ok"],[200,330,"bad"],[320,330,"ok"]];
+  const kill=seg(q,.42,.7);
+  cells.forEach((c,i)=>{const bad=c[2]==="bad";const sh=bad?kill:0;const r=44;
+    if(bad&&sh>=1){for(let k=0;k<6;k++){const an=k/6*TAU;circ(c[0]+Math.cos(an)*24,c[1]+Math.sin(an)*20,8,C.host,C["host-edge"],1)}txt(c[0],c[1]+70,"apoptosis",{size:11.5,weight:700,align:"center",color:C.bad});return}
+    hostCell(c[0],c[1],r,{seed:i+3,shrink:sh*.6,bleb:bad?seg(kill,.5,1):0});
+    const n=bad?1:6;for(let k=0;k<n;k++){const an=-Math.PI/2+(k-(n-1)/2)*.38;mhc(c[0]+Math.cos(an)*r*(1-sh*.27),c[1]+Math.sin(an)*r*(1-sh*.27),an,C.mhc1,C.ag)}
+    if(bad){for(let k=0;k<4;k++)virus(c[0]-14+(k%2)*24,c[1]+5+Math.floor(k/2)*14-6,5,1-sh,t)}
+    txt(c[0],c[1]+64,bad?"infected: few MHC I":"healthy",{size:11,align:"center",weight:600,color:bad?C.bad:C.good})});
+  // NK path
+  const pts=[[20,170],[80,230],[140,170],[200,232],[200,232],[200,232],[260,170],[320,230],[380,170]];
+  const path=q<.12?seg(q,0,.12)*.125:q<.2?.125+seg(q,.12,.2)*.125:q<.3?.25+seg(q,.2,.3)*.125:q<.75?.375:.375+seg(q,.75,1)*.625;
+  const [nx,ny]=along(pts,path);lymph(nx,ny,26,"nk",{t});
+  if(q>.08&&q<.2)label(80,140,"✓ badges OK, move on",{size:11.5,align:"center",border:C.good});
+  if(q>.3&&q<.75){const pf=seg(q,.32,.5);for(let k=0;k<6;k++){const an=-Math.PI/2+(k-2.5)*.3;const tx=200+Math.cos(an)*44,ty=330+Math.sin(an)*44;dotM(lerp(nx,tx,pf),lerp(ny+20,ty,pf),3,C.perf,1-seg(q,.6,.7))}
+    for(let k=0;k<4;k++){const g=seg(q,.45,.6);diamond(lerp(nx,200-12+k*8,g),lerp(ny+20,330,g),4,C.gzm,1-seg(q,.62,.7))}
+    label(200,128,"few badges: perforin + granzymes",{size:11.5,align:"center",border:C.bad})}
+  // IFN side
+  const q2=P(t,9);const ic=[520,300];const nb=[[680,170],[710,320],[600,410],[690,440]];
+  const shield=seg(q2,.3,.42);
+  nb.slice(0,3).forEach((n,i)=>{hostCell(n[0],n[1],36,{seed:i+9});if(shield>0){withA(shield,()=>{circ(n[0],n[1],44,null,C.ifn,3);ctx.setLineDash([5,4]);circ(n[0],n[1],50,null,hexA(C.ifn,.6),1.5);ctx.setLineDash([])});
+    for(let k=0;k<4;k++)withA(shield,()=>diamond(n[0]-14+k*9,n[1]-6,3,C.ifn))}});
+  const burst=seg(q2,.5,.62);hostCell(ic[0],ic[1],48,{seed:4,shrink:burst*.3,fill:mix(C.host,C.virus,.15)});
+  for(let k=0;k<5;k++)if(q2<.52)virus(ic[0]-20+k*10,ic[1]+(k%2?10:-8),5,1,t);
+  for(let k=0;k<10;k++){const u=seg(q2,0,.32);if(u>0&&u<1){const an=k/10*TAU-.4;diamond(ic[0]+Math.cos(an)*(50+u*150),ic[1]+Math.sin(an)*(50+u*120),4.5,C.ifn,1-seg(u,.8,1))}}
+  nb.slice(0,3).forEach((n,i)=>{const u=seg(q2,.55,.8);if(u<=0)return;const bx=lerp(ic[0],n[0],u*.75),by=lerp(ic[1],n[1],u*.75);
+    if(u<1)virus(bx,by,6,1,t);else{const v=seg(q2,.8,.95);virus(lerp(bx,ic[0],v*.4),lerp(by,ic[1],v*.4),6,1-v,t);}
+    if(u>=.95&&q2<.95){ctx.font=`700 16px ${FONT}`;ctx.fillStyle=C.bad;ctx.textAlign="center";ctx.fillText("✕",bx,by-16)}});
+  label(ic[0],ic[1]+70,"infected cell",{size:11.5,align:"center",weight:600,color:C.virus});
+  if(q2<.32)label(600,90,"interferon spreads out",{size:12,align:"center",border:C.ifn});
+  else if(q2<.55)label(600,90,"neighbors make antiviral proteins",{size:12,align:"center",border:C.ifn});
+  else label(600,90,"new viruses cannot take over warned cells",{size:12,align:"center",border:C.ifn});
+}
+
+/* ---------- inflammation + fever ---------- */
+function sceneInflam(t){bg(C.tissue);
+  const L=14,q=P(t,L);
+  const dil=ease(seg(q,.12,.3)),leak=ease(seg(q,.25,.45)),dia=seg(q,.42,.62),chase=seg(q,.6,.85);
+  // skin surface with swelling bump
+  const swell=leak*22;
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(560,0);ctx.lineTo(560,62);for(let x=560;x>=0;x-=10){const b=Math.exp(-Math.pow((x-260)/130,2));ctx.lineTo(x,62-b*swell)}ctx.closePath();ctx.fillStyle=C.panel;ctx.fill();
+  ctx.beginPath();for(let x=0;x<=560;x+=10){const b=Math.exp(-Math.pow((x-260)/130,2));const y=62-b*swell;x?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.lineTo(560,84);for(let x=560;x>=0;x-=10){const b=Math.exp(-Math.pow((x-260)/130,2));ctx.lineTo(x,84-b*swell)}ctx.closePath();ctx.fillStyle=C.kera;ctx.fill();ctx.strokeStyle=mix(C.kera,C.ink,.3);ctx.lineWidth=1;ctx.stroke();
+  if(dil>0){glow(270,250,260,C.heat,dil*.35)}
+  // splinter
+  ctx.beginPath();ctx.moveTo(150,20);ctx.lineTo(170,14);ctx.lineTo(236,170);ctx.closePath();ctx.fillStyle=C["body-edge"];ctx.fill();ctx.strokeStyle=mix(C["body-edge"],C.ink,.4);ctx.lineWidth=1;ctx.stroke();
+  label(130,104,"splinter",{size:11,align:"right"});
+  // bacteria at tip
+  const nb=Math.round(7-chase*6);for(let k=0;k<nb;k++){const an=k*1.1;bact(240+Math.cos(an)*22,182+Math.sin(an)*16,an,5)}
+  // mast cell + histamine
+  mastC(370,170,26,seg(q,.03,.15),{t});
+  for(let k=0;k<14;k++){const u=P(t*.3+k/14,1);if(q<.05)break;const an=-.3+rnd(k)*2.4;dotM(370+Math.cos(an)*(30+u*90),170+Math.sin(an)*(20+u*100),2.6,C.hist,(1-u)*Math.min(1,q*10))}
+  // vessel
+  const vy=320,hw=lerp(22,38,dil);const gap=leak*10;
+  ctx.fillStyle=mix(C.vessel,C.blood,dil*.35);ctx.fillRect(0,vy-hw,560,hw*2);
+  for(let x=0;x<560;x+=56){const g=(x>140&&x<420)?gap:0;rr(x+g/2,vy-hw-7,56-g,7,3);ctx.fillStyle=C["blood-edge"];ctx.fill();rr(x+g/2,vy+hw,56-g,7,3);ctx.fill()}
+  for(let k=0;k<14;k++){const u=P(t*.25*(1-dil*.3)+k/14,1);rbc(u*560,vy+((k*17)%((hw-8)*2))-hw+8,7)}
+  // leaking fluid
+  for(let k=0;k<16;k++){if(leak<=0)break;const u=P(t*.4+k/16,1);const gx=168+((k%5)*56);dotM(gx+Math.sin(k)*4,vy-hw-6-u*150,2.8,C.water,leak*(1-u))}
+  // neutrophils: roll, squeeze out, chase
+  for(let k=0;k<3;k++){const gx=224+k*56;let x,y,r=15;const roll=seg(q,.3+k*.03,.45+k*.03);
+    if(dia<=0){x=lerp(-30,gx,ease(roll));y=vy}else{const d=seg(dia,k*.15,.55+k*.15);x=gx;y=lerp(vy,vy-hw-24,ease(d));if(d>0&&d<1)r=13}
+    if(chase>0){const c=ease(seg(chase,0,.9));x=lerp(gx,240+(k-1)*30,c);y=lerp(vy-hw-24,205+k*8,c)}
+    neut(x,y,r,{t,seed:k+2})}
+  // chemotaxis gradient
+  if(dia>0&&chase<1)for(let k=0;k<10;k++){dotM(240+(k%3-1)*20,200+k*9,2,hexA(C.bact,.45),.6)}
+  // signs
+  const signs=[["Redness",.18],["Heat",.22],["Swelling",.38],["Pain",.45]];signs.forEach((s,i)=>{if(q>s[1]){withA(seg(q,s[1],s[1]+.04),()=>chipText(460+(i%2)*70,108+Math.floor(i/2)*24,s[0],C.heat))}});
+  if(dil>0)label(470,vy+hw+26,"vasodilation: more blood",{size:11.5,align:"center",weight:600});
+  if(leak>0)label(120,vy-hw-40,"leaky gaps: fluid out",{size:11.5,align:"center",weight:600});
+  if(dia>0)label(300,vy+hw+26,"neutrophils squeeze out",{size:11.5,align:"center",weight:600});
+  label(370,128,"histamine",{size:11,align:"center",color:C.hist,weight:600});
+  // fever panel
+  panelBox(572,10,220,460,{fill:hexA(C["panel-2"],.95)});title(588,30,"Fever");
+  const fx=682;ctx.beginPath();ctx.ellipse(fx,110,70,50,0,0,TAU);ctx.fillStyle=mix(C.body,C.panel,.3);ctx.fill();ctx.strokeStyle=C["body-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let k=0;k<4;k++){ctx.beginPath();ctx.arc(fx-30+k*20,96,14,Math.PI*1.1,Math.PI*1.9);ctx.strokeStyle=hexA(C["body-edge"],.6);ctx.stroke()}
+  const fq=seg(q,.1,.7);circ(fx,132,9,C.pyro,null);label(fx,158,"hypothalamus",{size:11,align:"center",weight:600});
+  macro(620,330,24,{t,seed:8,lab:false});line(640,320,670,170,C.vessel,10);
+  for(let k=0;k<4;k++){const u=P(t*.35+k/4,1);if(q<.08)break;diamond(lerp(640,672,u),lerp(318,172,u),4,C.pyro,Math.min(1,u*6,(1-u)*6))}
+  label(620,372,"macrophage",{size:11,align:"center"});label(650,248,"pyrogens",{size:11,align:"right",color:C.pyro,weight:600});
+  const sp=lerp(37,39,ease(fq)),tmp=lerp(37,39,ease(seg(q,.25,.85)));
+  const tx=752,ty0=420,ty1=210;rr(tx-8,ty1-10,16,ty0-ty1+10,8);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.stroke();circ(tx,ty0+8,13,C.heat);
+  const yT=v=>lerp(ty0-20,ty1+10,(v-36)/4);rr(tx-4,yT(tmp),8,ty0-yT(tmp),4);ctx.fillStyle=C.heat;ctx.fill();
+  [36,37,38,39,40].forEach(v=>{line(tx-14,yT(v),tx-8,yT(v),C["ink-soft"],1);txt(tx-18,yT(v),v+"",{size:10,align:"right",color:C["ink-soft"],mono:true})});
+  arrow(tx-48,yT(sp),tx-22,yT(sp),C.pyro,2);txt(tx-52,yT(sp)-12,"set point",{size:10,align:"right",color:C.pyro,weight:600});
+  label(682,446,"body temp "+tmp.toFixed(1)+" °C",{size:11.5,align:"center",mono:true,weight:600});
+}
+
+/* ---------- complement ---------- */
+function sceneComp(t){bg(C.tissue);
+  const L=12,q=P(t,L);
+  // top: cascade on a big bacterium
+  const bx=400,by=118;bact(bx,by,0,34,1);
+  const sites=[[-80,-26],[-40,-26],[0,-26],[40,-26],[80,-26]];
+  sites.forEach((s,i)=>{const on=seg(q,.04+i*.06,.1+i*.06);const sx=bx+s[0],sy=by+s[1]-8;
+    const fx=sx+(i%2?40:-40)*(1-on),fy=sy-50*(1-ease(on));circ(fx,fy,8,on>=1?C.comp:mix(C.comp,C.panel,.55),hexA(C.ink,.4),1);if(on>=1)glow(sx,sy,18,C.glow,.5*(1-seg(q,.1+i*.06,.2+i*.06)));
+    txt(fx,fy,String(i+1),{size:9.5,weight:700,align:"center",color:C.ink,mono:true});if(i<4&&on>=1)arrow(sx+9,sy,sx+30,sy,C.comp,1.5)});
+  for(let k=0;k<10;k++){const an=k*.63+t*.2;circ(bx+Math.cos(an)*200,by+Math.sin(an)*60,5,mix(C.comp,C.panel,.55),hexA(C.ink,.3),1)}
+  label(bx,by+60,"cascade: each complement protein switches on the next",{size:12,align:"center",weight:600,border:C.comp});
+  label(140,40,"inactive complement in plasma",{size:11,align:"center",color:C["ink-soft"]});
+  // bottom panels
+  const out=seg(q,.35,1);panelBox(10,200,384,270,{fill:hexA(C.panel,.75)});panelBox(406,200,384,270,{fill:hexA(C.panel,.75)});
+  title(26,220,"Opsonization");title(422,220,"Membrane attack complex");
+  // opsonization
+  { const u=seg(out,.05,.75);const ox=lerp(300,170,ease(u)),oy=340;const eaten=seg(out,.6,.85);
+    macro(110,340,58,{t,seed:3,lab:false});for(let k=0;k<6;k++){const an=-.8+k*.32;line(110+Math.cos(an)*58,340+Math.sin(an)*58,110+Math.cos(an)*66,340+Math.sin(an)*66,C["macro-edge"],2)}
+    if(eaten<1){withA(1-eaten,()=>{bact(lerp(ox,120,eaten),oy,0,13);for(let k=0;k<8;k++){const an=k/8*TAU;circ(lerp(ox,120,eaten)+Math.cos(an)*24,oy+Math.sin(an)*13,4,C.comp,hexA(C.ink,.4),.8)}})}
+    else txt(110,340,"eaten",{size:12,weight:700,align:"center",color:C.good});
+    label(200,440,"complement \"handles\" make it easy to grab",{size:11.5,align:"center"});}
+  // MAC
+  { const pores=seg(out,.05,.35),sw=seg(out,.35,.7),pop=seg(out,.7,.8);const cx=598,cy=330;
+    if(pop<1){bact(cx,cy,0,26,1,{swell:sw});
+      for(let k=0;k<4;k++){const px=cx-48+k*32,py=cy-20*(1+sw*.6);withA(pores,()=>{ctx.beginPath();ctx.ellipse(px,py,9,5,0,0,TAU);ctx.strokeStyle=C.comp;ctx.lineWidth=4;ctx.stroke();ctx.beginPath();ctx.ellipse(px,py,3.5,2,0,0,TAU);ctx.fillStyle=C.panel;ctx.fill()});
+        if(pores>=1)for(let j=0;j<3;j++){const u=P(t*1.2+j/3+k*.2,1);dotM(px,py-30+u*28,2.6,C.water,1-u*.3)}}}
+    else{for(let k=0;k<10;k++){const an=k/10*TAU;const d=30+seg(out,.8,1)*50;withA(1-seg(out,.85,1),()=>{ctx.save();ctx.translate(cx+Math.cos(an)*d,cy+Math.sin(an)*d*.6);ctx.rotate(an);rr(-8,-4,16,8,3);ctx.fillStyle=C.bact;ctx.fill();ctx.restore()})}txt(cx,cy,"lysis",{size:14,weight:700,align:"center",color:C.bad})}
+    label(cx,440,pores<1?"complement proteins form a ring-shaped pore":pop<1?"water rushes in; the cell swells":"the bacterium bursts",{size:11.5,align:"center"});}
+}
+
+/* ================= scenes: Part 4 adaptive T cells ================= */
+function sceneClonal(t){bg();
+  const L=15,q=P(t,L);
+  // bacterium with antigens and zoom bubble
+  bact(110,92,-.15,26,1);for(let k=0;k<6;k++){const an=k/6*TAU+.3;const x=110+Math.cos(an)*44,y=92+Math.sin(an)*22;circ(x,y,6,C.ag,hexA(C.ink,.4),1)}
+  line(150,80,290,70,hexA(C.ink,.35),1,[4,3]);line(150,104,290,130,hexA(C.ink,.35),1,[4,3]);
+  circ(360,100,72,hexA(C["panel-2"],.95),C.rule,1.5);
+  ctx.beginPath();ctx.ellipse(360,110,42,30,0,0,TAU);ctx.fillStyle=mix(C.ag,C.panel,.55);ctx.fill();ctx.strokeStyle=C.ag;ctx.lineWidth=1.5;ctx.stroke();
+  epi("tri",332,78,9,C.ag,0);epi("sq",392,82,8,C.ag,0);epi("half",360,142,9,C.ag,Math.PI);
+  label(360,22,"one antigen, several epitopes",{size:11.5,align:"center",weight:600});
+  label(470,82,"epitope",{size:11.5,align:"left",color:C.ag,weight:600});line(400,82,464,82,C.ag,1);
+  // naive cells
+  const kinds=["sq","circ","dia","tri","half"];const xs=[100,240,380,520,660];const cy=270;const match=3;
+  const scan=seg(q,0,.45);const pos=scan*3;const si=Math.min(3,Math.floor(pos));const u=pos-si;
+  let fx,fy;if(q>=.45){fx=xs[match];fy=lerp(cy-80,cy-26-14-9*.9,ease(seg(q,.45,.52)))}
+  else{fx=lerp(xs[si],xs[Math.min(3,si+1)],ease(seg(u,.55,1)));fy=lerp(cy-84,cy-64,Math.sin(Math.PI*seg(u,0,.5)))}
+  xs.forEach((x,i)=>{const sel=i===match&&q>.45;lymph(x,cy,26,"naive",{norec:true,label:"",glow:sel?(.6+.4*Math.sin(t*5)):0,col:C.bcell,t});
+    socket(x,cy-26,-Math.PI/2,14,kinds[i],C.bcell,9);socket(x-26,cy,Math.PI,8,kinds[i],C.bcell,6);socket(x+26,cy,0,8,kinds[i],C.bcell,6);
+    if(i<match&&pos>i+.3)txt(x+28,cy-62,"✕",{size:16,weight:700,color:C.bad,align:"center"});});
+  epi("tri",fx,fy,9,C.ag,Math.PI);ctx.beginPath();ctx.ellipse(fx,fy-20,26,12,0,0,TAU);ctx.fillStyle=mix(C.ag,C.panel,.55);ctx.fill();ctx.strokeStyle=C.ag;ctx.lineWidth=1.2;ctx.stroke();
+  if(q<.45)label(fx,fy-46,"antigen tries each receptor",{size:11,align:"center"});
+  label(380,cy+42,"each lymphocyte has receptors of ONE shape, made before any germ arrives",{size:11.5,align:"center"});
+  if(q>.45)label(xs[match],cy-122,"✓ it fits: SELECTED",{size:12,align:"center",weight:700,border:C.good});
+  // clonal expansion
+  const ex=seg(q,.55,.95);if(ex>0){const g=Math.min(3,Math.floor(ex*4));const ox=xs[match],oy=cy+30;
+    const gens=[[[ox,345]],[[ox-80,385],[ox+80,385]],[[ox-140,425],[ox-50,425],[ox+50,425],[ox+140,425]]];
+    for(let a=0;a<Math.min(g,2);a++)gens[a].forEach((p,i)=>{gens[a+1].slice(i*2,i*2+2).forEach(c=>line(p[0],p[1],c[0],c[1],hexA(C.ink,.3),1.2))});
+    if(ex>0)line(ox,oy,ox,345,hexA(C.ink,.3),1.2);
+    for(let a=0;a<=Math.min(g,2);a++)gens[a].forEach((p,i)=>{const last=a===2;const mem=last&&(i===3);{const rr_=last?16:14;lymph(p[0],p[1],rr_,mem?"mem":"b",{label:last?(mem?"M":"E"):"",norec:true,t});socket(p[0],p[1]-rr_,-Math.PI/2,5,"tri",mem?C.mem:C.bcell,5)}});
+    if(g>=3){label(60,425,"E = effector cells (fight now)",{size:11,align:"left"});label(60,450,"M = memory cell (waits for next time)",{size:11,align:"left",color:C.mem})}
+    label(740,350,"clonal expansion",{size:12,align:"right",weight:700,border:C.act4})}
+}
+
+/* ---------- MHC presentation ---------- */
+function sceneMHC(t){bg();
+  line(400,10,400,470,C.rule,1.5);title(16,24,"MHC II · antigen-presenting cell → CD4");title(416,24,"MHC I · any nucleated cell → CD8");
+  const L=12,q=P(t,L);
+  // left: DC
+  const dx=140,dy=260;dendritic(dx,dy,54,{t,lab:false});txt(dx,dy+80,"Dendritic cell (APC)",{size:11.5,weight:700,align:"center",color:C.apc});
+  const eat=seg(q,0,.18),chop=seg(q,.18,.35),load=seg(q,.35,.5),dock=seg(q,.5,.68);
+  if(eat<1)bact(lerp(40,dx-10,ease(eat)),lerp(110,dy-6,ease(eat)),.6,10,1);
+  else if(chop<1){for(let k=0;k<4;k++){const an=k/4*TAU+chop*2;circ(dx-10+Math.cos(an)*chop*14,dy-6+Math.sin(an)*chop*14,lerp(8,4,chop),chop>.5?C.ag:C.bact)}}
+  const mx=dx+58,my=dy;
+  if(chop>=1&&load<1){circ(lerp(dx,mx-16,ease(load)),lerp(dy,my,ease(load)),4,C.ag)}
+  mhc(mx,my,0,C.mhc2,load>=1?C.ag:null);mhc(dx+20,dy-52,-1.2,C.mhc2,null);mhc(dx+20,dy+52,1.2,C.mhc2,null);
+  label(mx+8,my-40,"MHC II",{size:11.5,weight:700,align:"center",color:C.mhc2});
+  const tx=lerp(360,mx+60,ease(dock));lymph(tx,my,30,"th",{t,glow:dock>=1?.6+.4*Math.sin(t*5):0,norec:true,label:"Th"});
+  receptor(tx-30,my,Math.PI,12,null,C.th);line(tx-26,my+16,tx-40,my+22,C.th,3);txt(tx-6,my+46,"CD4",{size:11,weight:700,align:"center",color:C.th});
+  if(dock>=1)label(tx,my-56,"match! helper T activated",{size:11.5,align:"center",border:C.good});
+  // right: infected cell
+  const ix=530,iy=260;hostCell(ix,iy,60,{seed:3,fill:mix(C.host,C.virus,.1)});txt(ix,iy+86,"Infected body cell",{size:11.5,weight:700,align:"center"});
+  for(let k=0;k<3;k++)virus(ix-20+k*18,iy+18-(k%2)*12,6,1,t);
+  const make=seg(q,.1,.35),load2=seg(q,.35,.5),dock2=seg(q,.5,.68);
+  if(make>0&&load2<1){const pxx=lerp(ix-10,ix+44,ease(load2)),pyy=lerp(iy-10,iy,ease(load2));circ(pxx,pyy,4,C.ag)}
+  const m1x=ix+62;mhc(m1x,iy,0,C.mhc1,load2>=1?C.ag:null);mhc(ix+28,iy-56,-1.1,C.mhc1,C.host);mhc(ix+28,iy+56,1.1,C.mhc1,C.host);
+  label(m1x+8,iy-40,"MHC I",{size:11.5,weight:700,align:"center",color:C.mhc1});
+  if(make>0&&make<1)label(ix,iy-90,"viral proteins chopped up inside",{size:11,align:"center"});
+  const tcx=lerp(770,m1x+60,ease(dock2));lymph(tcx,iy,30,"tc",{t,glow:dock2>=1?.6+.4*Math.sin(t*5):0,norec:true,label:"Tc"});
+  receptor(tcx-30,iy,Math.PI,12,null,C.tc);line(tcx-26,iy+16,tcx-40,iy+22,C.tc,3);txt(tcx-6,iy+46,"CD8",{size:11,weight:700,align:"center",color:C.tc});
+  if(dock2>=1)label(tcx-20,iy-56,"match! cytotoxic T locks on",{size:11.5,align:"center",border:C.good});
+  label(200,440,"APCs: dendritic cells, macrophages, B cells",{size:11,align:"center",color:C["ink-soft"]});
+  label(600,440,"every cell with a nucleus has MHC I",{size:11,align:"center",color:C["ink-soft"]});
+}
+
+/* ---------- helper T rallies the team ---------- */
+function sceneHelper(t){bg();
+  const L=10,q=P(t,L);const cx=400,cy=210;
+  dendritic(cx,78,36,{t,lab:false});mhc(cx,112,Math.PI/2,C.mhc2,C.ag);txt(cx+70,72,"APC shows antigen",{size:11,color:C["ink-soft"]});
+  lymph(cx,cy,36,"th",{t,glow:.6+.4*Math.sin(t*4),label:"Th"});txt(cx+46,cy+4,"CD4",{size:11,weight:700,color:C.th});
+  const tg=[[150,340,"b"],[650,340,"tc"],[400,410,"m"]];
+  tg.forEach((g,i)=>{for(let k=0;k<5;k++){const u=P(t*.5+k/5+i*.07,1);diamond(lerp(cx,g[0],u),lerp(cy,g[1],u),5,C.glow,Math.min(1,u*6,(1-u)*4))}});
+  const act=seg(q,.25,.5),div=seg(q,.5,.8);
+  // B cell
+  { const [x,y]=tg[0];if(div<.1){lymph(x,y,30,"b",{t,glow:act})}else{const d=ease(div)*36;lymph(x-d,y+8,24,"b",{t,glow:act});lymph(x+d,y-8,24,"b",{t,glow:act})}
+    label(x,y+56,act>.5?"B cell: divide, make antibodies":"B cell (has bound antigen)",{size:11.5,align:"center",weight:600,color:C.bcell});}
+  { const [x,y]=tg[1];if(div<.1){lymph(x,y,30,"tc",{t,glow:act})}else{const d=ease(div)*36;lymph(x-d,y+8,24,"tc",{t,glow:act});lymph(x+d,y-8,24,"tc",{t,glow:act})}
+    label(x,y+56,act>.5?"Cytotoxic T: divide and kill":"Cytotoxic T cell",{size:11.5,align:"center",weight:600,color:C.tc});}
+  { const [x,y]=tg[2];macro(x,y,30,{t:t*(1+act*3),seed:4,glow:act,lab:false});label(x+120,y,act>.5?"Macrophage: eat harder":"Macrophage",{size:11.5,align:"center",weight:600});}
+  label(cx-150,cy-10,"cytokines (interleukins)",{size:12,align:"center",weight:700,border:C.glow});
+}
+
+/* ---------- cytotoxic T kills ---------- */
+function sceneCTL(t){bg(C.tissue);
+  const L=14,q=P(t,L);const targets=[[300,270],[600,260]];
+  [[120,380],[460,400],[720,400]].forEach((h,i)=>{hostCell(h[0],h[1],34,{seed:i+11});for(let k=0;k<3;k++){const an=-Math.PI/2+(k-1)*.5;mhc(h[0]+Math.cos(an)*34,h[1]+Math.sin(an)*34,an,C.mhc1,C.host)}});
+  let killed=0;
+  targets.forEach((g,i)=>{const s=i?.55:.08;const dock=seg(q,s,s+.08),perf=seg(q,s+.08,s+.18),gz=seg(q,s+.16,s+.26),apo=seg(q,s+.24,s+.38);
+    if(apo>=1){killed++;for(let k=0;k<7;k++){const an=k/7*TAU;circ(g[0]+Math.cos(an)*(22+apo*6),g[1]+Math.sin(an)*18,9,C.host,C["host-edge"],1)}return}
+    hostCell(g[0],g[1],52,{seed:i+2,shrink:apo*.6,bleb:apo,fill:mix(C.host,C.virus,.12)});
+    for(let k=0;k<3;k++)virus(g[0]-16+k*16,g[1]+6-(k%2)*12,5,1-apo,t);
+    mhc(g[0]-52*(1-apo*.27),g[1],Math.PI,C.mhc1,C.ag);
+    if(perf>0)for(let k=0;k<5;k++){const an=Math.PI+(k-2)*.28;const ex=g[0]+Math.cos(an)*50,ey=g[1]+Math.sin(an)*50;const sx=g[0]-80,sy=g[1]+(k-2)*8;
+      if(perf<1)dotM(lerp(sx,ex,perf),lerp(sy,ey,perf),3,C.perf);else withA(1-apo,()=>{ctx.beginPath();ctx.ellipse(ex,ey,4,6,an,0,TAU);ctx.strokeStyle=C.perf;ctx.lineWidth=2.5;ctx.stroke()})}
+    if(gz>0&&gz<1)for(let k=0;k<4;k++){diamond(lerp(g[0]-80,g[0]-20+k*10,gz),lerp(g[1]-10+k*6,g[1]-6+k*4,gz),4.5,C.gzm)}});
+  // T cell path
+  const pts=[[40,140],[218,270],[218,270],[518,260],[518,260],[780,140]];
+  let pos;if(q<.08)pos=seg(q,0,.08)*.2;else if(q<.46)pos=.2+(q<.44?0:0);else if(q<.55)pos=.2+seg(q,.46,.55)*.4;else if(q<.92)pos=.6;else pos=.6+seg(q,.92,1)*.4;
+  const pp=pos<.2?along([pts[0],pts[1]],pos/.2):pos<.6?along([pts[1],pts[3]],(pos-.2)/.4):along([pts[3],pts[5]],(pos-.6)/.4);
+  lymph(pp[0],pp[1],30,"tc",{t,label:"Tc"});txt(pp[0],pp[1]+44,"CD8",{size:11,weight:700,align:"center",color:C.tc});
+  const ph=(q>.08&&q<.46)?0:(q>.55&&q<.92)?1:-1;
+  if(ph>=0){const s=ph?.55:.08;const lab=q<s+.08?"locks on to MHC I + viral piece":q<s+.18?"perforin makes pores":q<s+.26?"granzymes enter":"apoptosis: cell breaks apart";label(targets[ph][0]-40,targets[ph][1]-94,lab,{size:12,align:"center",border:C.tc})}
+  else if(q>.46&&q<.55)label(450,150,"lets go, moves to the next target",{size:12,align:"center",border:C.tc});
+  label(560,30,"infected cells killed: "+killed,{size:12,mono:true,weight:600});
+  label(400,455,"healthy cells (normal MHC I, no viral pieces) are left alone",{size:11,align:"center",color:C["ink-soft"]});
+}
+
+/* ================= Part 5 antibodies ================= */
+function sceneBcell(t){bg();
+  const L=15,q=P(t,L);const bx=170,by=230;
+  const bind=seg(q,0,.12),pres=seg(q,.12,.24),th=seg(q,.24,.36),cyt=seg(q,.36,.46),div=seg(q,.46,.62),pour=seg(q,.6,1);
+  const steps=["1 antigen binds","2 shown on MHC II","3 helper T checks","4 cytokines","5 clone divides","6 plasma + memory"];const bnd=[0,.12,.24,.36,.46,.62,1.01];const si=bnd.findIndex((b,i)=>q>=b&&q<bnd[i+1]);
+  steps.forEach((s_,i)=>{const x=14+i*130;rr(x,446,124,24,12);ctx.fillStyle=i===si?C.act5:hexA(C["panel-2"],.95);ctx.fill();ctx.strokeStyle=i===si?C.act5:C.rule;ctx.lineWidth=1.2;ctx.stroke();txt(x+62,458,s_,{size:11.5,weight:i===si?700:500,align:"center",color:i===si?onFill():C.ink})});
+  if(div<.2){lymph(bx,by,52,"b",{t,glow:cyt,label:"B",nrec:14});
+    for(let k=0;k<3;k++){const an=-2.3+k*.55;const tipx=bx+Math.cos(an)*74,tipy=by+Math.sin(an)*74;if(pres<1)withA(1-pres,()=>epi("tri",lerp(tipx+Math.cos(an)*80,tipx,ease(bind)),lerp(tipy+Math.sin(an)*80,tipy,ease(bind)),7,C.ag,an+Math.PI/2))}
+    if(pres>0){mhc(bx+52,by+6,0,C.mhc2,C.ag,pres);if(pres<1)circ(lerp(bx-20,bx+40,pres),lerp(by-30,by+6,pres),4,C.ag)}
+    const tx=lerp(420,bx+124,ease(th));if(th>0){lymph(tx,by+6,34,"th",{t,label:"Th",norec:true});receptor(tx-34,by+6,Math.PI,12,null,C.th)}
+    if(cyt>0)for(let k=0;k<5;k++){const u=P(t*.8+k/5,1);diamond(lerp(bx+100,bx+56,u),by-30+k*14,4.5,C.glow,cyt)}
+    label(bx+40,by-100,bind<1?"antigen fits the B-cell receptors":pres<1?"B cell shows a piece on MHC II":th<1?"a helper T cell with the same match checks it":"cytokines: GO!",{size:12.5,align:"center",border:C.bcell})}
+  if(div>=.2){const ox=110,oy=220;const kids=[[300,70,"p"],[300,160,"p"],[300,250,"p"],[300,340,"p"],[200,390,"m"],[110,390,"m"]];
+    lymph(ox,oy,36,"b",{t,label:"B",nrec:10});
+    kids.forEach((k,i)=>{const u=ease(seg(div,.2+i*.1,.6+i*.08));if(u<=0)return;const x=lerp(ox,k[0],u),y=lerp(oy,k[1],u);line(ox,oy,x,y,hexA(C.ink,.25),1.2);
+      if(k[2]==="p"&&u>=1)plasmaC(x,y,30,{lab:i===0});else if(k[2]==="m")lymph(x,y,22,"mem",{t,label:"M",brec:true});else lymph(x,y,22,"b",{t,label:"B",nrec:8})});
+    if(pour>0){for(let r=0;r<4;r++)for(let k=0;k<9;k++){const u=P(t*.3+k/9+r*.13,1);ab(345+u*440,70+r*90+Math.sin(u*9+k)*16,11,u*6+k,C.ab,{a:Math.min(1,u*8,pour*3)})}
+      label(580,30,"plasma cells pour out antibodies",{size:12.5,align:"center",weight:700,border:C.ab})}
+    if(div>=.8){label(155,428,"memory B cells: live for years",{size:11.5,align:"center",color:C.mem,weight:600})}}
+}
+function sceneAbStruct(t){bg();
+  const L=12,q=P(t,L);const hv=ease(seg(q,0,.22)),lt=ease(seg(q,.2,.4)),ss=seg(q,.4,.52),vr=seg(q,.52,.68),agb=ease(seg(q,.7,.86));
+  const cx=400,yb=430,yh=270;const tipL=[250,120],tipR=[550,120];
+  const HL=[[cx-7,yb],[cx-7,yh],[tipL[0]+8,tipL[1]+8]],HR=[[cx+7,yb],[cx+7,yh],[tipR[0]-8,tipR[1]+8]];
+  const off=(1-hv)*120;
+  ctx.lineCap="round";ctx.lineJoin="round";
+  const drawChain=(pts,dx,dy,col,w)=>{ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0]+dx,p[1]+dy):ctx.moveTo(p[0]+dx,p[1]+dy));ctx.strokeStyle=col;ctx.lineWidth=w;ctx.stroke()};
+  drawChain(HL,-off,off*.5,C.abH,18);drawChain(HR,off,off*.5,C.abH,18);
+  // light chains: parallel to arms, offset outward
+  const armL=[[cx-7,yh],[tipL[0]+8,tipL[1]+8]],armR=[[cx+7,yh],[tipR[0]-8,tipR[1]+8]];
+  const lightOf=(arm,sd)=>{const [a,b]=arm;const dx=b[0]-a[0],dy=b[1]-a[1];const l=Math.hypot(dx,dy);const nx=-dy/l*sd,ny=dx/l*sd;const s0=.3;return [[a[0]+dx*s0+nx*24,a[1]+dy*s0+ny*24],[b[0]+nx*24,b[1]+ny*24]]};
+  const LL=lightOf(armL,-1),LR=lightOf(armR,1);const lo=(1-lt)*90;
+  drawChain(LL,-lo,lo*.3,C.abL,14);drawChain(LR,lo,lo*.3,C.abL,14);
+  // variable regions
+  if(vr>0){withA(vr,()=>{const seg_=(pts,f)=>{const [a,b]=pts;return [[lerp(a[0],b[0],f),lerp(a[1],b[1],f)],b]};
+    drawChain(seg_(armL,.66),0,0,C.var,18);drawChain(seg_(armR,.66),0,0,C.var,18);drawChain(seg_(LL,.5),0,0,C.var,14);drawChain(seg_(LR,.5),0,0,C.var,14)})}
+  ctx.lineCap="butt";
+  // disulfide bonds
+  if(ss>0){withA(ss,()=>{[[cx-7,285],[cx-7,305]].forEach(p=>{rr(p[0]-2,p[1]-3,18,6,2);ctx.fillStyle=C.comp;ctx.fill()});
+    [[armL,LL,-1],[armR,LR,1]].forEach(([a,l,sd])=>{const f=.45;const p1=[lerp(a[0][0],a[1][0],f),lerp(a[0][1],a[1][1],f)];const p2=[lerp(l[0][0],l[1][0],.2),lerp(l[0][1],l[1][1],.2)];line(p1[0],p1[1],p2[0],p2[1],C.comp,6)})});
+    if(ss<1)glow(cx,295,40,C.glow,.5*(1-ss))}
+  // antigens docking
+  if(agb>0){[[tipL,-1],[tipR,1]].forEach(([tp,sd])=>{const ex=tp[0]+sd*(-6)-(1-agb)*sd*-80,ey=tp[1]-30-(1-agb)*60;
+    ctx.beginPath();ctx.ellipse(ex+sd*10,ey-16,30,16,0,0,TAU);ctx.fillStyle=mix(C.ag,C.panel,.55);ctx.fill();ctx.strokeStyle=C.ag;ctx.lineWidth=1.3;ctx.stroke();epi("tri",ex,ey+2,9,C.ag,Math.PI)})}
+  // labels
+  const LBL=(p,tx,ty,s,col,al)=>{line(p[0],p[1],tx,ty,hexA(C.ink,.35),1);label(tx,ty,s,{size:12,weight:600,align:al||"left",color:col||C.ink})};
+  if(hv>.9){LBL([cx+7,380],520,400,"Heavy chain (×2)",C.abH);LBL([cx-7,350],250,370,"Constant region (stem)",C.ink,"right")}
+  if(lt>.9){LBL([LL[1][0]-6,LL[1][1]+30],120,230,"Light chain (×2)",C.abL,"left")}
+  if(ss>.9){LBL([cx+10,295],520,300,"Disulfide bonds hold chains together",C.comp)}
+  if(vr>.9){LBL([tipR[0]-30,tipR[1]+30],620,190,"Variable region",C.var);LBL([tipL[0]+20,tipL[1]+20],140,160,"Variable region",C.var,"right")}
+  if(agb>.9){label(cx,40,"2 antigen-binding sites, each fits one epitope",{size:12.5,align:"center",weight:700,border:C.ag})}
+  label(cx,458,"hinge lets the arms swing to reach two epitopes",{size:11,align:"center",color:C["ink-soft"]});
+}
+
+function sceneAbAct(t){bg(C.tissue);
+  const q=P(t,8);const PN=[[8,8,"1 Neutralization"],[404,8,"2 Agglutination"],[8,244,"3 Opsonization"],[404,244,"4 Complement activation"]];
+  PN.forEach(p=>{panelBox(p[0],p[1],388,228,{fill:hexA(C.panel,.7)});title(p[0]+14,p[1]+18,p[2])});
+  // 1 neutralization
+  { const ox=8,oy=8;ctx.fillStyle=C.host;ctx.fillRect(ox+10,oy+180,368,44);line(ox+10,oy+180,ox+378,oy+180,C["host-edge"],2);
+    for(let k=0;k<6;k++){const x=ox+40+k*60;line(x,oy+180,x,oy+168,C["host-edge"],2.5);ctx.beginPath();ctx.arc(x,oy+164,5,Math.PI,0,true);ctx.strokeStyle=C["host-edge"];ctx.lineWidth=2;ctx.stroke()}
+    for(let k=0;k<3;k++){const x=ox+70+k*120;const dn=Math.sin(Math.PI*q);const y=oy+50+dn*90;virus(x,y,11,1,t);
+      for(let j=0;j<4;j++){const an=Math.PI/2+(j-1.5)*.55;ab(x+Math.cos(an)*24,y+Math.sin(an)*24,10,an+Math.PI,C.ab)}}
+    label(ox+194,oy+204,"coated viruses cannot attach",{size:11.5,align:"center",weight:600});}
+  // 2 agglutination
+  { const ox=404,oy=8;const c=ease(Math.min(1,q*1.6));const cx=ox+194,cy=oy+110;
+    const pos=[[-130,-60],[120,-55],[-140,55],[130,60],[0,-80],[10,70]];const fin=[[-24,-16],[24,-16],[-24,16],[24,16],[0,-34],[0,34]];
+    const P2=pos.map((p,i)=>[cx+lerp(p[0],fin[i][0]*1.4,c),cy+lerp(p[1],fin[i][1]*1.4,c)]);
+    if(c>.6){[[0,1],[0,2],[1,3],[2,3],[0,4],[1,4],[2,5],[3,5]].forEach(([a,b])=>{const mx=(P2[a][0]+P2[b][0])/2,my=(P2[a][1]+P2[b][1])/2;const an=Math.atan2(P2[b][1]-P2[a][1],P2[b][0]-P2[a][0]);withA(seg(c,.6,1),()=>ab(mx,my,9,an-Math.PI/2,C.ab))})}
+    P2.forEach((p,i)=>bact(p[0],p[1],i*.7,8));
+    label(cx,oy+204,c<.6?"antibodies link germs together...":"...into a clump that is easy to catch",{size:11.5,align:"center",weight:600});}
+  // 3 opsonization
+  { const ox=8,oy=244;const u=ease(seg(q,.2,.75));const bxx=lerp(ox+300,ox+130,u),byy=oy+115;const e=seg(q,.7,.95);
+    macro(ox+90,oy+115,54,{t,seed:2,lab:false});for(let k=0;k<7;k++){const an=-.9+k*.3;receptor(ox+90+Math.cos(an)*54,oy+115+Math.sin(an)*54,an,6,null,C["macro-edge"])}
+    if(e<1)withA(1-e,()=>{bact(lerp(bxx,ox+100,e),byy,0,12);for(let j=0;j<6;j++){const an=j/6*TAU;ab(lerp(bxx,ox+100,e)+Math.cos(an)*28,byy+Math.sin(an)*18,9,an+Math.PI,C.ab)}});
+    else txt(ox+90,oy+115,"eaten",{size:12,weight:700,align:"center",color:C.good});
+    label(ox+240,oy+204,"phagocyte grabs the antibody stems",{size:11.5,align:"center",weight:600});}
+  // 4 complement
+  { const ox=404,oy=244;const cx=ox+194,cy=oy+110;const c1=seg(q,.1,.3),pore=seg(q,.3,.55),pop=seg(q,.7,.8);
+    if(pop<1){bact(cx,cy,0,26,1,{swell:seg(q,.5,.7)});for(let j=0;j<3;j++){const x=cx-40+j*40;ab(x,cy-34,11,-Math.PI/2+Math.PI,C.ab);
+        if(c1>0)circ(x,lerp(cy-90,cy-52,ease(c1)),6,C.comp,hexA(C.ink,.4),1)}
+      if(pore>0)for(let j=0;j<2;j++){const x=cx-20+j*40;withA(pore,()=>{ctx.beginPath();ctx.ellipse(x,cy+20,8,5,0,0,TAU);ctx.strokeStyle=C.comp;ctx.lineWidth=4;ctx.stroke()})}}
+    else{for(let k=0;k<9;k++){const an=k/9*TAU;const d=30+seg(q,.8,1)*40;withA(1-seg(q,.9,1),()=>circ(cx+Math.cos(an)*d,cy+Math.sin(an)*d*.6,6,C.bact))}}
+    label(cx,oy+204,pop<1?"complement binds the antibody stem → pores":"lysis",{size:11.5,align:"center",weight:600});}
+}
+
+function sceneClasses(t){bg();
+  const cols=[["IgG","igg","monomer · most abundant","crosses placenta"],["IgA","iga","dimer","tears, saliva, milk"],["IgM","igm","pentamer · first made","great at clumping"],["IgE","ige","monomer · on mast cells","allergy, parasites"],["IgD","igd","monomer · on B cells","B-cell receptor"]];
+  const on=Math.floor(P(t,12.5)*5);
+  cols.forEach((c,i)=>{const x=8+i*158,w=152;const lit=i===on;panelBox(x,10,w,460,{stroke:lit?C[c[1]]:C.rule,lw:lit?3:1.2,fill:hexA(C["panel-2"],lit?1:.7)});
+    const col=C[c[1]];const cx=x+w/2;txt(cx,36,c[0],{size:20,weight:700,align:"center",color:col});
+    ctx.save();ctx.globalAlpha=lit?1:.6;
+    if(i===0)ab(cx,120,28,-Math.PI/2,col,{lw:5});
+    if(i===1){ab(cx-21,112,23,Math.PI,col,{lw:4.5});ab(cx+21,112,23,0,col,{lw:4.5});circ(cx,112,5,C.comp)}
+    if(i===2)pentamer(cx,112,46,col,t*.3);
+    if(i===3)ab(cx,120,28,-Math.PI/2,col,{lw:5});
+    if(i===4)ab(cx,120,28,-Math.PI/2,col,{lw:5});
+    ctx.restore();
+    txt(cx,178,c[2],{size:11,align:"center",color:C["ink-soft"]});
+    // vignette
+    const vy=200,vh=200;rr(x+8,vy,w-16,vh,6);ctx.fillStyle=hexA(C.panel,.8);ctx.fill();ctx.save();rr(x+8,vy,w-16,vh,6);ctx.clip();
+    if(i===0){ctx.fillStyle=mix(C.blood,C.panel,.75);ctx.fillRect(x+8,vy,w-16,80);ctx.fillStyle=mix(C.node,C.panel,.3);ctx.fillRect(x+8,vy+80,w-16,30);ctx.fillStyle=mix(C.blood,C.panel,.85);ctx.fillRect(x+8,vy+110,w-16,90);
+      txt(cx,vy+14,"mother's blood",{size:10,align:"center",color:C["ink-soft"]});txt(cx,vy+95,"placenta",{size:10,align:"center",color:C["ink-soft"]});txt(cx,vy+188,"fetus",{size:10,align:"center",color:C["ink-soft"]});
+      for(let k=0;k<4;k++){const u=P(t*.3+k/4,1);ab(x+30+k*30,vy+30+u*150,9,Math.PI/2+.5*Math.sin(u*6),col)}}
+    if(i===1){ctx.beginPath();ctx.moveTo(cx,vy+20);ctx.bezierCurveTo(cx+60,vy+90,cx+60,vy+180,cx,vy+185);ctx.bezierCurveTo(cx-60,vy+180,cx-60,vy+90,cx,vy+20);ctx.fillStyle=hexA(C.water,.18);ctx.fill();ctx.strokeStyle=C.water;ctx.lineWidth=1.5;ctx.stroke();
+      for(let k=0;k<4;k++){const yy=vy+80+k*24+Math.sin(t+k)*4,xx=cx-14+(k%2)*28;ab(xx-7,yy,8,Math.PI,col,{lw:2.5});ab(xx+7,yy,8,0,col,{lw:2.5})}txt(cx,vy+60,"secretions",{size:10,align:"center",color:C["ink-soft"]})}
+    if(i===2){const c=ease(Math.min(1,P(t,4)*1.8));[[-40,-50],[40,-40],[-30,50],[44,48],[0,-70]].forEach((p,k)=>bact(cx+p[0]*(1-c*.55),vy+100+p[1]*(1-c*.55),k,7));pentamer(cx,vy+100,40,col,t*.3)}
+    if(i===3){const m=P(t,4);mastC(cx,vy+120,44,seg(m,.45,.7),{t,lab:false});for(let k=0;k<5;k++){const an=-Math.PI/2+(k-2)*.4;ab(cx+Math.cos(an)*50,vy+120+Math.sin(an)*50,10,an,col,{lw:2.5})}
+      const ay=lerp(vy+20,vy+60,ease(seg(m,0,.4)));for(let k=0;k<6;k++){const an=k/6*TAU;line(cx,ay,cx+Math.cos(an)*9,ay+Math.sin(an)*9,C.fat,2)}circ(cx,ay,5,C.fat);
+      if(m>.45)for(let k=0;k<10;k++){const u=seg(m,.45,1);const an=k/10*TAU;dotM(cx+Math.cos(an)*(44+u*30),vy+120+Math.sin(an)*(44+u*30),2.5,C.hist,1-u)}txt(cx,vy+188,"allergen → histamine",{size:10,align:"center",color:C["ink-soft"]})}
+    if(i===4){lymph(cx,vy+105,40,"b",{t,norec:true});for(let k=0;k<10;k++){const an=k/10*TAU+t*.1;ab(cx+Math.cos(an)*46,vy+105+Math.sin(an)*46,10,an,col,{lw:2.5})}}
+    ctx.restore();
+    txt(cx,vy+vh+22,c[3],{size:12,weight:700,align:"center",color:lit?col:C.ink});});
+}
+
+/* ================= Part 6 ================= */
+function titerFns(){const g=(d,on,pk,amp,k)=>{const x=d-on;if(x<=0)return 0;const tp=pk-on;return amp*Math.pow(x/tp,k)*Math.exp(k*(1-x/tp))};
+  return {igm:d=>g(d,4,10,40,3)+g(d,33,37,14,3),igg:d=>g(d,6,16,70,1.6)+g(d,33,40,1100,1.3)}}
+function sceneTiter(t){bg();
+  const L=13,q=P(t,L);const day=Math.min(60,seg(q,0,.85)*60);const F=titerFns();
+  const x0=80,x1=760,y0=410,y1=60;const X=d=>lerp(x0,x1,d/60),Y=v=>y0-Math.log10(Math.max(1,1+v))/3.2*(y0-y1);
+  line(x0,y0,x1,y0,C.ink,1.5);line(x0,y0,x0,y1,C.ink,1.5);
+  [0,10,20,30,40,50,60].forEach(d=>{line(X(d),y0,X(d),y0+5,C.ink,1);txt(X(d),y0+16,d+"",{size:11,align:"center",mono:true,color:C["ink-soft"]})});
+  txt((x0+x1)/2,y0+36,"days",{size:12,align:"center",color:C["ink-soft"]});
+  ctx.save();ctx.translate(30,(y0+y1)/2);ctx.rotate(-Math.PI/2);txt(0,0,"antibody titer (log scale)",{size:12,align:"center",color:C["ink-soft"]});ctx.restore();
+  [10,100,1000].forEach(v=>{line(x0,Y(v),x1,Y(v),hexA(C.rule,.6),1,[3,4]);txt(x0-8,Y(v),v===10?"low":v===100?"":"high",{size:10,align:"right",color:C["ink-faint"]})});
+  // exposure markers
+  [[0,"1st exposure"],[32,"2nd exposure"]].forEach(([d,s])=>{if(day>=d){virus(X(d),y0-14,7,1,t);line(X(d),y0-26,X(d),y1+20,hexA(C.virus,.5),1.2,[4,4]);label(X(d)+6,y1+10,s,{size:11.5,weight:600,color:C.virus})}});
+  // curves
+  const drawC=(fn,col,dash)=>{ctx.beginPath();for(let d=0;d<=day;d+=.25){const x=X(d),y=Y(fn(d));d?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.strokeStyle=col;ctx.lineWidth=3;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])};
+  drawC(F.igm,C.igm,[7,5]);drawC(F.igg,C.igg);
+  circ(X(day),Y(F.igg(day)),5,C.igg);circ(X(day),Y(F.igm(day)),4,C.igm);
+  // annotations
+  if(day>5){const y=y0-30;line(X(0),y,X(5),y,C.ink,1.2);line(X(0),y-5,X(0),y+5,C.ink,1.2);line(X(5),y-5,X(5),y+5,C.ink,1.2);txt(X(2.5),y-12,"lag",{size:11,align:"center",weight:600})}
+  if(day>11)label(X(10),Y(F.igm(10))-18,"IgM first",{size:11.5,align:"center",weight:700,color:C.igm});
+  if(day>17)label(X(18),Y(F.igg(16))-22,"then IgG",{size:11.5,align:"center",weight:700,color:C.igg});
+  if(day>20)label(X(22),268,"PRIMARY: slow, small",{size:12,align:"center",weight:700,border:C.act6});
+  if(day>42)label(X(50),Y(F.igg(48))+40,"SECONDARY: fast, huge, mostly IgG",{size:12,align:"center",weight:700,border:C.act6});
+  // memory cells
+  const nm=day<12?0:day<32?3:day<40?3+Math.round(seg(day,33,40)*6):9;
+  for(let k=0;k<nm;k++)lymph(X(22)+(k%5)*18,96+Math.floor(k/5)*20,7,"mem",{label:"",norec:true});
+  if(nm>0)txt(X(22)-12,96,"memory cells",{size:11,align:"right",weight:600,color:C.mem});
+  label(x1-4,y0-20,"day "+Math.round(day),{size:11.5,align:"right",mono:true});
+}
+
+function sceneImmTypes(t){bg();
+  const q=P(t,10);
+  txt(270,20,"NATURAL",{size:12,weight:700,align:"center",mono:true,color:C["ink-soft"]});txt(620,20,"ARTIFICIAL",{size:12,weight:700,align:"center",mono:true,color:C["ink-soft"]});
+  ctx.save();ctx.translate(40,140);ctx.rotate(-Math.PI/2);txt(0,0,"ACTIVE: you make it",{size:12,weight:700,align:"center",mono:true,color:C.good});ctx.restore();
+  ctx.save();ctx.translate(40,355);ctx.rotate(-Math.PI/2);txt(0,0,"PASSIVE: you receive it",{size:12,weight:700,align:"center",mono:true,color:C.warn});ctx.restore();
+  const cells=[[100,32,"Catch the disease, recover",0],[452,32,"Vaccine",1],[100,246,"Mother → baby (placenta, milk)",2],[452,246,"Injected antibodies (antivenom)",3]];
+  cells.forEach(([x,y,s,i])=>{const w=344,h=206;panelBox(x,y,w,h,{fill:hexA(C["panel-2"],.85)});txt(x+12,y+18,s,{size:12.5,weight:700});
+    const vx=x+90,vy=y+110;
+    if(i===0){bodyFig(vx-40,vy-60,.28);for(let k=0;k<3;k++){const u=P(t*.5+k/3,1);virus(lerp(vx-90,vx-46,u),lerp(vy-60,vy-40,u),5,1-u*.5,t)}
+      lymph(vx+30,vy-20,16,"b",{t,norec:true});plasmaC(vx+30,vy+30,16,{lab:false});for(let k=0;k<3;k++){const u=P(t*.6+k/3,1);ab(vx+50+u*40,vy+30+(k-1)*12,7,0,C.ab,{a:1-u})}lymph(vx-10,vy+60,10,"mem",{label:"M",norec:true})}
+    if(i===1){const u=seg(q,0,.3);ctx.save();ctx.translate(vx-50+u*20,vy-30);ctx.rotate(.6);rr(-40,-7,62,14,3);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=1.3;ctx.stroke();line(22,0,42,0,C.ink,1.5);line(-50,0,-40,0,C.ink,3);ctx.restore();
+      virus(vx-20,vy+10,7,.5,t,mix(C.virus,C.panel,.4));txt(vx-20,vy+34,"harmless form",{size:9.5,align:"center",color:C["ink-soft"]});
+      lymph(vx+30,vy-20,16,"b",{t,norec:true});plasmaC(vx+30,vy+30,16,{lab:false});for(let k=0;k<3;k++){const u=P(t*.6+k/3,1);ab(vx+50+u*40,vy+30+(k-1)*12,7,0,C.ab,{a:1-u})}lymph(vx-10,vy+60,10,"mem",{label:"M",norec:true})}
+    if(i===2){circ(vx-40,vy-30,18,C.body,C["body-edge"],1.3);txt(vx-40,vy-30,"mom",{size:9,align:"center"});circ(vx+30,vy+40,13,C.body,C["body-edge"],1.3);txt(vx+30,vy+40,"baby",{size:9,align:"center"});
+      for(let k=0;k<4;k++){const u=P(t*.35+k/4,1);ab(lerp(vx-30,vx+20,u),lerp(vy-14,vy+28,u),7,u*3,k%2?C.iga:C.igg)}txt(vx-10,vy+76,"IgG + IgA",{size:10,align:"center",color:C["ink-soft"]})}
+    if(i===3){ctx.strokeStyle=C.bact;ctx.lineWidth=5;ctx.lineCap="round";ctx.beginPath();for(let k=0;k<=20;k++){const xx=vx-70+k*4,yy=vy-50+Math.sin(k*.6+t*2)*6;k?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.stroke();ctx.lineCap="butt";
+      ctx.save();ctx.translate(vx-20,vy+20);rr(-36,-9,60,18,3);ctx.fillStyle=hexA(C.ab,.25);ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=1.3;ctx.stroke();line(24,0,46,0,C.ink,1.5);for(let k=0;k<3;k++)ab(-24+k*16,0,5,0,C.ab,{lw:1.5});ctx.restore();
+      for(let k=0;k<3;k++){const u=P(t*.6+k/3,1);ab(vx+30+u*40,vy+20+(k-1)*12,7,0,C.ab,{a:1-u})}txt(vx-20,vy+50,"ready-made antibodies",{size:9.5,align:"center",color:C["ink-soft"]})}
+    // protection chart
+    const gx=x+184,gy=y+44,gw=146,gh=120;rr(gx,gy,gw,gh,4);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+    const act=i<2;const f=u=>act?(u<.15?0:1-Math.exp(-(u-.15)*9))*.9:(u<.04?u*22:.88*Math.exp(-(u-.04)*3.2));
+    const now=seg(q,0,.9);ctx.beginPath();for(let k=0;k<=60;k++){const u=k/60;if(u>now)break;const px_=gx+6+u*(gw-12),py=gy+gh-10-f(u)*(gh-24);k?ctx.lineTo(px_,py):ctx.moveTo(px_,py)}ctx.strokeStyle=act?C.good:C.warn;ctx.lineWidth=2.5;ctx.stroke();
+    txt(gx+gw/2,gy+gh+14,"protection over time",{size:10,align:"center",color:C["ink-soft"]});
+    txt(gx+gw/2,gy+12,act?"slow start, lasts":"instant, fades",{size:10.5,weight:700,align:"center",color:act?C.good:C.warn})});
+}
+
+function sceneDisorders(t){bg();
+  const PN=[[8,"Hypersensitivity (allergy)","act3"],[272,"Autoimmunity","act5"],[536,"Immunodeficiency (HIV)","act6"]];
+  PN.forEach(([x,s,c])=>{panelBox(x,8,256,464,{fill:hexA(C["panel-2"],.85)});txt(x+128,28,s,{size:12.5,weight:700,align:"center",color:C[c]})});
+  // allergy
+  { const q=P(t,6);const cx=136,cy=180;const deg=seg(q,.4,.65);mastC(cx,cy,56,deg,{t,lab:false});txt(cx,cy+78,"mast cell",{size:11,align:"center",color:C["ink-soft"]});
+    const ys=[];for(let k=0;k<7;k++){const an=-Math.PI/2+(k-3)*.36;const x=cx+Math.cos(an)*62,y=cy+Math.sin(an)*62;ab(x,y,11,an,C.ige,{lw:3});ys.push([x+Math.cos(an)*14,y+Math.sin(an)*14])}
+    const ay=lerp(70,ys[3][1]-6,ease(seg(q,0,.4)));for(let k=0;k<8;k++){const an=k/8*TAU+t;line(cx,ay,cx+Math.cos(an)*14,ay+Math.sin(an)*14,C.fat,2.5)}circ(cx,ay,8,C.fat);txt(cx+18,ay-12,"pollen",{size:10.5,color:C["ink-soft"]});
+    for(let k=0;k<16;k++){const u=seg(q,.4+rnd(k)*.1,1);if(u<=0)continue;const an=rnd(k+3)*TAU;dotM(cx+Math.cos(an)*(50+u*70),cy+Math.sin(an)*(50+u*60),3,C.hist,1-u)}
+    if(deg>0)label(cx,cy-96,"histamine released",{size:11.5,align:"center",border:C.hist});
+    const ar=lerp(30,13,ease(seg(q,.5,.8)));circ(cx-50,350,40,C.host,C["host-edge"],2);circ(cx-50,350,ar,C.panel,C["host-edge"],1.5);txt(cx-50,404,"airway narrows",{size:10.5,align:"center"});
+    txt(cx+60,330,"anaphylaxis:",{size:11,weight:700,align:"center"});txt(cx+60,348,"airways close,",{size:10.5,align:"center"});txt(cx+60,364,"BP falls",{size:10.5,align:"center"});chipText(cx,440,"treat: epinephrine",C.act3);}
+  // autoimmunity
+  { const q=P(t,7);const x0=272;for(let k=0;k<4;k++){const x=x0+50+(k%2)*100,y=170+Math.floor(k/2)*110;const hit=k===1;const d=hit?seg(q,.5,.9):0;
+      hostCell(x,y,34,{seed:k+20,shrink:d*.5,bleb:d,fill:mix(C.host,C.good,.12)});txt(x,y+48,"self",{size:10.5,align:"center",weight:600,color:C.good});
+      if(k===2||k===3)for(let j=0;j<3;j++){const an=-Math.PI/2+(j-1)*.6;ab(x+Math.cos(an)*44,y+Math.sin(an)*44,9,an+Math.PI,C.ab,{a:seg(q,.2,.4)})}}
+    const tx=lerp(x0+250,x0+190,ease(seg(q,0,.4))),ty=120;lymph(tx,ty+50,22,"tc",{t,label:"Tc"});
+    if(q>.35&&q<.6)for(let k=0;k<4;k++){const u=seg(q,.35,.55);dotM(lerp(tx-14,x0+176,u),lerp(ty+50,170-10+k*6,u),2.6,C.perf)}
+    label(x0+128,400,"immune cells and antibodies",{size:11,align:"center"});label(x0+128,420,"attack the body's own cells",{size:11,align:"center"});
+    chipText(x0+128,446,"loss of self-tolerance",C.act5);}
+  // HIV
+  { const q=P(t,10);const x0=536;const n=8;const lost=Math.floor(seg(q,.1,.8)*6);
+    for(let k=0;k<n;k++){const x=x0+50+(k%4)*52,y=110+Math.floor(k/4)*70;const gone=k<lost;const fading=k===lost?seg(q,.1+lost/6*.7,.1+(lost+1)/6*.7):0;
+      if(gone)continue;lymph(x,y,18,"th",{t,label:"Th",a:1-fading*.8,norec:true});
+      if(k===lost&&q<.8){for(let j=0;j<3;j++){const an=j*2.1+t;virus(x+Math.cos(an)*(36-fading*16),y+Math.sin(an)*(36-fading*16),5,1,t,C.hiv)}}}
+    const cnt=Math.round(lerp(1000,150,seg(q,.1,.8)));const bx_=x0+24,by_=300,bw=208;rr(bx_,by_,bw,14,7);ctx.fillStyle=C.sunk;ctx.fill();rr(bx_,by_,bw*cnt/1000,14,7);ctx.fillStyle=cnt<200?C.bad:C.th;ctx.fill();
+    line(bx_+bw*.2,by_-4,bx_+bw*.2,by_+18,C.bad,1.5);txt(bx_+bw*.2,by_+28,"200",{size:10,align:"center",mono:true,color:C.bad});
+    txt(x0+128,by_-14,"CD4 helper T count: "+cnt+" per µL",{size:11.5,align:"center",mono:true,weight:600});
+    const dim=seg(q,.6,.85);lymph(x0+70,380,16,"b",{t,a:1-dim*.6,norec:true});lymph(x0+128,380,16,"tc",{t,a:1-dim*.6,norec:true});
+    txt(x0+186,380,dim>.5?"no orders":"",{size:11,weight:700,color:C.bad,align:"center"});
+    label(x0+128,430,cnt<200?"AIDS: everyday germs become deadly":"HIV infects and kills CD4 helper T cells",{size:11,align:"center",border:cnt<200?C.bad:null});}
+}
+
+function sceneRecap(t){bg();
+  const parts=[["Lymphatic system","act1"],["Lymphoid organs","act2"],["Innate defenses","act3"],["Adaptive: T cells","act4"],["Adaptive: antibodies","act5"],["Memory & disorders","act6"]];
+  const on=Math.floor(P(t,12)*6.5);
+  parts.forEach((p,i)=>{const x=14+(i%3)*262,y=16+Math.floor(i/3)*228,w=250,h=216;const lit=i<=on;panelBox(x,y,w,h,{stroke:lit?C[p[1]]:C.rule,lw:lit?2.5:1.2,fill:hexA(C["panel-2"],lit?.95:.55)});
+    ctx.save();ctx.globalAlpha=lit?1:.4;const cx=x+w/2,cy=y+90;
+    if(i===0){rr(cx-80,cy-14,160,28,14);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2;ctx.stroke();for(let k=0;k<7;k++){const q=P(t*.4+k/7,1);dotM(cx-72+q*144,cy,3.4,C.lv)}}
+    else if(i===1){beanNode(cx,cy,70,46,{bgc:hexA(C["panel-2"],.95)});for(let k=0;k<5;k++)circ(cx-40+k*18,cy-22+(k%2)*6,7,C.follicle,C.bcell,1)}
+    else if(i===2){neut(cx-20,cy,34,{t});bact(cx+44,cy,0,8)}
+    else if(i===3){lymph(cx-40,cy,26,"th",{t});lymph(cx+40,cy,26,"tc",{t})}
+    else if(i===4){for(let k=0;k<5;k++)ab(cx-60+k*30,cy+10+Math.sin(t*2+k)*6,16,-Math.PI/2,C.ab,{lw:3.5})}
+    else{ctx.beginPath();for(let k=0;k<=60;k++){const d=k;const v=k<30?Math.exp(-Math.pow((k-14)/6,2))*.3:Math.exp(-Math.pow((k-40)/8,2));const X=cx-90+k*3,Y=cy+40-v*80;k?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=C.igg;ctx.lineWidth=3;ctx.stroke()}
+    txt(cx,y+170,p[0],{size:14,weight:700,align:"center"});txt(cx,y+192,"Part "+(i+1),{size:11,mono:true,align:"center",color:C[p[1]]});ctx.restore()});
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+const SCENES={map:sceneMap,jobs:sceneJobs,lcap:sceneLcap,ducts:sceneDucts,primary:scenePrimary,node:sceneNode,spleen:sceneSpleen,
+  barrier:sceneBarrier,phago:scenePhago,nk:sceneNK,inflam:sceneInflam,comp:sceneComp,
+  clonal:sceneClonal,mhc:sceneMHC,helper:sceneHelper,ctl:sceneCTL,bcell:sceneBcell,abstruct:sceneAbStruct,abact:sceneAbAct,classes:sceneClasses,
+  titer:sceneTiter,immtypes:sceneImmTypes,disorders:sceneDisorders,recap:sceneRecap};
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;
+  const s=STEPS[cur];
+  try{(SCENES[s.scene]||sceneRecap)(T)}catch(e){console.error(e)}
+  ctx.globalAlpha=1;
+}
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+window.__n=()=>STEPS.length;
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

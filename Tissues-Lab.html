@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tissues Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --gold:#C9A227;--gold-wash:#F6EFD3;
+  /* tissue palette */
+  --ecf:#F4EEF1;--epi:#F4C9D6;--epi-edge:#B8708C;--nuc:#5A3E9A;--ct:#FBF1F4;--coll:#E59AB6;--elas:#4A2A66;--retic:#7A5C3E;
+  --musc:#E58FAE;--musc-d:#B8507A;--nerve:#D9A441;--blood:#D9475F;--plasma:#F6E7C8;--air:#EAF4FB;--fluid:#2F7FC1;--hist:#7B5CC9;
+  --neut:#4F6F94;--macro:#2E8A7A;--bact:#3E8E3E;--scar:#E9DED2;--kera:#E2C383;--fat:#FFF3CF;--bone:#E6DCC4;--cart:#CDBFE8;
+  --skin:#F1D2BE;--skin-edge:#C49A80;--organ-edge:#8A6B74;--glow:#F2B33B;
+  --g-flow:#C2412D;--g-swell:#2F7FC1;--g-neut:#4F6F94;--g-mac:#2E8A7A;--g-rep:#2F8A57;--g-scar:#B4632A;--g-pain:#C9A227;
+  --grp-epi:#C4644F;--grp-ct:#2E8A7A;--grp-cart:#7B5CC9;--grp-bb:#B4632A;--grp-mus:#A04E8C;--grp-nerv:#1B6E88;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --gold:#E0BE48;--gold-wash:#352E14;
+  --ecf:#1C1519;--epi:#6E3A4E;--epi-edge:#D493AD;--nuc:#B49BEF;--ct:#21181C;--coll:#B55F80;--elas:#C9A8F0;--retic:#C9A27A;
+  --musc:#A9506F;--musc-d:#E38AAD;--nerve:#D9A441;--blood:#F0697F;--plasma:#4A3E26;--air:#13232E;--fluid:#5AA9E6;--hist:#B79BF2;
+  --neut:#8FB1D9;--macro:#5CC4B0;--bact:#6BC26B;--scar:#5E544B;--kera:#A88A4E;--fat:#4A4226;--bone:#5A5140;--cart:#4C4366;
+  --skin:#5A4136;--skin-edge:#B48E78;--organ-edge:#C9A9B2;--glow:#F2B33B;
+  --g-flow:#F07A66;--g-swell:#5AA9E6;--g-neut:#8FB1D9;--g-mac:#5CC4B0;--g-rep:#6BC293;--g-scar:#E39A5B;--g-pain:#E0BE48;
+  --grp-epi:#E08A74;--grp-ct:#5CC4B0;--grp-cart:#A98BEF;--grp-bb:#E39A5B;--grp-mus:#D186C0;--grp-nerv:#4FB3D1;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --gold:#E0BE48;--gold-wash:#352E14;
+  --ecf:#1C1519;--epi:#6E3A4E;--epi-edge:#D493AD;--nuc:#B49BEF;--ct:#21181C;--coll:#B55F80;--elas:#C9A8F0;--retic:#C9A27A;
+  --musc:#A9506F;--musc-d:#E38AAD;--nerve:#D9A441;--blood:#F0697F;--plasma:#4A3E26;--air:#13232E;--fluid:#5AA9E6;--hist:#B79BF2;
+  --neut:#8FB1D9;--macro:#5CC4B0;--bact:#6BC26B;--scar:#5E544B;--kera:#A88A4E;--fat:#4A4226;--bone:#5A5140;--cart:#4C4366;
+  --skin:#5A4136;--skin-edge:#B48E78;--organ-edge:#C9A9B2;--glow:#F2B33B;
+  --g-flow:#F07A66;--g-swell:#5AA9E6;--g-neut:#8FB1D9;--g-mac:#5CC4B0;--g-rep:#6BC293;--g-scar:#E39A5B;--g-pain:#E0BE48;
+  --grp-epi:#E08A74;--grp-ct:#5CC4B0;--grp-cart:#A98BEF;--grp-bb:#E39A5B;--grp-mus:#D186C0;--grp-nerv:#4FB3D1;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf);position:relative}
+canvas{display:block;width:100%;touch-action:manipulation}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:520px){.opts{grid-template-columns:1fr}}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:10px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt:disabled{cursor:default}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.score{font-family:var(--mono);font-size:14px}
+.qprog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.qprog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.timer{height:6px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 0}
+.timer i{display:block;height:100%;background:var(--warn);width:100%}
+.feat{margin:6px 0 0;padding-left:0;list-style:none;counter-reset:f}
+.feat li{position:relative;padding:4px 0 4px 30px;font-size:14.5px;border-top:1px solid var(--rule-soft)}
+.feat li::before{counter-increment:f;content:counter(f);position:absolute;left:0;top:5px;width:22px;height:22px;border-radius:50%;background:#10161A;color:#fff;border:1.5px solid var(--gold);font-family:var(--mono);font-size:12px;display:grid;place-items:center}
+.chipg{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;color:#fff}
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.gcard{background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:0;cursor:pointer;text-align:left;overflow:hidden;display:flex;flex-direction:column}
+.gcard:hover,.gcard:focus-visible{border-color:var(--accent)}
+.gcard canvas{aspect-ratio:4/3;background:var(--sunk)}
+.gcard .gb{padding:8px 10px 10px}
+.gcard .gn{font-weight:600;font-size:14.5px;line-height:1.3}
+.gcard .gl{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
+.detail{margin-bottom:14px}
+/* tree */
+.flow{display:flex;flex-direction:column;gap:0}
+.fnode{border:1.5px solid var(--rule);border-radius:8px;padding:10px 12px;background:var(--panel-2);position:relative}
+.fnode.cur{border-color:var(--accent);background:var(--panel);box-shadow:0 0 0 3px var(--accent-wash)}
+.fnode.done{border-color:var(--good);background:var(--good-wash)}
+.fnode .fq{font-weight:600;font-size:15px;margin:0 0 6px}
+.fnode .fa{font-size:14px;color:var(--ink)}
+.fnode .fa b{color:var(--good)}
+.flink{width:2px;height:16px;background:var(--rule);margin-left:22px;position:relative}
+.flink::after{content:"";position:absolute;left:-4px;bottom:-2px;border:5px solid transparent;border-top-color:var(--rule)}
+.fleaf{border:2px solid var(--gold);background:var(--gold-wash);border-radius:8px;padding:10px 12px;font-weight:700}
+.answers{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.answers .opt{font-size:14px}
+.treemap{width:100%;height:auto;display:block}
+.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.shake{animation:none}}
+/* matcher */
+.mapwrap{position:relative;width:100%}
+.mapwrap svg{display:block;width:100%;height:auto}
+.pin{position:absolute;transform:translate(-50%,-50%);min-width:26px;height:26px;border-radius:13px;border:2px solid var(--ink);background:var(--panel);font-family:var(--mono);font-size:12.5px;font-weight:600;cursor:pointer;padding:0 6px;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.pin:hover,.pin:focus-visible{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
+.pin.ok{background:var(--good);border-color:var(--good);color:#fff}
+.pin.hint{animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(242,179,59,.9)}50%{box-shadow:0 0 0 9px rgba(242,179,59,0)}}
+.pinlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pinlist .tbtn{font-size:13px;padding:5px 9px}
+.mcards{display:grid;grid-template-columns:1fr;gap:8px}
+.mcard{display:grid;grid-template-columns:84px 1fr;gap:10px;align-items:start;border:1.5px solid var(--rule);border-radius:var(--r);padding:8px;background:var(--panel);text-align:left;cursor:pointer;width:100%}
+.mcard canvas{width:84px;height:63px;border-radius:4px}
+.mcard.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.mcard.done{border-color:var(--good);background:var(--good-wash);cursor:default}
+.mcard .mn{font-weight:600;font-size:14.5px;line-height:1.3}
+.mcard .ms{font-size:13px;color:var(--ink-soft);margin-top:2px}
+.jobq{margin-top:6px;display:flex;flex-direction:column;gap:5px}
+.jobq .opt{font-size:13.5px;padding:7px 10px}
+/* sim */
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.seg button{border:0;background:var(--panel-2);padding:8px 12px;cursor:pointer;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:20px;height:0;border-top:3px solid;display:inline-block}
+.legend i.d{border-top-style:dashed}
+.signs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.sign{border:1.5px solid var(--rule);border-radius:var(--r);padding:6px 8px;font-size:13.5px;background:var(--panel-2)}
+.sign b{display:block;font-size:14px}
+.sign.on{border-color:var(--warn);background:var(--warn-wash)}
+.phase{font-family:var(--mono);font-size:13px;padding:6px 10px;border-radius:var(--r);background:var(--accent-wash);color:var(--accent-ink);margin:6px 0}
+.chal{border-top:1px solid var(--rule-soft);padding-top:8px;margin-top:8px}
+.chal .q{font-weight:600;font-size:14.5px;margin:0 0 6px}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Tissues &middot; USC Upstate</div>
+    <h1>Tissues Lab</h1>
+    <p class="sub">Learn to recognize every tissue under the microscope, find where it lives, and watch a wound heal. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="name" id="tabbtn-name" aria-controls="tab-name" type="button">Part 1 &middot; Name That Tissue</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="tree" id="tabbtn-tree" aria-controls="tab-tree" type="button">Part 2 &middot; Decision Tree</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="match" id="tabbtn-match" aria-controls="tab-match" type="button">Part 3 &middot; Location &amp; Job</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="sim" id="tabbtn-sim" aria-controls="tab-sim" type="button">Part 4 &middot; Inflammation Simulator</button>
+  </div>
+
+  <!-- PART 1 -->
+  <section id="tab-name" role="tabpanel" aria-labelledby="tabbtn-name">
+    <div class="rounds">
+      <span class="small">Mode:</span>
+      <button class="round" type="button" id="mQuiz" aria-pressed="true">Quiz</button>
+      <button class="round" type="button" id="mStudy" aria-pressed="false">Study gallery</button>
+      <span class="small" style="margin-left:10px">Tissues:</span>
+      <span id="setBtns" style="display:contents"></span>
+    </div>
+    <div id="quizView" class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvName" role="img" aria-label="Microscope image of a tissue"></canvas></div>
+        <div class="stagebar">
+          <button class="tbtn" id="lblBtn" type="button" aria-pressed="false">Show labels</button>
+          <button class="tbtn" id="schBtn" type="button" aria-pressed="false">Schematic view</button>
+          <label class="mode"><input type="checkbox" id="timedChk"> Timed (25 s per image)</label>
+        </div>
+        <div class="timer" id="timerBar" hidden><i id="timerFill"></i></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="nN"></div>
+        <div class="qprog"><i id="nProg"></i></div>
+        <h2 class="lvl-t">What tissue is this?</h2>
+        <div class="opts" id="nOpts"></div>
+        <div class="bar">
+          <button class="tbtn" id="nHint" type="button">Hint</button>
+          <button class="tbtn" id="nShow" type="button">Show answer</button>
+          <button class="btn" id="nNext" type="button" hidden>Next image &rarr;</button>
+        </div>
+        <div class="msg" id="nMsg" role="status"></div>
+        <div id="nFeat" hidden><h3>Giveaway features (numbered on the image)</h3><ol class="feat" id="nFeatList"></ol><p class="small" id="nWhere"></p></div>
+        <p class="calm">Every image is drawn fresh, so the same tissue never looks exactly the same twice, just like real slides.</p>
+        <p class="score" id="nScore"></p>
+      </aside>
+    </div>
+    <div id="studyView" hidden>
+      <div class="card detail" id="detail" hidden>
+        <div class="grid">
+          <div>
+            <div class="canvas-holder"><canvas id="cvDetail" role="img" aria-label="Enlarged tissue image"></canvas></div>
+            <div class="stagebar">
+              <button class="tbtn" id="dLbl" type="button" aria-pressed="true">Labels on</button>
+              <button class="tbtn" id="dSch" type="button" aria-pressed="false">Schematic view</button>
+              <button class="tbtn" id="dNew" type="button">New example</button>
+              <button class="tbtn" id="dClose" type="button">Close</button>
+            </div>
+          </div>
+          <div class="side" id="dInfo"></div>
+        </div>
+      </div>
+      <div class="bar"><button class="tbtn" id="galNew" type="button">New examples for all</button><span class="small">Tap any card to enlarge it with labels. Toggle the schematic to see the same image as a clean diagram.</span></div>
+      <div class="gal" id="gal"></div>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section id="tab-tree" role="tabpanel" aria-labelledby="tabbtn-tree" hidden>
+    <div class="rounds"><span class="small">Tissues:</span><span id="tSetBtns" style="display:contents"></span><span class="score" id="tScore" style="margin-left:auto"></span></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvTree" role="img" aria-label="Microscope image to identify with the decision tree"></canvas></div>
+        <div class="stagebar"><button class="tbtn" id="tSch" type="button" aria-pressed="false">Schematic view</button><span class="small">Answer each question about this image. Wrong turns are fine: you can try again.</span></div>
+        <h3 class="lvl-n" style="margin:12px 4px 4px">The whole tree (your path is highlighted)</h3>
+        <svg id="treeMap" class="treemap" role="img" aria-label="Overview of the tissue decision tree"></svg>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="tN"></div>
+        <div class="flow" id="flow"></div>
+        <div class="bar">
+          <button class="tbtn" id="tHint" type="button">Hint: highlight a clue</button>
+          <button class="tbtn" id="tShow" type="button">Show the path</button>
+          <button class="btn" id="tNext" type="button" hidden>Next image &rarr;</button>
+        </div>
+        <div class="msg" id="tMsg" role="status"></div>
+        <p class="calm">Tip: this tree is the same set of questions an expert asks, in the same order.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section id="tab-match" role="tabpanel" aria-labelledby="tabbtn-match" hidden>
+    <div class="rounds" id="mRounds"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="mapwrap" id="mapwrap"><svg id="bodySvg" viewBox="0 0 520 640" role="img" aria-label="Body map with numbered locations"></svg></div>
+        <p class="small" style="margin:8px 4px 0">Keyboard or switch users: pick a location by name here instead of tapping the map.</p>
+        <div class="pinlist" id="pinList"></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="mN"></div>
+        <h2 class="lvl-t" id="mTitle">Where does it live, and what does it do?</h2>
+        <p class="small" style="margin:0 0 8px">1. Tap a tissue card. 2. Tap where it is found on the body map. 3. Pick its job.</p>
+        <div class="mcards" id="mCards"></div>
+        <div class="bar">
+          <button class="tbtn" id="mHint" type="button">Hint</button>
+          <button class="tbtn" id="mShowAns" type="button">Show answer</button>
+          <button class="tbtn" id="mReset" type="button">Restart round</button>
+        </div>
+        <div class="msg" id="mMsg" role="status"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 4 -->
+  <section id="tab-sim" role="tabpanel" aria-labelledby="tabbtn-sim" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvInf" role="img" aria-label="Animated cross section of skin and a blood vessel"></canvas></div>
+        <div class="stagebar">
+          <button class="btn" id="sGo" type="button">Injure the tissue</button>
+          <button class="tbtn" id="sPause" type="button">Pause</button>
+          <button class="tbtn" id="sReset" type="button">Reset</button>
+          <label>Speed <input type="range" id="sSpeed" min="0.5" max="2" step="0.25" value="1" style="accent-color:var(--accent);width:100px"></label>
+          <label class="mode"><input type="checkbox" id="sRelax"> Relaxed (half speed)</label>
+        </div>
+        <div class="canvas-holder" style="margin-top:10px"><canvas id="cvGraph" role="img" aria-label="Live graph of the inflammation and repair response"></canvas></div>
+        <div class="legend" id="gLegend"></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <h3 style="margin-top:0">Wound</h3>
+        <div class="seg" role="group" aria-label="Wound type"><button type="button" id="wClean" aria-pressed="true">Clean cut</button><button type="button" id="wLarge" aria-pressed="false">Large wound</button></div>
+        <div class="bar" style="margin-top:10px">
+          <label class="mode"><input type="checkbox" id="sBact"> Bacteria get in</label>
+          <label class="mode"><input type="checkbox" id="sAnti"> Antihistamine</label>
+        </div>
+        <p class="small" style="margin:0">Changes apply on the next injury. The last run stays on the graph as a dashed line so you can compare.</p>
+        <div id="predict" class="chal"><p class="q">Predict first: how will this wound heal?</p><div class="bar"><button class="tbtn" type="button" data-p="reg">Regeneration</button><button class="tbtn" type="button" data-p="scar">Scar (fibrosis)</button></div><p class="small" id="predOut"></p></div>
+        <div class="phase" id="sPhase">Ready. Press "Injure the tissue".</div>
+        <div class="signs" id="signs"></div>
+        <p class="small" id="sNow"></p>
+        <h3>Challenges</h3>
+        <div id="chals"></div>
+        <p class="calm">Simplified teaching model: time is squeezed (minutes to weeks) and curve heights are relative, not measured values.</p>
+      </aside>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 4, The Tissue Level of Organization (OpenStax Anatomy &amp; Physiology 2e) &middot; Pair with the <a href="Tissues-Walkthrough.html">Tissues Walkthrough</a>.<br>Every microscope image here is generated by code to imitate an H&amp;E-stained slide (reticular tissue imitates a silver stain, elastic tissue an elastic stain, and bone a ground section). They are teaching drawings, not photographs. Diagrams are simplified and not to scale.</footer>
+
+<script>
+/* =====================================================================
+   HISTO: procedural "micrograph" engine. Every image is drawn in code
+   from a random seed, in an H&E-like stain ("he") or a clean schematic
+   ("sc") style. Nothing is a photo.
+   ===================================================================== */
+const HISTO=(function(){
+"use strict";
+const TAU=Math.PI*2;
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function h2r(h){h=h.replace("#","");return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+function r2h(r,g,b){return"#"+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,"0")).join("")}
+function rgb2hsl(r,g,b){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,s=0;const l=(mx+mn)/2;if(mx!==mn){const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h/=6}return[h,s,l]}
+function hsl2rgb(h,s,l){if(!s)return[l*255,l*255,l*255];const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;const f=t=>{t=(t%1+1)%1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p};return[f(h+1/3)*255,f(h)*255,f(h-1/3)*255]}
+function adj(hex,dh,ds,dl){const[h,s,l]=rgb2hsl(...h2r(hex));return r2h(...hsl2rgb(h+dh/360,Math.max(0,Math.min(1,s*ds)),Math.max(0,Math.min(1,l+dl))))}
+function mix(a,b,t){const A=h2r(a),B=h2r(b);return r2h(A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t,A[2]+(B[2]-A[2])*t)}
+const SHC={};
+function shade(hex,l){const k=hex+"|"+l.toFixed(3);if(SHC[k])return SHC[k];return SHC[k]=l>0?mix(hex,"#ffffff",l):mix(hex,"#000000",-l)}
+
+/* stain palettes */
+const HE={bg:"#F3E1EA",space:"#FAF1F5",cyto:"#E79DBD",cytoL:"#F0BCD1",cytoD:"#D67AA3",border:"#F8DDE8",
+ coll:"#E486AD",collD:"#CC6594",collL:"#EFB2CB",elas:"#3A1E4E",ret:"#2A1F17",retBg:"#E2CA96",
+ nuc:"#4A2B80",nucD:"#2C185A",nucL:"#8A6CB8",chrom:"#22114A",matHy:"#B9A0D3",matHyD:"#9479BE",lac:"#F6EEF5",chondro:"#C88AB7",
+ boneBg:"#D7CEBD",lamel:"#BCB099",lamelD:"#A29580",lacB:"#3A3026",canal:"#29221B",
+ rbc:"#DE5A7A",rbcL:"#EE9AAE",smearBg:"#F1E3E2",musc:"#DA6A94",muscD:"#B44A78",muscL:"#E995B6",
+ kera:"#EEA2C2",keraD:"#D97CA5",gob:"#E6DCEC",mucus:"#D3C3E2",gran:"#38195F",fat:"#FBF6F9",
+ neuropil:"#E2A6C5",neuro:"#C27BAA",nissl:"#55307F",eosGran:"#E4532E",wbcCyto:"#DCC6E3",smooth:"#E28AAE"};
+const SC={bg:"#FFF7FA",space:"#FFFFFF",cyto:"#F7C6D7",cytoL:"#FBDCE7",cytoD:"#EDA3BF",border:"#B86E8C",
+ coll:"#F0A2BE",collD:"#D57698",collL:"#F7CADA",elas:"#4A2A66",ret:"#4F3B2B",retBg:"#F3E5C2",
+ nuc:"#5A3E9A",nucD:"#3C2777",nucL:"#9C83CE",chrom:"#3C2777",matHy:"#D6C6EA",matHyD:"#B79FDA",lac:"#FFFFFF",chondro:"#E6A6C7",
+ boneBg:"#EFE6D3",lamel:"#CDBFA2",lamelD:"#AF9F80",lacB:"#5A4A38",canal:"#4A3C2C",
+ rbc:"#E66C88",rbcL:"#F6B6C4",smearBg:"#FFF6F3",musc:"#EE8DAC",muscD:"#C2547C",muscL:"#F6BACD",
+ kera:"#F4C1D5",keraD:"#E297B6",gob:"#EEE7F7",mucus:"#D8CCEE",gran:"#4A2A7A",fat:"#FFFFFF",
+ neuropil:"#F4D2E2",neuro:"#E3A0C5",nissl:"#7652A8",eosGran:"#EE6B3C",wbcCyto:"#EADDF1",smooth:"#F3ADC6"};
+const HK=new Set(["nuc","nucD","nucL","chrom","gran","nissl","matHy","matHyD"]);
+const EK=new Set(["bg","cyto","cytoL","cytoD","border","coll","collD","collL","chondro","rbc","rbcL","musc","muscD","muscL","kera","keraD","neuropil","neuro","smooth"]);
+
+let NOISE=null;
+function noise(){if(NOISE)return NOISE;const c=document.createElement("canvas");c.width=c.height=128;const x=c.getContext("2d");const d=x.createImageData(128,128);
+  const R=mulberry(99);for(let i=0;i<d.data.length;i+=4){const v=90+R()*80;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}x.putImageData(d,0,0);return NOISE=c}
+
+/* ---------- painter: semantic drawing calls, styled per stain ---------- */
+function painter(ctx,R,w,h,style,st,dpr){
+  const he=style!=="sc";const B=he?HE:SC;const P={};
+  for(const k in B){let v=B[k];if(he){if(HK.has(k))v=adj(v,st.hh,1,st.hl);else if(EK.has(k))v=adj(v,st.eh,st.es,st.el)}P[k]=v}
+  const g={ctx,R,w,h,he,P,dpr,feats:[]};
+  g.r=(a,b)=>a+(b-a)*R();
+  g.ri=(a,b)=>Math.floor(a+(b-a+1)*R());
+  g.pick=a=>a[Math.floor(R()*a.length)];
+  g.c=(k,l)=>{const v=P[k]||k;return l?shade(v,l):v};
+  g.feat=(x,y,t,k)=>g.feats.push({x,y,t,k});
+  g.ell=(x,y,rx,ry,rot,fill,stroke,lw)=>{ctx.beginPath();ctx.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1;ctx.stroke()}};
+  g.blobPts=(x,y,rx,ry,rot,wob,n)=>{n=n||14;const a1=R()*TAU,a2=R()*TAU,a3=R()*TAU;const c=Math.cos(rot||0),s=Math.sin(rot||0);const pts=[];
+    for(let i=0;i<n;i++){const t=i/n*TAU;const m=1+wob*(.55*Math.sin(2*t+a1)+.3*Math.sin(3*t+a2)+.15*Math.sin(5*t+a3));const px=Math.cos(t)*rx*m,py=Math.sin(t)*ry*m;pts.push([x+px*c-py*s,y+px*s+py*c])}return pts};
+  g.smooth=(pts,closed)=>{ctx.beginPath();const n=pts.length;if(n<2)return;
+    if(closed){ctx.moveTo((pts[n-1][0]+pts[0][0])/2,(pts[n-1][1]+pts[0][1])/2);for(let i=0;i<n;i++){const p=pts[i],q=pts[(i+1)%n];ctx.quadraticCurveTo(p[0],p[1],(p[0]+q[0])/2,(p[1]+q[1])/2)}ctx.closePath()}
+    else{ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<n-1;i++){const p=pts[i],q=pts[i+1];ctx.quadraticCurveTo(p[0],p[1],(p[0]+q[0])/2,(p[1]+q[1])/2)}ctx.lineTo(pts[n-1][0],pts[n-1][1])}};
+  g.blob=(x,y,rx,ry,rot,wob,fill,stroke,lw)=>{g.smooth(g.blobPts(x,y,rx,ry,rot,wob),true);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1;ctx.stroke()}};
+  g.poly=(pts,fill,stroke,lw)=>{ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1;ctx.lineJoin="round";ctx.stroke()}};
+  g.line=(pts,col,lw,al,smooth)=>{ctx.globalAlpha=al==null?1:al;if(smooth)g.smooth(pts,false);else{ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]))}
+    ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke();ctx.globalAlpha=1};
+  g.dots=(x,y,rx,ry,rot,n,col,s0,s1,al)=>{ctx.globalAlpha=al==null?1:al;ctx.fillStyle=col;const c=Math.cos(rot||0),s=Math.sin(rot||0);
+    for(let i=0;i<n;i++){const a=R()*TAU,q=Math.sqrt(R());const px=Math.cos(a)*rx*q,py=Math.sin(a)*ry*q;ctx.beginPath();ctx.arc(x+px*c-py*s,y+px*s+py*c,s0+(s1-s0)*R(),0,TAU);ctx.fill()}ctx.globalAlpha=1};
+  g.rdots=(x0,y0,x1,y1,n,col,s0,s1,al)=>{ctx.globalAlpha=al==null?1:al;ctx.fillStyle=col;for(let i=0;i<n;i++){ctx.beginPath();ctx.arc(g.r(x0,x1),g.r(y0,y1),g.r(s0,s1),0,TAU);ctx.fill()}ctx.globalAlpha=1};
+  g.nuc=(x,y,rx,ry,rot,o)=>{o=o||{};const kind=o.kind||"n";const col=kind==="d"?P.nucD:kind==="p"?P.nucL:P.nuc;
+    if(he){ctx.save();ctx.shadowColor=col;ctx.shadowBlur=1.3*dpr;g.blob(x,y,rx,ry,rot,.07,col);ctx.restore();
+      const area=Math.max(2,Math.round(rx*ry*.55));
+      g.dots(x,y,rx*.85,ry*.85,rot,area,P.chrom,.3,Math.min(1,.25+rx*.12),kind==="p"?.4:.5);
+      g.dots(x,y,rx*.8,ry*.8,rot,Math.round(area*.5),shade(col,.3),.3,.7,.35);
+      if(kind==="p")g.blob(x,y,rx,ry,rot,.07,null,P.nucD,.9);
+    }else{g.ell(x,y,rx,ry,rot,col,P.nucD,.9)}
+    if(o.nl)g.ell(x+(o.nlx||0),y+(o.nly||0),o.nl,o.nl,0,P.nucD)};
+  g.rbc=(x,y,r)=>{if(he){const gr=ctx.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,P.rbcL);gr.addColorStop(.45,P.rbcL);gr.addColorStop(.85,P.rbc);gr.addColorStop(1,shade(P.rbc,-.08));ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+    else{g.ell(x,y,r,r,0,P.rbc,shade(P.rbc,-.25),.8);g.ell(x,y,r*.45,r*.45,0,P.rbcL)}};
+  g.capillary=(x,y,r,rot)=>{rot=rot||0;g.ell(x,y,r+1.6,r*.8+1.6,rot,P.cytoD);g.ell(x,y,r,r*.8,rot,P.space);const n=r>7?2:1;for(let i=0;i<n;i++)g.rbc(x+(i-(n-1)/2)*r*.7,y+g.r(-1,1),Math.min(r*.55,4.2));
+    g.nuc(x+Math.cos(rot+1)*(r+.5),y+Math.sin(rot+1)*(r*.8+.5),3.6,1.4,rot+1+Math.PI/2,{kind:"d"});return[x,y]};
+  g.fill=(col)=>{ctx.fillStyle=col;ctx.fillRect(-5,-5,w+10,h+10)};
+  g.below=(f,col)=>{ctx.beginPath();ctx.moveTo(-5,h+5);for(let x=-5;x<=w+5;x+=4)ctx.lineTo(x,f(x));ctx.lineTo(w+5,h+5);ctx.closePath();ctx.fillStyle=col;ctx.fill()};
+  g.above=(f,col)=>{ctx.beginPath();ctx.moveTo(-5,-5);for(let x=-5;x<=w+5;x+=4)ctx.lineTo(x,f(x));ctx.lineTo(w+5,-5);ctx.closePath();ctx.fillStyle=col;ctx.fill()};
+  g.curvePts=(f,x0,x1,st)=>{const p=[];for(let x=x0;x<=x1;x+=st||4)p.push([x,f(x)]);return p};
+  g.fibrils=(n,cols,al,L,lw)=>{for(let i=0;i<n;i++){const x=g.r(-10,w+10),y=g.r(-10,h+10),a=g.r(0,TAU),l=g.r(L*.5,L);g.line([[x,y],[x+Math.cos(a)*l*.5+g.r(-2,2),y+Math.sin(a)*l*.5+g.r(-2,2)],[x+Math.cos(a)*l,y+Math.sin(a)*l]],g.pick(cols),lw||.7,al,true)}};
+  /* circle packing by dart throwing */
+  g.pack=(n,r0,r1,gap,pad,tries,list)=>{const out=list||[];pad=pad==null?0:pad;for(let t=0;t<(tries||n*60)&&out.length<n;t++){const r=g.r(r0,r1),x=g.r(-pad,w+pad),y=g.r(-pad,h+pad);let ok=true;
+    for(const c of out){const d=Math.hypot(c.x-x,c.y-y);if(d<c.r+r+gap){ok=false;break}}if(ok)out.push({x,y,r})}return out};
+  return g;
+}
+
+/* ---------- Voronoi cells (half-plane clipping) ---------- */
+function voronoi(S,x0,y0,x1,y1,maxD){return S.map((s,i)=>{let poly=[[x0,y0],[x1,y0],[x1,y1],[x0,y1]];
+  for(let j=0;j<S.length;j++){if(j===i)continue;const t=S[j];const dx=t[0]-s[0],dy=t[1]-s[1];if(Math.abs(dx)>maxD||Math.abs(dy)>maxD)continue;
+    const mx=(s[0]+t[0])/2,my=(s[1]+t[1])/2;const out=[];
+    for(let k=0;k<poly.length;k++){const a=poly[k],b=poly[(k+1)%poly.length];const da=(a[0]-mx)*dx+(a[1]-my)*dy,db=(b[0]-mx)*dx+(b[1]-my)*dy;
+      if(da<=0)out.push(a);if((da<=0)!==(db<=0)){const q=da/(da-db);out.push([a[0]+(b[0]-a[0])*q,a[1]+(b[1]-a[1])*q])}}
+    poly=out;if(!poly.length)break}return poly})}
+function centroid(P){let a=0,cx=0,cy=0;for(let i=0;i<P.length;i++){const p=P[i],q=P[(i+1)%P.length];const c=p[0]*q[1]-q[0]*p[1];a+=c;cx+=(p[0]+q[0])*c;cy+=(p[1]+q[1])*c}if(Math.abs(a)<1e-6)return P[0]||[0,0];return[cx/(3*a),cy/(3*a)]}
+function relax(S,x0,y0,x1,y1,maxD,n){for(let k=0;k<n;k++){S=voronoi(S,x0,y0,x1,y1,maxD).map((p,i)=>p.length>2?centroid(p):S[i])}return S}
+function inset(P,s,d){return P.map(p=>{const dx=s[0]-p[0],dy=s[1]-p[1],L=Math.hypot(dx,dy)||1;const k=Math.min(d,L*.45);return[p[0]+dx/L*k,p[1]+dy/L*k]})}
+function jitterSeeds(g,n,pad){const S=[];for(let i=0;i<n;i++)S.push([g.r(-pad,g.w+pad),g.r(-pad,g.h+pad)]);return S}
+
+/* ---------- shared bits ---------- */
+function wave(g,y0,A,fr){const p1=g.r(0,TAU),p2=g.r(0,TAU),f2=fr*g.r(1.8,2.6);return x=>y0+A*Math.sin(x*fr+p1)+A*.35*Math.sin(x*f2+p2)}
+function looseCT(g,f,dens,col){ // connective tissue under an epithelium, below curve f
+  const {w,h}=g;g.below(f,col||mix(g.c("collL"),g.c("space"),.35));
+  for(let i=0;i<46*dens;i++){const x=g.r(-20,w+20),y0=g.r(0,h+10);const y=Math.max(y0,f(x)+6);const a=g.r(-.5,.5)+(g.R()<.35?g.r(.8,1.4):0),L=g.r(26,80);const pts=[];
+    for(let j=0;j<5;j++){const t=j/4;pts.push([x+Math.cos(a)*L*t+g.r(-4,4),y+Math.sin(a)*L*t+g.r(-3,3)])}
+    if(pts.some(p=>p[1]<f(p[0])+4))continue;g.line(pts,g.c(g.R()<.5?"coll":"collD"),g.r(1.4,3.6),g.he?.5:.7,true)}
+  for(let i=0;i<3*dens;i++){const x=g.r(20,w-20),y=g.r(f(x)+18,h-8);if(y<f(x)+16)continue;g.capillary(x,y,g.r(5,8),g.r(0,1))}
+  for(let i=0;i<24*dens;i++){const x=g.r(0,w),y=g.r(0,h);if(y<f(x)+7)continue;if(g.R()<.55)g.nuc(x,y,g.r(3.5,5.5),g.r(1.5,2.3),g.r(-.5,.5),{kind:"d"});else g.nuc(x,y,2.5,2.5,0,{kind:"d"})}}
+function bm(g,f,lw){g.line(g.curvePts(f,-5,g.w+5,4),g.c("collD"),lw||1.4,g.he?.55:.9)}
+function cellQuad(g,x0,x1,top,bot,fill,stroke,lw,jit){const j=()=>jit?g.r(-jit,jit):0;g.poly([[x0+j(),bot(x0)],[x1+j(),bot(x1)],[x1+j(),top(x1)],[x0+j(),top(x0)]],fill,stroke,lw)}
+function ringPt(cx,cy,a,r,sq,rot){const x=Math.cos(a)*r,y=Math.sin(a)*r*sq;return[cx+x*Math.cos(rot)-y*Math.sin(rot),cy+x*Math.sin(rot)+y*Math.cos(rot)]}
+function ringCells(g,cx,cy,ri,ro,n,sq,rot,fillFn,nucFn){const a0=g.r(0,TAU);for(let i=0;i<n;i++){const a=a0+i/n*TAU,b=a0+(i+1)/n*TAU,m=(a+b)/2;
+  const pts=[ringPt(cx,cy,a,ri,sq,rot),ringPt(cx,cy,m,ri*.98,sq,rot),ringPt(cx,cy,b,ri,sq,rot),ringPt(cx,cy,b,ro,sq,rot),ringPt(cx,cy,m,ro*1.01,sq,rot),ringPt(cx,cy,a,ro,sq,rot)];
+  g.poly(pts,fillFn(i),g.c("border"),g.he?.8:1);if(nucFn)nucFn(i,m)}}
+
+/* ===================== the tissues ===================== */
+const T={};
+
+/* ---- EPITHELIA ---- */
+T.simpleSquamous=function(g,p){const {w,h}=g;
+  if(p.variant==="vessel"||(p.variant==null&&g.R()<.35)){ // lining of a vessel / serous membrane in section
+    const f=wave(g,h*g.r(.45,.55),g.r(6,14),g.r(.008,.014));g.fill(g.c("space"));
+    for(let i=0;i<14;i++){const x=g.r(0,w),y=g.r(4,h);if(y<f(x)-10)g.rbc(x,y,g.r(8,9.5))}
+    g.below(x=>f(x)+3,g.c("smooth",.12));
+    for(let k=0;k<7;k++){const ff=x=>f(x)+12+k*20+Math.sin(x*.02+k)*4;g.line(g.curvePts(ff,-5,w+5,6),g.c("muscD"),1,.25,true);
+      for(let i=0;i<6;i++){const x=g.r(0,w);g.nuc(x,ff(x)+8,g.r(7,10),1.8,Math.atan(Math.cos(x*.02+k)*.08),{kind:"n"})}}
+    g.line(g.curvePts(f,-5,w+5,3),g.c("cytoD"),3.2,1);
+    let x=g.r(5,30);let first=null;while(x<w){const y=f(x);g.nuc(x,y-1,g.r(9,12),2.6,Math.atan((f(x+1)-f(x-1))/2),{kind:"d"});if(!first&&x>w*.3)first=[x,y-1];x+=g.r(45,75)}
+    g.feat(first[0],first[1],"Flat nucleus bulges into the space","nuclei");
+    g.feat(w*.72,f(w*.72),"One thin layer of flat cells","layers");
+    g.feat(w*.5,f(w*.5)-60,"Open space (a lumen) next to the thin layer","surface");
+    return}
+  // lung alveoli: a lace of very thin walls around big air spaces
+  g.fill(g.c("cytoL",-.03));
+  let S=relax(jitterSeeds(g,Math.round(w*h/5200),40),-60,-60,w+60,h+60,200,2);
+  const V=voronoi(S,-60,-60,w+60,h+60,200);let nucPt=null,rbcPt=null,big=null;
+  V.forEach((P,i)=>{if(P.length<3)return;const sp=inset(P,S[i],g.r(2.2,3.6));g.smooth(sp.map(p=>[p[0]+g.r(-1.5,1.5),p[1]+g.r(-1.5,1.5)]),true);g.ctx.fillStyle=g.c("space");g.ctx.fill();
+    const c=S[i];if(c[0]>w*.3&&c[0]<w*.7&&c[1]>h*.3&&c[1]<h*.7&&!big)big={x:c[0],y:c[1],P:sp}});
+  V.forEach((P,i)=>{if(P.length<3)return;P.forEach((p,k)=>{if(p[0]<0||p[1]<0||p[0]>w||p[1]>h)return;
+    if(g.R()<.35){g.rbc(p[0],p[1],g.r(3,3.6));if(!rbcPt&&p[0]>w*.2&&p[1]>h*.2&&p[0]<w*.8&&p[1]<h*.8)rbcPt=p}
+    const q=P[(k+1)%P.length];if(g.R()<.45){const t=g.r(.3,.7);const x=p[0]+(q[0]-p[0])*t,y=p[1]+(q[1]-p[1])*t;g.nuc(x,y,g.r(4,6),g.r(1.4,2),Math.atan2(q[1]-p[1],q[0]-p[0]),{kind:"d"});if(!nucPt&&x>w*.25&&x<w*.75&&y>h*.25&&y<h*.75)nucPt=[x,y]}})});
+  if(!big)big={x:S[0][0],y:S[0][1],P:V[0]};
+  g.feat(big.x,big.y,"Air space (alveolus)","surface");
+  const e=big.P[0];g.feat(e[0],e[1],"Wall is one very thin layer of flat cells","layers");
+  if(nucPt)g.feat(nucPt[0],nucPt[1],"Flat, thin nucleus","nuclei");
+  if(rbcPt)g.feat(rbcPt[0],rbcPt[1],"Red blood cell in a capillary right beside the air","cells");
+};
+
+T.simpleCuboidal=function(g){const {w,h}=g;
+  g.fill(mix(g.c("collL"),g.c("space"),.25));g.fibrils(90,[g.c("coll"),g.c("collD")],.25,30,1);
+  const tb=g.pack(40,32,46,5,25,6000);g.pack(60,22,30,5,25,3000,tb);let best=null;
+  tb.forEach(t=>{const sq=g.r(.72,1),rot=g.r(0,TAU);const ri=t.r*g.r(.38,.48);
+    g.ell(t.x,t.y,t.r+1.8,t.r*sq+1.8,rot,null,g.c("collD"),1.3);
+    g.ell(t.x,t.y,t.r,t.r*sq,rot,g.c("cyto"));
+    const n=Math.round(TAU*t.r/g.r(13,16));
+    ringCells(g,t.x,t.y,ri,t.r,n,sq,rot,()=>g.c("cyto",g.r(-.06,.08)),(i,m)=>{if(g.R()<.18)return;const q=ringPt(t.x,t.y,m+g.r(-.08,.08),(ri+t.r)/2+g.r(-2,2),sq,rot);g.nuc(q[0],q[1],g.r(3,4.2),g.r(2.9,4),g.r(0,3),{kind:g.R()<.3?"p":"n"})});
+    g.ell(t.x,t.y,ri,ri*sq,rot,g.c("space"));
+    if(g.he)g.ell(t.x,t.y,ri+1.2,ri*sq+1.2,rot,null,g.c("cytoD"),1.6);
+    if(!best||Math.hypot(t.x-w/2,t.y-h/2)<Math.hypot(best.x-w/2,best.y-h/2))best={x:t.x,y:t.y,r:t.r,ri,sq,rot}});
+  for(let i=0;i<30;i++){const x=g.r(0,w),y=g.r(0,h);if(tb.every(t=>Math.hypot(t.x-x,t.y-y)>t.r+7)){if(g.R()<.4)g.capillary(x,y,g.r(4,6),g.r(0,3));else g.nuc(x,y,g.r(3,5),1.6,g.r(0,3),{kind:"d"})}}
+  g.feat(best.x,best.y,"Lumen of a kidney tubule","surface");
+  const q=ringPt(best.x,best.y,-Math.PI/2,(best.ri+best.r)/2,best.sq,best.rot);
+  g.feat(q[0],q[1],"Cube-shaped cell with a round, central nucleus","shape");
+  const q2=ringPt(best.x,best.y,Math.PI*.8,best.r+2,best.sq,best.rot);
+  g.feat(q2[0],q2[1],"One layer of cells in a ring","layers");
+};
+
+function columnCells(g,f,H,opt){ // shared by simple columnar and pseudostratified
+  const {w}=g;const cells=[];let x=-12,i=0,nextG=g.ri(2,5);
+  while(x<w+12){const cw=g.r(opt.cw0,opt.cw1);const gob=i===nextG;if(gob)nextG=i+g.ri(opt.g0,opt.g1);cells.push({x0:x,x1:x+cw,gob});x+=cw;i++}
+  const top=x=>f(x)-H;
+  cells.forEach(c=>{const xm=(c.x0+c.x1)/2,cw=c.x1-c.x0;
+    cellQuad(g,c.x0,c.x1,top,f,g.c("cyto",g.r(-.05,.07)),g.he?g.c("cytoL"):g.c("border"),g.he?.6:1,1.3);
+    if(c.gob){const cy=f(xm)-H*.62;g.blob(xm,cy,cw*.62,H*.3,0,.08,g.c("gob"),g.he?null:g.c("border"),1);
+      if(g.he)g.dots(xm,cy,cw*.5,H*.26,0,22,g.c("mucus",-.12),.4,1,.35);
+      g.nuc(xm,f(xm)-H*.18,cw*.32,2.6,0,{kind:"d"});c.gy=cy;c.gx=xm}
+    else c.nx=xm});
+  return{cells,top}}
+
+T.simpleColumnar=function(g){const {w,h}=g;
+  const f=wave(g,h*g.r(.66,.72),g.r(4,12),g.r(.006,.014));const H=g.r(84,98);
+  g.fill(g.c("space"));
+  for(let i=0;i<5;i++){const y=g.r(8,h*.3),x=g.r(0,w);g.line([[x,y],[x+g.r(20,60),y+g.r(-8,8)],[x+g.r(60,120),y+g.r(-10,10)]],g.c("mucus"),g.r(1,3),.45,true)}
+  looseCT(g,f,.9);bm(g,f);
+  const {cells,top}=columnCells(g,f,H,{cw0:10.5,cw1:13.5,g0:4,g1:7});
+  let nf=null;
+  cells.forEach(c=>{if(c.nx!=null){const y=f(c.nx)-g.r(15,21);g.nuc(c.nx,y,g.r(2.6,3.2),g.r(7,9),g.r(-.06,.06),{kind:"n"});if(!nf&&c.nx>w*.55&&c.nx<w*.8)nf=[c.nx,y]}});
+  const ap=g.curvePts(top,-5,w+5,2);g.line(ap,g.c("cytoD",-.08),3.2,g.he?.85:1);
+  if(g.he)for(let x=0;x<w;x+=1.4)g.line([[x,top(x)-1.6],[x,top(x)+1.2]],g.c("cytoD",-.15),.5,.35);
+  else g.line(ap.map(p=>[p[0],p[1]-2.5]),g.c("cytoD",-.15),1.2,1);
+  cells.filter(c=>c.gob).forEach(c=>{if(g.R()<.6)g.blob(c.gx,top(c.gx)-g.r(3,6),g.r(4,7),g.r(3,5),0,.2,g.c("gob"))});
+  const gb=cells.filter(c=>c.gob&&c.gx>w*.2&&c.gx<w*.5)[0]||cells.find(c=>c.gob);
+  g.feat(gb.gx,gb.gy,"Goblet cell (makes mucus)","goblet");
+  g.feat(w*.3,top(w*.3)-2,"Brush border (microvilli) on the free surface","cilia");
+  if(nf)g.feat(nf[0],nf[1],"Oval nuclei lined up in one row near the base","nuclei");
+  g.feat(w*.86,f(w*.86)-H*.5,"Tall cell: taller than it is wide (columnar)","shape");
+  g.feat(w*.12,f(w*.12)+2,"Basement membrane: every cell sits on it","layers");
+};
+
+T.pseudostratified=function(g){const {w,h}=g;
+  const f=wave(g,h*g.r(.68,.74),g.r(3,8),g.r(.006,.012));const H=g.r(96,112);
+  g.fill(g.c("space"));
+  for(let i=0;i<4;i++){const y=g.r(6,h*.16),x=g.r(0,w);g.line([[x,y],[x+g.r(40,90),y+g.r(-6,6)],[x+g.r(90,160),y+g.r(-8,8)]],g.c("mucus"),g.r(2,4),.5,true)}
+  looseCT(g,x=>f(x)+5,1);
+  g.line(g.curvePts(x=>f(x)+2.5,-5,w+5,4),g.c("collL",-.04),5,g.he?.9:1);
+  const {cells,top}=columnCells(g,f,H,{cw0:9.5,cw1:12,g0:4,g1:8});
+  // basal cells: short triangles on the basement membrane
+  const basal=[];for(let x=g.r(0,14);x<w;x+=g.r(14,24)){basal.push(x);g.poly([[x-7,f(x-7)],[x+7,f(x+7)],[x+1,f(x)-g.r(16,22)]],g.c("cyto",-.05),g.c("border"),g.he?.6:1)}
+  let hiN=null,loN=null;
+  cells.forEach(c=>{if(c.nx==null)return;const u=g.r(.22,.55);const y=f(c.nx)-H*u;g.nuc(c.nx,y,g.r(2.6,3.2),g.r(6,8),g.r(-.08,.08),{kind:"n"});
+    if(c.nx>w*.3&&c.nx<w*.7){if(!hiN||y<hiN[1])hiN=[c.nx,y];}});
+  basal.forEach(x=>{const y=f(x)-g.r(6,9);g.nuc(x,y,3.3,3.6,0,{kind:"n"});if(!loN&&x>w*.4)loN=[x,y]});
+  // cilia
+  for(let x=-2;x<w+2;x+=g.he?1.3:2.2){const gob=cells.find(c=>c.gob&&x>=c.x0&&x<=c.x1);if(gob)continue;const y=top(x);const L=g.r(8,11),b=g.r(-1.5,1.5);g.line([[x,y],[x+b*.5,y-L*.5],[x+b,y-L]],g.c("cytoD",-.06),g.he?.7:1,g.he?.75:1,true)}
+  g.line(g.curvePts(top,-5,w+5,3),g.c("cytoD",-.18),1.4,.8);
+  const gb=cells.filter(c=>c.gob&&c.gx>w*.55&&c.gx<w*.85)[0]||cells.find(c=>c.gob);
+  g.feat(w*.25,top(w*.25)-8,"Cilia: a fringe of tiny hairs","cilia");
+  g.feat(gb.gx,gb.gy,"Goblet cell (mucus)","goblet");
+  if(hiN)g.feat(hiN[0],hiN[1],"Nuclei at many different heights","nuclei");
+  if(loN)g.feat(loN[0],loN[1],"Short basal cell: still touches the base","layers");
+  g.feat(w*.1,f(w*.1)+3,"Thick basement membrane","layers");
+};
+
+function stratRows(g,f,top,o){ // stratified squamous rows from base (u=0) to u=o.uEnd
+  const {w}=g;const Y=o.Y||((x,u)=>f(x)*(1-u)+top*u);
+  const n=o.rows;const hs=[];for(let k=0;k<n;k++)hs.push(k===0?1.15:1.45-1*Math.pow(k/(n-1),.75));
+  const sum=hs.reduce((a,b)=>a+b,0);let u=0;const out={};const S=[],I=[];
+  for(let k=0;k<n;k++){const u0=u,u1=u+hs[k]/sum*o.uEnd;u=u1;const fr=k/(n-1);
+    const sx=(k===0?g.r(7.5,9):8+Math.pow(fr,1.3)*o.wTop)*(o.sx||1);let x=-g.r(0,sx)-12;
+    while(x<w+16){const um=(u0+u1)/2+(k===0?0:g.r(-.22,.22)*(u1-u0));S.push([x+g.r(-.2,.2)*sx,Y(x,um)]);I.push({k,fr,gran:o.gran&&k>=n-o.gran});x+=sx*g.r(.85,1.15)}}
+  for(let x=-12;x<w+16;x+=7){S.push([x,f(x)+7]);I.push(null)}
+  for(let x=-12;x<w+16;x+=26){S.push([x,Y(x,o.uEnd)-5]);I.push(null)}
+  const V=voronoi(S,-24,Math.min(top,Y(0,o.uEnd),Y(w,o.uEnd))-50,w+24,g.h+24,110);const ctx=g.ctx;
+  ctx.save();ctx.beginPath();ctx.moveTo(-10,f(-10));for(let x=-10;x<=w+10;x+=4)ctx.lineTo(x,f(x));for(let x=w+10;x>=-10;x-=4)ctx.lineTo(x,Y(x,o.uEnd));ctx.closePath();
+  ctx.fillStyle=g.c("border");ctx.fill();ctx.clip();
+  V.forEach((P,i)=>{const q=I[i];if(!q||P.length<3)return;const s=S[i];const ip=inset(P,s,g.he?1.1:.7);
+    let bx0=1e9,bx1=-1e9,by0=1e9,by1=-1e9;ip.forEach(p=>{bx0=Math.min(bx0,p[0]);bx1=Math.max(bx1,p[0]);by0=Math.min(by0,p[1]);by1=Math.max(by1,p[1])});const bw=bx1-bx0,bh=by1-by0;
+    const col=q.k===0?mix(g.c("cytoD"),g.c("nucL"),.32):q.gran?mix(g.c("cytoD"),g.c("gran"),.12):g.c("cyto",(q.fr*.12)+g.r(-.04,.05));
+    g.smooth(ip,true);ctx.fillStyle=col;ctx.fill();if(!g.he){ctx.strokeStyle=g.c("border");ctx.lineWidth=.8;ctx.stroke()}
+    const x=s[0]+g.r(-1,1),y=s[1]+g.r(-.6,.6);
+    if(q.gran)g.dots(x,y,bw*.4,bh*.33,0,g.he?12:7,g.c("gran"),.6,1.25,.85);
+    if(q.k===0){g.nuc(x,y,Math.min(2.8,bw*.32),Math.min(4.3,bh*.4),g.r(-.15,.15),{kind:"n"});if(!out.basal&&x>w*.35)out.basal=[x,y]}
+    else if(q.fr<.55||o.round){const r=Math.min(3.9,bw*.3,bh*.36);g.nuc(x,y,r*g.r(1,1.15),r,g.r(0,3),{kind:q.fr<.2?"n":"p",nl:q.fr<.2?0:.85});if(!out.mid&&x>w*.55&&q.fr>.3)out.mid=[x,y]}
+    else if(!o.noTopNuc){g.nuc(x,y,Math.min(bw*.27,6.5),Math.max(1.1,Math.min(bh*.28,2.6)),Math.atan2(f(x+3)-f(x-3),6)*(1-q.fr),{kind:"d"});if(!out.top&&x>w*.45&&q.k===n-1)out.top=[x,y]}
+    else if(!q.gran&&q.fr<.75&&g.R()<.5)g.nuc(x,y,3.6,1.5,0,{kind:"d"})});
+  ctx.restore();
+  out.Y=Y;return out}
+
+T.stratSqNK=function(g){const {w,h}=g;
+  const f=wave(g,h*g.r(.84,.9),g.r(10,18),g.r(.02,.035));const top=h*g.r(.1,.16);
+  g.fill(g.c("space"));looseCT(g,f,.7);
+  const o=stratRows(g,f,top,{rows:g.ri(15,18),uEnd:1,wTop:g.r(24,32)});bm(g,f,1.2);
+  for(let i=0;i<4;i++){const x=g.r(0,w);g.blob(x,top-g.r(3,7),g.r(10,16),2.2,g.r(-.15,.15),.1,g.c("cytoL"),g.he?null:g.c("border"));g.nuc(x,top-5,4,1.3,0,{kind:"d"})}
+  if(o.top)g.feat(o.top[0],o.top[1],"Flat cells at the surface still have nuclei (no keratin)","surface");
+  if(o.mid)g.feat(o.mid[0],o.mid[1],"Many layers of cells","layers");
+  if(o.basal)g.feat(o.basal[0],o.basal[1],"Basal layer: small dividing cells","nuclei");
+  g.feat(w*.15,f(w*.15),"Wavy basement membrane","layers");
+};
+
+T.stratSqK=function(g){const {w,h}=g;
+  const f=wave(g,h*g.r(.86,.9),g.r(10,18),g.r(.02,.035));const top=h*g.r(.06,.1);
+  g.fill(g.c("space"));looseCT(g,f,.7);
+  const uL=g.r(.6,.68);const o=stratRows(g,f,top,{rows:g.ri(11,13),uEnd:uL,wTop:g.r(20,26),gran:2,noTopNuc:true});bm(g,f,1.2);
+  const Y=o.Y;
+  // stratum corneum: stacked thin dead layers, no nuclei
+  g.ctx.beginPath();g.ctx.moveTo(-5,Y(-5,uL));for(let x=-5;x<=w+5;x+=4)g.ctx.lineTo(x,Y(x,uL));for(let x=w+5;x>=-5;x-=4)g.ctx.lineTo(x,Y(x,1)+Math.sin(x*.09)*1.5);g.ctx.closePath();g.ctx.fillStyle=g.c("kera");g.ctx.fill();
+  const nl=g.ri(14,20);for(let k=1;k<nl;k++){const u=uL+(1-uL)*k/nl;const ph=g.r(0,TAU);let x=g.r(-30,0);
+    while(x<w){const L=g.r(30,90);const pts=[];for(let s=0;s<=L;s+=6)pts.push([x+s,Y(x+s,u)+Math.sin((x+s)*.05+ph)*1.6]);g.line(pts,g.c(g.R()<.55?"space":"keraD"),g.r(.8,1.6),g.he?.8:.9,true);x+=L+g.r(4,18)}}
+  for(let i=0;i<5;i++){const x=g.r(0,w);g.line([[x,top+1],[x+g.r(14,28),top-g.r(3,8)],[x+g.r(30,50),top-g.r(4,10)]],g.c("keraD"),1.4,.8,true)}
+  g.feat(w*.5,Y(w*.5,(uL+1)/2),"Thick keratin layer: dead, flat cells with NO nuclei","surface");
+  g.feat(w*.78,Y(w*.78,uL-.04),"Granular layer (dark granules)","cells");
+  if(o.mid)g.feat(o.mid[0],o.mid[1],"Many living layers below","layers");
+  if(o.basal)g.feat(o.basal[0],o.basal[1],"Basal layer: dividing cells","nuclei");
+};
+
+T.transitional=function(g,p){const {w,h}=g;const s=p.stretch==null?(g.R()<.25?g.r(.5,.8):g.r(0,.2)):p.stretch;
+  const f=wave(g,h*g.r(.74,.8),g.r(2,5),g.r(.01,.02));const Hh=118-58*s;const top=x=>f(x)-Hh;
+  g.fill(g.c("space"));looseCT(g,f,.9);
+  const n=Math.round(6-3*s);const Y=(x,u)=>f(x)-Hh*u;const um=.66+.06*s;
+  stratRows(g,f,0,{rows:n-1,uEnd:um,wTop:16,sx:1+.9*s,Y,round:true});
+  // umbrella (dome) cells
+  let x=-g.r(0,20);let ub=null,bi=null;const bulge=10-8*s;
+  while(x<w+10){const ww=g.r(34,46)*(1+.55*s);const x0=x,x1=x+ww;x=x1;const xm=(x0+x1)/2;
+    const yb0=Y(x0,um-.04),yb1=Y(x1,um-.04),yt0=Y(x0,1)+2,yt1=Y(x1,1)+2;
+    const arc=[];for(let i=0;i<=12;i++){const xx=x1-ww*i/12;arc.push([xx,Y(xx,1)-Math.sin(Math.PI*i/12)*bulge])}
+    const shape=[[x0+2,yb0],[xm,Y(xm,um-.06)],[x1-2,yb1],[x1+1.5,(yb1+yt1)/2]].concat(arc).concat([[x0-1.5,(yb0+yt0)/2]]);
+    g.smooth(shape,true);g.ctx.fillStyle=g.c("cyto",g.r(-.07,.02));g.ctx.fill();g.ctx.strokeStyle=g.c("border");g.ctx.lineWidth=1.2;g.ctx.stroke();
+    g.line(arc,g.c("cytoD",-.12),2,g.he?.8:1,false);
+    const ym=Y(xm,(um+1)/2)-bulge*.3;const two=g.R()<.35;
+    if(two){g.nuc(xm-8,ym,4.6,4.3*(1-.3*s),0,{kind:"p",nl:.9});g.nuc(xm+8,ym,4.6,4.3*(1-.3*s),0,{kind:"p",nl:.9});if(!bi&&xm>w*.55)bi=[xm,ym]}
+    else{g.nuc(xm,ym,5.2,4.8*(1-.3*s),0,{kind:"p",nl:1})}
+    if(!ub&&xm>w*.2)ub=[xm,Y(xm,1)-bulge*.6]}
+  bm(g,f,1.1);
+  g.feat(ub[0],ub[1],s>.4?"Surface cells flattened by stretching":"Big dome-shaped (umbrella) surface cells","surface");
+  if(bi)g.feat(bi[0],bi[1],"Some surface cells have two nuclei","nuclei");
+  g.feat(w*.12,Y(w*.12,um*.45),s>.4?"Fewer layers when stretched":"Several layers of cells","layers");
+  g.feat(w*.9,f(w*.9)+1,"Basement membrane","shape");
+};
+
+T.stratCuboidal=function(g){const {w,h}=g;
+  g.fill(mix(g.c("collL"),g.c("space"),.15));
+  for(let i=0;i<70;i++)ribbon(g,g.r(-40,w),g.r(-40,h),g.r(0,TAU),g.r(50,140),g.r(5,12),g.c("coll",g.r(-.06,.08)),g.c("space"));
+  const ducts=g.pack(11,30,42,12,-10,3000);let best=null;
+  ducts.forEach(d=>{const sq=g.r(.6,1),rot=g.r(0,TAU);const ri=d.r*.28,rm=d.r*.62;
+    g.ell(d.x,d.y,d.r+2,d.r*sq+2,rot,null,g.c("collD"),1.2);
+    ringCells(g,d.x,d.y,rm,d.r,Math.round(TAU*d.r/14),sq,rot,()=>mix(g.c("cytoD"),g.c("nucL"),.22+g.r(-.05,.05)),(i,m)=>{const q=ringPt(d.x,d.y,m,(rm+d.r)/2,sq,rot);g.nuc(q[0],q[1],3.6,3.3,0,{kind:"n"})});
+    ringCells(g,d.x,d.y,ri,rm,Math.round(TAU*rm/12),sq,rot,()=>g.c("cytoD",g.r(-.05,.05)),(i,m)=>{const q=ringPt(d.x,d.y,m,(ri+rm)/2,sq,rot);g.nuc(q[0],q[1],3.3,3.1,0,{kind:"n"})});
+    g.ell(d.x,d.y,ri,ri*sq,rot,g.c("space"));g.ell(d.x,d.y,ri+1,ri*sq+1,rot,null,g.c("cytoD",-.2),1.4);
+    if(!best||Math.hypot(d.x-w/2,d.y-h/2)<Math.hypot(best.x-w/2,best.y-h/2))best={x:d.x,y:d.y,r:d.r,sq,rot,rm,ri}});
+  for(let i=0;i<40;i++){const x=g.r(0,w),y=g.r(0,h);if(ducts.every(d=>Math.hypot(d.x-x,d.y-y)>d.r+6))g.nuc(x,y,g.r(3,5),1.6,g.r(0,3),{kind:"d"})}
+  g.feat(best.x,best.y,"Small lumen of a duct","surface");
+  const a=ringPt(best.x,best.y,.3,(best.ri+best.rm)/2,best.sq,best.rot),b=ringPt(best.x,best.y,.3,(best.rm+best.r)/2,best.sq,best.rot);
+  g.feat(a[0],a[1],"Inner layer of cube-shaped cells","shape");
+  g.feat(b[0],b[1],"Outer layer: two layers in all","layers");
+};
+
+/* ---- CONNECTIVE TISSUE PROPER ---- */
+T.areolar=function(g){const {w,h}=g;
+  g.fill(mix(g.c("space"),g.c("collL"),.25));
+  if(g.he)g.fibrils(160,[g.c("collL"),g.c("cytoL")],.35,40,.8);
+  let col=null,el=null;
+  for(let i=0;i<34;i++){const x=g.r(-60,w+60),y=g.r(-60,h+60),a=g.r(0,TAU),L=g.r(150,320);const pts=[];const k=g.r(-.004,.004);let ang=a;let px=x,py=y;
+    for(let s=0;s<=L;s+=20){pts.push([px,py]);ang+=k*20+g.r(-.18,.18);px+=Math.cos(ang)*20;py+=Math.sin(ang)*20}
+    const lw=g.r(3.5,8);g.line(pts,g.c("coll",g.r(-.05,.08)),lw,g.he?.72:.85,true);if(g.he)g.line(pts,g.c("collL"),lw*.35,.35,true);
+    const m=pts[Math.floor(pts.length/2)];if(!col&&m[0]>w*.2&&m[0]<w*.8&&m[1]>h*.2&&m[1]<h*.8)col=m}
+  for(let i=0;i<22;i++){let x=g.r(-20,w+20),y=g.r(-20,h+20),a=g.r(0,TAU);const pts=[[x,y]];for(let s=0;s<g.ri(4,9);s++){a+=g.r(-.25,.25);x+=Math.cos(a)*30;y+=Math.sin(a)*30;pts.push([x,y])}
+    g.line(pts,g.c("elas"),g.r(1,1.6),g.he?.85:1,true);
+    if(g.R()<.5){const b=pts[2];const a2=a+g.r(.6,1.2);g.line([b,[b[0]+Math.cos(a2)*25,b[1]+Math.sin(a2)*25],[b[0]+Math.cos(a2)*55,b[1]+Math.sin(a2)*55]],g.c("elas"),1,g.he?.8:1,true)}
+    const m=pts[1];if(!el&&m[0]>w*.15&&m[0]<w*.85&&m[1]>h*.15&&m[1]<h*.85)el=m}
+  let fb=null,mc=null;
+  for(let i=0;i<26;i++){const x=g.r(10,w-10),y=g.r(10,h-10);g.nuc(x,y,g.r(5,8),g.r(1.8,2.6),g.r(0,TAU),{kind:"d"});if(!fb&&x>w*.3&&x<w*.7&&y>h*.55)fb=[x,y]}
+  for(let i=0;i<4;i++){const x=g.r(30,w-30),y=g.r(30,h-30);g.ell(x,y,11,7,g.r(0,3),mix(g.c("nucL"),g.c("space"),.5));g.dots(x,y,10,6.5,0,g.he?60:30,g.c("gran"),.7,1.4,.85);if(!mc)mc=[x,y]}
+  if(col)g.feat(col[0],col[1],"Collagen fiber (thick, pink)","fibers");
+  if(el)g.feat(el[0],el[1],"Elastic fiber (thin, dark)","fibers");
+  if(fb)g.feat(fb[0],fb[1],"Fibroblast nucleus","cells");
+  if(mc)g.feat(mc[0],mc[1],"Mast cell full of granules","cells");
+  g.feat(w*.5,h*.5,"Loose: lots of open space (ground substance)","density");
+};
+
+T.adipose=function(g){const {w,h}=g;
+  g.fill(g.c("cyto",.02));
+  const S=relax(jitterSeeds(g,Math.round(w*h/3000),40),-50,-50,w+50,h+50,160,2);const V=voronoi(S,-50,-50,w+50,h+50,160);
+  const cells=[];V.forEach((P,i)=>{if(P.length<3)return;const ip=inset(P,S[i],g.r(1.3,2));g.smooth(ip,true);g.ctx.fillStyle=g.c("fat");g.ctx.fill();cells.push({s:S[i],P,ip})});
+  let sig=null;
+  cells.forEach(c=>{if(g.R()<.3){const k=g.ri(0,c.ip.length-1);const p=c.ip[k],q=c.ip[(k+1)%c.ip.length];const x=(p[0]+q[0])/2,y=(p[1]+q[1])/2;
+      const dx=c.s[0]-x,dy=c.s[1]-y,L=Math.hypot(dx,dy)||1;g.nuc(x+dx/L*1.5,y+dy/L*1.5,g.r(5.5,7.5),g.r(1.8,2.4),Math.atan2(q[1]-p[1],q[0]-p[0]),{kind:"d"});
+      if(!sig&&x>w*.3&&x<w*.7&&y>h*.3&&y<h*.7)sig=[x,y]}
+    c.P.forEach(p=>{if(g.R()<.07)g.rbc(p[0],p[1],2.8)})});
+  if(g.R()<.6){const y0=g.r(h*.2,h*.8);const f=x=>y0+Math.sin(x*.01)*30;g.line(g.curvePts(f,-5,w+5,6),g.c("coll"),g.r(5,9),.9,true);for(let i=0;i<6;i++){const x=g.r(0,w);g.nuc(x,f(x),6,1.6,Math.atan(Math.cos(x*.01)*.3),{kind:"d"})}}
+  const big=cells.filter(c=>c.s[0]>w*.25&&c.s[0]<w*.75&&c.s[1]>h*.25&&c.s[1]<h*.75)[0]||cells[0];
+  g.feat(big.s[0],big.s[1],"Big, empty-looking fat cell (the lipid dissolves during slide prep)","cells");
+  if(sig)g.feat(sig[0],sig[1],"Nucleus squeezed flat at the edge","nuclei");
+  const e=big.ip[0];g.feat(e[0],e[1],"Thin rim of cytoplasm","density");
+};
+
+T.reticular=function(g){const {w,h}=g;
+  g.fill(g.c("retBg"));
+  if(g.he){for(let i=0;i<8;i++){const x=g.r(0,w),y=g.r(0,h),r=g.r(60,140);const gr=g.ctx.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,"rgba(150,105,40,.18)");gr.addColorStop(1,"rgba(150,105,40,0)");g.ctx.fillStyle=gr;g.ctx.fillRect(0,0,w,h)}}
+  let lym=null;
+  for(let i=0;i<300;i++){const x=g.r(0,w),y=g.r(0,h);g.blob(x,y,4.8,4.5,0,.1,mix(g.c("retBg"),"#8a6a3a",.3));g.blob(x,y,3.5,3.4,0,.1,mix(g.c("retBg"),"#5a4426",.42));if(!lym&&x>w*.6&&y>h*.6)lym=[x,y]}
+  const S=relax(jitterSeeds(g,Math.round(w*h/1500),30),-40,-40,w+40,h+40,120,1);const V=voronoi(S,-40,-40,w+40,h+40,120);const N=[];
+  V.forEach(P=>{for(let k=0;k<P.length;k++){if(g.R()<.28)continue;const a=P[k],b=P[(k+1)%P.length];if(a[0]>b[0])continue;const m=[(a[0]+b[0])/2+g.r(-3,3),(a[1]+b[1])/2+g.r(-3,3)];
+    g.line([a,m,b],g.c("ret"),g.r(.8,1.9),g.he?.85:1,true);N.push(a)}});
+  for(let i=0;i<4;i++){const y=g.r(0,h);g.line([[-5,y],[w*.35,y+g.r(-30,30)],[w*.7,y+g.r(-30,30)],[w+5,y+g.r(-40,40)]],g.c("ret"),g.r(2.4,3.4),.85,true)}
+  const p=N.find(q=>q[0]>w*.3&&q[0]<w*.7&&q[1]>h*.3&&q[1]<h*.7)||N[0];
+  g.feat(p[0],p[1],"Reticular fibers: thin dark branching network","fibers");
+  if(lym)g.feat(lym[0],lym[1],"Small cells (mostly lymphocytes) in the mesh","cells");
+  g.feat(w*.2,h*.25,"Silver stain makes reticular fibers black","density");
+};
+
+T.denseRegular=function(g){const {w,h}=g;const ang=g.r(-.35,.35);
+  g.fill(g.c("collL",.1));const ctx=g.ctx;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(ang);
+  const D=Math.hypot(w,h)/2+20;const sp=g.r(9,12);const ph=g.r(0,TAU),wl=g.r(45,70),amp=g.r(2,3.5);
+  const yy=(x,y0)=>y0+Math.sin(x/wl*TAU+ph)*amp;
+  for(let y0=-D;y0<D;y0+=sp*g.r(.8,1.3)){const th=sp*g.r(.84,.98);const pts=[],pts2=[];for(let x=-D;x<=D;x+=5){pts.push([x,yy(x,y0)]);pts2.push([x,yy(x,y0+th)])}
+    g.poly(pts.concat(pts2.reverse()),g.c("coll",g.r(-.06,.06)));if(g.he)g.line(pts,g.c("collL"),1,.4)}
+  const nuc=[];for(let i=0;i<70;i++){const x=g.r(-D,D),y0=Math.round(g.r(-D,D)/sp)*sp;const y=yy(x,y0);g.nuc(x,y,g.r(7,10),g.r(1.3,1.9),Math.atan(Math.cos(x/wl*TAU+ph)*amp*TAU/wl),{kind:"d"});nuc.push([x,y])}
+  ctx.restore();
+  const tr=(x,y)=>[w/2+x*Math.cos(ang)-y*Math.sin(ang),h/2+x*Math.sin(ang)+y*Math.cos(ang)];
+  const n1=nuc.map(p=>tr(p[0],p[1])).find(p=>p[0]>w*.3&&p[0]<w*.7&&p[1]>h*.3&&p[1]<h*.7)||[w/2,h/2];
+  g.feat(n1[0],n1[1],"Fibroblast nuclei squeezed in rows","cells");
+  const a=tr(-D*.35,-sp*3.5);g.feat(a[0],a[1],"Collagen fibers all run the same way (parallel)","fibers");
+  const b=tr(D*.3,sp*5);g.feat(b[0],b[1],"Dense: packed fibers, little space, few cells","density");
+};
+
+function ribbon(g,x,y,a,L,w0,col,edge){const pts=[];let ang=a;const k=g.r(-.02,.02);for(let s=0;s<=L;s+=8){pts.push([x,y,ang]);ang+=k*8+g.r(-.08,.08);x+=Math.cos(ang)*8;y+=Math.sin(ang)*8}
+  const A=[],B=[];pts.forEach((p,i)=>{const t=i/(pts.length-1);const ww=w0*Math.pow(Math.sin(Math.PI*Math.min(.999,Math.max(.001,t))),.35)/2;const nx=-Math.sin(p[2]),ny=Math.cos(p[2]);A.push([p[0]+nx*ww,p[1]+ny*ww]);B.push([p[0]-nx*ww,p[1]-ny*ww])});
+  const poly=A.concat(B.reverse());g.smooth(poly,true);g.ctx.fillStyle=col;g.ctx.fill();if(edge){g.ctx.strokeStyle=edge;g.ctx.lineWidth=1;g.ctx.globalAlpha=.7;g.ctx.stroke();g.ctx.globalAlpha=1}return pts}
+T.denseIrregular=function(g){const {w,h}=g;
+  g.fill(g.c("collL",.12));
+  for(let i=0;i<150;i++){const p=ribbon(g,g.r(-40,w+20),g.r(-40,h+20),g.r(0,TAU),g.r(60,190),g.r(8,17),g.c("coll",g.r(-.08,.06)),g.c("space"));if(g.he&&g.R()<.5)g.line(p.map(q=>[q[0],q[1]]),g.c("collL"),1.2,.3,true)}
+  for(let i=0;i<10;i++){const x=g.r(0,w),y=g.r(0,h);g.blob(x,y,g.r(6,12),g.r(5,9),g.r(0,3),.15,g.c("coll",-.04),g.c("space"),1.2)}
+  let nn=null;for(let i=0;i<22;i++){const x=g.r(10,w-10),y=g.r(10,h-10);g.nuc(x,y,g.r(5,7.5),g.r(1.5,2.1),g.r(0,TAU),{kind:"d"});if(!nn&&x>w*.25&&x<w*.75&&y>h*.4)nn=[x,y]}
+  for(let i=0;i<2;i++)g.capillary(g.r(40,w-40),g.r(40,h-40),g.r(5,7),g.r(0,3));
+  g.feat(w*.3,h*.3,"Thick collagen bundles running in many directions","fibers");
+  g.feat(w*.72,h*.62,"Dense: fibers packed tightly","density");
+  if(nn)g.feat(nn[0],nn[1],"Scattered fibroblast nuclei","cells");
+};
+
+T.elasticCT=function(g){const {w,h}=g;const ang=g.r(-.3,.3);
+  g.fill(mix(g.c("collL"),g.c("space"),.35));const ctx=g.ctx;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(ang);const D=Math.hypot(w,h)/2+20;
+  for(let i=0;i<60;i++){const y=g.r(-D,D),x=g.r(-D,D);g.line([[x,y],[x+g.r(30,60),y+g.r(-4,4)]],g.c("coll"),g.r(2,4),.4,true)}
+  const sp=g.r(11,15);const ph=g.r(0,TAU);
+  for(let y0=-D;y0<D;y0+=sp*g.r(.75,1.25)){const pts=[];const f1=g.r(.05,.09),a1=g.r(2,4.5),p1=g.r(0,TAU);for(let x=-D;x<=D;x+=4)pts.push([x,y0+Math.sin(x*f1+p1)*a1+Math.sin(x*.013+ph)*6]);
+    g.line(pts,g.c("elas"),g.r(1.6,3),g.he?.85:1,true);
+    if(g.R()<.5){const k=g.ri(10,pts.length-12);g.line([pts[k],[pts[k][0]+20,pts[k][1]+sp*.5],[pts[k][0]+40,pts[k][1]+sp]],g.c("elas"),1.2,.8,true)}}
+  const nl=[];for(let i=0;i<24;i++){const x=g.r(-D,D),y=g.r(-D,D);g.nuc(x,y,g.r(5,8),1.6,0,{kind:"d"});nl.push([x,y])}
+  ctx.restore();
+  const tr=(x,y)=>[w/2+x*Math.cos(ang)-y*Math.sin(ang),h/2+x*Math.sin(ang)+y*Math.cos(ang)];
+  const a=tr(-20,sp*.2);g.feat(a[0],a[1],"Wavy elastic fibers (dark with an elastic stain)","fibers");
+  const b=tr(D*.35,-sp*4);g.feat(b[0],b[1],"Fibers mostly run one way, like sheets","density");
+  const n=nl.map(p=>tr(p[0],p[1])).find(p=>p[0]>w*.2&&p[0]<w*.8&&p[1]>h*.2&&p[1]<h*.8);if(n)g.feat(n[0],n[1],"Few cells between the fibers","cells");
+};
+
+/* ---- CARTILAGE ---- */
+function lacuna(g,x,y,rx,ry,rot){g.blob(x,y,rx,ry,rot,.08,g.c("lac"),g.he?null:g.c("matHyD"),1);
+  g.blob(x+g.r(-.8,.8),y+g.r(-.8,.8),rx*g.r(.62,.78),ry*g.r(.62,.8),rot,.18,g.c("chondro",g.r(-.05,.05)));g.nuc(x,y,Math.min(rx,ry)*.42,Math.min(rx,ry)*.4,0,{kind:"n"})}
+T.hyaline=function(g){const {w,h}=g;
+  g.fill(g.c("matHy"));const ctx=g.ctx;
+  if(g.he){for(let i=0;i<10;i++){const x=g.r(0,w),y=g.r(0,h),r=g.r(60,150);const gr=ctx.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,g.c("matHyD")+"33");gr.addColorStop(1,g.c("matHyD")+"00");ctx.fillStyle=gr;ctx.fillRect(0,0,w,h)}}
+  const pc=g.R()<.7;const pcH=g.r(26,36);
+  if(pc){const f=wave(g,pcH,4,g.r(.01,.02));g.above(f,g.c("coll",.08));for(let i=0;i<20;i++){const y=g.r(4,pcH-6);g.line([[g.r(-20,w),y],[g.r(0,w+20),y+g.r(-4,4)]],g.c("collD"),g.r(1,2),.35,true)}
+    for(let i=0;i<14;i++){const x=g.r(0,w);g.nuc(x,g.r(8,pcH-8),g.r(6,9),1.6,0,{kind:"d"})}
+    g.feat(w*.5,pcH*.5,"Perichondrium: the fibrous wrap","fibers");}
+  const y0=pc?pcH+6:0;const grp=[];g.pack(30,16,26,18,0,3000).forEach(c=>{if(c.y<y0+10)return;grp.push(c)});
+  let iso=null,lac=null;
+  grp.forEach(c=>{const near=pc&&c.y<y0+40;const n=near?1:g.pick([1,2,2,2,3,4]);const rot=near?0:g.r(0,TAU);
+    if(g.he){const gr=ctx.createRadialGradient(c.x,c.y,2,c.x,c.y,c.r+18);gr.addColorStop(0,g.c("matHyD")+"cc");gr.addColorStop(1,g.c("matHyD")+"00");ctx.fillStyle=gr;ctx.beginPath();ctx.arc(c.x,c.y,c.r+18,0,TAU);ctx.fill()}
+    else g.ell(c.x,c.y,c.r+5,c.r+4,0,g.c("matHyD")+"55");
+    for(let k=0;k<n;k++){const off=n===1?0:(k-(n-1)/2)*19;const x=c.x+Math.cos(rot)*off,y=c.y+Math.sin(rot)*off;const rx=near?g.r(11,14):g.r(9,11.5),ry=near?g.r(3.4,4.4):g.r(7.2,9);lacuna(g,x,y,rx,ry,near?g.r(-.1,.1):rot+Math.PI/2+g.r(-.3,.3));
+      if(n>=2){const d=Math.hypot(c.x-w*.6,c.y-h*.6);if(!iso||d<iso[2])iso=[c.x,c.y,d]}if(n===1&&!near){const d=Math.hypot(x-w/2,y-h/2);if(!lac||d<lac[2])lac=[x,y,d]}}});
+  if(lac)g.feat(lac[0],lac[1],"Chondrocyte sitting in a lacuna (a little hole)","lacunae");
+  if(iso)g.feat(iso[0],iso[1],"Cells in small groups","cells");
+  g.feat(w*.8,h*.85,"Smooth, glassy matrix: no fibers visible","fibers");
+};
+T.fibrocartilage=function(g){const {w,h}=g;const ang=g.r(-.4,.4)+(g.R()<.3?Math.PI/2:0);
+  g.fill(mix(g.c("coll",.15),g.c("matHy"),.25));const ctx=g.ctx;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(ang);const D=Math.hypot(w,h)/2+20;
+  const sp=g.r(24,30);const rows=[];
+  for(let y0=-D;y0<D;y0+=sp){const th=sp*g.r(.55,.75);const ph=g.r(0,TAU);const pts=[],pts2=[];for(let x=-D;x<=D;x+=6){pts.push([x,y0+Math.sin(x*.04+ph)*2.5]);pts2.push([x,y0+th+Math.sin(x*.04+ph)*2.5])}
+    g.poly(pts.concat(pts2.reverse()),g.c("coll",g.r(-.06,.05)));if(g.he)g.line(pts,g.c("collD"),1,.4);rows.push(y0+th+(sp-th)/2)}
+  const cl=[];rows.forEach(y=>{let x=-D+g.r(0,90);while(x<D){const n=g.ri(2,4);for(let k=0;k<n;k++){const xx=x+k*15;
+      if(g.he){const gr=ctx.createRadialGradient(xx,y,1,xx,y,12);gr.addColorStop(0,g.c("matHyD")+"aa");gr.addColorStop(1,g.c("matHyD")+"00");ctx.fillStyle=gr;ctx.beginPath();ctx.arc(xx,y,12,0,TAU);ctx.fill()}
+      lacuna(g,xx,y,6.6,5.2,0);cl.push([xx,y])}x+=n*15+g.r(60,130)}});
+  ctx.restore();
+  const tr=(x,y)=>[w/2+x*Math.cos(ang)-y*Math.sin(ang),h/2+x*Math.sin(ang)+y*Math.cos(ang)];
+  const c=cl.map(p=>tr(p[0],p[1])).find(p=>p[0]>w*.3&&p[0]<w*.7&&p[1]>h*.3&&p[1]<h*.7)||[w/2,h/2];
+  g.feat(c[0],c[1],"Chondrocytes in lacunae, lined up in rows","lacunae");
+  const b=tr(-D*.3,rows[Math.floor(rows.length/2)]-sp*.5);g.feat(b[0],b[1],"Thick pink collagen bundles","fibers");
+};
+T.elasticCart=function(g){const {w,h}=g;
+  g.fill(mix(g.c("matHy"),g.c("cytoL"),.45));
+  const L=g.pack(80,12,16,5,6,5000);
+  for(let i=0;i<260;i++){let x=g.r(-10,w+10),y=g.r(-10,h+10),a=g.r(0,TAU);const pts=[[x,y]];for(let s=0;s<g.ri(3,6);s++){a+=g.r(-.6,.6);x+=Math.cos(a)*12;y+=Math.sin(a)*12;pts.push([x,y])}g.line(pts,g.c("elas"),g.r(.8,1.7),g.he?.8:.9,true)}
+  let one=null;L.forEach(c=>{const two=g.R()<.3;const rot=g.r(0,TAU);if(two){lacuna(g,c.x+Math.cos(rot)*7,c.y+Math.sin(rot)*7,6.5,5.5,rot);lacuna(g,c.x-Math.cos(rot)*7,c.y-Math.sin(rot)*7,6.5,5.5,rot)}else{lacuna(g,c.x,c.y,c.r*.62,c.r*.52,rot);const d=Math.hypot(c.x-w*.45,c.y-h*.45);if(!one||d<one[2])one=[c.x,c.y,d]}});
+  if(one)g.feat(one[0],one[1],"Chondrocyte in a lacuna","lacunae");
+  g.feat(w*.22,h*.3,"Dark, branching elastic fibers fill the matrix","fibers");
+  g.feat(w*.75,h*.75,"Cells packed closely together","cells");
+};
+
+/* ---- BONE & BLOOD ---- */
+T.bone=function(g){const {w,h}=g;
+  g.fill(g.c("boneBg"));
+  for(let i=0;i<40;i++){const x=g.r(-100,w+100),y=g.r(-100,h+100),r=g.r(60,160),a=g.r(0,TAU);for(let k=0;k<6;k++){g.ctx.beginPath();g.ctx.arc(x,y,r+k*5,a,a+g.r(.3,.9));g.ctx.strokeStyle=g.c(k%2?"lamel":"lamelD");g.ctx.globalAlpha=.6;g.ctx.lineWidth=1;g.ctx.stroke();g.ctx.globalAlpha=1}}
+  const O=g.pack(22,44,66,1.5,25,6000);g.pack(60,24,40,1.5,25,4000,O);let best=null;
+  O.forEach(o=>{g.ell(o.x,o.y,o.r,o.r*.95,0,g.c("boneBg",.08),g.c("lamelD",-.15),1.6);
+    const cr=g.r(7,11);for(let r=cr+3;r<o.r-1;r+=g.r(4,5.2)){g.ell(o.x,o.y,r,r*.95,0,null,g.c(Math.round(r)%2?"lamel":"lamelD"),.9)}
+    for(let r=cr+6;r<o.r-3;r+=g.r(7,10)){const n=Math.floor(TAU*r/g.r(24,34));const a0=g.r(0,TAU);for(let k=0;k<n;k++){const a=a0+k/n*TAU+g.r(-.1,.1);const x=o.x+Math.cos(a)*r,y=o.y+Math.sin(a)*r*.95;
+        for(let c=0;c<g.ri(5,8);c++){const b=g.r(0,TAU),L=g.r(4,9);g.line([[x,y],[x+Math.cos(b)*L*.5+g.r(-1,1),y+Math.sin(b)*L*.5+g.r(-1,1)],[x+Math.cos(b)*L,y+Math.sin(b)*L]],g.c("lacB"),.55,.65,true)}
+        g.blob(x,y,g.r(3,4),g.r(1.2,1.7),a+Math.PI/2,.15,g.c("lacB"))}}
+    g.blob(o.x,o.y,cr,cr*.92,g.r(0,3),.12,g.c("canal"));if(g.he)g.blob(o.x+1,o.y-1,cr*.5,cr*.4,0,.3,g.c("canal",.2));
+    if(!best||Math.hypot(o.x-w/2,o.y-h/2)<Math.hypot(best.x-w/2,best.y-h/2))best={x:o.x,y:o.y,r:o.r,cr}});
+  g.feat(best.x,best.y,"Central canal (blood vessels ran here)","lacunae");
+  g.feat(best.x+best.r*.55,best.y-best.r*.45,"Rings of matrix (lamellae) around the canal","fibers");
+  g.feat(best.x-best.r*.3,best.y+best.r*.7,"Dark lacunae with tiny canaliculi","cells");
+  g.feat(best.x-best.r*.95,best.y-best.r*.2,"One osteon","density");
+};
+
+T.blood=function(g){const {w,h}=g;
+  g.fill(g.c("smearBg"));
+  const R=[];for(let t=0;t<4000&&R.length<240;t++){const x=g.r(-10,w+10),y=g.r(-10,h+10);if(R.every(c=>Math.hypot(c.x-x,c.y-y)>15.5))R.push({x,y})}
+  const wbc=[];const types=["neut","lymph",g.pick(["neut","mono","eos","lymph"])];
+  types.forEach(tp=>{for(let t=0;t<50;t++){const x=g.r(50,w-50),y=g.r(50,h-50);if(wbc.every(c=>Math.hypot(c.x-x,c.y-y)>80)){wbc.push({x,y,tp});break}}});
+  R.forEach(c=>{if(wbc.every(k=>Math.hypot(k.x-c.x,k.y-c.y)>24))g.rbc(c.x,c.y,g.r(8.4,9.6))});
+  let rb=R.find(c=>c.x>w*.3&&c.x<w*.7&&wbc.every(k=>Math.hypot(k.x-c.x,k.y-c.y)>40));
+  wbc.forEach(k=>{if(k.tp==="lymph"){g.ell(k.x,k.y,11,11,0,g.c("wbcCyto",-.08));g.nuc(k.x-1,k.y,9.2,8.8,0,{kind:"n"})}
+    else if(k.tp==="mono"){g.blob(k.x,k.y,17,15,0,.1,g.c("wbcCyto"));g.blob(k.x+2,k.y,10,7,.4,.3,g.c("nuc"))}
+    else{g.ell(k.x,k.y,14,14,0,g.c("wbcCyto"));if(k.tp==="eos")g.dots(k.x,k.y,12.5,12.5,0,90,g.c("eosGran"),.9,1.5,.85);else if(g.he)g.dots(k.x,k.y,12,12,0,60,g.c("nucL"),.4,.8,.4);
+      const lob=k.tp==="eos"?2:g.ri(3,4);const pts=[];for(let i=0;i<lob;i++){const a=i/lob*TAU*.8+g.r(0,1);pts.push([k.x+Math.cos(a)*6,k.y+Math.sin(a)*6])}
+      g.line(pts,g.c("nuc"),2,1,true);pts.forEach(p=>g.nuc(p[0],p[1],4.2,3.6,g.r(0,3),{kind:"n"}))}});
+  let pl=null;for(let i=0;i<9;i++){const x=g.r(10,w-10),y=g.r(10,h-10);for(let k=0;k<g.ri(1,3);k++)g.blob(x+g.r(-3,3),y+g.r(-3,3),g.r(1.3,2.2),g.r(1.1,1.8),0,.3,g.c("nucL",-.1));if(!pl&&x>w*.2&&x<w*.8&&y>h*.2&&y<h*.8)pl=[x,y]}
+  if(rb)g.feat(rb.x,rb.y,"Red blood cell: no nucleus, pale center","cells");
+  const n=wbc.find(k=>k.tp==="neut");if(n)g.feat(n.x,n.y,"Neutrophil: nucleus in 3-5 lobes","nuclei");
+  const l=wbc.find(k=>k.tp==="lymph");if(l)g.feat(l.x,l.y,"Lymphocyte: big round nucleus","nuclei");
+  if(pl)g.feat(pl[0],pl[1],"Platelets (tiny fragments)","density");
+  g.feat(w*.12,h*.15,"Cells float in liquid plasma: no fibers","fibers");
+};
+
+/* ---- MUSCLE ---- */
+T.skeletal=function(g,p){const {w,h}=g;
+  if(p.variant==="cross"||(p.variant==null&&g.R()<.22)){g.fill(mix(g.c("muscL"),g.c("space"),.4));const S=relax(jitterSeeds(g,Math.round(w*h/2600),40),-40,-40,w+40,h+40,150,2);const V=voronoi(S,-40,-40,w+40,h+40,150);let pn=null,big=null;
+    const F=V.map((P,i)=>({P:inset(P,S[i],2),x:S[i][0],y:S[i][1],r:Math.sqrt(w*h/2600/Math.PI)*1.0})).filter(f=>f.P.length>2);
+    F.forEach(f=>{g.smooth(f.P,true);g.ctx.fillStyle=g.c("musc",g.r(-.06,.05));g.ctx.fill();if(g.he)g.dots(f.x,f.y,f.r*.85,f.r*.75,0,Math.round(f.r*f.r*.4),g.c("muscD"),.4,.8,.25);
+      for(let k=0;k<g.ri(1,3);k++){const j=g.ri(0,f.P.length-1);const p=f.P[j],q=f.P[(j+1)%f.P.length];const mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2;const x=mx+(f.x-mx)*.14,y=my+(f.y-my)*.14;g.nuc(x,y,3.8,1.9,Math.atan2(q[1]-p[1],q[0]-p[0]),{kind:"d"});if(!pn&&x>w*.3&&x<w*.7&&y>h*.3)pn=[x,y]}
+      if(!big&&f.x>w*.2&&f.y>h*.2&&f.x<w*.8&&f.y<h*.8)big=f});
+    if(pn)g.feat(pn[0],pn[1],"Nuclei at the edge of each fiber (peripheral)","nuclei");if(big)g.feat(big.x,big.y,"Big fiber cut across (cross section)","cells");
+    g.feat(w*.1,h*.1,"Tip: in cross section, look for nuclei pushed to the edge","striations");return}
+  const ang=g.r(-.3,.3);g.fill(mix(g.c("muscL"),g.c("space"),.45));const ctx=g.ctx;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(ang);const D=Math.hypot(w,h)/2+30;
+  let y=-D;const fib=[];while(y<D){const fw=g.r(30,44);fib.push([y,fw]);y+=fw+g.r(1.6,3)}
+  const sp=g.r(3.8,4.6);
+  fib.forEach(([y0,fw],fi)=>{const ph=g.r(0,TAU);const top=x=>y0+Math.sin(x*.012+ph)*2,bot=x=>y0+fw+Math.sin(x*.012+ph+1)*2;
+    const pts=[];for(let x=-D;x<=D;x+=10)pts.push([x,top(x)]);const pts2=[];for(let x=D;x>=-D;x-=10)pts2.push([x,bot(x)]);
+    g.poly(pts.concat(pts2),g.c("musc",g.r(-.06,.05)));
+    ctx.save();g.poly(pts.concat(pts2));ctx.clip();const skew=g.r(-.08,.08);
+    for(let x=-D;x<D;x+=sp){g.line([[x,y0-3],[x+skew*fw,y0+fw+3]],g.c("muscD",-.08),sp*.45,g.he?.75:.7)}
+    if(g.he)for(let x=-D;x<D;x+=sp)g.line([[x+sp*.5,y0-3],[x+sp*.5+skew*fw,y0+fw+3]],g.c("muscD",-.2),.4,.35);
+    ctx.restore();
+    for(let x=-D+g.r(0,40);x<D;x+=g.r(26,56)){const edge=g.R()<.5;const yy=edge?top(x)+3:bot(x)-3;g.nuc(x,yy,g.r(7,10),g.r(1.8,2.3),0,{kind:"n"})}});
+  ctx.restore();
+  const tr=(x,y)=>[w/2+x*Math.cos(ang)-y*Math.sin(ang),h/2+x*Math.sin(ang)+y*Math.cos(ang)];
+  const mid=fib.reduce((a,b)=>Math.abs(b[0]+b[1]/2)<Math.abs(a[0]+a[1]/2)?b:a);
+  const s1=tr(-60,mid[0]+mid[1]/2);g.feat(s1[0],s1[1],"Striations: light and dark stripes","striations");
+  const s2=tr(70,mid[0]+3);g.feat(s2[0],s2[1],"Many nuclei pushed to the edge of the fiber","nuclei");
+  const s3=tr(-D*.45,mid[0]+mid[1]*1.6);g.feat(s3[0],s3[1],"Long, unbranched cylindrical fibers","cells");
+};
+
+T.cardiac=function(g){const {w,h}=g;const ang=g.r(-.3,.3);
+  g.fill(mix(g.c("muscL"),g.c("space"),.15));const ctx=g.ctx;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(ang);const D=Math.hypot(w,h)/2+30;
+  const sp=g.r(29,33);const paths=[];for(let y0=-D;y0<D;y0+=sp){const ph=g.r(0,TAU),a=g.r(3,7);const pts=[];for(let x=-D;x<=D;x+=8)pts.push([x,y0+Math.sin(x*.02+ph)*a]);paths.push({pts,fw:sp-g.r(2,4.5)})}
+  const br=[];for(let i=0;i<paths.length-1;i++){for(let x=-D+g.r(20,100);x<D;x+=g.r(90,170)){const a=paths[i].pts,b=paths[i+1].pts;const k=Math.round((x+D)/8);const k2=Math.min(b.length-1,k+g.ri(4,7));if(!a[k])continue;br.push([[a[k][0],a[k][1]],[(a[k][0]+b[k2][0])/2,(a[k][1]+b[k2][1])/2],[b[k2][0],b[k2][1]]])}}
+  paths.forEach(p=>g.line(p.pts,g.c("musc",-.03),p.fw,1,true));br.forEach(b=>g.line(b,g.c("musc",-.03),20,1,true));
+  if(g.he){paths.forEach(p=>g.line(p.pts,g.c("muscL"),p.fw*.3,.18,true))}
+  // faint striations (ticks along each path)
+  const tick=(pts,fw)=>{for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1];const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy);const nx=-dy/L,ny=dx/L;for(let s=0;s<L;s+=3.8){const x=a[0]+dx*s/L,y=a[1]+dy*s/L;g.line([[x-nx*fw*.42,y-ny*fw*.42],[x+nx*fw*.42,y+ny*fw*.42]],g.c("muscD"),1.2,g.he?.28:.3)}}};
+  paths.forEach(p=>tick(p.pts,p.fw));
+  const disc=[],nucl=[];
+  paths.forEach(p=>{let k=g.ri(2,8);while(k<p.pts.length-2){const a=p.pts[k],b=p.pts[k+1];const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy),nx=-dy/L,ny=dx/L,ux=dx/L,uy=dy/L;
+      if(g.R()<.5){const hw=p.fw*.48;const st=g.r(2,3.5);g.line([[a[0]-nx*hw,a[1]-ny*hw],[a[0]-nx*hw*.2,a[1]-ny*hw*.2],[a[0]-nx*hw*.2+ux*st,a[1]-ny*hw*.2+uy*st],[a[0]+nx*hw+ux*st,a[1]+ny*hw+uy*st]],g.c("nucD",.1),2.6,g.he?.85:1);disc.push(a)}
+      else{const c=p.pts[k];g.ell(c[0],c[1],10,4.6,Math.atan2(dy,dx),g.c("muscL",.15),null);g.nuc(c[0],c[1],g.r(5.5,7),g.r(2.6,3.2),Math.atan2(dy,dx),{kind:"p"});nucl.push(c)}
+      k+=g.ri(6,10)}});
+  ctx.restore();
+  const tr=(p)=>[w/2+p[0]*Math.cos(ang)-p[1]*Math.sin(ang),h/2+p[0]*Math.sin(ang)+p[1]*Math.cos(ang)];
+  const inF=p=>p[0]>w*.2&&p[0]<w*.8&&p[1]>h*.2&&p[1]<h*.8;
+  const d=disc.map(tr).find(inF);if(d)g.feat(d[0],d[1],"Intercalated disc: dark line where cells join","striations");
+  const n=nucl.map(tr).filter(inF).sort((a,b)=>Math.hypot(a[0]-w*.65,a[1]-h*.5)-Math.hypot(b[0]-w*.65,b[1]-h*.5))[0];if(n)g.feat(n[0],n[1],"One central nucleus per cell","nuclei");
+  const b=br.map(q=>tr(q[1])).find(inF);if(b)g.feat(b[0],b[1],"Branched cells","cells");
+};
+
+T.smooth=function(g,p){const {w,h}=g;
+  if(p.variant==="cross"||(p.variant==null&&g.R()<.2)){g.fill(g.c("smooth",.3));const S=relax(jitterSeeds(g,Math.round(w*h/110),10),-10,-10,w+10,h+10,40,1);const V=voronoi(S,-10,-10,w+10,h+10,40);let nn=null;
+    V.forEach((P,i)=>{if(P.length<3)return;g.smooth(inset(P,S[i],.7),true);g.ctx.fillStyle=g.c("smooth",g.r(-.08,.03));g.ctx.fill();const c={x:S[i][0],y:S[i][1]};if(g.R()<.22){g.nuc(c.x,c.y,2.3,2.2,0,{kind:"n"});if(!nn&&c.x>w*.3&&c.x<w*.7&&c.y>h*.3)nn=[c.x,c.y]}});
+    g.feat(w*.5,h*.4,"Cells cut across: small round profiles","cells");if(nn)g.feat(nn[0],nn[1],"Only some show a central nucleus","nuclei");g.feat(w*.2,h*.8,"No striations","striations");return}
+  const ang=g.r(-.35,.35);g.fill(g.c("smooth",.12));const ctx=g.ctx;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(ang);const D=Math.hypot(w,h)/2+60;
+  const cells=[];for(let y=-D;y<D;y+=g.r(6,8)){for(let x=-D+g.r(-60,0);x<D;x+=g.r(70,110)){cells.push({x:x+g.r(-10,10),y:y+g.r(-2,2),L:g.r(90,130),W:g.r(8,11),a:g.r(-.07,.07)})}}
+  cells.sort(()=>g.R()-.5);const nl=[];
+  cells.forEach(c=>{ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.a);ctx.beginPath();ctx.moveTo(-c.L/2,0);ctx.quadraticCurveTo(0,-c.W,c.L/2,0);ctx.quadraticCurveTo(0,c.W,-c.L/2,0);ctx.closePath();
+    ctx.fillStyle=g.c("smooth",g.r(-.08,.04));ctx.fill();if(!g.he){ctx.strokeStyle=g.c("border");ctx.lineWidth=.7;ctx.stroke()}else{ctx.strokeStyle=g.c("smooth",.25);ctx.lineWidth=.5;ctx.stroke()}ctx.restore();
+    if(g.R()<.5){g.nuc(c.x,c.y,g.r(8,11),g.r(1.7,2.2),c.a,{kind:"n"});nl.push([c.x,c.y])}});
+  ctx.restore();
+  const tr=(p)=>[w/2+p[0]*Math.cos(ang)-p[1]*Math.sin(ang),h/2+p[0]*Math.sin(ang)+p[1]*Math.cos(ang)];
+  const n=nl.map(tr).filter(q=>q[0]>w*.3&&q[0]<w*.7&&q[1]>h*.3&&q[1]<h*.7)[0];
+  if(n)g.feat(n[0],n[1],"One long, cigar-shaped nucleus in the middle","nuclei");
+  g.feat(w*.2,h*.25,"Spindle-shaped cells (thick middle, tapered ends)","cells");
+  g.feat(w*.75,h*.8,"No striations","striations");
+};
+
+/* ---- NERVOUS ---- */
+T.nervous=function(g){const {w,h}=g;
+  g.fill(g.c("neuropil"));if(g.he){g.fibrils(900,[g.c("neuropil",-.12),g.c("neuropil",.2),g.c("nucL",.3)],.35,22,.7)}else g.fibrils(200,[g.c("neuropil",-.12)],.5,22,.8);
+  const N=[];const n=g.ri(2,3);for(let t=0;t<200&&N.length<n;t++){const x=g.r(70,w-70),y=g.r(60,h-60);if(N.every(c=>Math.hypot(c.x-x,c.y-y)>170))N.push({x,y,r:g.r(27,34)})}
+  N.forEach(c=>{const k=g.ri(3,5);const a0=g.r(0,TAU);
+    for(let i=0;i<k;i++){const a=a0+i/k*TAU+g.r(-.3,.3);const L=g.r(50,130);const pts=[];let ang=a;let x=c.x,y=c.y;for(let s=0;s<L;s+=10){pts.push([x,y]);ang+=g.r(-.15,.15);x+=Math.cos(ang)*10;y+=Math.sin(ang)*10}
+      for(let j=0;j<pts.length-1;j++){const t=j/pts.length;g.line([pts[j],pts[j+1]],g.c("neuro"),Math.pow(1-t,1.6)*c.r*.75+1.4,1)}c.proc=c.proc||pts[Math.floor(pts.length*.6)]}
+    g.blob(c.x,c.y,c.r,c.r*.85,g.r(0,3),.22,g.c("neuro"));
+    g.dots(c.x,c.y,c.r*.85,c.r*.75,0,g.he?240:60,g.c("nissl"),.6,1.6,g.he?.5:.7);
+    g.ell(c.x+2,c.y-1,c.r*.36,c.r*.34,0,g.c("nucL",.45),g.c("nucD"),.8);if(g.he)g.dots(c.x+2,c.y-1,c.r*.3,c.r*.3,0,14,g.c("nucL"),.3,.7,.5);g.ell(c.x+3,c.y-2,2.4,2.4,0,g.c("nucD"))});
+  let gl=null;for(let i=0;i<110;i++){let x=g.r(0,w),y=g.r(0,h);if(i<20){const c=g.pick(N);const a=g.r(0,TAU);x=c.x+Math.cos(a)*(c.r+5);y=c.y+Math.sin(a)*(c.r*.85+5)}
+    if(N.some(c=>Math.hypot(c.x-x,c.y-y)<c.r))continue;g.nuc(x,y,g.r(2.3,3.3),g.r(2.1,3),0,{kind:g.R()<.6?"d":"n"});if(!gl&&i>20&&x>w*.25&&x<w*.75&&y>h*.25&&y<h*.75)gl=[x,y]}
+  const c=N[0];g.feat(c.x-c.r*.5,c.y+c.r*.35,"Large neuron cell body","cells");g.feat(c.x+3,c.y-2,"Big round nucleus with a dark nucleolus","nuclei");
+  if(c.proc)g.feat(c.proc[0],c.proc[1],"Long process (dendrite or axon)","fibers");if(gl)g.feat(gl[0],gl[1],"Small dark nuclei: neuroglia","density");
+};
+
+/* ---------- meta ---------- */
+const META={
+ simpleSquamous:{name:"Simple squamous epithelium",grp:"Epithelium",loc:"Air sacs (alveoli) of the lungs; lining of blood vessels and capillaries; serous membranes",fn:"Diffusion and filtration; a thin, slick surface"},
+ simpleCuboidal:{name:"Simple cuboidal epithelium",grp:"Epithelium",loc:"Kidney tubules; ducts and secretory parts of small glands",fn:"Secretion and absorption"},
+ simpleColumnar:{name:"Simple columnar epithelium",grp:"Epithelium",loc:"Lining of the stomach and intestines",fn:"Absorption and secretion (mucus from goblet cells)"},
+ pseudostratified:{name:"Pseudostratified ciliated columnar epithelium",grp:"Epithelium",loc:"Trachea and most of the upper airways",fn:"Makes mucus and sweeps it with cilia"},
+ stratSqNK:{name:"Stratified squamous epithelium (nonkeratinized)",grp:"Epithelium",loc:"Mouth, esophagus, vagina",fn:"Protection from rubbing, kept moist"},
+ stratSqK:{name:"Stratified squamous epithelium (keratinized)",grp:"Epithelium",loc:"Epidermis of the skin",fn:"Tough, waterproof protection"},
+ stratCuboidal:{name:"Stratified cuboidal epithelium",grp:"Epithelium",loc:"Ducts of sweat glands and some other glands (rare)",fn:"Protection of ducts"},
+ transitional:{name:"Transitional epithelium (urothelium)",grp:"Epithelium",loc:"Urinary bladder, ureters, part of the urethra",fn:"Stretches as the bladder fills"},
+ areolar:{name:"Areolar (loose) connective tissue",grp:"Connective tissue proper",loc:"Under epithelia, around organs and blood vessels",fn:"Cushions, holds organs in place, holds fluid; immune cells patrol it"},
+ adipose:{name:"Adipose tissue",grp:"Connective tissue proper",loc:"Under the skin (hypodermis), around organs",fn:"Stores energy as fat, insulates, cushions"},
+ reticular:{name:"Reticular connective tissue",grp:"Connective tissue proper",loc:"Lymph nodes, spleen, liver, bone marrow",fn:"A mesh (stroma) that holds cells of soft organs"},
+ denseRegular:{name:"Dense regular connective tissue",grp:"Connective tissue proper",loc:"Tendons and ligaments",fn:"Very strong pull in one direction"},
+ denseIrregular:{name:"Dense irregular connective tissue",grp:"Connective tissue proper",loc:"Dermis of the skin; capsules around organs",fn:"Resists pulling from many directions"},
+ elasticCT:{name:"Elastic connective tissue",grp:"Connective tissue proper",loc:"Walls of large arteries; some ligaments of the spine",fn:"Stretches and recoils"},
+ hyaline:{name:"Hyaline cartilage",grp:"Cartilage",loc:"Ends of long bones, ribs (costal cartilage), nose, rings of the trachea",fn:"Smooth surfaces, firm flexible support"},
+ fibrocartilage:{name:"Fibrocartilage",grp:"Cartilage",loc:"Intervertebral discs, knee menisci, pubic symphysis",fn:"Tough shock absorber"},
+ elasticCart:{name:"Elastic cartilage",grp:"Cartilage",loc:"External ear, epiglottis",fn:"Bends and springs back to shape"},
+ bone:{name:"Compact bone",grp:"Bone and blood",loc:"Shafts of long bones, outer layer of all bones",fn:"Support, protection, mineral storage"},
+ blood:{name:"Blood",grp:"Bone and blood",loc:"Inside the heart and blood vessels",fn:"Transports gases, nutrients, wastes; defends the body"},
+ skeletal:{name:"Skeletal muscle",grp:"Muscle",loc:"Muscles attached to bones (like the biceps)",fn:"Voluntary movement, posture, heat"},
+ cardiac:{name:"Cardiac muscle",grp:"Muscle",loc:"Wall of the heart only",fn:"Pumps blood, involuntary"},
+ smooth:{name:"Smooth muscle",grp:"Muscle",loc:"Walls of hollow organs, blood vessels, airways",fn:"Squeezes and moves contents, involuntary"},
+ nervous:{name:"Nervous tissue",grp:"Nervous",loc:"Brain, spinal cord, nerves",fn:"Sends electrical signals; neuroglia support neurons"}
+};
+const EPI=new Set(["simpleSquamous","simpleColumnar","pseudostratified","stratSqNK","stratSqK","transitional"]);
+
+/* ---------- render ---------- */
+function render(key,o){o=o||{};const w=o.w||480,h=o.h||360,dpr=o.dpr||2;const seed=o.seed==null?1:o.seed;
+  const c=document.createElement("canvas");c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);const ctx=c.getContext("2d");ctx.scale(dpr,dpr);
+  const R=mulberry(seed*7919+13);const style=o.style||"he";
+  const st={eh:(R()-.5)*14,es:.85+R()*.3,el:(R()-.5)*.06,hh:(R()-.5)*16,hl:(R()-.5)*.08};
+  const zoom=o.zoom||1;const fw=w/zoom,fh=h/zoom;
+  const fx=o.orient===false?false:R()<.5;const fy=o.orient===false?false:(EPI.has(key)&&R()<.22);
+  const g=painter(ctx,R,fw,fh,style,st,dpr*zoom);
+  ctx.save();ctx.scale(zoom,zoom);if(fx){ctx.translate(fw,0);ctx.scale(-1,1)}if(fy){ctx.translate(0,fh);ctx.scale(1,-1)}
+  try{T[key](g,o.param||{})}catch(e){console.error(key,e)}
+  ctx.restore();
+  if(g.he){ctx.save();ctx.setTransform(1,0,0,1,0,0);const t=document.createElement("canvas");t.width=c.width;t.height=c.height;const tx=t.getContext("2d");tx.filter="blur("+(0.8*dpr)+"px)";tx.drawImage(c,0,0);ctx.globalAlpha=.5;ctx.drawImage(t,0,0);ctx.restore();
+    g.rdots(0,0,w,h,Math.round(w*h/40),"#7a2a60",.3,.9,.06);g.rdots(0,0,w,h,Math.round(w*h/60),"#ffffff",.3,1,.07)}
+  if(g.he){for(let i=0;i<7;i++){const x=R()*w,y=R()*h,r=60+R()*140;const gr=ctx.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,"rgba(110,30,90,.07)");gr.addColorStop(1,"rgba(110,30,90,0)");ctx.fillStyle=gr;ctx.fillRect(0,0,w,h)}
+    ctx.save();ctx.globalCompositeOperation="soft-light";ctx.globalAlpha=.5;const pat=ctx.createPattern(noise(),"repeat");ctx.fillStyle=pat;ctx.fillRect(0,0,w,h);ctx.restore()}
+  const feats=g.feats.map((f,i)=>({i,x:(fx?fw-f.x:f.x)*zoom,y:(fy?fh-f.y:f.y)*zoom,t:f.t,k:f.k})).filter(f=>f.x>4&&f.y>4&&f.x<w-4&&f.y<h-4);
+  return{canvas:c,feats,w,h,key,flipped:fy}}
+
+/* labelled overlay: rings on features + pill labels, nudged so they don't overlap */
+function overlay(ctx,feats,ox,oy,s,o){o=o||{};const W=o.W,H=o.H;const font=`600 ${o.size||12.5}px "IBM Plex Sans",system-ui,sans-serif`;ctx.font=font;
+  const al=o.alpha==null?1:o.alpha;const col=o.col||"#F2B33B";const boxes=[];
+  const list=feats.map((f,i)=>({f,i,x:ox+f.x*s,y:oy+f.y*s,w:ctx.measureText((o.num?(i+1)+". ":"")+f.t).width+14}));
+  list.forEach(L=>{const right=L.x<ox+W/2;let bx=right?L.x+16:L.x-16-L.w;bx=Math.max(ox+4,Math.min(ox+W-4-L.w,bx));let by=L.y-30;if(by<oy+4)by=L.y+16;L.bx=bx;L.by=by});
+  list.sort((a,b)=>a.by-b.by);
+  list.forEach(L=>{let moved=true,guard=0;while(moved&&guard++<30){moved=false;for(const B of boxes){if(L.bx<B.bx+B.w+4&&L.bx+L.w+4>B.bx&&L.by<B.by+24&&L.by+24>B.by){L.by=B.by+26;moved=true}}}
+    if(L.by>oy+H-26)L.by=oy+H-26;boxes.push(L)});
+  ctx.save();ctx.globalAlpha=al;
+  list.forEach(L=>{const pulse=o.pulse||0;ctx.lineWidth=2.5;ctx.strokeStyle="rgba(0,0,0,.55)";ctx.beginPath();ctx.arc(L.x,L.y,9+pulse,0,TAU);ctx.stroke();ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();
+    const tx=Math.max(L.bx,Math.min(L.bx+L.w,L.x)),ty=L.by+11;const dx=tx-L.x,dy=ty-L.y,d=Math.hypot(dx,dy);
+    if(d>12){ctx.beginPath();ctx.moveTo(L.x+dx/d*10,L.y+dy/d*10);ctx.lineTo(tx,ty);ctx.strokeStyle="rgba(0,0,0,.5)";ctx.lineWidth=3;ctx.stroke();ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.stroke()}
+    ctx.fillStyle="rgba(16,22,26,.86)";const r=5;const x=L.bx,y=L.by,w=L.w,h=22;ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill();
+    ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.fillStyle="#fff";ctx.font=font;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText((o.num?(L.i+1)+". ":"")+L.f.t,x+7,y+11.5)});
+  ctx.restore()}
+
+return{render,overlay,META,KEYS:Object.keys(META),mix,shade,mulberry,EPI};
+})();
+
+</script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+const M=HISTO.META,KEYS=HISTO.KEYS;
+const C={};
+const CK=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","gold","ecf","epi","epi-edge","nuc","ct","coll","elas","retic","musc","musc-d","nerve","blood","plasma","air","fluid","hist","neut","macro","bact","scar","kera","fat","bone","cart","glow",
+ "g-flow","g-swell","g-neut","g-mac","g-rep","g-scar","g-pain"];
+function readColors(){const s=getComputedStyle(document.documentElement);CK.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+readColors();
+const mix=(a,b,t)=>{try{return HISTO.mix(a,b,clamp(t,0,1))}catch(e){return a}};
+const sh=(c,l)=>{try{return HISTO.shade(c,l)}catch(e){return c}};
+const rint=n=>Math.floor(Math.random()*n);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rint(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
+const dpr=()=>Math.min(2,Math.max(1,window.devicePixelRatio||1));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const GRPCOL={"Epithelium":"grp-epi","Connective tissue proper":"grp-ct","Cartilage":"grp-cart","Bone and blood":"grp-bb","Muscle":"grp-mus","Nervous":"grp-nerv"};
+const chip=k=>`<span class="chipg" style="background:var(--${GRPCOL[M[k].grp]})">${M[k].grp}</span>`;
+const SHORT={simpleSquamous:"Simple squamous",simpleCuboidal:"Simple cuboidal",simpleColumnar:"Simple columnar",pseudostratified:"Pseudostratified ciliated columnar",stratSqNK:"Stratified squamous, nonkeratinized",stratSqK:"Stratified squamous, keratinized",stratCuboidal:"Stratified cuboidal",transitional:"Transitional",
+ areolar:"Areolar CT",adipose:"Adipose",reticular:"Reticular CT",denseRegular:"Dense regular CT",denseIrregular:"Dense irregular CT",elasticCT:"Elastic CT",hyaline:"Hyaline cartilage",fibrocartilage:"Fibrocartilage",elasticCart:"Elastic cartilage",bone:"Compact bone",blood:"Blood",skeletal:"Skeletal muscle",cardiac:"Cardiac muscle",smooth:"Smooth muscle",nervous:"Nervous tissue"};
+const GIVE={
+ simpleSquamous:["One very thin layer of flat cells","Flat nuclei that bulge slightly","In the lung: lacy thin walls around big air spaces"],
+ simpleCuboidal:["One layer of cube-shaped cells","Round, central nuclei","Often rings around a small lumen (kidney tubules)"],
+ simpleColumnar:["One layer of tall cells","Oval nuclei lined up near the base","Pale goblet cells and a brush border on top"],
+ pseudostratified:["Nuclei at many different heights","A fringe of cilia on the surface","Goblet cells and a thick basement membrane"],
+ stratSqNK:["Many layers of cells","Flat surface cells that still have nuclei","No thick, dead keratin layer on top"],
+ stratSqK:["Many layers of cells","A thick pink keratin layer on top, with no nuclei","A dark granular layer just under it"],
+ stratCuboidal:["Two layers of cube-shaped cells","Usually rings around a small duct lumen"],
+ transitional:["Several layers of cells","Big dome-shaped (umbrella) cells at the surface","Some surface cells have two nuclei"],
+ areolar:["Loose: lots of open space","Thick pink collagen and thin dark elastic fibers going every way","Scattered cells, such as fibroblasts and mast cells"],
+ adipose:["Big, empty-looking round cells","A thin rim of cytoplasm","Nucleus squished flat against the edge"],
+ reticular:["A thin, dark, branching fiber net (silver stain)","Many small round cells caught in the net"],
+ denseRegular:["Tightly packed collagen fibers all running one way","Wavy (crimped) fibers","Thin, flat fibroblast nuclei in rows"],
+ denseIrregular:["Thick pink collagen bundles in many directions","Packed tightly, with little open space","Few, scattered nuclei"],
+ elasticCT:["Many wavy, dark elastic fibers (elastic stain)","Fibers run roughly parallel, like sheets"],
+ hyaline:["Smooth, glassy, lilac matrix with no visible fibers","Chondrocytes in lacunae, often in small groups"],
+ fibrocartilage:["Thick pink collagen bundles","Chondrocytes in lacunae lined up in rows"],
+ elasticCart:["Chondrocytes in lacunae","Dark, branching elastic fibers all through the matrix"],
+ bone:["Osteons: rings (lamellae) around a dark central canal","Dark lacunae with tiny canaliculi"],
+ blood:["Cells floating loose, with no fibers","Many pink red blood cells with pale centers","A few white blood cells with purple nuclei"],
+ skeletal:["Striations (stripes) across long fibers","Many nuclei pushed to the edge of each fiber","Long, unbranched fibers"],
+ cardiac:["Branched fibers","Dark intercalated discs across the fibers","One central nucleus per cell; faint striations"],
+ smooth:["Spindle-shaped cells with no striations","One long, cigar-shaped central nucleus"],
+ nervous:["Large neuron cell bodies with long processes","Big round nucleus with a dark nucleolus","Many small dark glial nuclei around them"]};
+const CONF={simpleColumnar:["pseudostratified","simpleCuboidal","stratSqNK"],pseudostratified:["simpleColumnar","stratSqNK","transitional"],stratSqNK:["stratSqK","transitional","pseudostratified"],stratSqK:["stratSqNK","denseIrregular","transitional"],
+ transitional:["stratSqNK","stratCuboidal","pseudostratified"],simpleSquamous:["adipose","simpleCuboidal","areolar"],simpleCuboidal:["stratCuboidal","simpleColumnar","bone"],stratCuboidal:["simpleCuboidal","transitional","hyaline"],
+ areolar:["denseIrregular","reticular","elasticCT"],adipose:["simpleSquamous","areolar","hyaline"],reticular:["areolar","elasticCart","nervous"],denseRegular:["smooth","skeletal","denseIrregular"],denseIrregular:["denseRegular","areolar","fibrocartilage"],
+ elasticCT:["denseRegular","elasticCart","smooth"],hyaline:["elasticCart","fibrocartilage","bone"],fibrocartilage:["denseRegular","hyaline","elasticCart"],elasticCart:["hyaline","elasticCT","reticular"],bone:["hyaline","simpleCuboidal","fibrocartilage"],
+ blood:["areolar","adipose","nervous"],skeletal:["cardiac","smooth","denseRegular"],cardiac:["skeletal","smooth","denseRegular"],smooth:["denseRegular","skeletal","cardiac"],nervous:["areolar","reticular","blood"]};
+const SETS={all:{n:"All 23",k:KEYS},epi:{n:"Epithelia",k:KEYS.filter(k=>M[k].grp==="Epithelium")},ct:{n:"Connective",k:KEYS.filter(k=>["Connective tissue proper","Cartilage","Bone and blood"].includes(M[k].grp))},mn:{n:"Muscle & nervous",k:KEYS.filter(k=>["Muscle","Nervous"].includes(M[k].grp))}};
+const PARAM=k=>({});
+
+/* ---------- canvas helpers ---------- */
+function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,ctx:cv.getContext("2d"),W,H,K:1};
+  st.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const d=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*d);cv.height=Math.round(w*H/W*d);st.K=cv.width/W};
+  return st}
+let ctx;
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(.1,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,rot,fill,stroke,lw){ctx.beginPath();ctx.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.2;ctx.stroke()}}
+function glow(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;const a=o.alpha==null?1:clamp(o.alpha,0,1);if(a<=0)return w;
+  if(o.pill!==false){ctx.globalAlpha=(o.bga==null?.9:o.bga)*a;ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a;if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.globalAlpha=a;ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1;return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function pl(pts,col,lw,alpha,dash){ctx.globalAlpha=alpha==null?1:alpha;ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.lineCap="round";ctx.lineJoin="round";ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1}
+function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=8+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function starStr(n){return "★".repeat(n)+"☆".repeat(3-n)}
+
+/* =====================================================================
+   PART 1 - NAME THAT TISSUE (+ study gallery)
+   ===================================================================== */
+const S1=makeStage("cvName",600,450);
+const NQ={set:"all",queue:[],i:0,n:10,key:null,seed:1,img:null,sc:null,answered:false,tries:0,hint:false,labels:false,sch:false,first:0,t0:0,tLeft:25,showT:0};
+const best1=store.get("tissuesLab.best1")||{};
+function setButtons(holder,cur,onPick,showStars,bestMap){holder.innerHTML="";Object.keys(SETS).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",k===cur);
+  b.innerHTML=esc(SETS[k].n)+(showStars&&bestMap[k]?`<span class="ok" aria-label="best ${bestMap[k]} stars">${"★".repeat(bestMap[k])}</span>`:"");b.onclick=()=>onPick(k);holder.appendChild(b)})}
+function nSets(){setButtons($("#setBtns"),NQ.set,k=>{NQ.set=k;nSets();if(studyMode)buildGallery();else nNewRound()},true,best1)}
+function nNewRound(){const keys=SETS[NQ.set].k;let q=[];while(q.length<NQ.n){q=q.concat(shuffle(keys))}NQ.queue=q.slice(0,NQ.n);NQ.i=0;NQ.first=0;nLoad()}
+function nLoad(){const k=NQ.queue[NQ.i];NQ.key=k;NQ.seed=1+rint(1e6);NQ.img=HISTO.render(k,{seed:NQ.seed,w:600,h:450,dpr:dpr(),param:PARAM(k)});NQ.sc=null;
+  NQ.answered=false;NQ.tries=0;NQ.hint=false;NQ.labels=false;NQ.sch=false;NQ.t0=performance.now();NQ.tLeft=25;NQ.showT=performance.now();
+  $("#lblBtn").setAttribute("aria-pressed","false");$("#lblBtn").textContent="Show labels";$("#schBtn").setAttribute("aria-pressed","false");
+  const pool=SETS.all.k.filter(x=>x!==k);let opts=[k].concat(CONF[k].slice(0,2));const extra=shuffle(SETS[NQ.set].k.filter(x=>!opts.includes(x)));opts.push(extra[0]||shuffle(pool.filter(x=>!opts.includes(x)))[0]);opts=shuffle(opts);
+  const box=$("#nOpts");box.innerHTML="";opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=SHORT[o];b.dataset.k=o;b.onclick=()=>nAnswer(o,b);box.appendChild(b)});
+  $("#nMsg").className="msg";$("#nMsg").innerHTML="";$("#nFeat").hidden=true;$("#nNext").hidden=true;$("#nHint").disabled=false;$("#nShow").disabled=false;
+  $("#nN").textContent=`Image ${NQ.i+1} of ${NQ.n} · ${SETS[NQ.set].n}`;$("#nProg").style.width=(NQ.i/NQ.n*100)+"%";
+  $("#nScore").textContent=`First-try correct so far: ${NQ.first}`;
+  S1.cv.setAttribute("aria-label","Microscope image number "+(NQ.i+1)+". Choose which tissue it shows.");
+  $("#timerBar").hidden=!$("#timedChk").checked;}
+function nShowFeatures(){const f=NQ.img.feats;$("#nFeatList").innerHTML=f.map(x=>`<li>${esc(x.t)}</li>`).join("");
+  $("#nWhere").innerHTML=`${chip(NQ.key)} <b>Where:</b> ${esc(M[NQ.key].loc)}. <b>Job:</b> ${esc(M[NQ.key].fn)}.`;$("#nFeat").hidden=false;
+  NQ.labels=true;$("#lblBtn").setAttribute("aria-pressed","true");$("#lblBtn").textContent="Hide labels";NQ.showT=performance.now()}
+function nFinish(msgHTML,cls){NQ.answered=true;$("#nHint").disabled=true;$("#nShow").disabled=true;document.querySelectorAll("#nOpts .opt").forEach(b=>{b.disabled=true;if(b.dataset.k===NQ.key)b.classList.add("right")});
+  nShowFeatures();const last=NQ.i===NQ.n-1;$("#nNext").hidden=false;$("#nNext").textContent=last?"See my results →":"Next image →";
+  $("#nMsg").className="msg show "+cls;$("#nMsg").innerHTML=msgHTML;$("#nScore").textContent=`First-try correct so far: ${NQ.first}`;
+  S1.cv.setAttribute("aria-label","Microscope image of "+M[NQ.key].name+", with numbered labels on the giveaway features.");$("#nNext").focus({preventScroll:true})}
+function nAnswer(k,btn){if(NQ.answered)return;NQ.tries++;
+  if(k===NQ.key){const ft=NQ.tries===1&&!NQ.hint;if(ft)NQ.first++;nFinish(`<b>Yes! ${esc(M[k].name)}.</b> ${ft?"First try.":"You got there."} The numbered labels show the giveaways.`,"good")}
+  else{btn.classList.add("wrong");btn.disabled=true;$("#nMsg").className="msg show warn";
+    $("#nMsg").innerHTML=`<b>Not quite.</b> ${esc(SHORT[k])} would show: ${esc(GIVE[k][0].toLowerCase())}. In this image, look for: <b>${esc(GIVE[NQ.key][0].toLowerCase())}</b>.`+(NQ.tries>=2?" A clue is now marked on the image.":" Try again.");
+    if(NQ.tries>=2)NQ.hint=true}}
+function nResults(){const n=NQ.first;const stars=n>=9?3:n>=7?2:1;if(!best1[NQ.set]||stars>best1[NQ.set]){best1[NQ.set]=stars;store.set("tissuesLab.best1",best1);nSets()}
+  $("#nMsg").className="msg show good";$("#nMsg").innerHTML=`<div class="stars" aria-label="${stars} of 3 stars">${starStr(stars)}</div><b>Round done: ${n} of ${NQ.n} right on the first try.</b> 3 stars = 9 or more, 2 stars = 7 or more. Every round uses brand-new images.<div class="bar"><button class="btn" type="button" id="nAgain">Play another round</button></div>`;
+  $("#nAgain").onclick=nNewRound;$("#nNext").hidden=true;$("#nProg").style.width="100%"}
+$("#nNext").onclick=()=>{if(NQ.i>=NQ.n-1){nResults();return}NQ.i++;nLoad()};
+$("#nHint").onclick=()=>{NQ.hint=true;$("#nMsg").className="msg show info";$("#nMsg").innerHTML=`<b>Hint:</b> ${esc(GIVE[NQ.key][0])}. One clue is circled on the image.`};
+$("#nShow").onclick=()=>{nFinish(`This is <b>${esc(M[NQ.key].name)}</b>. Study the numbered giveaways, then try the next one.`,"info")};
+$("#lblBtn").onclick=()=>{NQ.labels=!NQ.labels;$("#lblBtn").setAttribute("aria-pressed",NQ.labels);$("#lblBtn").textContent=NQ.labels?"Hide labels":"Show labels";if(NQ.labels&&!NQ.answered)NQ.hint=true;NQ.showT=performance.now()};
+$("#schBtn").onclick=()=>{NQ.sch=!NQ.sch;$("#schBtn").setAttribute("aria-pressed",NQ.sch);if(NQ.sch&&!NQ.sc)NQ.sc=HISTO.render(NQ.key,{seed:NQ.seed,w:600,h:450,dpr:dpr(),style:"sc",param:PARAM(NQ.key)})};
+$("#timedChk").onchange=()=>{$("#timerBar").hidden=!$("#timedChk").checked;NQ.t0=performance.now()};
+function drawName(now){ctx=S1.ctx;ctx.setTransform(S1.K,0,0,S1.K,0,0);ctx.clearRect(0,0,600,450);if(!NQ.img)return;
+  const im=NQ.sch&&NQ.sc?NQ.sc:NQ.img;ctx.drawImage(im.canvas,0,0,600,450);
+  const pulse=(Math.sin(now/250)+1)*1.5;
+  if(NQ.labels){const a=clamp((now-NQ.showT)/500,0,1);HISTO.overlay(ctx,NQ.img.feats,0,0,1,{W:600,H:450,num:true,size:13,alpha:a,pulse})}
+  else if(NQ.hint&&NQ.img.feats[0])HISTO.overlay(ctx,[NQ.img.feats[0]],0,0,1,{W:600,H:450,size:13,pulse});
+  if($("#timedChk").checked&&!NQ.answered){const left=Math.max(0,25-(now-NQ.t0)/1000);$("#timerFill").style.width=(left/25*100)+"%";if(left<=0)nFinish("<b>Time's up.</b> This is <b>"+esc(M[NQ.key].name)+"</b>. Untick Timed any time for relaxed mode.","warn")}
+  if(NQ.sch){ctx.fillStyle="rgba(16,22,26,.8)";rr(8,8,128,24,5);ctx.fill();ctx.fillStyle="#fff";ctx.font=`600 12px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText("SCHEMATIC VIEW",16,20.5)}}
+
+/* ---- study gallery ---- */
+let studyMode=false,galToken=0;const GAL={};
+function buildGallery(){const g=$("#gal");g.innerHTML="";const tok=++galToken;const keys=SETS[NQ.set].k;
+  keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="gcard";b.setAttribute("aria-label","Enlarge "+M[k].name);
+    b.innerHTML=`<canvas width="320" height="240" aria-hidden="true"></canvas><div class="gb"><div class="gn">${esc(M[k].name)}</div><div class="gl">${chip(k)}</div><div class="gl">Look for: ${esc(GIVE[k].slice(0,2).join("; "))}</div></div>`;
+    b.onclick=()=>openDetail(k);g.appendChild(b);
+    setTimeout(()=>{if(tok!==galToken)return;const seed=GAL[k]||(GAL[k]=1+rint(1e6));const r=HISTO.render(k,{seed,w:320,h:240,dpr:1,param:PARAM(k)});b.querySelector("canvas").getContext("2d").drawImage(r.canvas,0,0)},30+i*40)})}
+const D={key:null,seed:1,img:null,sc:null,lbl:true,sch:false,t:0};
+const SD=makeStage("cvDetail",600,450);
+function openDetail(k){D.key=k;D.seed=GAL[k]||1+rint(1e6);D.img=HISTO.render(k,{seed:D.seed,w:600,h:450,dpr:dpr(),param:PARAM(k)});D.sc=null;D.sch=false;D.t=performance.now();
+  $("#dSch").setAttribute("aria-pressed","false");$("#detail").hidden=false;SD.fit();
+  $("#dInfo").innerHTML=`<div class="lvl-n">${chip(k)}</div><h2 class="lvl-t">${esc(M[k].name)}</h2><h3>Look for</h3><ol class="feat">${D.img.feats.map(f=>`<li>${esc(f.t)}</li>`).join("")}</ol><h3>Where</h3><p>${esc(M[k].loc)}</p><h3>Job</h3><p>${esc(M[k].fn)}</p>`;
+  SD.cv.setAttribute("aria-label","Enlarged image of "+M[k].name+" with numbered labels");$("#detail").scrollIntoView({behavior:"smooth",block:"start"})}
+$("#dLbl").onclick=()=>{D.lbl=!D.lbl;$("#dLbl").setAttribute("aria-pressed",D.lbl);$("#dLbl").textContent=D.lbl?"Labels on":"Labels off"};
+$("#dSch").onclick=()=>{D.sch=!D.sch;$("#dSch").setAttribute("aria-pressed",D.sch);if(D.sch&&!D.sc)D.sc=HISTO.render(D.key,{seed:D.seed,w:600,h:450,dpr:dpr(),style:"sc",param:PARAM(D.key)})};
+$("#dNew").onclick=()=>{GAL[D.key]=1+rint(1e6);openDetail(D.key)};
+$("#dClose").onclick=()=>{$("#detail").hidden=true};
+$("#galNew").onclick=()=>{Object.keys(GAL).forEach(k=>delete GAL[k]);buildGallery()};
+function drawDetail(now){if($("#detail").hidden||!D.img)return;ctx=SD.ctx;ctx.setTransform(SD.K,0,0,SD.K,0,0);ctx.clearRect(0,0,600,450);ctx.drawImage((D.sch&&D.sc?D.sc:D.img).canvas,0,0,600,450);
+  if(D.lbl)HISTO.overlay(ctx,D.img.feats,0,0,1,{W:600,H:450,num:true,size:13,alpha:clamp((now-D.t)/500,0,1)})}
+function setMode(study){studyMode=study;$("#mQuiz").setAttribute("aria-pressed",!study);$("#mStudy").setAttribute("aria-pressed",study);$("#quizView").hidden=study;$("#studyView").hidden=!study;if(study)buildGallery();else S1.fit()}
+$("#mQuiz").onclick=()=>setMode(false);$("#mStudy").onclick=()=>setMode(true);
+
+/* =====================================================================
+   PART 2 - DECISION TREE
+   ===================================================================== */
+const TREE={
+ q0:{q:"Is it a sheet of cells packed tightly together, with a free surface on one side?",tag:"layers",h:"Epithelium is mostly cells, edge to edge, with almost no material between them, and one side faces open space (a lumen or the outside).",
+   a:[["Yes: cells packed edge to edge, with a free surface","e1"],["No: cells spread out, or it is fibers, muscle, or nerve","n1"]]},
+ e1:{q:"How many layers of cells sit on the basement membrane?",tag:"layers",h:"Follow the cells from the basement membrane up to the surface. Nuclei at many heights while every cell still touches the base is the pseudostratified trick.",
+   a:[["One layer","es"],["Many layers","ss"],["Looks layered, but nuclei are just at different heights","ep"]]},
+ es:{q:"What shape are the cells?",tag:"shape",h:"Compare height and width, and look at the nuclei: flat cells have flat nuclei, cube cells round nuclei, tall cells oval nuclei.",
+   a:[["Flat and thin, with flat nuclei","L:simpleSquamous"],["Cube-shaped, with round central nuclei","L:simpleCuboidal"],["Tall, with oval nuclei in a row near the base","L:simpleColumnar"]]},
+ ep:{q:"Do you see a fringe of cilia and some pale goblet cells on top?",tag:"cilia",h:"Look right at the free surface for a fuzzy fringe, and for pale, cup-shaped cells.",
+   a:[["Yes","L:pseudostratified"],["No","x"]]},
+ ss:{q:"What shape are the cells at the surface?",tag:"surface",h:"Stratified tissue is named by the top layer only. Ignore the cube-shaped cells at the bottom.",
+   a:[["Flat","ek"],["Cube-shaped, in rings two layers thick","L:stratCuboidal"],["Big and dome-shaped (umbrella cells)","L:transitional"]]},
+ ek:{q:"Is there a thick pink top layer of dead, flat cells with no nuclei?",tag:"surface",h:"Check whether the surface cells still have purple nuclei.",
+   a:[["Yes: a keratin layer","L:stratSqK"],["No: surface cells still have nuclei","L:stratSqNK"]]},
+ n1:{q:"Is it made of long cells lined up side by side (muscle fibers)?",tag:"cells",h:"Muscle is made of the cells themselves. In dense connective tissue the pink is fibers, and the nuclei are thin and squeezed between them.",
+   a:[["Yes","m1"],["No","n2"]]},
+ m1:{q:"Do you see striations (light and dark stripes across the cells)?",tag:"striations",h:"Look across the width of a fiber for regular light and dark bands.",
+   a:[["No stripes: spindle-shaped cells","L:smooth"],["Yes, stripes","m2"]]},
+ m2:{q:"Are the cells branched, with dark intercalated discs and one central nucleus?",tag:"striations",h:"Look for dark lines crossing the fibers and Y-shaped branches, and check where the nuclei sit.",
+   a:[["Yes","L:cardiac"],["No: long unbranched fibers, many nuclei at the edge","L:skeletal"]]},
+ n2:{q:"Are there large cells with long branching processes, among many small dark nuclei?",tag:"cells",h:"Neurons are big, star-shaped cells with a large round nucleus.",
+   a:[["Yes","L:nervous"],["No","c1"]]},
+ c1:{q:"Do the cells sit in little holes (lacunae) in a solid matrix?",tag:"lacunae",h:"Lacunae look like small, pale or dark pockets, each holding a cell.",
+   a:[["Yes","c2"],["No","c4"]]},
+ c2:{q:"Are the lacunae arranged in rings around a central canal?",tag:"lacunae",h:"Bone's osteons look like tree rings around a dark center.",
+   a:[["Yes: osteons","L:bone"],["No","c3"]]},
+ c3:{q:"What does the matrix look like?",tag:"fibers",h:"Look at the material between the lacunae.",
+   a:[["Smooth and glassy, no fibers visible","L:hyaline"],["Thick pink collagen bundles, cells in rows","L:fibrocartilage"],["Full of dark, branching elastic fibers","L:elasticCart"]]},
+ c4:{q:"Are cells floating loose in fluid, with no fibers at all?",tag:"fibers",h:"Blood smears show separate round cells with nothing connecting them.",
+   a:[["Yes","L:blood"],["No","c5"]]},
+ c5:{q:"Is it mostly big, empty-looking round cells?",tag:"cells",h:"Fat cells look like big white bubbles with thin pink rims.",
+   a:[["Yes","L:adipose"],["No","c6"]]},
+ c6:{q:"Are the fibers packed tightly (dense) or spread out with open space (loose)?",tag:"density",h:"Is most of the picture fibers, or is there a lot of pale open space?",
+   a:[["Dense: packed tightly","c7"],["Loose: lots of open space","c8"]]},
+ c7:{q:"How are the fibers arranged?",tag:"fibers",h:"Do the fibers all run one way, cross in many directions, or look dark and wavy?",
+   a:[["Parallel, all running the same way","L:denseRegular"],["Thick bundles in many directions","L:denseIrregular"],["Wavy, dark elastic fibers","L:elasticCT"]]},
+ c8:{q:"What do the fibers look like?",tag:"fibers",h:"Compare a fine black net with a loose mix of pink and dark fibers.",
+   a:[["A fine, dark, branching net (silver stain)","L:reticular"],["A mix of thick pink and thin dark fibers","L:areolar"]]}
+};
+function pathTo(key){const out=[];function dfs(id){const n=TREE[id];if(!n)return false;for(let i=0;i<n.a.length;i++){const tgt=n.a[i][1];out.push([id,i]);if(tgt==="L:"+key||dfs(tgt))return true;out.pop()}return false}dfs("q0");return out}
+const S2=makeStage("cvTree",600,450);
+const TQ={set:"all",key:null,seed:1,img:null,sc:null,sch:false,node:"q0",trail:[],wrong:0,tot:0,miss:0,hl:null,hlT:0,done:false,count:0,stars:0,path:[]};
+const best2=store.get("tissuesLab.best2")||{};
+function tSets(){setButtons($("#tSetBtns"),TQ.set,k=>{TQ.set=k;tSets();tNew()},false,{})}
+function tNew(){const keys=SETS[TQ.set].k;let k;do{k=keys[rint(keys.length)]}while(keys.length>1&&k===TQ.key);TQ.key=k;TQ.seed=1+rint(1e6);
+  TQ.img=HISTO.render(k,{seed:TQ.seed,w:600,h:450,dpr:dpr(),param:PARAM(k)});TQ.sc=null;TQ.sch=false;$("#tSch").setAttribute("aria-pressed","false");
+  TQ.node="q0";TQ.trail=[];TQ.wrong=0;TQ.miss=0;TQ.hl=null;TQ.done=false;TQ.path=pathTo(k);$("#tMsg").className="msg";$("#tNext").hidden=true;$("#tHint").disabled=false;$("#tShow").disabled=false;
+  TQ.count++;$("#tN").textContent=`Image ${TQ.count} · ${SETS[TQ.set].n}`;S2.cv.setAttribute("aria-label","Microscope image to identify. Answer the questions on the right.");renderFlow();drawTreeMap()}
+function renderFlow(){const f=$("#flow");let h="";
+  TQ.trail.forEach(t=>{const n=TREE[t[0]];h+=`<div class="fnode done"><p class="fq">${esc(n.q)}</p><div class="fa">✓ <b>${esc(n.a[t[1]][0])}</b></div></div><div class="flink" aria-hidden="true"></div>`});
+  if(TQ.done){const k=TQ.key;h+=`<div class="fleaf">It is ${esc(M[k].name)}! <span class="stars" aria-label="${TQ.stars} of 3 stars" style="font-size:18px">${starStr(TQ.stars)}</span><ul style="font-weight:400;font-size:14px;margin:6px 0 0;padding-left:18px">${GIVE[k].map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`}
+  else{const n=TREE[TQ.node];h+=`<div class="fnode cur" id="curNode"><p class="fq">${esc(n.q)}</p><div class="answers">${n.a.map((a,i)=>`<button type="button" class="opt" data-i="${i}">${esc(a[0])}</button>`).join("")}</div></div>`}
+  f.innerHTML=h;f.querySelectorAll("#curNode .opt").forEach(b=>b.onclick=()=>tPick(+b.dataset.i,b))}
+function tPick(i,btn){const n=TREE[TQ.node];const want=TQ.path.find(p=>p[0]===TQ.node);if(!want)return;
+  if(i===want[1]){TQ.trail.push([TQ.node,i]);const tgt=n.a[i][1];TQ.wrong=0;TQ.hl=null;
+    if(tgt.startsWith("L:")){TQ.done=true;TQ.stars=TQ.miss===0?3:TQ.miss<=2?2:1;const b=best2[TQ.set]||0;if(TQ.stars>b){best2[TQ.set]=TQ.stars;store.set("tissuesLab.best2",best2)}
+      $("#tMsg").className="msg show good";$("#tMsg").innerHTML=`<b>Correct path!</b> ${TQ.miss===0?"No wrong turns.":"Wrong turns along the way: "+TQ.miss+"."} The giveaways are now labeled on the image.`;$("#tNext").hidden=false;$("#tHint").disabled=true;$("#tShow").disabled=true;
+      S2.cv.setAttribute("aria-label","Identified: "+M[TQ.key].name+". Labels show its features.");TQ.hlT=performance.now()}
+    else{TQ.node=tgt;$("#tMsg").className="msg"}
+    renderFlow();drawTreeMap();if(TQ.done)$("#tNext").focus({preventScroll:true});else{const c=document.querySelector("#curNode .opt");if(c)c.focus({preventScroll:true})}}
+  else{TQ.wrong++;TQ.miss++;btn.classList.add("wrong");btn.disabled=true;const nodeEl=$("#curNode");nodeEl.classList.remove("shake");void nodeEl.offsetWidth;nodeEl.classList.add("shake");
+    tHighlight();$("#tMsg").className="msg show warn";$("#tMsg").innerHTML=`<b>Not quite.</b> ${esc(n.h)}`+(TQ.wrong>=2?` <br>The answer here is: <b>${esc(n.a[want[1]][0])}</b>.`:" A clue is circled on the image. Try again.")}}
+function tHighlight(){const tag=TREE[TQ.node].tag;const f=TQ.img.feats;TQ.hl=f.filter(x=>x.k===tag);if(!TQ.hl.length)TQ.hl=f.slice(0,1);TQ.hlT=performance.now()}
+$("#tHint").onclick=()=>{tHighlight();$("#tMsg").className="msg show info";$("#tMsg").innerHTML=`<b>Hint:</b> ${esc(TREE[TQ.node].h)}`};
+$("#tShow").onclick=()=>{TQ.miss+=2;const want=TQ.path.find(p=>p[0]===TQ.node);const b=document.querySelector(`#curNode .opt[data-i="${want[1]}"]`);tPick(want[1],b)};
+$("#tNext").onclick=tNew;
+$("#tSch").onclick=()=>{TQ.sch=!TQ.sch;$("#tSch").setAttribute("aria-pressed",TQ.sch);if(TQ.sch&&!TQ.sc)TQ.sc=HISTO.render(TQ.key,{seed:TQ.seed,w:600,h:450,dpr:dpr(),style:"sc",param:PARAM(TQ.key)})};
+function drawTree(now){ctx=S2.ctx;ctx.setTransform(S2.K,0,0,S2.K,0,0);ctx.clearRect(0,0,600,450);if(!TQ.img)return;ctx.drawImage((TQ.sch&&TQ.sc?TQ.sc:TQ.img).canvas,0,0,600,450);
+  const pulse=(Math.sin(now/250)+1)*1.5;
+  if(TQ.done)HISTO.overlay(ctx,TQ.img.feats,0,0,1,{W:600,H:450,num:true,size:13,alpha:clamp((now-TQ.hlT)/500,0,1),pulse});
+  else if(TQ.hl)HISTO.overlay(ctx,TQ.hl,0,0,1,{W:600,H:450,size:13,pulse,alpha:clamp((now-TQ.hlT)/400,0,1)})}
+/* overview of the whole tree (SVG) */
+const LEAFSHORT={simpleSquamous:"Simple sq.",simpleCuboidal:"Simple cub.",simpleColumnar:"Simple col.",pseudostratified:"Pseudostrat.",stratSqNK:"Strat. sq. (non-ker.)",stratSqK:"Strat. sq. (ker.)",stratCuboidal:"Strat. cub.",transitional:"Transitional",
+ areolar:"Areolar",adipose:"Adipose",reticular:"Reticular",denseRegular:"Dense reg.",denseIrregular:"Dense irreg.",elasticCT:"Elastic CT",hyaline:"Hyaline",fibrocartilage:"Fibrocart.",elasticCart:"Elastic cart.",bone:"Bone",blood:"Blood",skeletal:"Skeletal",cardiac:"Cardiac",smooth:"Smooth",nervous:"Nervous"};
+const TLAY=(function(){const pos={},edges=[];let lx=0;let maxD=0;
+  function place(id,d){maxD=Math.max(maxD,d);if(id.startsWith("L:")){pos[id]={x:lx++,d};return pos[id].x}const n=TREE[id];const xs=[];n.a.forEach(a=>{if(a[1]==="x")return;xs.push(place(a[1],d+1));edges.push([id,a[1]])});pos[id]={x:(Math.min(...xs)+Math.max(...xs))/2,d};return pos[id].x}
+  place("q0",0);return{pos,edges,n:lx,maxD}})();
+function drawTreeMap(){const s=$("#treeMap");const dx=40,dy=40,ox=24,oy=18;const Wd=ox*2+60+(TLAY.n-1)*dx,Hd=oy+TLAY.maxD*dy+86;s.setAttribute("viewBox",`0 0 ${Wd} ${Hd}`);
+  const onPath=new Set();const trail=TQ.trail.map(t=>t[0]);TQ.trail.forEach(t=>{onPath.add(t[0]+">"+TREE[t[0]].a[t[1]][1])});
+  const P=id=>[ox+TLAY.pos[id].x*dx,oy+TLAY.pos[id].d*dy];let h="";
+  TLAY.edges.forEach(e=>{const a=P(e[0]),b=P(e[1]);const on=onPath.has(e[0]+">"+e[1]);h+=`<path d="M${a[0]} ${a[1]} C ${a[0]} ${a[1]+dy*.5}, ${b[0]} ${b[1]-dy*.5}, ${b[0]} ${b[1]}" fill="none" stroke="${on?"var(--accent)":"var(--rule)"}" stroke-width="${on?4:1.6}"/>`});
+  Object.keys(TLAY.pos).forEach(id=>{const p=P(id);const leaf=id.startsWith("L:");const k=leaf?id.slice(2):null;const isCur=!TQ.done&&id===TQ.node;const visited=trail.includes(id)||(TQ.done&&k===TQ.key);
+    if(leaf){const hit=TQ.done&&k===TQ.key;h+=`<circle cx="${p[0]}" cy="${p[1]}" r="${hit?8:5}" fill="${hit?"var(--gold)":"var(--panel-2)"}" stroke="${hit?"var(--ink)":"var(--ink-faint)"}" stroke-width="1.5"><title>${esc(M[k].name)}</title></circle>`;
+      h+=`<text x="${p[0]+3}" y="${p[1]+12}" transform="rotate(55 ${p[0]+3} ${p[1]+12})" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="11" font-weight="${hit?700:400}" fill="${hit?"var(--ink)":"var(--ink-soft)"}">${esc(LEAFSHORT[k])}</text>`}
+    else h+=`<circle cx="${p[0]}" cy="${p[1]}" r="${isCur?9:6}" fill="${isCur?"var(--accent)":visited?"var(--good)":"var(--panel)"}" stroke="${isCur?"var(--accent)":"var(--ink-faint)"}" stroke-width="1.5"><title>${esc(TREE[id].q)}</title></circle>${isCur?`<circle cx="${p[0]}" cy="${p[1]}" r="14" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".5"/>`:""}`});
+  s.innerHTML=h}
+
+/* =====================================================================
+   PART 3 - LOCATION & JOB MATCHER (body map)
+   ===================================================================== */
+const PINS={pseudostratified:[166,165,"Trachea"],stratSqNK:[192,196,"Esophagus"],simpleSquamous:[128,232,"Lung air sacs"],simpleCuboidal:[118,322,"Kidney tubules"],simpleColumnar:[150,372,"Small intestine lining"],transitional:[170,424,"Urinary bladder"],
+ stratSqK:[430,48,"Skin surface (epidermis)"],stratCuboidal:[482,104,"Sweat gland duct"],
+ areolar:[388,82,"Just under the epidermis"],denseIrregular:[430,138,"Deep dermis"],adipose:[400,196,"Fat under the skin"],reticular:[100,190,"Lymph node"],denseRegular:[283,268,"Biceps tendon"],elasticCT:[176,318,"Aorta wall"],
+ hyaline:[146,286,"Rib (costal) cartilage"],fibrocartilage:[430,330,"Intervertebral disc"],elasticCart:[124,66,"Outer ear"],bone:[126,492,"Femur shaft"],blood:[56,300,"Inside a blood vessel"],skeletal:[268,206,"Biceps muscle"],cardiac:[200,262,"Heart wall"],smooth:[224,318,"Stomach wall"],nervous:[170,46,"Brain"]};
+const ROUNDS=[{n:"Epithelia",k:["pseudostratified","stratSqNK","simpleSquamous","simpleCuboidal","simpleColumnar","transitional","stratSqK","stratCuboidal"]},
+ {n:"Connective tissue proper",k:["areolar","denseIrregular","adipose","reticular","denseRegular","elasticCT"]},
+ {n:"Cartilage, bone, blood, muscle, nerve",k:["hyaline","fibrocartilage","elasticCart","bone","blood","skeletal","cardiac","smooth","nervous"]}];
+const MQ={r:0,sel:null,done:{},loc:{},mist:0,hint:null};
+const best3=store.get("tissuesLab.best3")||{};
+function bodySVG(){const V=c=>`var(--${c})`;let s="";
+  s+=`<defs><pattern id="alv" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="2.2" fill="none" stroke="${V("organ-edge")}" stroke-width=".6" opacity=".6"/></pattern></defs>`;
+  // body silhouette
+  s+=`<g fill="${V("skin")}" stroke="${V("skin-edge")}" stroke-width="2">`;
+  s+=`<path d="M92 152 Q60 165 52 230 L40 330 Q36 380 44 405 L60 404 Q64 360 72 330 L96 236 Z"/><path d="M248 152 Q280 165 288 230 L300 330 Q304 380 296 405 L280 404 Q276 360 268 330 L244 236 Z"/>`;
+  s+=`<path d="M100 410 L92 600 L130 606 L156 440 L184 440 L210 606 L248 600 L240 410 Z"/>`;
+  s+=`<path d="M92 150 Q170 128 248 150 L262 260 Q258 330 246 412 Q170 436 94 412 Q82 330 78 260 Z"/>`;
+  s+=`<rect x="152" y="96" width="36" height="48" rx="10"/><circle cx="170" cy="60" r="44"/><ellipse cx="124" cy="66" rx="9" ry="15"/><ellipse cx="216" cy="66" rx="9" ry="15"/></g>`;
+  // brain
+  s+=`<path d="M136 52 Q138 22 170 20 Q202 22 204 52 Q200 66 170 66 Q140 66 136 52 Z" fill="${V("epi")}" stroke="${V("organ-edge")}" stroke-width="1.5"/><path d="M150 34 q8 6 0 12 M170 26 q-6 10 4 16 q-6 8 2 14 M188 32 q-8 8 0 14" fill="none" stroke="${V("organ-edge")}" stroke-width="1.2"/>`;
+  s+=`<path d="M120 60 q-6 6 0 14" fill="none" stroke="${V("cart")}" stroke-width="3"/>`;
+  // trachea, esophagus
+  for(let y=108;y<206;y+=9)s+=`<rect x="160" y="${y}" width="20" height="6" rx="3" fill="${V("cart")}" stroke="${V("organ-edge")}" stroke-width=".8"/>`;
+  s+=`<path d="M188 108 L190 230 Q192 270 206 292" fill="none" stroke="${V("musc")}" stroke-width="7" stroke-dasharray="5 3" opacity=".9"/>`;
+  // lungs
+  s+=`<path d="M160 200 Q120 196 110 240 Q104 290 120 304 Q150 300 160 280 Z" fill="${V("epi")}" stroke="${V("organ-edge")}" stroke-width="1.5"/><path d="M160 200 Q120 196 110 240 Q104 290 120 304 Q150 300 160 280 Z" fill="url(#alv)"/>`;
+  s+=`<path d="M180 200 Q222 196 232 240 Q238 290 222 304 Q200 300 196 284 Z" fill="${V("epi")}" stroke="${V("organ-edge")}" stroke-width="1.5"/><path d="M180 200 Q222 196 232 240 Q238 290 222 304 Q200 300 196 284 Z" fill="url(#alv)"/>`;
+  // ribs + costal cartilage
+  for(let k=0;k<5;k++){const y=206+k*18;s+=`<path d="M96 ${y+14} Q120 ${y} 150 ${y+4}" fill="none" stroke="${V("bone")}" stroke-width="4" opacity=".8"/><path d="M244 ${y+14} Q220 ${y} 190 ${y+4}" fill="none" stroke="${V("bone")}" stroke-width="4" opacity=".8"/>`;
+    s+=`<path d="M150 ${y+4} L166 ${y+8}" stroke="${V("cart")}" stroke-width="4"/><path d="M190 ${y+4} L174 ${y+8}" stroke="${V("cart")}" stroke-width="4"/>`}
+  s+=`<rect x="165" y="204" width="10" height="92" rx="4" fill="${V("bone")}"/>`;
+  // heart, aorta
+  s+=`<path d="M176 304 L174 330 L174 410 M174 410 L150 440 M174 410 L196 440" fill="none" stroke="${V("blood")}" stroke-width="6" stroke-linecap="round"/>`;
+  s+=`<path d="M200 288 C176 278 170 252 186 244 C194 240 200 246 202 252 C206 244 214 240 222 246 C236 258 222 280 200 288 Z" fill="${V("blood")}" stroke="${V("organ-edge")}" stroke-width="1.5"/>`;
+  s+=`<path d="M190 248 Q176 226 178 240" fill="none" stroke="${V("blood")}" stroke-width="6"/>`;
+  // stomach, intestines, kidneys, bladder
+  s+=`<path d="M206 292 Q244 288 246 312 Q248 342 220 346 Q200 346 198 330 Q212 334 220 326 Q228 314 210 304 Z" fill="${V("musc")}" stroke="${V("organ-edge")}" stroke-width="1.5"/>`;
+  s+=`<path d="M128 352 q12 -10 24 0 q12 10 24 0 q12 -10 24 0 M124 366 q14 10 28 0 q14 -10 28 0 q14 10 28 0 M128 382 q12 -10 24 0 q12 10 24 0 q12 -10 24 0 M132 396 q14 8 28 0 q14 -8 28 0" fill="none" stroke="${V("epi-edge")}" stroke-width="6" stroke-linecap="round" opacity=".85"/>`;
+  s+=`<path d="M110 306 q-14 16 0 32 q12 8 16 -4 q-6 -12 0 -24 q-6 -12 -16 -4 Z" fill="${V("blood")}" opacity=".55" stroke="${V("organ-edge")}" stroke-dasharray="3 2"/><path d="M230 306 q14 16 0 32 q-12 8 -16 -4 q6 -12 0 -24 q6 -12 16 -4 Z" fill="${V("blood")}" opacity=".55" stroke="${V("organ-edge")}" stroke-dasharray="3 2"/>`;
+  s+=`<ellipse cx="170" cy="424" rx="22" ry="15" fill="${V("kera")}" stroke="${V("organ-edge")}" stroke-width="1.5"/>`;
+  // arms: biceps, tendon, vein; lymph node
+  s+=`<ellipse cx="268" cy="208" rx="13" ry="30" transform="rotate(-12 268 208)" fill="${V("musc")}" stroke="${V("organ-edge")}" stroke-width="1.5"/><path d="M276 236 L286 284" stroke="${V("scar")}" stroke-width="6" stroke-linecap="round"/>`;
+  s+=`<path d="M70 200 Q58 260 52 330 Q48 360 50 390" fill="none" stroke="${V("fluid")}" stroke-width="4" opacity=".8"/>`;
+  s+=`<g fill="${V("retic")}" opacity=".85"><ellipse cx="100" cy="186" rx="7" ry="5"/><ellipse cx="108" cy="196" rx="6" ry="4"/><ellipse cx="94" cy="198" rx="5" ry="4"/></g>`;
+  // femur
+  s+=`<path d="M118 446 q8 -10 16 0 L132 548 q8 8 0 14 q-8 4 -12 -2 q-6 -6 2 -12 Z" fill="${V("bone")}" stroke="${V("organ-edge")}" stroke-width="1.2"/>`;
+  // skin close-up inset
+  s+=`<g><rect x="344" y="14" width="168" height="214" rx="10" fill="${V("panel")}" stroke="${V("rule")}"/><text x="356" y="32" font-family="IBM Plex Mono, monospace" font-size="11" fill="${V("ink-soft")}">SKIN CLOSE-UP</text>`;
+  s+=`<rect x="352" y="40" width="152" height="10" fill="${V("kera")}"/><rect x="352" y="50" width="152" height="18" fill="${V("epi")}"/>`;
+  s+=`<path d="M352 68 q10 10 20 0 q10 10 20 0 q10 10 20 0 q10 10 20 0 q10 10 20 0 q10 10 20 0 q10 10 20 0 q6 6 12 0 L504 100 L352 100 Z" fill="${V("ct")}" stroke="${V("coll")}"/>`;
+  s+=`<rect x="352" y="100" width="152" height="66" fill="${V("coll")}" opacity=".75"/>`;for(let k=0;k<8;k++)s+=`<path d="M${356+k*18} ${106+(k%3)*18} l14 ${k%2?10:-8}" stroke="${V("epi-edge")}" stroke-width="4" opacity=".7"/>`;
+  s+=`<rect x="352" y="166" width="152" height="54" fill="${V("fat")}"/>`;for(let k=0;k<6;k++)s+=`<circle cx="${364+k*26}" cy="${186+(k%2)*12}" r="11" fill="${V("fat")}" stroke="${V("kera")}"/>`;
+  s+=`<path d="M482 42 L482 140 q-8 6 0 12 q10 6 0 12 q-10 6 0 10" fill="none" stroke="${V("epi-edge")}" stroke-width="5"/></g>`;
+  s+=`<line x1="300" y1="300" x2="344" y2="200" stroke="${V("ink-faint")}" stroke-dasharray="4 4"/>`;
+  // spine inset
+  s+=`<g><rect x="344" y="244" width="168" height="170" rx="10" fill="${V("panel")}" stroke="${V("rule")}"/><text x="356" y="262" font-family="IBM Plex Mono, monospace" font-size="11" fill="${V("ink-soft")}">SPINE (SIDE VIEW)</text>`;
+  for(let k=0;k<4;k++){s+=`<rect x="396" y="${272+k*34}" width="66" height="24" rx="5" fill="${V("bone")}" stroke="${V("organ-edge")}"/>`;if(k<3)s+=`<rect x="400" y="${297+k*34}" width="58" height="8" rx="4" fill="${V("cart")}" stroke="${V("organ-edge")}"/>`}
+  s+=`</g><line x1="186" y1="380" x2="344" y2="330" stroke="${V("ink-faint")}" stroke-dasharray="4 4"/>`;
+  return s}
+function mRounds(){const h=$("#mRounds");h.innerHTML='<span class="small">Round:</span>';ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===MQ.r);
+  b.innerHTML=esc(r.n)+(best3[i]?`<span class="ok" aria-label="best ${best3[i]} stars">${"★".repeat(best3[i])}</span>`:"");b.onclick=()=>{MQ.r=i;mStart()};h.appendChild(b)})}
+function mStart(){MQ.sel=null;MQ.done={};MQ.loc={};MQ.mist=0;MQ.hint=null;mRounds();const R=ROUNDS[MQ.r];$("#mN").textContent=`Round ${MQ.r+1} of 3 · ${R.n}`;
+  $("#bodySvg").innerHTML=bodySVG();const wrap=$("#mapwrap");wrap.querySelectorAll(".pin").forEach(p=>p.remove());
+  const order=shuffle(R.k);order.forEach((k,i)=>{const p=PINS[k];const b=document.createElement("button");b.type="button";b.className="pin";b.dataset.k=k;b.textContent=i+1;b.style.left=(p[0]/520*100)+"%";b.style.top=(p[1]/640*100)+"%";
+    b.setAttribute("aria-label","Location "+(i+1)+": "+p[2]);b.title=p[2];b.onclick=()=>mPlace(k);wrap.appendChild(b)});
+  const pl=$("#pinList");pl.innerHTML="";order.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.textContent=(i+1)+". "+PINS[k][2];b.onclick=()=>mPlace(k);pl.appendChild(b)});
+  const cards=$("#mCards");cards.innerHTML="";shuffle(R.k).forEach(k=>{const b=document.createElement("div");b.className="mcard";b.dataset.k=k;b.setAttribute("role","button");b.tabIndex=0;
+    b.innerHTML=`<canvas width="168" height="126" aria-hidden="true"></canvas><div><div class="mn">${esc(SHORT[k])}</div><div class="ms" data-st>Not placed yet</div><div class="jobq" data-job hidden></div></div>`;
+    const sel=()=>{if(MQ.done[k])return;MQ.sel=k;MQ.hint=null;document.querySelectorAll(".mcard").forEach(c=>c.classList.toggle("sel",c.dataset.k===k));document.querySelectorAll(".pin").forEach(p=>p.classList.remove("hint"));
+      $("#mMsg").className="msg show info";$("#mMsg").innerHTML=MQ.loc[k]?`Now pick the job of <b>${esc(SHORT[k])}</b>.`:`Selected <b>${esc(SHORT[k])}</b>. Now tap where it is found.`};
+    b.onclick=e=>{if(e.target.closest(".opt"))return;sel()};b.onkeydown=e=>{if((e.key==="Enter"||e.key===" ")&&e.target===b){e.preventDefault();sel()}};cards.appendChild(b);
+    setTimeout(()=>{const r=HISTO.render(k,{seed:1+rint(1e6),w:168,h:126,dpr:1,param:PARAM(k)});b.querySelector("canvas").getContext("2d").drawImage(r.canvas,0,0)},20)});
+  $("#mMsg").className="msg show info";$("#mMsg").textContent="Start by tapping a tissue card."}
+function mPlace(k){if(!MQ.sel){$("#mMsg").className="msg show warn";$("#mMsg").textContent="First tap a tissue card, then tap its location.";return}
+  const s=MQ.sel;if(MQ.loc[s]){$("#mMsg").className="msg show info";$("#mMsg").innerHTML=`<b>${esc(SHORT[s])}</b> is already placed. Pick its job on the card.`;return}
+  if(k===s){MQ.loc[s]=true;const pin=document.querySelector(`.pin[data-k="${s}"]`);pin.classList.add("ok");pin.classList.remove("hint");pin.textContent="✓";pin.setAttribute("aria-label",PINS[s][2]+": matched to "+SHORT[s]);
+    const card=document.querySelector(`.mcard[data-k="${s}"]`);card.querySelector("[data-st]").textContent="Found in: "+PINS[s][2];mJob(s,card);
+    $("#mMsg").className="msg show good";$("#mMsg").innerHTML=`<b>Yes!</b> ${esc(M[s].name)}: ${esc(M[s].loc)}. Now pick its job.`}
+  else{MQ.mist++;$("#mMsg").className="msg show warn";$("#mMsg").innerHTML=`<b>Not quite.</b> That spot is the <b>${esc(PINS[k][2].toLowerCase())}</b>, which is lined or built by ${esc(SHORT[k].toLowerCase())}. Clue: ${esc(SHORT[s])} shows ${esc(GIVE[s][0].toLowerCase())}. Where would that build be useful?`}}
+function mJob(k,card){const R=ROUNDS[MQ.r].k;const opts=shuffle([k].concat(shuffle(R.filter(x=>x!==k)).slice(0,2)));const box=card.querySelector("[data-job]");box.hidden=false;
+  box.innerHTML='<div class="ms" style="color:var(--ink);font-weight:600">Its main job?</div>'+opts.map(o=>`<button type="button" class="opt" data-o="${o}">${esc(M[o].fn)}</button>`).join("");
+  box.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(b.dataset.o===k){b.classList.add("right");box.querySelectorAll(".opt").forEach(x=>x.disabled=true);MQ.done[k]=true;card.classList.add("done");card.classList.remove("sel");MQ.sel=null;
+      card.querySelector("[data-st]").textContent="✓ "+PINS[k][2];$("#mMsg").className="msg show good";$("#mMsg").innerHTML=`<b>Right.</b> ${esc(SHORT[k])}: ${esc(M[k].fn.toLowerCase())}.`;mCheckEnd()}
+    else{MQ.mist++;b.classList.add("wrong");b.disabled=true;$("#mMsg").className="msg show warn";$("#mMsg").innerHTML=`<b>Not quite.</b> That job belongs to ${esc(SHORT[b.dataset.o].toLowerCase())}. Remember: ${esc(SHORT[k])} shows ${esc(GIVE[k][0].toLowerCase())}. What would that structure be good for?`}})}
+function mCheckEnd(){const R=ROUNDS[MQ.r].k;if(!R.every(k=>MQ.done[k]))return;const stars=MQ.mist===0?3:MQ.mist<=3?2:1;if(!best3[MQ.r]||stars>best3[MQ.r]){best3[MQ.r]=stars;store.set("tissuesLab.best3",best3);mRounds()}
+  $("#mMsg").className="msg show good";$("#mMsg").innerHTML=`<div class="stars" aria-label="${stars} of 3 stars">${starStr(stars)}</div><b>Round complete.</b> Mistakes: ${MQ.mist}. 3 stars = no mistakes, 2 stars = 3 or fewer.`+(MQ.r<2?` <div class="bar"><button class="btn" type="button" id="mNextR">Next round &rarr;</button></div>`:"");
+  const nb=$("#mNextR");if(nb)nb.onclick=()=>{MQ.r++;mStart()}}
+$("#mHint").onclick=()=>{const k=MQ.sel||ROUNDS[MQ.r].k.find(x=>!MQ.done[x]);if(!k)return;if(!MQ.sel){document.querySelector(`.mcard[data-k="${k}"]`).click()}
+  if(!MQ.loc[k]){document.querySelectorAll(".pin").forEach(p=>p.classList.toggle("hint",p.dataset.k===k));$("#mMsg").className="msg show info";$("#mMsg").innerHTML=`<b>Hint:</b> ${esc(SHORT[k])} is found in: ${esc(M[k].loc.split(";")[0])}. The matching spot is pulsing.`}
+  else{$("#mMsg").className="msg show info";$("#mMsg").innerHTML=`<b>Hint:</b> it ${esc(GIVE[k][0].toLowerCase())}. Its job matches that build.`}};
+$("#mShowAns").onclick=()=>{const k=MQ.sel||ROUNDS[MQ.r].k.find(x=>!MQ.done[x]);if(!k)return;MQ.mist++;if(!MQ.sel)document.querySelector(`.mcard[data-k="${k}"]`).click();if(!MQ.loc[k])mPlace(k);
+  const card=document.querySelector(`.mcard[data-k="${k}"]`);const b=card.querySelector(`.opt[data-o="${k}"]`);if(b)b.click()};
+$("#mReset").onclick=mStart;
+
+/* =====================================================================
+   PART 4 - INFLAMMATION SIMULATOR (scene + live graph)
+   ===================================================================== */
+const S4=makeStage("cvInf",800,440),SG=makeStage("cvGraph",800,250);
+const SIM={on:false,paused:false,t:0,p:{L:0,B:0,A:0},next:{L:0,B:0,A:0},ghost:null,ghostP:null,spawnN:[],spawnM:[],pred:null,ended:false};
+const Pk=(t,r,d)=>t<=0?0:(t<r?Math.pow(t/r,2)*(3-2*t/r):Math.exp(-(t-r)/d));
+const sig=x=>1/(1+Math.exp(-x));
+function model(t,p){const L=p.L,B=p.B,A=p.A;
+  const his=(.6+.4*L)*Pk(t,1.2,6);const hisEff=x=>(.6+.4*L)*Pk(x,1.2,6)*(A?.3:1);
+  const other=x=>(.32+.3*L+.45*B)*Pk(x,5,14+10*L+12*B);
+  const flow=clamp(.62*hisEff(t)+.6*other(t),0,1);
+  const swell=clamp(.9*hisEff(t-1.5)+.45*other(t-1),0,1);
+  const pain=clamp(.45*swell+.6*other(t),0,1);
+  const neut=clamp((.45+.2*L+.45*B)*Pk(t-3,6,10+12*B),0,1);
+  const mac=clamp((.35+.35*L+.2*B)*Pk(t-12,14,24+10*L),0,1);
+  const bact=B?(1-sig((t-17)/2.5))*seg(t,.5,2):0;
+  let regen=0,gran=0,scar=0,cover=0;
+  if(!L){regen=sig((t-(32+8*B))/5);cover=regen}else{gran=clamp(Pk(t-30,14,16)*1,0,1)*(1-sig((t-(62+8*B))/6))+0*0;scar=sig((t-(55+8*B))/7);cover=sig((t-(64+6*B))/5)}
+  const clot=seg(t,.4,3)*(1-(L?sig((t-45)/6):sig((t-36)/4)));
+  return{his,flow,swell,pain,neut,mac,bact,regen,gran,scar,cover,clot,repair:L?scar:regen}}
+const SERIES=[["flow","Blood flow (redness, heat)","g-flow"],["swell","Swelling","g-swell"],["pain","Pain","g-pain"],["neut","Neutrophils","g-neut"],["mac","Macrophages","g-mac"],["repair","New tissue: regeneration / scar","g-rep"]];
+function legendSim(){$("#gLegend").innerHTML=SERIES.map(s=>`<span><i style="border-color:var(--${s[0]==="repair"&&SIM.p.L?"g-scar":s[2]})"></i>${s[0]==="repair"?(SIM.p.L?"Scar collagen (fibrosis)":"Regeneration (same tissue)"):s[1]}</span>`).join("")+(SIM.ghost?`<span><i class="d" style="border-color:var(--ink-faint)"></i>Last run</span>`:"")}
+const timeWord=t=>t<5?"minutes":t<25?"hours":t<60?"days":"weeks";
+function phaseOf(t,p){if(!SIM.on&&t===0)return "Ready. Press “Injure the tissue”.";if(t<2)return "Bleeding, then a clot starts to form";if(t<6)return "Histamine released: vessels widen";if(t<12)return "Leaky capillaries: swelling and pain";if(t<25)return p.B?"Neutrophils arrive and eat bacteria":"Neutrophils arrive and clear damaged cells";
+  if(t<35)return "Macrophages clean up debris";if(t<100)return p.L?(t<55?"Repair: granulation tissue fills the gap":"Repair: fibroblasts lay down collagen (scar)"):"Repair: regeneration of the same tissue";return p.L?"Healed with a scar (fibrosis)":"Healed by regeneration"}
+function simStart(){if(SIM.on||SIM.t>0){SIM.ghost=SIM.p;}SIM.p=Object.assign({},SIM.next);SIM.on=true;SIM.paused=false;SIM.t=0;SIM.spawnN=[];SIM.spawnM=[];SIM.ended=false;$("#sPause").textContent="Pause";$("#sGo").textContent="Injure again";legendSim();$("#predOut").textContent=SIM.pred?"Prediction saved. Watch the end of the run.":""}
+$("#sGo").onclick=simStart;
+$("#sPause").onclick=()=>{SIM.paused=!SIM.paused;$("#sPause").textContent=SIM.paused?"Play":"Pause"};
+$("#sReset").onclick=()=>{SIM.on=false;SIM.t=0;SIM.ghost=null;SIM.ended=false;$("#sGo").textContent="Injure the tissue";legendSim();updSide()};
+function setWound(L){SIM.next.L=L;$("#wClean").setAttribute("aria-pressed",!L);$("#wLarge").setAttribute("aria-pressed",!!L)}
+$("#wClean").onclick=()=>setWound(0);$("#wLarge").onclick=()=>setWound(1);
+$("#sBact").onchange=e=>SIM.next.B=e.target.checked?1:0;$("#sAnti").onchange=e=>SIM.next.A=e.target.checked?1:0;
+document.querySelectorAll("#predict [data-p]").forEach(b=>b.onclick=()=>{SIM.pred=b.dataset.p;document.querySelectorAll("#predict [data-p]").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#predOut").textContent="Saved. Now press “Injure the tissue”."});
+const CHAL=[{q:"Run a clean cut, then a large wound. Which one ends with a scar?",o:[["The large wound",1,"Right. The big gap fills with granulation tissue, then dense collagen: fibrosis."],["The clean cut",0,"A small, clean cut in skin regenerates: the same tissue grows back."],["Both of them",0,"Only the large wound scars here. The clean cut heals by regeneration."],["Neither of them",0,"Watch the end of the large-wound run: a pale collagen scar stays."]]},
+ {q:"Turn on the antihistamine and run again. Which curve drops the most compared with the dashed line?",o:[["Swelling",1,"Yes. Histamine makes capillaries leaky, so blocking it cuts the leak the most."],["Neutrophils",0,"Neutrophils still come. They respond to many signals, not only histamine."],["New tissue (repair)",0,"Repair still happens on about the same schedule."],["Nothing changes",0,"Compare the swelling line with the dashed line from the last run."]]},
+ {q:"Add bacteria. What happens to the neutrophil curve?",o:[["It rises higher and lasts longer",1,"Right. More bacteria call in more neutrophils, for longer, and healing starts a bit later."],["It disappears",0,"Bacteria are exactly what neutrophils are called in to eat."],["It stays exactly the same",0,"Compare with the dashed line: the peak is higher and wider."],["Neutrophils turn into scar tissue",0,"Scar collagen is made by fibroblasts, not neutrophils."]]}];
+function buildChal(){const c=$("#chals");c.innerHTML="";CHAL.forEach((ch,i)=>{const d=document.createElement("div");d.className="chal";d.innerHTML=`<p class="q">${i+1}. ${esc(ch.q)}</p><div class="opts"></div><p class="small" data-fb></p>`;
+  const box=d.querySelector(".opts");ch.o.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));const fb=d.querySelector("[data-fb]");
+    if(o[1]){b.classList.add("right");fb.style.color="var(--good)";fb.textContent="✓ "+o[2]}else{b.classList.add("wrong");fb.style.color="var(--warn)";fb.textContent="Not quite. "+o[2]}};box.appendChild(b)});c.appendChild(d)})}
+function updSide(){const t=SIM.t,m=model(t,SIM.p);$("#sPhase").textContent=phaseOf(t,SIM.p);const on=SIM.on;
+  const S=[["Redness","more blood flow",m.flow],["Heat","warm blood",m.flow],["Swelling","fluid in tissue",m.swell],["Pain","nerves irritated",m.pain]];
+  $("#signs").innerHTML=S.map(s=>{const v=on?s[2]:0;return `<div class="sign${v>.25?" on":""}"><b>${s[0]}${v>.25?" ✓":""}</b>${s[1]} · ${v>.6?"strong":v>.25?"some":"none"}</div>`}).join("");
+  $("#sNow").textContent=on?`Time scale now: ${timeWord(t)}. ${SIM.p.L?"Large wound":"Clean cut"}${SIM.p.B?", bacteria":""}${SIM.p.A?", antihistamine":""}.`:"";
+  S4.cv.setAttribute("aria-label","Wound simulation. "+phaseOf(t,SIM.p))}
+function advanceSim(dt){if(!SIM.on||SIM.paused||SIM.ended)return;const rate=2.6*(+$("#sSpeed").value)*($("#sRelax").checked?.5:1);SIM.t=Math.min(100,SIM.t+dt*rate);
+  const m=model(SIM.t,SIM.p);const nN=Math.round(m.neut*8),nM=Math.round(m.mac*4);
+  for(let i=0;i<8;i++){if(i<nN&&SIM.spawnN[i]==null)SIM.spawnN[i]=SIM.t;if(i>=nN&&SIM.spawnN[i]!=null&&SIM.t>20){SIM.spawnN[i]=SIM.spawnN[i]<0?SIM.spawnN[i]:-SIM.t}}
+  for(let i=0;i<4;i++){if(i<nM&&SIM.spawnM[i]==null)SIM.spawnM[i]=SIM.t;if(i>=nM&&SIM.spawnM[i]!=null&&SIM.t>40){SIM.spawnM[i]=SIM.spawnM[i]<0?SIM.spawnM[i]:-SIM.t}}
+  if(SIM.t>=100&&!SIM.ended){SIM.ended=true;if(SIM.pred){const res=SIM.p.L?"scar":"reg";$("#predOut").innerHTML=(SIM.pred===res?"<b>Your prediction was right.</b> ":"<b>Not what you predicted.</b> ")+(SIM.p.L?"A large wound fills with granulation tissue and heals with a scar.":"A small, clean cut heals by regeneration.")+" Try the other wound type next."}}}
+function drawSim(now){ctx=S4.ctx;ctx.setTransform(S4.K,0,0,S4.K,0,0);ctx.clearRect(0,0,800,440);const t=SIM.t,p=SIM.p,m=model(t,p),on=SIM.on;const L=p.L;
+  const cx=400,wW=L?170:16,wD=L?240:120,ep=64,de=112,cy=300,hy=350;const sec=now/1000;
+  const sw=on?m.swell:0;const surf=x=>ep-sw*24*Math.exp(-Math.pow(x-cx,2)/30000);
+  ctx.fillStyle=C.air;ctx.fillRect(0,0,800,440);
+  ctx.fillStyle=C.coll;ctx.fillRect(0,de,800,hy-de);ctx.fillStyle=C.fat;ctx.fillRect(0,hy,800,90);for(let i=0;i<14;i++)circ(30+i*58,hy+30+(i%2)*26,24,C.fat,C.kera,1.2);
+  for(let i=0;i<4;i++){ctx.beginPath();for(let x=0;x<=800;x+=8)ctx.lineTo(x,de+30+i*44+Math.sin(x/70+i)*5);ctx.strokeStyle=sh(C.coll,-.14);ctx.lineWidth=3;ctx.globalAlpha=.5;ctx.stroke();ctx.globalAlpha=1}
+  // epidermis with swelling bump
+  ctx.beginPath();ctx.moveTo(0,surf(0));for(let x=0;x<=800;x+=8)ctx.lineTo(x,surf(x));for(let x=800;x>=0;x-=8)ctx.lineTo(x,surf(x)+(de-ep));ctx.closePath();ctx.fillStyle=C.epi;ctx.fill();ctx.strokeStyle=C["epi-edge"];ctx.lineWidth=1.2;ctx.stroke();
+  for(let r=0;r<3;r++)for(let x=8+r*9;x<800;x+=26)circ(x,surf(x)+12+r*14,3.6,C.nuc);
+  ctx.fillStyle=C.kera;ctx.beginPath();ctx.moveTo(0,surf(0));for(let x=0;x<=800;x+=8)ctx.lineTo(x,surf(x));for(let x=800;x>=0;x-=8)ctx.lineTo(x,surf(x)+6);ctx.closePath();ctx.fill();
+  // hair follicle + gland (lost in a large wound)
+  const destroyed=on&&L;[[455,"h"],[335,"g"]].forEach(f=>{if(destroyed)return;if(f[1]==="h"){ctx.fillStyle=C.epi;rr(f[0]-9,ep,18,180,8);ctx.fill();line(f[0],ep-34,f[0],ep+170,C.ink,2)}else{line(f[0],ep+40,f[0],de+120,C["epi-edge"],5);for(let k=0;k<3;k++)circ(f[0]-8+k*8,de+128+(k%2)*8,8,C.epi,C["epi-edge"],1)}});
+  if(on&&!L){ctx.fillStyle=C.epi;rr(455-9,ep,18,180,8);ctx.fill();line(455,ep-34,455,ep+170,C.ink,2);line(335,ep+40,335,de+120,C["epi-edge"],5)}
+  // inflammation tint + heat
+  if(on&&m.flow>.02){ctx.globalAlpha=.25*m.flow;ctx.fillStyle=C.blood;ctx.fillRect(0,ep,800,hy-ep);ctx.globalAlpha=1;for(let k=0;k<5;k++){const hx=300+k*50;ctx.globalAlpha=m.flow*.8;ctx.beginPath();for(let i=0;i<8;i++)ctx.lineTo(hx+Math.sin(i+sec*4+k)*5,surf(hx)-10-i*6);ctx.strokeStyle=C.warn;ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1}}
+  // capillary
+  const hw=14+(on?m.flow:0)*14;ctx.fillStyle=mix(C.blood,C.panel,.75);ctx.fillRect(0,cy-hw,800,hw*2);
+  const gap=on?m.swell*9:0;for(let x=0;x<800;x+=40){ctx.fillStyle=C.epi;ctx.fillRect(x+gap/2,cy-hw-5,40-gap,5);ctx.fillRect(x+gap/2,cy+hw,40-gap,5)}
+  const fl=sec*(40+(on?m.flow:0)*50);for(let i=0;i<18;i++){const x=((fl+i*47)%860)-30;circ(x,cy+(rnd(i)-.5)*hw,7.5,C.blood,"rgba(0,0,0,.25)",1)}
+  if(on)for(let i=0;i<Math.round(m.swell*24);i++){const u=((sec*.3)+i/24)%1;const x=30+i*31;circ(x+Math.sin(u*6)*6,lerp(cy-hw,de+20,u),3.2,C.fluid);}
+  // wound
+  if(on){const op=seg(t,0,.5);let gw=wW*op;let regenW=L?0:m.regen;const gx=cx-gw/2*(1-regenW*.98);const gwx=gw*(1-regenW*.98);
+    ctx.fillStyle=C.air;ctx.beginPath();ctx.moveTo(cx-gw/2,surf(cx-gw/2));ctx.lineTo(cx+gw/2,surf(cx+gw/2));ctx.lineTo(cx+gw/2*(L?.9:.3),ep+wD);ctx.lineTo(cx-gw/2*(L?.9:.3),ep+wD);ctx.closePath();ctx.fill();
+    // clot
+    if(m.clot>0){ctx.globalAlpha=m.clot;ctx.fillStyle=mix(C.blood,C.panel,.2);ctx.beginPath();ctx.moveTo(cx-gw/2,surf(cx)-4);ctx.lineTo(cx+gw/2,surf(cx)-4);ctx.lineTo(cx+gw/2*(L?.9:.3),ep+wD);ctx.lineTo(cx-gw/2*(L?.9:.3),ep+wD);ctx.closePath();ctx.fill();
+      for(let k=0;k<14;k++){line(cx-gw/2+rnd(k)*gw,ep+rnd(k+3)*wD,cx-gw/2+rnd(k+1)*gw,ep+rnd(k+5)*wD,sh(C.blood,-.35),1)}ctx.globalAlpha=1}
+    if(!L&&m.regen>0){ctx.globalAlpha=m.regen;ctx.fillStyle=C.coll;ctx.fillRect(cx-gw/2,de,gw,wD-(de-ep));ctx.fillStyle=C.epi;ctx.fillRect(cx-gw/2-1,surf(cx)-1,gw+2,de-ep+1);ctx.fillStyle=C.kera;ctx.fillRect(cx-gw/2-1,surf(cx)-1,gw+2,6);for(let r=0;r<3;r++)circ(cx,surf(cx)+12+r*14,3.6,C.nuc);ctx.globalAlpha=1}
+    if(L){const top=ep+wD-(wD-30)*clamp(m.gran+m.scar,0,1);if(m.gran>.02){ctx.globalAlpha=clamp(m.gran*1.4,0,1);ctx.fillStyle=mix(C.blood,C.coll,.55);ctx.fillRect(cx-gw/2*.9,top,gw*.9,ep+wD-top);
+        for(let k=0;k<8;k++){const x=cx-gw*.42+k*gw*.12;ctx.strokeStyle=C.blood;ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x-5,ep+wD);ctx.quadraticCurveTo(x,top-8,x+5,ep+wD);ctx.stroke()}ctx.globalAlpha=1}
+      if(m.scar>.02){ctx.globalAlpha=m.scar;ctx.fillStyle=C.scar;ctx.fillRect(cx-gw/2,de-4,gw,ep+wD-de+4);for(let k=0;k<12;k++)line(cx-gw/2,de+6+k*19,cx+gw/2,de+6+k*19,sh(C.scar,-.15),3);ctx.globalAlpha=1}
+      if(m.cover>.02){const cw=gw/2*m.cover;ctx.fillStyle=C.epi;ctx.fillRect(cx-gw/2,surf(cx)+4,cw,32);ctx.fillRect(cx+gw/2-cw,surf(cx)+4,cw,32);ctx.fillStyle=C.kera;ctx.fillRect(cx-gw/2,surf(cx),cw,5);ctx.fillRect(cx+gw/2-cw,surf(cx),cw,5)}
+      if(m.gran>.3&&m.scar<.5)label(cx,top-16,"Granulation tissue",{align:"center",size:12,weight:600,border:C.blood});
+      if(m.scar>.6)label(cx,de+60,"Scar: dense collagen, no hair or gland",{align:"center",size:12.5,weight:700,border:C.warn})}
+    if(!L&&m.regen>.8)label(cx,de+60,"Regenerated: same tissue",{align:"center",size:12.5,weight:700,border:C.good});
+    // bacteria
+    for(let i=0;i<Math.round(m.bact*10);i++){const bx=cx+(rnd(i)-.5)*Math.max(30,gw*.8),by=ep+30+rnd(i+7)*Math.min(110,wD-40);ctx.save();ctx.translate(bx,by);ctx.rotate(i+Math.sin(sec*3+i)*.2);rr(-8,-3.5,16,7,3.5);ctx.fillStyle=C.bact;ctx.fill();ctx.restore()}
+    // mast cells + histamine
+    [[250,200],[560,210],[170,255]].forEach((mc,k)=>{ell(mc[0],mc[1],20,13,0,mix(C.hist,C.panel,.7),C.hist,1.2);for(let j=0;j<10;j++)circ(mc[0]+Math.cos(j*2.4)*rnd(j+k)*15,mc[1]+Math.sin(j*2.4)*rnd(j+k)*9,1.8,C.hist);
+      if(m.his>.05)for(let j=0;j<12;j++){const a=j/12*TAU;const r=18+((sec*30+j*9)%90);circ(mc[0]+Math.cos(a)*r,mc[1]+Math.sin(a)*r*.8,2.4,C.hist)}});
+    if(p.A&&t<30){for(let x=60;x<800;x+=120){ctx.strokeStyle=C.warn;ctx.lineWidth=2.5;line(x-6,cy-hw-16,x+6,cy-hw-4,C.warn,2.5);line(x+6,cy-hw-16,x-6,cy-hw-4,C.warn,2.5)}label(700,cy-hw-30,"Antihistamine blocks receptors",{align:"center",size:11.5,weight:600,border:C.warn})}
+    // pain nerve
+    ctx.beginPath();ctx.moveTo(760,440);ctx.quadraticCurveTo(640,260,cx+40,ep+70);ctx.strokeStyle=C.nerve;ctx.lineWidth=3;ctx.stroke();if(m.pain>.1){glow(cx+40,ep+70,34,C.glow,m.pain);label(cx+60,ep+96,"Pain",{size:12,weight:700,border:C.glow,alpha:m.pain*1.4})}
+    // neutrophils
+    for(let i=0;i<8;i++){const st=SIM.spawnN[i];if(st==null)continue;const dead=st<0;const t0=dead?0:st;const prog=dead?1:clamp((t-t0)/5,0,1);const fade=dead?1-clamp((t+st)/4,0,1):1;if(fade<=0)continue;
+      const sx=80+i*85,sy=cy;const tx=cx+(rnd(i+20)-.5)*Math.max(40,gw*.8),ty=ep+40+rnd(i+30)*70;const x=prog<.25?sx:lerp(sx,tx,ease((prog-.25)/.75)),y=prog<.25?cy-hw+8:lerp(cy-hw-10,ty,ease((prog-.25)/.75));
+      ctx.globalAlpha=fade;circ(x,y,11,mix(C.neut,C.panel,.45),C.neut,1.5);circ(x-3,y-2,3.5,C.nuc);circ(x+3,y+2,3.5,C.nuc);circ(x,y+4,3,C.nuc);ctx.globalAlpha=1}
+    for(let i=0;i<4;i++){const st=SIM.spawnM[i];if(st==null)continue;const dead=st<0;const prog=dead?1:clamp((t-st)/8,0,1);const fade=dead?1-clamp((t+st)/6,0,1):1;if(fade<=0)continue;
+      const sx=150+i*170;const tx=cx+(i-1.5)*Math.max(18,gw*.2),ty=ep+70+(i%2)*40;const x=lerp(sx,tx,ease(prog)),y=prog<.15?cy:lerp(cy-hw-14,ty,ease(prog));
+      ctx.globalAlpha=fade;ctx.beginPath();for(let k=0;k<14;k++){const a=k/14*TAU;const r=17+Math.sin(a*3+sec*2+i)*3.5;ctx.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r)}ctx.closePath();ctx.fillStyle=mix(C.macro,C.panel,.45);ctx.fill();ctx.strokeStyle=C.macro;ctx.lineWidth=1.5;ctx.stroke();ell(x-3,y,7,5,.3,C.nuc);ctx.globalAlpha=1}
+  }else{label(400,30,"Healthy skin. Choose a wound type, then press “Injure the tissue”.",{align:"center",size:13,weight:600});
+    [[250,200],[560,210],[170,255]].forEach(mc=>{ell(mc[0],mc[1],20,13,0,mix(C.hist,C.panel,.7),C.hist,1.2)});ctx.beginPath();ctx.moveTo(760,440);ctx.quadraticCurveTo(640,260,cx+40,ep+70);ctx.strokeStyle=C.nerve;ctx.lineWidth=3;ctx.stroke()}
+  label(14,de+14,"Dermis",{size:11.5,pill:false,color:C["ink-soft"]});label(14,hy+12,"Hypodermis (fat)",{size:11.5,pill:false,color:C["ink-soft"]});label(14,cy,"Capillary",{size:11.5,weight:600});
+  if(on){ctx.fillStyle="rgba(16,22,26,.82)";rr(560,8,232,42,6);ctx.fill();ctx.fillStyle="#fff";ctx.font=`600 12px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText("TIME SCALE: "+timeWord(t).toUpperCase(),572,22);ctx.font=`500 12px ${FONT}`;ctx.fillText(SIM.p.L?"Large wound":"Clean cut",572,39)}
+}
+function drawGraph(){ctx=SG.ctx;ctx.setTransform(SG.K,0,0,SG.K,0,0);ctx.clearRect(0,0,800,250);ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,250);
+  const x0=48,x1=786,y0=24,y1=214;const X=t=>x0+(x1-x0)*t/100,Y=v=>y1-(y1-y0)*v;
+  [[0,5,"minutes"],[5,25,"hours"],[25,60,"days"],[60,100,"weeks"]].forEach((b,i)=>{ctx.fillStyle=i%2?C["panel-2"]:C.panel;ctx.fillRect(X(b[0]),y0,X(b[1])-X(b[0]),y1-y0);ctx.font=`500 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];ctx.fillText(b[2],(X(b[0])+X(b[1]))/2,y1+14)});
+  line(x0,y1,x1,y1,C["ink-faint"],1.2);line(x0,y0,x0,y1,C["ink-faint"],1.2);
+  ctx.save();ctx.translate(14,(y0+y1)/2);ctx.rotate(-Math.PI/2);ctx.font=`500 11.5px ${FONT}`;ctx.textAlign="center";ctx.fillStyle=C["ink-soft"];ctx.fillText("relative level",0,0);ctx.restore();
+  ctx.font=`500 11px ${MONO}`;ctx.textAlign="right";ctx.fillStyle=C["ink-soft"];ctx.fillText("high",x0-6,y0+4);ctx.fillText("none",x0-6,y1-2);
+  ctx.font=`600 12px ${FONT}`;ctx.textAlign="left";ctx.fillStyle=C.ink;ctx.fillText("Live graph: the body's response over time (time is squeezed)",x0+4,12);
+  const col=s=>C[s[0]==="repair"?(SIM.p.L?"g-scar":"g-rep"):s[2]];
+  if(SIM.ghost){SERIES.forEach(s=>{const pts=[];for(let t=0;t<=100;t+=.5)pts.push([X(t),Y(model(t,SIM.ghost)[s[0]])]);pl(pts,s[0]==="repair"?C[SIM.ghost.L?"g-scar":"g-rep"]:C[s[2]],1.5,.55,[5,4])})}
+  if(SIM.on){SERIES.forEach(s=>{const pts=[];for(let t=0;t<=SIM.t;t+=.25)pts.push([X(t),Y(model(t,SIM.p)[s[0]])]);if(pts.length>1)pl(pts,col(s),s[0]==="pain"?2:3)});
+    line(X(SIM.t),y0,X(SIM.t),y1,C.ink,1,[3,3]);const m=model(SIM.t,SIM.p);SERIES.forEach(s=>circ(X(SIM.t),Y(m[s[0]]),4,col(s),C.panel,1.5))}
+  else{ctx.font=`500 13px ${FONT}`;ctx.textAlign="center";ctx.fillStyle=C["ink-soft"];ctx.fillText(SIM.ghost?"Dashed lines show your last run. Press “Injure” to run again.":"The graph draws itself as the wound heals.",(x0+x1)/2,(y0+y1)/2)}}
+
+/* ---------- tabs / theme / loop ---------- */
+let curTab="name";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;
+  ["name","tree","match","sim"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll();if(curTab==="tree"&&!TQ.img)tNew();if(curTab==="match"&&!$("#mCards").children.length)mStart()});
+function fitAll(){[S1,S2,S4,SG,SD].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors();if(curTab==="match")$("#bodySvg").innerHTML=bodySVG()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+document.addEventListener("keydown",e=>{if(curTab!=="name"||studyMode||e.ctrlKey||e.metaKey||e.altKey)return;const tag=(e.target.tagName||"").toLowerCase();if(tag==="input")return;
+  if(/^[1-4]$/.test(e.key)){const b=document.querySelectorAll("#nOpts .opt")[+e.key-1];if(b&&!b.disabled)b.click()}});
+let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  try{if(curTab==="name"){if(studyMode)drawDetail(now);else drawName(now)}else if(curTab==="tree")drawTree(now);else if(curTab==="sim"){if(!window.__manual)advanceSim(dt);drawSim(now);drawGraph();if(Math.floor(now/250)!==Math.floor((now-dt*1000)/250))updSide()}}catch(e){console.error(e)}
+  requestAnimationFrame(frame)}
+window.__sim=(t,o)=>{if(o)Object.assign(SIM.next,o);simStart();window.__manual=true;SIM.t=0;const steps=Math.round(t/0.25);for(let i=0;i<steps;i++){SIM.t=Math.min(100,SIM.t+.25);advanceSim(0)}updSide()};
+window.__lab={NQ,TQ,MQ,SIM,tPick,nAnswer:(k)=>{const b=[...document.querySelectorAll("#nOpts .opt")].find(x=>x.dataset.k===k);if(b)b.click()},pathTo,TREE,mPlace,PINS,ROUNDS};
+nSets();tSets();buildChal();legendSim();updSide();fitAll();nNewRound();requestAnimationFrame(frame);
+})();
+
+</script>
+</body>
+</html>

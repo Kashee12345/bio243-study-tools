@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Body Basics Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;
+  /* body palette */
+  --ecf:#EAF1F5;--skin:#EBC9AE;--skin-edge:#9C7158;--hair:#5B4636;--cut:#D7948A;--cut-edge:#A9655B;
+  --bone:#F3ECDC;--bone-edge:#A89A78;--brain:#E3B9BE;--brain-edge:#A86F78;--cord:#EAD9A0;
+  --lung:#E9A9A6;--heart:#B5443B;--liver:#8E4434;--stomach:#E09A63;--gut:#E6B983;--kidney:#9A4A3A;--bladder:#E3C254;
+  --ax:#2E8A7A;--app:#D98A1C;--plane:#1B6E88;--dot-a:#C2412D;--dot-b:#2C5DB8;
+  --fluid:#8CC7E0;--parietal:#2C5DB8;--visceral:#C2412D;
+  --hot:#D2492F;--cold:#2F7FC1;--sweat:#3E9AD6;--vessel:#C23B32;--nerve:#C9A227;
+  --glucose:#D98A1C;--insulin:#2F8A57;--glucagon:#7B5CC9;--oxy:#A04E8C;--platelet:#9C7CC9;--fibrin:#C9A227;--rbc:#C23B32;
+  --o2:#2F7FC1;--food:#2F8A57;--glow:#F2B33B;--gold:#C9A227;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#4CC2AE;
+  --ecf:#14222A;--skin:#8C6B57;--skin-edge:#D9B597;--hair:#2A2019;--cut:#9E5A52;--cut-edge:#D78D82;
+  --bone:#CFC6B0;--bone-edge:#8F8466;--brain:#A7767C;--brain-edge:#D9A3AB;--cord:#B9A766;
+  --lung:#B9706D;--heart:#D9625A;--liver:#A6574A;--stomach:#C98552;--gut:#B98F5E;--kidney:#B65E4B;--bladder:#C9A93E;
+  --ax:#4CC2AE;--app:#F2A93B;--plane:#4FB3D1;--dot-a:#F08F74;--dot-b:#7FA7F0;
+  --fluid:#3C7F99;--parietal:#7FA7F0;--visceral:#F08F74;
+  --hot:#F0785E;--cold:#5AA9E6;--sweat:#6BB8EC;--vessel:#E0605A;--nerve:#E0BE48;
+  --glucose:#F2A93B;--insulin:#4FBF7F;--glucagon:#A98BEF;--oxy:#D47DBE;--platelet:#B9A0E8;--fibrin:#E0BE48;--rbc:#E0605A;
+  --o2:#5AA9E6;--food:#4FBF7F;--glow:#F2B33B;--gold:#E0BE48;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#4CC2AE;
+  --ecf:#14222A;--skin:#8C6B57;--skin-edge:#D9B597;--hair:#2A2019;--cut:#9E5A52;--cut-edge:#D78D82;
+  --bone:#CFC6B0;--bone-edge:#8F8466;--brain:#A7767C;--brain-edge:#D9A3AB;--cord:#B9A766;
+  --lung:#B9706D;--heart:#D9625A;--liver:#A6574A;--stomach:#C98552;--gut:#B98F5E;--kidney:#B65E4B;--bladder:#C9A93E;
+  --ax:#4CC2AE;--app:#F2A93B;--plane:#4FB3D1;--dot-a:#F08F74;--dot-b:#7FA7F0;
+  --fluid:#3C7F99;--parietal:#7FA7F0;--visceral:#F08F74;
+  --hot:#F0785E;--cold:#5AA9E6;--sweat:#6BB8EC;--vessel:#E0605A;--nerve:#E0BE48;
+  --glucose:#F2A93B;--insulin:#4FBF7F;--glucagon:#A98BEF;--oxy:#D47DBE;--platelet:#B9A0E8;--fibrin:#E0BE48;--rbc:#E0605A;
+  --o2:#5AA9E6;--food:#4FBF7F;--glow:#F2B33B;--gold:#E0BE48;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf);position:relative}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2)}
+.legend i.l{width:20px;height:0;border-radius:0;border:0;border-top:3px solid}
+.legend i.dl{width:20px;height:0;border-radius:0;border:0;border-top:2.5px dashed}
+.legend i.s{border-radius:2px}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:21px;font-weight:600;margin:4px 0 8px;line-height:1.3}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);border:1px solid var(--rule)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.opts.one{grid-template-columns:1fr}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:8px 11px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt .pair{display:block;font-size:12px;color:var(--ink-soft)}
+.qprog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.qprog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.qbox{font-size:17px;font-weight:600;margin:4px 0 10px}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.seg button{border:0;background:var(--panel-2);padding:7px 12px;cursor:pointer;font-size:14px;border-right:1px solid var(--rule)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 4px 0;font-size:14px}
+.ctrl label{display:inline-flex;align-items:center;gap:8px}
+.ctrl input[type=range]{accent-color:var(--accent);width:180px}
+.ctrl output{font-family:var(--mono);font-weight:600;min-width:64px;display:inline-block}
+/* sorter */
+.zones{position:absolute;inset:0;pointer-events:none}
+.zone{position:absolute;border:2px dashed transparent;border-radius:8px;background:transparent;cursor:pointer;pointer-events:auto;padding:0}
+.zone:hover,.zone:focus-visible,.zone.over{border-color:var(--accent);background:rgba(27,110,136,.10);outline:none}
+.zone.armed{border-color:var(--ink-faint)}
+.zone.hintz{border-color:var(--gold);background:rgba(201,162,39,.15)}
+.tray{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px;min-height:40px}
+.card-chip{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:7px 13px;cursor:grab;touch-action:none;font-size:14.5px;user-select:none;-webkit-user-select:none}
+.card-chip.box{border-radius:8px;text-align:left;max-width:100%}
+.card-chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.card-chip.miss{border-color:var(--warn)}
+.ghost{position:fixed;left:0;top:0;pointer-events:none;z-index:50;opacity:.92;transform:translate(-50%,-50%);box-shadow:var(--shadow)}
+.zbtns{display:flex;flex-wrap:wrap;gap:6px;padding:10px 4px 0;align-items:center}
+.zbtns .zl{font-size:13.5px;color:var(--ink-soft)}
+.zbtn{background:var(--panel);border:1.5px dashed var(--rule);border-radius:var(--r);padding:6px 10px;cursor:pointer;font-size:13.5px}
+.zbtn:hover,.zbtn.over{border-color:var(--accent);background:var(--accent-wash)}
+.chal{list-style:none;padding:0;margin:6px 0}
+.chal li{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.chal li b{font-family:var(--mono);min-width:22px;color:var(--ink-faint)}
+.chal li.done b{color:var(--good)}
+.chal li.done{color:var(--ink)}
+.meters{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;font-size:13.5px;margin-top:6px}
+.meter{height:10px;background:var(--sunk);border-radius:99px;overflow:hidden;position:relative}
+.meter i{position:absolute;top:0;bottom:0;left:0;background:var(--accent);border-radius:99px}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--rule);border-radius:var(--r);background:var(--panel);color:var(--ink);max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Introduction to the Human Body &middot; USC Upstate</div>
+    <h1>Body Basics Lab</h1>
+    <p class="sub">Point to body parts, slice through the body, sort organs, and run feedback loops. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="atlas" id="tabbtn-atlas" type="button">Part 1 &middot; Body Atlas</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="slice" id="tabbtn-slice" type="button">Part 2 &middot; Plane Slicer</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="sort" id="tabbtn-sort" type="button">Part 3 &middot; Cavity &amp; Region Sorter</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="loops" id="tabbtn-loops" type="button">Part 4 &middot; Feedback Loops</button>
+  </div>
+
+  <!-- PART 1: ATLAS -->
+  <section id="tab-atlas" role="tabpanel" aria-labelledby="tabbtn-atlas">
+    <div class="rounds" id="atModes" aria-label="Game modes"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvAtlas" role="img" aria-label="Body figures: anterior view, posterior view, and side view"></canvas></div>
+        <div class="stagebar"><span class="caption" id="atCap"></span></div>
+        <div class="zbtns" id="atAlt" hidden><label class="zl" for="atSelect">Can't click the picture? Choose an area:</label><select id="atSelect"></select><button class="tbtn" id="atSelGo" type="button">Choose</button></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="atN"></div>
+        <div class="qprog"><i id="atProg"></i></div>
+        <p class="qbox" id="atQ"></p>
+        <div class="opts" id="atOpts"></div>
+        <div class="bar">
+          <button class="tbtn" id="atHint" type="button">Hint</button>
+          <button class="tbtn" id="atShow" type="button">Show answer</button>
+          <button class="btn" id="atNext" type="button" hidden>Next &rarr;</button>
+        </div>
+        <div class="msg" id="atMsg" role="status"></div>
+        <p class="small" id="atScore" style="margin-top:10px"></p>
+        <h3>How to play</h3>
+        <ul id="atHow"></ul>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2: PLANE SLICER -->
+  <section id="tab-slice" role="tabpanel" aria-labelledby="tabbtn-slice" hidden>
+    <div class="rounds" id="slModes"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvSlice" role="img" aria-label="Object with a cutting plane, and the section it makes"></canvas></div>
+        <div class="ctrl" id="slCtrl">
+          <span>Object: <span class="seg" id="slObj"></span></span>
+          <span>Plane: <span class="seg" id="slPlane"></span></span>
+          <label>Position <input type="range" id="slPos" min="0" max="100" value="50" aria-describedby="slPosOut"> <output id="slPosOut"></output></label>
+          <button class="tbtn" id="slMid" type="button">Snap to middle</button>
+        </div>
+        <div class="legend" id="slLegend"></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div id="slExplore">
+          <div class="lvl-n">Explore</div>
+          <h2 class="lvl-t" id="slTitle"></h2>
+          <p id="slText" style="margin:0 0 8px"></p>
+          <div class="goal"><b class="h">Try this</b><span id="slTry"></span></div>
+          <h3>Planes</h3>
+          <ul>
+            <li><b>Sagittal</b>: left and right parts. <b>Midsagittal</b> = equal halves; <b>parasagittal</b> = unequal.</li>
+            <li><b>Frontal (coronal)</b>: front and back parts.</li>
+            <li><b>Transverse (horizontal)</b>: upper and lower parts. Makes a cross-section.</li>
+          </ul>
+        </div>
+        <div id="slQuiz" hidden>
+          <div class="lvl-n" id="sqN"></div>
+          <div class="qprog"><i id="sqProg"></i></div>
+          <p class="qbox">Which plane made this section?</p>
+          <div class="opts one" id="sqOpts"></div>
+          <div class="bar">
+            <button class="tbtn" id="sqHint" type="button">Hint</button>
+            <button class="tbtn" id="sqShow" type="button">Show answer</button>
+            <button class="btn" id="sqNext" type="button" hidden>Next &rarr;</button>
+          </div>
+          <div class="msg" id="sqMsg" role="status"></div>
+          <p class="small" id="sqScore"></p>
+          <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3: SORTER -->
+  <section id="tab-sort" role="tabpanel" aria-labelledby="tabbtn-sort" hidden>
+    <div class="rounds" id="soRounds" aria-label="Rounds"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder" id="soHolder"><canvas id="cvSort" role="img" aria-label="Body diagram with places to drop organs"></canvas><div class="zones" id="soZones"></div></div>
+        <div class="zbtns" id="soZBtns"></div>
+        <div class="stagebar"><span class="caption" id="soCap"></span></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="soN"></div>
+        <h2 class="lvl-t" id="soT"></h2>
+        <div class="goal"><b class="h">Your goal</b><span id="soGoal"></span></div>
+        <div class="tray" id="soTray" aria-label="Items to sort"></div>
+        <div class="bar">
+          <button class="tbtn" id="soHint" type="button">Hint</button>
+          <button class="tbtn" id="soShow" type="button">Show answer</button>
+          <button class="tbtn" id="soReset" type="button">Start round over</button>
+        </div>
+        <div class="msg" id="soMsg" role="status"></div>
+        <h3>How to play</h3>
+        <ul>
+          <li>Drag an item onto the picture or onto a place button.</li>
+          <li>Or tap an item to pick it up, then tap where it goes. Keyboard: <kbd>Tab</kbd> to an item, <kbd>Enter</kbd>, then <kbd>Tab</kbd> to a place and <kbd>Enter</kbd>.</li>
+        </ul>
+        <h3>Stars</h3>
+        <p class="small" style="margin:0">3 stars: almost all right on the first try. Answers you reveal with "Show answer" count as misses.</p>
+        <p class="small" id="soTot"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 4: LOOPS -->
+  <section id="tab-loops" role="tabpanel" aria-labelledby="tabbtn-loops" hidden>
+    <div class="rounds" id="lpModes"></div>
+    <!-- A: builder -->
+    <div id="lpBuild" class="grid">
+      <div class="card stage">
+        <div class="canvas-holder" id="lbHolder"><canvas id="cvLoop" role="img" aria-label="A feedback loop with four empty slots"></canvas><div class="zones" id="lbZones"></div></div>
+        <div class="zbtns" id="lbZBtns"></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="rounds" id="lbRounds" aria-label="Loops to build"></div>
+        <h2 class="lvl-t" id="lbT"></h2>
+        <div class="goal"><b class="h">Your goal</b><span id="lbGoal"></span></div>
+        <div class="tray" id="lbTray" aria-label="Cards"></div>
+        <div class="bar">
+          <button class="tbtn" id="lbHint" type="button">Hint</button>
+          <button class="tbtn" id="lbShow" type="button">Show answer</button>
+          <button class="tbtn" id="lbReset" type="button">Start over</button>
+        </div>
+        <div class="msg" id="lbMsg" role="status"></div>
+        <div id="lbType" hidden>
+          <p class="qbox" style="margin-top:12px">Is this negative or positive feedback?</p>
+          <div class="opts" id="lbTypeOpts"></div>
+          <div class="msg" id="lbTypeMsg" role="status"></div>
+        </div>
+        <p class="calm">Some cards do not belong in this loop. Drag or tap a card, then a slot.</p>
+      </aside>
+    </div>
+    <!-- B: simulator -->
+    <div id="lpSim" class="grid" hidden>
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvSim" role="img" aria-label="Thermoregulation simulator: a body, its temperature graph, and its responses"></canvas></div>
+        <div class="ctrl">
+          <label>Room temperature <input type="range" id="smRoom" min="0" max="45" step="1" value="22"> <output id="smRoomOut">22 °C</output></label>
+          <span>Activity: <span class="seg" id="smAct"></span></span>
+          <label class="mode"><input type="checkbox" id="smResp" checked> Body responses on</label>
+          <label class="mode"><input type="checkbox" id="smRelaxed"> Relaxed speed</label>
+          <button class="tbtn" id="smReset" type="button">Reset to 37 °C</button>
+        </div>
+        <div class="legend"><span><i class="l" style="border-color:var(--act4)"></i>Core body temperature</span><span><i class="dl" style="border-color:var(--ink-soft)"></i>Set point 37 °C</span><span><i class="s" style="background:var(--good)"></i>Normal range</span><span><i class="l" style="border-color:var(--warn)"></i>Room temperature</span></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n">Thermoregulation simulator</div>
+        <h2 class="lvl-t" id="smStatus">Steady</h2>
+        <p id="smText" style="margin:0 0 8px"></p>
+        <div class="meters" id="smMeters"></div>
+        <h3>Challenges</h3>
+        <ul class="chal" id="smChal"></ul>
+        <p class="small" id="smStars"></p>
+        <p class="calm">Time is sped up: one second on screen is about one minute in the body (two seconds in relaxed speed).</p>
+      </aside>
+    </div>
+    <!-- C: positive feedback -->
+    <div id="lpPos" class="grid" hidden>
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvPos" role="img" aria-label="Positive feedback in childbirth: uterus, baby, brain, and a graph of contraction strength"></canvas></div>
+        <div class="ctrl">
+          <button class="btn" id="pfNext" type="button">Next contraction</button>
+          <label class="mode"><input type="checkbox" id="pfAuto"> Run automatically</label>
+          <button class="tbtn" id="pfReset" type="button">Start over</button>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n">Positive feedback run</div>
+        <h2 class="lvl-t" id="pfTitle">Labor begins</h2>
+        <p id="pfText" style="margin:0 0 8px"></p>
+        <div id="pfQ" hidden>
+          <p class="qbox" style="margin-top:8px">What ended this loop?</p>
+          <div class="opts one" id="pfOpts"></div>
+          <div class="msg" id="pfMsg" role="status"></div>
+        </div>
+        <h3>Compare</h3>
+        <ul>
+          <li><b>Negative feedback</b> pushes a value back toward its set point. Most loops work this way.</li>
+          <li><b>Positive feedback</b> pushes the value further in the same direction, faster and faster, until an end point stops it.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 1, An Introduction to the Human Body (OpenStax Anatomy &amp; Physiology 2e) &middot; Learn it first in the <a href="Body-Basics-Walkthrough.html">Body Basics Walkthrough</a>.<br>Diagrams are simplified and not to scale. Organ positions are approximate, and the temperature and labor models are teaching models with time sped up, not clinical predictions. Best scores are saved only in this browser.</footer>
+
+<script>
+(function(){
+"use strict";
+
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","good-wash","warn","warn-wash","bad","act1","act2","act3","act4",
+ "ecf","skin","skin-edge","hair","cut","cut-edge","bone","bone-edge","brain","brain-edge","cord","lung","heart","liver","stomach","gut","kidney","bladder",
+ "ax","app","plane","dot-a","dot-b","fluid","parietal","visceral","hot","cold","sweat","vessel","nerve","glucose","insulin","glucagon","oxy","platelet","fibrin","rbc","o2","food","glow","gold"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim());C.atp=C.gold}
+
+let ctx=null,W=800,H=480;
+function makeStage(id,w,h){const cv=document.getElementById(id);const st={cv,ctx:cv.getContext("2d"),W:w,H:h,K:1};
+  st.fit=()=>{const ww=cv.parentElement.clientWidth;if(!ww)return;const dpr=window.devicePixelRatio||1;cv.style.height=(ww*h/w)+"px";cv.width=Math.round(ww*dpr);cv.height=Math.round(ww*h/w*dpr);st.K=cv.width/w};
+  st.toLocal=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*w/r.width,(e.clientY-r.top)*h/r.height]};
+  st.begin=()=>{ctx=st.ctx;W=w;H=h;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,w,h);ctx.globalAlpha=1;ctx.lineCap="butt";ctx.lineJoin="miter"};
+  return st}
+function bg(col){ctx.fillStyle=col||C.panel;ctx.fillRect(0,0,W,H)}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,rot,fill,stroke,lw){ctx.beginPath();ctx.ellipse(x,y,Math.max(.01,rx),Math.max(.01,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){if(Math.hypot(x2-x1,y2-y1)<2)return;line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=8+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,txt,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+10}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
+function heading(x,y,txt,col){ctx.font=`600 12px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.fillText(txt.toUpperCase(),x,y)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function panelBox(x,y,w,h,on,col){ctx.fillStyle=C["panel-2"];rr(x,y,w,h,8);ctx.fill();ctx.strokeStyle=on?(col||C.accent):C.rule;ctx.lineWidth=on?3:1.2;ctx.stroke()}
+function dotPt(x,y,col,txt,t){const pul=1+.18*Math.sin((t||0)*6);glow(x,y,16*pul,col,.35);circ(x,y,6.5,col,C.panel,2);if(txt)label(x+11,y-11,txt,{size:12,weight:700,color:col,bga:.95})}
+function drop(x,y,r,col,a){ctx.globalAlpha=a==null?1:clamp(a,0,1);ctx.beginPath();ctx.moveTo(x,y-r*1.7);ctx.bezierCurveTo(x+r*.9,y-r*.4,x+r,y+r*.9,x,y+r);ctx.bezierCurveTo(x-r,y+r*.9,x-r*.9,y-r*.4,x,y-r*1.7);ctx.fillStyle=col;ctx.fill();ctx.globalAlpha=1}
+function hexa(x,y,r,col,a){ctx.globalAlpha=a==null?1:clamp(a,0,1);ctx.beginPath();for(let i=0;i<6;i++){const q=i/6*TAU+Math.PI/6;ctx.lineTo(x+r*Math.cos(q),y+r*Math.sin(q))}ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function wiggle(x1,y1,x2,y2,col,lw,amp,ph){const n=24;ctx.beginPath();for(let i=0;i<=n;i++){const u=i/n;const x=lerp(x1,x2,u),y=lerp(y1,y2,u);const a=Math.atan2(y2-y1,x2-x1)+Math.PI/2;const o=Math.sin(u*14+ph)*amp;ctx.lineTo(x+Math.cos(a)*o,y+Math.sin(a)*o)}ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.stroke()}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function pathLine(P,col,lw,dash){ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function thermo(x,y,h,val,lo,hi,col,o){o=o||{}; // vertical thermometer, val in degrees
+  const f=clamp((val-lo)/(hi-lo),0,1);ctx.fillStyle=C.panel;rr(x-9,y,18,h,9);ctx.fill();ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.stroke();
+  circ(x,y+h+8,13,C.panel,C["ink-soft"],1.5);
+  if(o.band){const b0=y+h-(o.band[0]-lo)/(hi-lo)*h,b1=y+h-(o.band[1]-lo)/(hi-lo)*h;ctx.globalAlpha=.3;ctx.fillStyle=C.good;ctx.fillRect(x-8,b1,16,b0-b1);ctx.globalAlpha=1}
+  ctx.fillStyle=col;ctx.fillRect(x-4,y+h-f*h,8,f*h+4);circ(x,y+h+8,9,col);
+  if(o.ticks)o.ticks.forEach(v=>{const yy=y+h-(v-lo)/(hi-lo)*h;line(x+9,yy,x+15,yy,C["ink-soft"],1.2);label(x+18,yy,String(v),{size:11,mono:true,pill:false,color:C["ink-soft"]})})}
+
+function hex2rgb(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");const n=parseInt(h,16);return [(n>>16)&255,(n>>8)&255,n&255]}
+function mix(a,b,t){try{const A=hex2rgb(a),B=hex2rgb(b);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*clamp(t,0,1))).join(",")+")"}catch(e){return a}}
+function regionPath(reg){const P=new Path2D();
+  (reg.bands||[]).forEach(b=>{PARTS.filter(p=>p.id===b[0]&&p.views.indexOf("front")>=0).forEach(p=>{
+    const y0=Math.max(b[1],p.y0),y1=Math.min(b[2],p.y1);if(y1<=y0)return;const L=[],R=[];const sg=p.s||1;
+    for(let y=y0;;y+=1.5){const yy=Math.min(y,y1);const q=p.f(yy);L.push([sg*q.cx-q.hw,yy]);R.push([sg*q.cx+q.hw,yy]);if(yy>=y1)break}
+    const pts=L.concat(R.reverse());pts.forEach((pt,i)=>i?P.lineTo(pt[0],pt[1]):P.moveTo(pt[0],pt[1]));P.closePath()})});
+  if(reg.circle){P.moveTo(reg.circle[0]+reg.circle[2],reg.circle[1]);P.arc(reg.circle[0],reg.circle[1],reg.circle[2],0,TAU)}
+  (reg.ellipses||[]).forEach(e=>{P.moveTo(e[0]+e[2],e[1]);P.ellipse(e[0],e[1],e[2],e[3],0,0,TAU)});
+  if(reg.rect)P.rect(reg.rect[0],reg.rect[1],reg.rect[2],reg.rect[3]);
+  return P}
+const REGIONS=[
+ {id:"cephalic",name:"Cephalic",plain:"head",view:"A",bands:[["head",3,65]],at:[0,30]},
+ {id:"cervical",name:"Cervical",plain:"neck",view:"AP",bands:[["neck",64,86]],at:[0,76]},
+ {id:"thoracic",name:"Thoracic",plain:"chest",view:"A",bands:[["torso",86,160]],at:[-18,124]},
+ {id:"abdominal",name:"Abdominal",plain:"belly",view:"A",bands:[["torso",160,212]],at:[-14,184]},
+ {id:"brachial",name:"Brachial",plain:"arm (shoulder to elbow)",view:"AP",bands:[["arm",100,180]],at:[-63,140]},
+ {id:"antecubital",name:"Antecubital",plain:"front of the elbow",view:"A",bands:[["arm",180,196]],at:[-68,188]},
+ {id:"antebrachial",name:"Antebrachial",plain:"forearm",view:"AP",bands:[["arm",196,248]],at:[-71,222]},
+ {id:"carpal",name:"Carpal",plain:"wrist",view:"AP",bands:[["arm",248,262],["hand",256,262]],at:[-75,256]},
+ {id:"palmar",name:"Palmar",plain:"palm",view:"A",bands:[["hand",262,284]],at:[-77,273]},
+ {id:"digital",name:"Digital",plain:"fingers",view:"AP",bands:[["hand",284,302],["thumb",262,288]],at:[-77,292]},
+ {id:"femoral",name:"Femoral",plain:"thigh",view:"AP",bands:[["leg",232,324]],at:[-24,278]},
+ {id:"patellar",name:"Patellar",plain:"front of the knee",view:"A",bands:[["leg",324,348]],at:[-25,336]},
+ {id:"crural",name:"Crural",plain:"front of the leg (knee to ankle)",view:"A",bands:[["leg",348,406]],at:[-25,378]},
+ {id:"tarsal",name:"Tarsal",plain:"ankle",view:"A",bands:[["leg",406,418],["foot",410,418]],at:[-25,414]},
+ {id:"pedal",name:"Pedal",plain:"foot",view:"A",bands:[["foot",418,438]],at:[-27,428]},
+ {id:"occipital",name:"Occipital",plain:"back of the head",view:"P",bands:[["head",36,62]],at:[0,50]},
+ {id:"scapular",name:"Scapular",plain:"shoulder blade",view:"P",ellipses:[[-27,118,15,19],[27,118,15,19]],at:[27,118]},
+ {id:"vertebral",name:"Vertebral",plain:"spine",view:"P",rect:[-5,90,10,122],at:[0,150]},
+ {id:"lumbar",name:"Lumbar",plain:"lower back",view:"P",bands:[["torso",170,212]],at:[18,192]},
+ {id:"olecranal",name:"Olecranal",plain:"back of the elbow",view:"P",bands:[["arm",180,196]],at:[68,188]},
+ {id:"gluteal",name:"Gluteal",plain:"buttock",view:"P",bands:[["torso",214,252],["leg",214,252]],at:[22,236]},
+ {id:"popliteal",name:"Popliteal",plain:"back of the knee",view:"P",bands:[["leg",324,348]],at:[25,336]},
+ {id:"sural",name:"Sural",plain:"calf",view:"P",bands:[["leg",348,406]],at:[25,374]},
+ {id:"calcaneal",name:"Calcaneal",plain:"heel",view:"P",bands:[["foot",420,438]],at:[26,430]}];
+const REG={};REGIONS.forEach(r=>REG[r.id]=r);
+function fillRegion(reg,ox,oy,s,col,a){ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);ctx.globalAlpha=a==null?.6:a;ctx.fillStyle=col;ctx.fill(regionPath(reg));
+  ctx.globalAlpha=1;ctx.strokeStyle=col;ctx.lineWidth=1.6/s;ctx.stroke(regionPath(reg));ctx.restore()}
+
+
+function wrapText(txt,x,y,maxW,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${FONT}`;ctx.textAlign=o.align||"center";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=txt.split(" ");let ln="",lines=[];words.forEach(w=>{const tst=ln?ln+" "+w:w;if(ctx.measureText(tst).width>maxW&&ln){lines.push(ln);ln=w}else ln=tst});lines.push(ln);
+  const y0=o.top?y:y-(lines.length-1)*lh/2;lines.forEach((l,i)=>ctx.fillText(l,x,y0+i*lh));return lines.length}
+
+function heartShape(x,y,sc,col){ctx.save();ctx.translate(x,y);ctx.scale(sc,sc);ctx.rotate(-.35);ctx.beginPath();ctx.moveTo(0,52);ctx.bezierCurveTo(-58,10,-52,-44,-16,-46);ctx.bezierCurveTo(-2,-47,0,-34,0,-30);
+  ctx.bezierCurveTo(0,-34,4,-47,18,-46);ctx.bezierCurveTo(54,-44,58,10,0,52);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.5;ctx.stroke();ctx.restore()}
+
+function planeV(X,y0,y1,col){ctx.globalAlpha=.16;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(X-22,y0-8);ctx.lineTo(X+22,y0+10);ctx.lineTo(X+22,y1+8);ctx.lineTo(X-22,y1-10);ctx.closePath();ctx.fill();
+  ctx.globalAlpha=.7;ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.globalAlpha=1;line(X,y0,X,y1,col,2.5)}
+function planeH(Y,x0,x1,col){ctx.globalAlpha=.16;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x0-24,Y+10);ctx.lineTo(x0+24,Y-10);ctx.lineTo(x1+24,Y-10);ctx.lineTo(x1-24,Y+10);ctx.closePath();ctx.fill();
+  ctx.globalAlpha=.7;ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.globalAlpha=1;line(x0,Y,x1,Y,col,2.5)}
+
+function starStr(n){return "★".repeat(n)+"☆".repeat(3-n)}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function setMsg(el,html,kind){el.innerHTML=html;el.className="msg show "+(kind||"info")}
+function clearMsg(el){el.innerHTML="";el.className="msg"}
+/* =====================================================================
+   BODY MODEL
+   Units: the figure is about 440 units tall. y goes down from the top of the head.
+   x: + is the figure's LEFT (so in a front view, + is the viewer's right).
+   z: + is ANTERIOR. Every body part is a stack of elliptical slices, so the same
+   model draws the front/back/side figures and computes any section.
+   ===================================================================== */
+const POSE={palm:1,feet:1,head:1};
+function interp(T,y,k){const n=T.length;if(y<=T[0][0])return T[0][k];if(y>=T[n-1][0])return T[n-1][k];
+  for(let i=0;i<n-1;i++){if(y<=T[i+1][0]){const u=(y-T[i][0])/(T[i+1][0]-T[i][0]);return T[i][k]+(T[i+1][k]-T[i][k])*u}}return T[n-1][k]}
+function smooth(T,y,k){return (interp(T,y-5,k)+2*interp(T,y,k)+interp(T,y+5,k))/4}
+//            y   hw  zFront zBack
+const TOR=[[80,14,10,-12],[86,44,14,-16],[96,54,18,-19],[120,52,25,-21],[140,49,26,-21],[160,44,20,-19],[180,39,20,-15],[200,42,23,-17],[222,47,20,-25],[240,44,14,-22],[252,24,6,-10]];
+const ARM=[[100,58,11,-1],[186,68,8.5,-3],[258,75,6.4,3]];
+const LEG=[[212,23,18,-3],[226,23.5,20,0],[336,25,12.5,3],[414,25,7,0]];
+const sq=v=>Math.sqrt(Math.max(0,v));
+function torsoAt(y){const hw=smooth(TOR,y,1),zF=smooth(TOR,y,2),zB=smooth(TOR,y,3);return {cx:0,hw,zc:(zF+zB)/2,hd:(zF-zB)/2,zF,zB}}
+function spineZ(y){return y<88?-5:smooth(TOR,y,3)+9}
+const PARTS=[
+ {id:"head",y0:3,y1:65,views:"front side",f:y=>{const k=sq(1-((y-34)/31)**2);return {cx:5*(1-POSE.head),hw:24*k,zc:2,hd:26*k}}},
+ {id:"nose",y0:33,y1:47,views:"side",f:y=>{const u=(y-33)/14;return {cx:0,hw:3,zc:25+2*u,hd:2.6*Math.sin(Math.PI*u)+.4}}},
+ {id:"ear",s:1,y0:29,y1:45,views:"front",f:y=>{const u=(y-29)/16;return {cx:24.5+5*(1-POSE.head),hw:3.2*sq(Math.sin(Math.PI*u)),zc:-2,hd:4}}},
+ {id:"ear",s:-1,y0:29,y1:45,views:"front",f:y=>{const u=(y-29)/16;return {cx:24.5-5*(1-POSE.head),hw:3.2*sq(Math.sin(Math.PI*u)),zc:-2,hd:4}}},
+ {id:"neck",y0:56,y1:88,views:"front side",f:y=>({cx:0,hw:10.5,zc:-1,hd:11})},
+ {id:"torso",y0:80,y1:252,views:"front side",f:torsoAt},
+ {id:"arm",s:1,y0:86,y1:260,views:"front side",limb:1,f:armAt},
+ {id:"arm",s:-1,y0:86,y1:260,views:"front",limb:1,f:armAt},
+ {id:"hand",s:1,y0:256,y1:302,views:"front side",limb:1,f:handAt},
+ {id:"hand",s:-1,y0:256,y1:302,views:"front",limb:1,f:handAt},
+ {id:"thumb",s:1,y0:262,y1:288,views:"front side",limb:1,f:thumbAt},
+ {id:"thumb",s:-1,y0:262,y1:288,views:"front",limb:1,f:thumbAt},
+ {id:"leg",s:1,y0:212,y1:418,views:"front side",f:legAt},
+ {id:"leg",s:-1,y0:212,y1:418,views:"front",f:legAt},
+ {id:"foot",s:1,y0:410,y1:438,views:"front side",f:footAt},
+ {id:"foot",s:-1,y0:410,y1:438,views:"front",f:footAt}
+];
+function armAt(y){if(y<100){const k=sq(1-((100-y)/14)**2);return {cx:58-(100-y)*.2,hw:11*k,zc:-1,hd:10.5*k}}
+  const hw=interp(ARM,y,2);return {cx:interp(ARM,y,1),hw,zc:interp(ARM,y,3),hd:hw*.95}}
+function handAt(y){const pr=POSE.palm;const full=y<270?6.4+3.1*(y-256)/14:(y>280?9.5*sq(1-((y-280)/22)**2):9.5);const f=full/9.5;
+  return {cx:75+2.5*(y-256)/46-2*(1-pr),hw:3.6*f+(full-3.6*f)*pr,zc:2+2*(y-256)/46,hd:full+(3.6*f-full)*pr}}
+function thumbAt(y){const u=(y-262)/26;const r=3.4*sq(Math.sin(Math.PI*u));const pr=POSE.palm;return {cx:77+(86.5+u*1.5-77)*pr,hw:r,zc:10+(6-10)*pr,hd:r}}
+function legAt(y){let hw=interp(LEG,y,2),zc=interp(LEG,y,3),hd=hw*1.05;
+  if(y>336){const u=(y-336)/78;const s=Math.sin(Math.PI*Math.min(1,u*1.25));hw+=2.2*s;zc-=2.6*s;hd=hw+1.6*s}
+  return {cx:interp(LEG,y,1),hw,zc,hd}}
+function footAt(y){const u=(y-410)/28;const fo=1-POSE.feet;
+  const w=(u<.8?7+2*u/.8:9*sq(1-((u-.8)/.2)**2))*(1+fo*.45);const v=Math.min(1,u*1.4);const r=u>.85?sq(1-((u-.85)/.15)**2):1;
+  return {cx:25.5+1.5*u+fo*6*u,hw:w,zc:12*v,hd:(7.5+14*v)*(u>.85?.6+.4*r:1)}}
+function partPoly(p,view){const L=[],R=[];const st=1.5;const sg=p.s||1;
+  for(let y=p.y0;;y+=st){const yy=Math.min(y,p.y1);const q=p.f(yy);let a,b;
+    if(view==="side"){a=q.zc-q.hd;b=q.zc+q.hd}else{const cx=q.cx*sg;a=cx-q.hw;b=cx+q.hw}
+    L.push([a,yy]);R.push([b,yy]);if(yy>=p.y1)break}
+  return L.concat(R.reverse())}
+function polyPath(P){ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath()}
+function viewParts(view){const v=view==="back"?"front":view;return PARTS.filter(p=>p.views.indexOf(v)>=0)}
+/* draw a whole figure. view: front | back | side (side faces right: anterior is to the right) */
+function drawFigure(view,ox,oy,s,o){o=o||{};ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);
+  if(o.alpha!=null)ctx.globalAlpha*=o.alpha;
+  const ps=viewParts(view).filter(p=>!o.only||o.only(p));const groups=view==="side"?[ps.filter(p=>!p.limb),ps.filter(p=>p.limb)]:[ps];
+  groups.forEach(g=>{const polys=g.map(p=>[p,partPoly(p,view)]);
+    ctx.lineJoin="round";ctx.strokeStyle=o.edge||C["skin-edge"];ctx.lineWidth=(o.lw||2.2)/s;
+    polys.forEach(pp=>{polyPath(pp[1]);ctx.stroke()});
+    polys.forEach(pp=>{polyPath(pp[1]);ctx.fillStyle=(o.colorOf&&o.colorOf(pp[0]))||o.fill||C.skin;ctx.fill()})});
+  if(o.deco!==false)figDeco(view,s,o);
+  ctx.restore()}
+function figDeco(view,s,o){const e=C["skin-edge"];ctx.lineCap="round";const hx=5*(1-POSE.head);const a0=ctx.globalAlpha;
+  const L=(pts,w,col,a)=>{ctx.globalAlpha=a0*(a==null?.75:a);ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col||e;ctx.lineWidth=(w||1.3)/s;ctx.stroke();ctx.globalAlpha=a0};
+  ctx.save();
+  if(view==="front"){
+    ctx.save();ctx.beginPath();ctx.ellipse(hx,34,24,31,0,0,TAU);ctx.clip();ctx.beginPath();ctx.ellipse(hx,14,27,17,0,0,TAU);ctx.fillStyle=C.hair;ctx.fill();ctx.restore();
+    [-8,8].forEach(x=>{circ(hx+x,33,1.9,C.ink);L([[hx+x-4,28],[hx+x+4,28]],1.2,C.hair,.9)});
+    L([[hx,35],[hx-2,43],[hx+1.5,44]],1.1);ctx.beginPath();ctx.arc(hx,48,5,.25*Math.PI,.75*Math.PI);ctx.strokeStyle=e;ctx.lineWidth=1.3/s;ctx.stroke();
+    L([[-6,90],[-38,94]],1.1,e,.5);L([[6,90],[38,94]],1.1,e,.5);
+    circ(0,196,1.6,null,e,1.1/s);
+    [-1,1].forEach(sg=>{ctx.globalAlpha=a0*.6;ctx.beginPath();ctx.arc(sg*25,338,5,.15*Math.PI,.85*Math.PI);ctx.strokeStyle=e;ctx.lineWidth=1.1/s;ctx.stroke();ctx.globalAlpha=a0;
+      if(POSE.palm>.6){const a=(POSE.palm-.6)/.4*.6;for(let i=0;i<3;i++)L([[sg*(73+i*3.2),289],[sg*(73+i*3.2),299]],.9,e,a);
+        ctx.globalAlpha=a0*a;ctx.beginPath();ctx.arc(sg*77,270,5,.15*Math.PI,.85*Math.PI);ctx.strokeStyle=e;ctx.lineWidth=.9/s;ctx.stroke();ctx.globalAlpha=a0}
+      for(let i=0;i<3;i++)L([[sg*(22+i*3),434],[sg*(22+i*3),437]],.9,e,.5)});
+  } else if(view==="back"){
+    ctx.save();ctx.beginPath();ctx.ellipse(0,34,24,31,0,0,TAU);ctx.clip();ctx.beginPath();ctx.ellipse(0,26,27,29,0,0,TAU);ctx.fillStyle=C.hair;ctx.fill();ctx.restore();
+    L([[0,92],[0,212]],1.2,e,.6);
+    [-1,1].forEach(sg=>{ctx.globalAlpha=a0*.55;ctx.beginPath();ctx.moveTo(sg*14,104);ctx.quadraticCurveTo(sg*38,100,sg*36,126);ctx.quadraticCurveTo(sg*30,138,sg*16,124);ctx.strokeStyle=e;ctx.lineWidth=1.1/s;ctx.stroke();
+      ctx.beginPath();ctx.arc(sg*21,244,12,.2*Math.PI,.8*Math.PI);ctx.stroke();ctx.globalAlpha=a0;
+      L([[sg*20,338],[sg*30,338]],1,e,.55);L([[sg*72,186],[sg*67,190]],1,e,.4)});
+    L([[0,224],[0,250]],1.2,e,.7);
+  } else {
+    ctx.save();ctx.beginPath();ctx.ellipse(2,34,26,31,0,0,TAU);ctx.clip();ctx.beginPath();ctx.ellipse(-6,22,26,24,-.2,0,TAU);ctx.fillStyle=C.hair;ctx.fill();ctx.restore();
+    circ(17,32,1.9,C.ink);L([[13,27],[21,27]],1.2,C.hair,.9);
+    ctx.beginPath();ctx.ellipse(-3,38,3.5,6,0,0,TAU);ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=e;ctx.lineWidth=1.1/s;ctx.stroke();
+    L([[19,50],[24,50]],1.2);L([[22,196],[24,196]],1.1,e,.6);
+  }
+  ctx.restore()}
+/* local point → screen */
+const FP=(ox,oy,s,x,y)=>[ox+x*s,oy+y*s];
+/* ---------- organs and bones for sections ---------- */
+const ORGANS=[
+ {id:"lung",c:[-23,126,1],r:[16,33,15],col:"lung"},
+ {id:"lung",c:[22,128,1],r:[15,32,15],col:"lung"},
+ {id:"heart",c:[7,140,8],r:[13,14,10],col:"heart"},
+ {id:"liver",c:[-13,170,4],r:[25,12,14],col:"liver"},
+ {id:"stomach",c:[15,174,7],r:[12,11,9],col:"stomach"},
+ {id:"gut",c:[0,207,5],r:[30,20,13],col:"gut"},
+ {id:"kidney",c:[-17,192,-9],r:[6.5,11,5.5],col:"kidney"},
+ {id:"kidney",c:[17,188,-9],r:[6.5,11,5.5],col:"kidney"},
+ {id:"bladder",c:[0,238,6],r:[9,7,7],col:"bladder"},
+ {id:"brain",c:[0,28,2],r:[20,19,23],col:"brain"}];
+const BONES=[ // long bones as vertical rods inside a limb part: [part id, y0, y1, radius, dx]
+ ["arm",102,182,3.4,0],["arm",192,252,2,-2.6],["arm",192,252,2,2.6],["leg",228,330,4.6,0],["leg",342,410,3.6,-1],["leg",346,410,1.8,5.5]];
+/* draws the cut face of a section. plane: "S" sagittal (pos = x), "F" frontal (pos = z), "T" transverse (pos = y).
+   S: screen x = z (anterior to the right). F: screen x = x (front view). T: screen x = x, screen y = -z (anterior up). */
+function drawSection(plane,pos,ox,oy,s,o){o=o||{};ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);
+  const sk=C.skin,cu=C.cut;
+  if(o.clipY!=null){ctx.beginPath();ctx.rect(-400,-400,800,o.clipY+400);ctx.clip()}
+  const parts=PARTS.filter(p=>p.views.indexOf("front")>=0||p.id==="nose");
+  if(plane==="T"){
+    const els=[];parts.forEach(p=>{if(p.id==="nose"||pos<p.y0||pos>p.y1)return;const q=p.f(pos);if(q.hw<.4||q.hd<.4)return;els.push({p,x:(p.s||1)*q.cx,y:-q.zc,a:q.hw,b:q.hd})});
+    els.forEach(e=>{ctx.beginPath();ctx.ellipse(e.x,e.y,e.a+1.3,e.b+1.3,0,0,TAU);ctx.fillStyle=C["skin-edge"];ctx.fill()});
+    els.forEach(e=>{ctx.beginPath();ctx.ellipse(e.x,e.y,e.a+.6,e.b+.6,0,0,TAU);ctx.fillStyle=sk;ctx.fill();ctx.beginPath();ctx.ellipse(e.x,e.y,Math.max(.1,e.a-.6),Math.max(.1,e.b-.6),0,0,TAU);ctx.fillStyle=cu;ctx.fill()});
+    // skull ring
+    els.filter(e=>e.p.id==="head").forEach(e=>{if(pos<50){ctx.beginPath();ctx.ellipse(e.x,e.y,Math.max(.1,e.a-1.6),Math.max(.1,e.b-1.6),0,0,TAU);ctx.fillStyle=C.bone;ctx.fill()}});
+    ORGANS.forEach(g=>{const d=(pos-g.c[1])/g.r[1];if(Math.abs(d)>=1)return;const k=sq(1-d*d);
+      ctx.beginPath();ctx.ellipse(g.c[0],-g.c[2],g.r[0]*k,g.r[2]*k,0,0,TAU);ctx.fillStyle=C[g.col];ctx.fill();ctx.strokeStyle="rgba(0,0,0,.25)";ctx.lineWidth=.8/s;ctx.stroke()});
+    if(pos>96&&pos<176){const t=torsoAt(pos);for(let i=0;i<22;i++){const a=i/22*TAU;if(Math.abs(Math.cos(a))<.18)continue;
+      circ(Math.cos(a)*(t.hw-4),-(t.zc+Math.sin(a)*(t.hd-3.5)),1.8,C.bone,C["bone-edge"],.6/s)}
+      if(pos<150){ctx.fillStyle=C.bone;ctx.fillRect(-4,-(t.zF-4.5),8,3.4)}}
+    if(pos>=60&&pos<=250){const z=spineZ(pos);circ(0,-z,6,C.bone,C["bone-edge"],.8/s);if(pos<205)circ(0,-(z-2.5),2.2,C.cord)}
+    BONES.forEach(b=>{if(pos<b[1]||pos>b[2])return;parts.filter(p=>p.id===b[0]).forEach(p=>{const q=p.f(pos);circ((p.s||1)*(q.cx+b[4]),-q.zc,b[3],C.bone,C["bone-edge"],.7/s)})});
+  } else {
+    const st=1.5;const segs=[];
+    parts.forEach(p=>{if(plane==="F"&&p.id==="nose")return;if(plane==="S"&&p.id==="ear")return;
+      for(let y=p.y0;y<=p.y1;y+=st){const q=p.f(y);const cx=(p.s||1)*q.cx;
+        if(plane==="S"){const d=(pos-cx)/q.hw;if(!(q.hw>0)||Math.abs(d)>=1)continue;const h=q.hd*sq(1-d*d);segs.push([q.zc-h,q.zc+h,y])}
+        else{const d=(pos-q.zc)/q.hd;if(!(q.hd>0)||Math.abs(d)>=1)continue;const h=q.hw*sq(1-d*d);segs.push([cx-h,cx+h,y])}}});
+    ctx.fillStyle=C["skin-edge"];segs.forEach(g=>ctx.fillRect(g[0]-1.3,g[2]-1.1,g[1]-g[0]+2.6,2.2));
+    ctx.fillStyle=sk;segs.forEach(g=>ctx.fillRect(g[0]-.6,g[2]-.95,g[1]-g[0]+1.2,1.9));
+    ctx.fillStyle=cu;segs.forEach(g=>{if(g[1]-g[0]>1.4)ctx.fillRect(g[0]+.6,g[2]-.95,g[1]-g[0]-1.2,1.9)});
+    // skull + brain handled as organ with a bone rim
+    if(!o.noOrgans)ORGANS.forEach(g=>{const ax=plane==="S"?0:2;const d=(pos-g.c[ax])/g.r[ax];if(Math.abs(d)>=1)return;const k=sq(1-d*d);
+      const X=plane==="S"?g.c[2]:g.c[0],RX=(plane==="S"?g.r[2]:g.r[0])*k,RY=g.r[1]*k;
+      ctx.beginPath();ctx.ellipse(X,g.c[1],RX,RY,0,0,TAU);ctx.fillStyle=C[g.col];ctx.fill();
+      if(g.id==="brain"){ctx.strokeStyle=C.bone;ctx.lineWidth=3.2;ctx.stroke()}else{ctx.strokeStyle="rgba(0,0,0,.25)";ctx.lineWidth=.8/s;ctx.stroke()}});
+    // spine
+    for(let y=62;y<=250;y+=st){const z=spineZ(y);
+      if(plane==="S"){const d=pos/6;if(Math.abs(d)>=1)break;const h=6*sq(1-d*d);ctx.fillStyle=(Math.floor(y/9)%2)?C.bone:C["bone-edge"];ctx.fillRect(z-h,y-.95,2*h,1.9);
+        if(y<205&&Math.abs(pos)<2.2){ctx.fillStyle=C.cord;ctx.fillRect(z-4.2,y-.95,3.2,1.9)}}
+      else{const d=(pos-z)/6;if(Math.abs(d)>=1)continue;const h=6*sq(1-d*d);ctx.fillStyle=(Math.floor(y/9)%2)?C.bone:C["bone-edge"];ctx.fillRect(-h,y-.95,2*h,1.9);
+        if(y<205&&Math.abs(pos-(z-2.5))<2.2){ctx.fillStyle=C.cord;ctx.fillRect(-1.6,y-.95,3.2,1.9)}}}
+    // long bones
+    BONES.forEach(b=>{parts.filter(p=>p.id===b[0]).forEach(p=>{for(let y=b[1];y<=b[2];y+=st){const q=p.f(y);const cx=(p.s||1)*(q.cx+b[4]);
+      const d=plane==="S"?(pos-cx)/b[3]:(pos-q.zc)/b[3];if(Math.abs(d)>=1)continue;const h=b[3]*sq(1-d*d);
+      ctx.fillStyle=C.bone;if(plane==="S")ctx.fillRect(q.zc-h,y-.95,2*h,1.9);else ctx.fillRect(cx-h,y-.95,2*h,1.9)}})});
+  }
+  ctx.restore()}
+
+/* =====================================================================
+   PART 1 - BODY ATLAS
+   ===================================================================== */
+const SA=makeStage("cvAtlas",800,500);
+const VIEW={front:[140,34,1],back:[400,34,1],side:[668,34,1]};
+const TERMS={superior:"toward the head",inferior:"toward the feet",anterior:"toward the front",posterior:"toward the back",medial:"toward the midline",lateral:"away from the midline, toward the side",
+  proximal:"closer to where a limb attaches to the trunk",distal:"farther from where a limb attaches to the trunk",superficial:"closer to the body surface",deep:"farther from the body surface, toward the inside"};
+const SYN={superior:"cranial",inferior:"caudal",anterior:"ventral",posterior:"dorsal"};
+const OPP={superior:"inferior",inferior:"superior",anterior:"posterior",posterior:"anterior",medial:"lateral",lateral:"medial",proximal:"distal",distal:"proximal",superficial:"deep",deep:"superficial"};
+const HINTS={superior:"Compare how high each dot is.",inferior:"Compare how high each dot is.",anterior:"Compare front and back. The front of the body faces right in the side view.",posterior:"Compare front and back. The front of the body faces right in the side view.",
+  medial:"Compare how far each dot is from the midline (the dashed line).",lateral:"Compare how far each dot is from the midline (the dashed line).",proximal:"Follow the limb from where it joins the trunk.",distal:"Follow the limb from where it joins the trunk.",
+  superficial:"Compare how far each dot is from the skin surface.",deep:"Compare how far each dot is from the skin surface."};
+const LAYERS={x0:592,x1:778,L:[["Skin",70,102,"skin"],["Fat (subcutaneous layer)",102,152,"bladder"],["Muscle",152,330,"cut"],["Bone",330,404,"bone"]]};
+const LP={skin:[686,86],fat:[686,127],muscle:[686,242],bone:[686,367]};
+const tz=y=>torsoAt(y);
+const DIRQ=[
+ {v:"front",a:[0,41],b:[0,196],an:"the nose",bn:"the navel",ans:["superior"],why:"The nose is closer to the head end of the body than the navel is."},
+ {v:"front",a:[-25,336],b:[-27,228],an:"the knee",bn:"the hip",ans:["distal","inferior"],why:"The knee is farther down the leg from where the leg joins the trunk at the hip."},
+ {v:"front",a:[24.5,37],b:[0,41],an:"the ear",bn:"the nose",ans:["lateral"],why:"The ear is farther from the midline than the nose, which sits right on it."},
+ {v:"front",a:[0,118],b:[57,116],an:"the breastbone",bn:"the shoulder",ans:["medial"],why:"The breastbone is on the midline. The shoulder is out to the side."},
+ {v:"front",a:[-75,256],b:[-68,186],an:"the wrist",bn:"the elbow",ans:["distal","inferior"],why:"The wrist is farther along the arm from where the arm joins the trunk."},
+ {v:"front",a:[-87,274],b:[-71,282],an:"the thumb",bn:"the little finger",ans:["lateral"],why:"In anatomical position the palms face forward, so the thumb is on the outside, away from the midline."},
+ {v:"front",a:[-57,104],b:[-77,282],an:"the shoulder",bn:"the hand",ans:["proximal","superior"],why:"The shoulder is where the arm joins the trunk, so it is closer to the attachment than the hand."},
+ {v:"front",a:[0,196],b:[-38,192],an:"the navel",bn:"the side of the waist",ans:["medial"],why:"The navel sits on the midline. The side of the waist is farther out."},
+ {v:"front",a:[0,58],b:[0,8],an:"the chin",bn:"the top of the head",ans:["inferior"],why:"The chin is lower, closer to the feet, than the top of the head."},
+ {v:"front",a:[25,414],b:[25,336],an:"the ankle",bn:"the knee",ans:["distal","inferior"],why:"The ankle is farther down the leg from where the leg joins the trunk."},
+ {v:"back",a:[-22,238],b:[-18,190],an:"the buttock",bn:"the lower back",ans:["inferior"],why:"The buttock is below the lower back, closer to the feet."},
+ {v:"back",a:[0,118],b:[27,118],an:"the spine",bn:"the shoulder blade",ans:["medial"],why:"The spine runs down the midline. The shoulder blade is out to the side."},
+ {v:"back",a:[25,336],b:[25,376],an:"the back of the knee",bn:"the calf",ans:["proximal","superior"],why:"The back of the knee is closer to where the leg joins the trunk than the calf is."},
+ {v:"side",a:[tz(196).zF-1.5,196],b:[tz(196).zB+2,196],an:"the navel",bn:"the spine",ans:["anterior"],why:"The navel is on the front of the body. The spine is at the back."},
+ {v:"side",a:[tz(118).zB+1.5,118],b:[tz(118).zF-1.5,118],an:"the shoulder blade",bn:"the breastbone",ans:["posterior"],why:"The shoulder blade is on the back. The breastbone is on the front of the chest."},
+ {v:"side",a:[-6,432],b:[31,433],an:"the heel",bn:"the toes",ans:["posterior"],why:"The toes point forward, so the heel is toward the back."},
+ {v:"side",a:[27.5,41],b:[-23,40],an:"the tip of the nose",bn:"the back of the head",ans:["anterior"],why:"The nose sticks out on the front of the head."},
+ {v:"layers",a:LP.skin,b:LP.bone,an:"the skin",bn:"the bone",ans:["superficial"],why:"The skin is on the surface. The bone is far inside."},
+ {v:"layers",a:LP.bone,b:LP.muscle,an:"the bone",bn:"the muscle",ans:["deep"],why:"The bone lies under the muscle, farther from the surface."},
+ {v:"layers",a:LP.fat,b:LP.muscle,an:"the fat layer",bn:"the muscle",ans:["superficial"],why:"The fat layer is just under the skin, closer to the surface than the muscle."},
+ {v:"layers",a:LP.muscle,b:LP.skin,an:"the muscle",bn:"the skin",ans:["deep"],why:"The muscle lies under the skin and fat, farther from the surface."}];
+const AT_PRI=["digital","palmar","carpal","antecubital","olecranal","patellar","popliteal","tarsal","pedal","calcaneal","scapular","vertebral","occipital","cervical","cephalic","thoracic","abdominal","lumbar","gluteal","brachial","antebrachial","femoral","crural","sural"];
+const AT_MODES=[{id:"dir",name:"Name the direction"},{id:"find",name:"Find the region"},{id:"name",name:"Name the region"}];
+const atBest=store.get("bb-at-best")||{};
+let AT={mode:"dir",qs:[],i:0,score:0,tried:false,hint:false,shown:false,done:false,anim:0,clicked:null,chosen:null,finished:false};
+function atView(v){return VIEW[v]}
+function atPt(v,p){if(v==="layers")return p;const o=VIEW[v];return [o[0]+p[0]*o[2],o[1]+p[1]*o[2]]}
+function atNewRound(){AT.i=0;AT.score=0;AT.finished=false;
+  if(AT.mode==="dir"){const f=shuffle(DIRQ.filter(q=>q.v==="front")).slice(0,5),o=shuffle(DIRQ.filter(q=>q.v==="back"||q.v==="side")).slice(0,3),l=shuffle(DIRQ.filter(q=>q.v==="layers")).slice(0,2);AT.qs=shuffle(f.concat(o,l))}
+  else AT.qs=shuffle(REGIONS).slice(0,10);
+  atSetup()}
+function atSetup(){AT.tried=false;AT.hint=false;AT.shown=false;AT.done=false;AT.anim=0;AT.clicked=null;AT.chosen=null;clearMsg($("#atMsg"));$("#atNext").hidden=true;
+  const q=AT.qs[AT.i];$("#atN").textContent=AT_MODES.find(m=>m.id===AT.mode).name+" · question "+(AT.i+1)+" of "+AT.qs.length;$("#atProg").style.width=(AT.i/AT.qs.length*100)+"%";
+  const box=$("#atOpts");box.innerHTML="";box.className="opts";$("#atAlt").hidden=AT.mode!=="find";
+  if(AT.mode==="dir"){$("#atQ").innerHTML=`<span style="color:var(--dot-a)">A</span> (${q.an}) is ____ to <span style="color:var(--dot-b)">B</span> (${q.bn}).`;
+    ["superior","inferior","anterior","posterior","medial","lateral","proximal","distal","superficial","deep"].forEach(t=>{const b=document.createElement("button");b.type="button";b.className="opt";b.dataset.t=t;
+      b.innerHTML=t[0].toUpperCase()+t.slice(1)+(SYN[t]?` <span class="pair">(${SYN[t]})</span>`:"");b.onclick=()=>atAnswerDir(t,b);box.appendChild(b)});
+    $("#atCap").textContent="Dot A and dot B are on the "+(q.v==="layers"?"skin-to-bone layers":q.v==="side"?"side view":q.v==="back"?"posterior view":"anterior view")+". Pick the word that finishes the sentence.";
+    SA.cv.setAttribute("aria-label","Two dots: A on "+q.an+" and B on "+q.bn+", on the "+(q.v==="layers"?"layer diagram":q.v+" view")+".");
+  } else if(AT.mode==="find"){$("#atQ").innerHTML=`Click the <b>${q.name}</b> region.`;$("#atCap").textContent="Click or tap the body. Front regions are on the anterior view, back regions on the posterior view.";
+    SA.cv.setAttribute("aria-label","Anterior and posterior body views. Click the "+q.name+" region, or use the list below the picture.");
+  } else {$("#atQ").innerHTML=`What is the highlighted region called?`;box.className="opts one";
+    const others=shuffle(REGIONS.filter(r=>r.id!==q.id)).slice(0,3);shuffle([q].concat(others)).forEach(r=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=r.name;b.onclick=()=>atAnswerName(r,b);box.appendChild(b)});
+    $("#atCap").textContent="The highlighted area pulses on the body.";SA.cv.setAttribute("aria-label","A body region is highlighted: "+q.plain+".");}
+  $("#atScore").textContent=`First-try correct so far: ${AT.score} of ${AT.i}`;}
+function atFinishQ(ok){AT.done=true;if(ok&&!AT.tried&&!AT.hint&&!AT.shown)AT.score++;$("#atNext").hidden=false;$("#atNext").textContent=AT.i<AT.qs.length-1?"Next →":"See my stars";$("#atScore").textContent=`First-try correct so far: ${AT.score} of ${AT.i+1}`}
+function atAnswerDir(t,b){if(AT.done)return;const q=AT.qs[AT.i];
+  if(q.ans.indexOf(t)>=0){b.classList.add("right");AT.chosen=t;AT.anim=performance.now();
+    let txt=`✓ Yes. ${q.an[0].toUpperCase()+q.an.slice(1)} is ${t} to ${q.bn}. ${q.why}`;
+    if(t!==q.ans[0])txt+=` That is true, but on a limb anatomists usually say <b>${q.ans[0]}</b>.`;
+    else if(q.ans.length>1)txt+=` (${q.ans[1][0].toUpperCase()+q.ans[1].slice(1)} is also true, but on a limb we use ${q.ans[0]}.)`;
+    setMsg($("#atMsg"),txt,"good");atFinishQ(true)}
+  else{b.classList.add("wrong");AT.tried=true;const opp=q.ans.indexOf(OPP[t])>=0;
+    setMsg($("#atMsg"),`Not quite. <b>${t[0].toUpperCase()+t.slice(1)}</b> means ${TERMS[t]}. ${opp?"That is the opposite direction here: you are comparing A to B, so start from B and look at where A is.":"That is not how these two places differ."} ${q.why}`,"warn")}}
+function atAnswerName(r,b){if(AT.done)return;const q=AT.qs[AT.i];
+  if(r.id===q.id){b.classList.add("right");setMsg($("#atMsg"),`✓ Yes. <b>${q.name}</b> means ${q.plain}.`,"good");atFinishQ(true)}
+  else{b.classList.add("wrong");AT.tried=true;setMsg($("#atMsg"),`Not quite. <b>${r.name}</b> means ${r.plain}. The highlighted area is the ${q.plain}, so it is the <b>${q.name}</b> region.`,"warn")}}
+function atRegionAt(x,y){let v=null,o=null;if(x>40&&x<250){v="A";o=VIEW.front}else if(x>290&&x<510){v="P";o=VIEW.back}if(!v)return null;
+  const ux=(x-o[0])/o[2],uy=(y-o[1])/o[2];ctx=SA.ctx;ctx.save();ctx.setTransform(1,0,0,1,0,0);let hit=null;
+  for(const id of AT_PRI){const r=REG[id];if(r.view.indexOf(v)<0)continue;if(ctx.isPointInPath(regionPath(r),ux,uy)){hit=r;break}}ctx.restore();return {r:hit,v}}
+function atFindAnswer(r){if(AT.done)return;const q=AT.qs[AT.i];
+  if(r&&r.id===q.id){setMsg($("#atMsg"),`✓ Yes. That is the <b>${q.name}</b> region: ${q.plain}.`,"good");AT.clicked={r,ok:true};atFinishQ(true)}
+  else{AT.tried=true;AT.clicked={r,ok:false,t:performance.now()};
+    setMsg($("#atMsg"),r?`Not quite. You picked the <b>${r.name}</b> region (${r.plain}). Look again: where would the <b>${q.name}</b> region be?`:`Not quite. That spot is not one of the regions in this game. Try again, or use a hint.`,"warn")}}
+SA.cv.addEventListener("click",e=>{if(curTab!=="atlas"||AT.mode!=="find"||AT.finished)return;const p=SA.toLocal(e);const h=atRegionAt(p[0],p[1]);atFindAnswer(h?h.r:null)});
+function atFillSelect(){const s=$("#atSelect");s.innerHTML=REGIONS.slice().sort((a,b)=>a.plain.localeCompare(b.plain)).map(r=>`<option value="${r.id}">${r.plain}</option>`).join("")}
+$("#atSelGo").onclick=()=>{if(AT.mode!=="find"||AT.finished)return;atFindAnswer(REG[$("#atSelect").value])};
+$("#atHint").onclick=()=>{if(AT.done||AT.finished)return;AT.hint=true;const q=AT.qs[AT.i];
+  if(AT.mode==="dir")setMsg($("#atMsg"),"Hint: "+HINTS[q.ans[0]],"info");
+  else if(AT.mode==="find")setMsg($("#atMsg"),`Hint: <b>${q.name}</b> means ${q.plain}. ${q.view==="AP"?"It shows on both the anterior and posterior views.":"Look on the "+(q.view==="P"?"posterior (back)":"anterior (front)")+" view."}`,"info");
+  else setMsg($("#atMsg"),`Hint: the highlighted area is the ${q.plain}.`,"info")};
+$("#atShow").onclick=()=>{if(AT.done||AT.finished)return;AT.shown=true;const q=AT.qs[AT.i];
+  if(AT.mode==="dir"){AT.chosen=q.ans[0];AT.anim=performance.now();$("#atOpts").querySelectorAll(".opt").forEach(b=>{if(b.dataset.t===q.ans[0])b.classList.add("right")});setMsg($("#atMsg"),`The answer is <b>${q.ans[0]}</b>: ${q.an} is ${q.ans[0]} to ${q.bn}. ${q.why}`,"info")}
+  else if(AT.mode==="find"){AT.clicked={r:q,ok:true};setMsg($("#atMsg"),`Here it is: the <b>${q.name}</b> region is the ${q.plain}.`,"info")}
+  else{$("#atOpts").querySelectorAll(".opt").forEach(b=>{if(b.textContent===q.name)b.classList.add("right")});setMsg($("#atMsg"),`It is the <b>${q.name}</b> region: ${q.plain}.`,"info")}
+  atFinishQ(false)};
+$("#atNext").onclick=()=>{if(AT.i<AT.qs.length-1){AT.i++;atSetup()}else atEnd()};
+function atEnd(){AT.finished=true;const st=AT.score>=9?3:AT.score>=7?2:1;const prev=atBest[AT.mode]||0;if(st>prev){atBest[AT.mode]=st;store.set("bb-at-best",atBest)}atModes();
+  $("#atProg").style.width="100%";$("#atOpts").innerHTML="";$("#atQ").textContent="Round complete.";$("#atNext").hidden=true;
+  setMsg($("#atMsg"),`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${AT.score} of ${AT.qs.length}</b> right on the first try, with no hint.<br><button class="btn" id="atAgain" type="button" style="margin-top:8px">Play again</button>`,"good");
+  $("#atAgain").onclick=atNewRound}
+function atModes(){const box=$("#atModes");box.innerHTML="";AT_MODES.forEach(m=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",m.id===AT.mode);
+  b.innerHTML=m.name+(atBest[m.id]?`<span class="ok" aria-label="best ${atBest[m.id]} stars">${"★".repeat(atBest[m.id])}</span>`:"");b.onclick=()=>{AT.mode=m.id;atModes();atHow();atNewRound()};box.appendChild(b)})}
+function atHow(){$("#atHow").innerHTML=AT.mode==="dir"?"<li>Dot <b>A</b> is compared to dot <b>B</b>. Finish the sentence with the best direction word.</li><li>On limbs, use proximal and distal.</li><li>The patient is always in anatomical position.</li>"
+  :AT.mode==="find"?"<li>Click or tap the named region on the anterior or posterior view.</li><li>No mouse? Pick the area from the list under the picture.</li>"
+  :"<li>One region pulses on the body. Pick its name.</li>"}
+function drawAtlas(now){SA.begin();bg();const t=now/1000;const q=AT.finished?null:AT.qs[AT.i];
+  const dimV=q&&AT.mode==="dir"?q.v:null;
+  heading(20,18,"Anterior view");heading(296,18,"Posterior view");heading(588,18,dimV==="layers"?"Skin to bone (thigh)":"Side view (facing right)");
+  drawFigure("front",VIEW.front[0],VIEW.front[1],1);drawFigure("back",VIEW.back[0],VIEW.back[1],1);
+  if(dimV==="layers"){const L=LAYERS;L.L.forEach((l,k)=>{ctx.fillStyle=C[l[3]];ctx.globalAlpha=k===1?.5:1;ctx.fillRect(L.x0,l[1],L.x1-L.x0,l[2]-l[1]);ctx.globalAlpha=1;
+      if(k===2)for(let i=0;i<10;i++)line(L.x0,l[1]+12+i*17,L.x1,l[1]+12+i*17,C["cut-edge"],1.1);
+      if(k===3){ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=2;ctx.strokeRect(L.x0+1,l[1]+1,L.x1-L.x0-2,l[2]-l[1]-2);for(let i=0;i<26;i++)circ(L.x0+10+rnd(i)*(L.x1-L.x0-20),l[1]+12+rnd(i+40)*(l[2]-l[1]-24),1.5+rnd(i+7)*1.5,C["bone-edge"])}
+      label(L.x1-6,(l[1]+l[2])/2+(k===2?40:0),l[0],{align:"right",size:11.5,weight:600})});
+    line(L.x0,70,L.x1,70,C["skin-edge"],2);label(L.x0,58,"body surface",{size:11.5,pill:false,color:C["ink-soft"]})}
+  else drawFigure("side",VIEW.side[0],VIEW.side[1],1);
+  if(dimV){ctx.globalAlpha=.6;ctx.fillStyle=C.panel;const R={front:[40,26,210,470],back:[300,26,210,470],side:[560,26,240,470],layers:[560,26,240,470]};Object.keys(R).forEach(k=>{if(k===dimV||(dimV==="layers"&&k==="side")||(dimV==="side"&&k==="layers"))return;const r=R[k];ctx.fillRect(r[0],r[1],r[2],r[3])});ctx.globalAlpha=1}
+  if(q&&AT.mode==="dir"){
+    if(AT.hint&&/medial|lateral/.test(q.ans[0])){const o=VIEW[q.v];line(o[0],o[1],o[0],o[1]+440,C["ink-soft"],1.6,[6,5])}
+    const A=atPt(q.v,q.a),B=atPt(q.v,q.b);dotPt(A[0],A[1],C["dot-a"],"A",t);dotPt(B[0],B[1],C["dot-b"],"B",t);
+    if(AT.chosen){const g=ease(clamp((now-AT.anim)/700,0,1));const d=Math.hypot(A[0]-B[0],A[1]-B[1]);const k=Math.max(0,1-11/d);
+      arrow(B[0],B[1],B[0]+(A[0]-B[0])*k*g,B[1]+(A[1]-B[1])*k*g,C.act2,3);if(g>.9)label((A[0]+B[0])/2+(Math.abs(A[1]-B[1])>Math.abs(A[0]-B[0])?14:0),(A[1]+B[1])/2-(Math.abs(A[1]-B[1])>Math.abs(A[0]-B[0])?0:16),AT.chosen,{size:12.5,weight:700,color:C.act2,border:C.act2,align:Math.abs(A[1]-B[1])>Math.abs(A[0]-B[0])?"left":"center"})}}
+  if(q&&AT.mode==="find"){if(AT.clicked&&AT.clicked.r){const r=AT.clicked.r;const fresh=!AT.clicked.ok&&now-AT.clicked.t<1800;if(AT.clicked.ok||fresh){const col=AT.clicked.ok?C.good:C.warn;
+      if(r.view.indexOf("A")>=0)fillRegion(r,VIEW.front[0],VIEW.front[1],1,col,.55);if(r.view.indexOf("P")>=0)fillRegion(r,VIEW.back[0],VIEW.back[1],1,col,.55);
+      const V=r.view==="P"?VIEW.back:VIEW.front;const ax=r.view==="P"?Math.abs(r.at[0]):-Math.abs(r.at[0]);label(V[0]+ax*V[2],V[1]+r.at[1]*V[2]-18,r.name+(AT.clicked.ok?" ✓":""),{align:"center",size:12.5,weight:700,border:col})}}
+    if(AT.hint&&!AT.done){const V=AT.qs[AT.i].view;ctx.strokeStyle=C.gold;ctx.lineWidth=3;ctx.setLineDash([8,6]);if(V.indexOf("A")>=0){rr(42,28,196,466,10);ctx.stroke()}if(V.indexOf("P")>=0){rr(302,28,196,466,10);ctx.stroke()}ctx.setLineDash([])}}
+  if(q&&AT.mode==="name"){const a=.35+.25*Math.sin(t*4);if(q.view.indexOf("A")>=0)fillRegion(q,VIEW.front[0],VIEW.front[1],1,AT.done?C.good:C.act2,a);if(q.view.indexOf("P")>=0)fillRegion(q,VIEW.back[0],VIEW.back[1],1,AT.done?C.good:C.act2,a)}
+  if(AT.finished){label(400,250,"Round complete. Pick a mode above or play again.",{align:"center",size:15,weight:600,border:C.accent})}
+}
+
+/* =====================================================================
+   PART 2 - PLANE SLICER
+   ===================================================================== */
+const SS=makeStage("cvSlice",800,480);
+const RANGE={body:{S:[-92,92],F:[-24,30],T:[4,436]},brain:{S:[-58,58],F:[-72,72],T:[-45,82]},kidney:{S:[-30,30],F:[-20,20],T:[-55,55]}};
+const PNAME={S:"Sagittal",F:"Frontal (coronal)",T:"Transverse (horizontal)"};
+const ONM={body:"Body",brain:"Brain",kidney:"Kidney"};
+let SL={mode:"explore",obj:"body",plane:"S",v:50,cur:0,changeT:0,lastPlane:"S",lastObj:"body"};
+function slPos(){const r=RANGE[SL.obj][SL.plane];return lerp(r[0],r[1],SL.v/100)}
+/* ---- brain model (units ~ mm-ish; x left/right, y down, z anterior +) ---- */
+const BRAIN=[{id:"cer",c:[0,0,0],r:[58,45,72]},{id:"cb",c:[0,40,-48],r:[40,17,22]},{id:"bs",c:[0,56,-10],r:[10,30,10]},{id:"cc",c:[0,-6,-2],r:[22,4,34]},{id:"vl",c:[-9,3,-2],r:[5,8,28]},{id:"vr",c:[9,3,-2],r:[5,8,28]}];
+const KID={r:[30,55,20]};
+function ellSec(e,plane,pos){const ax=plane==="S"?0:plane==="F"?2:1;const d=(pos-e.c[ax])/e.r[ax];if(Math.abs(d)>=1)return null;const k=sq(1-d*d);
+  if(plane==="S")return {x:e.c[2],y:e.c[1],rx:e.r[2]*k,ry:e.r[1]*k,k};if(plane==="F")return {x:e.c[0],y:e.c[1],rx:e.r[0]*k,ry:e.r[1]*k,k};return {x:e.c[0],y:-e.c[2],rx:e.r[0]*k,ry:e.r[2]*k,k}}
+function gyriPath(x,y,rx,ry,amp,n){ctx.beginPath();for(let i=0;i<=120;i++){const a=i/120*TAU;const f=1+amp*Math.sin(a*n)+amp*.5*Math.sin(a*n*2.3+1);ctx.lineTo(x+Math.cos(a)*rx*f,y+Math.sin(a)*ry*f)}ctx.closePath()}
+function brainSection(plane,pos,ox,oy,s){ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);const white=mix(C.brain,"#ffffff",.55),gray=C.brain;const items=[];
+  const E=id=>BRAIN.find(b=>b.id===id);
+  const cb=ellSec(E("cb"),plane,pos);if(cb){gyriPath(cb.x,cb.y,cb.rx,cb.ry,.04,22);ctx.fillStyle=gray;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1/s;ctx.stroke();
+    if(cb.rx>6){for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(cb.x,cb.y);ctx.lineTo(cb.x+Math.cos(-2.5+i*.6)*cb.rx*.75,cb.y+Math.sin(-2.5+i*.6)*cb.ry*.75);ctx.strokeStyle=white;ctx.lineWidth=2;ctx.stroke()}}items.push(["Cerebellum",cb.x,cb.y+cb.ry*.2])}
+  const bs=ellSec(E("bs"),plane,pos);if(bs){ell(bs.x,bs.y,bs.rx,bs.ry,0,white,C["brain-edge"],1/s);items.push(["Brainstem",bs.x,bs.y+bs.ry*.5])}
+  const ce=ellSec(E("cer"),plane,pos);if(ce){gyriPath(ce.x,ce.y,ce.rx,ce.ry,.025,26);ctx.fillStyle=gray;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1/s;ctx.stroke();
+    gyriPath(ce.x,ce.y,ce.rx*.8,ce.ry*.78,.03,22);ctx.fillStyle=white;ctx.fill();items.push(["Gray matter (outer)",ce.x+ce.rx*.86,ce.y-ce.ry*.3]);items.push(["White matter",ce.x-ce.rx*.45,ce.y+ce.ry*.35]);
+    if(plane!=="S"){const top=ce.y-ce.ry*1.03,yC=plane==="F"?-10:null;ctx.strokeStyle=C.panel;ctx.lineWidth=3.2/s*1.6;ctx.beginPath();
+      if(plane==="F"){ctx.moveTo(0,top);ctx.lineTo(0,yC)}else{const cc=ellSec(E("cc"),plane,pos);if(cc){ctx.moveTo(0,ce.y-ce.ry*1.03);ctx.lineTo(0,cc.y-cc.ry);ctx.moveTo(0,cc.y+cc.ry);ctx.lineTo(0,ce.y+ce.ry*1.03)}else{ctx.moveTo(0,ce.y-ce.ry*1.03);ctx.lineTo(0,ce.y+ce.ry*1.03)}}
+      ctx.stroke();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1/s;ctx.stroke();items.push(["Longitudinal fissure",0,ce.y-ce.ry*.85])}}
+  const cc=ellSec(E("cc"),plane,pos);if(cc&&ce){ell(cc.x,cc.y,cc.rx,Math.max(2.5,cc.ry),0,mix(C.brain,"#ffffff",.82),C["brain-edge"],.8/s);items.push(["Corpus callosum",cc.x,cc.y])}
+  ["vl","vr"].forEach(id=>{const v=ellSec(E(id),plane,pos);if(v&&ce){ell(v.x,v.y,v.rx,v.ry,0,C.fluid,C["brain-edge"],.6/s);if(id==="vl")items.push(["Ventricle (fluid)",v.x,v.y])}});
+  ctx.restore();return items.map(i=>[i[0],ox+i[1]*s,oy+i[2]*s])}
+function kidneySection(plane,pos,ox,oy,s){ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);const items=[];const e={c:[0,0,0],r:KID.r};const S=ellSec(e,plane,pos);
+  if(!S){ctx.restore();return items}
+  const med=mix(C.kidney,C.panel,.35),pel=C.bladder;
+  ell(S.x,S.y,S.rx,S.ry,0,C.kidney,"rgba(0,0,0,.35)",1/s);items.push(["Cortex (outer)",S.x+S.rx*.92,S.y-S.ry*.5]);
+  const hil=plane!=="S";const inner=.74;
+  if(S.k>.25){ell(S.x,S.y,S.rx*inner,S.ry*inner,0,mix(C.kidney,C.panel,.18));
+    const n=plane==="T"?3:plane==="F"?7:5;const apex=plane==="S"?[S.x,S.y]:[-S.rx*.35,S.y];
+    for(let i=0;i<n;i++){const a=plane==="S"?(i/n*TAU):(-1.25+i*(2.5/(n-1)));const bx=S.x+Math.cos(a)*S.rx*inner,by=S.y+Math.sin(a)*S.ry*inner;const w=plane==="S"?.32:.17;
+      const b1=[S.x+Math.cos(a-w)*S.rx*inner,S.y+Math.sin(a-w)*S.ry*inner],b2=[S.x+Math.cos(a+w)*S.rx*inner,S.y+Math.sin(a+w)*S.ry*inner];
+      const tip=plane==="S"?[lerp(bx,S.x,.55),lerp(by,S.y,.55)]:[lerp(bx,apex[0],.55),lerp(by,apex[1],.55)];
+      ctx.beginPath();ctx.moveTo(b1[0],b1[1]);ctx.lineTo(b2[0],b2[1]);ctx.lineTo(tip[0],tip[1]);ctx.closePath();ctx.fillStyle=med;ctx.fill();ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=.6/s;ctx.stroke();
+      for(let j=1;j<4;j++){const f=j/4;line(lerp(b1[0],b2[0],f),lerp(b1[1],b2[1],f),tip[0],tip[1],C["cut-edge"],.5/s)}
+      if(i===Math.floor(n/2))items.push(["Medulla: pyramid",lerp(bx,tip[0],.4),lerp(by,tip[1],.4)])}}
+  if(hil&&S.k>.35&&Math.abs(plane==="T"?pos:0)<30){const hx=-S.rx;ctx.beginPath();ctx.moveTo(hx-6,S.y-10*S.k);ctx.quadraticCurveTo(-S.rx*.3,S.y-S.ry*.35,-S.rx*.08,S.y);ctx.quadraticCurveTo(-S.rx*.3,S.y+S.ry*.35,hx-6,S.y+10*S.k);ctx.closePath();ctx.fillStyle=pel;ctx.fill();
+    ell(hx-4,S.y,9,14*S.k,0,C.panel);items.push(["Renal pelvis",-S.rx*.45,S.y]);items.push(["Hilum (notch)",hx-2,S.y+14*S.k])}
+  else if(plane==="S"&&pos<-18){ell(S.x,S.y,S.rx*.45,S.ry*.25,0,pel);items.push(["Renal pelvis",S.x,S.y])}
+  ctx.restore();return items.map(i=>[i[0],ox+i[1]*s,oy+i[2]*s])}
+const SCALE={body:{S:[598,28,.96],F:[598,28,.96],T:[598,250,2.1]},brain:{S:[598,236,1.95],F:[598,236,2.0],T:[598,244,1.9]},kidney:{S:[598,240,3.4],F:[598,240,3.4],T:[598,240,4.2]}};
+const ONAME2={lung:"Lung",heart:"Heart",liver:"Liver",stomach:"Stomach",gut:"Intestines",kidney:"Kidney",bladder:"Bladder",brain:"Brain"};
+function bodyItems(plane,pos,ox,oy,s){const out=[];const seen={};
+  ORGANS.forEach(g=>{const ax=plane==="S"?0:plane==="F"?2:1;const d=(pos-g.c[ax])/g.r[ax];if(Math.abs(d)>=1)return;const k=sq(1-d*d);
+    let X,Y,r;if(plane==="S"){X=g.c[2];Y=g.c[1];r=Math.min(g.r[2],g.r[1])*k}else if(plane==="F"){X=g.c[0];Y=g.c[1];r=Math.min(g.r[0],g.r[1])*k}else{X=g.c[0];Y=-g.c[2];r=Math.min(g.r[0],g.r[2])*k}
+    if(r<3.5||seen[g.id])return;seen[g.id]=1;out.push([ONAME2[g.id],ox+X*s,oy+Y*s])});
+  if(plane==="S"&&Math.abs(pos)<5)out.push([Math.abs(pos)<2.2?"Spinal cord":"Vertebral column",ox+(spineZ(150)-2)*s,oy+150*s]);
+  if(plane==="T"&&pos>=60&&pos<=250)out.push(["Vertebra",ox,oy-spineZ(pos)*s]);
+  return out}
+function drawObjSection(obj,plane,pos,reveal){const sc=SCALE[obj][plane];
+  ctx.save();if(reveal<1){ctx.beginPath();ctx.rect(410,0,390*reveal,480);ctx.clip()}
+  let items;if(obj==="body"){drawSection(plane,pos,sc[0],sc[1],sc[2]);items=bodyItems(plane,pos,sc[0],sc[1],sc[2])}else if(obj==="brain")items=brainSection(plane,pos,sc[0],sc[1],sc[2]);else items=kidneySection(plane,pos,sc[0],sc[1],sc[2]);
+  ctx.restore();return items}
+function labelItems(items,plane,obj){const used=[];
+  if(obj==="body"&&plane==="T"){items.forEach(i=>label(i[1],i[2],i[0],{align:"center",size:11.5,weight:600,bga:.8}));return}
+  items.forEach(i=>{const right=obj==="body"?true:i[1]>=598;const lx=obj==="body"?700:right?782:416;let ly=i[2];while(used.some(u=>Math.abs(u[0]-ly)<19&&u[1]===right))ly+=19;used.push([ly,right]);
+    line(i[1],i[2],lx+(right?(obj==="body"?-4:-60):60),ly,C["ink-soft"],1);circ(i[1],i[2],2.4,C.ink);label(lx,ly,i[0],{align:obj==="body"?"left":right?"right":"left",size:11.5,weight:600})})}
+/* object views on the left */
+function brainSil(view,ox,oy,s){ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);const gray=C.brain;
+  if(view==="front"){ell(0,56,10,26,0,mix(C.brain,"#ffffff",.4),C["brain-edge"],1/s);ell(-22,40,20,15,0,gray,C["brain-edge"],1/s);ell(22,40,20,15,0,gray,C["brain-edge"],1/s);
+    gyriPath(0,0,58,45,.025,26);ctx.fillStyle=gray;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.2/s;ctx.stroke();line(0,-45,0,8,C["brain-edge"],1.6/s);
+    for(let i=0;i<6;i++){ctx.beginPath();ctx.arc(i<3?-30:30,-10+(i%3)*14,10,0,Math.PI);ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=.8/s;ctx.stroke()}}
+  else{ell(-10,56,10,26,0,mix(C.brain,"#ffffff",.4),C["brain-edge"],1/s);gyriPath(-48,40,22,17,.04,22);ctx.fillStyle=gray;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1/s;ctx.stroke();
+    gyriPath(0,0,72,45,.025,30);ctx.fillStyle=gray;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.2/s;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-6,-44);ctx.quadraticCurveTo(4,-10,-2,20);ctx.moveTo(30,12);ctx.quadraticCurveTo(-10,6,-40,16);ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.4/s;ctx.stroke()}
+  ctx.restore()}
+function kidneySil(view,ox,oy,s){ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);
+  if(view==="front"){ell(0,0,30,55,0,C.kidney,"rgba(0,0,0,.35)",1/s);ell(-33,0,9,15,0,C.panel);ctx.beginPath();ctx.moveTo(-28,8);ctx.quadraticCurveTo(-40,30,-34,70);ctx.strokeStyle=C.bladder;ctx.lineWidth=4/s*2;ctx.stroke();
+    line(-28,-6,-46,-14,C.vessel,3);line(-28,0,-46,2,C.glucagon,3);}
+  else{ell(0,0,20,55,0,C.kidney,"rgba(0,0,0,.35)",1/s)}
+  ctx.restore()}
+function objViews(obj,plane,pos,showPlane){const isB=obj==="body";
+  const FV=isB?[110,22,.98]:obj==="brain"?[120,230,1.45]:[120,240,2.6],SV=isB?[318,22,.98]:obj==="brain"?[312,230,.92]:[318,240,2.6];
+  heading(20,470,"front view");heading(SV[0]-50,470,"side view");
+  if(isB){drawFigure("front",FV[0],FV[1],FV[2]);drawFigure("side",SV[0],SV[1],SV[2])}else if(obj==="brain"){brainSil("front",FV[0],FV[1],FV[2]);brainSil("side",SV[0],SV[1],SV[2])}else{kidneySil("front",FV[0],FV[1],FV[2]);kidneySil("side",SV[0],SV[1],SV[2])}
+  if(!showPlane)return;
+  const ext=isB?[0,440]:obj==="brain"?[-50,86]:[-60,60];const yTop=v=>v[1]+ext[0]*v[2]-8,yBot=v=>v[1]+ext[1]*v[2]+8;
+  const tint=(v,w)=>{ctx.globalAlpha=.13;ctx.fillStyle=C.plane;ctx.fillRect(v[0]-w,yTop(v),2*w,yBot(v)-yTop(v));ctx.globalAlpha=.8;ctx.strokeStyle=C.plane;ctx.lineWidth=1.5;ctx.strokeRect(v[0]-w,yTop(v),2*w,yBot(v)-yTop(v));ctx.globalAlpha=1;
+    label(v[0],yTop(v)-10,"plane faces you",{align:"center",size:11,color:C.plane,weight:600})};
+  if(plane==="S"){planeV(FV[0]+pos*FV[2],yTop(FV),yBot(FV),C.plane);tint(SV,isB?42:obj==="brain"?72:58)}
+  else if(plane==="F"){planeV(SV[0]+pos*SV[2],yTop(SV),yBot(SV),C.plane);tint(FV,isB?100:obj==="brain"?90:84)}
+  else{planeH(FV[1]+pos*FV[2],FV[0]-(isB?100:90),FV[0]+(isB?100:90),C.plane);planeH(SV[1]+pos*SV[2],SV[0]-(isB?45:72),SV[0]+(isB?45:72),C.plane)}}
+function slPosText(){const p=slPos();if(SL.plane==="S"){if(SL.obj==="kidney")return "parasagittal";return Math.abs(p)<1.5?"midsagittal":"parasagittal, "+(p<0?"body's right":"body's left")}
+  if(SL.plane==="F"){const r=RANGE[SL.obj].F;const m=(r[0]+r[1])/2;return Math.abs(p-m)<(r[1]-r[0])*.08?"middle":p>m?"toward the front":"toward the back"}
+  if(SL.obj==="body")return levelName2(p);return (p<RANGE[SL.obj].T[0]*.3?"upper part":p>RANGE[SL.obj].T[1]*.4?"lower part":"middle")}
+function levelName2(y){return y<62?"head":y<88?"neck":y<160?"chest":y<214?"abdomen":y<252?"pelvis":y<330?"thighs":y<410?"legs":"feet"}
+const SLTXT={body:{S:"A sagittal cut through the body, seen from the side. Slide it to the exact middle for a midsagittal section: you will see the brain, spinal cord, heart, and liver cut down the middle.",F:"A frontal (coronal) cut, seen from the front. Slide from the front of the body to the back and watch which organs appear.",T:"A transverse (horizontal) cut makes a cross-section. Front is at the top, the body's right is on your left, like a CT scan."},
+  brain:{S:"A sagittal cut shows the brain from the side. At the exact middle you see the corpus callosum (the bridge between the two halves) and the brainstem.",F:"A frontal (coronal) cut shows both halves of the brain side by side, with the deep fissure between them.",T:"A transverse cut shows the brain from above, front at the top, with the fissure running front to back."},
+  kidney:{S:"Kidneys sit off to the side of the body, so any sagittal cut through one is parasagittal.",F:"The classic textbook view of the kidney: the outer cortex, the striped pyramids of the medulla, and the renal pelvis that collects urine at the notch (hilum).",T:"A transverse cut through the kidney: the notch (hilum) is on the side that faces the spine."}};
+const SLTRY={body:{S:"Snap to the middle, then slide a little to one side. Which organs disappear?",F:"Move the plane toward the back. When do the kidneys show up?",T:"Slide from the head to the feet. Find a slice with both lungs and the heart."},
+  brain:{S:"Compare the middle with a cut farther out. Where does the corpus callosum go?",F:"Find the slice that shows the ventricles (fluid spaces).",T:"Slide up and down to find the corpus callosum crossing the midline."},
+  kidney:{S:"Slide toward the hilum side. When does the renal pelvis appear?",F:"Count the pyramids in the middle slice.",T:"Find the slice where the renal pelvis reaches the notch."}};
+function slSegs(){const o=$("#slObj");o.innerHTML="";["body","brain","kidney"].forEach(k=>{const b=document.createElement("button");b.type="button";b.textContent=ONM[k];b.setAttribute("aria-pressed",k===SL.obj);b.onclick=()=>{SL.obj=k;SL.v=50;$("#slPos").value=50;slChanged(true)};o.appendChild(b)});
+  const p=$("#slPlane");p.innerHTML="";["S","F","T"].forEach(k=>{const b=document.createElement("button");b.type="button";b.textContent=PNAME[k].split(" ")[0];b.setAttribute("aria-pressed",k===SL.plane);b.onclick=()=>{SL.plane=k;SL.v=50;$("#slPos").value=50;slChanged(true)};p.appendChild(b)})}
+function slChanged(big){if(big){SL.changeT=performance.now();SL.cur=slPos()}slSegs();$("#slPosOut").textContent=slPosText();
+  $("#slTitle").textContent=ONM[SL.obj]+": "+PNAME[SL.plane]+" plane";$("#slText").textContent=SLTXT[SL.obj][SL.plane];$("#slTry").textContent=SLTRY[SL.obj][SL.plane];
+  $("#slPos").setAttribute("aria-valuetext",slPosText());
+  slLegend(SL.obj);
+  SS.cv.setAttribute("aria-label",ONM[SL.obj]+" cut by a "+PNAME[SL.plane]+" plane ("+slPosText()+"), with the resulting section on the right.")}
+function slLegend(obj){$("#slLegend").innerHTML=(obj==="body"?[["plane","Plane"],["cut","Cut surface"],["bone","Bone"],["lung","Lung"],["heart","Heart"],["liver","Liver"]]:obj==="brain"?[["brain","Gray matter"],["bone","White matter (lighter)"],["fluid","Ventricle (fluid)"]]:[["kidney","Cortex"],["cut","Medulla (pyramids)"],["bladder","Renal pelvis"]]).map(l=>`<span><i style="background:var(--${l[0]})"></i>${l[1]}</span>`).join("")}
+$("#slPos").oninput=e=>{SL.v=+e.target.value;slChanged(false)};
+$("#slMid").onclick=()=>{SL.v=50;$("#slPos").value=50;slChanged(false)};
+/* ---- quiz ---- */
+const SQ_OPTS=[["mid","Midsagittal"],["para","Parasagittal"],["F","Frontal (coronal)"],["T","Transverse (horizontal)"]];
+const SHOWS={mid:"a cut right down the middle that splits left from right into equal halves",para:"a cut that splits left from right, but off the midline, so the parts are unequal",F:"the inside as if seen from the front, with the left and right sides both present",T:"a slice straight across, like a coin cut from a carrot, seen from below or above"};
+const CLUE={body:{mid:"The outline is tall and narrow like a profile, and the spinal cord and brain are cut right down the middle.",para:"The outline is a tall side-on slice, but there is no spinal cord, so the cut missed the midline.",F:"The outline is tall and wide, with left and right parts side by side.",T:"It is a short, wide slice. The front is at the top and the back is at the bottom."},
+  brain:{mid:"You see the brain from the side, with the corpus callosum and brainstem cut down the middle.",para:"You see the brain from the side, but there is no brainstem or corpus callosum, so the cut is off to one side.",F:"Both halves of the brain sit side by side with the fissure between them, as if you were looking at the face.",T:"Both halves of the brain show from above, with the fissure running from front to back."},
+  kidney:{para:"It is a tall, narrow oval seen from the side. Kidneys sit off the midline, so this is parasagittal.",F:"It is the classic bean shape with the notch (hilum), the cortex, the pyramids, and the renal pelvis.",T:"It is a short, round slice with the notch on one side."}};
+let SQ={qs:[],i:0,score:0,tried:false,hint:false,done:false,reveal:0,finished:false};
+function sqMake(){const out=[];const objs=["body","body","body","brain","brain","kidney","kidney","body"];
+  shuffle(objs).forEach((o,i)=>{let kinds=o==="kidney"?["para","F","T"]:["mid","para","F","T"];const a=kinds[(i+Math.floor(Math.random()*4))%kinds.length];const R=RANGE[o];let plane,pos;
+    if(a==="mid"){plane="S";pos=0}else if(a==="para"){plane="S";pos=(Math.random()<.5?-1:1)*(o==="body"?24:o==="brain"?28+Math.random()*12:6+Math.random()*12)}
+    else if(a==="F"){plane="F";pos=o==="body"?lerp(-6,10,Math.random()):lerp(-8,8,Math.random())}
+    else{plane="T";pos=o==="body"?[34,124,140,190,290,380][Math.floor(Math.random()*6)]:o==="brain"?[-24,-6,10,30][Math.floor(Math.random()*4)]:[-24,0,18][Math.floor(Math.random()*3)]}
+    out.push({obj:o,plane,pos,ans:a})});return out}
+function sqStart(){SQ.qs=sqMake();SQ.i=0;SQ.score=0;SQ.finished=false;sqSetup()}
+function sqSetup(){SQ.tried=false;SQ.hint=false;SQ.done=false;clearMsg($("#sqMsg"));$("#sqNext").hidden=true;const q=SQ.qs[SQ.i];
+  $("#sqN").textContent="Quiz · section "+(SQ.i+1)+" of "+SQ.qs.length+" · "+ONM[q.obj];$("#sqProg").style.width=(SQ.i/SQ.qs.length*100)+"%";
+  const box=$("#sqOpts");box.innerHTML="";SQ_OPTS.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[1];b.dataset.k=o[0];b.onclick=()=>sqAnswer(o[0],b);box.appendChild(b)});
+  $("#sqScore").textContent=`First-try correct: ${SQ.score} of ${SQ.i}`;slLegend(q.obj);SS.cv.setAttribute("aria-label","Quiz: a section of the "+ONM[q.obj].toLowerCase()+". Which plane made it?")}
+function sqName(k){return SQ_OPTS.find(o=>o[0]===k)[1]}
+function sqAnswer(k,b){if(SQ.done)return;const q=SQ.qs[SQ.i];const clue=CLUE[q.obj][q.ans];
+  if(k===q.ans){b.classList.add("right");SQ.done=true;SQ.reveal=performance.now();if(!SQ.tried&&!SQ.hint)SQ.score++;setMsg($("#sqMsg"),`✓ Yes, ${sqName(k).toLowerCase()}. ${clue}`,"good");sqAfter()}
+  else{b.classList.add("wrong");SQ.tried=true;let txt;
+    if((k==="mid"||k==="para")&&(q.ans==="mid"||q.ans==="para"))txt=`Close. It is a sagittal section, but ${q.ans==="mid"?"the cut is right on the midline":"the cut is off the midline"}. ${clue}`;
+    else if(k==="mid"&&q.obj==="kidney")txt=`Not quite. The kidneys sit off to the side of the body, so a cut through a kidney can never be on the body's midline. ${clue}`;
+    else txt=`Not quite. A ${sqName(k).toLowerCase()} section would show ${SHOWS[k]}. Look again: ${clue}`;
+    setMsg($("#sqMsg"),txt,"warn")}}
+function sqAfter(){$("#sqNext").hidden=false;$("#sqNext").textContent=SQ.i<SQ.qs.length-1?"Next →":"See my stars";$("#sqScore").textContent=`First-try correct: ${SQ.score} of ${SQ.i+1}`}
+$("#sqHint").onclick=()=>{if(SQ.done||SQ.finished)return;SQ.hint=true;const q=SQ.qs[SQ.i];
+  setMsg($("#sqMsg"),"Hint: Is the outline tall or short? Do you see the left and right sides together? Is anything on the midline (like the spinal cord or corpus callosum) cut straight down the middle?"+(q.obj==="kidney"?" Remember that the kidneys sit off the midline.":""),"info")};
+$("#sqShow").onclick=()=>{if(SQ.done||SQ.finished)return;const q=SQ.qs[SQ.i];SQ.done=true;SQ.reveal=performance.now();$("#sqOpts").querySelectorAll(".opt").forEach(b=>{if(b.dataset.k===q.ans)b.classList.add("right")});
+  setMsg($("#sqMsg"),`It is <b>${sqName(q.ans).toLowerCase()}</b>. ${CLUE[q.obj][q.ans]}`,"info");sqAfter()};
+$("#sqNext").onclick=()=>{if(SQ.i<SQ.qs.length-1){SQ.i++;sqSetup()}else sqEnd()};
+function sqEnd(){SQ.finished=true;const st=SQ.score>=7?3:SQ.score>=5?2:1;const b=store.get("bb-sq-best")||0;if(st>b)store.set("bb-sq-best",st);slModes();
+  $("#sqOpts").innerHTML="";$("#sqProg").style.width="100%";setMsg($("#sqMsg"),`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${SQ.score} of ${SQ.qs.length}</b> right on the first try.<br><button class="btn" id="sqAgain" type="button" style="margin-top:8px">New quiz</button>`,"good");$("#sqAgain").onclick=sqStart}
+function slModes(){const box=$("#slModes");box.innerHTML="";const best=store.get("bb-sq-best")||0;[["explore","Explore the planes"],["quiz","Quiz: which plane?"]].forEach(m=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",m[0]===SL.mode);
+  b.innerHTML=m[1]+(m[0]==="quiz"&&best?`<span class="ok" aria-label="best ${best} stars">${"★".repeat(best)}</span>`:"");b.onclick=()=>{SL.mode=m[0];$("#slExplore").hidden=m[0]!=="explore";$("#slQuiz").hidden=m[0]!=="quiz";$("#slCtrl").hidden=m[0]!=="explore";if(m[0]==="quiz"&&(!SQ.qs.length||SQ.finished))sqStart();slModes()};box.appendChild(b)})}
+function drawSlice(now){SS.begin();bg();ctx.fillStyle=C["panel-2"];rr(410,10,382,460,8);ctx.fill();
+  if(SL.mode==="explore"){const target=slPos();SL.cur+= (target-SL.cur)*.18;const rev=clamp((now-SL.changeT)/700,0,1);
+    objViews(SL.obj,SL.plane,SL.cur,true);const items=drawObjSection(SL.obj,SL.plane,SL.cur,rev);if(rev>=1)labelItems(items,SL.plane,SL.obj);
+    heading(424,30,PNAME[SL.plane]+" section"+(SL.plane==="T"?" (cross-section)":""),C.plane);label(424,52,slPosText(),{size:12.5,weight:600,pill:false,color:C["ink-soft"]});
+    slOrient(SL.obj,SL.plane)}
+  else{const q=SQ.qs[SQ.i];if(!q)return;const rv=SQ.done?ease(clamp((now-SQ.reveal)/900,0,1)):0;
+    if(SQ.done){const R=RANGE[q.obj][q.plane];objViews(q.obj,q.plane,lerp(q.plane==="T"?R[0]:R[1],q.pos,rv),true)}else{objViews(q.obj,q.plane,0,false);label(205,12,"Which plane made the section on the right?",{align:"center",size:13,weight:600,border:C.plane})}
+    if(!SQ.finished){drawObjSection(q.obj,q.plane,q.pos,1);heading(424,30,"Mystery section",C.plane);slOrient(q.obj,q.plane,!SQ.done)}}}
+function slOrient(obj,plane,hide){if(hide){label(598,456,"orientation hidden",{align:"center",size:11.5,color:C["ink-soft"],pill:false});return}
+  const t=plane==="S"?"← posterior    anterior →":plane==="F"?"body's right ←   → body's left (seen from the front)":"front (anterior) at the top";label(598,456,t,{align:"center",size:11.5,color:C["ink-soft"],pill:false})}
+
+/* =====================================================================
+   shared drag / tap-to-place helper
+   Items are <button class="card-chip" data-id>. Targets are elements with data-zone
+   (overlay .zone buttons on the picture, and .zbtn buttons under it).
+   The dragged chip never leaves the DOM, so pointer capture is never lost.
+   ===================================================================== */
+function makeDnD(root,onPlace,onEmpty){let sel=null,drag=null;
+  const zones=()=>root.querySelectorAll("[data-zone]");
+  function select(id){sel=(id&&sel!==id)?id:null;root.querySelectorAll(".card-chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.id===sel?"true":"false"));zones().forEach(z=>z.classList.toggle("armed",!!sel))}
+  function zoneAt(x,y){const el=document.elementFromPoint(x,y);return el?el.closest("[data-zone]"):null}
+  root.addEventListener("pointerdown",e=>{const c=e.target.closest(".card-chip");if(!c||e.button>0)return;drag={id:c.dataset.id,el:c,x:e.clientX,y:e.clientY,moved:false,pid:e.pointerId};try{c.setPointerCapture(e.pointerId)}catch(_){}});
+  root.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.pid)return;
+    if(!drag.moved&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>6){drag.moved=true;drag.ghost=drag.el.cloneNode(true);drag.ghost.classList.add("ghost");drag.ghost.removeAttribute("data-id");drag.ghost.setAttribute("aria-hidden","true");document.body.appendChild(drag.ghost)}
+    if(drag.moved){e.preventDefault();drag.ghost.style.left=e.clientX+"px";drag.ghost.style.top=e.clientY+"px";const z=zoneAt(e.clientX,e.clientY);zones().forEach(el=>el.classList.toggle("over",el===z))}});
+  const end=(e,ok)=>{if(!drag||e.pointerId!==drag.pid)return;const d=drag;drag=null;if(d.ghost)d.ghost.remove();zones().forEach(el=>el.classList.remove("over"));
+    if(d.moved){d.el._skip=true;setTimeout(()=>{d.el._skip=false},50);if(ok){const z=zoneAt(e.clientX,e.clientY);if(z){select(null);onPlace(d.id,z.dataset.zone)}}}};
+  root.addEventListener("pointerup",e=>end(e,true));root.addEventListener("pointercancel",e=>end(e,false));
+  root.addEventListener("click",e=>{const c=e.target.closest(".card-chip");if(c){if(c._skip)return;select(c.dataset.id);return}
+    const z=e.target.closest("[data-zone]");if(z){if(sel){const id=sel;select(null);onPlace(id,z.dataset.zone)}else if(onEmpty)onEmpty(z.dataset.zone)}});
+  return {select,get sel(){return sel}}}
+function zoneEls(holder,btnRow,zs,W0,H0,cls){holder.innerHTML="";btnRow.innerHTML='<span class="zl">Places:</span>';
+  zs.forEach(z=>{const b=document.createElement("button");b.type="button";b.className="zone";b.dataset.zone=z.id;b.setAttribute("aria-label",z.name);
+    b.style.left=(z.r[0]/W0*100)+"%";b.style.top=(z.r[1]/H0*100)+"%";b.style.width=(z.r[2]/W0*100)+"%";b.style.height=(z.r[3]/H0*100)+"%";holder.appendChild(b);
+    const c=document.createElement("button");c.type="button";c.className="zbtn";c.dataset.zone=z.id;c.textContent=z.name;btnRow.appendChild(c)})}
+
+/* =====================================================================
+   PART 3 - CAVITY & REGION SORTER
+   ===================================================================== */
+const SO=makeStage("cvSort",800,500);
+const CVs={ox:330,oy:8,s:1.8};
+const cvq=(z,y)=>[CVs.ox+z*CVs.s,CVs.oy+y*CVs.s];
+const zFs=y=>torsoAt(y).zF;
+function cvRect(z0,y0,z1,y1){const a=cvq(z0,y0),b=cvq(z1,y1);return [a[0],a[1],b[0]-a[0],b[1]-a[1]]}
+const TH={ox:400,oy:-200,s:2.65};const thq=(x,y)=>FP(TH.ox,TH.oy,TH.s,x,y);function thRect(x0,y0,x1,y1){const a=thq(x0,y0),b=thq(x1,y1);return [a[0],a[1],b[0]-a[0],b[1]-a[1]]}
+const AB={ox:300,oy:-186,s:2.35};const abq=(x,y)=>FP(AB.ox,AB.oy,AB.s,x,y);function abRect(x0,y0,x1,y1){const a=abq(x0,y0),b=abq(x1,y1);return [a[0],a[1],b[0]-a[0],b[1]-a[1]]}
+const SO_ROUNDS=[
+ {id:"cav",name:"Body cavities",title:"Which cavity holds it?",goal:"Put each organ into its body cavity. The view is a midsagittal section: front of the body to the right.",
+  zones:[{id:"cranial",name:"Cranial cavity",r:cvRect(-22,8,26,48)},{id:"vertebral",name:"Vertebral cavity",r:cvRect(-19,52,-6,240)},{id:"thoracic",name:"Thoracic cavity",r:cvRect(-4,92,24,158)},{id:"abdominal",name:"Abdominal cavity",r:cvRect(-5,166,23,220)},{id:"pelvic",name:"Pelvic cavity",r:cvRect(-8,224,16,252)}],
+  items:[["brain","Brain","cranial","The brain sits inside the skull, in the cranial cavity."],["cord","Spinal cord","vertebral","The spinal cord runs inside the backbone, in the vertebral cavity."],
+   ["heart","Heart","thoracic","The heart is in the chest, above the diaphragm, so it is in the thoracic cavity."],["lungs","Lungs","thoracic","The lungs fill most of the chest, inside the rib cage: the thoracic cavity."],
+   ["esoph","Esophagus","thoracic","The esophagus runs down through the chest behind the heart, in the thoracic cavity, before it passes through the diaphragm."],
+   ["stomach","Stomach","abdominal","The stomach is just below the diaphragm, in the abdominal cavity."],["liver","Liver","abdominal","The liver sits under the diaphragm on the right, in the abdominal cavity."],
+   ["spleen","Spleen","abdominal","The spleen is high on the left, under the diaphragm, in the abdominal cavity."],["si","Small intestine","abdominal","The small intestine fills the middle of the abdomen: the abdominal cavity."],
+   ["bladder","Urinary bladder","pelvic","The urinary bladder sits low, behind the pubic bone, in the pelvic cavity."],["rectum","Rectum","pelvic","The rectum is the last part of the large intestine, low in the pelvic cavity."],["uterus","Uterus","pelvic","The uterus sits low in the body, behind the bladder, in the pelvic cavity."]],
+  hint:"Ask two questions: Is it protected by bone at the back (dorsal) or in the front (ventral)? Is it above or below the diaphragm?"},
+ {id:"chest",name:"Chest close-up",title:"Inside the thoracic cavity",goal:"Put each structure into its space in the chest. You are facing the patient, so the patient's right is on your left.",
+  zones:[{id:"rpl",name:"Right pleural cavity",r:thRect(-45,90,-13,160)},{id:"lpl",name:"Left pleural cavity",r:thRect(16,90,44,160)},{id:"med",name:"Mediastinum (outside the pericardium)",r:thRect(-11,80,14,124)},{id:"peri",name:"Pericardial cavity",r:thRect(-11,127,15,160)}],
+  items:[["rlung","Right lung","rpl","The right lung is on the patient's right (your left), in the right pleural cavity."],["llung","Left lung","lpl","The left lung is on the patient's left (your right), in the left pleural cavity."],
+   ["heart2","Heart","peri","The heart is wrapped in its own sac inside the mediastinum: the pericardial cavity."],["trachea","Trachea","med","The trachea runs down the middle of the chest above the heart, in the mediastinum."],
+   ["esoph2","Esophagus","med","The esophagus runs down the middle of the chest behind the trachea and heart, in the mediastinum."],["thymus","Thymus","med","The thymus sits in the upper middle of the chest, in front of the great vessels, in the mediastinum."]],
+  hint:"Each lung has its own pleural cavity. Everything in the middle of the chest is in the mediastinum. Only the heart is inside the pericardial cavity."},
+ {id:"quad",name:"Quadrants",title:"Four abdominopelvic quadrants",goal:"Put each organ into the quadrant where most of it lies. Remember: the patient's right is on your left.",
+  zones:[{id:"RUQ",name:"Right upper quadrant (RUQ)",r:abRect(-52,146,0,196)},{id:"LUQ",name:"Left upper quadrant (LUQ)",r:abRect(0,146,52,196)},{id:"RLQ",name:"Right lower quadrant (RLQ)",r:abRect(-52,196,0,252)},{id:"LLQ",name:"Left lower quadrant (LLQ)",r:abRect(0,196,52,252)}],
+  items:[["liver3","Liver (most of it)","RUQ","Most of the liver is on the patient's right, high up under the ribs."],["gb","Gallbladder","RUQ","The gallbladder tucks under the liver on the right side."],["stom3","Stomach (most of it)","LUQ","Most of the stomach is on the patient's left, just under the diaphragm."],
+   ["spleen3","Spleen","LUQ","The spleen is high on the left side, behind the stomach."],["app","Appendix","RLQ","The appendix hangs off the large intestine low on the right side."],["cecum","Cecum","RLQ","The cecum, the first part of the large intestine, is low on the right."],
+   ["sig","Sigmoid colon","LLQ","The S-shaped sigmoid colon is low on the left side."],["lov","Left ovary","LLQ","The left ovary is low on the left side of the pelvis."]],
+  hint:"First decide upper or lower (above or below the navel). Then decide the patient's right or left. Their right is on YOUR left."},
+ {id:"nine",name:"Nine regions",title:"Nine abdominopelvic regions",goal:"Put each item into its region. The grid is drawn as you face the patient.",
+  zones:[["rhyp","Right hypochondriac",0,0],["epi","Epigastric",1,0],["lhyp","Left hypochondriac",2,0],["rlum","Right lumbar",0,1],["umb","Umbilical",1,1],["llum","Left lumbar",2,1],["ril","Right iliac (inguinal)",0,2],["hypo","Hypogastric (pubic)",1,2],["lil","Left iliac (inguinal)",2,2]].map(z=>{const xs=[-52,-18,18,52],ys=[140,176,214,256];return {id:z[0],name:z[1],r:abRect(xs[z[2]],ys[z[3]],xs[z[2]+1],ys[z[3]+1])}}),
+  items:[["gb4","Gallbladder","rhyp","The gallbladder is high on the right, under the ribs: the right hypochondriac region."],["sp4","Spleen","lhyp","The spleen is high on the left, under the ribs: the left hypochondriac region."],
+   ["hb","Heartburn pain just below the breastbone","epi","Just below the breastbone, in the upper middle, is the epigastric region. (Epi = above, gastric = stomach.)"],
+   ["asc","Ascending colon","rlum","The ascending colon runs up the right side of the abdomen: the right lumbar region."],["navel","Navel (belly button)","umb","The navel is the center of the umbilical region."],
+   ["desc","Descending colon","llum","The descending colon runs down the left side: the left lumbar region."],["app4","Appendix","ril","The appendix is low on the right, in the right iliac (inguinal) region."],
+   ["bl4","Urinary bladder","hypo","The bladder is low in the middle, behind the pubic bone: the hypogastric (pubic) region."],["sig4","Sigmoid colon","lil","The sigmoid colon is low on the left, in the left iliac (inguinal) region."]],
+  hint:"Top row: under the ribs (hypo = below, chondro = rib cartilage), and epigastric in the middle. Middle row: lumbar on the sides, umbilical in the center. Bottom row: iliac (inguinal) on the sides, hypogastric (pubic) in the middle."}];
+const soBest=store.get("bb-so-best")||{};
+let SOR={ri:0,placed:{},miss:{},shown:{},done:false,flash:null};
+const soDnD=makeDnD($("#tab-sort"),(id,z)=>soPlace(id,z),()=>setMsg($("#soMsg"),"Pick an item first: tap it in the list, then tap where it goes.","info"));
+function soRound(){return SO_ROUNDS[SOR.ri]}
+function soStart(i){SOR={ri:i,placed:{},miss:{},shown:{},done:false,flash:null};const R=soRound();
+  $("#soN").textContent="Round "+(i+1)+" of "+SO_ROUNDS.length+" · "+R.name;$("#soT").textContent=R.title;$("#soGoal").textContent=R.goal;clearMsg($("#soMsg"));
+  zoneEls($("#soZones"),$("#soZBtns"),R.zones,800,500);soTray();soRoundsUI();
+  SO.cv.setAttribute("aria-label",R.title+". Drop zones: "+R.zones.map(z=>z.name).join(", ")+".");$("#soCap").textContent=R.id==="cav"?"Midsagittal view of the head and trunk. Anterior (front) is to the right.":R.id==="chest"?"Front view of the chest, as you face the patient.":"Front view of the abdomen, as you face the patient."}
+function soTray(){const R=soRound();const tray=$("#soTray");tray.innerHTML="";const left=R.items.filter(it=>!SOR.placed[it[0]]);
+  shuffle(left).forEach(it=>{const b=document.createElement("button");b.type="button";b.className="card-chip"+(SOR.miss[it[0]]?" miss":"");b.dataset.id=it[0];b.textContent=it[1];b.setAttribute("aria-pressed","false");tray.appendChild(b)});
+  if(!left.length&&!SOR.done)soEnd()}
+function soItem(id){return soRound().items.find(i=>i[0]===id)}
+function soZoneName(z){const n=soRound().zones.find(q=>q.id===z).name;return soRound().id==="nine"?n+" region":n}
+function soPlace(id,z){const it=soItem(id);if(!it||SOR.placed[id])return;
+  if(it[2]===z){SOR.placed[id]=z;SOR.flash={z,t:performance.now(),ok:true};setMsg($("#soMsg"),`✓ Yes. ${it[3]}`,"good");soTray()}
+  else{SOR.miss[id]=true;SOR.flash={z,t:performance.now(),ok:false};let extra="";
+    if(id==="heart2"&&z==="med")extra="Close: the heart is in the mediastinum, but it has its own space inside it. ";
+    if(soRound().id==="quad"||soRound().id==="nine"){const zr=soRound().zones.find(q=>q.id===z).name;if(/Right|Left/.test(zr)&&/Right|Left/.test(soZoneName(it[2]))&&zr.split(" ")[0]!==soZoneName(it[2]).split(" ")[0])extra="Check right and left: the patient's right is on your left. "}
+    setMsg($("#soMsg"),`Not quite. ${it[1]} does not go in the ${soZoneName(z).toLowerCase()}. ${extra}Clue: ${it[3].split(/[,:]/)[0]}.`,"warn");soTray()}}
+$("#soHint").onclick=()=>{const R=soRound();const id=soDnD.sel;if(id){const it=soItem(id);SOR.miss[id]=SOR.miss[id]||"hint";setMsg($("#soMsg"),`Hint for <b>${it[1]}</b>: ${it[3].split(/[,:]/)[0]}.`,"info")}else setMsg($("#soMsg"),"Hint: "+R.hint+" Tap an item first to get a hint about it.","info")};
+$("#soShow").onclick=()=>{const R=soRound();const id=soDnD.sel||(R.items.find(i=>!SOR.placed[i[0]])||[])[0];if(!id)return;const it=soItem(id);SOR.placed[id]=it[2];SOR.shown[id]=true;SOR.miss[id]=true;SOR.flash={z:it[2],t:performance.now(),ok:true};soDnD.select(null);
+  setMsg($("#soMsg"),`<b>${it[1]}</b> goes in the ${soZoneName(it[2]).toLowerCase()}. ${it[3]}`,"info");soTray()};
+$("#soReset").onclick=()=>soStart(SOR.ri);
+function soEnd(){SOR.done=true;const R=soRound();const n=R.items.length;const first=R.items.filter(i=>!SOR.miss[i[0]]).length;const st=first>=n-1?3:first>=Math.ceil(n*.7)?2:1;
+  if(st>(soBest[R.id]||0)){soBest[R.id]=st;store.set("bb-so-best",soBest)}soRoundsUI();
+  setMsg($("#soMsg"),`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span><br><b>${first} of ${n}</b> placed right on the first try.`+(SOR.ri<SO_ROUNDS.length-1?`<br><button class="btn" id="soNextR" type="button" style="margin-top:8px">Next round →</button>`:`<br>That was the last round. Nice work.`),"good");
+  const nb=$("#soNextR");if(nb)nb.onclick=()=>soStart(SOR.ri+1)}
+function soRoundsUI(){const box=$("#soRounds");box.innerHTML="";SO_ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===SOR.ri);
+  b.innerHTML=(i+1)+" · "+r.name+(soBest[r.id]?`<span class="ok" aria-label="best ${soBest[r.id]} stars">${"★".repeat(soBest[r.id])}</span>`:"");b.onclick=()=>soStart(i);box.appendChild(b)});
+  const tot=SO_ROUNDS.reduce((s,r)=>s+(soBest[r.id]||0),0);$("#soTot").innerHTML=`Your stars: <b>${tot}</b> of ${SO_ROUNDS.length*3}`}
+/* ---- drawing ---- */
+function soCavBase(){ctx.save();ctx.beginPath();ctx.rect(0,0,800,CVs.oy+262*CVs.s);ctx.clip();drawSection("S",0,CVs.ox,CVs.oy,CVs.s,{noOrgans:true});
+  ctx.translate(CVs.ox,CVs.oy);ctx.scale(CVs.s,CVs.s);ell(2,28,23.5,19.5,0,null,C.bone,3.4);ell(2,28,21.5,17.5,0,C.panel);
+  ctx.beginPath();for(let y=46;y<=240;y+=2)ctx.lineTo(spineZ(y)-2.5,y);ctx.strokeStyle=C.panel;ctx.lineWidth=5;ctx.stroke();ctx.restore();
+  const br=0;const zb=spineZ(170)+7,zf=zFs(166)-5;const dia=z=>{const u=clamp((z-zb)/(zf-zb),0,1);return lerp(172,165,u)-13*Math.sin(Math.PI*u)};
+  const poly=pts=>{ctx.beginPath();pts.forEach((p,i)=>{const q=cvq(p[0],p[1]);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});ctx.closePath();ctx.fillStyle=C.panel;ctx.fill()};
+  const T=[];for(let y=92;y<=dia(zf);y+=2)T.push([zFs(y)-5,y]);for(let z=zf;z>=zb;z-=1)T.push([z,dia(z)]);for(let y=dia(zb);y>=92;y-=2)T.push([spineZ(y)+7,y]);poly(T);
+  const A=[];for(let z=zb;z<=zf;z+=1)A.push([z,dia(z)]);for(let y=dia(zf);y<=246;y+=2)A.push([zFs(y)-5,y]);A.push([spineZ(246)+7,246]);for(let y=246;y>=dia(zb);y-=2)A.push([spineZ(y)+7,y]);poly(A);
+  ctx.beginPath();for(let z=zb;z<=zf;z+=.5){const q=cvq(z,dia(z));ctx.lineTo(q[0],q[1])}ctx.strokeStyle=C.act3;ctx.lineWidth=3;ctx.stroke();
+  const a=cvq(zFs(226)-5,226),b=cvq(spineZ(212)+7,212);line(a[0],a[1],b[0],b[1],C["ink-soft"],1.2,[4,4]);
+  const L=[["Cranial cavity",cvq(-12,22),150,40],["Vertebral cavity",cvq(spineZ(140)-2.5,140),150,250],["Thoracic cavity",cvq(16,110),520,120],["Diaphragm",cvq(12,dia(12)),520,190],["Abdominal cavity",cvq(16,196),520,260],["Pelvic cavity",cvq(8,240),520,330]];
+  L.forEach(l=>{line(l[1][0],l[1][1],l[2]+(l[2]<300?4:-4),l[3],C["ink-soft"],1);label(l[2],l[3],l[0],{align:l[2]<300?"right":"left",size:12.5,weight:600})})}
+function soChestBase(){ctx.save();ctx.beginPath();ctx.rect(0,0,800,500);ctx.clip();drawFigure("front",TH.ox,TH.oy,TH.s,{lw:3,deco:false});ctx.restore();
+  ctx.save();ctx.translate(TH.ox,TH.oy);ctx.scale(TH.s,TH.s);ctx.globalAlpha=.4;for(let i=0;i<7;i++){const y=98+i*10;const w=lerp(30,46,Math.min(1,i/3));[-1,1].forEach(sg=>{ctx.beginPath();ctx.moveTo(sg*4,y);ctx.quadraticCurveTo(sg*(w+6),y-6,sg*(w-2),y+14);ctx.strokeStyle=C.bone;ctx.lineWidth=3;ctx.stroke()})}ctx.globalAlpha=1;
+  [[-27,124,18,35],[28,124,16,34]].forEach(L=>ell(L[0],L[1],L[2],L[3],0,mix(C.fluid,C.panel,.55),C["ink-faint"],.6));ell(4,142,13.5,15.5,-.35,mix(C.fluid,C.panel,.55),C["ink-faint"],.6);
+  ctx.beginPath();for(let x=-46;x<=46;x+=1)ctx.lineTo(x,162-8*Math.cos(x/46*Math.PI/2)+(Math.abs(x)>38?(Math.abs(x)-38)*.6:0));ctx.strokeStyle=C.act3;ctx.lineWidth=2;ctx.stroke();ctx.restore();
+  label(150,40,"Patient's right",{align:"center",size:12,color:C["ink-soft"]});label(650,40,"Patient's left",{align:"center",size:12,color:C["ink-soft"]})}
+function soAbBase(nine){ctx.save();ctx.beginPath();ctx.rect(0,0,560,500);ctx.clip();drawFigure("front",AB.ox,AB.oy,AB.s,{lw:3});ctx.restore();
+  const tor=PARTS.find(p=>p.id==="torso");ctx.save();ctx.translate(AB.ox,AB.oy);ctx.scale(AB.s,AB.s);polyPath(partPoly(tor,"front"));ctx.clip();
+  if(nine){[-18,18].forEach(x=>line(x,140,x,256,C.act3,1.4));[176,214].forEach(y=>line(-55,y,55,y,C.act3,1.4))}else{line(0,140,0,256,C.act3,1.6);line(-55,196,55,196,C.act3,1.6)}ctx.restore();
+  label(AB.ox,16,"The patient's RIGHT is on YOUR left",{align:"center",size:12.5,weight:600,border:C.act3});
+  soRound().zones.forEach(z=>{const cx=z.r[0]+z.r[2]/2,cy=z.r[1]+12;label(cx,cy,nine?String(soRound().zones.indexOf(z)+1):z.id,{align:"center",size:nine?11:13,weight:700,color:C.act3,bga:.75})});
+  if(nine){heading(586,40,"Regions",C.act3);soRound().zones.forEach((z,i)=>label(586,70+i*24,(i+1)+"  "+z.name,{size:12.5,pill:false}))}}
+function soOrgan(id,t){const P={
+  brain:()=>{ctx.save();ctx.translate(CVs.ox,CVs.oy);ctx.scale(CVs.s,CVs.s);ell(2,28,21,17,0,C.brain,C["brain-edge"],.6);ell(-11,40,8,5.5,0,C["brain-edge"]);ctx.restore()},
+  cord:()=>{ctx.save();ctx.translate(CVs.ox,CVs.oy);ctx.scale(CVs.s,CVs.s);ctx.beginPath();for(let y=40;y<=205;y+=2)ctx.lineTo(spineZ(Math.max(46,y))-2.5,y);ctx.strokeStyle=C.cord;ctx.lineWidth=3;ctx.stroke();ctx.restore()},
+  heart:()=>{const p=cvq(9,140);ell(p[0],p[1],15,22,-.3,C.heart)},lungs:()=>{const p=cvq(2,124);ctx.globalAlpha=.55;ell(p[0],p[1],22,48,0,C.lung);ctx.globalAlpha=1;ctx.setLineDash([3,3]);ell(p[0],p[1],22,48,0,null,C["cut-edge"],1);ctx.setLineDash([])},
+  esoph:()=>{const a=cvq(-2,90),b=cvq(1,168);line(a[0],a[1],b[0],b[1],C.stomach,4)},stomach:()=>{const p=cvq(9,176);ell(p[0],p[1],11,11,0,C.stomach)},liver:()=>{const p=cvq(4,172);ell(p[0],p[1],20,15,0,C.liver)},
+  spleen:()=>{const p=cvq(-6,172);ell(p[0],p[1],8,9,0,C.kidney)},si:()=>{const p=cvq(4,204);ell(p[0],p[1],20,24,0,C.gut);for(let i=0;i<4;i++){ctx.beginPath();ctx.arc(p[0]-8+i%2*12,p[1]-14+i*8,6,0,Math.PI);ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=1.2;ctx.stroke()}},
+  bladder:()=>{const p=cvq(9,240);ell(p[0],p[1],10,9,0,C.bladder)},rectum:()=>{const a=cvq(-7,214),b=cvq(-5,248);line(a[0],a[1],b[0],b[1],C.gut,7)},uterus:()=>{const p=cvq(2,232);ell(p[0],p[1],7,11,.4,C.cut,C["cut-edge"],1)},
+  rlung:()=>{const k=.95+.05*Math.sin(t*1.5);ctx.save();ctx.translate(TH.ox,TH.oy);ctx.scale(TH.s,TH.s);ell(-27,124,15*k,32*k,0,C.lung,"rgba(0,0,0,.25)",.5);ctx.restore()},
+  llung:()=>{const k=.95+.05*Math.sin(t*1.5);ctx.save();ctx.translate(TH.ox,TH.oy);ctx.scale(TH.s,TH.s);ell(28,124,13*k,31*k,0,C.lung,"rgba(0,0,0,.25)",.5);ctx.restore()},
+  heart2:()=>{const hb=1+.05*Math.max(0,Math.sin(t*7));ctx.save();ctx.translate(TH.ox,TH.oy);ctx.scale(TH.s,TH.s);ell(4,142,10.5*hb,12.5*hb,-.35,C.heart,"rgba(0,0,0,.3)",.6);ctx.restore()},
+  trachea:()=>{ctx.save();ctx.translate(TH.ox,TH.oy);ctx.scale(TH.s,TH.s);line(-2.5,70,-2.5,108,C.bone,4);line(-2.5,108,-16,116,C.bone,3);line(-2.5,108,13,116,C.bone,3);ctx.restore()},
+  esoph2:()=>{ctx.save();ctx.translate(TH.ox,TH.oy);ctx.scale(TH.s,TH.s);line(2.5,72,3,158,C.stomach,2.2);ctx.restore()},thymus:()=>{ctx.save();ctx.translate(TH.ox,TH.oy);ctx.scale(TH.s,TH.s);ell(2,118,6,7,0,mix(C.stomach,C.panel,.4),C["cut-edge"],.5);ctx.restore()},
+  liver3:()=>abE(-13,170,25,12,C.liver),gb:()=>abE(-8,181,4,3.5,C.insulin),stom3:()=>abE(15,174,12,11,C.stomach),spleen3:()=>abE(33,168,5,8,C.kidney),app:()=>{const a=abq(-28,232),b=abq(-24,243);line(a[0],a[1],b[0],b[1],C.gut,6)},
+  cecum:()=>abE(-27,226,6,6,C.gut),sig:()=>{ctx.save();ctx.translate(AB.ox,AB.oy);ctx.scale(AB.s,AB.s);ctx.beginPath();ctx.moveTo(28,224);ctx.bezierCurveTo(20,240,10,226,4,240);ctx.strokeStyle=C.gut;ctx.lineWidth=4;ctx.stroke();ctx.restore()},lov:()=>abE(22,234,4,3,C.glucagon),
+  gb4:()=>abE(-30,170,5,4,C.insulin),sp4:()=>abE(34,166,5,8,C.kidney),hb:()=>{const p=abq(0,160);glow(p[0],p[1],26+4*Math.sin(t*5),C.hot,.85)},asc:()=>{const a=abq(-30,232),b=abq(-30,192);line(a[0],a[1],b[0],b[1],C.gut,12)},
+  navel:()=>{const p=abq(0,196);circ(p[0],p[1],6,null,C.ink,2)},desc:()=>{const a=abq(30,186),b=abq(30,224);line(a[0],a[1],b[0],b[1],C.gut,12)},app4:()=>{const a=abq(-30,232),b=abq(-26,244);line(a[0],a[1],b[0],b[1],C.gut,6)},
+  bl4:()=>abE(0,240,9,7,C.bladder),sig4:()=>{ctx.save();ctx.translate(AB.ox,AB.oy);ctx.scale(AB.s,AB.s);ctx.beginPath();ctx.moveTo(30,224);ctx.bezierCurveTo(22,240,12,228,6,242);ctx.strokeStyle=C.gut;ctx.lineWidth=4;ctx.stroke();ctx.restore()}};
+  if(P[id])P[id]()}
+function abE(x,y,a,b,col){ctx.save();ctx.translate(AB.ox,AB.oy);ctx.scale(AB.s,AB.s);ell(x,y,a,b,0,col,"rgba(0,0,0,.3)",.5);ctx.restore()}
+function drawSort(now){SO.begin();bg();const t=now/1000;const R=soRound();
+  if(R.id==="cav")soCavBase();else if(R.id==="chest")soChestBase();else soAbBase(R.id==="nine");
+  Object.keys(SOR.placed).forEach(id=>soOrgan(id,t));
+  if(SOR.flash&&now-SOR.flash.t<1400){const z=R.zones.find(q=>q.id===SOR.flash.z);if(z){const a=1-(now-SOR.flash.t)/1400;ctx.globalAlpha=.35*a;ctx.fillStyle=SOR.flash.ok?C.good:C.warn;rr(z.r[0],z.r[1],z.r[2],z.r[3],8);ctx.fill();ctx.globalAlpha=1;
+    label(z.r[0]+z.r[2]/2,z.r[1]+z.r[3]/2,SOR.flash.ok?"✓":"✗ try again",{align:"center",size:14,weight:700,color:SOR.flash.ok?C.good:C.warn})}}
+  // placed labels list
+  if(R.id!=="nine"){const pl=Object.keys(SOR.placed);if(pl.length){heading(R.id==="cav"?600:586,R.id==="cav"?400:R.id==="chest"?400:300,"Placed",C["ink-soft"]);
+    pl.slice(-6).forEach((id,i)=>{const it=soItem(id);label(R.id==="cav"?600:586,(R.id==="cav"?422:R.id==="chest"?422:322)+i*21,"✓ "+it[1],{size:12,pill:false,color:C.good,weight:600})})}}}
+
+/* =====================================================================
+   PART 4 - FEEDBACK LOOPS
+   ===================================================================== */
+let LPM="build";
+function lpModes(){const box=$("#lpModes");box.innerHTML="";[["build","A · Build a loop"],["sim","B · Thermostat simulator"],["pos","C · Positive feedback: childbirth"]].forEach(m=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",m[0]===LPM);b.textContent=m[1];
+  b.onclick=()=>{LPM=m[0];$("#lpBuild").hidden=LPM!=="build";$("#lpSim").hidden=LPM!=="sim";$("#lpPos").hidden=LPM!=="pos";lpModes();fitAll()};box.appendChild(b)})}
+/* ---------- A: loop builder ---------- */
+const SLB=makeStage("cvLoop",800,440);
+const LB_SLOTS=[{id:"stim",name:"Stimulus",x:400,y:56},{id:"sens",name:"Sensor",x:668,y:220},{id:"ctrl",name:"Control center",x:400,y:384},{id:"eff",name:"Effector",x:132,y:220}];
+LB_SLOTS.forEach(s=>s.r=[s.x-116,s.y-38,232,76]);
+const ROLE={stim:"stimulus",sens:"sensor",ctrl:"control center",eff:"effector"};
+const LB_ROUNDS=[
+ {id:"hot",name:"Too hot",type:"neg",goal:"Build the loop that cools the body after exercise on a hot day. Two cards do not belong.",
+  cards:[["Body temperature rises above 37 °C","stim","It is the change that starts the loop."],["Temperature receptors in the skin and brain","sens","Receptors detect the change."],["Hypothalamus in the brain","ctrl","It compares the temperature to 37 °C and sends the commands."],["Sweat glands and widening skin blood vessels","eff","They carry out the cooling response."],
+   ["Skeletal muscles start shivering",null,"Shivering makes heat, which would make an overheated body even hotter."],["Pancreas releases insulin",null,"Insulin controls blood glucose, not body temperature."]]},
+ {id:"cold",name:"Too cold",type:"neg",goal:"Build the loop that warms the body in cold wind. Two cards do not belong.",
+  cards:[["Body temperature falls below 37 °C","stim","It is the change that starts the loop."],["Temperature receptors in the skin and brain","sens","Receptors detect the change."],["Hypothalamus in the brain","ctrl","It compares the temperature to 37 °C and sends the commands."],["Skin blood vessels narrow and skeletal muscles shiver","eff","They keep heat in and make more heat."],
+   ["Sweat glands release sweat",null,"Sweating cools the body, which would make a cold body colder."],["Pituitary releases oxytocin",null,"Oxytocin drives labor contractions. It has nothing to do with body temperature."]]},
+ {id:"gluc",name:"Blood glucose high",type:"neg",goal:"Build the loop that brings blood glucose down after a meal. Two cards do not belong.",
+  cards:[["Blood glucose rises after a meal","stim","It is the change that starts the loop."],["Beta cells in the pancreas detect the rise","sens","They detect the change. (In this loop the pancreas senses and also commands.)"],["The pancreas releases insulin into the blood","ctrl","Sending out the hormone insulin is the command from the control center."],["Liver and body cells take glucose out of the blood","eff","They carry out the response that lowers glucose."],
+   ["The pancreas releases glucagon",null,"Glucagon raises blood glucose. It answers LOW glucose, so it would make this problem worse."],["Sweat glands",null,"Sweat glands are effectors for temperature, not glucose."]]},
+ {id:"birth",name:"Childbirth",type:"pos",goal:"Build the loop that drives labor. Two cards do not belong.",
+  cards:[["The baby's head stretches the cervix","stim","It is the change that starts the loop."],["Stretch receptors in the cervix","sens","They detect the stretch."],["The brain signals the pituitary to release oxytocin","ctrl","The brain sends the command, carried by the hormone oxytocin."],["Uterine muscle contracts harder","eff","The uterus carries out the response."],
+   ["Uterine contractions stop",null,"During labor contractions get stronger, not weaker, until the baby is born."],["Pancreas releases insulin",null,"Insulin controls blood glucose. It has no job in labor."]]}];
+const lbBest=store.get("bb-lb-best")||{};
+let LB={ri:0,placed:{},miss:0,shown:false,typeDone:false,typeTries:0,t0:0,flash:null,done:false};
+const lbDnD=makeDnD($("#lpBuild"),(id,z)=>lbPlace(id,z),()=>setMsg($("#lbMsg"),"Pick a card first: tap it, then tap a slot.","info"));
+function lbR(){return LB_ROUNDS[LB.ri]}
+function lbCard(id){const i=+id.split("-")[1];return lbR().cards[i]}
+function lbStart(i){LB={ri:i,placed:{},miss:0,shown:false,typeDone:false,typeTries:0,t0:0,flash:null,done:false};const R=lbR();
+  $("#lbT").textContent=R.name;$("#lbGoal").textContent=R.goal;clearMsg($("#lbMsg"));$("#lbType").hidden=true;clearMsg($("#lbTypeMsg"));
+  zoneEls($("#lbZones"),$("#lbZBtns"),LB_SLOTS.map(s=>({id:s.id,name:s.name,r:s.r})),800,440);lbTray();lbRoundsUI();
+  SLB.cv.setAttribute("aria-label","Feedback loop for "+R.name+" with four slots: stimulus, sensor, control center, effector.")}
+function lbTray(){const tray=$("#lbTray");tray.innerHTML="";const R=lbR();const used=Object.values(LB.placed);
+  shuffle(R.cards.map((c,i)=>i)).forEach(i=>{const id=R.id+"-"+i;if(used.indexOf(id)>=0)return;const b=document.createElement("button");b.type="button";b.className="card-chip box";b.dataset.id=id;b.textContent=R.cards[i][0];b.setAttribute("aria-pressed","false");tray.appendChild(b)})}
+function lbPlace(id,slot){if(LB.done)return;const c=lbCard(id);if(LB.placed[slot]){setMsg($("#lbMsg"),"That slot is already filled. Choose an empty slot.","info");return}
+  if(c[1]===slot){LB.placed[slot]=id;LB.flash={slot,t:performance.now(),ok:true};setMsg($("#lbMsg"),`✓ Yes. "${c[0]}" is the ${ROLE[slot]}. ${c[2]}`,"good");lbTray();lbCheck()}
+  else{LB.miss++;LB.flash={slot,t:performance.now(),ok:false};
+    setMsg($("#lbMsg"),c[1]?`Not quite. "${c[0]}" is not the ${ROLE[slot]}. ${c[2]} That makes it the <b>${ROLE[c[1]]}</b>.`:`Not quite. "${c[0]}" does not belong in this loop. ${c[2]}`,"warn")}}
+function lbCheck(){if(Object.keys(LB.placed).length<4)return;$("#lbType").hidden=false;const box=$("#lbTypeOpts");box.innerHTML="";const R=lbR();
+  [["neg","Negative feedback"],["pos","Positive feedback"]].forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[1];b.onclick=()=>{if(LB.typeDone)return;
+    if(o[0]===R.type){b.classList.add("right");LB.typeDone=true;LB.t0=performance.now();setMsg($("#lbTypeMsg"),R.type==="neg"?"✓ Yes. The response pushes the value back the opposite way, toward the set point. Watch the loop run.":"✓ Yes. The response makes the stretch even bigger, so the loop grows until the baby is born. Watch it run.","good");lbEnd()}
+    else{b.classList.add("wrong");LB.typeTries++;setMsg($("#lbTypeMsg"),R.type==="neg"?"Not quite. Here the response reverses the change (it brings the value back toward normal). That is negative feedback.":"Not quite. Here the response makes the change bigger: stronger contractions cause more stretch. That is positive feedback.","warn")}};box.appendChild(b)})}
+function lbEnd(){LB.done=true;const st=LB.shown?1:(LB.miss===0&&LB.typeTries===0?3:LB.miss<=2?2:1);if(st>(lbBest[lbR().id]||0)){lbBest[lbR().id]=st;store.set("bb-lb-best",lbBest)}lbRoundsUI();
+  setMsg($("#lbMsg"),`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span><br>Loop complete${LB.miss?` with ${LB.miss} misplaced card${LB.miss>1?"s":""}`:" with no mistakes"}.`+(LB.ri<LB_ROUNDS.length-1?` <button class="btn" id="lbNextR" type="button" style="margin-left:6px">Next loop →</button>`:""),"good");
+  const nb=$("#lbNextR");if(nb)nb.onclick=()=>lbStart(LB.ri+1)}
+$("#lbHint").onclick=()=>{if(LB.done)return;const R=lbR();const id=lbDnD.sel;if(id){const c=lbCard(id);LB.miss+=0;setMsg($("#lbMsg"),c[1]?`Hint for "${c[0]}": ${c[2]}`:`Hint for "${c[0]}": ask whether it would fix the problem or make it worse.`,"info")}
+  else setMsg($("#lbMsg"),"Hint: the stimulus is a change. The sensor detects it. The control center decides and sends a command. The effector does the work. Tap a card for a hint about it.","info")};
+$("#lbShow").onclick=()=>{if(LB.done)return;const R=lbR();const slot=LB_SLOTS.find(s=>!LB.placed[s.id]);if(!slot)return;const i=R.cards.findIndex(c=>c[1]===slot.id);LB.placed[slot.id]=R.id+"-"+i;LB.shown=true;LB.flash={slot:slot.id,t:performance.now(),ok:true};
+  setMsg($("#lbMsg"),`The ${ROLE[slot.id]} is "${R.cards[i][0]}". ${R.cards[i][2]}`,"info");lbTray();lbCheck()};
+$("#lbReset").onclick=()=>lbStart(LB.ri);
+function lbRoundsUI(){const box=$("#lbRounds");box.innerHTML="";LB_ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===LB.ri);
+  b.innerHTML=r.name+(lbBest[r.id]?`<span class="ok" aria-label="best ${lbBest[r.id]} stars">${"★".repeat(lbBest[r.id])}</span>`:"");b.onclick=()=>lbStart(i);box.appendChild(b)})}
+function drawLoopB(now){SLB.begin();bg();const R=lbR();const t=now/1000;const cx=400,cy=220,Rr=150;
+  ctx.beginPath();ctx.ellipse(cx,cy,268,164,0,0,TAU);ctx.strokeStyle=C.rule;ctx.lineWidth=4;ctx.stroke();
+  [[.6],[2.2],[3.75],[5.35]].forEach(a=>{const x=cx+Math.cos(a[0])*268,y=cy+Math.sin(a[0])*164;const ang=Math.atan2(Math.cos(a[0])*164,-Math.sin(a[0])*268);ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.beginPath();ctx.moveTo(9,0);ctx.lineTo(-7,-8);ctx.lineTo(-7,8);ctx.closePath();ctx.fillStyle=C["ink-faint"];ctx.fill();ctx.restore()});
+  let tok=-1;if(LB.typeDone){const u=((now-LB.t0)/1000)%6/6;tok=Math.floor(u*4);const a=-Math.PI/2+u*TAU;const x=cx+Math.cos(a)*268,y=cy+Math.sin(a)*164;glow(x,y,22,C.act4,.9);circ(x,y,7,C.act4,C.panel,2)}
+  LB_SLOTS.forEach((s,i)=>{const id=LB.placed[s.id];const on=i===tok;ctx.fillStyle=id?(on?C.act4:C["panel-2"]):C.panel;rr(s.r[0],s.r[1],s.r[2],s.r[3],8);ctx.fill();ctx.strokeStyle=id?C.act4:C["ink-faint"];ctx.lineWidth=id?2:1.5;if(!id)ctx.setLineDash([6,5]);ctx.stroke();ctx.setLineDash([]);
+    label(s.r[0]+10,s.r[1]+13,s.name.toUpperCase(),{size:11,weight:700,mono:true,pill:false,color:on?"#fff":C.act4});
+    if(id)wrapText(lbCard(id)[0],s.x,s.y+8,s.r[2]-20,15,{size:12.5,weight:600,color:on?"#fff":C.ink});else label(s.x,s.y+8,"drop a card here",{align:"center",size:12,pill:false,color:C["ink-faint"]})});
+  if(LB.flash&&now-LB.flash.t<1200){const s=LB_SLOTS.find(q=>q.id===LB.flash.slot);const a=1-(now-LB.flash.t)/1200;ctx.globalAlpha=.35*a;ctx.fillStyle=LB.flash.ok?C.good:C.warn;rr(s.r[0],s.r[1],s.r[2],s.r[3],8);ctx.fill();ctx.globalAlpha=1;if(!LB.flash.ok)label(s.x,s.r[1]-12,"✗ not this slot",{align:"center",size:12,weight:700,color:C.warn})}
+  // centre: scenario icon + value graph
+  const gx0=300,gx1=500,gy0=150,gy1=290;ctx.fillStyle=C["panel-2"];rr(gx0-14,gy0-26,gx1-gx0+28,gy1-gy0+44,10);ctx.fill();
+  const nm={hot:"body temperature",cold:"body temperature",gluc:"blood glucose",birth:"contraction strength"}[R.id];label(400,gy0-12,nm,{align:"center",size:11.5,pill:false,color:C["ink-soft"]});
+  const mid=(gy0+gy1)/2;if(R.type==="neg"){ctx.globalAlpha=.2;ctx.fillStyle=C.good;ctx.fillRect(gx0,mid-14,gx1-gx0,28);ctx.globalAlpha=1;line(gx0,mid,gx1,mid,C["ink-soft"],1.2,[4,4])}
+  line(gx0,gy1,gx1,gy1,C.rule,1.2);
+  const run=LB.typeDone?(((now-LB.t0)/1000)%6)/6:0;const sign=R.id==="cold"?1:-1;
+  ctx.beginPath();for(let k=0;k<=100;k++){const u=k/100;if(LB.typeDone&&u>run)break;let v;
+    if(R.type==="neg"){const bump=u<.25?ease(u/.25):1-ease(seg(u,.4,.9));v=mid+sign*bump*48}else{const n=Math.min(1,u/.85);v=gy1-8-(u>.88?0:(Math.pow(2.6,n*4)-1)/(Math.pow(2.6,4)-1)*120*(.6+.4*Math.abs(Math.sin(u*40))))}
+    ctx.lineTo(lerp(gx0,gx1,u),v)}ctx.strokeStyle=R.type==="neg"?C.act4:C.oxy;ctx.lineWidth=2.5;ctx.stroke();
+  if(!LB.typeDone){label(400,gy1+12,"fill the loop, then watch it run",{align:"center",size:11.5,pill:false,color:C["ink-soft"]})}
+  else label(400,gy1+12,R.type==="neg"?"back to the set point":"bigger and bigger, until birth ends it",{align:"center",size:11.5,weight:600,pill:false,color:R.type==="neg"?C.good:C.oxy})}
+
+/* ---------- B: thermoregulation simulator ---------- */
+const SM=makeStage("cvSim",800,460);
+const ACTS=[["rest","Rest",0],["walk","Walk",1.5],["run","Run",3.5]];
+let SIM={T:37,room:22,act:"rest",resp:true,relaxed:false,vd:0,sweat:0,shiver:0,hist:[],simt:0,chal:store.get("bb-sim-chal")||{}};
+const CHAL=[["sweat","Make the body sweat hard (sweating above 40%)."],["shiver","Make the body shiver (shivering above 20%)."],["limit","Find a setting where even full sweating cannot keep the temperature in the normal range."],["off","Turn body responses off and watch the temperature drift out of the normal range."]];
+function smTargets(){const err=SIM.T-37;if(!SIM.resp)return {vd:0,sweat:0,shiver:0};return {vd:clamp(err*4,-.4,1),sweat:clamp((err-.05)*3,0,1),shiver:clamp((-err-.1)*3,0,1)}}
+function smStep(dtMin){const tg=smTargets();const k=Math.min(1,dtMin/.4);SIM.vd+=(tg.vd-SIM.vd)*k;SIM.sweat+=(tg.sweat-SIM.sweat)*k;SIM.shiver+=(tg.shiver-SIM.shiver)*k;
+  const ex=ACTS.find(a=>a[0]===SIM.act)[2];const P=1+ex+2.5*SIM.shiver;const cond=.12*(1+1.5*SIM.vd)*(SIM.T-SIM.room);const evap=4*SIM.sweat;
+  SIM.T=clamp(SIM.T+(P-cond-evap)/8*dtMin,28,46);SIM.simt+=dtMin}
+function smChal(){const c=SIM.chal;let ch=false;
+  if(SIM.sweat>.4&&!c.sweat){c.sweat=1;ch=true}if(SIM.shiver>.2&&!c.shiver){c.shiver=1;ch=true}if(SIM.resp&&SIM.sweat>.9&&SIM.T>37.5&&!c.limit){c.limit=1;ch=true}if(!SIM.resp&&Math.abs(SIM.T-37)>.6&&!c.off){c.off=1;ch=true}
+  if(ch){store.set("bb-sim-chal",c);smChalUI()}}
+function smChalUI(){$("#smChal").innerHTML=CHAL.map((c,i)=>`<li class="${SIM.chal[c[0]]?"done":""}"><b>${SIM.chal[c[0]]?"✓":(i+1)+"."}</b><span>${c[1]}</span></li>`).join("");
+  const n=CHAL.filter(c=>SIM.chal[c[0]]).length;const st=n>=4?3:n>=2?2:n>=1?1:0;$("#smStars").innerHTML=st?`<span class="stars" aria-label="${st} of 3 stars">${starStr(st)}</span> ${n} of 4 challenges done`:"Try the challenges to earn stars."}
+function smUI(){$("#smRoomOut").textContent=SIM.room+" °C";const a=$("#smAct");a.innerHTML="";ACTS.forEach(x=>{const b=document.createElement("button");b.type="button";b.textContent=x[1];b.setAttribute("aria-pressed",x[0]===SIM.act);b.onclick=()=>{SIM.act=x[0];smUI()};a.appendChild(b)})}
+$("#smRoom").oninput=e=>{SIM.room=+e.target.value;smUI()};$("#smResp").onchange=e=>{SIM.resp=e.target.checked};$("#smRelaxed").onchange=e=>{SIM.relaxed=e.target.checked};
+$("#smReset").onclick=()=>{SIM.T=37;SIM.vd=0;SIM.sweat=0;SIM.shiver=0;SIM.hist=[];SIM.simt=0};
+function smText(){const T=SIM.T;let st,tx;
+  if(T>=40){st="Danger: heat stroke range";tx="Core temperature is far above normal. In real life this is an emergency: stop exercising, get to a cool place, and get help."}
+  else if(T<35){st="Danger: hypothermia";tx="Core temperature has dropped below 35 °C. In real life the person needs warming right away."}
+  else if(SIM.resp&&SIM.sweat>.9&&T>37.5){st="Sweating can't keep up";tx="The sweat glands are working as hard as they can, but the body is still gaining heat. Negative feedback has limits."}
+  else if(T>37.5){st="Above the normal range";tx=SIM.resp?"The hypothalamus is turning on cooling: sweating and widened skin vessels.":"Body responses are off, so nothing pushes the temperature back down."}
+  else if(T<36.5){st="Below the normal range";tx=SIM.resp?"The hypothalamus is turning on warming: narrowed skin vessels and shivering.":"Body responses are off, so nothing pushes the temperature back up."}
+  else{st="Inside the normal range";tx=SIM.resp?(SIM.sweat>.15?"Sweating is holding temperature near 37 °C.":SIM.shiver>.15?"Shivering and narrowed skin vessels are holding temperature near 37 °C.":SIM.vd<-.15?"Narrowed skin vessels are holding heat in.":SIM.vd>.15?"Widened skin vessels are letting extra heat out.":"Small adjustments keep temperature near 37 °C."):"Responses are off. Watch: the temperature will drift unless the room is just right."}
+  $("#smStatus").textContent=st;$("#smText").textContent=tx;
+  const vdTxt=SIM.vd>.05?"widened "+Math.round(SIM.vd*100)+"%":SIM.vd<-.05?"narrowed "+Math.round(-SIM.vd/.4*100)+"%":"normal";
+  $("#smMeters").innerHTML=[["Sweating",SIM.sweat,Math.round(SIM.sweat*100)+"%","var(--sweat)"],["Skin blood vessels",(SIM.vd+.4)/1.4,vdTxt,SIM.vd>=0?"var(--hot)":"var(--cold)"],["Shivering",SIM.shiver,Math.round(SIM.shiver*100)+"%","var(--act4)"]]
+    .map(m=>`<span>${m[0]}</span><span class="meter" role="img" aria-label="${m[0]}: ${m[2]}"><i style="width:${clamp(m[1],0,1)*100}%;background:${m[3]}"></i></span><span style="font-family:var(--mono);font-size:12.5px">${m[2]}</span>`).join("")}
+let smTextT=0;
+function drawSim(now,dt){if(!$("#lpSim").hidden&&curTab==="loops"){smStep(dt*(SIM.relaxed?.5:1));SIM.hist.push([SIM.simt,SIM.T,SIM.room]);while(SIM.hist.length&&SIM.hist[0][0]<SIM.simt-4)SIM.hist.shift();smChal();if(now-smTextT>250){smText();smTextT=now}}
+  SM.begin();bg();const t=now/1000;const T=SIM.T;
+  // figure
+  const fx=150+Math.sin(t*55)*2.2*SIM.shiver,fy=26,s=.88;const fill=SIM.vd>=0?mix(C.skin,C.hot,.45*SIM.vd):mix(C.skin,C.cold,.14*(-SIM.vd/.4));
+  if(SIM.act!=="rest"){for(let i=0;i<4;i++){const y=120+i*60;const x=fx-110-((t*120*(SIM.act==="run"?2:1)+i*40)%60);ctx.globalAlpha=.5;line(x,y,x+34,y,C["ink-faint"],2.5);ctx.globalAlpha=1}}
+  drawFigure("front",fx,fy,s,{fill});
+  if(SIM.sweat>.05){const n=Math.round(3+SIM.sweat*10);for(let i=0;i<n;i++){const b=[[-6,22],[8,24],[-12,120],[14,150],[-66,160],[66,200],[-20,180],[24,300],[-25,320],[0,140],[-30,100],[30,110],[-64,220]][i%13];const q=(t*.3+rnd(i))%1;const p=FP(fx,fy,s,b[0],b[1]+q*24);drop(p[0],p[1],5,C.sweat,clamp(SIM.sweat*1.6,0,1)*(1-q*.5))}}
+  if(SIM.shiver>.2)label(fx,FP(fx,fy,s,0,446)[1]+2,"shivering",{align:"center",size:12,weight:700,color:C.act4,border:C.act4});
+  const H0=FP(fx,fy,s,0,38);const act=SIM.resp&&(Math.abs(T-37)>.12);glow(H0[0],H0[1],act?22+6*Math.sin(t*8):14,C.nerve,act?.95:.4);circ(H0[0],H0[1],4,C.nerve,C.ink,1);line(H0[0]-5,H0[1]-3,H0[0]-34,H0[1]-20,C["ink-soft"],1);label(H0[0]-38,H0[1]-24,"hypothalamus",{align:"right",size:11.5,weight:600});
+  label(fx,14,ACTS.find(a=>a[0]===SIM.act)[1]+" · room "+SIM.room+" °C",{align:"center",size:12,weight:600,pill:false,color:C["ink-soft"]});
+  thermo(290,70,300,T,30,44,T>37.5||T<36.5?C.warn:C.act4,{band:[36.5,37.5],ticks:[32,35,37,40,43]});label(290,40,T.toFixed(1)+" °C",{align:"center",size:16,weight:700,mono:true});
+  // graph
+  const gx0=380,gx1=780,gy0=40,gy1=300,lo=33,hi=42;const yv=v=>gy1-(clamp(v,lo,hi)-lo)/(hi-lo)*(gy1-gy0);const yr=v=>gy1-clamp(v/45,0,1)*(gy1-gy0);
+  ctx.fillStyle=C["panel-2"];rr(gx0-36,gy0-26,gx1-gx0+56,gy1-gy0+52,8);ctx.fill();
+  ctx.globalAlpha=.2;ctx.fillStyle=C.good;ctx.fillRect(gx0,yv(37.5),gx1-gx0,yv(36.5)-yv(37.5));ctx.globalAlpha=1;line(gx0,yv(37),gx1,yv(37),C["ink-soft"],1.3,[6,5]);
+  [34,36,38,40,42].forEach(v=>label(gx0-6,yv(v),String(v),{align:"right",size:10.5,mono:true,pill:false,color:C["ink-soft"]}));
+  [0,15,30,45].forEach(v=>label(gx1+4,yr(v),String(v),{size:10,mono:true,pill:false,color:C.warn}));
+  heading(gx0,gy0-12,"Core temperature (°C), last 4 minutes",C["ink-soft"]);label(gx1+16,gy0-12,"room",{align:"right",size:10.5,pill:false,color:C.warn});
+  const H=SIM.hist;if(H.length>1){const t1=SIM.simt;const X=s0=>gx1-(t1-s0)/4*(gx1-gx0);
+    ctx.beginPath();H.forEach((h,i)=>{const x=X(h[0]),y=yr(h[2]);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.strokeStyle=C.warn;ctx.lineWidth=1.6;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+    ctx.beginPath();H.forEach((h,i)=>{const x=X(h[0]),y=yv(h[1]);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.strokeStyle=C.act4;ctx.lineWidth=3;ctx.stroke()}
+  circ(gx1,yv(T),5,C.act4,C.panel,2);
+  // effector loop strip
+  const by=338;const boxes=[["Sensors","skin + brain",true],["Hypothalamus","compares to 37 °C",act],["Sweat glands",Math.round(SIM.sweat*100)+"%",SIM.sweat>.05],["Skin vessels",SIM.vd>.05?"widen":SIM.vd<-.05?"narrow":"normal",Math.abs(SIM.vd)>.05],["Muscles",SIM.shiver>.05?"shiver":"quiet",SIM.shiver>.05]];
+  boxes.forEach((b,i)=>{const x=344+i*90,w=82;const on=b[2]&&SIM.resp;ctx.fillStyle=on?C.act4:C["panel-2"];rr(x,by,w,58,6);ctx.fill();ctx.strokeStyle=on?C.act4:C.rule;ctx.lineWidth=1.2;ctx.stroke();
+    label(x+w/2,by+18,b[0],{align:"center",size:11.5,weight:700,pill:false,color:on?"#fff":C.ink});label(x+w/2,by+38,b[1],{align:"center",size:11,pill:false,color:on?"#fff":C["ink-soft"]});if(i<4)arrow(x+w,by+29,x+w+8,by+29,C["ink-faint"],1.2)});
+  if(!SIM.resp)label(570,by+80,"Body responses are OFF: no effectors respond",{align:"center",size:12.5,weight:700,color:C.warn,border:C.warn});
+  else label(570,by+80,T>37.5?"Too warm → cooling responses":T<36.5?"Too cool → warming responses":"In range → small adjustments",{align:"center",size:12.5,weight:600,color:T>37.5||T<36.5?C.warn:C.good,pill:false})}
+
+/* ---------- C: positive feedback run ---------- */
+const SP=makeStage("cvPos",800,440);
+let PF={k:0,anim:-1,t0:0,born:0,bornT:0,auto:false,qDone:false};
+const PF_MAX=6;
+function pfStrength(k){return Math.pow(1.45,k)}
+function pfNext(){if(PF.anim>=0||PF.born)return;if(PF.k>=PF_MAX){PF.born=1;PF.bornT=performance.now();pfText();return}PF.anim=0;PF.t0=performance.now()}
+$("#pfNext").onclick=pfNext;$("#pfAuto").onchange=e=>{PF.auto=e.target.checked};$("#pfReset").onclick=()=>{PF={k:0,anim:-1,t0:0,born:0,bornT:0,auto:PF.auto,qDone:false};$("#pfQ").hidden=true;clearMsg($("#pfMsg"));$("#pfNext").disabled=false;pfText()};
+function pfText(){if(PF.born){$("#pfTitle").textContent="The baby is born";$("#pfText").textContent="The cervix is no longer stretched, so the stretch receptors stop firing, oxytocin release drops, and the contractions fade. The loop has reached its end point.";$("#pfNext").disabled=true;
+    $("#pfQ").hidden=false;if(!$("#pfOpts").children.length)pfQuiz();return}
+  if(PF.k===0){$("#pfTitle").textContent="Labor begins";$("#pfText").textContent="Press Next contraction. Each round: the baby's head stretches the cervix, stretch receptors signal the brain, the pituitary releases oxytocin, and the uterus contracts harder.";return}
+  $("#pfTitle").textContent="Contraction "+PF.k+" of "+PF_MAX;$("#pfText").textContent=`This contraction was ${pfStrength(PF.k-1).toFixed(1)} times as strong as the first. Stronger push → more stretch → more oxytocin → an even stronger contraction next time.`+(PF.k>=PF_MAX?" The baby is ready to be born: press the button once more.":"")}
+function pfQuiz(){const box=$("#pfOpts");box.innerHTML="";shuffle([["The baby was born, so the cervix stopped being stretched.",1,"Yes. The stimulus (stretch) went away, so the loop stopped. That is the end point."],
+  ["The body ran out of oxytocin.",0,"Oxytocin was still available. The loop stopped because its stimulus, the stretch, disappeared."],
+  ["Negative feedback from body temperature took over.",0,"Temperature control is a separate loop. Labor ends because delivery removes the stretch."],
+  ["The uterus got tired and stopped on its own.",0,"The contractions were getting stronger right up to delivery. Delivery itself removed the stimulus."]]).forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+  b.onclick=()=>{if(PF.qDone)return;if(o[1]){b.classList.add("right");PF.qDone=true;setMsg($("#pfMsg"),"✓ "+o[2],"good")}else{b.classList.add("wrong");setMsg($("#pfMsg"),"Not quite. "+o[2],"warn")}};box.appendChild(b)})}
+function drawPos(now){SP.begin();bg();const t=now/1000;
+  let ph=-1;if(PF.anim>=0){ph=(now-PF.t0)/2600;if(ph>=1){PF.anim=-1;PF.k++;pfText();ph=-1;if(PF.auto)setTimeout(()=>{if(PF.auto)pfNext()},500)}}
+  if(PF.auto&&PF.anim<0&&!PF.born&&PF.k===0&&curTab==="loops"&&LPM==="pos")pfNext();
+  const stage=ph<0?-1:ph<.25?0:ph<.5?1:ph<.75?2:3;const k=PF.k;const born=PF.born?ease(clamp((now-PF.bornT)/2500,0,1)):0;
+  const sq0=stage===3?Math.sin(seg(ph,.75,1)*Math.PI)*Math.min(.45,.12*pfStrength(k)):0;
+  const ux=200,uy=210;ctx.save();ctx.translate(ux,uy);ctx.scale(1-.12*sq0,1+.03*sq0);ctx.scale(.82,.82);
+  ctx.beginPath();ctx.moveTo(-30,186);ctx.bezierCurveTo(-90,150,-150,40,-140,-40);ctx.bezierCurveTo(-130,-150,130,-150,140,-40);ctx.bezierCurveTo(150,40,90,150,30,186);ctx.closePath();ctx.fillStyle=C.cut;ctx.fill();ctx.strokeStyle=C["cut-edge"];ctx.lineWidth=3;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-16,176);ctx.bezierCurveTo(-74,140,-126,40,-118,-34);ctx.bezierCurveTo(-110,-124,110,-124,118,-34);ctx.bezierCurveTo(126,40,74,140,16,176);ctx.closePath();ctx.fillStyle=mix(C.fluid,C.panel,.4);ctx.fill();ctx.restore();
+  const desc=Math.min(PF_MAX,k+(stage>=0?seg(ph,0,.25):0))*7;const cw=8+Math.min(PF_MAX,k)*3+born*12;const cy=uy+.82*170;ctx.fillStyle=C.panel;ctx.fillRect(ux-cw,cy,cw*2,24);line(ux-cw,cy,ux-cw,cy+24,C["cut-edge"],3);line(ux+cw,cy,ux+cw,cy+24,C["cut-edge"],3);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,420,440);ctx.clip();const by=uy+28+desc+born*200;ell(ux+4,by-42,38,50,.15,C.skin,C["skin-edge"],1.5);circ(ux,by+32,28,C.skin,C["skin-edge"],1.5);ctx.restore();
+  label(ux+60,cy+12,"cervix",{size:12});if(stage===0||stage===1)glow(ux,cy+4,24,C.nerve,.6);
+  const bx=480,bY=70;ell(bx,bY,62,40,0,C.brain,C["brain-edge"],1.5);const pit=[bx-8,bY+44];circ(pit[0],pit[1],6.5,C.oxy,C.ink,1);label(bx+14,bY+50,"pituitary",{size:11.5});label(bx,bY-50,"brain",{align:"center",size:11.5,pill:false});
+  const NP=[[ux+24,cy+8],[360,cy+8],[360,96],[bx-48,bY+8]],OP=[[pit[0],pit[1]+8],[440,134],[330,140],[ux+96,uy-30]];pathLine(NP,C.nerve,2,[5,5]);pathLine(OP,C.oxy,2,[2,5]);
+  if(stage===1){const q=seg(ph,.25,.5);for(let j=0;j<3;j++){const p=along(NP,clamp(q*1.3-j*.12,0,1));circ(p[0],p[1],4.5,C.nerve,C.ink,1)}}
+  if(stage===2){const q=seg(ph,.5,.75);const nO=Math.round(3*pfStrength(k));for(let j=0;j<nO;j++){const f=clamp(q*1.6-j*.03,0,1);if(f<=0||f>=1)continue;const p=along(OP,f);circ(p[0]+Math.sin(j*3)*6,p[1]+Math.cos(j*2)*6,3.6,C.oxy)}}
+  if(stage===3)label(ux,24,"CONTRACTION "+(k+1),{align:"center",size:13,weight:700,color:C.act4,border:C.act4});
+  const cap=PF.born?"Baby born → no stretch → no more oxytocin → loop ends":stage<0?(k===0?"Press Next contraction to start":"Waiting for the next contraction"):["1 Head stretches the cervix","2 Stretch receptors signal the brain","3 Pituitary releases oxytocin","4 Uterus contracts harder"][stage];
+  label(ux,428,cap,{align:"center",size:12.5,weight:600,border:PF.born?C.good:C.act4});
+  // graph
+  const gx0=470,gx1=780,gy0=180,gy1=400;ctx.fillStyle=C["panel-2"];rr(gx0-40,gy0-30,gx1-gx0+52,gy1-gy0+56,8);ctx.fill();heading(gx0-30,gy0-14,"Contraction strength",C.act4);
+  const mx=pfStrength(PF_MAX-1);line(gx0,gy1,gx1,gy1,C.rule,1.5);line(gx0,gy0,gx0,gy1,C.rule,1.5);
+  const bw=(gx1-gx0)/(PF_MAX+2);for(let i=0;i<PF_MAX+1;i++){const x=gx0+8+i*bw;let h=0;if(i<PF_MAX){if(i<k)h=pfStrength(i)/mx;if(i===k&&stage===3)h=pfStrength(i)/mx*seg(ph,.75,1)}
+    if(h>0){ctx.fillStyle=C.act4;rr(x,gy1-h*(gy1-gy0-10),bw-10,h*(gy1-gy0-10),3);ctx.fill()}label(x+(bw-10)/2,gy1+12,i<PF_MAX?String(i+1):"birth",{align:"center",size:10.5,mono:true,pill:false,color:C["ink-soft"]})}
+  if(PF.born){const x=gx0+8+PF_MAX*bw;label(x+(bw-10)/2,gy1-24,"0",{align:"center",size:12,weight:700,color:C.good,pill:false});label((gx0+gx1)/2,gy0+12,"loop ends at birth",{align:"center",size:13,weight:700,color:C.good,border:C.good})}
+  else if(k>1)label(gx0+10,gy0+12,"each one stronger than the last",{align:"left",size:12,color:C["ink-soft"],pill:false})}
+
+/* ---------- tabs / theme / loop ---------- */
+let curTab="atlas";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;
+  ["atlas","slice","sort","loops"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll()});
+function fitAll(){[SA,SS,SO,SLB,SM,SP].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  try{if(curTab==="atlas")drawAtlas(now);else if(curTab==="slice")drawSlice(now);else if(curTab==="sort")drawSort(now);
+    else{if(LPM==="build")drawLoopB(now);else if(LPM==="pos")drawPos(now);drawSimMaybe(now,dt)}}catch(err){console.error(err)}
+  requestAnimationFrame(frame)}
+function drawSimMaybe(now,dt){if(LPM==="sim")drawSim(now,dt)}
+/* test hooks */
+window.__bb={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),AT:()=>AT,SL:()=>SL,SQ:()=>SQ,SOR:()=>SOR,LB:()=>LB,SIM:()=>SIM,PF:()=>PF,
+  atMode:m=>{AT.mode=m;atModes();atHow();atNewRound()},soPlace:(id,z)=>soPlace(id,z),soStart:i=>soStart(i),lbPlace:(id,z)=>lbPlace(id,z),lbStart:i=>lbStart(i),
+  setSim:o=>Object.assign(SIM,o),stepSim:m=>{for(let i=0;i<m*20;i++)smStep(.05)},lpMode:m=>{document.querySelectorAll("#lpModes .round")[["build","sim","pos"].indexOf(m)].click()},
+  atClick:(x,y)=>{const h=atRegionAt(x,y);atFindAnswer(h?h.r:null);return h&&h.r?h.r.id:null}};
+readColors();atModes();atHow();atFillSelect();atNewRound();slSegs();slChanged(true);slModes();soStart(0);lbStart(0);lpModes();smUI();smChalUI();smText();pfText();fitAll();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

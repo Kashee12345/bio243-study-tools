@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blood Vessels Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#2E8A7A;--act4:#C4644F;--act5:#A04E8C;
+  /* vessel palette */
+  --ecf:#F1EEEA;--tissue:#F6EFE6;--tissue-edge:#D8C7B2;
+  --art:#C2392F;--art-edge:#82231C;--ven:#3F62A8;--ven-edge:#27407A;--mixed:#8A4A86;
+  --endo:#E5A99B;--endo-edge:#A9655A;--smooth:#D9826F;--smooth-edge:#9C4E3E;--elastic:#C9A227;--collagen:#A57B4F;
+  --muscle:#C77B6B;--muscle-edge:#8E4C3F;--fluid:#2F7FC1;--protein:#D98A1C;--lymph:#3E8E41;--lymph-wash:#DCEFD8;
+  --nerve:#7B5CC9;--co2:#7E8C95;--hplus:#B4632A;--o2:#2F7FC1;
+  --epi:#D98A1C;--adh:#1F78B4;--renin:#A04E8C;--angio:#C4644F;--ace:#2E8A7A;--aldo:#5C7F2A;--na:#7B5CC9;--anp:#2F8A57;
+  --lung:#E8B4AC;--liver:#8E4A3A;--kidney:#A9524A;--gut:#E3B98F;--gut-edge:#A87A52;--brain:#E8C8D4;--brain-edge:#A9768A;--heart:#B8453B;--heart-edge:#7A2A22;--adrenal:#E0B04A;--bone:#EADFC8;
+  --glow:#F2B33B;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#5CC4B0;--act4:#E08A74;--act5:#D186C0;
+  --ecf:#161A1D;--tissue:#211D1A;--tissue-edge:#4A3F33;
+  --art:#D24C42;--art-edge:#F08A80;--ven:#5F86D6;--ven-edge:#9DB5EA;--mixed:#B070AC;
+  --endo:#7A4A42;--endo-edge:#D99A8E;--smooth:#9A5A4C;--smooth-edge:#E09A88;--elastic:#E0BE48;--collagen:#C89A68;
+  --muscle:#8A4E42;--muscle-edge:#D99A88;--fluid:#5AA9E6;--protein:#F2A93B;--lymph:#6BC26E;--lymph-wash:#1E3320;
+  --nerve:#A98BEF;--co2:#9AA8B0;--hplus:#E39A5B;--o2:#5AA9E6;
+  --epi:#F2A93B;--adh:#4FA3E0;--renin:#D186C0;--angio:#E08A74;--ace:#5CC4B0;--aldo:#A6C75A;--na:#A98BEF;--anp:#4FBF7F;
+  --lung:#5A3434;--liver:#B86E5C;--kidney:#D47E74;--gut:#5A4430;--gut-edge:#C89A68;--brain:#4A3442;--brain-edge:#C99AB0;--heart:#C4544A;--heart-edge:#F08A80;--adrenal:#C9A23A;--bone:#4A4234;
+  --glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#5CC4B0;--act4:#E08A74;--act5:#D186C0;
+  --ecf:#161A1D;--tissue:#211D1A;--tissue-edge:#4A3F33;
+  --art:#D24C42;--art-edge:#F08A80;--ven:#5F86D6;--ven-edge:#9DB5EA;--mixed:#B070AC;
+  --endo:#7A4A42;--endo-edge:#D99A8E;--smooth:#9A5A4C;--smooth-edge:#E09A88;--elastic:#E0BE48;--collagen:#C89A68;
+  --muscle:#8A4E42;--muscle-edge:#D99A88;--fluid:#5AA9E6;--protein:#F2A93B;--lymph:#6BC26E;--lymph-wash:#1E3320;
+  --nerve:#A98BEF;--co2:#9AA8B0;--hplus:#E39A5B;--o2:#5AA9E6;
+  --epi:#F2A93B;--adh:#4FA3E0;--renin:#D186C0;--angio:#E08A74;--ace:#5CC4B0;--aldo:#A6C75A;--na:#A98BEF;--anp:#4FBF7F;
+  --lung:#5A3434;--liver:#B86E5C;--kidney:#D47E74;--gut:#5A4430;--gut-edge:#C89A68;--brain:#4A3442;--brain-edge:#C99AB0;--heart:#C4544A;--heart-edge:#F08A80;--adrenal:#C9A23A;--bone:#4A4234;
+  --glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2)}
+.legend i.s{border-radius:2px}
+.legend i.ln{width:20px;height:0;border-radius:0;border:0;border-top:3px solid}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.abbox{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;font-size:14.5px;margin-top:10px}
+/* sim */
+.ctl{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+.ctl label{font-size:14.5px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.ctl output{font-family:var(--mono);font-weight:600;color:var(--accent-ink)}
+.ctl input[type=range]{accent-color:var(--accent);width:100%}
+.ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-faint);font-family:var(--mono)}
+.readouts{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+.readouts th{text-align:left;font-weight:500;color:var(--ink-soft);padding:5px 6px 5px 0;border-top:1px solid var(--rule-soft)}
+.readouts td{padding:5px 0;border-top:1px solid var(--rule-soft);font-family:var(--mono);font-size:13.5px;text-align:right;white-space:nowrap}
+.chal{list-style:none;padding:0;margin:6px 0}
+.chal li{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.chal .ck{flex:0 0 22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:13px;font-family:var(--mono)}
+.chal li.done .ck{background:var(--good);border-color:var(--good);color:#fff}
+.status{font-size:14.5px;padding:8px 10px;border-radius:var(--r);margin-top:8px;border:1px solid var(--rule);background:var(--panel-2)}
+.status.warn{background:var(--warn-wash);border-color:var(--warn)}
+.status.bad{background:var(--bad-wash);border-color:var(--bad)}
+.status.good{background:var(--good-wash);border-color:var(--good)}
+/* sequencer */
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 6px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.subtabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+.scen{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
+.scen .tbtn{font-size:13.5px;padding:7px 10px}
+.vgroups{margin-top:10px}
+.vgroups h4{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:10px 0 5px}
+.vbtns{display:flex;flex-wrap:wrap;gap:5px}
+.vbtn{background:var(--panel);border:1.5px solid var(--rule);border-left:5px solid var(--rule);border-radius:var(--r);padding:5px 9px;cursor:pointer;font-size:13.5px;line-height:1.25}
+.vbtn:hover{border-color:var(--accent)}
+.vbtn.art{border-left-color:var(--art)}.vbtn.ven{border-left-color:var(--ven)}.vbtn.cap{border-left-color:var(--act3)}.vbtn.ch{border-left-color:var(--heart)}.vbtn.sh{border-left-color:var(--act5)}
+.vbtn.used{background:var(--good-wash);border-color:var(--good)}
+.vbtn.hint{box-shadow:0 0 0 3px var(--gold)}
+.vbtn.no{background:var(--warn-wash);border-color:var(--warn)}
+.routebox{font-size:14.5px;margin:6px 0}
+.trail{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0;font-size:13px}
+.trail span{background:var(--panel-2);border:1px solid var(--rule);border-radius:99px;padding:2px 9px}
+.trail span.on{background:var(--good-wash);border-color:var(--good)}
+.trail span.q{border-style:dashed;color:var(--ink-faint)}
+.cases{margin-top:16px}
+.casecard h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.cs-grid{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:700px){.cs-grid{grid-template-columns:1fr}}
+.cs-art{width:100%;max-width:200px;height:auto;display:block}
+.quiz .opt{margin-bottom:0}
+.mq{margin-top:12px}
+.flags{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.col{min-width:0;display:flex;flex-direction:column;gap:16px}
+.col .cases{margin-top:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Blood Vessels and Circulation &middot; USC Upstate</div>
+    <h1>Blood Vessels Lab</h1>
+    <p class="sub">Run the capillary and blood pressure simulators, find out why radius rules blood flow, and trace a drop of blood through the body. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="cap" id="tabbtn-cap" type="button">Part 1 &middot; Capillary Exchange</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="bp" id="tabbtn-bp" type="button">Part 2 &middot; Blood Pressure Control</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="flow" id="tabbtn-flow" type="button">Part 3 &middot; Resistance &amp; Flow</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="route" id="tabbtn-route" type="button">Part 4 &middot; Route Tracer</button>
+  </div>
+
+  <!-- PART 1: capillary exchange -->
+  <section id="tab-cap" role="tabpanel" aria-labelledby="tabbtn-cap">
+    <div class="grid">
+      <div class="col">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvCap" role="img" aria-label="A capillary between an arteriole and a venule, with tissue fluid and a lymphatic capillary above it."></canvas></div>
+        <div class="canvas-holder" style="margin-top:8px"><canvas id="cvNfp" role="img" aria-label="Live graph of net filtration pressure along the capillary."></canvas></div>
+        <div class="legend">
+          <span><i style="background:var(--fluid)"></i>Fluid (water)</span>
+          <span><i class="s" style="background:var(--protein)"></i>Plasma protein (albumin)</span>
+          <span><i style="background:var(--lymph)"></i>Lymphatic capillary</span>
+          <span><i class="ln" style="border-top-color:var(--art)"></i>Net filtration (out)</span>
+          <span><i class="ln" style="border-top-color:var(--ven)"></i>Net reabsorption (in)</span>
+        </div>
+      </div>
+      <div class="card casecard cases" id="capCases"></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n">Simulator</div>
+        <h2 class="lvl-t">Capillary Exchange</h2>
+        <div class="goal"><b class="h">Try this</b>Change the push (blood pressure), the pull (plasma protein) and the drain (lymph). Watch the arrows, the graph and the tissue. Can you make edema, then fix it?</div>
+        <div class="ctl"><label for="chp">Capillary blood pressure <output id="chpOut"></output></label><input type="range" id="chp" min="20" max="60" step="1" value="35"><div class="ticks"><span>low</span><span>normal</span><span>high</span></div></div>
+        <div class="ctl"><label for="prot">Plasma protein (albumin) <output id="protOut"></output></label><input type="range" id="prot" min="30" max="140" step="5" value="100"><div class="ticks"><span>low</span><span>normal</span><span>high</span></div></div>
+        <div class="ctl"><label for="lym">Lymph drainage <output id="lymOut"></output></label><input type="range" id="lym" min="0" max="100" step="5" value="100"><div class="ticks"><span>blocked</span><span></span><span>open</span></div></div>
+        <div class="bar"><button class="tbtn" id="leaky" type="button" aria-pressed="false">Inflammation: leaky capillaries</button></div>
+        <h3>Scenarios</h3>
+        <div class="scen" id="capScen"></div>
+        <table class="readouts" id="capRead"></table>
+        <div class="status" id="capStatus" role="status"></div>
+        <h3>Challenges</h3>
+        <ul class="chal" id="capChal"></ul>
+        <p class="small" id="capStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2: blood pressure control -->
+  <section id="tab-bp" role="tabpanel" aria-labelledby="tabbtn-bp" hidden>
+    <div class="grid">
+      <div class="col">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvBody" role="img" aria-label="Body diagram showing the baroreceptor reflex, RAAS, ADH and ANP responding to the chosen event."></canvas></div>
+        <div class="canvas-holder" style="margin-top:8px"><canvas id="cvBpTr" role="img" aria-label="Live traces of mean arterial pressure, heart rate, arteriole diameter and blood volume over time."></canvas></div>
+        <div class="legend">
+          <span><i class="ln" style="border-top-color:var(--art)"></i>Mean arterial pressure</span>
+          <span><i class="ln" style="border-top-color:var(--act4)"></i>Heart rate</span>
+          <span><i class="ln" style="border-top-color:var(--smooth-edge)"></i>Arteriole diameter</span>
+          <span><i class="ln" style="border-top-color:var(--fluid)"></i>Blood volume</span>
+          <span><i style="background:var(--nerve)"></i>Sympathetic signal</span>
+          <span><i class="s" style="background:var(--renin)"></i>Renin / angiotensin</span>
+        </div>
+      </div>
+      <div class="card casecard cases" id="bpCases"></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n">Simulator</div>
+        <h2 class="lvl-t">Blood Pressure Control</h2>
+        <div class="goal"><b class="h">Try this</b>Pick an event. Watch the fast nerve reflex act first, then the slower hormones. Then try it again with a medicine switched on.</div>
+        <h3>Events</h3>
+        <div class="scen">
+          <button class="tbtn" id="evBleed" type="button">Hemorrhage (lose 1 L)</button>
+          <button class="tbtn" id="evStand" type="button">Stand up quickly</button>
+          <button class="tbtn" id="evDehy" type="button">Dehydration</button>
+          <button class="tbtn" id="evSalt" type="button">Big salty meal</button>
+        </div>
+        <h3>Medicines</h3>
+        <div class="flags">
+          <button class="tbtn" id="medAce" type="button" aria-pressed="false">ACE inhibitor</button>
+          <button class="tbtn" id="medBeta" type="button" aria-pressed="false">Beta blocker</button>
+        </div>
+        <div class="bar">
+          <button class="tbtn" id="bpPause" type="button">Pause</button>
+          <button class="tbtn" id="bpReset" type="button">Reset</button>
+          <label class="mode">Speed <select id="bpSpeed"><option value="1">1 min/s</option><option value="2" selected>2 min/s</option><option value="4">4 min/s</option></select></label>
+        </div>
+        <table class="readouts" id="bpRead"></table>
+        <div class="status" id="bpStatus" role="status"></div>
+        <h3>Challenges</h3>
+        <ul class="chal" id="bpChal"></ul>
+        <p class="small" id="bpStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3: resistance and flow -->
+  <section id="tab-flow" role="tabpanel" aria-labelledby="tabbtn-flow" hidden>
+    <div class="grid">
+      <div class="col">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvFlow" role="img" aria-label="A blood vessel with flowing cells and a cup filling at its end."></canvas></div>
+        <div class="canvas-holder" style="margin-top:8px"><canvas id="cvFlowCh" role="img" aria-label="Graph of flow against radius, and bars showing how much each factor changes flow."></canvas></div>
+        <div class="legend">
+          <span><i class="ln" style="border-top-color:var(--accent)"></i>Real rule: flow ∝ radius⁴</span>
+          <span><i class="dl" style="border-top-color:var(--ink-faint)"></i>If flow just followed radius (not real)</span>
+          <span><i style="background:var(--art)"></i>Red blood cells</span>
+        </div>
+      </div>
+      <div class="card casecard cases" id="flowCases"></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n">Lab</div>
+        <h2 class="lvl-t">Resistance &amp; Flow</h2>
+        <div class="goal"><b class="h">The rule</b>Same push from the heart each time. Flow goes up with <b>radius × radius × radius × radius</b>, and down with thicker blood or a longer vessel.</div>
+        <div class="ctl"><label for="rad">Vessel radius <output id="radOut"></output></label><input type="range" id="rad" min="50" max="150" step="1" value="100"><div class="ticks"><span>50%</span><span>100%</span><span>150%</span></div></div>
+        <div class="ctl"><label for="visc">Blood viscosity <output id="viscOut"></output></label><input type="range" id="visc" min="50" max="200" step="5" value="100"><div class="ticks"><span>thin</span><span>normal</span><span>thick</span></div></div>
+        <div class="ctl"><label for="len">Vessel length <output id="lenOut"></output></label><input type="range" id="len" min="50" max="200" step="5" value="100"><div class="ticks"><span>short</span><span>normal</span><span>long</span></div></div>
+        <div class="bar"><button class="tbtn" id="flowReset" type="button">Back to normal</button></div>
+        <table class="readouts" id="flowRead"></table>
+        <div class="status" id="flowStatus" role="status"></div>
+        <h3>Challenges</h3>
+        <ul class="chal" id="flowChal"></ul>
+        <p class="small" id="flowStars"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 4: route tracer -->
+  <section id="tab-route" role="tabpanel" aria-labelledby="tabbtn-route" hidden>
+    <div class="rounds" id="rtRounds" aria-label="Routes"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvMap" role="img" aria-label="A drawn map of the heart and major blood vessels. Click the next vessel on the route."></canvas></div>
+        <div class="stagebar">
+          <label class="mode"><input type="checkbox" id="rtTimed"> Timed mode</label>
+          <span class="timer" id="rtTimer" hidden>0:00</span>
+          <span class="caption" id="rtCap">Click the next vessel on the map, or use the vessel buttons beside or below it.</span>
+        </div>
+        <div class="legend">
+          <span><i class="s" style="background:var(--art)"></i>Arteries (red)</span>
+          <span><i class="s" style="background:var(--ven)"></i>Veins (blue)</span>
+          <span><i class="s" style="background:var(--act3)"></i>Capillary beds</span>
+          <span><i class="s" style="background:var(--heart)"></i>Heart chambers</span>
+          <span><i class="s" style="background:var(--act5)"></i>Fetal shunts</span>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="rtN"></div>
+        <h2 class="lvl-t" id="rtT"></h2>
+        <div class="goal"><b class="h">Your route</b><span id="rtGoal"></span></div>
+        <div class="trail" id="rtTrail"></div>
+        <div class="bar">
+          <button class="tbtn" id="rtHint" type="button">Hint</button>
+          <button class="tbtn" id="rtShow" type="button">Show answer</button>
+          <button class="tbtn" id="rtReset" type="button">Start over</button>
+          <button class="btn" id="rtNext" type="button" hidden>Next route &rarr;</button>
+        </div>
+        <div class="msg" id="rtMsg" role="status"></div>
+        <div class="vgroups" id="rtBtns"></div>
+        <p class="small" id="rtStars"></p>
+      </aside>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 20, The Cardiovascular System: Blood Vessels and Circulation (OpenStax A&amp;P 2e) &middot; Pair with the <a href="Blood-Vessels-Walkthrough.html">Blood Vessels Walkthrough</a>.<br>Diagrams are simplified and not to scale. The simulators are teaching models with rounded numbers, not medical calculators: capillary pressure is assumed to fall in a straight line, tissue-fluid pressure starts at zero and rises only as edema builds, and time in the blood pressure simulator is compressed (the reflex really acts in seconds, hormones over minutes to hours, and volume recovery over hours to days). The vessel map shows only major routes.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let ctx;const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash","act1","act2","act3","act4","act5",
+ "ecf","tissue","tissue-edge","art","art-edge","ven","ven-edge","mixed","endo","endo-edge","smooth","smooth-edge","elastic","collagen","muscle","muscle-edge","fluid","protein","lymph","lymph-wash",
+ "nerve","co2","hplus","o2","epi","adh","renin","angio","ace","aldo","na","anp","lung","liver","kidney","gut","gut-edge","brain","brain-edge","heart","heart-edge","adrenal","bone","glow","gold","gold-wash"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function isDark(){return hx(C.ground)[0]<60}
+function onFill(){return isDark()?"#0E1519":"#fff"}
+function P(T,L){return ((T%L)+L)%L/L}
+function hx(c){let h=(c||"#888").trim();if(h[0]!=="#")return [136,136,136];h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "#"+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,"0")).join("")}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,t,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(t).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){if(Math.hypot(x2-x1,y2-y1)<1)return;line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function badge(x,y,n,col){circ(x,y,11,col||C.ink,C.panel,1.5);ctx.font=`700 12px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function plen(P_){let L=0;for(let i=0;i<P_.length-1;i++)L+=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);return L}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f),Math.atan2(P_[i+1][1]-P_[i][1],P_[i+1][0]-P_[i][0])]}d-=ls[i]}return P_[P_.length-1]}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.lineJoin="round";ctx.stroke();ctx.setLineDash([])}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,8);ctx.fillStyle=o.fill||hexA(C.panel,.75);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function banner(t,col,y){y=y==null?452:y;rr(14,y-22,772,44,10);ctx.fillStyle=hexA(col||C.accent,.12);ctx.fill();ctx.strokeStyle=col||C.accent;ctx.lineWidth=1.2;ctx.stroke();txt(400,y,t,{size:14,weight:600,align:"center"})}
+
+/* ---------- drawing kit ---------- */
+// red blood cell seen edge-on/oblique, moving
+function cell(x,y,r,col,ang,a){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);
+  ctx.beginPath();ctx.ellipse(0,0,r,r*.62,0,0,TAU);ctx.fillStyle=col||C.art;ctx.fill();ctx.strokeStyle=hexA(C.ink,.28);ctx.lineWidth=.8;ctx.stroke();
+  ctx.beginPath();ctx.ellipse(0,0,r*.45,r*.24,0,0,TAU);ctx.fillStyle="rgba(0,0,0,.14)";ctx.fill();ctx.restore()}
+// a vessel drawn along a polyline: wall colour + lumen colour
+function vessel(P_,r,lum,wall,ww){ctx.save();ctx.lineJoin="round";ctx.lineCap="round";ctx.beginPath();P_.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+  ctx.strokeStyle=wall||C["art-edge"];ctx.lineWidth=2*r+(ww==null?4:ww);ctx.stroke();ctx.strokeStyle=lum;ctx.lineWidth=2*r;ctx.stroke();ctx.restore()}
+function flowDots(P_,n,period,T,fn,off){for(let i=0;i<n;i++){const f=P((T+(off||0))/period+i/n,1);const q=along(P_,f);fn(q[0],q[1],f,i,q[2])}}
+function heartIcon(x,y,s,beat,colL,colR){const k=1-.08*beat;ctx.save();ctx.translate(x,y);ctx.scale(s*k,s*k);
+  ctx.beginPath();ctx.moveTo(0,.9);ctx.bezierCurveTo(-1.2,.1,-1.05,-.9,-.5,-.95);ctx.bezierCurveTo(-.2,-1,0,-.75,0,-.55);ctx.bezierCurveTo(0,-.75,.2,-1,.5,-.95);ctx.bezierCurveTo(1.05,-.9,1.2,.1,0,.9);ctx.closePath();
+  if(colL&&colR){ctx.save();ctx.clip();ctx.fillStyle=colL;ctx.fillRect(-1.3,-1.1,1.3,2.1);ctx.fillStyle=colR;ctx.fillRect(0,-1.1,1.3,2.1);ctx.restore()}else{ctx.fillStyle=colL||C.heart;ctx.fill()}
+  ctx.lineWidth=2/(s*k);ctx.strokeStyle=C["heart-edge"];ctx.stroke();ctx.restore()}
+function beatOf(T,per){const p=P(T,per);return p<.25?Math.sin(p/.25*Math.PI):0}
+// semicircular gauge
+function gauge(x,y,r,v,vmin,vmax,lbl,o){o=o||{};ctx.save();
+  ctx.beginPath();ctx.arc(x,y,r,Math.PI,TAU);ctx.lineTo(x,y);ctx.closePath();ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.stroke();
+  if(o.low!=null){const a1=Math.PI+Math.PI*seg(o.low,vmin,vmax);ctx.beginPath();ctx.arc(x,y,r-5,Math.PI,a1);ctx.strokeStyle=hexA(C.bad,.7);ctx.lineWidth=7;ctx.stroke()}
+  if(o.ok){const a0=Math.PI+Math.PI*seg(o.ok[0],vmin,vmax),a1=Math.PI+Math.PI*seg(o.ok[1],vmin,vmax);ctx.beginPath();ctx.arc(x,y,r-5,a0,a1);ctx.strokeStyle=hexA(C.good,.7);ctx.lineWidth=7;ctx.stroke()}
+  const a=Math.PI+Math.PI*seg(v,vmin,vmax);line(x,y,x+Math.cos(a)*(r-9),y+Math.sin(a)*(r-9),C.ink,2.5);circ(x,y,3.5,C.ink);
+  txt(x,y+12,o.val||(Math.round(v)+(o.unit==null?" mmHg":o.unit)),{size:o.vs||12,weight:700,align:"center",mono:true});
+  if(lbl)txt(x,y-r-10,lbl,{size:11.5,weight:600,align:"center",color:C["ink-soft"]});ctx.restore()}
+// a nerve fibre with travelling impulses
+function nerve(P_,T,col,rate,on,lw){poly(P_,hexA(col,.55),lw||2);if(on<=0)return;const n=Math.max(1,Math.round(rate));for(let i=0;i<n;i++){const f=P(T*rate/n*.9+i/n,1);const q=along(P_,f);glow(q[0],q[1],10,col,.8*on);circ(q[0],q[1],3,col)}}
+// molecule shapes so colour is never the only cue
+function mol(x,y,kind,s,a){s=s||5;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.translate(x,y);ctx.lineWidth=1;ctx.strokeStyle=hexA(C.ink,.35);
+  if(kind==="water"){circ(0,0,s*.75,C.fluid,hexA(C.ink,.25),.8)}
+  else if(kind==="protein"){ctx.beginPath();for(let i=0;i<=10;i++){const t=i/10*TAU;const rad=s*1.25*(1+.18*Math.sin(t*3));i?ctx.lineTo(Math.cos(t)*rad,Math.sin(t)*rad):ctx.moveTo(Math.cos(t)*rad,Math.sin(t)*rad)}ctx.closePath();ctx.fillStyle=C.protein;ctx.fill();ctx.stroke()}
+  else if(kind==="co2"){circ(-s*.95,0,s*.6,C.co2);circ(s*.95,0,s*.6,C.co2);circ(0,0,s*.75,mix(C.co2,C.ink,.45))}
+  else if(kind==="o2"){circ(-s*.5,0,s*.65,C.o2,hexA(C.ink,.3),.8);circ(s*.5,0,s*.65,C.o2,hexA(C.ink,.3),.8)}
+  else if(kind==="h"){circ(0,0,s*.8,C.hplus);ctx.fillStyle="#fff";ctx.font=`700 ${s*1.3}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("+",0,.5)}
+  else if(kind==="na"){circ(0,0,s*.85,C.na);ctx.fillStyle="#fff";ctx.font=`700 ${s*1.2}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("+",0,.5)}
+  else if(kind==="epi"){ctx.beginPath();ctx.moveTo(0,-s);ctx.lineTo(s,0);ctx.lineTo(0,s);ctx.lineTo(-s,0);ctx.closePath();ctx.fillStyle=C.epi;ctx.fill();ctx.stroke()}
+  else if(kind==="adh"){ctx.beginPath();for(let i=0;i<6;i++){const t=i/6*TAU;i?ctx.lineTo(Math.cos(t)*s,Math.sin(t)*s):ctx.moveTo(Math.cos(t)*s,Math.sin(t)*s)}ctx.closePath();ctx.fillStyle=C.adh;ctx.fill();ctx.stroke()}
+  else if(kind==="anp"){ctx.beginPath();ctx.moveTo(0,-s);ctx.lineTo(s*.95,s*.75);ctx.lineTo(-s*.95,s*.75);ctx.closePath();ctx.fillStyle=C.anp;ctx.fill();ctx.stroke()}
+  else if(kind==="aldo"){ctx.beginPath();for(let i=0;i<10;i++){const t=i/10*TAU-Math.PI/2;const rad=i%2?s*.5:s*1.1;i?ctx.lineTo(Math.cos(t)*rad,Math.sin(t)*rad):ctx.moveTo(Math.cos(t)*rad,Math.sin(t)*rad)}ctx.closePath();ctx.fillStyle=C.aldo;ctx.fill();ctx.stroke()}
+  else if(kind==="renin"){ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,s,.55,TAU-.55);ctx.closePath();ctx.fillStyle=C.renin;ctx.fill();ctx.stroke()}
+  else if(kind==="ace"){rr(-s,-s,2*s,2*s,2);ctx.fillStyle=C.ace;ctx.fill();ctx.stroke()}
+  else if(kind==="aden"){rr(-s,-s*.7,2*s,1.4*s,s*.6);ctx.fillStyle=C.act5;ctx.fill();ctx.stroke()}
+  else if(kind==="k"){circ(0,0,s*.8,C.act1);ctx.fillStyle="#fff";ctx.font=`700 ${s*1.1}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("K",0,.5)}
+  ctx.restore()}
+function chain(x,y,n,col,s,a,ang){ctx.save();ctx.globalAlpha*=a==null?1:a;ctx.translate(x,y);ctx.rotate(ang||0);for(let i=0;i<n;i++){circ(i*s*1.7,Math.sin(i*1.3)*s*.4,s,col,hexA(C.ink,.35),1)}ctx.restore()}
+function tissueCells(x,y,w,h,col,a,seed){ctx.save();ctx.globalAlpha*=a==null?1:a;const nx=Math.max(1,Math.floor(w/34)),ny=Math.max(1,Math.floor(h/30));for(let i=0;i<nx;i++)for(let j=0;j<ny;j++){const cx=x+(i+.5)*w/nx+(rnd(i*7+j+(seed||0))-.5)*6,cy=y+(j+.5)*h/ny+(rnd(i+j*5+(seed||0))-.5)*5;
+  ctx.beginPath();ctx.ellipse(cx,cy,w/nx*.4,h/ny*.38,0,0,TAU);ctx.fillStyle=col||C.tissue;ctx.fill();ctx.strokeStyle=C["tissue-edge"];ctx.lineWidth=1;ctx.stroke();circ(cx,cy,2.6,hexA(C["ink-soft"],.5))}ctx.restore()}
+function lungShape(x,y,rx,ry,side,col){ctx.save();ctx.translate(x,y);ctx.scale(side,1);ctx.beginPath();ctx.moveTo(rx*.35,-ry);ctx.bezierCurveTo(-rx*.6,-ry*.9,-rx,ry*.2,-rx*.8,ry*.95);ctx.bezierCurveTo(-rx*.3,ry*1.05,rx*.2,ry*.9,rx*.45,ry*.6);ctx.bezierCurveTo(rx*.3,ry*.1,rx*.5,-ry*.6,rx*.35,-ry);ctx.closePath();
+  ctx.fillStyle=col||C.lung;ctx.fill();ctx.strokeStyle=hexA(C["art-edge"],.6);ctx.lineWidth=1.5/1;ctx.stroke();ctx.restore()}
+function kidneyShape(x,y,s,col){ctx.save();ctx.translate(x,y);ctx.beginPath();ctx.moveTo(0,-s);ctx.bezierCurveTo(s*1.1,-s*1.15,s*1.25,s*1.1,0,s);ctx.bezierCurveTo(-s*.75,s*.95,-s*.5,s*.35,-s*.22,s*.15);ctx.bezierCurveTo(-s*.42,-s*.05,-s*.6,-s*.95,0,-s);ctx.closePath();
+  ctx.fillStyle=col||C.kidney;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1.5;ctx.stroke();ctx.restore()}
+function brainShape(x,y,s){ctx.save();ctx.translate(x,y);ctx.beginPath();ctx.ellipse(0,0,s*1.3,s,0,Math.PI*.95,TAU+Math.PI*.05);ctx.bezierCurveTo(s*1.2,s*.5,s*.4,s*.55,s*.2,s*.5);ctx.lineTo(-s*1.25,s*.2);ctx.closePath();ctx.fillStyle=C.brain;ctx.fill();ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  ctx.beginPath();for(let i=0;i<4;i++){ctx.moveTo(-s*.9+i*s*.5,-s*.75);ctx.quadraticCurveTo(-s*.7+i*s*.5,-s*.2,-s*.95+i*s*.5,s*.1)}ctx.strokeStyle=hexA(C["brain-edge"],.6);ctx.lineWidth=1.2;ctx.stroke();ctx.restore()}
+function liverShape(x,y,w,h,col){ctx.save();ctx.translate(x,y);ctx.beginPath();ctx.moveTo(-w*.5,-h*.2);ctx.bezierCurveTo(-w*.45,-h*.6,w*.2,-h*.65,w*.5,-h*.35);ctx.bezierCurveTo(w*.45,-h*.05,w*.2,h*.25,-w*.1,h*.5);ctx.bezierCurveTo(-w*.4,h*.55,-w*.55,h*.2,-w*.5,-h*.2);ctx.closePath();
+  ctx.fillStyle=col||C.liver;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1.5;ctx.stroke();ctx.restore()}
+// spindle-shaped smooth muscle cell
+function spindle(x,y,len,th,ang,col){ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.beginPath();ctx.moveTo(-len/2,0);ctx.quadraticCurveTo(0,-th,len/2,0);ctx.quadraticCurveTo(0,th,-len/2,0);ctx.fillStyle=col||C.smooth;ctx.fill();ctx.strokeStyle=C["smooth-edge"];ctx.lineWidth=.8;ctx.stroke();ctx.beginPath();ctx.ellipse(0,0,len*.12,th*.3,0,0,TAU);ctx.fillStyle=hexA(C["smooth-edge"],.8);ctx.fill();ctx.restore()}
+function wavyRing(x,y,r,amp,n,col,lw){ctx.beginPath();for(let i=0;i<=200;i++){const t=i/200*TAU;const rad=r+amp*Math.sin(t*n);i?ctx.lineTo(x+Math.cos(t)*rad,y+Math.sin(t)*rad):ctx.moveTo(x+Math.cos(t)*rad,y+Math.sin(t)*rad)}ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.stroke()}
+function cross(x,y,s,col){line(x-s,y-s,x+s,y+s,col||C.bad,3.5);line(x-s,y+s,x+s,y-s,col||C.bad,3.5)}
+// scene-local state that survives frames (reset on step change)
+function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,ctx:cv.getContext("2d"),W,H,K:1};
+  st.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);st.K=cv.width/W};
+  st.toLocal=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};return st}
+function use(st){ctx=st.ctx;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,st.W,st.H);ctx.globalAlpha=1}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fmt(s){s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function setMsg(id,t,c){const m=$(id);m.className="msg"+(t?" show "+c:"");m.innerHTML=t}
+function starStr(n){return "★".repeat(n)+"☆".repeat(3-n)}
+function renderChal(id,starsId,list,done){$(id).innerHTML=list.map((c,i)=>`<li class="${done[i]?"done":""}"><span class="ck">${done[i]?"✓":i+1}</span><span>${c}</span></li>`).join("");
+  const n=done.filter(Boolean).length;$(starsId).innerHTML=`Challenges done: <b>${n}</b> of ${list.length} <span class="stars" style="font-size:16px">${starStr(Math.min(3,Math.round(n/list.length*3)))}</span>`}
+function legendRow(items){return items.map(([c,t,sh])=>`<span><i class="${sh||""}" style="${sh==="ln"?"border-top-color":"background"}:var(--${c})"></i>${t}</span>`).join("")}
+/* ---- two-part clinical case cards ("What breaks if...?") ---- */
+function makeCases(boxId,key,title,CASES){
+  const box=$(boxId);let ci=0;const st=store.get(key)||{};
+  box.innerHTML=`<h3>${title}</h3><div class="rounds" role="group" aria-label="Cases"></div><div class="cs-grid"><div class="cs-artbox"></div><div><div class="sc-title"></div><p class="cs-story"></p><div class="cs-q"></div><div class="calm">Wrong answers are fine here. Read why, then try again.</div></div></div><p class="small cs-score"></p>`;
+  const chips=box.querySelector(".rounds");
+  function score(){const n=CASES.filter((c,i)=>st[i]===2).length;box.querySelector(".cs-score").innerHTML=`Cases solved: <b>${n}</b> of ${CASES.length} <span class="stars" style="font-size:16px">${starStr(Math.min(3,Math.round(n/CASES.length*3)))}</span>`;
+    chips.innerHTML="";CASES.forEach((c,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===ci);b.innerHTML=`Case ${i+1}`+(st[i]===2?' <span class="ok">✓</span>':"");b.onclick=()=>{ci=i;show()};chips.appendChild(b)})}
+  function show(){const c=CASES[ci];score();box.querySelector(".cs-artbox").innerHTML=c.art();box.querySelector(".sc-title").textContent=c.title;box.querySelector(".cs-story").innerHTML=c.story;
+    const q=box.querySelector(".cs-q");q.innerHTML="";let part=0;
+    c.qs.forEach((qq,qi)=>{const wrap=document.createElement("div");wrap.className="mq";if(qi>0)wrap.hidden=true;wrap.innerHTML=`<p class="qlab">${qi+1}. ${qq.q}</p><div class="opts"></div><p class="fb"></p>`;
+      const ob=wrap.querySelector(".opts"),fb=wrap.querySelector(".fb");
+      qq.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];b.onclick=()=>{ob.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb show ok";fb.textContent="✓ "+o[2];const nx=q.querySelectorAll(".mq")[qi+1];if(nx)nx.hidden=false;else{st[ci]=2;store.set(key,st);score();if(c.after)c.after()}}
+        else{b.classList.add("wrong");fb.className="fb show no";fb.textContent="Not quite. "+o[2]}};ob.appendChild(b)});q.appendChild(wrap)});
+    if(c.run){const rb=document.createElement("button");rb.type="button";rb.className="tbtn";rb.style.marginTop="10px";rb.textContent=c.runLabel||"Run this in the simulator";rb.onclick=c.run;q.appendChild(rb)}}
+  show();return {show:i=>{ci=i;show()}}}
+/* small inline SVG art for case cards */
+function svgWrap(inner){return `<svg class="cs-art" viewBox="0 0 200 160" role="img" aria-hidden="true">${inner}</svg>`}
+
+/* ================= PART 1: capillary exchange ================= */
+const S1=makeStage("cvCap",800,360),S1g=makeStage("cvNfp",800,220);
+const cap={chp:35,prot:100,lym:100,leaky:false,E:0,wasSwollen:false,done:store.get("bv-cap-done")||[false,false,false,false]};
+const CAP_CHAL=["Cause edema by raising capillary blood pressure (keep everything else normal).","Cause edema by lowering plasma protein (keep everything else normal).","Cause edema by blocking lymph drainage (keep everything else normal).","Swell the tissue to moderate or worse, then bring it all the way back to no edema."];
+function capVals(){const CHPa=cap.chp,CHPv=cap.chp-17,BCOP=25*cap.prot/100,IFCOP=cap.leaky?4:0,IFHP=2*cap.E;
+  const nfp=f=>(lerp(CHPa,CHPv,f)-IFHP)-(BCOP-IFCOP);
+  const left=(CHPa+CHPv)/2-IFHP-BCOP+IFCOP,capy=3*cap.lym/100;
+  let out=0,inn=0;for(let i=0;i<50;i++){const v=nfp((i+.5)/50);if(v>0)out+=v/50;else inn+=-v/50}
+  return {CHPa,CHPv,BCOP,IFCOP,IFHP,nfp,left,capy,out,inn,lymph:clamp(left,0,capy)}}
+function edemaLevel(E){return E<.15?["none","good"]:E<.6?["mild","warn"]:E<1.5?["moderate","warn"]:["severe","bad"]}
+function capStep(dt){const v=capVals();let d=.05*(v.left-v.capy);if(v.left<v.capy)d=-.09*(v.capy-v.left)-.02;cap.E=clamp(cap.E+d*dt,0,3);
+  const norm=(k)=>({chp:cap.chp>=33&&cap.chp<=37,prot:cap.prot>=90,lym:cap.lym>=80,leak:!cap.leaky})[k];
+  let ch=false;
+  if(!cap.done[0]&&cap.E>=.6&&cap.chp>=40&&norm("prot")&&norm("lym")&&norm("leak")){cap.done[0]=ch=true}
+  if(!cap.done[1]&&cap.E>=.6&&cap.prot<=80&&norm("chp")&&norm("lym")&&norm("leak")){cap.done[1]=ch=true}
+  if(!cap.done[2]&&cap.E>=.5&&cap.lym<=10&&norm("chp")&&norm("prot")&&norm("leak")){cap.done[2]=ch=true}
+  if(cap.E>=.6)cap.wasSwollen=true;if(!cap.done[3]&&cap.wasSwollen&&cap.E<.15){cap.done[3]=ch=true}
+  if(ch){store.set("bv-cap-done",cap.done);renderChal("#capChal","#capStars",CAP_CHAL,cap.done)}}
+const CAP_SC=[["Normal",35,100,100,false],["High BP / heart failure",44,100,100,false],["Liver disease (low albumin)",35,55,100,false],["Starvation (low protein)",35,65,100,false],["Lymph nodes removed",35,100,0,false],["Inflammation (bee sting)",35,100,100,true]];
+function capSet(c,p,l,lk){$("#chp").value=c;$("#prot").value=p;$("#lym").value=l;cap.chp=c;cap.prot=p;cap.lym=l;cap.leaky=lk;$("#leaky").setAttribute("aria-pressed",lk);capOutputs()}
+CAP_SC.forEach(s=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.textContent=s[0];b.onclick=()=>capSet(s[1],s[2],s[3],s[4]);$("#capScen").appendChild(b)});
+function capOutputs(){$("#chpOut").textContent=`${cap.chp} → ${cap.chp-17} mmHg`;$("#protOut").textContent=`${cap.prot}% (BCOP ${Math.round(25*cap.prot/100)})`;$("#lymOut").textContent=cap.lym+"%"}
+["chp","prot","lym"].forEach(k=>$("#"+k).oninput=e=>{cap[k]=+e.target.value;capOutputs()});
+$("#leaky").onclick=()=>{cap.leaky=!cap.leaky;$("#leaky").setAttribute("aria-pressed",cap.leaky)};
+function capRead(){const v=capVals();const lv=edemaLevel(cap.E);const f1=x=>(x>=0?"+":"−")+Math.abs(x).toFixed(0);
+  const rows=[["Capillary pressure (CHP), arterial → venous",`${v.CHPa} → ${v.CHPv} mmHg`],["Protein pull (BCOP)",`${v.BCOP.toFixed(0)} mmHg`],["Leaked protein pull in tissue",`${v.IFCOP} mmHg`],["Tissue fluid pressure",`${v.IFHP.toFixed(1)} mmHg`],
+    ["NFP at arterial end",`${f1(v.nfp(0))} mmHg`],["NFP at venous end",`${f1(v.nfp(1))} mmHg`],["Leftover fluid / lymph can carry",`${Math.max(0,v.left).toFixed(1)} / ${v.capy.toFixed(1)}`],["Edema",lv[0]]];
+  const h=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");if($("#capRead").innerHTML!==h)$("#capRead").innerHTML=h;
+  let msg,cls;if(cap.E<.15&&v.left<=v.capy){msg="Balanced. Fluid filtered at the arterial end is mostly reabsorbed at the venous end, and lymph carries away the small leftover.";cls="good"}
+  else{const rising=v.left>v.capy;cls=lv[1]==="good"?"warn":lv[1];
+    const why=cap.leaky?"Leaky capillaries let protein escape into the tissue. That protein pulls water out with it.":cap.chp>=38?"Capillary pressure is high, so far more fluid is pushed out than can come back in.":cap.prot<90?"Plasma protein is low, so the pull back into the capillary is weak and less fluid is reabsorbed.":cap.lym<50?"Lymph drainage is blocked, so the normal leftover fluid has nowhere to go.":"The forces are shifting back toward normal.";
+    msg=(rising?"Fluid is building up in the tissue. ":"Lymph is draining the extra fluid. ")+why+(cap.E>.3&&rising?" As fluid piles up, tissue pressure rises a little and slows the leak.":"")}
+  const st=$("#capStatus");if(st.textContent!==msg){st.textContent=msg;st.className="status "+cls}}
+function drawCap(now){use(S1);const T=now/1000;const v=capVals();const E=cap.E;
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,800,360);
+  // tissue above: swells with edema
+  const top=lerp(70,40,E/3);
+  ctx.beginPath();ctx.moveTo(0,174);ctx.lineTo(0,top+10);for(let x=0;x<=800;x+=20)ctx.lineTo(x,top-Math.sin(x/800*Math.PI)*E*10);ctx.lineTo(800,174);ctx.closePath();ctx.fillStyle=mix(mix(C.tissue,C.panel,.2),C.fluid,clamp(E/3,0,1)*.28);ctx.fill();
+  const sp=1+E*.12;for(let i=0;i<14;i++)for(let j=0;j<2;j++){const cx=40+i*55,cy=118+j*28;ctx.beginPath();ctx.ellipse(cx,cy,20/sp,10/sp,0,0,TAU);ctx.fillStyle=C.tissue;ctx.fill();ctx.strokeStyle=C["tissue-edge"];ctx.lineWidth=1;ctx.stroke();circ(cx,cy,2.2,hexA(C["ink-soft"],.5))}
+  for(let i=0;i<Math.round(E*26);i++){mol(20+rnd(i)*760+Math.sin(T+i)*3,top+30+rnd(i*7)*(140-top)+Math.cos(T*1.3+i)*2,"water",4)}
+  // lymphatic capillary
+  const ly=top+4,la=cap.lym/100;rr(110,ly-14,690,28,14);ctx.fillStyle=mix(C.lymph,C.panel,1-.6-.4*la);ctx.fill();rr(116,ly-9,684,18,9);ctx.fillStyle=C["lymph-wash"];ctx.fill();
+  txt(104,ly,"lymphatic capillary",{size:11,weight:600,align:"right",color:C.lymph});
+  if(cap.lym<=10){cross(450,ly,10)}
+  const lf=v.lymph;for(let i=0;i<Math.round(lf*4);i++){const f=P(T/2.2+i/(lf*4+.01),1);const x=180+(i*97)%560;mol(x,lerp(150,ly+8,f),"water",4,1-f*.3)}
+  for(let i=0;i<Math.round(la*10);i++){const f=P(T/4*la+i/10,1);mol(lerp(120,795,f),ly,"water",4)}
+  // capillary
+  const cy=212,hh=26;rr(0,cy-hh-6,800,2*hh+12,10);ctx.fillStyle=C.endo;ctx.fill();
+  const g=ctx.createLinearGradient(60,0,740,0);g.addColorStop(0,mix(C.art,C.panel,.55));g.addColorStop(1,mix(C.ven,C.panel,.55));rr(0,cy-hh,800,2*hh,8);ctx.fillStyle=g;ctx.fill();
+  if(cap.leaky)for(let x=60;x<760;x+=70){ctx.fillStyle=C.ecf;ctx.fillRect(x,cy-hh-6,5,6)}
+  for(let i=0;i<9;i++){const f=P(T/6+i/9,1);cell(f*800,cy+(rnd(i)-.5)*24,8,mix(C.art,C.ven,f),0)}
+  const np=Math.round(6+12*cap.prot/100);for(let i=0;i<np;i++){const x=(i*61+T*40)%800;mol(x,cy+Math.sin(T*2+i*1.7)*(hh-8),"protein",4.5)}
+  if(cap.leaky)for(let i=0;i<5;i++){const f=P(T/3+i/5,1);mol(95+i*140,lerp(cy-hh,cy-hh-60,f),"protein",4.5,1-f)}
+  txt(8,cy+hh+20,"arteriole end",{size:11.5,weight:700,color:C.art});txt(792,cy+hh+20,"venule end",{size:11.5,weight:700,align:"right",color:C.ven});
+  // local NFP arrows and fluid streams
+  for(let i=0;i<9;i++){const f=(i+.5)/9,x=lerp(50,750,f),n=v.nfp(f);const L=clamp(Math.abs(n)*3,0,64);
+    if(n>.3){arrow(x,cy-hh-8,x,cy-hh-8-L,C.art,3);for(let k=0;k<Math.min(5,Math.ceil(n/3));k++){const q=P(T/1.6+k/5+i*.13,1);mol(x+10+k*3,lerp(cy-hh-4,cy-hh-70,q),"water",4,1-q)}}
+    else if(n<-.3){arrow(x,cy-hh-8-L,x,cy-hh-8,C.ven,3);for(let k=0;k<Math.min(5,Math.ceil(-n/3));k++){const q=P(T/1.6+k/5+i*.13,1);mol(x+10+k*3,lerp(cy-hh-70,cy-hh-4,q),"water",4,q<.9?1:(1-q)*10)}}
+    else circ(x,cy-hh-12,3,C["ink-faint"]);}
+  label(80,cy-hh-82,(v.nfp(0)>=0?"+":"−")+Math.abs(v.nfp(0)).toFixed(0)+" out",{size:12,weight:700,mono:true,align:"center",border:C.art});
+  label(720,cy-hh-82,(v.nfp(1)>=0?"+":"−")+Math.abs(v.nfp(1)).toFixed(0)+(v.nfp(1)>0?" out":" in"),{size:12,weight:700,mono:true,align:"center",border:v.nfp(1)>0?C.art:C.ven});
+  // lower panel: flow bars + ankle
+  panelBox(10,262,470,90);const bars=[["Filtered out",v.out,C.art],["Reabsorbed",v.inn,C.ven],["Carried by lymph",v.lymph,C.lymph],["Left in tissue",Math.max(0,v.left-v.capy),C.bad]];
+  bars.forEach((b,i)=>{const y=280+i*19;txt(22,y,b[0],{size:11.5,weight:600});rr(150,y-6,280,12,6);ctx.fillStyle=C.sunk;ctx.fill();rr(150,y-6,280*clamp(b[1]/15,0,1),12,6);ctx.fillStyle=b[2];ctx.fill();txt(468,y,b[1].toFixed(1),{size:11,mono:true,align:"right"})});
+  // ankle
+  const lv=edemaLevel(E);const sw=E/3;panelBox(492,262,298,90);
+  ctx.save();ctx.translate(560,262);ctx.beginPath();ctx.moveTo(10,0);ctx.lineTo(10,48);ctx.quadraticCurveTo(10-14*sw,62,14,74);ctx.lineTo(80,80);ctx.quadraticCurveTo(92,80,92,70);ctx.lineTo(44,58);ctx.quadraticCurveTo(44+10*sw,40,40,0);ctx.closePath();
+  ctx.fillStyle=mix(C.tissue,C.fluid,.1+.3*sw);ctx.fill();ctx.strokeStyle=C["tissue-edge"];ctx.lineWidth=2;ctx.stroke();
+  if(E>.15){ctx.setLineDash([3,3]);ctx.beginPath();ctx.ellipse(27,56,22+18*sw,10+8*sw,0,0,TAU);ctx.strokeStyle=C.bad;ctx.lineWidth=1.5;ctx.stroke();ctx.setLineDash([])}ctx.restore();
+  txt(680,292,"Ankle",{size:12,weight:700,align:"center"});txt(680,318,"Edema: "+lv[0],{size:13,weight:700,align:"center",color:C[lv[1]]});
+  S1.cv.setAttribute("aria-label",`Capillary simulation. Net filtration ${v.nfp(0).toFixed(0)} mmHg at the arterial end, ${v.nfp(1).toFixed(0)} at the venous end. Edema: ${lv[0]}.`)}
+function drawNfp(){use(S1g);const v=capVals();ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,220);
+  const x0=70,x1=770,Y=n=>lerp(190,34,(n+20)/50);
+  txt(16,14,"Net filtration pressure along the capillary (mmHg)",{size:12,weight:700});
+  [-20,-10,0,10,20,30].forEach(n=>{line(x0,Y(n),x1,Y(n),n===0?C["ink-soft"]:C["rule-soft"],n===0?1.5:1);txt(x0-8,Y(n),(n>0?"+":"")+n,{size:11,mono:true,align:"right",color:C["ink-soft"]})});
+  ctx.save();ctx.beginPath();ctx.moveTo(x0,Y(0));for(let i=0;i<=100;i++){const f=i/100;ctx.lineTo(lerp(x0,x1,f),Y(clamp(v.nfp(f),-20,30)))}ctx.lineTo(x1,Y(0));ctx.closePath();ctx.clip();
+  ctx.fillStyle=hexA(C.art,.28);ctx.fillRect(x0,0,x1-x0,Y(0));ctx.fillStyle=hexA(C.ven,.28);ctx.fillRect(x0,Y(0),x1-x0,220);ctx.restore();
+  poly([[x0,Y(10)],[x1,Y(-7)]],C["ink-faint"],1.5,[6,5]);
+  ctx.beginPath();for(let i=0;i<=100;i++){const f=i/100;const X=lerp(x0,x1,f),Yv=Y(clamp(v.nfp(f),-20,30));i?ctx.lineTo(X,Yv):ctx.moveTo(X,Yv)}ctx.strokeStyle=C.ink;ctx.lineWidth=2.5;ctx.stroke();
+  txt(x0,206,"arterial end",{size:11,weight:600,color:C.art});txt(x1,206,"venous end",{size:11,weight:600,align:"right",color:C.ven});
+  label(x1-4,Y(26),"dashed = normal (+10 to −7)",{size:11,align:"right",color:C["ink-soft"]});
+  label(x0+60,Y(24),"above 0: fluid out",{size:11,color:C.art,weight:600});label(x0+60,Y(-16),"below 0: fluid in",{size:11,color:C.ven,weight:600})}
+
+/* edema case art */
+const ART={
+ ankle:()=>svgWrap(`<rect width="200" height="160" rx="10" fill="var(--panel-2)"/><path d="M70 10 V95 Q50 120 62 136 L160 144 Q176 144 172 128 L104 112 Q120 80 104 10 Z" fill="var(--tissue)" stroke="var(--tissue-edge)" stroke-width="3"/><ellipse cx="80" cy="118" rx="38" ry="18" fill="none" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="5 4"/><text x="150" y="40" font-size="13" font-family="IBM Plex Sans,sans-serif" font-weight="600" fill="var(--ink)" text-anchor="middle">swollen</text><text x="150" y="56" font-size="13" font-family="IBM Plex Sans,sans-serif" font-weight="600" fill="var(--ink)" text-anchor="middle">ankle</text>`),
+ liver:()=>svgWrap(`<rect width="200" height="160" rx="10" fill="var(--panel-2)"/><path d="M30 70 C35 30 120 25 170 50 C165 80 120 110 80 120 C50 125 28 100 30 70 Z" fill="var(--liver)" stroke="var(--ink-soft)" stroke-width="2"/>${[0,1,2,3,4].map(i=>`<circle cx="${60+i*22}" cy="${70+(i%2)*14}" r="6" fill="var(--protein)" opacity="${i<2?1:.3}"/>`).join("")}<text x="100" y="148" font-size="13" font-family="IBM Plex Sans,sans-serif" font-weight="600" fill="var(--ink)" text-anchor="middle">liver makes less albumin</text>`),
+ arm:()=>svgWrap(`<rect width="200" height="160" rx="10" fill="var(--panel-2)"/><path d="M20 40 L150 30 Q185 30 186 50 L186 70 Q185 92 150 96 L20 104 Z" fill="var(--tissue)" stroke="var(--tissue-edge)" stroke-width="3"/><path d="M30 120 H170" stroke="var(--lymph)" stroke-width="10" stroke-linecap="round"/><path d="M92 112 l16 16 M108 112 l-16 16" stroke="var(--bad)" stroke-width="4"/><text x="100" y="150" font-size="13" font-family="IBM Plex Sans,sans-serif" font-weight="600" fill="var(--ink)" text-anchor="middle">lymph path cut</text>`),
+ bee:()=>svgWrap(`<rect width="200" height="160" rx="10" fill="var(--panel-2)"/><path d="M10 120 Q100 40 190 120 Z" fill="var(--tissue)" stroke="var(--tissue-edge)" stroke-width="3"/><ellipse cx="100" cy="98" rx="46" ry="22" fill="var(--bad)" opacity=".25"/><ellipse cx="100" cy="40" rx="18" ry="11" fill="var(--glow)"/><path d="M88 40 v-10 M100 40 v-12 M112 40 v-10" stroke="var(--ink)" stroke-width="4"/><path d="M100 51 L100 70" stroke="var(--ink)" stroke-width="2"/><text x="100" y="146" font-size="13" font-family="IBM Plex Sans,sans-serif" font-weight="600" fill="var(--ink)" text-anchor="middle">red, warm, swollen</text>`),
+ heart:()=>svgWrap(`<rect width="200" height="160" rx="10" fill="var(--panel-2)"/><path d="M100 140 C20 90 30 30 70 28 C88 27 100 40 100 54 C100 40 112 27 130 28 C170 30 180 90 100 140 Z" fill="var(--heart)" stroke="var(--heart-edge)" stroke-width="3"/><ellipse cx="72" cy="40" rx="26" ry="18" fill="none" stroke="var(--warn)" stroke-width="3" stroke-dasharray="5 4"/><ellipse cx="128" cy="40" rx="26" ry="18" fill="none" stroke="var(--warn)" stroke-width="3" stroke-dasharray="5 4"/>`),
+ pill:(t)=>svgWrap(`<rect width="200" height="160" rx="10" fill="var(--panel-2)"/><g transform="rotate(-25 100 80)"><rect x="40" y="58" width="120" height="44" rx="22" fill="var(--panel)" stroke="var(--ink-soft)" stroke-width="3"/><rect x="40" y="58" width="60" height="44" rx="22" fill="var(--accent)"/><rect x="80" y="58" width="20" height="44" fill="var(--accent)"/></g><text x="100" y="148" font-size="13" font-family="IBM Plex Sans,sans-serif" font-weight="600" fill="var(--ink)" text-anchor="middle">${t}</text>`),
+ bleed:()=>svgWrap(`<rect width="200" height="160" rx="10" fill="var(--panel-2)"/><rect x="60" y="20" width="80" height="110" rx="12" fill="var(--panel)" stroke="var(--ink-soft)" stroke-width="3"/><rect x="64" y="76" width="72" height="50" rx="8" fill="var(--art)"/><path d="M64 76 h72" stroke="var(--art-edge)" stroke-width="2"/><text x="100" y="56" font-size="14" font-family="IBM Plex Mono,monospace" font-weight="700" fill="var(--ink)" text-anchor="middle">−1.5 L</text><text x="100" y="150" font-size="13" font-family="IBM Plex Sans,sans-serif" font-weight="600" fill="var(--ink)" text-anchor="middle">blood volume low</text>`),
+ tube:(t,r)=>svgWrap(`<rect width="200" height="160" rx="10" fill="var(--panel-2)"/><rect x="20" y="${80-r-6}" width="160" height="${2*r+12}" rx="${r+6}" fill="var(--art-edge)"/><rect x="20" y="${80-r}" width="160" height="${2*r}" rx="${r}" fill="var(--art)" opacity=".55"/>${[0,1,2,3].map(i=>`<ellipse cx="${45+i*36}" cy="80" rx="${Math.min(9,r*.7)}" ry="${Math.min(5.5,r*.45)}" fill="var(--art)"/>`).join("")}<text x="100" y="148" font-size="13" font-family="IBM Plex Sans,sans-serif" font-weight="600" fill="var(--ink)" text-anchor="middle">${t}</text>`)
+};
+let capCases;
+function capCasesInit(){capCases=makeCases("#capCases","bv-cap-cases","What breaks if...? Edema cases",[
+ {title:"Heart failure and puffy ankles",art:ART.ankle,story:"Mr. Jones has right-sided heart failure. Blood backs up in his veins, so pressure in his capillaries rises. By evening his ankles are puffy, and a finger press leaves a dent.",
+  qs:[{q:"Which force has changed the most?",opts:[["Capillary hydrostatic pressure went up.",1,"Yes. Backed-up venous blood raises the pushing pressure inside the capillaries, so more fluid filters out."],["Blood colloid osmotic pressure went up.",0,"A higher protein pull would draw fluid back in and reduce swelling, not cause it."],["Lymph flow increased.",0,"More lymph flow would remove fluid and reduce swelling. Here the push out is the problem."],["The capillaries became leaky from inflammation.",0,"Nothing here suggests inflammation. The pressure inside the vessels is what rose."]]},
+      {q:"Why is the swelling worst in his ankles by evening?",opts:[["After a day upright, gravity adds to the pressure in the leg veins and capillaries.",1,"Right. Standing adds the weight of the blood column, so leg capillaries push out the most fluid."],["His albumin is used up during the day.",0,"Albumin levels don't drain away over a day. Gravity and posture explain the timing."],["Lymph vessels close at night.",0,"Lymph keeps working at night. Lying down actually helps the fluid drain."],["His heart beats faster in the evening.",0,"Heart rate isn't the cause. The extra pressure in the legs from standing is."]]}],
+  run:()=>capSet(44,100,100,false),runLabel:"Show high capillary pressure in the simulator"},
+ {title:"Liver disease and a swollen belly",art:ART.liver,story:"Ms. Rivera has advanced liver disease (cirrhosis). Her blood test shows very low albumin. Her legs and belly are swelling.",
+  qs:[{q:"Why does liver disease lower the protein pull?",opts:[["The liver makes most plasma albumin, so less albumin is made.",1,"Yes. Less albumin means a lower blood colloid osmotic pressure."],["The liver filters albumin out of the blood.",0,"The liver makes albumin. It doesn't filter it out."],["Liver disease raises capillary pressure everywhere.",0,"That's not the main link to albumin. The protein pull falls because the liver makes less albumin."],["The liver stores albumin in the lymph.",0,"Albumin is made by the liver and released into the blood plasma."]]},
+      {q:"What happens at the venous end of her capillaries?",opts:[["Reabsorption shrinks or stops, so fluid stays in the tissue.",1,"Right. With a weak pull, the inward force at the venous end can't win, so less fluid comes back."],["Reabsorption gets stronger.",0,"A weaker protein pull means less reabsorption, not more."],["Blood stops flowing there.",0,"Blood keeps flowing. What changes is how much fluid returns to it."],["Proteins rush out of the capillary there.",0,"Capillaries still hold the proteins in. There are just fewer of them."]]}],
+  run:()=>capSet(35,55,100,false),runLabel:"Show low albumin in the simulator"},
+ {title:"Lymph nodes removed: a swollen arm",art:ART.arm,story:"After breast cancer surgery, Mrs. Lee had several lymph nodes in her armpit removed. Months later her arm on that side is swollen (lymphedema).",
+  qs:[{q:"Which part of the fluid balance failed?",opts:[["Lymph drainage.",1,"Yes. With nodes and vessels removed, the leftover tissue fluid can't drain away."],["Capillary hydrostatic pressure.",0,"Her blood pressure in the arm is normal. The drain is the problem."],["Blood colloid osmotic pressure.",0,"Her albumin is normal. The fluid can't leave through the lymph."],["Red blood cell count.",0,"Red cells don't control tissue fluid balance here."]]},
+      {q:"Normally, what happens to the fluid the capillaries don't reabsorb?",opts:[["Lymphatic capillaries collect it and return it to the blood.",1,"Right. That's the lymph system's daily job."],["It evaporates through the skin.",0,"Some water leaves as sweat, but tissue fluid is cleared by the lymph system."],["Tissue cells soak it all up.",0,"Cells can't keep absorbing fluid. It must drain away."],["The kidneys pull it out directly.",0,"The kidneys filter blood, not tissue fluid. Lymph returns the fluid to the blood first."]]}],
+  run:()=>capSet(35,100,0,false),runLabel:"Block the lymph in the simulator"},
+ {title:"A bee sting",art:ART.bee,story:"Jordan is stung on the arm. Within minutes the spot is red, warm and puffy. Mast cells released histamine.",
+  qs:[{q:"What did histamine do to the nearby capillaries?",opts:[["Made them leakier, so proteins escape into the tissue.",1,"Yes. Histamine widens the gaps between endothelial cells."],["Made them constrict and close.",0,"Histamine widens vessels (that's the redness and warmth) and makes them leaky."],["Lowered the pressure inside them.",0,"Histamine dilates arterioles, which tends to raise capillary pressure, not lower it."],["Blocked the lymph vessels.",0,"The lymph still works. It just can't keep up with the extra leak."]]},
+      {q:"Why does protein in the tissue fluid make it swell?",opts:[["The leaked protein pulls water out of the capillary toward itself.",1,"Right. Protein outside the vessel cancels part of the inward pull, so fluid stays out."],["The protein pushes the capillary shut.",0,"Protein pulls water by osmosis. It doesn't squeeze the vessel."],["It raises the blood colloid osmotic pressure.",0,"BCOP is the pull of protein inside the blood. Here the protein is outside, pulling the other way."],["It destroys the lymph vessels.",0,"The lymph vessels are fine. The leak is simply bigger than they can drain."]]}],
+  run:()=>capSet(35,100,100,true),runLabel:"Make the capillaries leaky in the simulator"}])}
+
+/* ================= PART 2: blood pressure control ================= */
+const S2=makeStage("cvBody",800,400),S2t=makeStage("cvBpTr",800,300);
+const BP_CHAL=["Stand up quickly and watch the reflex raise heart rate within seconds.","Hemorrhage: watch the RAAS (angiotensin II) switch on.","Eat a big salty meal and trigger ANP.","Run a hemorrhage with the ACE inhibitor on and watch for 20 minutes."];
+let bp;
+function bpFresh(){const keep=bp?{ace:bp.ace,beta:bp.beta,done:bp.done,speed:bp.speed}:{ace:false,beta:false,done:store.get("bv-bp-done")||[false,false,false,false],speed:2};
+  bp=Object.assign({t:0,V:5,S:5,pool:0,s:0,A:0,Hd:0,N:0,E:0,bleed:0,dry:0,salt:0,paused:false,hist:[],events:[],ev:"Resting",evT:0,aceBleedT:null},keep)}
+function bpCalc(){const Ve=Math.max(1.5,bp.V-bp.pool);const sp=Math.max(0,bp.s);const k=bp.beta?.25:1;
+  const HR=clamp(72*(1+.75*bp.s*k+.15*bp.E*k),40,175);
+  const tone=1+.25*bp.s+.35*bp.A+.12*bp.Hd-.15*bp.N;
+  const MAP=93*Math.pow(Ve/5,2)*Math.pow(HR/72,.4)*(1+.1*sp*k)*tone;
+  return {HR,tone,MAP,diam:100*Math.pow(tone,-.25),osm:bp.S/bp.V}}
+function bpStep(dt){let c=bpCalc();const osm=c.osm;
+  // events in progress
+  if(bp.bleed>0){const d=Math.min(bp.bleed,2*dt);bp.V-=d;bp.S-=d;bp.bleed-=d}
+  if(bp.dry>0){const d=Math.min(bp.dry,.08*dt);bp.V-=d;bp.S-=d*.75;bp.dry-=d}
+  if(bp.salt>0){const d=Math.min(bp.salt,.03*dt);bp.S+=d;bp.salt-=d}
+  const sT=clamp((93-c.MAP)/12,-.6,1.2);bp.s+=(sT-bp.s)*Math.min(1,dt/.8);
+  bp.E+=(clamp(bp.s,0,1.2)-bp.E)*Math.min(1,dt/.6);
+  bp.N+=(clamp((bp.V-5)/.25,0,2)-bp.N)*Math.min(1,dt/3);
+  let aT=Math.max(0,clamp((90-c.MAP)/12,0,1.5)+clamp(5-bp.V,0,1)*.5-bp.N*.6-clamp((osm-1)/.03,0,1)*.3);if(bp.ace)aT=0;bp.A+=(aT-bp.A)*Math.min(1,dt/4);
+  const hT=Math.max(0,clamp((osm-1)/.015,0,2)+clamp((88-c.MAP)/15,0,1)+bp.A*.3-bp.N*.5);bp.Hd+=(hT-bp.Hd)*Math.min(1,dt/3);
+  const D=.004+.01*clamp((osm-1)/.03,0,1.5)+.004*bp.A;
+  const U=.004*clamp(1+1.5*bp.N-.5*bp.A-.7*bp.Hd+(c.MAP-93)/30,.12,4);
+  const natr=clamp(1+1.5*bp.N-.6*bp.A,.2,4);
+  bp.V+=(D-U)*dt;bp.S+=(.004-U*osm*natr)*dt;bp.t+=dt;
+  c=bpCalc();
+  // challenges
+  let ch=false;
+  if(!bp.done[0]&&bp.ev==="Stand up quickly"&&c.HR>=85){bp.done[0]=ch=true}
+  if(!bp.done[1]&&bp.ev==="Hemorrhage"&&bp.A>=.45){bp.done[1]=ch=true}
+  if(!bp.done[2]&&bp.ev==="Big salty meal"&&bp.N>=.35){bp.done[2]=ch=true}
+  if(!bp.done[3]&&bp.aceBleedT!=null&&bp.ace&&bp.t-bp.aceBleedT>=20){bp.done[3]=ch=true}
+  if(ch){store.set("bv-bp-done",bp.done);renderChal("#bpChal","#bpStars",BP_CHAL,bp.done)}
+  if(!bp.histT||bp.t-bp.histT>=.25){bp.histT=bp.t;bp.hist.push([bp.t,c.MAP,c.HR,c.diam,bp.V]);if(bp.hist.length>400)bp.hist.shift()}}
+function bpEvent(name){bp.ev=name;bp.evT=bp.t;bp.events.push([bp.t,name]);
+  if(name==="Hemorrhage"){bp.bleed+=1;if(bp.ace)bp.aceBleedT=bp.t}
+  if(name==="Stand up quickly")bp.pool=.5;
+  if(name==="Dehydration")bp.dry+=.5;
+  if(name==="Big salty meal")bp.salt+=.2;
+  $("#bpStatus").dataset.ev=name}
+$("#evBleed").onclick=()=>bpEvent("Hemorrhage");$("#evStand").onclick=()=>bpEvent("Stand up quickly");$("#evDehy").onclick=()=>bpEvent("Dehydration");$("#evSalt").onclick=()=>bpEvent("Big salty meal");
+$("#medAce").onclick=()=>{bp.ace=!bp.ace;$("#medAce").setAttribute("aria-pressed",bp.ace);bp.events.push([bp.t,bp.ace?"ACE inhibitor on":"ACE inhibitor off"])};
+$("#medBeta").onclick=()=>{bp.beta=!bp.beta;$("#medBeta").setAttribute("aria-pressed",bp.beta);bp.events.push([bp.t,bp.beta?"Beta blocker on":"Beta blocker off"])};
+$("#bpPause").onclick=()=>{bp.paused=!bp.paused;$("#bpPause").textContent=bp.paused?"Play":"Pause"};
+$("#bpReset").onclick=()=>{bpFresh();$("#bpPause").textContent="Pause";$("#medAce").setAttribute("aria-pressed",bp.ace);$("#medBeta").setAttribute("aria-pressed",bp.beta)};
+$("#bpSpeed").onchange=e=>bp.speed=+e.target.value;
+function bpRead(){const c=bpCalc();const rows=[["Mean arterial pressure",Math.round(c.MAP)+" mmHg"],["Heart rate",Math.round(c.HR)+" bpm"],["Arteriole diameter",Math.round(c.diam)+"% of normal"],["Blood volume",bp.V.toFixed(2)+" L"],["Blood concentration",(c.osm>1.008?"high":c.osm<.992?"low":"normal")],["Time since start",Math.floor(bp.t)+" min"]];
+  const h=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");if($("#bpRead").innerHTML!==h)$("#bpRead").innerHTML=h;
+  const parts=[];if(bp.s>.12)parts.push("Baroreceptor reflex: sympathetic output is up, so heart rate rises"+(bp.beta?" (only a little, because of the beta blocker)":"")+" and arterioles constrict.");
+  if(bp.s<-.12)parts.push("Baroreceptor reflex: pressure is high, so sympathetic output drops and the heart slows.");
+  if(bp.A>.3)parts.push("RAAS: angiotensin II narrows vessels and aldosterone keeps Na⁺ and water.");if(bp.ace&&bp.ev==="Hemorrhage")parts.push("The ACE inhibitor blocks angiotensin II, so this help is missing.");
+  if(bp.Hd>.3)parts.push("ADH: the kidneys keep water"+(c.osm>1.01?" and thirst rises to dilute the blood":"")+".");if(bp.N>.3)parts.push("ANP: stretched atria tell the kidneys to dump Na⁺ and water.");
+  let msg=parts.length?parts.join(" "):(bp.ev==="Resting"?"Resting. Everything is steady: MAP about 93 mmHg, heart rate about 72.":"Back near steady. The responses have done their job.");
+  msg=(bp.ev!=="Resting"?"Event: "+bp.ev+". ":"")+msg;const cls=c.MAP<70?"bad":c.MAP<85||c.MAP>105?"warn":"good";
+  const st=$("#bpStatus");if(st.textContent!==msg){st.textContent=msg};st.className="status "+cls}
+function bar(x,y,w,label_,v,col,kind){txt(x,y,label_,{size:11.5,weight:600});rr(x,y+9,w,10,5);ctx.fillStyle=C.sunk;ctx.fill();rr(x,y+9,w*clamp(v/1.5,0,1),10,5);ctx.fillStyle=col;ctx.fill();if(kind)mol(x+w+12,y+14,kind,5)}
+function drawBody(now){use(S2);const T=now/1000;const c=bpCalc();ctx.fillStyle=C.ecf;ctx.fillRect(0,0,800,400);
+  // silhouette
+  ctx.fillStyle=mix(C.tissue,C.panel,.25);ctx.strokeStyle=C["tissue-edge"];ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(215,58,44,0,TAU);ctx.fill();ctx.stroke();rr(195,96,40,22,4);ctx.fill();
+  rr(120,112,190,230,40);ctx.fill();ctx.stroke();rr(140,320,60,80,20);ctx.fill();ctx.stroke();rr(230,320,60,80,20);ctx.fill();ctx.stroke();
+  if(bp.pool>0){rr(146,352,48,46,16);ctx.fillStyle=hexA(C.ven,.5);ctx.fill();rr(236,352,48,46,16);ctx.fill();txt(215,392,"blood pooled in legs",{size:10.5,weight:600,align:"center"})}
+  brainShape(215,48,28);ctx.beginPath();ctx.ellipse(228,74,9,13,.2,0,TAU);ctx.fillStyle=mix(C.brain,C.nerve,.35);ctx.fill();
+  circ(205,72,5,C.adh,hexA(C.ink,.4),1);
+  lungShape(170,172,30,42,1,hexA(C.lung,.7));lungShape(262,172,30,42,-1,hexA(C.lung,.7));
+  // vessels: aorta + carotid
+  vessel([[225,190],[232,150],[248,140],[256,160],[256,300]],6,mix(C.art,C.panel,.4),C["art-edge"],2);vessel([[240,142],[240,96]],4,mix(C.art,C.panel,.4),C["art-edge"],2);
+  heartIcon(215,198,24,beatOf(T,60/c.HR),C.heart);
+  liverShape(170,250,70,34,C.liver);
+  kidneyShape(165,296,16);kidneyShape(268,296,16);ctx.beginPath();ctx.ellipse(165,278,10,5,0,0,TAU);ctx.ellipse(268,278,10,5,0,0,TAU);ctx.fillStyle=C.adrenal;ctx.fill();
+  // carotid sinus baroreceptor firing
+  const fire=clamp((c.MAP-50)/45,.1,1.3);glow(240,108,18,C.glow,.25+.35*fire);circ(240,108,5,C.glow,C.warn,1.5);
+  nerve([[240,104],[236,88],[230,80]],T,C.glow,8*fire,1,2);
+  // sympathetic
+  const sy=clamp(bp.s,0,1.2);nerve([[226,86],[222,140],[218,182]],T,C.nerve,8*sy,sy,2);nerve([[232,82],[330,90],[470,95]],T,C.nerve,8*sy,sy,2);
+  // epinephrine
+  if(bp.E>.05)for(let i=0;i<4;i++){const f=P(T/1.6+i/4,1);mol(lerp(165,215,f),lerp(276,214,f),"epi",4,clamp(bp.E,0,1))}
+  // RAAS chain: kidney -> liver -> lungs
+  if(bp.A>.05){const a=clamp(bp.A,0,1);for(let i=0;i<3;i++){const f=P(T/2+i/3,1);mol(lerp(170,180,f),lerp(290,256,f),"renin",4.5,a)}
+    for(let i=0;i<3;i++){const f=P(T/2.4+i/3,1);const q=along([[180,250],[175,210],[170,180]],f);chain(q[0]-6,q[1],f<.5?3:2,C.angio,2.5,a)}
+    for(let i=0;i<3;i++){const f=P(T/2+i/3,1);mol(lerp(268,272,f),lerp(280,300,f),"aldo",4,a)}}
+  if(bp.Hd>.05)for(let i=0;i<4;i++){const f=P(T/2.2+i/4,1);const q=along([[205,76],[190,120],[150,200],[160,290]],f);mol(q[0],q[1],"adh",4,clamp(bp.Hd,0,1))}
+  if(bp.N>.05)for(let i=0;i<4;i++){const f=P(T/2+i/4,1);const q=along([[230,186],[268,240],[268,290]],f);mol(q[0],q[1],"anp",4.5,clamp(bp.N,0,1))}
+  // labels
+  txt(300,40,"medulla",{size:10.5,weight:600,color:C["ink-soft"]});line(296,42,236,72,C["rule"],1);
+  txt(300,108,"carotid sinus",{size:10.5,weight:600,color:C["ink-soft"]});line(296,108,246,108,C.rule,1);
+  txt(110,210,"heart",{size:10.5,weight:600,align:"right",color:C["ink-soft"]});txt(110,252,"liver",{size:10.5,weight:600,align:"right",color:C["ink-soft"]});
+  txt(110,296,"kidney",{size:10.5,weight:600,align:"right",color:C["ink-soft"]});txt(300,276,"adrenal",{size:10.5,weight:600,color:C["ink-soft"]});
+  txt(110,72,"pituitary",{size:10.5,weight:600,align:"right",color:C["ink-soft"]});line(114,72,200,72,C.rule,1);
+  // right side: arteriole, gauge, volume tank
+  panelBox(440,14,346,150);
+  const ar=34*(c.diam/100);circ(510,92,52,mix(C.smooth,C.panel,.3),C["smooth-edge"],2);for(let i=0;i<14;i++){const a=i/14*TAU;spindle(510+Math.cos(a)*(ar+(52-ar)/2),92+Math.sin(a)*(ar+(52-ar)/2),14,3+3*sy,a+Math.PI/2)}
+  circ(510,92,ar,mix(C.art,C.panel,.5),C.endo,3);txt(510,156,"arteriole "+Math.round(c.diam)+"%",{size:11.5,weight:700,align:"center"});
+  gauge(640,104,52,c.MAP,30,150,"MAP",{low:60,ok:[70,110]});
+  rr(724,36,46,112,6);ctx.fillStyle=C.sunk;ctx.fill();const vf=clamp((bp.V-3.5)/2.2,0,1);rr(724,36+112*(1-vf),46,112*vf,6);ctx.fillStyle=C.art;ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;rr(724,36,46,112,6);ctx.stroke();
+  line(720,36+112*(1-(5-3.5)/2.2),774,36+112*(1-(5-3.5)/2.2),C.ink,1.5,[3,3]);txt(747,26,bp.V.toFixed(1)+" L",{size:11.5,weight:700,mono:true,align:"center"});txt(747,156,"volume",{size:11,weight:600,align:"center"});
+  // activity bars
+  panelBox(440,174,346,214);txt(452,190,"Who is responding?",{size:12,weight:700});
+  bar(452,206,290,"Sympathetic (baroreceptor reflex)",Math.max(0,bp.s)*1.25,C.nerve);
+  bar(452,236,290,"Epinephrine (adrenal medulla)",bp.E*1.25,C.epi,"epi");
+  bar(452,266,290,"Angiotensin II (RAAS)"+(bp.ace?" · blocked":""),bp.A,C.angio);
+  bar(452,296,290,"Aldosterone",bp.A*.9,C.aldo,"aldo");
+  bar(452,326,290,"ADH",bp.Hd,C.adh,"adh");
+  bar(452,356,290,"ANP",bp.N,C.anp,"anp");
+  chipText(70,18,bp.ev.toUpperCase(),bp.ev==="Resting"?C.good:C.act4);
+  S2.cv.setAttribute("aria-label",`Body diagram. ${bp.ev}. MAP ${Math.round(c.MAP)} mmHg, heart rate ${Math.round(c.HR)}, arteriole ${Math.round(c.diam)} percent, blood volume ${bp.V.toFixed(1)} liters.`)}
+function drawBpTr(){use(S2t);ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,300);
+  const WIN=40,tEnd=Math.max(WIN,bp.t),t0=tEnd-WIN,X=t=>lerp(40,780,(t-t0)/WIN);
+  const panels=[["MAP (mmHg)",1,60,110,C.art,[93]],["Heart rate (bpm)",2,55,125,C.act4,[72]],["Arteriole diameter (%)",3,86,104,C["smooth-edge"],[100]],["Blood volume (L)",4,3.6,5.6,C.fluid,[5]]];
+  panels.forEach((p,i)=>{const y0=8+i*72,h=62;const Y=v=>lerp(y0+h,y0+4,(v-p[2])/(p[3]-p[2]));
+    rr(36,y0,748,h+4,4);ctx.fillStyle=C["panel-2"];ctx.fill();txt(44,y0+11,p[0],{size:10.5,weight:700,color:C["ink-soft"]});
+    p[5].forEach(r=>{line(40,Y(r),780,Y(r),C["ink-faint"],1,[4,4]);txt(32,Y(r),String(r),{size:10,mono:true,align:"right",color:C["ink-faint"]})});
+    ctx.save();rr(36,y0,748,h+4,4);ctx.clip();ctx.beginPath();let first=true;bp.hist.forEach(hh=>{if(hh[0]<t0)return;const xx=X(hh[0]),yy=Y(clamp(hh[p[1]],p[2]-5,p[3]+5));first?ctx.moveTo(xx,yy):ctx.lineTo(xx,yy);first=false});ctx.strokeStyle=p[4];ctx.lineWidth=2.2;ctx.stroke();ctx.restore();
+    const lastv=bp.hist.length?bp.hist[bp.hist.length-1][p[1]]:0;txt(782,y0+12,(p[1]===4?lastv.toFixed(2):Math.round(lastv))+"",{size:11,weight:700,mono:true,align:"right"})});
+  bp.events.forEach(e=>{if(e[0]<t0)return;const x=X(e[0]);line(x,6,x,296,hexA(C.act4,.7),1.5,[3,3]);label(x+4,296-8,e[1],{size:10.5,weight:600})});
+  txt(90,296,"",{});txt(780,296,"minutes (compressed) →",{size:10,align:"right",color:C["ink-faint"]})}
+let bpCases;
+function bpCasesInit(){bpCases=makeCases("#bpCases","bv-bp-cases","What breaks if...? Blood pressure cases",[
+ {title:"A beta blocker and a quick stand",art:()=>ART.pill("beta blocker"),story:"Mrs. Patel takes a beta blocker for her heart. She stands up quickly from bed and feels dizzy for a moment.",
+  qs:[{q:"Which part of her baroreceptor reflex is blunted?",opts:[["The rise in heart rate.",1,"Yes. Beta blockers block the heart's response to sympathetic signals and epinephrine, so heart rate can't climb much."],["Arteriole constriction.",0,"Arteriole constriction mostly uses different receptors, so it still works. The heart rate response is what's blunted."],["Baroreceptor firing.",0,"Her baroreceptors still sense the drop. The problem is how the heart responds."],["ADH release.",0,"ADH is slower and isn't what a beta blocker blocks."]]},
+      {q:"What still helps bring her pressure back up?",opts:[["Sympathetic constriction of her arterioles and veins.",1,"Right. More resistance and more venous return still raise pressure."],["A much faster heart rate.",0,"That's the part the beta blocker limits."],["ANP release.",0,"ANP lowers blood pressure. It would not help here."],["Widening of her arterioles.",0,"Widening would lower pressure even more."]]}],
+  run:()=>{if(!bp.beta)$("#medBeta").click();bpEvent("Stand up quickly")},runLabel:"Run it: beta blocker + stand up"},
+ {title:"Trauma: losing blood",art:ART.bleed,story:"After a car crash, Mr. Ortiz has lost about 1.5 L of blood. His heart rate is 125, his blood pressure is 88/60, and his skin is pale and cool.",
+  qs:[{q:"Why is his heart rate so high?",opts:[["His baroreceptors fire less, so the medulla raises sympathetic output.",1,"Yes. Low pressure means less stretch, fewer baroreceptor signals and more sympathetic drive to the heart."],["His blood volume is too high.",0,"He lost blood. His volume is low."],["ANP is speeding up his heart.",0,"ANP lowers volume and pressure. It is suppressed when volume is low."],["His heart is making up for too much oxygen.",0,"The trigger is low pressure, not extra oxygen."]]},
+      {q:"Why is his skin pale and cool?",opts:[["Sympathetic vasoconstriction sends blood away from the skin to the brain and heart.",1,"Right. Skin arterioles clamp down so the vital organs keep their supply."],["His skin cells have died.",0,"His skin is just getting less blood flow, which makes it pale and cool."],["ADH cools the skin.",0,"ADH works on the kidneys and vessels. It doesn't control skin temperature directly."],["Red blood cells are made in the skin.",0,"Red cells are made in red bone marrow."]]}],
+  run:()=>bpEvent("Hemorrhage"),runLabel:"Run a hemorrhage"},
+ {title:"An ACE inhibitor and dehydration",art:()=>ART.pill("ACE inhibitor"),story:"Ms. Brown takes lisinopril, an ACE inhibitor, for high blood pressure. She has had a stomach bug for two days and is dehydrated.",
+  qs:[{q:"Which molecule can she not make well?",opts:[["Angiotensin II",1,"Yes. ACE turns angiotensin I into angiotensin II, and her drug blocks ACE."],["Renin",0,"Renin is made by the kidney and comes before ACE. It isn't blocked."],["Angiotensinogen",0,"Angiotensinogen is made by the liver, before renin acts."],["ADH",0,"ADH comes from the posterior pituitary. The drug doesn't block it directly."]]},
+      {q:"Why might dehydration drop her pressure more than usual?",opts:[["Without angiotensin II she gets less vasoconstriction and less aldosterone to save Na⁺ and water.",1,"Right. One of her main backup systems is switched off."],["Her baroreceptors stop working.",0,"Her baroreceptor reflex still works. The RAAS is what's missing."],["The drug raises her ANP.",0,"The drug doesn't raise ANP. It blocks angiotensin II."],["Her heart can no longer beat faster.",0,"That would be a beta blocker. ACE inhibitors don't stop the heart rate reflex."]]}],
+  run:()=>{if(!bp.ace)$("#medAce").click();bpEvent("Dehydration")},runLabel:"Run it: ACE inhibitor + dehydration"},
+ {title:"Fluid overload",art:ART.heart,story:"Mrs. Kim has too much fluid in her body. Her atria are stretched, and a blood test shows a high natriuretic peptide level.",
+  qs:[{q:"What made her heart release this hormone?",opts:[["Stretch of the atria from high blood volume.",1,"Yes. Atrial stretch is the trigger for ANP."],["Low blood pressure.",0,"Low pressure triggers the baroreceptor reflex and RAAS, not ANP."],["High CO₂ in the blood.",0,"CO₂ is sensed by chemoreceptors. ANP responds to stretch."],["Low blood concentration.",0,"That would lower ADH. ANP responds to atrial stretch."]]},
+      {q:"What does ANP do?",opts:[["Makes the kidneys lose more Na⁺ and water, and turns down renin, aldosterone and ADH.",1,"Right. It lowers blood volume and pressure."],["Makes the kidneys hold on to water.",0,"That's ADH and aldosterone. ANP does the opposite."],["Constricts arterioles.",0,"ANP widens vessels."],["Raises renin release.",0,"ANP suppresses renin."]]}],
+  run:()=>bpEvent("Big salty meal"),runLabel:"Run a big salty meal to see ANP"}])}
+
+/* ================= PART 3: resistance & flow ================= */
+const S3=makeStage("cvFlow",800,320),S3c=makeStage("cvFlowCh",800,230);
+const fl={r:1,eta:1,L:1,cup:0,o:0,lastT:null,done:store.get("bv-flow-done")||[false,false,false,false]};
+const FLOW_CHAL=["Double the flow using only the radius.","Cut the flow to about 1/16 using only the radius.","Blood is twice as thick (viscosity 2×). Get flow back to normal by changing the radius.","Make the flow at least 10 times normal."];
+const Qf=()=>Math.pow(fl.r,4)/(fl.eta*fl.L);
+function flOut(){$("#radOut").textContent=Math.round(fl.r*100)+"%";$("#viscOut").textContent="×"+fl.eta.toFixed(2);$("#lenOut").textContent="×"+fl.L.toFixed(2)}
+$("#rad").oninput=e=>{fl.r=+e.target.value/100;flOut();flCheck()};$("#visc").oninput=e=>{fl.eta=+e.target.value/100;flOut();flCheck()};$("#len").oninput=e=>{fl.L=+e.target.value/100;flOut();flCheck()};
+$("#flowReset").onclick=()=>{$("#rad").value=100;$("#visc").value=100;$("#len").value=100;fl.r=fl.eta=fl.L=1;flOut();flCheck()};
+function flCheck(){const q=Qf();let ch=false;const n1=Math.abs(fl.eta-1)<.01,n2=Math.abs(fl.L-1)<.01;
+  if(!fl.done[0]&&n1&&n2&&q>=1.9&&q<=2.1){fl.done[0]=ch=true}
+  if(!fl.done[1]&&n1&&n2&&fl.r<=.52){fl.done[1]=ch=true}
+  if(!fl.done[2]&&fl.eta>=1.95&&n2&&q>=.95&&q<=1.05){fl.done[2]=ch=true}
+  if(!fl.done[3]&&q>=10){fl.done[3]=ch=true}
+  if(ch){store.set("bv-flow-done",fl.done);renderChal("#flowChal","#flowStars",FLOW_CHAL,fl.done)}
+  const q4=Math.pow(fl.r,4),rows=[["Radius effect",`× ${q4<1?q4.toFixed(3):q4.toFixed(2)}`],["Viscosity effect",`× ${(1/fl.eta).toFixed(2)}`],["Length effect",`× ${(1/fl.L).toFixed(2)}`],["Resistance",`${(fl.eta*fl.L/q4).toFixed(2)} × normal`],["Flow",`${q<.1?q.toFixed(3):q.toFixed(2)} × normal`]];
+  $("#flowRead").innerHTML=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");
+  const big=[["radius",Math.abs(Math.log(q4))],["viscosity",Math.abs(Math.log(fl.eta))],["length",Math.abs(Math.log(fl.L))]].sort((a,b)=>b[1]-a[1])[0];
+  const st=$("#flowStatus");st.className="status "+(q<.5?"warn":q>2?"good":"");
+  st.textContent=big[1]<.02?"Everything is normal: flow is 1 × normal.":`Biggest effect right now: ${big[0]}. `+(fl.r!==1?`Radius ${Math.round(fl.r*100)}% means ${Math.round(fl.r*100)}% × itself four times = ${q4<.1?q4.toFixed(3):q4.toFixed(2)} × the flow. `:"")+`Total flow: ${q<.1?q.toFixed(3):q.toFixed(2)} × normal.`;
+  S3.cv.setAttribute("aria-label",`Vessel with radius ${Math.round(fl.r*100)} percent, viscosity ${fl.eta.toFixed(2)} times, length ${fl.L.toFixed(2)} times. Flow is ${q.toFixed(2)} times normal.`)}
+function drawFlow(now){use(S3);const T=now/1000;const dt=fl.lastT==null?0:clamp(T-fl.lastT,0,.1);fl.lastT=T;const q=Qf();
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,800,320);
+  const yc=150,rp=30*fl.r,x0=110,x1=x0+300*fl.L;
+  // pump/reservoir
+  rr(20,60,80,180,10);ctx.fillStyle=mix(C.art,C.panel,.55);ctx.fill();ctx.strokeStyle=C["art-edge"];ctx.lineWidth=2;ctx.stroke();heartIcon(60,120,22,beatOf(T,1),C.heart);
+  txt(60,170,"same push",{size:11.5,weight:700,align:"center"});txt(60,188,"every time",{size:11.5,weight:700,align:"center"});
+  // vessel
+  rr(x0-2,yc-rp-6,x1-x0+4,2*rp+12,rp+6);ctx.fillStyle=C["art-edge"];ctx.fill();
+  rr(x0,yc-rp,x1-x0,2*rp,rp);ctx.fillStyle=mix(mix(C.art,C.panel,.75),C.art,clamp((fl.eta-.5)/1.5,0,1)*.45);ctx.fill();
+  const vel=q/(fl.r*fl.r);fl.o+=dt*vel*90;const n=Math.round(10*fl.eta*fl.L);
+  ctx.save();rr(x0,yc-rp,x1-x0,2*rp,rp);ctx.clip();for(let i=0;i<n;i++){const x=x0+((fl.o+i*(x1-x0)/n)%(x1-x0));cell(x,yc+(rnd(i)-.5)*rp*1.3,clamp(rp*.4,5,10),C.art,0)}ctx.restore();
+  // speed lines
+  for(let k=0;k<3;k++){const y=yc+(k-1)*rp*.5;const xx=x0+((fl.o*1.2+k*90)%(x1-x0-30));line(xx,y,xx+18,y,hexA(C.panel,.6),2)}
+  // cup at the end
+  fl.cup+=dt*q*.12;if(fl.cup>1)fl.cup=0;const cx=x1+14;
+  ctx.beginPath();ctx.moveTo(cx,yc+40);ctx.lineTo(cx+8,yc+150);ctx.lineTo(cx+82,yc+150);ctx.lineTo(cx+90,yc+40);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=2.5;ctx.stroke();
+  const lvl=yc+150-108*fl.cup;ctx.beginPath();ctx.moveTo(cx+lerp(8,0,(150-(lvl-yc))/110)+1,lvl);ctx.lineTo(cx+8+1,yc+149);ctx.lineTo(cx+82-1,yc+149);ctx.lineTo(cx+90-lerp(8,0,(150-(lvl-yc))/110)-1,lvl);ctx.closePath();ctx.fillStyle=hexA(C.art,.6);ctx.fill();
+  // stream into cup
+  const sw=clamp(rp*.5*Math.min(1,q),1,14);rr(x1-2,yc-sw/2,22,sw,sw/2);ctx.fillStyle=hexA(C.art,.7);ctx.fill();ctx.beginPath();ctx.moveTo(x1+18,yc);ctx.quadraticCurveTo(cx+40,yc+4,cx+45,lvl);ctx.strokeStyle=hexA(C.art,.7);ctx.lineWidth=sw;ctx.stroke();
+  // labels
+  txt(780,30,"Flow",{size:13,weight:700,align:"right",color:C["ink-soft"]});txt(780,62,(q<.1?q.toFixed(3):q.toFixed(2))+" ×",{size:30,weight:700,mono:true,align:"right"});txt(780,92,"normal",{size:12,align:"right",color:C["ink-soft"]});
+  label((x0+x1)/2,yc-rp-24,`radius ${Math.round(fl.r*100)}%`,{size:12,weight:600,align:"center"});
+  line(x0,yc+rp+18,x1,yc+rp+18,C["ink-soft"],1.5);line(x0,yc+rp+12,x0,yc+rp+24,C["ink-soft"],1.5);line(x1,yc+rp+12,x1,yc+rp+24,C["ink-soft"],1.5);
+  label((x0+x1)/2,yc+rp+30,`length ×${fl.L.toFixed(2)}`,{size:12,weight:600,align:"center"});
+  txt(20,300,`viscosity ×${fl.eta.toFixed(2)}: ${fl.eta>1.3?"thick blood, crowded with cells":fl.eta<.8?"thin blood":"normal blood"}`,{size:12,weight:600});}
+function drawFlowCh(){use(S3c);ctx.fillStyle=C.panel;ctx.fillRect(0,0,800,230);
+  // left: flow vs radius
+  const gx0=60,gx1=430,gy0=30,gy1=196;const k=1/(fl.eta*fl.L);const ymax=Math.max(2,5.07*k)*1.05;
+  const X=r=>lerp(gx0,gx1,(r-.5)/1),Y=v=>lerp(gy1,gy0,v/ymax);
+  txt(gx0-40,16,"Flow (× normal) vs radius",{size:12,weight:700});
+  [0,ymax/2,ymax].forEach(v=>{line(gx0,Y(v),gx1,Y(v),C["rule-soft"],1);txt(gx0-6,Y(v),v.toFixed(v<10?1:0),{size:10.5,mono:true,align:"right",color:C["ink-soft"]})});
+  [.5,1,1.5].forEach(r=>txt(X(r),gy1+14,Math.round(r*100)+"%",{size:10.5,mono:true,align:"center",color:C["ink-soft"]}));txt((gx0+gx1)/2,gy1+28,"radius",{size:11,align:"center",color:C["ink-soft"]});
+  ctx.beginPath();for(let i=0;i<=60;i++){const r=.5+i/60;const v=r*k;i?ctx.lineTo(X(r),Y(v)):ctx.moveTo(X(r),Y(v))}ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=1.8;ctx.setLineDash([6,5]);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();for(let i=0;i<=60;i++){const r=.5+i/60;const v=Math.pow(r,4)*k;i?ctx.lineTo(X(r),Y(v)):ctx.moveTo(X(r),Y(v))}ctx.strokeStyle=C.accent;ctx.lineWidth=3;ctx.stroke();
+  const q=Qf();circ(X(fl.r),Y(q),7,C.accent,C.panel,2.5);line(X(fl.r),Y(q),X(fl.r),gy1,hexA(C.accent,.5),1.2,[3,3]);
+  label(clamp(X(fl.r),gx0+40,gx1-40),clamp(Y(q)-16,gy0+6,gy1-10),q.toFixed(2)+" ×",{size:11.5,weight:700,mono:true,align:"center"});
+  // right: factor bars on a log scale
+  const bx0=470,bx1=780,mid=(bx0+bx1)/2;const L2=v=>mid+clamp(Math.log2(v)/4,-1,1)*(bx1-bx0)/2;
+  txt(bx0,16,"How much each factor changes flow",{size:12,weight:700});
+  [1/16,1/4,1,4,16].forEach(v=>{const x=L2(v);line(x,32,x,186,C["rule-soft"],1);txt(x,198,v<1?"1/"+Math.round(1/v):String(v),{size:10.5,mono:true,align:"center",color:C["ink-soft"]})});
+  line(mid,32,mid,186,C["ink-soft"],1.5);
+  const fac=[["Radius",Math.pow(fl.r,4),C.accent],["Viscosity",1/fl.eta,C.art],["Length",1/fl.L,C.act2],["Total",q,C.ink]];
+  fac.forEach((f,i)=>{const y=48+i*36;const x=L2(f[1]);rr(Math.min(mid,x),y,Math.abs(x-mid)||2,20,4);ctx.fillStyle=f[2];ctx.fill();txt(f[1]>=1?Math.min(mid,x)-6:mid+6,y+10,f[0],{size:11.5,weight:700,align:f[1]>=1?"right":"left"})});
+  txt(mid,218,"× normal (each step is 4 times bigger)",{size:10.5,align:"center",color:C["ink-faint"]})}
+function flowCasesInit(){makeCases("#flowCases","bv-flow-cases","Predict it: what breaks if...?",[
+ {title:"Vasodilation",art:()=>ART.tube("radius doubles",22),story:"A skeletal muscle starts working hard. Its arterioles relax until their radius is twice as big.",
+  qs:[{q:"If the pressure stays the same, flow through those arterioles becomes about…",opts:[["16 times as much",1,"Yes. 2 × 2 × 2 × 2 = 16."],["2 times as much",0,"That would be true if flow followed radius directly. It follows radius to the fourth power."],["4 times as much",0,"That's 2 squared. Flow follows radius to the fourth power: 16 times."],["The same",0,"Radius is the biggest control on flow. Doubling it changes flow a lot."]]},
+      {q:"Why does the body control flow mostly with radius, not vessel length?",opts:[["Smooth muscle can change radius in seconds; length can't change quickly.",1,"Right. And because of the fourth power, small radius changes have big effects."],["Length has no effect on flow.",0,"Length does matter. Longer vessels add resistance. It just can't be adjusted minute to minute."],["Radius changes viscosity.",0,"Radius and viscosity are separate factors."],["Vessels can't change radius.",0,"They can. That's what vasoconstriction and vasodilation are."]]}],
+  run:()=>{$("#rad").value=150;$("#visc").value=100;$("#len").value=100;fl.r=1.5;fl.eta=fl.L=1;flOut();flCheck()},runLabel:"Show a wide radius in the lab"},
+ {title:"Polycythemia",art:()=>ART.tube("too many red cells",16),story:"Mr. Diaz makes too many red blood cells (polycythemia). His blood's viscosity is about 50% higher than normal.",
+  qs:[{q:"If nothing else changes, his blood flow…",opts:[["falls to about 2/3 of normal.",1,"Yes. Flow goes down as viscosity goes up: 1 ÷ 1.5 ≈ 0.67."],["rises, because there are more cells.",0,"More cells make the blood thicker, which slows flow."],["stays the same.",0,"Viscosity is one of the three factors. Thicker blood flows less easily."],["falls to 1/16.",0,"The fourth-power rule is for radius. Viscosity has a simple one-to-one effect."]]},
+      {q:"How much wider would his vessels need to be to make up for it?",opts:[["Only about 10% wider.",1,"Right. Because of the fourth power, a 10% wider radius gives about 1.46 times the flow."],["50% wider.",0,"That would give about 5 times the flow, far more than needed."],["Twice as wide.",0,"That would give 16 times the flow."],["They can't make up for it.",0,"A small radius change is enough because radius is so powerful."]]}],
+  run:()=>{$("#visc").value=150;$("#rad").value=100;$("#len").value=100;fl.eta=1.5;fl.r=fl.L=1;flOut();flCheck()},runLabel:"Show thick blood in the lab"},
+ {title:"A narrowed artery",art:()=>ART.tube("plaque narrows the lumen",10),story:"Plaque (atherosclerosis) has narrowed one of Ms. Green's arteries. Its radius is now 80% of normal.",
+  qs:[{q:"Flow through that artery falls to about…",opts:[["40% of normal",1,"Yes. 0.8 × 0.8 × 0.8 × 0.8 ≈ 0.41."],["80% of normal",0,"That would be true only if flow followed radius directly."],["64% of normal",0,"That's 0.8 squared. Use the fourth power: about 41%."],["20% of normal",0,"Not quite that low. The fourth power of 0.8 is about 0.41."]]},
+      {q:"Why is a small narrowing so dangerous?",opts:[["Flow depends on radius to the fourth power, so small narrowings cause big drops.",1,"Right. A 20% narrower artery carries less than half the blood."],["Plaque makes the blood thinner.",0,"Plaque narrows the vessel. It doesn't change the blood's viscosity."],["Narrowing makes the artery longer.",0,"Length stays about the same. The radius is the problem."],["It isn't dangerous; flow barely changes.",0,"Flow drops sharply. That's why narrowed coronary arteries cause chest pain."]]}],
+  run:()=>{$("#rad").value=80;$("#visc").value=100;$("#len").value=100;fl.r=.8;fl.eta=fl.L=1;flOut();flCheck()},runLabel:"Show 80% radius in the lab"},
+ {title:"Extra vessel length",art:()=>ART.tube("longer path",14),story:"When a person gains a lot of body fat, the new tissue needs its own blood supply, which adds a lot of extra vessel length.",
+  qs:[{q:"What happens to total resistance?",opts:[["It goes up.",1,"Yes. Longer vessels add more friction, so resistance rises."],["It goes down.",0,"Longer vessels add resistance, not remove it."],["It stays the same.",0,"Length is one of the three factors. More length means more resistance."],["It depends only on viscosity.",0,"Viscosity matters too, but here the change is in length."]]},
+      {q:"To keep flow normal, what must the heart do?",opts:[["Push with more pressure, which raises blood pressure.",1,"Right. More resistance needs a bigger pressure difference for the same flow."],["Pump with less pressure.",0,"Less pressure would mean even less flow through the extra resistance."],["Make the blood thicker.",0,"Thicker blood would add even more resistance."],["Nothing changes for the heart.",0,"The heart has to work harder against the extra resistance."]]}],
+  run:()=>{$("#len").value=200;$("#rad").value=100;$("#visc").value=100;fl.L=2;fl.r=fl.eta=1;flOut();flCheck()},runLabel:"Show a long vessel in the lab"}])}
+
+/* ================= PART 4: route tracer ================= */
+const S4=makeStage("cvMap",800,620);
+// element: id,name,kind(art|ven|cap|ch|sh),fetal(0 both,1 fetal only),geom: lines [[pts]] or ellipse {e:[x,y,rx,ry]}, leads, hint
+const EL={
+ ra:{n:"Right atrium",k:"ch",g:{e:[378,212,22,18]},leads:"the right ventricle",hint:"Blood returning from the body always enters the right atrium."},
+ rv:{n:"Right ventricle",k:"ch",g:{e:[386,252,22,20]},leads:"the lungs",hint:"From the right atrium, blood drops through the tricuspid valve into the chamber below."},
+ la:{n:"Left atrium",k:"ch",g:{e:[424,206,22,18]},leads:"the left ventricle",hint:"Blood coming back from the lungs enters this upper chamber on the left side."},
+ lv:{n:"Left ventricle",k:"ch",g:{e:[420,250,24,22]},leads:"the aorta",hint:"From the left atrium, blood flows through the mitral valve into the strongest chamber."},
+ aorta:{n:"Aorta (ascending and arch)",k:"art",g:[[[426,232],[432,170],[446,150],[468,158],[472,176]]],leads:"every systemic artery",hint:"The left ventricle pumps into the body's largest artery."},
+ daorta:{n:"Descending (abdominal) aorta",k:"art",g:[[[472,176],[468,300],[462,470]]],leads:"the arteries of the chest, abdomen and legs",hint:"To reach the abdomen or legs, blood keeps going down the main artery."},
+ carotid:{n:"Common carotid artery",k:"art",g:[[[440,154],[428,110],[420,80]]],leads:"the head and brain",hint:"Arteries to the head branch upward from the aortic arch."},
+ brain:{n:"Brain capillaries",k:"cap",g:{e:[400,48,46,28]},leads:"the jugular veins",hint:"Deliver O₂ to the brain in its capillary beds."},
+ jugular:{n:"Internal jugular vein",k:"ven",g:[[[382,78],[374,120],[372,160]]],leads:"the superior vena cava",hint:"Blood leaves the brain through the big vein in the neck."},
+ svc:{n:"Superior vena cava",k:"ven",g:[[[372,160],[374,196]]],leads:"the right atrium",hint:"Veins from the head and arms join into the large vein entering the top of the right atrium."},
+ ptrunk:{n:"Pulmonary trunk",k:"art",g:[[[404,238],[410,190],[408,170]]],leads:"the pulmonary arteries",hint:"The right ventricle pumps into one short, wide artery heading to the lungs."},
+ parts:{n:"Pulmonary arteries",k:"art",g:[[[408,170],[360,166],[312,176]],[[408,170],[470,190],[512,182]]],leads:"the lungs",hint:"The pulmonary trunk splits into a branch for each lung."},
+ lungs:{n:"Lung capillaries",k:"cap",g:{ee:[[290,200,40,56],[534,200,40,56]]},leads:"the pulmonary veins",hint:"Gas exchange happens in the capillaries around the alveoli."},
+ pveins:{n:"Pulmonary veins",k:"ven",g:[[[316,226],[372,232],[404,214]],[[512,226],[466,226],[440,212]]],leads:"the left atrium",hint:"Oxygen-rich blood leaves the lungs in veins that empty into the left atrium."},
+ ivc:{n:"Inferior vena cava",k:"ven",g:[[[372,476],[370,300],[374,232]]],leads:"the right atrium",hint:"Veins from the abdomen and legs drain into the large vein that enters the bottom of the right atrium."},
+ hepA:{n:"Hepatic artery",k:"art",g:[[[468,292],[400,290],[350,296]]],leads:"the liver",hint:""},
+ liver:{n:"Liver (sinusoids)",k:"cap",g:{e:[318,300,48,30]},leads:"the hepatic veins",hint:"The hepatic portal vein delivers gut blood to the liver's sinusoids."},
+ hepv:{n:"Hepatic veins",k:"ven",g:[[[336,284],[352,276],[370,272]]],leads:"the inferior vena cava",hint:"Blood leaves the liver through short veins into the inferior vena cava."},
+ sma:{n:"Superior mesenteric artery",k:"art",g:[[[466,346],[444,380],[428,404]]],leads:"the small intestine",hint:"An unpaired artery branches off the front of the abdominal aorta to supply the small intestine."},
+ gut:{n:"Small intestine capillaries",k:"cap",g:{e:[408,420,40,24]},leads:"the superior mesenteric vein",hint:"Deliver blood to the intestinal wall, where nutrients are absorbed."},
+ smv:{n:"Superior mesenteric vein",k:"ven",g:[[[384,410],[360,370],[348,348]]],leads:"the hepatic portal vein",hint:"The vein draining the small intestine heads up toward the liver."},
+ portal:{n:"Hepatic portal vein",k:"ven",g:[[[348,348],[336,330],[326,316]]],leads:"the liver",hint:"Gut veins join into one vein that carries blood to the liver, not the heart."},
+ renA:{n:"Renal artery",k:"art",g:[[[468,330],[512,330]],[[468,330],[420,330]]],leads:"the kidneys",hint:"Paired arteries branch sideways from the abdominal aorta to the kidneys."},
+ kidney:{n:"Kidney capillaries",k:"cap",g:{ee:[[536,344,18,28],[268,344,18,28]]},leads:"the renal veins",hint:"The renal artery feeds the kidney's capillaries, where blood is filtered."},
+ renV:{n:"Renal vein",k:"ven",g:[[[520,358],[376,358]],[[286,358],[368,358]]],leads:"the inferior vena cava",hint:"Each kidney drains through a vein straight into the inferior vena cava."},
+ iliacA:{n:"Common iliac artery",k:"art",g:[[[462,470],[492,510]],[[462,470],[352,510]]],leads:"the legs and pelvis",hint:"At the bottom of the abdomen, the aorta splits into two arteries."},
+ femA:{n:"Femoral artery",k:"art",g:[[[492,510],[496,590]],[[352,510],[348,590]]],leads:"the leg",hint:"The main artery of the thigh continues down the leg."},
+ leg:{n:"Leg and foot capillaries",k:"cap",g:{ee:[[488,604,26,12],[356,604,26,12]]},leads:"the leg veins",hint:"Deliver O₂ to the leg and foot tissues."},
+ femV:{n:"Femoral vein",k:"ven",g:[[[478,590],[476,512]],[[366,590],[368,512]]],leads:"the common iliac vein",hint:"Deep veins carry blood up the thigh, helped by valves and the muscle pump."},
+ iliacV:{n:"Common iliac vein",k:"ven",g:[[[476,512],[376,476]],[[368,512],[372,478]]],leads:"the inferior vena cava",hint:"The two leg veins join to form the inferior vena cava."},
+ placenta:{n:"Placenta",k:"cap",f:1,g:{e:[170,556,50,28]},leads:"the umbilical vein",hint:""},
+ umbV:{n:"Umbilical vein",k:"ven",f:1,g:[[[210,540],[280,500],[330,440],[352,360]]],leads:"the liver and ductus venosus",hint:"Oxygen-rich blood leaves the placenta in the umbilical cord's single vein."},
+ dvenosus:{n:"Ductus venosus",k:"sh",f:1,g:[[[352,360],[362,320],[370,296]]],leads:"the inferior vena cava",hint:"A shunt lets most umbilical blood skip the liver on its way to the inferior vena cava."},
+ foramen:{n:"Foramen ovale",k:"sh",f:1,g:{e:[396,224,7,9]},leads:"the left atrium",hint:"An opening in the wall between the atria lets blood cross straight to the left side."},
+ dart:{n:"Ductus arteriosus",k:"sh",f:1,g:[[[408,170],[432,150],[452,150]]],leads:"the aorta",hint:"A short shunt connects the pulmonary trunk to the aorta, skipping the fluid-filled lungs."},
+ umbA:{n:"Umbilical arteries",k:"art",f:1,g:[[[462,470],[330,540],[220,566]]],leads:"the placenta",hint:""}
+};
+const ADJ={lv:["aorta"],aorta:["carotid","daorta"],daorta:["sma","renA","iliacA","hepA","umbA"],sma:["gut"],gut:["smv"],smv:["portal"],portal:["liver"],hepA:["liver"],liver:["hepv"],hepv:["ivc"],
+ renA:["kidney"],kidney:["renV"],renV:["ivc"],iliacA:["femA"],femA:["leg"],leg:["femV"],femV:["iliacV"],iliacV:["ivc"],ivc:["ra"],carotid:["brain"],brain:["jugular"],jugular:["svc"],svc:["ra"],
+ ra:["rv","foramen"],rv:["ptrunk"],ptrunk:["parts","dart"],parts:["lungs"],lungs:["pveins"],pveins:["la"],la:["lv"],placenta:["umbV"],umbV:["dvenosus","liver"],dvenosus:["ivc"],foramen:["la"],dart:["daorta","aorta"],umbA:["placenta"]};
+const ROUTES=[
+ {t:"Gut to liver",goal:"Start in the <b>left ventricle</b>. Deliver blood to the <b>small intestine</b>, then send it through the <b>liver</b> and back to the <b>right atrium</b>.",p:["lv","aorta","daorta","sma","gut","smv","portal","liver","hepv","ivc","ra"]},
+ {t:"The lung loop",goal:"Start in the <b>right atrium</b>. Send blood through the <b>lungs</b> to pick up O₂ and bring it to the <b>left atrium</b>.",p:["ra","rv","ptrunk","parts","lungs","pveins","la"]},
+ {t:"To the brain",goal:"Start in the <b>left ventricle</b>. Deliver O₂ to the <b>brain</b>, then return to the <b>right atrium</b>.",p:["lv","aorta","carotid","brain","jugular","svc","ra"]},
+ {t:"Through a kidney",goal:"Start in the <b>left ventricle</b>. Send blood through a <b>kidney</b> and back to the <b>right atrium</b>.",p:["lv","aorta","daorta","renA","kidney","renV","ivc","ra"]},
+ {t:"Down to the foot",goal:"Start in the <b>left ventricle</b>. Deliver blood to the <b>foot</b> and bring it back to the <b>right atrium</b>.",p:["lv","aorta","daorta","iliacA","femA","leg","femV","iliacV","ivc","ra"]},
+ {t:"Fetal: placenta to aorta",fetal:1,goal:"Before birth. Start at the <b>placenta</b>. Get oxygen-rich blood into the <b>aorta</b> while skipping the liver and the lungs.",p:["placenta","umbV","dvenosus","ivc","ra","foramen","la","lv","aorta"]},
+ {t:"Fetal: the other shortcut",fetal:1,goal:"Before birth. Start in the <b>right atrium</b>. Reach the <b>descending aorta</b> through the <b>right ventricle</b> while skipping the lungs.",p:["ra","rv","ptrunk","dart","daorta"]}
+];
+const rt={R:0,i:0,miss:0,hints:0,shown:false,hintId:null,flash:null,anim:null,res:store.get("bv-rt-res")||{},t0:0,elapsed:0,running:false};
+function elVisible(id){const e=EL[id];const fetal=!!ROUTES[rt.R].fetal;if(e.f&&!fetal)return false;if(fetal&&(id==="hepA"))return false;return true}
+function segDist(px,py,a,b){const dx=b[0]-a[0],dy=b[1]-a[1];const L=dx*dx+dy*dy;let t=L?((px-a[0])*dx+(py-a[1])*dy)/L:0;t=clamp(t,0,1);return Math.hypot(px-a[0]-t*dx,py-a[1]-t*dy)}
+function hitTest(x,y){let best=null,bd=1e9;Object.keys(EL).forEach(id=>{if(!elVisible(id))return;const g=EL[id].g;let d=1e9;
+  if(Array.isArray(g)){g.forEach(pl=>{for(let i=0;i<pl.length-1;i++)d=Math.min(d,segDist(x,y,pl[i],pl[i+1]))});d-=2}
+  else{const es=g.e?[g.e]:g.ee;es.forEach(e=>{const v=Math.hypot((x-e[0])/e[2],(y-e[1])/e[3]);d=Math.min(d,v<=1?-1+v*0.5:(v-1)*Math.min(e[2],e[3]))})}
+  if(d<bd){bd=d;best=id}});return bd<12?best:null}
+function rtLoad(){const r=ROUTES[rt.R];rt.i=0;rt.miss=0;rt.hints=0;rt.shown=false;rt.hintId=null;rt.flash=null;rt.anim=null;rt.t0=performance.now();rt.elapsed=0;rt.running=true;
+  $("#rtN").textContent=`Route ${rt.R+1} of ${ROUTES.length}`+(r.fetal?" · fetal circulation":"");$("#rtT").textContent=r.t;$("#rtGoal").innerHTML=r.goal;$("#rtNext").hidden=true;setMsg("#rtMsg","","");
+  rtRounds();rtButtons();rtTrail()}
+function rtRounds(){const box=$("#rtRounds");box.innerHTML="";ROUTES.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===rt.R);b.innerHTML=`${i+1} · ${r.t}`+(rt.res[i]?` <span class="ok">${"★".repeat(rt.res[i])}</span>`:"");b.onclick=()=>{rt.R=i;rtLoad()};box.appendChild(b)});
+  const tot=Object.values(rt.res).reduce((a,b)=>a+b,0);$("#rtStars").innerHTML=`Stars: <b>${tot}</b> of ${ROUTES.length*3}. Saved only in this browser.`}
+function rtButtons(){const groups=[["Heart chambers","ch"],["Arteries","art"],["Capillary beds","cap"],["Veins","ven"],["Fetal shunts","sh"]];const r=ROUTES[rt.R];
+  $("#rtBtns").innerHTML=groups.map(([nm,k])=>{const ids=Object.keys(EL).filter(id=>EL[id].k===k&&elVisible(id));if(!ids.length)return "";
+    return `<h4>${nm}</h4><div class="vbtns">`+ids.map(id=>`<button type="button" class="vbtn ${k}" data-id="${id}">${EL[id].n}</button>`).join("")+"</div>"}).join("");
+  $("#rtBtns").querySelectorAll(".vbtn").forEach(b=>b.onclick=()=>rtPick(b.dataset.id));rtBtnState()}
+function rtBtnState(){const p=ROUTES[rt.R].p;$("#rtBtns").querySelectorAll(".vbtn").forEach(b=>{const id=b.dataset.id;const k=p.indexOf(id);b.classList.toggle("used",k>=0&&k<=rt.i);b.classList.toggle("hint",id===rt.hintId);b.classList.toggle("no",rt.flash&&rt.flash.id===id&&performance.now()-rt.flash.t<900)})}
+function rtTrail(){const p=ROUTES[rt.R].p;$("#rtTrail").innerHTML=p.map((id,k)=>k<=rt.i?`<span class="on">${EL[id].n}</span>`:`<span class="q">?</span>`).join("")}
+function rtPick(id){if(!rt.running)return;rt.anim=null;const p=ROUTES[rt.R].p;const curId=p[rt.i],next=p[rt.i+1];
+  if(id===next){rt.i++;rt.hintId=null;rt.anim={id,t0:performance.now()};const e=EL[id];
+    setMsg("#rtMsg",`✓ <b>${e.n}</b>. From here blood goes on to ${e.leads}.`,"good");rtTrail();rtBtnState();
+    if(rt.i===p.length-1)rtWin();return}
+  if(id===curId){setMsg("#rtMsg",`The drop is already in the <b>${EL[id].n}</b>. Pick where it goes next.`,"info");return}
+  rt.miss++;rt.flash={id,t:performance.now()};const e=EL[id],c=EL[curId];let why;
+  if((ADJ[id]||[]).includes(curId))why=`Blood in the ${c.n.toLowerCase()} has already come from the ${e.n.toLowerCase()}. Keep moving forward, in the direction blood flows.`;
+  else if((ADJ[curId]||[]).includes(id))why=`Blood can go from the ${c.n.toLowerCase()} into the ${e.n.toLowerCase()}, but that leads to ${e.leads}, which is not on this route.`;
+  else{const pl=/s$/.test(e.n);why=`The ${e.n.toLowerCase()} ${pl?"don't":"doesn't"} connect directly to the ${c.n.toLowerCase()}. ${pl?"They carry":"It carries"} blood to ${e.leads}.`}
+  setMsg("#rtMsg","Not quite. "+why,"warn");rtBtnState()}
+function rtWin(){rt.running=false;const stars=rt.shown?1:rt.hints===0&&rt.miss<=1?3:rt.miss<=3&&rt.hints<=1?2:1;if(!rt.shown&&(!rt.res[rt.R]||stars>rt.res[rt.R])){rt.res[rt.R]=stars;store.set("bv-rt-res",rt.res)}
+  const timed=$("#rtTimed").checked;
+  setTimeout(()=>{setMsg("#rtMsg",`<span class="stars">${starStr(stars)}</span><br><b>Route complete!</b> ${rt.shown?"You watched the answer. Try it yourself for stars. ":""}Wrong picks: ${rt.miss}. Hints: ${rt.hints}.${timed?" Time: "+fmt(rt.elapsed)+".":""}`,"good");$("#rtNext").hidden=rt.R>=ROUTES.length-1;rtRounds()},700)}
+$("#rtHint").onclick=()=>{if(!rt.running)return;const p=ROUTES[rt.R].p;const nx=p[rt.i+1];rt.hints++;rt.hintId=nx;const h=EL[nx].hint||("Look for the "+EL[nx].n.toLowerCase()+".");setMsg("#rtMsg","Hint: "+h+" The next step is glowing on the map and in the list.","info");rtBtnState()};
+$("#rtShow").onclick=()=>{if(!rt.running)return;rt.shown=true;const p=ROUTES[rt.R].p;const step=()=>{if(rt.i>=p.length-1)return;rt.anim=null;rtPick(p[rt.i+1]);if(rt.i<p.length-1)setTimeout(step,650)};step()};
+$("#rtReset").onclick=()=>rtLoad();
+$("#rtNext").onclick=()=>{rt.R=Math.min(ROUTES.length-1,rt.R+1);rtLoad()};
+$("#rtTimed").onchange=()=>{$("#rtTimer").hidden=!$("#rtTimed").checked};
+S4.cv.addEventListener("click",e=>{const [x,y]=S4.toLocal(e);const id=hitTest(x,y);if(id)rtPick(id);else setMsg("#rtMsg","Tap right on a vessel, chamber or organ. You can also use the buttons.","info")});
+S4.cv.addEventListener("mouseleave",()=>{rt.hover=null});
+S4.cv.addEventListener("mousemove",e=>{const [x,y]=S4.toLocal(e);rt.hover=hitTest(x,y);S4.cv.style.cursor=rt.hover?"pointer":"default"});
+function elColor(id){const k=EL[id].k;return k==="art"?C.art:k==="ven"?C.ven:k==="cap"?C.act3:k==="sh"?C.act5:C.heart}
+function drawEl(id,hl,now){const e=EL[id],g=e.g,col=elColor(id);const w=e.k==="art"||e.k==="ven"||e.k==="sh"?(["aorta","daorta","ivc"].includes(id)?8:["umbV","umbA","dart","dvenosus"].includes(id)?5:6):0;
+  if(Array.isArray(g)){g.forEach(pl=>{if(hl)vessel(pl,w+5,hexA(C.glow,.0),hexA(C.glow,.75),6);vessel(pl,w,mix(col,C.panel,hl==="used"?0:.35),hexA(C.ink,.35),2)})}
+  else{(g.e?[g.e]:g.ee).forEach(el=>{ctx.beginPath();ctx.ellipse(el[0],el[1],el[2],el[3],0,0,TAU);if(id==="foramen"){ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.act5;ctx.lineWidth=3;ctx.stroke()}
+      else{ctx.fillStyle=e.k==="ch"?mix(C.heart,C.panel,hl==="used"?0:.25):hexA(col,hl==="used"?.55:.25);ctx.fill();ctx.strokeStyle=e.k==="ch"?C["heart-edge"]:col;ctx.lineWidth=hl?3:1.5;ctx.stroke()}
+      if(hl&&hl!=="used"){ctx.strokeStyle=C.glow;ctx.lineWidth=4;ctx.stroke()}})}}
+function elCenter(id){const g=EL[id].g;if(Array.isArray(g)){const pl=g[0];return along(pl,.5)}const e=g.e||g.ee[0];return [e[0],e[1]]}
+function elEnd(id){const g=EL[id].g;if(Array.isArray(g)){const pl=g[0];return pl[pl.length-1]}const e=g.e||g.ee[0];return [e[0],e[1]]}
+function drawMap(now){use(S4);const T=now/1000;const r=ROUTES[rt.R],fetal=!!r.fetal;ctx.fillStyle=C.ecf;ctx.fillRect(0,0,800,620);
+  if(rt.running&&$("#rtTimed").checked){rt.elapsed=(now-rt.t0)/1000;$("#rtTimer").textContent=fmt(rt.elapsed)}
+  // body silhouette
+  ctx.fillStyle=mix(C.tissue,C.panel,.3);ctx.strokeStyle=C["tissue-edge"];ctx.lineWidth=2;
+  ctx.beginPath();ctx.ellipse(400,52,58,46,0,0,TAU);ctx.fill();ctx.stroke();rr(372,92,56,40,6);ctx.fill();
+  ctx.beginPath();ctx.moveTo(250,140);ctx.quadraticCurveTo(400,110,550,140);ctx.lineTo(560,480);ctx.quadraticCurveTo(400,500,240,480);ctx.closePath();ctx.fill();ctx.stroke();
+  rr(316,470,76,148,26);ctx.fill();ctx.stroke();rr(410,470,76,148,26);ctx.fill();ctx.stroke();
+  if(fetal){chipText(150,510,"PLACENTA (outside the body)",C.act5)}
+  txt(400,14,fetal?"FETAL CIRCULATION (before birth)":"ADULT CIRCULATION",{size:11.5,mono:true,weight:700,align:"center",color:C["ink-soft"]});
+  // draw order: capillary beds, veins, arteries, chambers, shunts
+  const order=Object.keys(EL).filter(elVisible).sort((a,b)=>{const o={cap:0,ven:1,art:2,ch:3,sh:4};return o[EL[a].k]-o[EL[b].k]});
+  const used=new Set(r.p.slice(0,rt.i+1));
+  order.forEach(id=>drawEl(id,used.has(id)?"used":(id===rt.hintId&&Math.sin(T*6)>-.3)||id===rt.hover?"hl":null,now));
+  // names on capillary beds
+  [["brain","brain",400,48],["lungs","lungs",290,200],["lungs","lungs",534,200],["liver","liver",318,300],["gut","small intestine",408,420],["kidney","kidney",536,344],["kidney","kidney",268,344],["leg","foot",356,604],["leg","foot",488,604]].forEach(([id,t,x,y])=>{if(elVisible(id))txt(x,y,t,{size:10.5,weight:700,align:"center",color:C.ink})});
+  if(fetal)txt(170,556,"placenta",{size:11,weight:700,align:"center"});
+  ["ra","rv","la","lv"].forEach(id=>{const e=EL[id].g.e;txt(e[0],e[1],id.toUpperCase(),{size:11,weight:700,align:"center",color:"#fff"})});
+  // wrong pick flash
+  if(rt.flash&&now-rt.flash.t<900){const c=elCenter(rt.flash.id);const a=1-(now-rt.flash.t)/900;ctx.save();ctx.globalAlpha=a;circ(c[0],c[1],16,hexA(C.warn,.25),C.warn,2.5);txt(c[0],c[1],"✗",{size:15,weight:700,align:"center",color:C.warn});ctx.restore()}
+  // the drop
+  const p=r.p;let pos=elEnd(p[rt.i]);
+  if(rt.anim){const k=clamp((now-rt.anim.t0)/600,0,1);const g=EL[rt.anim.id].g;if(Array.isArray(g)){pos=along(g[0],ease(k))}else{const prev=elEnd(p[rt.i-1]);const c=elCenter(rt.anim.id);pos=[lerp(prev[0],c[0],ease(k)),lerp(prev[1],c[1],ease(k))]}if(k>=1)rt.anim=null}
+  else if(!Array.isArray(EL[p[rt.i]].g))pos=elCenter(p[rt.i]);
+  const ox=["lungs","pveins","la","lv","aorta","daorta","carotid","sma","renA","iliacA","femA","placenta","umbV","dvenosus","hepA"].includes(p[rt.i]);
+  const cid=p[rt.i];const dropCol=fetal?(["placenta","umbV","dvenosus"].includes(cid)?C.art:p[0]==="placenta"||cid==="daorta"?C.mixed:C.ven):ox?C.art:C.ven;
+  glow(pos[0],pos[1],26,C.glow,.75);circ(pos[0],pos[1],9,dropCol,C.panel,2.5);
+  // hover tooltip
+  if(rt.hover){const c=elCenter(rt.hover);label(clamp(c[0],90,710),clamp(c[1]-22,20,600),EL[rt.hover].n,{size:12,weight:700,align:"center",border:elColor(rt.hover)})}
+  const goalTxt=`Now in: ${EL[p[rt.i]].n}`;label(14,600,goalTxt,{size:12.5,weight:700,border:C.accent});
+  // journey panel (left)
+  const jh=Math.min(36+p.length*22,fetal?250:330);panelBox(10,30,224,jh,{fill:hexA(C.panel,.92)});txt(22,46,"THE DROP'S JOURNEY",{size:10.5,mono:true,weight:700,color:C["ink-soft"]});
+  const step=Math.min(22,(jh-40)/p.length);
+  p.forEach((id,k)=>{const y=66+k*step;const done_=k<=rt.i;circ(28,y,7,done_?elColor(id):C.panel,done_?null:C.rule,1.5);if(done_)txt(28,y,"✓",{size:9,weight:700,align:"center",color:"#fff"});
+    txt(42,y,done_?EL[id].n:(k===rt.i+1?"next: ?":"?"),{size:11,weight:done_?600:500,color:done_?C.ink:C["ink-faint"]})});
+  // info panel (right)
+  const cur_=EL[p[rt.i]];panelBox(574,30,214,120,{fill:hexA(C.panel,.92),stroke:elColor(p[rt.i])});txt(586,46,"WHERE THE DROP IS",{size:10.5,mono:true,weight:700,color:C["ink-soft"]});
+  wrapText(cur_.n,586,66,190,15,{size:12.5,weight:700});txt(586,104,dropCol===C.mixed?"Blood here: mixed (still fairly O₂-rich)":ox?"Blood here: oxygen-rich":"Blood here: oxygen-poor",{size:11.5,weight:600,color:dropCol});
+  wrapText("Leads to "+cur_.leads+".",586,124,190,14,{size:11,color:C["ink-soft"]});
+  S4.cv.setAttribute("aria-label",`Vessel map. The drop of blood is in the ${EL[p[rt.i]].n}. ${rt.running?"Choose where it goes next.":"Route complete."}`);
+  rtBtnState()}
+
+/* ---------------- tabs / theme / loop ---------------- */
+let curTab="cap";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;
+  ["cap","bp","flow","route"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll()});
+function fitAll(){[S1,S1g,S2,S2t,S3,S3c,S4].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+let last=performance.now(),rdT=0;
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  try{
+    if(curTab==="cap"){if(!window.__manual)capStep(dt);drawCap(now);drawNfp();if(now-rdT>200){rdT=now;capRead()}}
+    else if(curTab==="bp"){if(!bp.paused&&!window.__manual){const tot=dt*bp.speed;const n=Math.ceil(tot/.02);for(let i=0;i<n;i++)bpStep(tot/n)}drawBody(now);drawBpTr();if(now-rdT>200){rdT=now;bpRead()}}
+    else if(curTab==="flow"){drawFlow(now);drawFlowCh()}
+    else drawMap(now);
+  }catch(err){console.error(err)}
+  requestAnimationFrame(frame)}
+/* test hooks */
+window.__bv={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),
+  cap:(c,p,l,lk)=>capSet(c,p,l,lk),capRun:s=>{for(let i=0;i<s*20;i++)capStep(.05)},capE:()=>cap.E,
+  bpEv:n=>bpEvent(n),bpRun:m=>{for(let i=0;i<m*50;i++)bpStep(.02)},bpS:()=>Object.assign({},bp,{hist:bp.hist.length,calc:bpCalc()}),
+  flow:(r,e,l)=>{$("#rad").value=r*100;$("#visc").value=e*100;$("#len").value=l*100;fl.r=r;fl.eta=e;fl.L=l;flOut();flCheck()},
+  rt:i=>{rt.R=i;rtLoad()},rtPick:id=>{rt.anim=null;rtPick(id)},rtPath:()=>ROUTES[rt.R].p,rtCenter:id=>elCenter(id),rtHit:(x,y)=>hitTest(x,y)};
+readColors();capOutputs();renderChal("#capChal","#capStars",CAP_CHAL,cap.done);capCasesInit();
+bpFresh();renderChal("#bpChal","#bpStars",BP_CHAL,bp.done);bpCasesInit();
+flOut();flCheck();renderChal("#flowChal","#flowStars",FLOW_CHAL,fl.done);flowCasesInit();
+rtLoad();fitAll();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

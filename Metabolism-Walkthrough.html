@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Metabolism Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;
+  /* metabolism palette */
+  --ecf:#EEF2F4;--cyto:#F7EEE2;--cell:#F4E6D6;--cell-edge:#B79A7E;--nuc:#D9CBEA;--nuc-edge:#7E68A8;
+  --mito:#E9B8A6;--mito-edge:#A4583F;--matrix:#F9E4DA;--ims:#F1CDBF;--crista:#C2735A;--memb:#D9B48C;--memb-edge:#9C7A52;
+  --glu:#D9A21B;--glu-edge:#8F6A0E;--pyr:#E07A2F;--acoa:#2E8A7A;--coa:#7FC8B8;--co2:#7D8A93;
+  --atp:#2F8A57;--adp:#8DBE9E;--pi:#B4632A;--nad:#2F6FB8;--nad-2:#A9C6EA;--fad:#7B5CC9;--fad-2:#CDBEF0;
+  --elec:#E8A90E;--hplus:#C4443A;--o2:#1E9CC9;--water:#4A97D6;--lact:#C2508A;
+  --fat:#EBCB62;--fat-edge:#B8914A;--glycerol:#8C8070;--amino:#8E5BB5;--nh3:#B23A6E;--urea:#6E8A2A;--ketone:#D96A1C;
+  --ins:#2563B8;--gcg:#C4644F;--gly:#B07A2A;
+  --liver:#B9624C;--liver-in:#EBC0B2;--muscle:#D9877C;--muscle-in:#F2CFC8;--adipose:#F5E3A6;--adipose-edge:#C3A54C;
+  --skin:#F1D9C4;--skin-edge:#B98E6E;--brain:#EED3CF;--brain-edge:#B4847D;--gut:#E7B49A;--gut-edge:#A4674B;
+  --blood:#C2453D;--blood-wash:#F4D7D3;--vessel:#D9776F;--kidney:#B9605A;
+  --heat:#D9481C;--cold:#2F7FC1;--air:#9FC3D9;--glow:#F2B33B;--gold:#C9A227;--gold-wash:#F6EFD3;--leaf:#4E9A4A;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#141E24;--cyto:#2A241B;--cell:#33291F;--cell-edge:#A68B70;--nuc:#3A3150;--nuc-edge:#A994D6;
+  --mito:#6A3A2C;--mito-edge:#D08670;--matrix:#2E1E19;--ims:#45291F;--crista:#C9765F;--memb:#5C4A33;--memb-edge:#B8976A;
+  --glu:#F2C14B;--glu-edge:#C9A02E;--pyr:#F09A55;--acoa:#5CC4B0;--coa:#2F6A5E;--co2:#9AA8B0;
+  --atp:#4FBF7F;--adp:#3F6B50;--pi:#E39A5B;--nad:#5A9BE6;--nad-2:#1F3A5C;--fad:#A98BEF;--fad-2:#3A2E5E;
+  --elec:#F2C14B;--hplus:#EE7B70;--o2:#4FC3E8;--water:#6CB4EE;--lact:#E07FB2;
+  --fat:#9C7E45;--fat-edge:#D9B865;--glycerol:#A89A86;--amino:#B58BDB;--nh3:#E0699E;--urea:#A8BF5E;--ketone:#F29A55;
+  --ins:#5A9BE6;--gcg:#F08F74;--gly:#D6A65A;
+  --liver:#C9765F;--liver-in:#5C3329;--muscle:#B86A60;--muscle-in:#4A2724;--adipose:#5C4E22;--adipose-edge:#C9AE5A;
+  --skin:#4A3A2E;--skin-edge:#B48D6C;--brain:#4A3533;--brain-edge:#B98A83;--gut:#6E4636;--gut-edge:#D49A7E;
+  --blood:#E0675E;--blood-wash:#3B1E1B;--vessel:#9C4B45;--kidney:#C9726B;
+  --heat:#F27A4F;--cold:#5AA9E6;--air:#3E6378;--glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;--leaf:#7CC477;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;
+  --ecf:#141E24;--cyto:#2A241B;--cell:#33291F;--cell-edge:#A68B70;--nuc:#3A3150;--nuc-edge:#A994D6;
+  --mito:#6A3A2C;--mito-edge:#D08670;--matrix:#2E1E19;--ims:#45291F;--crista:#C9765F;--memb:#5C4A33;--memb-edge:#B8976A;
+  --glu:#F2C14B;--glu-edge:#C9A02E;--pyr:#F09A55;--acoa:#5CC4B0;--coa:#2F6A5E;--co2:#9AA8B0;
+  --atp:#4FBF7F;--adp:#3F6B50;--pi:#E39A5B;--nad:#5A9BE6;--nad-2:#1F3A5C;--fad:#A98BEF;--fad-2:#3A2E5E;
+  --elec:#F2C14B;--hplus:#EE7B70;--o2:#4FC3E8;--water:#6CB4EE;--lact:#E07FB2;
+  --fat:#9C7E45;--fat-edge:#D9B865;--glycerol:#A89A86;--amino:#B58BDB;--nh3:#E0699E;--urea:#A8BF5E;--ketone:#F29A55;
+  --ins:#5A9BE6;--gcg:#F08F74;--gly:#D6A65A;
+  --liver:#C9765F;--liver-in:#5C3329;--muscle:#B86A60;--muscle-in:#4A2724;--adipose:#5C4E22;--adipose-edge:#C9AE5A;
+  --skin:#4A3A2E;--skin-edge:#B48D6C;--brain:#4A3533;--brain-edge:#B98A83;--gut:#6E4636;--gut-edge:#D49A7E;
+  --blood:#E0675E;--blood-wash:#3B1E1B;--vessel:#9C4B45;--kidney:#C9726B;
+  --heat:#F27A4F;--cold:#5AA9E6;--air:#3E6378;--glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;--leaf:#7CC477;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 170px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:16px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.tri{clip-path:polygon(50% 0,100% 100%,0 100%);border:0;border-radius:0;width:12px;height:11px}
+.legend i.hex{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border:0;border-radius:0;width:13px;height:12px}
+.legend i.pent{clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%);border:0;border-radius:0;width:12px;height:12px}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+.body a{color:var(--accent)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Metabolism and Nutrition &middot; USC Upstate</div>
+    <h1>Metabolism Walkthrough</h1>
+    <p class="sub">How your cells turn food into ATP, store fuel, and keep you warm, one step at a time. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 24, Metabolism and Nutrition (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Try it hands-on in the <a href="Metabolism-Lab.html">Metabolism Lab</a>.<br>Diagrams are simplified and not to scale. Molecules are cartoons, only a few of the many enzyme steps are shown, and processes are sped up so you can watch them. ATP totals follow OpenStax; other textbooks give slightly different numbers.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · Energy basics",col:"act1"},
+            2:{name:"Part 2 · Burning glucose",col:"act2"},
+            3:{name:"Part 3 · Storing and making fuel",col:"act3"},
+            4:{name:"Part 4 · Fed and fasting",col:"act4"},
+            5:{name:"Part 5 · Energy, heat and nutrition",col:"act5"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: food in, ATP out",
+ body:`<p><b>Metabolism</b> is every chemical reaction in your body. This chapter follows one big story: how the food you eat becomes <b>ATP</b>, the energy your cells spend.</p>
+ <p>Watch the map. All three kinds of food feed into the same machinery:</p>
+ <ul><li><b>Carbohydrates</b> become <b>glucose</b>, which is split in <b>glycolysis</b>.</li>
+ <li><b>Fats</b> become <b>fatty acids</b> and <b>glycerol</b>.</li>
+ <li><b>Proteins</b> become <b>amino acids</b>.</li></ul>
+ <p>Most roads lead to one hub molecule, <b>acetyl CoA</b>. It feeds the <b>citric acid (Krebs) cycle</b>, which loads electron carriers. The carriers drive the <b>electron transport chain</b>, where most ATP is made.</p>`,
+ analogy:"A city power plant that can burn coal, gas, or wood. Different fuels arrive by different roads, but they all feed the same furnace and turbine.",
+ terms:[["Metabolism","All the chemical reactions in the body."],["ATP","Adenosine triphosphate, the cell's energy currency."],["Acetyl CoA","The 2-carbon hub molecule that carbs, fats and some amino acids turn into."]],
+ check:{q:"Which molecule is the shared hub where carbs, fats and proteins meet before the Krebs cycle?",opts:[
+  ["Acetyl CoA",1,"Yes. Glucose, fatty acids and many amino acids can all become acetyl CoA."],
+  ["Glycogen",0,"Glycogen is stored glucose. Fats and proteins do not pass through it."],
+  ["Urea",0,"Urea is a waste product made from the nitrogen in amino acids. It carries no fuel."],
+  ["Oxygen",0,"Oxygen is needed at the very end of the electron transport chain. It is not a fuel hub."]]},
+ caption:"Carbs, fats and proteins all flow toward acetyl CoA, the Krebs cycle, and the electron transport chain.",
+ legend:[["glu","Glucose","hex"],["fat","Fatty acid","r"],["amino","Amino acid"],["acoa","Acetyl CoA"],["atp","ATP","r"]]},
+
+{act:1,scene:"cata",id:"cata",title:"Metabolism = catabolism + anabolism",
+ body:`<p>Metabolism has two sides that work together.</p>
+ <p><b>Catabolism</b> breaks big molecules into smaller ones. Breaking bonds <b>releases energy</b>. Digesting food and burning glucose are catabolic.</p>
+ <p><b>Anabolism</b> builds big molecules from small ones. Building <b>uses energy</b>. Making proteins, glycogen and fat are anabolic.</p>
+ <p>ATP links the two sides. Catabolism makes ATP. Anabolism spends it.</p>`,
+ analogy:"Taking apart old LEGO models earns you coins. You spend the coins to build new models.",
+ terms:[["Catabolism","Breaking molecules down. Releases energy."],["Anabolism","Building molecules up. Uses energy."],["Metabolic pathway","A chain of enzyme steps that changes one molecule into another."]],
+ check:{q:"Your muscle cells link amino acids together to build new muscle protein. Which kind of reaction is that?",opts:[
+  ["Anabolic, because it builds a bigger molecule and uses energy.",1,"Right. Building protein from amino acids is anabolism, and it spends ATP."],
+  ["Catabolic, because it releases energy.",0,"Linking pieces together costs energy. Catabolism is the breaking-down side."],
+  ["Catabolic, because protein is broken down.",0,"Here the protein is being built, not broken. Breaking it would be catabolic."],
+  ["Neither. It does not involve energy.",0,"Every bond you build or break involves energy. Building costs ATP."]]},
+ caption:"Left: catabolism breaks molecules and releases energy as ATP. Right: anabolism spends that ATP to build.",
+ legend:[["atp","ATP (charged)","r"],["adp","ADP (spent)","r"],["glu","Big molecule pieces","hex"],["amino","Building blocks"]]},
+
+{act:1,scene:"atp",id:"atp",title:"ATP: the cell's energy currency",
+ body:`<p><b>ATP (adenosine triphosphate)</b> has a base called adenine, a sugar called ribose, and a tail of <b>three phosphate groups</b>.</p>
+ <p>When the cell needs energy, it snaps off the last phosphate. ATP becomes <b>ADP</b> (adenosine <i>di</i>phosphate) plus a free phosphate, P<sub>i</sub>. The energy released powers work, like a muscle contracting or a pump moving ions.</p>
+ <p>Energy from food is then used to stick the phosphate back on. ADP becomes ATP again. Cells recycle the same ATP over and over.</p>`,
+ analogy:"A rechargeable battery. ATP is the charged battery, ADP is the drained one, and food is the charger.",
+ terms:[["ATP","Adenosine triphosphate. Three phosphates. Stores usable energy."],["ADP","Adenosine diphosphate. Two phosphates. The \"spent\" form."],["Phosphorylation","Adding a phosphate group to a molecule."]],
+ check:{q:"What happens to ATP when a cell uses it for energy?",opts:[
+  ["It loses its last phosphate and becomes ADP + Pᵢ.",1,"Yes. Breaking that bond releases the energy the cell uses."],
+  ["It gains a phosphate and becomes ATP + P.",0,"Adding a phosphate stores energy. Spending energy removes one."],
+  ["It is broken down into glucose.",0,"ATP is not made of glucose. Glucose is one of the fuels used to recharge it."],
+  ["It is destroyed and cannot be used again.",0,"ADP is recharged back into ATP again and again."]]},
+ caption:"The last phosphate snaps off to power work (ATP → ADP + Pᵢ). Energy from food puts it back on.",
+ legend:[["atp","ATP","r"],["adp","ADP","r"],["pi","Phosphate (Pᵢ)"],["glu","Glucose (fuel)","hex"]]},
+
+{act:1,scene:"redox",id:"redox",title:"Electron carriers: NADH and FADH₂ are delivery trucks",
+ body:`<p>Much of the energy in food is held in its <b>electrons</b>. Cells move those electrons in <b>oxidation-reduction (redox) reactions</b>.</p>
+ <ul><li><b>Oxidation</b> means a molecule <b>loses</b> electrons. Food is oxidized.</li>
+ <li><b>Reduction</b> means a molecule <b>gains</b> electrons.</li></ul>
+ <p>Two carriers do the hauling. <b>NAD⁺</b> picks up electrons (with hydrogen) and becomes <b>NADH</b>. <b>FAD</b> picks them up and becomes <b>FADH₂</b>. They drive the electrons to the electron transport chain, drop them off, and come back empty to load again.</p>`,
+ analogy:"Delivery trucks. NAD⁺ and FAD are empty trucks. NADH and FADH₂ are loaded trucks carrying electrons to the power plant.",
+ terms:[["Oxidation","Losing electrons. (OIL: Oxidation Is Loss.)"],["Reduction","Gaining electrons. (RIG: Reduction Is Gain.)"],["NAD⁺ / NADH","Empty / loaded electron carrier. Made from vitamin B3 (niacin)."],["FAD / FADH₂","Empty / loaded electron carrier. Made from vitamin B2 (riboflavin)."]],
+ check:{q:"NAD⁺ picks up two electrons and becomes NADH. What happened to NAD⁺?",opts:[
+  ["It was reduced, because it gained electrons.",1,"Right. Gaining electrons is reduction. The food molecule that gave them up was oxidized."],
+  ["It was oxidized, because it gained electrons.",0,"Oxidation is losing electrons. Remember OIL RIG: Reduction Is Gain."],
+  ["It was turned into ATP.",0,"NADH is a carrier, not ATP. Its electrons are used later to make ATP."],
+  ["It was used up and thrown away.",0,"NADH drops off its electrons and goes back to being NAD⁺, ready to reload."]]},
+ caption:"Empty NAD⁺ and FAD trucks load electrons from food, drive them to the electron transport chain, unload, and return.",
+ legend:[["nad","NAD⁺ / NADH truck","r"],["fad","FAD / FADH₂ truck","r"],["elec","Electron (e⁻)"],["glu","Food molecule","hex"]]},
+
+{act:2,scene:"overview",id:"overview",title:"Cellular respiration: three stages, two places",
+ body:`<p><b>Cellular respiration</b> breaks glucose all the way down to carbon dioxide and water and captures the energy as ATP. Overall:</p>
+ <p style="font-family:var(--mono);font-size:14px">C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O + ATP + heat</p>
+ <ol><li><b>Glycolysis</b> happens in the <b>cytoplasm</b>.</li>
+ <li>The <b>citric acid (Krebs) cycle</b> happens in the <b>mitochondrial matrix</b>, the inner space of the mitochondrion.</li>
+ <li>The <b>electron transport chain</b> sits in the <b>inner mitochondrial membrane</b>. It needs oxygen and makes most of the ATP.</li></ol>
+ <p>The oxygen you breathe ends up here. The CO₂ you breathe out comes from here.</p>`,
+ analogy:"A factory with a loading dock (cytoplasm) and a main plant (mitochondrion). Raw material is roughed out on the dock, then finished inside the plant where the big generator is.",
+ terms:[["Cellular respiration","Breaking down glucose with oxygen to make ATP."],["Mitochondrion","The organelle where the Krebs cycle and electron transport chain happen."],["Matrix","The fluid inside the inner membrane of a mitochondrion."]],
+ check:{q:"Where in the cell does glycolysis happen?",opts:[
+  ["In the cytoplasm",1,"Yes. Glycolysis happens outside the mitochondria, in the cytoplasm."],
+  ["In the mitochondrial matrix",0,"The matrix is where the Krebs cycle turns. Glycolysis happens before glucose gets there."],
+  ["On the inner mitochondrial membrane",0,"That is where the electron transport chain sits."],
+  ["In the nucleus",0,"The nucleus holds DNA. It does not break down glucose."]]},
+ caption:"Glucose is split in the cytoplasm (1), finished in the mitochondrial matrix (2), and the electron transport chain makes most ATP (3).",
+ legend:[["glu","Glucose","hex"],["pyr","Pyruvate"],["o2","O₂"],["co2","CO₂"],["atp","ATP","r"]]},
+
+{act:2,scene:"glyco",id:"glyco",title:"Glycolysis: splitting glucose in the cytoplasm",
+ body:`<p><b>Glycolysis</b> means "sugar splitting." One 6-carbon <b>glucose</b> is split into two 3-carbon molecules of <b>pyruvate</b>. It happens in the <b>cytoplasm</b> and <b>does not need oxygen</b>.</p>
+ <ol><li><b>Investment:</b> the cell spends <b>2 ATP</b> to add phosphates to glucose. This primes it to split.</li>
+ <li><b>Split:</b> glucose breaks into two 3-carbon halves.</li>
+ <li><b>Payoff:</b> each half makes 2 ATP and loads 1 NADH. That is <b>4 ATP</b> and <b>2 NADH</b> in all.</li></ol>
+ <p>Net result: <b>2 pyruvate, 2 ATP</b> (4 made minus 2 spent), and <b>2 NADH</b>.</p>`,
+ analogy:"Spending $2 on a lottery ticket that pays $4. You come out $2 ahead.",
+ terms:[["Glycolysis","Splitting glucose into 2 pyruvate in the cytoplasm. No oxygen needed."],["Pyruvate","The 3-carbon product of glycolysis."],["Net ATP","ATP made minus ATP spent. For glycolysis: 4 − 2 = 2."]],
+ check:{q:"Glycolysis makes 4 ATP. Why is the net gain only 2 ATP?",opts:[
+  ["Because 2 ATP were spent at the start to prime glucose.",1,"Yes. 4 made minus 2 invested gives a net of 2 ATP."],
+  ["Because 2 ATP are lost as heat.",0,"Some energy is lost as heat, but the count of 2 comes from the 2 ATP invested at the start."],
+  ["Because oxygen uses up 2 ATP.",0,"Glycolysis does not use oxygen at all."],
+  ["Because NADH destroys 2 ATP.",0,"NADH is an electron carrier. It does not destroy ATP."]]},
+ caption:"Invest 2 ATP, split glucose, then each half pays back 2 ATP and 1 NADH. Net: 2 pyruvate, 2 ATP, 2 NADH.",
+ legend:[["glu","Glucose (6 C)","hex"],["pyr","Pyruvate (3 C)"],["atp","ATP","r"],["adp","ADP","r"],["nad","NAD⁺ / NADH","r"]]},
+
+{act:2,scene:"lactate",id:"lactate",title:"No oxygen? Pyruvate becomes lactate",
+ body:`<p>Glycolysis keeps running only if it has empty <b>NAD⁺</b> trucks to load. Normally the electron transport chain empties NADH. But that chain needs oxygen.</p>
+ <p>When oxygen is low, like in a hard sprint, cells use <b>anaerobic</b> metabolism (fermentation). Pyruvate takes the electrons from NADH and becomes <b>lactate</b> (lactic acid). That frees NAD⁺, so glycolysis can keep going.</p>
+ <p>The catch: you only get <b>2 ATP per glucose</b>. Lactate goes into the blood, and the <b>liver</b> can turn it back into glucose later.</p>`,
+ analogy:"A restaurant with no dishwasher. To keep serving, the staff dumps leftovers into a bin (lactate) just to free up plates (NAD⁺).",
+ terms:[["Anaerobic","Without oxygen."],["Lactate","Made from pyruvate when oxygen is low. Regenerates NAD⁺."],["Fermentation","Making ATP by glycolysis alone, then recycling NADH by forming lactate."]],
+ check:{q:"What is the main reason cells turn pyruvate into lactate when oxygen is low?",opts:[
+  ["To turn NADH back into NAD⁺ so glycolysis can keep running.",1,"Right. Without fresh NAD⁺, glycolysis would stop and no ATP at all would be made."],
+  ["Because lactate makes more ATP than the Krebs cycle.",0,"Anaerobic glucose use gives only 2 ATP. The aerobic route gives far more."],
+  ["To make oxygen.",0,"Forming lactate does not make oxygen."],
+  ["To store glucose as glycogen.",0,"That is glycogenesis, a storage pathway. Lactate formation recycles NAD⁺."]]},
+ caption:"With little oxygen, pyruvate takes electrons from NADH and becomes lactate. The freed NAD⁺ returns to glycolysis.",
+ legend:[["glu","Glucose","hex"],["pyr","Pyruvate"],["lact","Lactate","s"],["nad","NAD⁺ / NADH","r"],["atp","ATP","r"]]},
+
+{act:2,scene:"link",id:"link",title:"Into the mitochondrion: pyruvate → acetyl CoA",
+ body:`<p>When oxygen is present, each pyruvate is carried into the <b>mitochondrial matrix</b>.</p>
+ <p>There, one carbon is removed and leaves as <b>carbon dioxide (CO₂)</b>. Electrons are loaded onto NAD⁺, making <b>NADH</b>. The leftover 2-carbon piece is attached to <b>coenzyme A</b>, forming <b>acetyl CoA</b>.</p>
+ <p>This happens twice for each glucose: 2 pyruvate give <b>2 acetyl CoA, 2 CO₂ and 2 NADH</b>.</p>`,
+ analogy:"Trimming a package to fit the delivery chute. One piece is cut off and tossed (CO₂), and a shipping label (CoA) is stuck on.",
+ terms:[["Acetyl CoA","A 2-carbon acetyl group attached to coenzyme A. Feeds the Krebs cycle."],["Coenzyme A","A carrier molecule made from vitamin B5 (pantothenic acid)."],["Decarboxylation","Removing a carbon as CO₂."]],
+ check:{q:"When pyruvate (3 carbons) becomes acetyl CoA (2 carbons), where does the missing carbon go?",opts:[
+  ["It leaves as CO₂.",1,"Yes. That is some of the CO₂ you breathe out."],
+  ["It becomes part of ATP.",0,"ATP does not take carbons from pyruvate. The carbon leaves as CO₂."],
+  ["It is stored as glycogen.",0,"Glycogen is made of whole glucose units, not single carbons."],
+  ["It joins oxygen to form water.",0,"Water forms at the end of the electron transport chain from O₂, H⁺ and electrons."]]},
+ caption:"Pyruvate enters the matrix, loses one carbon as CO₂, loads an NADH, and picks up CoA to become acetyl CoA.",
+ legend:[["pyr","Pyruvate"],["co2","CO₂"],["acoa","Acetyl CoA"],["nad","NAD⁺ / NADH","r"]]},
+
+{act:2,scene:"krebs",id:"krebs",title:"The citric acid (Krebs) cycle turns",
+ body:`<p>In the matrix, acetyl CoA (2 carbons) joins a 4-carbon molecule called <b>oxaloacetate</b> to form 6-carbon <b>citrate</b>. That is why this is called the <b>citric acid cycle</b> (also the <b>Krebs cycle</b> or TCA cycle).</p>
+ <p>As the cycle turns, the two carbons are removed as <b>2 CO₂</b>, and oxaloacetate is rebuilt to start again. Along the way, <b>each turn</b> (one acetyl CoA) makes:</p>
+ <ul><li><b>3 NADH</b> and <b>1 FADH₂</b> (loaded trucks)</li><li><b>1 ATP</b> (made as GTP)</li><li><b>2 CO₂</b></li></ul>
+ <p>One glucose gives two acetyl CoA, so the cycle turns <b>twice per glucose</b>.</p>`,
+ analogy:"A revolving door. Acetyl CoA steps in, and each lap the door throws out CO₂ and hands off loaded trucks. The door itself is never used up.",
+ terms:[["Citric acid cycle","Krebs cycle. Breaks acetyl CoA down to CO₂ and loads NADH and FADH₂."],["Oxaloacetate","The 4-carbon molecule that accepts acetyl CoA and is regenerated each turn."],["Citrate","The 6-carbon molecule formed first in the cycle."]],
+ check:{q:"How many NADH does one turn of the Krebs cycle produce?",opts:[
+  ["3",1,"Right. Each turn: 3 NADH, 1 FADH₂, 1 ATP (as GTP) and 2 CO₂."],
+  ["1",0,"There is 1 FADH₂ and 1 ATP per turn, but NADH is made 3 times."],
+  ["2",0,"2 is the number of CO₂ per turn. NADH is 3."],
+  ["36",0,"36 is the OpenStax total ATP for a whole glucose, not NADH per turn."]]},
+ caption:"Acetyl CoA joins oxaloacetate. Each turn releases 2 CO₂ and makes 3 NADH, 1 FADH₂ and 1 ATP.",
+ legend:[["acoa","Acetyl CoA (2 C)"],["gly","Cycle carbons"],["co2","CO₂"],["nad","NADH","r"],["fad","FADH₂","r"],["atp","ATP (GTP)","r"]]},
+
+{act:2,scene:"etc",id:"etc",title:"The electron transport chain pumps H⁺",
+ body:`<p>The loaded trucks drive to the <b>inner mitochondrial membrane</b>. Here sits the <b>electron transport chain (ETC)</b>: four protein complexes (I to IV) plus two small carriers (ubiquinone and cytochrome c).</p>
+ <p>NADH drops its electrons at complex I. FADH₂ drops its electrons at complex II, a little further down. The electrons are passed from one complex to the next, losing a bit of energy at each step.</p>
+ <p>That energy is used to <b>pump hydrogen ions (H⁺)</b> from the matrix into the <b>intermembrane space</b>. H⁺ piles up there.</p>
+ <p>At the end, <b>oxygen is the final electron acceptor</b>. O₂ grabs the electrons plus H⁺ and becomes <b>water</b>.</p>`,
+ analogy:"A bucket brigade. Each worker passes the bucket (electrons) along, and each pass powers a pump that lifts water (H⁺) up into a tank.",
+ terms:[["Electron transport chain","Proteins in the inner membrane that pass electrons and pump H⁺."],["Intermembrane space","The gap between the outer and inner mitochondrial membranes, where H⁺ builds up."],["Final electron acceptor","Oxygen. It takes the used electrons and forms water."]],
+ check:{q:"What is oxygen's job in cellular respiration?",opts:[
+  ["It accepts the electrons at the end of the chain and forms water.",1,"Yes. Without oxygen to take them, electrons back up and the chain stops."],
+  ["It is broken down to release energy.",0,"Oxygen is not a fuel. It is the final catcher of electrons."],
+  ["It becomes the CO₂ you breathe out.",0,"The carbon in CO₂ comes from food. The oxygen you inhale ends up in water."],
+  ["It carries electrons from glycolysis to the ETC.",0,"NADH and FADH₂ are the carriers. Oxygen waits at the end."]]},
+ caption:"Electrons hop along the chain. Each hop powers H⁺ pumps. At complex IV, O₂ takes the electrons and forms water.",
+ legend:[["elec","Electron (e⁻)"],["hplus","H⁺"],["o2","O₂"],["water","H₂O"],["nad","NADH","r"],["fad","FADH₂","r"]]},
+
+{act:2,scene:"synthase",id:"synthase",title:"Chemiosmosis: ATP synthase spins",
+ body:`<p>Now there is a lot of H⁺ in the intermembrane space and little in the matrix. H⁺ "wants" to flow back, down its gradient.</p>
+ <p>The only open door is an enzyme called <b>ATP synthase</b>. As H⁺ flows through it, part of the enzyme <b>spins like a turbine</b>. The spinning snaps phosphates onto ADP, making <b>ATP</b>.</p>
+ <p>Using an H⁺ gradient to make ATP is called <b>chemiosmosis</b>. Together, the ETC and chemiosmosis make up <b>oxidative phosphorylation</b>, which makes most of the body's ATP.</p>`,
+ analogy:"Water behind a dam. When it rushes through the dam's turbine, the turbine spins and makes electricity.",
+ terms:[["ATP synthase","The enzyme that makes ATP as H⁺ flows through it."],["Chemiosmosis","Using the flow of H⁺ down its gradient to make ATP."],["Oxidative phosphorylation","Making ATP using the ETC and chemiosmosis. Needs oxygen."]],
+ check:{q:"What directly powers ATP synthase?",opts:[
+  ["H⁺ flowing back into the matrix through it.",1,"Right. The H⁺ gradient built by the ETC drives the turbine."],
+  ["Glucose binding to it.",0,"Glucose never reaches ATP synthase. Its energy arrives indirectly, through electrons and H⁺."],
+  ["Oxygen flowing through it.",0,"Oxygen is used at complex IV. H⁺ flows through ATP synthase."],
+  ["Electrons flowing through it.",0,"Electrons travel through complexes I to IV. ATP synthase uses H⁺ flow."]]},
+ caption:"H⁺ rushes back through ATP synthase. The rotor spins and ADP + Pᵢ are joined into ATP.",
+ legend:[["hplus","H⁺"],["adp","ADP","r"],["pi","Pᵢ"],["atp","ATP","r"]]},
+
+{act:2,scene:"yield",id:"yield",title:"Adding it up: about 36 ATP per glucose",
+ body:`<p>OpenStax counts about <b>3 ATP for each NADH</b> and about <b>2 ATP for each FADH₂</b> that reaches the ETC. Per glucose:</p>
+ <ul><li>Glycolysis: 2 ATP, 2 NADH</li><li>Pyruvate → acetyl CoA: 2 NADH</li><li>Krebs cycle (2 turns): 2 ATP, 6 NADH, 2 FADH₂</li><li>ETC: 10 NADH × 3 = 30 ATP, plus 2 FADH₂ × 2 = 4 ATP</li></ul>
+ <p>That is 38 ATP. Moving the 2 NADH from glycolysis into the mitochondrion costs 2 ATP, so OpenStax gives a <b>net of 36 ATP</b> per glucose.</p>
+ <p><b>Heads up:</b> different textbooks give slightly different totals, from about <b>30 to 38</b>, because the exact numbers per NADH are hard to measure. Use the number your course uses. The big idea is the same: aerobic respiration gives many times more ATP than glycolysis alone (2).</p>`,
+ analogy:"Payday math. A small cash tip at the door (glycolysis), then a big paycheck from the main job (the ETC), minus a small delivery fee.",
+ terms:[["Aerobic yield","About 36 ATP per glucose (OpenStax). Other books: 30 to 38."],["Anaerobic yield","2 ATP per glucose (glycolysis only)."]],
+ check:{q:"Where does most of the ATP from one glucose come from?",opts:[
+  ["The electron transport chain and ATP synthase (oxidative phosphorylation).",1,"Yes. About 34 of the 38 gross ATP come from the ETC and chemiosmosis."],
+  ["Glycolysis",0,"Glycolysis makes only a net of 2 ATP."],
+  ["The Krebs cycle directly",0,"The cycle makes only 2 ATP directly per glucose. Its real value is the NADH and FADH₂ it loads."],
+  ["Lactate formation",0,"Making lactate makes no ATP. It only recycles NAD⁺."]]},
+ caption:"Each loaded truck is cashed in at the ETC. 38 ATP gross, minus 2 to move glycolysis NADH: about 36 (OpenStax).",
+ legend:[["atp","ATP","r"],["nad","NADH (≈3 ATP)","r"],["fad","FADH₂ (≈2 ATP)","r"]]},
+
+{act:3,scene:"gng",id:"gng",title:"Gluconeogenesis: making new glucose",
+ body:`<p>Your brain and red blood cells depend on glucose. When you have not eaten for a while, the <b>liver</b> (and to a smaller degree the kidneys) builds new glucose. This is <b>gluconeogenesis</b> ("making new glucose").</p>
+ <p>The raw materials are not carbohydrates. They are <b>lactate</b> (from muscles), <b>glycerol</b> (from fat), and some <b>amino acids</b> such as alanine and glutamine (from protein), plus pyruvate.</p>
+ <p>It costs ATP. It is turned on by <b>glucagon</b> and cortisol during fasting. Note: fatty acids cannot be turned into glucose. Only the glycerol part of fat can.</p>`,
+ analogy:"A recycling plant that builds new sugar cubes out of scraps: leftover lactate, glycerol and spare amino acids.",
+ terms:[["Gluconeogenesis","Making new glucose from non-carbohydrate sources. Mainly in the liver."],["Glucagon","Pancreatic hormone that raises blood glucose. Turns on gluconeogenesis."],["Substrates","Lactate, glycerol, pyruvate and some amino acids."]],
+ check:{q:"Which of these can the liver use to make new glucose?",opts:[
+  ["Lactate, glycerol and some amino acids",1,"Right. These are the main raw materials for gluconeogenesis."],
+  ["Fatty acids only",0,"Fatty acids become acetyl CoA, which cannot be turned back into glucose. Glycerol can."],
+  ["Urea",0,"Urea is a nitrogen waste product. It is excreted, not used to build glucose."],
+  ["Carbon dioxide",0,"Humans cannot build glucose from CO₂. Plants do that in photosynthesis."]]},
+ caption:"Lactate, glycerol and amino acids flow into a liver cell and are built into new glucose, which goes out to the blood.",
+ legend:[["lact","Lactate","s"],["glycerol","Glycerol","s"],["amino","Amino acid"],["glu","New glucose","hex"],["atp","ATP spent","r"]]},
+
+{act:3,scene:"glycogen",id:"glycogen",title:"Glycogen: saving and spending glucose",
+ body:`<p><b>Glycogen</b> is the body's stored form of glucose. It is a big branched chain of glucose units, kept in the <b>liver</b> and <b>skeletal muscle</b>.</p>
+ <p><b>Glycogenesis</b> builds glycogen after a meal, when glucose is plentiful. <b>Insulin</b> turns it on.</p>
+ <p><b>Glycogenolysis</b> breaks glycogen back into glucose between meals. <b>Glucagon</b> (and epinephrine) turns it on.</p>
+ <p>The two stores are used differently. The <b>liver</b> releases its glucose into the <b>blood</b> for the whole body. <b>Muscle</b> keeps its glucose for its own work.</p>`,
+ analogy:"A savings account. You deposit glucose after a meal (glycogenesis) and withdraw it between meals (glycogenolysis). The liver shares its account. Muscle keeps its own.",
+ terms:[["Glycogen","Branched chain of glucose. Stored in liver and muscle."],["Glycogenesis","Building glycogen from glucose. Insulin turns it on."],["Glycogenolysis","Breaking glycogen into glucose. Glucagon turns it on."]],
+ check:{q:"After an overnight fast, which tissue releases glucose from glycogen into the blood to keep blood sugar up?",opts:[
+  ["The liver",1,"Yes. The liver breaks down its glycogen and sends the glucose out into the blood."],
+  ["Skeletal muscle",0,"Muscle breaks down its glycogen too, but it keeps that glucose for its own use."],
+  ["Adipose tissue",0,"Fat tissue stores triglycerides, not much glycogen."],
+  ["The brain",0,"The brain uses glucose but stores almost none."]]},
+ caption:"After a meal, insulin builds glycogen. Between meals, glucagon breaks it down. The liver sends its glucose to the blood; muscle keeps its own.",
+ legend:[["glu","Glucose","hex"],["gly","Glycogen","hex"],["ins","Insulin"],["gcg","Glucagon","tri"]]},
+
+{act:3,scene:"beta",id:"beta",title:"Burning fat: lipolysis and beta-oxidation",
+ body:`<p>Fat is stored as <b>triglycerides</b>: one <b>glycerol</b> backbone with three <b>fatty acid</b> chains.</p>
+ <p><b>Lipolysis</b> splits a triglyceride into glycerol and three fatty acids. Glycerol can go to the liver and become glucose.</p>
+ <p>The fatty acids enter mitochondria. In <b>beta-oxidation</b>, the chain is chopped off <b>two carbons at a time</b>. Each chop makes one <b>acetyl CoA</b> and loads an NADH and an FADH₂. The acetyl CoA goes into the Krebs cycle.</p>
+ <p>Long chains give many acetyl CoA, which is why fat holds so much energy. Burning fat still needs <b>oxygen</b>.</p>`,
+ analogy:"Slicing a long loaf of bread two slices at a time. Every cut gives you a sandwich (acetyl CoA) for the furnace.",
+ terms:[["Triglyceride","Glycerol plus 3 fatty acids. The storage form of fat."],["Lipolysis","Breaking a triglyceride into glycerol and fatty acids."],["Beta-oxidation","Cutting fatty acids into 2-carbon acetyl CoA units in the mitochondria."]],
+ check:{q:"What does beta-oxidation produce from a fatty acid?",opts:[
+  ["Many acetyl CoA, plus NADH and FADH₂",1,"Right. Each 2-carbon cut gives an acetyl CoA and loads both kinds of carrier."],
+  ["Glucose",0,"Fatty acids cannot become glucose. Only the glycerol part of fat can."],
+  ["Pyruvate",0,"Fatty acids skip glycolysis and pyruvate. They go straight to acetyl CoA."],
+  ["Urea",0,"Urea comes from the nitrogen in amino acids. Fatty acids have no nitrogen."]]},
+ caption:"Lipase splits a triglyceride. The fatty acid enters a mitochondrion and is cut two carbons at a time into acetyl CoA.",
+ legend:[["fat","Fatty acid","r"],["glycerol","Glycerol","s"],["acoa","Acetyl CoA"],["nad","NADH","r"],["fad","FADH₂","r"]]},
+
+{act:3,scene:"keto",id:"keto",title:"Ketogenesis: when carbohydrate is scarce",
+ body:`<p>During a long fast, a very low-carbohydrate diet, or uncontrolled diabetes, the liver burns lots of fat. Acetyl CoA piles up faster than the Krebs cycle can use it, partly because oxaloacetate is being pulled away to make glucose.</p>
+ <p>The liver joins the extra acetyl CoA into <b>ketone bodies</b> (acetoacetate, beta-hydroxybutyrate, and acetone). This is <b>ketogenesis</b>. Ketone bodies travel in the blood to the heart, muscles and, during starvation, the brain, which turn them back into acetyl CoA for fuel.</p>
+ <p>Ketone bodies are acids. If they build up too fast, as in uncontrolled <b>type 1 diabetes</b>, blood pH drops. This dangerous state is <b>ketoacidosis</b>. Acetone can give the breath a fruity smell.</p>`,
+ analogy:"An overflowing warehouse. When the furnace cannot keep up, extra fuel is packed into portable cans (ketones) and shipped to other buildings.",
+ terms:[["Ketone bodies","Acetoacetate, beta-hydroxybutyrate and acetone. Made from acetyl CoA in the liver."],["Ketogenesis","Making ketone bodies when carbohydrate is scarce."],["Ketoacidosis","Too many ketone acids in the blood, so pH falls. A medical emergency."]],
+ check:{q:"A patient with untreated type 1 diabetes has fruity breath and low blood pH. What is happening?",opts:[
+  ["Without insulin, cells burn fat, ketones build up, and the blood becomes acidic (ketoacidosis).",1,"Right. Ketone bodies are acids. Too many lower the blood pH."],
+  ["The liver is storing too much glycogen.",0,"Without insulin, glycogen storage is low, not high."],
+  ["Lactate from heavy exercise is building up.",0,"Lactate can lower pH, but fruity breath (acetone) points to ketones."],
+  ["The kidneys are making too much urea.",0,"Urea is from protein nitrogen. It does not cause fruity breath."]]},
+ caption:"Extra acetyl CoA in the liver is packed into ketone bodies, shipped to other organs, and in excess lowers blood pH.",
+ legend:[["acoa","Acetyl CoA"],["ketone","Ketone body","pent"],["fat","Fatty acid","r"],["hplus","Acid (H⁺)"]]},
+
+{act:3,scene:"lipogen",id:"lipogen",title:"Lipogenesis: storing extra fuel as fat",
+ body:`<p>When you eat more than you need, cells do not waste the extra. In the liver and fat tissue, extra glucose (and extra amino acids) are broken down to <b>acetyl CoA</b>.</p>
+ <p>Then the cell runs fat-burning in reverse. In <b>lipogenesis</b>, acetyl CoA units are linked <b>two carbons at a time</b> into new fatty acids. Three fatty acids are attached to glycerol to make a <b>triglyceride</b>, which is stored in adipose tissue.</p>
+ <p>Lipogenesis is anabolic, so it costs ATP. <b>Insulin</b> turns it on after a meal.</p>`,
+ analogy:"Putting leftovers in the freezer. Extra food today is packed into compact fat blocks for later.",
+ terms:[["Lipogenesis","Building fatty acids and triglycerides from acetyl CoA."],["Adipose tissue","Fat tissue. Stores triglycerides."],["Insulin","Fed-state hormone. Turns on glycogen and fat storage."]],
+ check:{q:"You eat far more carbohydrate than you need. Besides glycogen, how does the body store the extra?",opts:[
+  ["The extra is turned into fatty acids and stored as triglycerides (lipogenesis).",1,"Yes. Glycogen stores fill up fast. The rest becomes fat."],
+  ["It is all breathed out as CO₂ right away.",0,"You burn only what you need. Extra fuel is stored."],
+  ["It is turned into ketone bodies.",0,"Ketones are made when carbohydrate is scarce, not plentiful."],
+  ["It is stored as extra ATP.",0,"Cells hold only a small amount of ATP. It is not a storage form."]]},
+ caption:"Extra glucose becomes acetyl CoA. Units are linked 2 carbons at a time into fatty acids, packed as triglyceride, and stored.",
+ legend:[["glu","Glucose","hex"],["acoa","Acetyl CoA"],["fat","Fatty acid","r"],["glycerol","Glycerol","s"],["ins","Insulin"]]},
+
+{act:3,scene:"urea",id:"urea",title:"Protein: deamination and the urea cycle",
+ body:`<p>Amino acids are mostly used to <b>build</b> proteins. But extra amino acids, or muscle protein during a long fast, can be used as fuel.</p>
+ <p>First the nitrogen-containing <b>amino group</b> must come off. This is <b>deamination</b>. The nitrogen becomes <b>ammonia (NH₃)</b>, which is toxic.</p>
+ <p>The <b>liver</b> turns ammonia and CO₂ into much safer <b>urea</b> in the <b>urea cycle</b>. Urea goes into the blood and the kidneys excrete it in urine.</p>
+ <p>The leftover <b>carbon skeleton</b> becomes pyruvate, acetyl CoA or a Krebs cycle molecule. It can be burned for ATP or used to make glucose.</p>`,
+ analogy:"Removing the battery from a toy before recycling it. The nitrogen (battery) is hazardous waste and goes to a special plant. The plastic (carbon skeleton) is reused.",
+ terms:[["Deamination","Removing the amino group from an amino acid."],["Ammonia (NH₃)","Toxic nitrogen waste from deamination."],["Urea cycle","Liver pathway that turns ammonia into urea."]],
+ check:{q:"A patient with severe liver failure has high blood ammonia. Why?",opts:[
+  ["The liver cannot run the urea cycle, so ammonia is not turned into urea.",1,"Right. The urea cycle happens in the liver. When it fails, ammonia builds up and can harm the brain."],
+  ["The kidneys are making ammonia from urea.",0,"The direction is the other way. The liver makes urea from ammonia."],
+  ["Muscles are making too much glycogen.",0,"Glycogen has no nitrogen and does not make ammonia."],
+  ["Beta-oxidation releases ammonia.",0,"Fatty acids contain no nitrogen. Ammonia comes from amino acids."]]},
+ caption:"Amino acids lose their amino group as ammonia. The liver turns ammonia into urea for the kidneys. The carbon skeleton becomes fuel.",
+ legend:[["amino","Amino acid"],["nh3","Ammonia (NH₃)","tri"],["urea","Urea","d"],["acoa","Carbon skeleton → fuel"]]},
+
+{act:4,scene:"fed",id:"fed",title:"The absorptive (fed) state: insulin says store",
+ body:`<p>The <b>absorptive state</b> is the time while a meal is being digested and absorbed. It can last up to about <b>4 hours</b>.</p>
+ <p>Blood glucose rises, and the pancreas releases <b>insulin</b>. Insulin is the "store it" signal:</p>
+ <ul><li><b>Liver:</b> takes up glucose, makes glycogen (glycogenesis) and fat (lipogenesis).</li>
+ <li><b>Skeletal muscle:</b> takes up glucose, makes glycogen, and builds protein from amino acids.</li>
+ <li><b>Adipose tissue:</b> takes up glucose and fatty acids and stores triglycerides.</li></ul>`,
+ analogy:"Grocery day. Food arrives, and insulin is the person putting everything away in the pantry, fridge and freezer.",
+ terms:[["Absorptive state","Fed state, while nutrients are being absorbed. Up to about 4 hours after a meal."],["Insulin","Released by pancreatic beta cells when blood glucose rises. Promotes storage."]],
+ check:{q:"Right after a meal, which hormone is high and what does it tell the liver to do?",opts:[
+  ["Insulin; store glucose as glycogen and fat.",1,"Yes. Insulin is the fed-state hormone that says store."],
+  ["Glucagon; break down glycogen.",0,"Glucagon is high between meals. After a meal it falls."],
+  ["Insulin; make ketone bodies.",0,"Insulin blocks ketone production. Ketones are made when insulin is low."],
+  ["Glucagon; make new glucose.",0,"Gluconeogenesis is a fasting pathway. After a meal, glucose is already plentiful."]]},
+ caption:"Fed state: nutrients pour into the blood, insulin rises, and the liver, muscle and fat tissue store fuel.",
+ legend:[["glu","Glucose","hex"],["amino","Amino acid"],["fat","Fat","r"],["ins","Insulin"]]},
+
+{act:4,scene:"fast",id:"fast",title:"The postabsorptive (fasting) state: glucagon says release",
+ body:`<p>The <b>postabsorptive state</b> begins when the meal has been digested, absorbed and stored. Blood glucose starts to fall, insulin drops, and the pancreas releases <b>glucagon</b>.</p>
+ <ul><li><b>Liver:</b> breaks down glycogen (glycogenolysis) and makes new glucose (gluconeogenesis). It sends glucose to the blood for the brain.</li>
+ <li><b>Adipose tissue:</b> breaks down triglycerides (lipolysis). Fatty acids feed muscle and liver; glycerol goes to the liver.</li>
+ <li><b>Muscle:</b> shifts toward burning fatty acids, saving glucose for the brain.</li>
+ <li>If the fast goes on for days, the liver makes <b>ketone bodies</b>, which become a major fuel, even for the brain.</li></ul>`,
+ analogy:"Living off your savings. Glucagon is the person going back to the pantry and freezer to bring stored food out.",
+ terms:[["Postabsorptive state","Fasting state, after the meal is absorbed. Fuel comes from stores."],["Glucagon","Released by pancreatic alpha cells when blood glucose falls. Promotes release of fuel."]],
+ check:{q:"It is 4 a.m. and you have not eaten since dinner. Which pair of pathways is the liver running?",opts:[
+  ["Glycogenolysis and gluconeogenesis",1,"Right. Glucagon tells the liver to release stored glucose and build new glucose."],
+  ["Glycogenesis and lipogenesis",0,"Those are storage pathways turned on by insulin after a meal."],
+  ["Glycolysis and lactate formation only",0,"The liver's job overnight is to send glucose out, not mainly to burn it."],
+  ["Protein synthesis and glycogenesis",0,"Building and storing happen mostly in the fed state."]]},
+ caption:"Fasting: insulin falls, glucagon rises. The liver releases glucose, fat tissue releases fatty acids, and later the liver makes ketones.",
+ legend:[["glu","Glucose","hex"],["fat","Fatty acid","r"],["glycerol","Glycerol","s"],["gcg","Glucagon","tri"],["ketone","Ketone body","pent"]]},
+
+{act:5,scene:"bmr",id:"bmr",title:"Energy balance and metabolic rate",
+ body:`<p>Food energy is measured in <b>kilocalories</b> (kcal, the "Calories" on food labels).</p>
+ <p>The <b>basal metabolic rate (BMR)</b> is the energy your body uses at rest, in a comfortable temperature, after fasting. It keeps the heart beating, lungs breathing, and cells pumping ions. BMR is the biggest part of the energy you use each day. Physical activity and digesting food add the rest.</p>
+ <p>BMR is higher with more <b>lean muscle mass</b> and more activity, and it usually <b>drops with age</b> as muscle is lost. Thyroid hormone raises it.</p>
+ <p><b>Energy balance:</b> if energy in equals energy out, weight stays steady. Eat more than you use and the extra is stored as fat. Use more than you eat and stored fuel is burned.</p>`,
+ analogy:"A bank account. Food is deposits, BMR is the rent you pay every day just to live there, and exercise is extra spending.",
+ terms:[["Kilocalorie (kcal)","The unit of food energy. 1 food Calorie = 1 kcal."],["BMR","Energy used at rest to keep the body alive. The largest share of daily energy use."],["Energy balance","Energy in compared with energy out."]],
+ check:{q:"Two people are the same age and weight. One has much more lean muscle. Who likely has the higher BMR?",opts:[
+  ["The one with more lean muscle",1,"Yes. Muscle tissue uses more energy at rest than fat tissue, so more lean mass means a higher BMR."],
+  ["The one with less lean muscle",0,"Less muscle usually means a lower BMR."],
+  ["They must be the same, because they weigh the same",0,"Body composition matters, not just weight."],
+  ["Whoever ate more today",0,"Today's meals change energy in. BMR is the resting energy out."]]},
+ caption:"The scale tips with energy in versus energy out. Extra energy is stored as fat; a shortfall is taken from stores.",
+ legend:[["glu","Energy in (food)","s"],["heat","BMR","s"],["act4","Activity","s"],["adipose","Fat store"]]},
+
+{act:5,scene:"heat",id:"heat",title:"Body temperature: making and losing heat",
+ body:`<p>Metabolism is not perfectly efficient. Much of the energy in food becomes <b>heat</b>, and that heat keeps your core near <b>37 °C</b> (98.6 °F). The <b>hypothalamus</b> acts as the thermostat.</p>
+ <p>Heat leaves the body four ways (OpenStax, at rest):</p>
+ <ul><li><b>Radiation</b> (about 60%): heat given off as infrared rays to cooler objects.</li>
+ <li><b>Evaporation</b> (about 20%): sweat and moisture turning to vapor carry heat away.</li>
+ <li><b>Convection</b> (about 15%): moving air or water sweeps warm air away from the skin.</li>
+ <li><b>Conduction</b> (about 3%): heat flows into anything cooler you touch.</li></ul>
+ <p>When hot, the body widens skin blood vessels (vasodilation) and sweats. When cold, it narrows them (vasoconstriction) and shivers to make more heat.</p>`,
+ analogy:"A house with a furnace (metabolism) and a thermostat (hypothalamus). Windows, fans and wet towels are the ways heat leaves.",
+ terms:[["Radiation","Heat loss as infrared energy. The largest route at rest."],["Evaporation","Heat loss as water turns to vapor. The main route in a hot place or during exercise."],["Convection / conduction","Heat carried off by moving air or water / heat flowing into objects you touch."]],
+ check:{q:"On a very hot day, when the air is warmer than your skin, which route can still remove heat from your body?",opts:[
+  ["Evaporation of sweat",1,"Right. Radiation, convection and conduction need cooler surroundings. Sweat evaporation still works, unless the air is very humid."],
+  ["Radiation",0,"Radiation sends heat to cooler objects. If the surroundings are hotter, you gain heat instead."],
+  ["Conduction",0,"Touching hot objects adds heat, not removes it."],
+  ["Convection",0,"Hot air blowing over you adds heat when it is warmer than your skin."]]},
+ caption:"Metabolism makes heat in the core. It leaves by radiation, evaporation, convection and conduction (percentages at rest).",
+ legend:[["heat","Heat (radiation)"],["water","Sweat / vapor"],["air","Air current"],["cold","Into cool surface"]]},
+
+{act:5,scene:"nutri",id:"nutri",title:"Nutrition: fuels, vitamins and minerals",
+ body:`<p>A <b>nutrient</b> is a substance in food the body needs. The three fuels are:</p>
+ <ul><li><b>Carbohydrates:</b> broken into glucose. The main quick fuel.</li>
+ <li><b>Lipids:</b> fatty acids and glycerol. Long-term energy storage, cell membranes, and steroid hormones.</li>
+ <li><b>Proteins:</b> amino acids. Build and repair tissue, make enzymes. Burned for fuel only when needed.</li></ul>
+ <p><b>Vitamins</b> give no energy, but many become coenzymes, like NAD⁺ (from B3) and FAD (from B2). <b>Fat-soluble vitamins (A, D, E, K)</b> are absorbed with fat and stored in the liver and fat, so they can build up to toxic levels. <b>Water-soluble vitamins (B group and C)</b> are not stored much; extra is lost in urine.</p>
+ <p><b>Minerals</b> are elements like calcium, iron, sodium, potassium and iodine. They build bone, carry oxygen, and help nerves and muscles work.</p>`,
+ analogy:"Fuels are the gasoline. Vitamins and minerals are the spark plugs, oil and tools. They give no energy themselves, but the engine cannot run without them.",
+ terms:[["Fat-soluble vitamins","A, D, E, K. Stored in liver and fat. Can build up."],["Water-soluble vitamins","B vitamins and C. Extra is excreted in urine."],["Minerals","Inorganic elements such as Ca, Fe, Na, K and I."]],
+ check:{q:"Which vitamin is most likely to build up to toxic levels if a person takes huge doses for months?",opts:[
+  ["Vitamin A, a fat-soluble vitamin",1,"Yes. Fat-soluble vitamins are stored in the liver and fat, so large doses can accumulate."],
+  ["Vitamin C, a water-soluble vitamin",0,"Extra vitamin C mostly leaves in the urine, so it builds up less."],
+  ["Vitamin B12 and other B vitamins, because they are fat-soluble",0,"B vitamins are water-soluble, not fat-soluble."],
+  ["None. Vitamins can never be toxic.",0,"Too much of a fat-soluble vitamin can be harmful."]]},
+ caption:"Carbs, lipids and proteins are broken into their building blocks. Fat-soluble vitamins are stored; water-soluble extras wash out.",
+ legend:[["glu","Glucose","hex"],["fat","Fatty acid","r"],["amino","Amino acid"],["fad","Vitamin","d"],["co2","Mineral","s"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole map.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · Energy basics</li>
+ <li>Catabolism breaks down and releases energy; anabolism builds up and uses it.</li><li>ATP → ADP + Pᵢ releases usable energy. Food recharges ADP.</li><li>NAD⁺ → NADH and FAD → FADH₂ carry electrons (reduction = gain).</li>
+ <li class="h">Part 2 · Burning glucose</li>
+ <li>Glycolysis (cytoplasm, no O₂): glucose → 2 pyruvate, net 2 ATP and 2 NADH.</li><li>No O₂: pyruvate → lactate to recycle NAD⁺.</li><li>With O₂: pyruvate → acetyl CoA + CO₂ + NADH in the matrix.</li><li>Krebs cycle, per acetyl CoA: 3 NADH, 1 FADH₂, 1 ATP, 2 CO₂.</li><li>ETC pumps H⁺; O₂ is the final electron acceptor and forms water.</li><li>H⁺ flows through ATP synthase: about 36 ATP per glucose (OpenStax; other books 30 to 38).</li>
+ <li class="h">Part 3 · Storing and making fuel</li>
+ <li>Gluconeogenesis: new glucose from lactate, glycerol, amino acids.</li><li>Glycogenesis (insulin) and glycogenolysis (glucagon).</li><li>Lipolysis and beta-oxidation; ketogenesis when carbs are scarce; lipogenesis when fuel is extra.</li><li>Deamination → ammonia → urea (liver).</li>
+ <li class="h">Part 4 · Fed and fasting</li>
+ <li>Fed: insulin says store. Fasting: glucagon says release.</li>
+ <li class="h">Part 5 · Energy, heat and nutrition</li>
+ <li>Energy balance and BMR; heat lost by radiation, evaporation, convection, conduction.</li><li>Fat-soluble A, D, E, K vs water-soluble B and C.</li></ol>
+ <p>Next: run the ATP factory yourself in the <a href="Metabolism-Lab.html">Metabolism Lab</a>.</p>`,
+ analogy:"Food in, ATP out. Store when fed, release when fasting. Heat is the exhaust that keeps you warm.",
+ terms:[],check:null,caption:"The whole metabolic map: three fuels, one hub, one cycle, one chain, and the ATP it makes.",
+ legend:[["glu","Glucose","hex"],["fat","Fatty acid","r"],["amino","Amino acid"],["acoa","Acetyl CoA"],["atp","ATP","r"]]}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+function buildChain(){
+  chainEl.innerHTML="";
+  const NA=Object.keys(ACTS).length;
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=NA;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([NA+1,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===NA+1)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i));if(i===cur)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current")})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#terms").style.display=s.terms.length?"":"none";
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=480;
+const cv=document.getElementById("stage");const ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+function readColors(){const s=getComputedStyle(document.documentElement);
+  const names=[];for(const sh of document.styleSheets){try{for(const r of sh.cssRules){if(r.selectorText===":root"&&r.style)for(const p of r.style)if(p.startsWith("--"))names.push(p.slice(2))}}catch(e){}}
+  names.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function A(a){ctx.globalAlpha=a==null?1:clamp(a,0,1)}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,fill,stroke,lw,rot){ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(!(r>0))return;const g=ctx.createRadialGradient(x,y,0,x,y,r);const a0=ctx.globalAlpha;ctx.globalAlpha=a0*(a==null?1:clamp(a,0,1));g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=a0}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function curveArrow(P,col,lw,dash,head){ctx.beginPath();ctx.moveTo(P[0][0],P[0][1]);if(P.length===3)ctx.quadraticCurveTo(P[1][0],P[1][1],P[2][0],P[2][1]);else ctx.bezierCurveTo(P[1][0],P[1][1],P[2][0],P[2][1],P[3][0],P[3][1]);
+  ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);
+  if(head===false)return;
+  const n=P.length-1,a=Math.atan2(P[n][1]-P[n-1][1],P[n][0]-P[n-1][0]),x2=P[n][0],y2=P[n][1];
+  const h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function bez(P,t){if(P.length===3){const u=1-t;return [u*u*P[0][0]+2*u*t*P[1][0]+t*t*P[2][0],u*u*P[0][1]+2*u*t*P[1][1]+t*t*P[2][1]]}
+  const u=1-t;return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function chipText(x,y,txt,col,fg,size){size=size||11;ctx.font=`600 ${size}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-size*.75,w+12,size*1.5,size*.75);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+12}
+function badge(x,y,n,col,on){circ(x,y,11,col||C.ink,C.panel,1.5);ctx.font=`700 12px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function wrapText(t,x,y,w,lh){const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function title(x,y,t,col,align){ctx.font=`600 12px ${MONO}`;ctx.textAlign=align||"left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.fillText(t.toUpperCase(),x,y)}
+function panelBox(x,y,w,h,on,col){ctx.fillStyle=on?C["panel-2"]:C.panel;rr(x,y,w,h,8);ctx.fill();ctx.strokeStyle=on?(col||C.accent):C.rule;ctx.lineWidth=on?2.2:1;ctx.stroke()}
+const EDGE="rgba(0,0,0,.35)";
+/* ---------- molecule glyphs: every one has its own SHAPE, so colour is never the only signal ---------- */
+function hexPath(x,y,s,rot){ctx.beginPath();for(let i=0;i<6;i++){const an=i*Math.PI/3+(rot||0);const px=x+s*Math.cos(an),py=y+s*Math.sin(an);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath()}
+function hexG(x,y,s,a,col,edge){A(a);hexPath(x,y,s||9);ctx.fillStyle=col||C.glu;ctx.fill();ctx.strokeStyle=edge||C["glu-edge"];ctx.lineWidth=1.3;ctx.stroke();ctx.globalAlpha=1}
+function bead(x,y,r,col,a){A(a);circ(x,y,r,col,EDGE,1);ctx.globalAlpha=1}
+function pyrM(x,y,a,s){s=s||1;A(a);line(x-7*s,y+3*s,x,y-3*s,C.pyr,2*s);line(x,y-3*s,x+7*s,y+3*s,C.pyr,2*s);[[-7,3],[0,-3],[7,3]].forEach(p=>circ(x+p[0]*s,y+p[1]*s,4.2*s,C.pyr,EDGE,1));ctx.globalAlpha=1}
+function lactM(x,y,a,s){s=s||1;A(a);[[-8,0],[0,0],[8,0]].forEach(p=>{rr(x+p[0]*s-3.8*s,y-3.8*s,7.6*s,7.6*s,1.5);ctx.fillStyle=C.lact;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke()});ctx.globalAlpha=1}
+function acoaM(x,y,a,s,noTag){s=s||1;A(a);line(x-5*s,y,x+3*s,y,C.acoa,2*s);circ(x-5*s,y,4.4*s,C.acoa,EDGE,1);circ(x+3*s,y,4.4*s,C.acoa,EDGE,1);
+  if(!noTag){rr(x+8*s,y-5*s,18*s,10*s,3*s);ctx.fillStyle=C.coa;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke();
+    ctx.font=`600 ${7*s}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.ink;ctx.fillText("CoA",x+17*s,y+.5)}ctx.globalAlpha=1}
+function co2M(x,y,a,s){s=s||1;A(a);circ(x-6*s,y,3.2*s,C.panel,C.co2,1.5);circ(x+6*s,y,3.2*s,C.panel,C.co2,1.5);circ(x,y,4.4*s,C.co2,EDGE,1);ctx.globalAlpha=1}
+function atpT(x,y,a,s,txt,fill,fg){s=s||1;A(a);ctx.font=`700 ${10*s}px ${MONO}`;const t=txt||"ATP";const w=ctx.measureText(t).width+10*s;rr(x-w/2,y-7*s,w,14*s,7*s);ctx.fillStyle=fill||C.atp;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle=fg||"#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(t,x,y+.5);ctx.globalAlpha=1}
+function adpT(x,y,a,s){atpT(x,y,a,s,"ADP",C.adp,C.ink)}
+function piT(x,y,a,s){s=s||1;A(a);circ(x,y,5.5*s,C.pi,EDGE,1);ctx.font=`700 ${7.5*s}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText("P",x,y+.5);ctx.globalAlpha=1}
+function elecT(x,y,a,s){s=s||1;A(a);glow(x,y,9*s,C.elec,.5);circ(x,y,4.2*s,C.elec,EDGE,1);ctx.fillStyle=C.ink;ctx.fillRect(x-2*s,y-.6*s,4*s,1.2*s);ctx.globalAlpha=1}
+function hpT(x,y,a,s){s=s||1;A(a);circ(x,y,5.2*s,C.hplus,EDGE,1);ctx.fillStyle="#fff";ctx.fillRect(x-2.6*s,y-.8*s,5.2*s,1.6*s);ctx.fillRect(x-.8*s,y-2.6*s,1.6*s,5.2*s);ctx.globalAlpha=1}
+function o2T(x,y,a,s){s=s||1;A(a);circ(x-3.6*s,y,4.4*s,C.o2,EDGE,1);circ(x+3.6*s,y,4.4*s,C.o2,EDGE,1);ctx.globalAlpha=1}
+function h2oT(x,y,a,s){s=s||1;A(a);ctx.beginPath();ctx.moveTo(x,y-8*s);ctx.bezierCurveTo(x+6*s,y-1*s,x+6*s,y+5*s,x,y+5*s);ctx.bezierCurveTo(x-6*s,y+5*s,x-6*s,y-1*s,x,y-8*s);ctx.fillStyle=C.water;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function fattyM(x,y,n,a,s,ang){s=s||1;A(a);ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);
+  ctx.beginPath();for(let i=0;i<n;i++){const px=8*s+i*6*s,py=(i%2?3:-3)*s;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.strokeStyle=C["fat-edge"];ctx.lineWidth=5*s;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke();
+  ctx.strokeStyle=C.fat;ctx.lineWidth=3*s;ctx.stroke();ctx.lineCap="butt";ctx.lineJoin="miter";
+  rr(-1*s,-5*s,9*s,10*s,2*s);ctx.fillStyle=C.fat;ctx.fill();ctx.strokeStyle=C["fat-edge"];ctx.lineWidth=1.2;ctx.stroke();
+  ctx.restore();ctx.globalAlpha=1}
+function glycerolM(x,y,a,s){s=s||1;A(a);for(let i=-1;i<=1;i++){rr(x-3.5*s,y+i*8*s-3.5*s,7*s,7*s,1.5);ctx.fillStyle=C.glycerol;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke()}ctx.globalAlpha=1}
+function trigM(x,y,a,s,n){s=s||1;n=n||7;for(let i=-1;i<=1;i++)fattyM(x+2*s,y+i*8*s,n,a,s);glycerolM(x,y,a,s)}
+function aminoM(x,y,a,s,noTag){s=s||1;A(a);circ(x,y,5.2*s,C.amino,EDGE,1);if(!noTag){rr(x-9*s,y-10*s,7*s,7*s,1.5);ctx.fillStyle=C.nh3;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke()}ctx.globalAlpha=1}
+function nh3T(x,y,a,s){s=s||1;A(a);ctx.beginPath();ctx.moveTo(x,y-7*s);ctx.lineTo(x+7*s,y+5*s);ctx.lineTo(x-7*s,y+5*s);ctx.closePath();ctx.fillStyle=C.nh3;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function ureaT(x,y,a,s){s=s||1;A(a);ctx.beginPath();ctx.moveTo(x,y-7*s);ctx.lineTo(x+7*s,y);ctx.lineTo(x,y+7*s);ctx.lineTo(x-7*s,y);ctx.closePath();ctx.fillStyle=C.urea;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function pentPath(x,y,s){ctx.beginPath();for(let i=0;i<5;i++){const an=-Math.PI/2+i*TAU/5;const px=x+s*Math.cos(an),py=y+s*Math.sin(an);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath()}
+function ketoneT(x,y,a,s){s=s||1;A(a);pentPath(x,y,6.5*s);ctx.fillStyle=C.ketone;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function insT(x,y,a,s){s=s||1;A(a);circ(x,y,4.3*s,C.ins,EDGE,1);ctx.globalAlpha=1}
+function gcgT(x,y,a,s){s=s||1;A(a);ctx.beginPath();ctx.moveTo(x,y-6*s);ctx.lineTo(x+5.6*s,y+4*s);ctx.lineTo(x-5.6*s,y+4*s);ctx.closePath();ctx.fillStyle=C.gcg;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+/* delivery truck: kind "nad" or "fad"; loaded shows electrons and the reduced name. dir 1 = faces right */
+function truck(x,y,kind,loaded,a,dir,s){s=s||1;dir=dir||1;A(a);ctx.save();ctx.translate(x,y);ctx.scale(dir*s,s);
+  const col=kind==="fad"?C.fad:C.nad,pale=kind==="fad"?C["fad-2"]:C["nad-2"];
+  const bw=kind==="fad"?46:52;
+  rr(-bw/2,-13,bw,22,3);ctx.fillStyle=loaded?col:pale;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.stroke();
+  // cab
+  ctx.beginPath();ctx.moveTo(bw/2+1,-7);ctx.lineTo(bw/2+11,-7);ctx.lineTo(bw/2+16,0);ctx.lineTo(bw/2+16,9);ctx.lineTo(bw/2+1,9);ctx.closePath();ctx.fillStyle=col;ctx.fill();
+  ctx.fillStyle="rgba(255,255,255,.7)";ctx.fillRect(bw/2+4,-4,7,5);
+  circ(-bw/2+10,10,4.6,C.ink);circ(bw/2+8,10,4.6,C.ink);circ(-bw/2+10,10,1.8,C["ink-faint"]);circ(bw/2+8,10,1.8,C["ink-faint"]);
+  ctx.restore();
+  const txt=kind==="fad"?(loaded?"FADH₂":"FAD"):(loaded?"NADH":"NAD⁺");
+  ctx.font=`700 ${10.5*s}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=loaded?"#fff":col;ctx.fillText(txt,x-dir*4*s,y-2*s);
+  if(loaded){elecT(x-dir*10*s,y-19*s,a,.85*s);elecT(x+dir*2*s,y-19*s,a,.85*s)}
+  ctx.globalAlpha=1}
+function cellBlob(x,y,rx,ry,fill,edge,seed,lw){ctx.beginPath();for(let i=0;i<=48;i++){const a=i/48*TAU;const w=1+Math.sin(a*3+(seed||0))*.035+Math.cos(a*5+(seed||0)*2)*.025;const px=x+Math.cos(a)*rx*w,py=y+Math.sin(a)*ry*w;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(edge){ctx.strokeStyle=edge;ctx.lineWidth=lw||2;ctx.stroke()}}
+/* mitochondrion: outer membrane, intermembrane space, folded inner membrane (cristae), matrix */
+function mito(x,y,rx,ry,o){o=o||{};ell(x,y,rx,ry,C.ims,C["mito-edge"],2.4);
+  const n=o.folds||9;ctx.beginPath();
+  for(let i=0;i<=240;i++){const th=i/240*TAU;const f=Math.pow(Math.abs(Math.sin(th*n/2)),16);const k=1-0.42*f;
+    const px=x+Math.cos(th)*(rx-9)*k,py=y+Math.sin(th)*(ry-9)*(1-0.55*f);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}
+  ctx.closePath();ctx.fillStyle=C.matrix;ctx.fill();ctx.strokeStyle=C.crista;ctx.lineWidth=2;ctx.stroke()}
+/* a simple ring that rotates: used for Krebs cycle icons */
+function cycleIcon(x,y,r,t,col,lw){ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.strokeStyle=col;ctx.lineWidth=lw||4;ctx.stroke();
+  for(let i=0;i<3;i++){const an=t*1.4+i*TAU/3;const px=x+Math.cos(an)*r,py=y+Math.sin(an)*r;const ta=an+Math.PI/2;
+    ctx.beginPath();ctx.moveTo(px+Math.cos(ta)*7,py+Math.sin(ta)*7);ctx.lineTo(px+Math.cos(ta+2.4)*6,py+Math.sin(ta+2.4)*6);ctx.lineTo(px+Math.cos(ta-2.4)*6,py+Math.sin(ta-2.4)*6);ctx.closePath();ctx.fillStyle=col;ctx.fill()}}
+/* membrane bilayer band from x0..x1 centred on y, thickness h */
+function bilayer(x0,x1,y,h,o){o=o||{};ctx.fillStyle=C.memb;ctx.fillRect(x0,y-h/2,x1-x0,h);
+  for(let x=x0+5;x<x1;x+=10){circ(x,y-h/2+4,4,C.memb,C["memb-edge"],1);circ(x,y+h/2-4,4,C.memb,C["memb-edge"],1)}}
+/* glycogen granule: deterministic branching tree; returns array of node coords (draw up to n) */
+function glyTree(cx,cy,N,sc){const nodes=[[cx,cy,0,-1,0]];const q=[];
+  for(let k=0;k<3;k++){const an=k*TAU/3+.4;nodes.push([cx+Math.cos(an)*13*sc,cy+Math.sin(an)*13*sc,1,0,an]);q.push(nodes.length-1)}
+  let guard=0;while(nodes.length<N&&q.length&&guard++<500){const i=q.shift();const p=nodes[i];
+    const an=p[4]+(rnd(i*3)-.5)*.35;nodes.push([p[0]+Math.cos(an)*13*sc,p[1]+Math.sin(an)*13*sc,p[2]+1,i,an]);q.push(nodes.length-1);
+    if(p[2]%2===1&&nodes.length<N){const b=p[4]+(rnd(i*7)>.5?.95:-.95);nodes.push([p[0]+Math.cos(b)*13*sc,p[1]+Math.sin(b)*13*sc,p[2]+1,i,b]);q.push(nodes.length-1)}}
+  return nodes}
+function drawGly(nodes,n,a,sc){for(let k=1;k<Math.min(n,nodes.length);k++){const p=nodes[k],q=nodes[Math.max(0,p[3])];A(a);line(q[0],q[1],p[0],p[1],C.gly,2*sc)}
+  for(let k=0;k<Math.min(n,nodes.length);k++){hexG(nodes[k][0],nodes[k][1],5.5*sc,a,C.gly,C["glu-edge"])}ctx.globalAlpha=1}
+/* organ icons */
+function liverIcon(x,y,s,fill){s=s||1;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-60,-14);ctx.bezierCurveTo(-40,-38,30,-40,62,-26);ctx.bezierCurveTo(70,-20,58,-4,40,6);ctx.bezierCurveTo(10,26,-30,36,-52,24);ctx.bezierCurveTo(-68,14,-70,0,-60,-14);ctx.closePath();
+  ctx.fillStyle=fill||C["liver-in"];ctx.fill();ctx.strokeStyle=C.liver;ctx.lineWidth=2.4/s;ctx.stroke();ctx.restore()}
+function muscleIcon(x,y,s,fill){s=s||1;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-62,0);ctx.bezierCurveTo(-40,-30,40,-30,62,0);ctx.bezierCurveTo(40,30,-40,30,-62,0);ctx.closePath();ctx.fillStyle=fill||C["muscle-in"];ctx.fill();ctx.strokeStyle=C.muscle;ctx.lineWidth=2.4/s;ctx.stroke();
+  ctx.strokeStyle=C.muscle;ctx.lineWidth=1/s;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(-50,i*6);ctx.bezierCurveTo(-20,i*8,20,i*8,50,i*6);ctx.stroke()}ctx.restore()}
+function adiposeIcon(x,y,s,grow){s=s||1;grow=grow==null?1:grow;ctx.save();ctx.translate(x,y);ctx.scale(s,s);
+  const P=[[-34,-12],[0,-18],[34,-10],[-20,16],[16,16]];P.forEach((p,i)=>{const r=(15+3*rnd(i))*(.75+.25*grow);circ(p[0],p[1],r+4,C.cell,C["cell-edge"],1.2/s);circ(p[0],p[1],r,C.adipose,C["adipose-edge"],1.2/s)});ctx.restore()}
+function brainIcon(x,y,s){s=s||1;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ell(0,0,34,25,C.brain,C["brain-edge"],2/s);ctx.strokeStyle=C["brain-edge"];ctx.lineWidth=1.3/s;
+  [[-18,-8,8],[0,-12,9],[16,-4,8],[-10,8,8],[12,10,7]].forEach(c=>{ctx.beginPath();ctx.arc(c[0],c[1],c[2],.3,2.8);ctx.stroke()});line(0,-24,0,22,C["brain-edge"],1.3/s);ctx.restore()}
+function pancIcon(x,y,s){s=s||1;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(-44,6);ctx.bezierCurveTo(-46,-14,-20,-14,0,-6);ctx.bezierCurveTo(20,2,40,-6,48,-2);ctx.bezierCurveTo(52,4,40,10,20,10);ctx.bezierCurveTo(0,12,-20,22,-44,6);ctx.closePath();ctx.fillStyle=C.gut;ctx.fill();ctx.strokeStyle=C["gut-edge"];ctx.lineWidth=2/s;ctx.stroke();ctx.restore()}
+function gutIcon(x,y,s){s=s||1;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();ctx.moveTo(-50,-20);for(let i=0;i<5;i++){ctx.quadraticCurveTo(-50+i*24+12,i%2?-36:-4,-50+(i+1)*24,-20)}
+  ctx.moveTo(-50,8);for(let i=0;i<5;i++){ctx.quadraticCurveTo(-50+i*24+12,i%2?-8:24,-50+(i+1)*24,8)}
+  ctx.strokeStyle=C["gut-edge"];ctx.lineWidth=13/1;ctx.stroke();ctx.strokeStyle=C.gut;ctx.lineWidth=9;ctx.stroke();ctx.lineCap="butt";ctx.lineJoin="miter";ctx.restore()}
+function kidneyIcon(x,y,s){s=s||1;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(6,-22);ctx.bezierCurveTo(-26,-30,-26,30,6,22);ctx.bezierCurveTo(14,18,6,6,10,0);ctx.bezierCurveTo(6,-6,14,-18,6,-22);ctx.closePath();ctx.fillStyle=C.kidney;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1.2/s;ctx.stroke();ctx.restore()}
+function heartIcon(x,y,s){s=s||1;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(0,14);ctx.bezierCurveTo(-22,0,-14,-18,-2,-9);ctx.bezierCurveTo(8,-18,22,-6,0,14);ctx.fillStyle=C.blood;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1.2/s;ctx.stroke();ctx.restore()}
+/* stylised standing person; origin top of head. returns key points */
+function person(ox,oy,s,o){o=o||{};ctx.save();ctx.translate(ox,oy);ctx.scale(s,s);ctx.lineCap="round";ctx.lineJoin="round";
+  const sk=o.skin||C.skin,ed=C["skin-edge"];
+  [-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(d*22,250);ctx.lineTo(d*28,380);ctx.strokeStyle=ed;ctx.lineWidth=36;ctx.stroke();ctx.strokeStyle=sk;ctx.lineWidth=32;ctx.stroke()});
+  [-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(d*52,96);ctx.quadraticCurveTo(d*70,170,d*74,240);ctx.strokeStyle=ed;ctx.lineWidth=22;ctx.stroke();ctx.strokeStyle=sk;ctx.lineWidth=18;ctx.stroke()});
+  ctx.lineCap="butt";
+  ctx.beginPath();ctx.moveTo(-14,70);ctx.quadraticCurveTo(-58,76,-60,98);ctx.quadraticCurveTo(-48,170,-44,210);ctx.quadraticCurveTo(-54,240,-48,266);ctx.lineTo(48,266);ctx.quadraticCurveTo(54,240,44,210);ctx.quadraticCurveTo(48,170,60,98);ctx.quadraticCurveTo(58,76,14,70);ctx.closePath();
+  ctx.fillStyle=sk;ctx.fill();ctx.strokeStyle=ed;ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle=sk;ctx.fillRect(-12,54,24,22);
+  ctx.beginPath();ctx.ellipse(0,30,26,31,0,0,TAU);ctx.fillStyle=sk;ctx.fill();ctx.stroke();
+  ctx.restore();ctx.lineJoin="miter";
+  return {head:[ox,oy+30*s],core:[ox,oy+160*s],feet:[ox,oy+382*s],handL:[ox-74*s,oy+240*s],handR:[ox+74*s,oy+240*s]}}
+function stream(P,t,n,period,fn,o){o=o||{};const on=o.on==null?1:o.on;if(on<=0)return;
+  for(let i=0;i<n;i++){const q=((t/period)+i/n+(o.phase||0))%1;const pos=o.curve?bez(P,q):along(P,q);
+    const a=Math.min(1,q*6,(1-q)*6)*on;const j=o.jit||0;fn(pos[0]+Math.sin(i*3.1+t*2)*j,pos[1]+Math.cos(i*2.3+t*1.7)*j,a,i)}}
+function onoff(x,y,name,on,w){w=w||170;ctx.font=`500 12px ${FONT}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=on?C.ink:C["ink-faint"];ctx.fillText(name,x,y);
+  const tx=on?"ON":"off";ctx.font=`700 10.5px ${MONO}`;const tw=ctx.measureText(tx).width+10;rr(x+w-tw,y-8,tw,16,8);ctx.fillStyle=on?C.good:C["panel-2"];ctx.fill();ctx.strokeStyle=on?C.good:C.rule;ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle=on?"#fff":C["ink-faint"];ctx.textAlign="center";ctx.fillText(tx,x+w-tw/2,y+.5)}
+
+
+/* ---------- scene utilities ---------- */
+function bg(col){ctx.fillStyle=col||C.panel;ctx.fillRect(0,0,W,H)}
+function vBilayer(x,y0,y1,w){ctx.fillStyle=C.memb;ctx.fillRect(x-w/2,y0,w,y1-y0);for(let y=y0+5;y<y1;y+=10){circ(x-w/2+4,y,4,C.memb,C["memb-edge"],1);circ(x+w/2-4,y,4,C.memb,C["memb-edge"],1)}}
+function vessel(P,w,col,inner){ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col||C.vessel;ctx.lineWidth=w;ctx.stroke();
+  ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=inner||C["blood-wash"];ctx.lineWidth=w-5;ctx.stroke();ctx.lineCap="butt";ctx.lineJoin="miter"}
+function scissors(x,y,open,col){col=col||C.ink;const o=open*.5;ctx.save();ctx.translate(x,y);ctx.lineCap="round";line(0,0,-16*Math.cos(o),-16*Math.sin(o)-2,col,2.5);line(0,0,-16*Math.cos(o),16*Math.sin(o)+2,col,2.5);circ(6*Math.cos(o),-6*Math.sin(o)-3,4,null,col,2);circ(6*Math.cos(o),6*Math.sin(o)+3,4,null,col,2);ctx.restore();ctx.lineCap="butt"}
+function bolt(x,y,s,col){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.beginPath();ctx.moveTo(4,-14);ctx.lineTo(-7,2);ctx.lineTo(0,2);ctx.lineTo(-4,14);ctx.lineTo(8,-3);ctx.lineTo(1,-3);ctx.closePath();ctx.fillStyle=col||C.glow;ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1/s;ctx.stroke();ctx.restore()}
+function tallyBox(x,y,w,h,name,val,col,draw){ctx.fillStyle=C.panel;rr(x,y,w,h,6);ctx.fill();ctx.strokeStyle=col||C.rule;ctx.lineWidth=1.5;ctx.stroke();
+  if(draw)draw(x+18,y+h/2);ctx.font=`500 12px ${FONT}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];ctx.fillText(name,x+34,y+h/2-8);
+  ctx.font=`700 15px ${MONO}`;ctx.fillStyle=C.ink;ctx.fillText(String(val),x+34,y+h/2+9)}
+
+/* ===== Scene: map (start) and recap ===== */
+function sceneMap(t,recap){
+  bg(C.panel);
+  const src=[[18,48,"Carbohydrates","glucose"],[18,200,"Fats","fatty acids + glycerol"],[18,352,"Proteins","amino acids"]];
+  src.forEach((s,i)=>{panelBox(s[0],s[1],150,58,true,[C.glu,C["fat-edge"],C.amino][i]);
+    label(s[0]+10,s[1]+18,s[2],{pill:false,weight:600,size:14});label(s[0]+10,s[1]+40,"→ "+s[3],{pill:false,size:12,color:C["ink-soft"]})});
+  // nodes
+  const hub=[410,236],kr=[555,236],etcX=690;
+  const nodes=[[268,77,"Glycolysis",C.act2],[268,229,"Beta-oxidation",C.act3],[268,381,"Deamination",C.act3]];
+  // paths
+  const P1=[[168,77],[268,77],[hub[0]-20,hub[1]-22]],P2=[[168,229],[268,229],[hub[0]-30,hub[1]]],P3=[[168,381],[268,381],[hub[0]-20,hub[1]+22]];
+  [P1,P2,P3].forEach(P=>{ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=C.rule;ctx.lineWidth=8;ctx.lineJoin="round";ctx.stroke();ctx.lineJoin="miter"});
+  line(hub[0]+34,hub[1],kr[0]-60,kr[1],C.rule,8);
+  // particles
+  stream(P1,t,4,4,(x,y,a)=>{x<268?hexG(x,y,8,a):pyrM(x,y,a)});
+  stream(P2,t,4,4,(x,y,a)=>{x<268?fattyM(x-20,y,6,a,.9):acoaM(x,y,a,.9,true)},{phase:.3});
+  stream(P3,t,4,4,(x,y,a)=>{aminoM(x,y,a,1,x>268)},{phase:.6});
+  nodes.forEach(n=>{ctx.fillStyle=C["panel-2"];rr(n[0]-58,n[1]-15,116,30,15);ctx.fill();ctx.strokeStyle=n[3];ctx.lineWidth=2;ctx.stroke();label(n[0],n[1],n[2],{align:"center",pill:false,size:12.5,weight:600})});
+  // ammonia to urea
+  const q=(t/3)%1;nh3T(268,lerp(398,448,q),1-q);label(310,450,"NH₃ → urea (liver)",{size:11.5,color:C["ink-soft"]});
+  // hub
+  glow(hub[0],hub[1],60,C.acoa,.25+.1*Math.sin(t*3));circ(hub[0],hub[1],34,C.panel,C.acoa,3);label(hub[0],hub[1]-7,"Acetyl",{align:"center",pill:false,weight:700,size:13});label(hub[0],hub[1]+9,"CoA",{align:"center",pill:false,weight:700,size:13});
+  stream([[hub[0]+34,hub[1]],[kr[0]-58,kr[1]]],t,2,2,(x,y,a)=>acoaM(x,y,a,.9));
+  // krebs
+  cycleIcon(kr[0],kr[1],52,t,C.act2,6);label(kr[0],kr[1]-8,"Krebs",{align:"center",pill:false,weight:700,size:13});label(kr[0],kr[1]+9,"cycle",{align:"center",pill:false,weight:700,size:13});
+  const cq=(t/2.5)%1;co2M(kr[0]+10,lerp(kr[1]-60,40,cq),1-cq);label(kr[0]+40,52,"CO₂ out",{size:11.5,color:C["ink-soft"]});
+  // trucks
+  for(let i=0;i<2;i++){const tq=(t/3+i*.5)%1;truck(lerp(kr[0]+58,etcX-30,tq),kr[1]+(i?40:-40),i?"fad":"nad",true,Math.min(1,tq*6,(1-tq)*6),1,.55)}
+  // ETC membrane
+  ctx.fillStyle=C.memb;ctx.fillRect(etcX-8,110,16,250);for(let y=116;y<360;y+=10){circ(etcX-5,y,3.5,C.memb,C["memb-edge"],1);circ(etcX+5,y,3.5,C.memb,C["memb-edge"],1)}
+  label(etcX,95,"Electron transport",{align:"center",size:12,weight:600});label(etcX,377,"chain + ATP synthase",{align:"center",size:12,weight:600});
+  const oq=(t/2.4)%1;o2T(lerp(etcX+60,etcX+12,oq),lerp(160,190,oq),Math.min(1,(1-oq)*5));label(etcX+66,140,"O₂ in",{size:11.5,color:C["ink-soft"]});
+  h2oT(lerp(etcX+12,etcX+50,oq),lerp(300,345,oq),Math.min(1,oq*4));label(etcX+62,360,"H₂O",{size:11.5,color:C["ink-soft"]});
+  for(let i=0;i<5;i++){const aq=(t/1.6+i/5)%1;atpT(lerp(etcX+14,792,aq),236+(i-2)*22,Math.min(1,aq*5,(1-aq)*5))}
+  label(752,306,"ATP out",{align:"center",weight:700,color:C.atp,size:13});
+  // banner
+  if(!recap){title(186,18,"Catabolism: big fuel molecules broken down",C["ink-soft"]);arrow(186,32,560,32,C["ink-faint"],1.6)}
+  if(recap){
+    const chips=[[268,52,"Part 2",C.act2],[555,168,"Part 2",C.act2],[690,72,"Part 2",C.act2],[268,204,"Part 3",C.act3],[268,356,"Part 3",C.act3]];
+    chips.forEach(c=>chipText(c[0],c[1],c[2],c[3]));
+    // storage side-branches (anabolism)
+    ctx.fillStyle=C["panel-2"];rr(18,122,150,58,8);ctx.fill();ctx.strokeStyle=C.act4;ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);
+    label(26,140,"Stores (Part 3–4)",{pill:false,size:12,weight:600});label(26,160,"glycogen · triglyceride",{pill:false,size:11.5,color:C["ink-soft"]});
+    const pulse=.5+.5*Math.sin(t*3);glow(etcX,236,90,C.heat,.15+.1*pulse);label(etcX-4,420,"heat (Part 5)",{align:"center",size:12,color:C.heat,weight:600});
+    ctx.fillStyle=C.act4;rr(200,6,380,28,6);ctx.globalAlpha=.15;ctx.fill();ctx.globalAlpha=1;label(390,20,"Fed: insulin stores · Fasting: glucagon releases",{align:"center",pill:false,size:12.5,weight:600,color:C.act4});
+  }
+}
+/* ===== Scene: catabolism / anabolism ===== */
+function sceneCata(t){
+  bg(C.panel);const p=(t%7)/7;
+  panelBox(14,44,368,316,true,C.act3);panelBox(418,44,368,316,true,C.act4);
+  title(28,64,"Catabolism · break down",C.act3);title(432,64,"Anabolism · build up",C.act4);
+  // left: chain splits
+  const split=ease(seg(p,.18,.42)),fade=1-seg(p,.9,1);
+  for(let i=0;i<6;i++){const bx=124+i*28,by=190;const ang=(i-2.5)*.5;const dx=(i-2.5)*26*split,dy=(i%2?-55:55)*split;
+    if(i<5&&split<.05)line(bx,by,bx+28,by,C["glu-edge"],3);
+    hexG(bx+dx,by+dy,11,fade)}
+  if(p>.18&&p<.5){const k=seg(p,.18,.5);for(let i=0;i<8;i++){const an=i/8*TAU+t;const r=20+70*k;bolt(194+Math.cos(an)*r,190+Math.sin(an)*r*.7,.6,C.glow)}label(198,110,"Bonds break → energy released",{align:"center",weight:600,color:C.act3})}
+  else label(198,110,split<.5?"A big molecule (like glucose or glycogen)":"Smaller pieces",{align:"center",size:12.5,color:C["ink-soft"]});
+  // right: building
+  const build=ease(seg(p,.55,.85));
+  for(let i=0;i<6;i++){const sx=470+rnd(i)*260,sy=110+rnd(i+9)*200;const tx=530+i*30,ty=200;const x=lerp(sx,tx,build),y=lerp(sy,ty,build);
+    if(build>.95&&i<5)line(tx,ty,tx+30,ty,C.amino,3);aminoM(x,y,1,1.4,true)}
+  label(602,110,build>.9?"Built: a new protein chain":"Small building blocks (amino acids)",{align:"center",size:12.5,color:build>.9?C.act4:C["ink-soft"],weight:build>.9?600:500});
+  if(p>.55&&p<.85)label(602,280,"Building uses energy",{align:"center",weight:600,color:C.act4});
+  // conveyor
+  line(40,410,760,410,C.rule,10);line(40,452,760,452,C.rule,10);
+  label(400,388,"ATP carries energy →",{align:"center",size:12,weight:600,color:C.atp});label(400,470,"← spent ADP goes back to be recharged",{align:"center",size:12,color:C["ink-soft"]});
+  for(let i=0;i<3;i++){const q=seg(p,.35+i*.04,.62+i*.04);if(q>0&&q<1){const pos=along([[198,230],[198,410],[602,410],[602,240]],q);atpT(pos[0],pos[1],1,1.2)}
+    const r=seg(p,.82+i*.03,.98);if(r>0&&r<1){const pos=along([[602,410],[602,452],[198,452]],r);adpT(pos[0],pos[1],1,1.2)}}
+  if(p>.62&&p<.85){for(let i=0;i<3;i++)atpT(560+i*44,260,1-seg(p,.75,.85),1.2)}
+}
+/* ===== Scene: ATP ===== */
+function sceneAtp(t){
+  bg(C.panel);const p=(t%8)/8;
+  const snap=seg(p,.28,.4),recharge=ease(seg(p,.66,.88));
+  const off=p<.28?0:(p<.66?1:1-recharge);
+  // molecule
+  ctx.fillStyle=C.nuc;rr(70,200,104,52,10);ctx.fill();ctx.strokeStyle=C["nuc-edge"];ctx.lineWidth=2;ctx.stroke();label(122,226,"Adenine",{align:"center",pill:false,weight:600});
+  line(174,226,214,226,C.ink,3);pentPath(240,228,26);ctx.fillStyle=C.adipose;ctx.fill();ctx.strokeStyle=C["adipose-edge"];ctx.lineWidth=2;ctx.stroke();label(240,230,"Ribose",{align:"center",pill:false,size:11.5,weight:600});
+  const px=[300,350,400];
+  line(266,226,px[0],226,C.ink,3);line(px[0],226,px[1],226,C.ink,3);
+  const p3x=lerp(px[2],px[2]+120,ease(off)),p3y=226-Math.sin(off*Math.PI)*0-off*70;
+  if(off<.05){ctx.save();ctx.setLineDash([]);const w=3+2*Math.sin(t*8);line(px[1],226,px[2],226,C.glow,w+2);line(px[1],226,px[2],226,C.ink,2.5);ctx.restore();label(375,196,"high-energy bond",{align:"center",size:11.5,color:C.warn,weight:600})}
+  piT(px[0],226,1,2.4);piT(px[1],226,1,2.4);piT(p3x,p3y,1,2.4);
+  if(snap>0&&snap<1){glow(375,226,90*snap,C.glow,1-snap);for(let i=0;i<6;i++){const an=i/6*TAU;bolt(375+Math.cos(an)*60*snap,226+Math.sin(an)*60*snap,.7)}}
+  // labels
+  const st=p<.28?"ATP: adenine + ribose + 3 phosphates":p<.66?"ADP + Pᵢ: the last phosphate snapped off":p<.88?"Energy from food puts Pᵢ back on":"ATP is recharged";
+  label(240,130,st,{align:"center",weight:600,size:14});
+  // work panel
+  panelBox(560,50,220,170,p>.3&&p<.62,C.act1);title(574,70,"Cell work",C.act1);
+  const flex=p>.32&&p<.62?Math.sin(seg(p,.32,.62)*Math.PI):0;
+  muscleIcon(670,140,.9-.2*flex,C["muscle-in"]);label(670,200,flex>.05?"Energy powers a contraction":"waiting for energy",{align:"center",size:12,color:flex>.05?C.act1:C["ink-faint"]});
+  if(snap>0&&p<.45){const q=seg(p,.3,.45);bolt(lerp(400,600,q),lerp(220,140,q),1.2)}
+  // food recharge
+  panelBox(20,330,300,120,p>.62&&p<.9,C.act2);title(34,350,"Food energy",C.act2);
+  const burn=seg(p,.62,.75);hexG(90,400,22,1-burn*.7);if(burn>0&&burn<1)glow(90,400,60*burn,C.glow,1-burn);
+  label(200,392,"Glucose is broken",{align:"center",size:12});label(200,412,"down for energy",{align:"center",size:12});
+  if(p>.66&&p<.88){const q=seg(p,.66,.86);curveArrow([[130,380],[260,300],[p3x,p3y+20]],C.glow,3,[6,4]);}
+  // battery
+  const ch=p<.28?1:(p<.4?1-snap*.7:(p<.66?.3:.3+.7*recharge));
+  ctx.fillStyle=C["panel-2"];rr(470,330,240,70,8);ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=2;ctx.stroke();ctx.fillStyle=C.ink;rr(710,350,10,30,2);ctx.fill();
+  ctx.fillStyle=ch>.6?C.atp:C.warn;rr(476,336,228*ch,58,5);ctx.fill();
+  label(590,365,ch>.6?"Charged (ATP)":"Low (ADP)",{align:"center",weight:700,size:15});
+  label(590,422,"ATP ⇄ ADP + Pᵢ, recycled again and again",{align:"center",size:12.5,color:C["ink-soft"]});
+}
+/* ===== Scene: redox trucks ===== */
+function sceneRedox(t){
+  bg(C.panel);
+  // ETC dock
+  ctx.fillStyle=C.memb;ctx.fillRect(728,60,22,380);for(let y=66;y<440;y+=10){circ(732,y,4,C.memb,C["memb-edge"],1);circ(746,y,4,C.memb,C["memb-edge"],1)}
+  label(722,40,"Electron transport chain →",{align:"right",size:12,weight:600});
+  chipText(400,24,"OIL RIG: Oxidation Is Loss · Reduction Is Gain",C.act1,"#fff",12);
+  const lanes=[[170,"nad",0],[360,"fad",.5]];
+  lanes.forEach(([y,kind,ph])=>{
+    const p=((t/9)+ph)%1;
+    ctx.fillStyle=C["panel-2"];rr(150,y+16,560,8,4);ctx.fill();
+    // fuel
+    const fx=90;hexG(fx,y-6,24,1);label(fx,y+34,kind==="nad"?"Fuel molecule":"Krebs cycle molecule",{align:"center",size:11.5});
+    const loadQ=seg(p,.25,.38);const hasE=p<.25||p>.92?2:(loadQ<.5?2:(loadQ<1?1:0));
+    for(let i=0;i<hasE;i++){const an=t*3+i*Math.PI;elecT(fx+Math.cos(an)*30,y-6+Math.sin(an)*18,1)}
+    // truck x
+    let x,dir,loaded;
+    if(p<.25){x=lerp(640,190,ease(p/.25));dir=-1;loaded=false}
+    else if(p<.38){x=190;dir=-1;loaded=loadQ>=1}
+    else if(p<.68){x=lerp(190,660,ease(seg(p,.38,.68)));dir=1;loaded=true}
+    else if(p<.8){x=660;dir=1;loaded=seg(p,.68,.8)<1}
+    else{x=660;dir=1;loaded=false}
+    if(p>.25&&p<.38){for(let i=0;i<2;i++){const q=seg(loadQ,i*.3,i*.3+.6);if(q>0&&q<1)elecT(lerp(fx+20,x,q),lerp(y-6,y-30,q)-Math.sin(q*Math.PI)*30,1)}
+      label(24,y-58,"Fuel is OXIDIZED: loses e⁻",{weight:600,color:C.act3,size:12.5});label(150,y+46,(kind==="nad"?"NAD⁺":"FAD")+" is REDUCED: gains e⁻ → "+(kind==="nad"?"NADH":"FADH₂"),{weight:600,color:kind==="nad"?C.nad:C.fad,size:12.5})}
+    if(p>.68&&p<.8){const q=seg(p,.68,.8);for(let i=0;i<2;i++){const r=seg(q,i*.3,i*.3+.7);if(r>0&&r<1)elecT(lerp(x,736,r),lerp(y-20,y-6,r),1)}label(560,y-56,"Unload electrons at the ETC",{align:"center",weight:600,color:C.act2,size:12.5})}
+    if(p>.8||p<.2){label(420,y-56,p>.8?"Empty again: "+(kind==="nad"?"NAD⁺":"FAD")+" heads back to reload":"Empty "+(kind==="nad"?"NAD⁺":"FAD")+" truck drives to the fuel",{align:"center",size:12.5,color:C["ink-soft"]})}
+    truck(x,y,kind,loaded,1,dir,1.15);
+  });
+  label(400,455,"NAD⁺ + 2e⁻ + H⁺ → NADH     FAD + 2e⁻ + 2H⁺ → FADH₂",{align:"center",mono:true,size:12.5});
+}
+/* ===== Scene: respiration overview ===== */
+function sceneOverview(t){
+  bg(C.ecf);const p=(t%10)/10;
+  cellBlob(400,262,380,200,C.cyto,C["cell-edge"],1,3);
+  label(70,90,"CYTOPLASM",{pill:false,mono:true,size:11.5,color:C["ink-soft"],weight:600});
+  mito(560,262,200,128,{folds:10});label(560,120,"MITOCHONDRION",{align:"center",mono:true,size:11.5,weight:600,color:C["mito-edge"]});
+  // equation
+  label(400,22,"C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O + ATP + heat",{align:"center",mono:true,size:13,weight:600});
+  // station 1
+  const s1=p<.3,s2=p>.3&&p<.65,s3=p>.55;
+  ctx.fillStyle=C.panel;rr(120,232,120,60,10);ctx.fill();ctx.strokeStyle=s1?C.act2:C.rule;ctx.lineWidth=s1?3:1.5;ctx.stroke();
+  label(180,252,"Glycolysis",{align:"center",pill:false,weight:600,size:13});label(180,272,"no O₂ needed",{align:"center",pill:false,size:11,color:C["ink-soft"]});badge(124,232,1,s1?C.act2:C["ink-faint"]);
+  // glucose in
+  const g=seg(p,0,.15);if(p<.17)hexG(lerp(18,150,g),262,12,1);
+  // pyruvate travel
+  const q=seg(p,.18,.36);if(p>.16&&p<.38){for(let i=0;i<2;i++)pyrM(lerp(240,470,q),262+(i?16:-16),1,1.3)}
+  if(p>.15&&p<.3){const k=seg(p,.15,.3);atpT(180,lerp(228,190,k),1-k);atpT(210,lerp(228,190,k),1-k)}
+  // krebs
+  cycleIcon(490,262,36,t*(s2?1.5:.4),s2?C.act2:C["ink-faint"],5);label(490,312,"Krebs cycle",{align:"center",size:12,weight:600});badge(452,226,2,s2?C.act2:C["ink-faint"]);
+  if(p>.36&&p<.7){const k=seg(p,.36,.7);for(let i=0;i<2;i++)co2M(lerp(490,430+i*80,k),lerp(250,52,k),1-k*.6,1.2);label(560,72,"CO₂ leaves",{size:11.5,color:C["ink-soft"]})}
+  if(p>.4&&p<.65){const k=seg(p,.4,.65);truck(lerp(520,640,k),lerp(240,212,k),"nad",true,1,1,.55);truck(lerp(520,640,k),lerp(285,312,k),"fad",true,1,1,.55)}
+  // ETC
+  for(let i=0;i<4;i++){const yy=216+i*30;ctx.fillStyle=s3?C.act1:C.rule;rr(668,yy,18,22,4);ctx.fill()}
+  label(700,190,"ETC",{size:12,weight:600});badge(676,196,3,s3?C.act2:C["ink-faint"]);
+  if(p>.5&&p<.8){const k=seg(p,.5,.75);o2T(lerp(790,690,k),lerp(70,210,k),1);label(740,62,"O₂ in",{size:11.5,color:C["ink-soft"]})}
+  if(p>.75){const k=seg(p,.75,1);h2oT(lerp(680,760,k),lerp(320,440,k),1-k*.5);label(708,450,"H₂O",{size:11.5})}
+  if(p>.72){const k=seg(p,.72,1);for(let i=0;i<10;i++){const an=-1+i*.22;atpT(677+Math.cos(an)*120*k,262+Math.sin(an)*140*k,1-k*.6,.9)}}
+  // big summary chip
+  const msg=s1&&!s2?"1 · Glycolysis in the cytoplasm: glucose → 2 pyruvate":p<.55?"2 · Krebs cycle in the matrix: CO₂ out, carriers loaded":"3 · ETC on the inner membrane: O₂ used, most ATP made";
+  label(400,462,msg,{align:"center",weight:600,size:13.5,border:C.act2});
+}
+/* ===== Scene: glycolysis ===== */
+function sceneGlyco(t){
+  bg(C.cyto);const p=(t%13)/13;
+  chipText(96,22,"CYTOPLASM",C.act2);chipText(250,22,"O₂ NOT NEEDED",C.good);
+  const head=p<.3?"1 · Investment: spend 2 ATP to prime glucose":p<.42?"2 · Split: 6 carbons → two 3-carbon halves":p<.74?"3 · Payoff: each half makes 2 ATP and 1 NADH":"Result: 2 pyruvate";
+  label(500,22,head,{align:"center",weight:600,size:14});
+  const q1=seg(p,.1,.2),q2=seg(p,.16,.26);
+  const gx=p<.3?150:lerp(150,320,ease(seg(p,.3,.36))),gy=210;
+  const sp=ease(seg(p,.36,.44));
+  if(sp<.05){hexG(gx,gy,26,seg(p,0,.06));label(gx,gy+44,"Glucose (6 C)",{align:"center",size:12,weight:600});
+    for(let i=0;i<6;i++){const an=i*Math.PI/3;circ(gx+Math.cos(an)*14,gy+Math.sin(an)*14,3.4,C["glu-edge"])}
+    if(q1>=1)piT(gx-26,gy-14,1,1.2);if(q2>=1)piT(gx+26,gy-14,1,1.2)}
+  // invest ATP
+  [[q1,70],[q2,230]].forEach(([q,sx])=>{if(q>0&&q<1)atpT(lerp(sx,gx+(sx<150?-24:24),q),lerp(90,gy-16,q),1,1.3);
+    if(q>=1&&p<.36){const r=seg(p,(sx<150?.2:.26),(sx<150?.2:.26)+.1);adpT(lerp(gx+(sx<150?-24:24),sx,r),lerp(gy-16,70,r),1-r,1.2)}});
+  // halves
+  const halves=[[-1],[1]];
+  halves.forEach(([d],k)=>{if(sp<.05)return;
+    const mv=seg(p,.44,.72);const hx=lerp(gx+30*sp,600,ease(mv)),hy=gy+d*72*sp;
+    if(p<.74){A(1);for(let i=0;i<3;i++){const an=i*TAU/3-Math.PI/2;circ(hx+Math.cos(an)*9,hy+Math.sin(an)*9,6,C.glu,C["glu-edge"],1.2)}piT(hx+16,hy-12,1,1.1);
+      label(hx,hy+(d<0?-28:30),"3-carbon half",{align:"center",size:11.5})}
+    else{pyrM(600,hy,1,1.9);label(600,hy+(d<0?-30:32),"Pyruvate (3 C)",{align:"center",weight:600,size:12.5,color:C.pyr})}
+    // payoff ATP pop
+    [.5,.8].forEach((e,j)=>{const em=seg(mv,e,e+.18);if(em>0&&em<1){atpT(lerp(lerp(gx,600,e),500+j*50+k*100,em),lerp(hy,330,em),1,1.2)}});
+    // NADH truck
+    const tq=seg(p,.5,.7);if(tq>0){const tx=tq<.4?lerp(780,lerp(gx,600,.65)+30,ease(tq/.4)):(tq<.6?lerp(gx,600,.65)+30:lerp(lerp(gx,600,.65)+30,790,ease((tq-.6)/.4)));
+      truck(tx,hy+(d<0?-36:36)+(d<0?-10:10),"nad",tq>=.5,tq<1?1:0,tq<.4?-1:1,.8);if(tq>.4&&tq<.6)elecT(lerp(hx,tx,(tq-.4)/.2),lerp(hy,hy+d*40,(tq-.4)/.2),1)}
+  });
+  // tally
+  const spent=(q1>=1?1:0)+(q2>=1?1:0);let made=0;[.5,.8].forEach(e=>{if(seg(seg(p,.44,.72),e,e+.18)>=1)made+=2});const nadh=seg(p,.5,.7)>=.5?2:0;
+  ctx.fillStyle=C.panel;ctx.globalAlpha=.85;rr(10,380,780,92,8);ctx.fill();ctx.globalAlpha=1;
+  tallyBox(24,396,175,60,"ATP spent",spent,C.warn,(x,y)=>adpT(x,y,1,.9));
+  tallyBox(214,396,175,60,"ATP made",made,C.atp,(x,y)=>atpT(x,y,1,.9));
+  tallyBox(404,396,175,60,"Net ATP",(made-spent>0?"+":"")+(made-spent),C.atp,(x,y)=>atpT(x,y,1,.9));
+  tallyBox(594,396,180,60,"NADH loaded",nadh,C.nad,(x,y)=>{ctx.fillStyle=C.nad;rr(x-10,y-7,20,14,3);ctx.fill()});
+}
+/* ===== Scene: lactate ===== */
+function sceneLactate(t){
+  bg(C.cyto);
+  chipText(80,22,"CYTOPLASM",C.act2);
+  // O2 gauge
+  panelBox(560,12,226,58,true,C.warn);label(574,30,"Oxygen supply",{pill:false,size:12,weight:600});ctx.fillStyle=C.sunk;rr(574,44,150,14,7);ctx.fill();ctx.fillStyle=C.warn;rr(574,44,18,14,7);ctx.fill();label(734,51,"LOW",{pill:false,weight:700,size:12,color:C.warn});o2T(760,30,.35);
+  label(400,94,"Hard exercise: oxygen can't keep up, so the ETC can't empty NADH",{align:"center",size:12.5,color:C["ink-soft"]});
+  // stations
+  ctx.fillStyle=C.panel;rr(130,150,170,64,10);ctx.fill();ctx.strokeStyle=C.act2;ctx.lineWidth=2.5;ctx.stroke();label(215,172,"Glycolysis",{align:"center",pill:false,weight:600});label(215,194,"needs NAD⁺",{align:"center",pill:false,size:11.5,color:C["ink-soft"]});
+  stream([[10,182],[130,182]],t,3,3,(x,y,a)=>hexG(x,y,9,a));
+  stream([[300,182],[540,182]],t,3,3,(x,y,a)=>pyrM(x,y,a,1.2));
+  label(420,150,"Pyruvate",{align:"center",size:12,color:C.pyr,weight:600});
+  ctx.fillStyle=C.panel;rr(540,150,120,64,10);ctx.fill();ctx.strokeStyle=C.lact;ctx.lineWidth=2.5;ctx.stroke();label(600,172,"Pyruvate",{align:"center",pill:false,size:12});label(600,194,"→ Lactate",{align:"center",pill:false,weight:700,color:C.lact});
+  stream([[660,182],[760,182],[760,300]],t,3,3,(x,y,a)=>lactM(x,y,a,1.1));
+  label(785,330,"Lactate → blood",{align:"right",size:12});label(785,350,"→ liver (back to glucose)",{align:"right",size:11.5,color:C["ink-soft"]});
+  // ATP from glycolysis
+  for(let i=0;i<2;i++){const q=((t/3)+i*.5)%1;atpT(215+(i?20:-20),lerp(146,100,q),1-q,1.1)}
+  // NAD loop
+  const loop=[[230,250],[600,250],[600,330],[230,330],[230,250]];
+  ctx.strokeStyle=C.rule;ctx.lineWidth=6;ctx.setLineDash([8,6]);ctx.beginPath();loop.forEach((pt,i)=>i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));ctx.stroke();ctx.setLineDash([]);
+  for(let k=0;k<2;k++){const q=((t/6)+k*.5)%1;const pos=along(loop,q);const top=q<370/900;const L=900;const d=q*L;
+    let dir=1;if(d>370&&d<450)dir=1;else if(d>=450&&d<820)dir=-1;
+    truck(pos[0],pos[1]+(top?-2:0),"nad",top,1,dir,.85)}
+  label(415,224,"NADH carries electrons to pyruvate",{align:"center",size:12,color:C.nad,weight:600});
+  label(415,360,"Freed NAD⁺ returns so glycolysis can keep going",{align:"center",size:12,color:C.nad,weight:600});
+  // electron hop at lactate
+  const hq=(t/3)%1;if(hq<.3)elecT(lerp(600,600,hq),lerp(240,214,hq/.3),1-hq/.3);
+  // tally
+  panelBox(20,398,760,66,true,C.act2);atpT(60,431,1,1.3);label(100,422,"Net ATP per glucose without oxygen: 2",{pill:false,weight:700,size:15});label(100,444,"Lactate formation itself makes no ATP. It only recycles NAD⁺.",{pill:false,size:12.5,color:C["ink-soft"]});
+}
+/* ===== Scene: pyruvate → acetyl CoA ===== */
+function sceneLink(t){
+  const p=(t%10)/10;
+  ctx.fillStyle=C.cyto;ctx.fillRect(0,0,300,H);ctx.fillStyle=C.ims;ctx.fillRect(300,0,70,H);ctx.fillStyle=C.matrix;ctx.fillRect(370,0,W-370,H);
+  vBilayer(300,0,H,18);vBilayer(370,0,H,18);
+  title(16,22,"Cytoplasm");title(386,22,"Mitochondrial matrix",C["mito-edge"]);
+  label(335,460,"2 membranes",{align:"center",size:11});
+  // transporters
+  [300,370].forEach(x=>{ctx.fillStyle=C.act1;rr(x-12,224,24,32,6);ctx.fill();ctx.fillStyle=C.panel;ctx.fillRect(x-4,226,8,28)});
+  const mv=seg(p,0,.32);const px=mv<1?lerp(70,460,ease(mv)):460;
+  const lost=seg(p,.34,.5);const coa=ease(seg(p,.64,.78));const out=ease(seg(p,.82,.98));
+  const mx=lerp(460,690,out);
+  if(lost<.02){pyrM(px,240,1,2.2);label(px,200,"Pyruvate (3 C)",{align:"center",weight:600,color:C.pyr})}
+  else{acoaM(mx,240,1,2,coa<1);if(coa<1&&coa>0){const cx=lerp(760,mx+36,coa);rr(cx-18,229,36,22,6);ctx.fillStyle=C.coa;ctx.fill();ctx.strokeStyle=EDGE;ctx.stroke();label(cx,240,"CoA",{align:"center",pill:false,size:12,weight:700,mono:true})}
+    co2M(lerp(474,520,lost),lerp(234,70,lost),1-seg(p,.55,.7),2);if(lost>.2&&p<.65)label(560,90,"1 carbon leaves as CO₂",{weight:600,color:C.co2})}
+  // NADH truck
+  const tq=seg(p,.48,.72);if(tq>0&&tq<1){const tx=tq<.4?lerp(790,500,ease(tq/.4)):(tq<.6?500:lerp(500,800,ease((tq-.6)/.4)));truck(tx,340,"nad",tq>=.5,1,tq<.4?-1:1,1.1);
+    if(tq>.4&&tq<.6){const r=(tq-.4)/.2;elecT(lerp(462,500,r),lerp(250,318,r),1);elecT(lerp(470,505,r),lerp(255,320,r),1)}if(tq>.45&&tq<.8)label(560,390,"NAD⁺ picks up electrons → NADH",{align:"center",weight:600,color:C.nad})}
+  if(coa>0&&p<.85)label(600,170,"Coenzyme A attaches",{align:"center",weight:600,color:C.acoa});
+  if(out>0){label(mx,190,"Acetyl CoA (2 C)",{align:"center",weight:700,color:C.acoa});cycleIcon(752,240,26,t,C.act2,4);label(752,286,"to Krebs",{align:"center",size:11.5})}
+  chipText(700,22,"× 2 per glucose",C.act2);
+  if(mv<1)label(150,400,"Carried across both membranes",{align:"center",size:12.5,color:C["ink-soft"],pill:false});
+}
+/* ===== Scene: Krebs cycle ===== */
+function sceneKrebs(t){
+  bg(C.matrix);const p=(t%11)/11;const turn=Math.floor(t/11)%2+1;
+  const cx=300,cy=258,R=150;
+  title(16,22,"Mitochondrial matrix",C["mito-edge"]);
+  ctx.beginPath();ctx.arc(cx,cy,R,0,TAU);ctx.strokeStyle=C["panel-2"];ctx.lineWidth=26;ctx.stroke();ctx.strokeStyle=C.act2;ctx.lineWidth=3;ctx.setLineDash([10,8]);ctx.lineDashOffset=-t*30;ctx.stroke();ctx.setLineDash([]);ctx.lineDashOffset=0;
+  for(let i=0;i<6;i++){const an=i/6*TAU+t*.4;const x=cx+Math.cos(an)*R,y=cy+Math.sin(an)*R;const ta=an+Math.PI/2;ctx.beginPath();ctx.moveTo(x+Math.cos(ta)*9,y+Math.sin(ta)*9);ctx.lineTo(x+Math.cos(ta+2.4)*8,y+Math.sin(ta+2.4)*8);ctx.lineTo(x+Math.cos(ta-2.4)*8,y+Math.sin(ta-2.4)*8);ctx.closePath();ctx.fillStyle=C.act2;ctx.fill()}
+  const a0=-110*Math.PI/180;const ang=a0+p*TAU;
+  const ev=[[.24,"co2"],[.26,"nad"],[.4,"co2"],[.42,"nad"],[.56,"atp"],[.7,"fad"],[.85,"nad"]];
+  let nC=p<.08?4:(p<.24?6:(p<.4?5:4));
+  // acetyl CoA arrival
+  const arr=seg(p,0,.08);const ex=cx+Math.cos(a0)*R,ey=cy+Math.sin(a0)*R;
+  if(arr<1){acoaM(lerp(60,ex-10,ease(arr)),lerp(50,ey,ease(arr)),1,1.8);label(70,80,"Acetyl CoA (2 C) enters",{weight:600,color:C.acoa})}
+  else if(p<.2){const r=seg(p,.08,.2);rr(lerp(ex,40,r)-14,lerp(ey,40,r)-8,28,16,4);ctx.fillStyle=C.coa;ctx.globalAlpha=1-r;ctx.fill();ctx.globalAlpha=1;label(70,80,"CoA is released and reused",{size:12,color:C["ink-soft"]})}
+  // carbon token
+  const tx=cx+Math.cos(ang)*R,ty=cy+Math.sin(ang)*R;
+  glow(tx,ty,40,C.glow,.35);
+  for(let i=0;i<nC;i++){const a=i/nC*TAU+t;circ(tx+Math.cos(a)*11,ty+Math.sin(a)*11,6,C.gly,EDGE,1)}
+  const nm=p<.08?"Oxaloacetate (4 C)":p<.24?"Citrate (6 C)":p<.4?"5 C":p>.85?"Oxaloacetate (4 C) again":"4 C";
+  label(cx,cy-10,nm,{align:"center",weight:700,size:14});label(cx,cy+14,"Turn "+turn+" of 2 for this glucose",{align:"center",size:12,color:C["ink-soft"]});
+  // emissions
+  const cnt={co2:0,nad:0,atp:0,fad:0};
+  const tgt={nad:[650,128],fad:[650,198],atp:[650,268],co2:[650,338]};
+  ev.forEach(([e,k],j)=>{const q=seg(p,e,e+.12);const ea=a0+e*TAU;const sx=cx+Math.cos(ea)*R,sy=cy+Math.sin(ea)*R;
+    if(q>=1)cnt[k]++;else if(q>0){const x=lerp(sx,tgt[k][0],ease(q)),y=lerp(sy,tgt[k][1],ease(q));
+      if(k==="co2")co2M(x,y,1,1.6);else if(k==="atp")atpT(x,y,1,1.2);else truck(x,y,k,true,1,1,.6)}});
+  // tally panel
+  panelBox(560,60,228,330,true,C.act2);title(574,82,"This turn makes");
+  const rows=[["nad","NADH",3],["fad","FADH₂",1],["atp","ATP (as GTP)",1],["co2","CO₂",2]];
+  rows.forEach(([k,n,max],i)=>{const y=128+i*70;
+    if(k==="co2")co2M(604,y,1,1.6);else if(k==="atp")atpT(604,y,1,1.2);else truck(604,y+4,k,true,1,1,.55);
+    label(640,y-9,n,{pill:false,size:13,weight:600});
+    for(let j=0;j<max;j++){circ(646+j*22,y+13,7,j<cnt[k]?(k==="co2"?C.co2:C[k]):C["panel-2"],C.rule,1)}
+    label(724,y+13,cnt[k]+" / "+max,{pill:false,mono:true,weight:700,size:13})});
+  label(674,412,"Per glucose: 2 turns",{align:"center",size:12,weight:600});
+  label(674,432,"= 6 NADH, 2 FADH₂, 2 ATP, 4 CO₂",{align:"center",size:11.5,color:C["ink-soft"]});
+}
+/* ===== Scene: electron transport chain ===== */
+function sceneEtc(t){
+  const per=8,p=(t%per)/per,loop=Math.floor(t/per),fad=loop%2===1;
+  ctx.fillStyle=C.ims;ctx.fillRect(0,0,W,230);ctx.fillStyle=C.matrix;ctx.fillRect(0,280,W,H-280);bilayer(0,W,255,50);
+  title(14,20,"Intermembrane space (H⁺ builds up here)",C["mito-edge"]);title(14,466,"Matrix",C["mito-edge"]);
+  // complexes
+  const CX={I:[150,70],II:[250,46],III:[390,64],IV:[550,64]};
+  [["I",200,310],["III",205,305],["IV",205,305]].forEach(([k,y0,y1])=>{const [x,w]=CX[k];ctx.fillStyle=C.act1;rr(x-w/2,y0,w,y1-y0,12);ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke();label(x,y0+12,k,{align:"center",pill:false,weight:700,color:"#fff",size:14})});
+  ctx.fillStyle=C.act5;rr(250-23,262,46,44,10);ctx.fill();label(250,290,"II",{align:"center",pill:false,weight:700,color:"#fff",size:13});
+  ell(310,255,16,10,C.glow,EDGE,1);label(310,236,"Q",{align:"center",size:11,weight:700});
+  circ(470,214,11,C.blood,EDGE,1);label(470,192,"cyt c",{align:"center",size:11,weight:700});
+  // ATP synthase dim
+  ctx.globalAlpha=.45;ctx.fillStyle=C.act4;rr(680,215,46,80,8);ctx.fill();circ(703,330,22,C.act4);ctx.globalAlpha=1;label(703,370,"ATP synthase",{align:"center",size:11.5,color:C["ink-soft"]});
+  // H+ in IMS
+  const pumped=[.28,.5,.72].filter((e,i)=>!(fad&&i===0)&&p>e+.08).length;
+  const nH=Math.min(46,10+loop*5+pumped*2);
+  for(let i=0;i<nH;i++){hpT(40+rnd(i)*600+Math.sin(t*1.3+i)*4,48+rnd(i+50)*150+Math.cos(t*1.1+i)*4,.95)}
+  for(let i=0;i<4;i++)hpT(60+rnd(i+90)*560,340+rnd(i+70)*100,.8);
+  // truck
+  const startX=fad?250:150;const kind=fad?"fad":"nad";
+  const tq=seg(p,0,.16);truck(tq<1?lerp(-40,startX-50,ease(tq)):lerp(startX-50,-60,seg(p,.2,.35)),360,kind,p<.17,1,tq<1?1:-1,1);
+  label(400,412,fad?"FADH₂ drops electrons at complex II, so it skips one pump":"NADH drops electrons at complex I",{align:"center",weight:600,size:13,color:fad?C.fad:C.nad});
+  // electron path
+  const path=fad?[[250,300],[250,280],[310,255],[390,255],[470,214],[550,255],[560,330]]:[[150,330],[150,255],[310,255],[390,255],[470,214],[550,255],[560,330]];
+  ctx.strokeStyle=C.elec;ctx.lineWidth=2;ctx.setLineDash([4,5]);ctx.beginPath();path.forEach((pt,i)=>i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));ctx.stroke();ctx.setLineDash([]);
+  const eq=seg(p,.16,.78);if(eq>0&&eq<1){const pos=along(path,eq);elecT(pos[0],pos[1],1,1.3);elecT(pos[0]-8,pos[1]+6,1,1.3)}
+  // pumps
+  [[.28,150],[.5,390],[.72,550]].forEach(([e,x],i)=>{if(fad&&i===0)return;const q=seg(p,e,e+.12);if(q>0&&q<1){for(let j=0;j<2;j++)hpT(x-10+j*20,lerp(330,170,ease(q)),1,1.2);arrow(x+40,320,x+40,190,C.hplus,2)}});
+  // oxygen
+  const oq=seg(p,.66,.8);if(p>.62&&p<.82){o2T(lerp(660,575,oq),lerp(440,345,oq),1,1.3);hpT(lerp(500,548,oq),lerp(440,350,oq),1);label(640,450,"O₂ arrives",{size:12})}
+  const wq=seg(p,.8,1);if(wq>0){h2oT(lerp(565,640,wq),lerp(340,440,wq),1-wq*.4,1.6);label(640,320,"O₂ + e⁻ + H⁺ → H₂O",{weight:600,color:C.water,size:12.5})}
+  // energy staircase
+  ctx.fillStyle=C.panel;ctx.globalAlpha=.9;rr(600,30,190,150,8);ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  label(695,46,"Electron energy",{align:"center",pill:false,size:11.5,weight:600});
+  const steps=[[620,70,"I"],[660,95,"Q/III"],[705,125,"IV"],[750,160,"O₂"]];
+  steps.forEach((s,i)=>{line(s[0],s[1],s[0]+34,s[1],C.ink,2);label(s[0]+17,s[1]-9,s[2],{align:"center",pill:false,size:10})});
+  const sp=Math.min(3,Math.floor(eq*4));if(eq>0&&eq<1)elecT(steps[sp][0]+17,steps[sp][1]-2,1);
+  chipText(520,20,"H⁺ in IMS: "+nH,C.hplus);
+}
+/* ===== Scene: ATP synthase ===== */
+function sceneSynthase(t){
+  ctx.fillStyle=C.ims;ctx.fillRect(0,0,W,215);ctx.fillStyle=C.matrix;ctx.fillRect(0,265,W,H-265);bilayer(0,W,240,50);
+  title(14,20,"Intermembrane space: lots of H⁺",C["mito-edge"]);title(14,466,"Matrix: little H⁺",C["mito-edge"]);
+  for(let i=0;i<40;i++){const x=30+rnd(i)*740,y=40+rnd(i+20)*160;if(Math.abs(x-400)<40)continue;hpT(x+Math.sin(t+i)*5,y+Math.cos(t*1.2+i)*5,.95)}
+  for(let i=0;i<5;i++)hpT(60+rnd(i+80)*680,300+rnd(i+60)*120,.8);
+  // ETC on left pumping
+  ctx.fillStyle=C.act1;ctx.globalAlpha=.7;rr(110,200,60,80,10);ctx.fill();ctx.globalAlpha=1;label(140,300,"ETC pumps H⁺ up",{align:"center",size:11.5});
+  const pq=(t/1.6)%1;hpT(140,lerp(300,160,pq),1-pq);
+  // synthase
+  const x=400,ang=t*2.6;
+  ctx.fillStyle=C.act4;rr(x+40,140,16,215,6);ctx.fill();ctx.globalAlpha=.9;
+  ell(x,240,62,22,C.act4,EDGE,1.5);ctx.globalAlpha=1;
+  for(let i=0;i<10;i++){const a=ang+i/10*TAU;const bx=x+Math.cos(a)*50,by=240+Math.sin(a)*14;circ(bx,by,6,Math.sin(a)>0?C.good:C.act4,EDGE,1)}
+  ctx.fillStyle=C.ink;ctx.fillRect(x-5,240,10,90);
+  // head
+  ctx.save();ctx.translate(x,360);for(let i=0;i<6;i++){const a=ang*.5+i/6*TAU;ell(Math.cos(a)*24,Math.sin(a)*12,18,24,i%2?C.act4:C.good,EDGE,1)}ctx.restore();
+  label(x+90,200,"Rotor spins",{weight:600,color:C.act4});label(x+90,360,"ATP synthase head",{weight:600,color:C.act4});
+  // H+ flow through
+  for(let i=0;i<5;i++){const q=(t/2+i/5)%1;const yy=lerp(150,300,q);hpT(x+Math.sin(q*TAU*1.5)*18,yy,Math.min(1,q*5,(1-q)*5),1.2)}
+  arrow(x-80,150,x-80,300,C.hplus,3);label(x-80,128,"H⁺ flows down its gradient",{align:"center",weight:600,color:C.hplus,size:12.5});
+  // ADP + Pi -> ATP
+  for(let i=0;i<3;i++){const q=(t/3+i/3)%1;if(q<.45){const r=q/.45;adpT(lerp(170,x-30,r),lerp(420,372,r),1,1.2);piT(lerp(230,x-24,r),lerp(450,385,r),1,1.2)}
+    else{const r=(q-.45)/.55;atpT(lerp(x+30,700,ease(r)),lerp(372,430,r),1-r*.3,1.3)}}
+  const made=Math.floor(t*1.5);panelBox(610,280,180,70,true,C.atp);label(700,302,"ATP made",{align:"center",pill:false,size:12,weight:600});label(700,328,String(made),{align:"center",pill:false,mono:true,weight:700,size:20});
+  label(480,466,"Chemiosmosis: the H⁺ gradient powers ATP synthase",{align:"center",weight:600,size:12.5,border:C.act4});
+}
+/* ===== Scene: ATP yield ===== */
+function sceneYield(t){
+  bg(C.panel);const p=Math.min(1,t/14);
+  const rows=[
+    [.0,"Glycolysis",[["atp",2],["nad",2]],2],
+    [.1,"Pyruvate → acetyl CoA",[["nad",2]],0],
+    [.2,"Krebs cycle × 2",[["atp",2],["nad",6],["fad",2]],2],
+    [.34,"ETC: 10 NADH × 3",[["atp",30]],30],
+    [.5,"ETC: 2 FADH₂ × 2",[["atp",4]],4]];
+  let coins=0;
+  rows.forEach(([s,name,items,add],i)=>{const a=seg(p,s,s+.06);if(a<=0)return;const y=58+i*58;A(a);
+    ctx.fillStyle=C["panel-2"];rr(16,y-22,500,46,6);ctx.fill();ctx.globalAlpha=a;
+    label(28,y,name,{pill:false,weight:600,size:14});let x=250;
+    items.forEach(([k,n])=>{if(k==="atp")atpT(x+14,y,a,1.1);else truck(x+14,y+3,k,true,a,1,.5);label(x+38,y,"× "+n,{pill:false,mono:true,weight:700});x+=86});
+    ctx.globalAlpha=1;if(seg(p,s,s+.12)>=1)coins+=add;else coins+=Math.floor(add*seg(p,s,s+.12))});
+  const g=seg(p,.62,.68),m=seg(p,.72,.8),n=seg(p,.84,.9);
+  if(g>0){A(g);label(28,358,"Gross total",{pill:false,weight:600,size:14});label(320,358,"38 ATP",{pill:false,mono:true,weight:700,size:16,color:C.atp});ctx.globalAlpha=1}
+  if(m>0){A(m);label(28,392,"Moving 2 glycolysis NADH into the mitochondrion",{pill:false,size:13});label(420,392,"− 2 ATP",{pill:false,mono:true,weight:700,size:15,color:C.warn});ctx.globalAlpha=1}
+  if(n>0){A(n);ctx.fillStyle=C["good-wash"];rr(16,412,500,48,6);ctx.fill();ctx.strokeStyle=C.good;ctx.lineWidth=2;ctx.stroke();label(28,436,"Net (OpenStax)",{pill:false,weight:700,size:15});label(300,436,"≈ 36 ATP per glucose",{pill:false,mono:true,weight:700,size:16,color:C.good});ctx.globalAlpha=1}
+  // jar
+  const jx=560,jy=70,jw=210,jh=360;
+  ctx.fillStyle=C["panel-2"];rr(jx,jy,jw,jh,14);ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=2;ctx.stroke();
+  const shown=Math.min(38,coins);const removed=m>0?Math.round(2*m):0;
+  for(let i=0;i<shown;i++){const r=Math.floor(i/5),c=i%5;let x=jx+26+c*40,y=jy+jh-22-r*44;const isRem=i>=36&&removed>i-36;if(isRem){x+=(m*200);y-=m*200}atpT(x,y,isRem?1-m:1,1.05)}
+  label(jx+jw/2,jy-22,"ATP count: "+(shown-removed),{align:"center",weight:700,size:15,mono:true});
+  if(p>.9)chipText(jx+jw/2,jy+jh+24,"Other textbooks: about 30–38",C.warn);
+}
+/* ===== Scene: gluconeogenesis ===== */
+function sceneGng(t){
+  bg(C.ecf);
+  cellBlob(420,262,250,186,C["liver-in"],C.liver,2,3);title(420,60,"Liver cell (hepatocyte)",C.liver,"center");
+  chipText(420,22,"Fasting: glucagon and cortisol turn this on",C.gcg);
+  // sources
+  muscleIcon(70,120,.5);label(70,152,"Muscle: lactate",{align:"center",size:11.5});
+  adiposeIcon(70,262,.5);label(70,298,"Fat: glycerol",{align:"center",size:11.5});
+  muscleIcon(70,400,.5);label(70,432,"Muscle protein:",{align:"center",size:11.5});label(70,450,"amino acids",{align:"center",size:11.5});
+  const hub=[330,262];
+  stream([[110,120],[230,170],hub],t,4,4,(x,y,a)=>lactM(x,y,a,1.1),{curve:true});
+  stream([[110,262],[220,262],hub],t,4,4,(x,y,a)=>glycerolM(x,y,a,1.1),{curve:true,phase:.33});
+  stream([[110,400],[230,350],hub],t,4,4,(x,y,a)=>aminoM(x,y,a,1.3),{curve:true,phase:.66});
+  circ(hub[0],hub[1],26,C.panel,C.pyr,2);pyrM(hub[0],hub[1],1,1.3);label(hub[0],hub[1]+42,"Pyruvate and",{align:"center",size:11.5});label(hub[0],hub[1]+58,"other 3-C pieces",{align:"center",size:11.5});
+  // assembly: two 3C pieces -> glucose
+  const q=(t/3)%1;const asm=[480,262];
+  if(q<.5){const r=ease(q/.5);for(let i=0;i<2;i++)pyrM(lerp(hub[0]+30,asm[0]-14+i*28,r),lerp(hub[1]+(i?24:-24),asm[1],r),1,1.2)}
+  else{const r=seg(q,.5,.6);hexG(asm[0],asm[1],lerp(10,16,r),1);glow(asm[0],asm[1],40,C.glow,1-r)}
+  ctx.strokeStyle=C.act3;ctx.lineWidth=2;ctx.setLineDash([5,4]);ctx.strokeRect(asm[0]-50,asm[1]-46,100,92);ctx.setLineDash([]);
+  label(asm[0],asm[1]+62,"Gluconeogenesis",{align:"center",weight:700,color:C.act3});
+  // ATP use
+  for(let i=0;i<2;i++){const r=((t/3)+i*.5)%1;if(r<.5)atpT(asm[0]-20+i*40,lerp(150,asm[1]-30,r/.5),1);else adpT(asm[0]-20+i*40+(r-.5)*80,lerp(asm[1]-30,140,(r-.5)/.5),1-(r-.5)*2)}
+  label(asm[0],126,"uses ATP",{align:"center",size:11.5,color:C["ink-soft"]});
+  // export
+  vessel([[740,470],[740,10]],34,C.vessel,C["blood-wash"]);label(740,450,"Blood",{align:"center",size:11.5,weight:600});
+  stream([[asm[0]+30,asm[1]],[670,262],[740,262],[740,20]],t,5,4,(x,y,a)=>hexG(x,y,9,a));
+  label(640,40,"→ brain, red blood cells",{align:"right",size:12,weight:600});
+  // not fatty acids
+  panelBox(540,370,160,90,true,C.bad);fattyM(560,398,9,1,1);line(556,388,640,410,C.bad,3);line(556,410,640,388,C.bad,3);
+  label(620,430,"Fatty acids cannot",{align:"center",size:11.5,weight:600});label(620,447,"become glucose",{align:"center",size:11.5,weight:600});
+}
+/* ===== Scene: glycogen ===== */
+const GLY_L=glyTree(210,280,34,1.15),GLY_M=glyTree(590,290,28,1);
+function sceneGlycogen(t){
+  bg(C.ecf);const p=(t%14)/14;
+  vessel([[0,52],[W,52]],40,C.vessel,C["blood-wash"]);label(20,52,"Blood",{pill:false,weight:600,size:12});
+  cellBlob(210,280,180,165,C["liver-in"],C.liver,1,3);title(210,128,"Liver cell",C.liver,"center");
+  ctx.fillStyle=C["muscle-in"];rr(430,140,340,300,60);ctx.fill();ctx.strokeStyle=C.muscle;ctx.lineWidth=3;ctx.stroke();title(600,128,"Muscle fiber",C.muscle,"center");
+  const build=p<.47,fill=build?seg(p,.04,.44):1-seg(p,.52,.92);
+  const nL=4+Math.round(fill*30),nM=3+Math.round(fill*25);
+  drawGly(GLY_L,nL,1,1.15);drawGly(GLY_M,nM,1,1);
+  if(build){
+    for(let i=0;i<6;i++){const x=40+i*130+((t*40)%130);insT(x%W,52+Math.sin(t*2+i)*8,.95)}
+    chipText(400,104,"GLYCOGENESIS · after a meal · insulin",C.ins);
+    stream([[160,60],[200,170],[210,270]],t,3,2.2,(x,y,a)=>hexG(x,y,8,a),{curve:true});
+    stream([[560,60],[590,180],[590,280]],t,3,2.2,(x,y,a)=>hexG(x,y,8,a),{curve:true,phase:.5});
+    label(210,462,"Glucose stored as glycogen",{align:"center",size:12});label(600,462,"Glucose stored as glycogen",{align:"center",size:12});
+  }else if(p>.5){
+    for(let i=0;i<5;i++){const x=40+i*80+((t*40)%80);gcgT(x%420,52+Math.sin(t*2+i)*8,.95)}
+    chipText(400,104,"GLYCOGENOLYSIS · between meals · glucagon (liver), epinephrine",C.gcg);
+    if(p<.94){stream([[210,270],[260,170],[270,60],[400,52]],t,4,2.4,(x,y,a)=>hexG(x,y,8,a));
+      stream([[590,280],[640,380]],t,3,2,(x,y,a)=>hexG(x,y,8,a))}
+    label(210,462,"Liver sends glucose to the blood",{align:"center",size:12,weight:600,color:C.liver});
+    ctx.fillStyle=C.panel;rr(600,370,160,40,8);ctx.fill();ctx.strokeStyle=C.muscle;ctx.lineWidth=1.5;ctx.stroke();label(680,390,"own glycolysis → ATP",{align:"center",pill:false,size:12});
+    label(600,462,"Muscle keeps its glucose for itself",{align:"center",size:12,weight:600,color:C.muscle});
+    line(560,72,620,72,C.bad,3);label(590,88,"not to blood",{align:"center",size:11,color:C.bad})}
+  label(210,148,"Glucose units: "+nL,{align:"center",mono:true,size:11.5,color:C["ink-soft"]});
+}
+/* ===== Scene: lipolysis and beta-oxidation ===== */
+function sceneBeta(t){
+  bg(C.ecf);const p=(t%15)/15;
+  mito(560,250,228,170,{folds:7});title(560,96,"Mitochondrion",C["mito-edge"],"center");
+  // adipocyte
+  circ(140,250,112,C.cell,C["cell-edge"],2.5);circ(140,250,96,C.adipose,C["adipose-edge"],1.5);title(140,124,"Fat cell",C["adipose-edge"],"center");
+  const cut=seg(p,.05,.22);
+  if(cut<1){trigM(110,250,1,2.2,9);scissors(105,214,Math.abs(Math.sin(t*6)),C.ink);label(140,390,"Lipase splits the triglyceride",{align:"center",size:12,weight:600})}
+  else{const r=seg(p,.22,.36);glycerolM(lerp(110,60,r),lerp(250,60,r),1,1.8);label(70,28,"Glycerol → liver (can become glucose)",{size:12});
+    for(let i=0;i<3;i++){if(i===1){const mv=seg(p,.26,.4);fattyM(lerp(125,380,ease(mv)),lerp(250,250,mv),9,1,1.8)}else fattyM(125+r*30,250+(i-1)*40,9,1-seg(p,.3,.4),1.8)}}
+  label(560,70,"Lipolysis → beta-oxidation",{align:"center",weight:600,size:13});
+  const cuts=Math.min(7,Math.max(0,Math.floor((p-.42)/.065)+1));const nC=16-2*cuts;
+  const sx=420,sy=210;
+  if(p>.4){ if(nC>2)fattyM(sx+2*cuts*7.8,sy,nC,1,1.3);else acoaM(sx+120,sy,1,1.3);
+    scissors(sx+2*cuts*7.8+14,sy-22,Math.abs(Math.sin(t*6)),C.act3)}
+  label(560,150,p>.4?"Carbons left in chain: "+Math.max(2,nC):"Fatty acid (16 carbons) arriving",{align:"center",mono:true,size:12,weight:600});
+  // each cut
+  for(let k=0;k<7;k++){const e=.42+k*.065;const q=seg(p,e,e+.12);if(q<=0||q>=1)continue;
+    const x0=sx+k*2*7.8+8;acoaM(lerp(x0,560,q),lerp(sy+10,345,ease(q)),1,1.2);
+    truck(lerp(x0,740,q),lerp(sy-10,170,q),"nad",true,1-q*.4,1,.45);truck(lerp(x0,740,q),lerp(sy+20,260,q),"fad",true,1-q*.4,1,.45)}
+  cycleIcon(560,360,28,t,C.act2,4);label(560,402,"Krebs cycle",{align:"center",size:12,weight:600});
+  label(745,215,"→ ETC",{align:"center",size:12,weight:600});
+  const acoa=p>.42?Math.min(8,cuts+(cuts===7?1:0)):0;
+  chipText(400,460,"Cuts: "+cuts+" / 7     Acetyl CoA made: "+acoa+" / 8",C.acoa,"#fff",12);
+}
+/* ===== Scene: ketogenesis ===== */
+function sceneKeto(t){
+  bg(C.ecf);const p=(t%16)/16;const dka=p>.5;
+  cellBlob(260,250,220,190,C["liver-in"],C.liver,3,3);title(260,74,"Liver cell",C.liver,"center");
+  stream([[30,40],[120,140],[230,220]],t,5,3,(x,y,a)=>fattyM(x-20,y,6,a,.9),{curve:true});label(16,24,"Lots of fatty acids",{size:11.5});
+  // acetyl CoA pile
+  for(let i=0;i<14;i++)acoaM(200+rnd(i)*120+Math.sin(t+i)*3,230+rnd(i+30)*60,.95,.9,true);
+  label(260,312,"Acetyl CoA piles up",{align:"center",size:12,weight:600,color:C.acoa});
+  ctx.globalAlpha=.45;cycleIcon(110,340,22,t*.15,C["ink-faint"],4);ctx.globalAlpha=1;label(142,334,"Krebs cycle slows:",{size:11.5,weight:600});label(142,352,"oxaloacetate is used to make glucose",{size:11.5});
+  // pairing into ketones
+  const q=(t/2)%1;if(q<.5){acoaM(lerp(300,370,q*2),lerp(240,250,q*2),1,1,true);acoaM(lerp(330,370,q*2),lerp(290,262,q*2),1,1,true)}else{ketoneT(lerp(370,560,(q-.5)*2),256,1,1.6)}
+  label(380,190,"2 acetyl CoA → ketone body",{align:"center",size:12,weight:600,color:C.ketone});
+  // vessel
+  vessel([[560,470],[560,10]],44,C.vessel,C["blood-wash"]);
+  const nk=dka?14+Math.floor(seg(p,.5,.8)*16):6;
+  for(let i=0;i<nk;i++){const y=(rnd(i)*460+t*40*(.6+rnd(i+5)))%460+10;ketoneT(552+((i%3)-1)*9,y,1,1.1)}
+  if(dka)for(let i=0;i<Math.floor(nk/2);i++){const y=(rnd(i+40)*460+t*30)%460+10;hpT(568+((i%2)?6:-10),y,1,.9)}
+  // organs
+  heartIcon(690,90,1.3);label(690,124,"Heart",{align:"center",size:11.5});brainIcon(690,230,.85);label(690,268,"Brain (in starvation)",{align:"center",size:11.5});muscleIcon(690,370,.6);label(690,398,"Muscle",{align:"center",size:11.5});
+  [[90],[230],[370]].forEach(([y],i)=>{const r=((t/2.5)+i*.33)%1;ketoneT(lerp(585,640,r),lerp(256,y,r),1-r)});
+  label(690,22,"use ketones → acetyl CoA → ATP",{align:"center",size:11.5,weight:600});
+  // pH meter
+  panelBox(14,400,330,74,true,dka?C.bad:C.good);
+  const ph=dka?lerp(7.4,7.12,seg(p,.55,.85)):7.4;const x0=40,x1=310,f=v=>lerp(x0,x1,(v-6.9)/(7.7-6.9));
+  ctx.fillStyle=C["good-wash"];ctx.fillRect(f(7.35),438,f(7.45)-f(7.35),14);line(x0,445,x1,445,C.rule,2);
+  [7.0,7.2,7.4,7.6].forEach(v=>{line(f(v),439,f(v),451,C["ink-soft"],1);label(f(v),462,v.toFixed(1),{align:"center",pill:false,size:10,mono:true,color:C["ink-soft"]})});
+  ctx.beginPath();ctx.moveTo(f(ph),437);ctx.lineTo(f(ph)-6,427);ctx.lineTo(f(ph)+6,427);ctx.closePath();ctx.fillStyle=dka?C.bad:C.good;ctx.fill();
+  label(24,414,"Blood pH "+ph.toFixed(2)+(ph<7.35?"  ACIDOSIS":"  normal"),{pill:false,size:12,weight:700,color:dka&&ph<7.35?C.bad:C.good});
+  chipText(320,22,dka?"Uncontrolled type 1 diabetes: ketones pile up":"Long fast / low-carb: ketones as fuel",dka?C.bad:C.act3);
+  if(dka&&p>.65){label(390,350,"Acetone → fruity breath",{size:12,weight:600,color:C.ketone});for(let i=0;i<3;i++){const r=((t/1.5)+i/3)%1;ctx.globalAlpha=1-r;ctx.strokeStyle=C.ketone;ctx.lineWidth=2;ctx.beginPath();ctx.arc(470+r*30,350,6+r*10,-.8,.8);ctx.stroke();ctx.globalAlpha=1}}
+}
+/* ===== Scene: lipogenesis ===== */
+function sceneLipogen(t){
+  bg(C.ecf);const p=(t%13)/13;
+  vessel([[50,470],[50,10]],48,C.vessel,C["blood-wash"]);label(80,462,"Blood",{size:11.5,weight:600});
+  for(let i=0;i<6;i++){const y=(i*80+t*50)%470;hexG(42,y,8,1);insT(60,(y+40)%470,1)}
+  cellBlob(390,250,300,200,C.cell,C["cell-edge"],4,2.5);title(390,64,"Liver or fat cell",C["cell-edge"],"center");
+  chipText(390,22,"Fed state: insulin says build and store",C.ins);
+  stream([[70,160],[150,160]],t,3,1.5,(x,y,a)=>hexG(x,y,8,a));
+  ctx.fillStyle=C.panel;rr(150,138,100,44,8);ctx.fill();ctx.strokeStyle=C.act2;ctx.lineWidth=1.5;ctx.stroke();label(200,160,"Glycolysis",{align:"center",pill:false,size:12,weight:600});
+  stream([[250,160],[300,200],[300,250]],t,3,1.5,(x,y,a)=>acoaM(x,y,a,1.1,true),{curve:true});
+  // chain growth
+  const ticks=Math.min(8,Math.floor(seg(p,.05,.6)*8)+1);const len=ticks*2;
+  if(p<.62){fattyM(320,250,len,1,1.4);const r=(seg(p,.05,.6)*8)%1;acoaM(lerp(300,320+len*8.4,r),lerp(225,240,r),1-r*.5,1,true);
+    label(420,300,"Adds 2 carbons at a time: "+len+" C",{align:"center",mono:true,size:12,weight:600});
+    for(let i=0;i<2;i++){const q=((t/1.5)+i*.5)%1;if(q<.5)atpT(250+i*40,lerp(360,272,q*2),1);else adpT(250+i*40,lerp(272,370,(q-.5)*2),1-(q-.5)*2)}
+    label(270,392,"uses ATP",{align:"center",size:11.5,color:C["ink-soft"]})}
+  // assemble triglyceride
+  const as=seg(p,.62,.74),mv=seg(p,.76,.92);
+  if(p>=.62){const tx=lerp(450,680,ease(mv)),ty=lerp(250,300,ease(mv));
+    if(mv<1){glycerolM(lerp(470,tx,as),lerp(330,ty,as),1,1.6);for(let i=-1;i<=1;i++)fattyM(lerp(i?380:320,tx+3,as),lerp(250+i*60,ty+i*12.8,as),9,1,1.6);label(560,180,as<1?"3 fatty acids + glycerol":"Triglyceride",{align:"center",weight:600})}}
+  // droplet
+  const store=Math.floor(t/13)%5;const R=40+store*4+(mv>=1?4:0);
+  circ(690,320,R+10,C.cell,C["cell-edge"],1.5);circ(690,320,R,C.adipose,C["adipose-edge"],2);label(690,320+R+24,"Stored fat droplet",{align:"center",size:12,weight:600});
+}
+/* ===== Scene: protein, deamination, urea ===== */
+function sceneUrea(t){
+  bg(C.ecf);const p=(t%12)/12;
+  // protein chain
+  const br=ease(seg(p,0,.15));for(let i=0;i<7;i++){const x=40+i*20+br*i*8,y=60+(br*(i%2?10:-10));if(br<.1&&i<6)line(x,y,x+20,y,C.amino,3);aminoM(x,y,1,1.2,false)}
+  label(110,28,br<.5?"Protein":"Amino acids (from extra food or muscle)",{size:12,weight:600});
+  cellBlob(430,275,300,185,C["liver-in"],C.liver,5,3);title(560,110,"Liver cell",C.liver,"center");
+  // amino acid to deamination
+  const mv=ease(seg(p,.15,.3));const ax=lerp(160,250,mv),ay=lerp(70,230,mv);
+  const off=seg(p,.3,.4);
+  ctx.strokeStyle=C.act3;ctx.lineWidth=2;ctx.setLineDash([5,4]);ctx.strokeRect(200,190,100,80);ctx.setLineDash([]);label(250,176,"Deamination",{align:"center",weight:700,color:C.act3});
+  if(off<1)aminoM(ax,ay,1,2,off>0);
+  // NH3
+  if(off>0){const r=seg(p,.4,.55);const nx=lerp(232,430,ease(r)),ny=lerp(212,330,ease(r));if(p<.6){nh3T(nx,ny,1,1.8);glow(nx,ny,26,C.nh3,.3+.3*Math.sin(t*10));label(nx-14,ny-20,"NH₃ (toxic)",{align:"right",weight:700,color:C.nh3,size:12})}}
+  // urea cycle
+  cycleIcon(430,340,40,t,C.urea,5);label(430,340,"Urea",{align:"center",pill:false,size:12,weight:700});label(430,396,"urea cycle",{align:"center",size:12,weight:600,color:C.urea});
+  const cq=seg(p,.42,.56);if(cq>0&&cq<1)co2M(lerp(540,470,cq),lerp(250,315,cq),1,1.4);if(p>.4&&p<.6)label(540,236,"+ CO₂",{size:11.5});
+  const uq=seg(p,.6,.95);if(uq>0){const pos=along([[470,340],[740,340],[740,410]],uq);ureaT(pos[0],pos[1],1,1.6)}
+  vessel([[740,20],[740,400]],34,C.vessel,C["blood-wash"]);kidneyIcon(740,430,1.2);label(675,455,"Kidneys → urine",{align:"center",size:12,weight:600});
+  // carbon skeleton
+  if(off>0){const r=ease(seg(p,.42,.7));aminoM(lerp(250,600,r),lerp(230,190,r),1,2,true);if(r>.5)label(600,160,"Carbon skeleton → pyruvate, acetyl CoA or Krebs",{align:"center",size:12,weight:600,color:C.amino})}
+  if(p>.7){for(let i=0;i<3;i++){const r=seg(p,.7+i*.05,.85+i*.05);atpT(600+i*30,lerp(210,250,r),1-r*.5)}label(600,276,"→ ATP, or → glucose",{align:"center",size:12})}
+}
+/* ===== Scenes: fed and fasting states ===== */
+const GLY_S=glyTree(92,266,24,.58);
+function sceneStates(t,fed){
+  bg(C.ecf);const per=12,p=(t%per)/per;
+  const late=!fed&&p>.5;
+  // loop
+  const L=[[215,125],[595,125],[595,395],[215,395],[215,125]];
+  ctx.lineJoin="round";ctx.beginPath();L.forEach((pt,i)=>i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));ctx.strokeStyle=C.vessel;ctx.lineWidth=30;ctx.stroke();ctx.strokeStyle=C["blood-wash"];ctx.lineWidth=24;ctx.stroke();ctx.lineJoin="miter";
+  // circulating tokens
+  for(let i=0;i<18;i++){const q=((t/14)+i/18)%1;const pos=along(L,q);const k=i%3;
+    if(fed){if(k===0)hexG(pos[0],pos[1],7,1);else if(k===1)aminoM(pos[0],pos[1],1,1);else insT(pos[0],pos[1],1,1.1)}
+    else{if(k===0)hexG(pos[0],pos[1],7,1);else if(k===1)(late&&i%2?ketoneT(pos[0],pos[1],1,1):fattyM(pos[0]-12,pos[1],4,1,.8));else gcgT(pos[0],pos[1],1,1.1)}}
+  // organs
+  gutIcon(98,92,.8);label(98,50,fed?"Gut: absorbing a meal":"Gut: empty",{align:"center",size:12,weight:600});
+  pancIcon(405,58,.8);label(405,28,fed?"Pancreas beta cells → insulin":"Pancreas alpha cells → glucagon",{align:"center",size:12,weight:600,color:fed?C.ins:C.gcg});
+  brainIcon(718,70,.75);label(718,38,late?"Brain: glucose + ketones":"Brain: needs glucose",{align:"center",size:11.5});
+  liverIcon(100,262,.95);title(100,212,"Liver",C.liver,"center");
+  const gfill=fed?.35+.65*seg(p,.1,.8):(late?.15:1-.8*seg(p,0,.5));drawGly(GLY_S,3+Math.round(gfill*21),1,.58);
+  muscleIcon(718,205,.8);title(718,172,"Skeletal muscle",C.muscle,"center");
+  adiposeIcon(718,368,.75,fed?.6+.4*seg(p,.1,.9):1-.5*seg(p,0,1));title(718,330,"Adipose tissue",C["adipose-edge"],"center");
+  // pancreas hormone release
+  for(let i=0;i<4;i++){const q=((t/2)+i/4)%1;const x=405+(i-1.5)*14,y=lerp(76,120,q);fed?insT(x,y,1-q*.5,1.1):gcgT(x,y,1-q*.5,1.1)}
+  // flows
+  const f=(P,fn,ph)=>stream(P,t,3,2.4,fn,{phase:ph||0});
+  if(fed){f([[140,110],[215,140]],(x,y,a)=>hexG(x,y,7,a));f([[140,120],[215,170]],(x,y,a)=>aminoM(x,y,a,1),.5);
+    f([[215,262],[160,262]],(x,y,a)=>hexG(x,y,7,a));f([[595,205],[660,205]],(x,y,a)=>hexG(x,y,7,a));f([[595,225],[660,225]],(x,y,a)=>aminoM(x,y,a,1),.5);
+    f([[595,368],[660,368]],(x,y,a)=>fattyM(x-12,y,4,a,.8));f([[595,140],[680,90]],(x,y,a)=>hexG(x,y,7,a))}
+  else{f([[160,262],[215,262]],(x,y,a)=>hexG(x,y,7,a));f([[660,368],[595,368]],(x,y,a)=>fattyM(x-12,y,4,a,.8));f([[660,388],[595,388]],(x,y,a)=>glycerolM(x,y,a,.8),.5);
+    f([[595,215],[660,215]],(x,y,a)=>fattyM(x-12,y,4,a,.8));f([[595,140],[680,90]],(x,y,a)=>hexG(x,y,7,a));
+    if(late){f([[160,290],[215,300]],(x,y,a)=>ketoneT(x,y,a,1),.3);f([[595,160],[680,100]],(x,y,a)=>ketoneT(x,y,a,1),.6);f([[660,230],[595,240]],(x,y,a)=>aminoM(x,y,a,1),.2)}}
+  // chips
+  const lv=fed?[["Glycogenesis",1],["Lipogenesis",1],["Glycogenolysis",0],["Gluconeogenesis",0],["Ketogenesis",0]]:[["Glycogenesis",0],["Lipogenesis",0],["Glycogenolysis",!late||1],["Gluconeogenesis",1],["Ketogenesis",late]];
+  lv.forEach((c,i)=>onoff(14,318+i*24,c[0],!!c[1],180));
+  const ms=fed?[["Glucose uptake",1],["Glycogenesis",1],["Protein synthesis",1]]:[["Burns fatty acids",1],["Glycogenesis",0],["Protein breakdown",late]];
+  ms.forEach((c,i)=>onoff(626,242+i*22,c[0],!!c[1],166));
+  const ad=fed?[["Triglyceride storage",1],["Lipolysis",0]]:[["Triglyceride storage",0],["Lipolysis",1]];
+  ad.forEach((c,i)=>onoff(626,420+i*22,c[0],!!c[1],166));
+  // centre panel
+  ctx.fillStyle=C.panel;rr(250,160,310,200,10);ctx.fill();ctx.strokeStyle=fed?C.ins:C.gcg;ctx.lineWidth=2;ctx.stroke();
+  label(405,184,fed?"ABSORPTIVE (FED) STATE":"POSTABSORPTIVE (FASTING) STATE",{align:"center",pill:false,weight:700,mono:true,size:13,color:fed?C.ins:C.gcg});
+  const clock=fed?"Time after meal: "+(p*4).toFixed(1)+" h":(p<.5?"Time since meal: "+Math.round(lerp(5,16,p*2))+" h":"Fasting: day "+(1+Math.floor(seg(p,.5,1)*2.99)));
+  label(405,208,clock,{align:"center",pill:false,mono:true,size:12.5});
+  const ins=fed?lerp(.4,1,seg(p,0,.25))*(1-.5*seg(p,.7,1)):.15,gcg=fed?.15:lerp(.5,1,seg(p,0,.6));
+  [["Insulin",ins,C.ins],["Glucagon",gcg,C.gcg]].forEach(([n,v,c],i)=>{const y=236+i*30;label(270,y,n,{pill:false,size:12.5,weight:600});ctx.fillStyle=C.sunk;rr(345,y-7,160,14,7);ctx.fill();ctx.fillStyle=c;rr(345,y-7,160*v,14,7);ctx.fill();label(545,y,v>.6?"high":v>.3?"mid":"low",{pill:false,size:11,align:"right",color:C["ink-soft"]})});
+  const bg2=fed?Math.round(90+45*Math.sin(Math.min(1,p*1.4)*Math.PI)):Math.round(lerp(88,72,seg(p,0,1)));
+  label(405,306,"Blood glucose ≈ "+bg2+" mg/dL",{align:"center",pill:false,mono:true,size:12.5,weight:600});
+  label(405,334,fed?"Insulin says: STORE fuel":(late?"Glucagon: release fuel; ketones rise":"Glucagon says: RELEASE fuel"),{align:"center",pill:false,size:13,weight:700,color:fed?C.ins:C.gcg});
+}
+/* ===== Scene: energy balance and BMR ===== */
+function sceneBmr(t){
+  bg(C.panel);const per=15,ci=Math.floor((t%per)/5),p=((t%per)%5)/5;
+  const cases=[[2200,2200,"Balanced: weight stays steady",C.good],[2900,2200,"Energy in > out: extra stored as fat",C.warn],[2200,2700,"Energy out > in: stored fat is used",C.cold]];
+  const [ein,eout,msg,col]=cases[ci];const drop=ease(seg(p,0,.25));
+  const ang=clamp((ein-eout)/1500,-.22,.22)*ease(seg(p,.2,.45));
+  const fx=250,fy=330,Lb=170;
+  ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(fx-30,fy+70);ctx.lineTo(fx+30,fy+70);ctx.closePath();ctx.fillStyle=C["ink-soft"];ctx.fill();
+  const lx=fx-Lb*Math.cos(ang),ly=fy-Lb*Math.sin(-ang)*-1,rx=fx+Lb*Math.cos(ang),ry=fy-Lb*Math.sin(ang)*-1;
+  const ly2=fy+Lb*Math.sin(ang)*-1+0,ry2=fy-Lb*Math.sin(ang)*-1;
+  const Lp=[fx-Lb*Math.cos(ang),fy+Lb*Math.sin(ang)],Rp=[fx+Lb*Math.cos(ang),fy-Lb*Math.sin(ang)];
+  line(Lp[0],Lp[1],Rp[0],Rp[1],C.ink,6);circ(fx,fy,6,C.ink);
+  [Lp,Rp].forEach(pt=>{line(pt[0],pt[1],pt[0]-40,pt[1]-60,C["ink-soft"],1.5);line(pt[0],pt[1],pt[0]+40,pt[1]-60,C["ink-soft"],1.5);ctx.fillStyle=C["panel-2"];rr(pt[0]-60,pt[1]-66,120,10,4);ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=1.5;ctx.stroke()});
+  // in blocks
+  const nIn=Math.round(ein/300);for(let i=0;i<nIn;i++){const c=i%3,r=Math.floor(i/3);const x=Lp[0]-48+c*34,y=Lp[1]-82-r*18;const yy=lerp(y-200,y,drop);ctx.fillStyle=C.glu;rr(x,yy,30,16,3);ctx.fill();ctx.strokeStyle=C["glu-edge"];ctx.lineWidth=1;ctx.stroke()}
+  label(Lp[0],Lp[1]+24,"Energy in: "+ein+" kcal",{align:"center",weight:700,size:12.5});
+  // out blocks: BMR, activity, digestion
+  const parts=[["BMR",Math.round(eout*.62),C.heat],["Activity",Math.round(eout*.28),C.act4],["Digestion",Math.round(eout*.1),C.pi]];let k=0;
+  parts.forEach(([n,v,c])=>{const nb=Math.max(1,Math.round(v/300));for(let i=0;i<nb;i++,k++){const cc=k%3,r=Math.floor(k/3);const x=Rp[0]-48+cc*34,y=Rp[1]-82-r*18;const yy=lerp(y-200,y,drop);ctx.fillStyle=c;rr(x,yy,30,16,3);ctx.fill();ctx.strokeStyle=EDGE;ctx.lineWidth=1;ctx.stroke()}});
+  label(Rp[0],Rp[1]+24,"Energy out: "+eout+" kcal",{align:"center",weight:700,size:12.5});
+  label(250,30,msg,{align:"center",weight:700,size:14,color:col,border:col});
+  // person with fat store
+  const pr=person(600,60,.42);const fatR=ci===0?16:(ci===1?16+10*seg(p,.4,1):16-7*seg(p,.4,1));
+  circ(600,60+205*.42,fatR,C.adipose,C["adipose-edge"],2);label(600,232,ci===0?"Fat store steady":ci===1?"Fat store grows":"Fat store shrinks",{align:"center",size:12,weight:600});
+  // pie
+  const pc=[690,355],pr2=62;let a0=-Math.PI/2;
+  [["BMR ≈ 60–70%",.65,C.heat],["Activity",.25,C.act4],["Digestion ≈ 10%",.1,C.pi]].forEach(([n,f,c],i)=>{ctx.beginPath();ctx.moveTo(pc[0],pc[1]);ctx.arc(pc[0],pc[1],pr2,a0,a0+f*TAU);ctx.closePath();ctx.fillStyle=c;ctx.fill();ctx.strokeStyle=C.panel;ctx.lineWidth=2;ctx.stroke();const am=a0+f*Math.PI;if(i<2)label(pc[0]+Math.cos(am)*36,pc[1]+Math.sin(am)*36,i?"Act.":"BMR",{align:"center",pill:false,size:11.5,weight:700,color:"#fff"});a0+=f*TAU});
+  label(pc[0],270,"Daily energy use (approx.)",{align:"center",size:12,weight:600});
+  label(560,370,"BMR: biggest share",{align:"right",size:11.5,color:C.heat,weight:600});label(560,392,"Activity, digestion",{align:"right",size:11.5,color:C["ink-soft"]});
+  // factors
+  const fac=["More lean muscle → higher BMR","Older age → lower BMR","Thyroid hormone → higher BMR"];const hi=Math.floor(t/2.5)%3;
+  fac.forEach((s,i)=>label(20,430+i*0+0,"",{pill:false}));
+  fac.forEach((s,i)=>{const x=[20,270,500][i];label(x,462,s,{size:11.5,weight:i===hi?700:500,color:i===hi?C.ink:C["ink-soft"],border:i===hi?C.act5:null})});
+}
+/* ===== Scene: heat gain and loss ===== */
+function sceneHeat(t){
+  bg(C.ecf);const ph=Math.floor((t%20)/4);const lit=i=>ph===4||ph===i;
+  // wall and floor
+  ctx.fillStyle=C.cold;ctx.globalAlpha=.18;ctx.fillRect(0,0,60,H);ctx.globalAlpha=1;label(30,24,"Cool wall",{align:"center",size:11});
+  ctx.fillStyle=C.sunk;ctx.fillRect(0,408,W,72);ctx.fillStyle=C.cold;ctx.globalAlpha=.2;ctx.fillRect(300,408,200,72);ctx.globalAlpha=1;label(400,470,"cold tile floor",{align:"center",size:11});
+  const pp=person(400,26,.98);
+  const core=pp.core;glow(core[0],core[1],90+10*Math.sin(t*3),C.heat,.45);label(core[0],core[1]+4,"Core ≈ 37 °C",{align:"center",weight:700,size:12.5});
+  label(core[0],core[1]+26,"metabolism makes heat",{align:"center",size:11.5});
+  // thermostat
+  label(470,40,"Hypothalamus = thermostat",{size:11.5,weight:600});line(420,52,465,42,C["ink-soft"],1.2);
+  // radiation
+  A(lit(0)?1:.3);for(let i=0;i<4;i++){const r=((t/1.5)+i/4)%1;ctx.strokeStyle=C.heat;ctx.lineWidth=2.5;ctx.beginPath();for(let k=0;k<=30;k++){const x=lerp(330,70,k/30)*1,y=140+i*40+Math.sin(k*1.3+t*8)*6;const xx=lerp(330,70,r)+(k-15)*4;k?ctx.lineTo(xx,y+Math.sin(k*1.1+t*8)*5):ctx.moveTo(xx,y)}ctx.stroke()}
+  ctx.globalAlpha=1;label(140,110,"Radiation ≈ 60%",{align:"center",weight:700,color:C.heat,border:lit(0)?C.heat:null,size:13});
+  // evaporation
+  A(lit(1)?1:.3);for(let i=0;i<8;i++){const r=((t/2.2)+i/8)%1;const sx=[330,470,345,455,360,440,375,425][i],sy=[230,230,180,180,120,120,100,100][i];if(r<.3)h2oT(sx,sy,1,.9);else{ctx.strokeStyle=C.water;ctx.lineWidth=1.8;ctx.beginPath();const y=sy-(r-.3)*160;ctx.moveTo(sx,y);ctx.bezierCurveTo(sx+8,y-8,sx-8,y-16,sx,y-24);ctx.globalAlpha=(lit(1)?1:.3)*(1-r);ctx.stroke()}}
+  ctx.globalAlpha=1;label(640,80,"Evaporation ≈ 20%",{align:"center",weight:700,color:C.water,border:lit(1)?C.water:null,size:13});
+  // convection
+  A(lit(2)?1:.3);for(let i=0;i<5;i++){const r=((t/3)+i/5)%1;const P=[[480,380],[560,300],[520,180],[640,110]];const pos=bez(P,r);curveArrow([[480,380],[560,300],[520,180],[640,110]],C.air,2,[6,6],false);ctx.globalAlpha=(lit(2)?1:.3)*Math.min(1,r*4,(1-r)*4);arrow(pos[0]-8,pos[1]+6,pos[0]+4,pos[1]-4,C.cold,2.5)}
+  ctx.globalAlpha=1;label(670,250,"Convection ≈ 15%",{align:"center",weight:700,color:C.cold,border:lit(2)?C.cold:null,size:13});label(670,272,"moving air carries heat",{align:"center",size:11.5});
+  // conduction
+  A(lit(3)?1:.3);for(let i=0;i<6;i++){const r=((t/1.6)+i/6)%1;circ(360+i*16,lerp(400,450,r),3.5,C.heat);}ctx.globalAlpha=1;
+  label(600,440,"Conduction ≈ 3%",{align:"center",weight:700,color:C.heat,border:lit(3)?C.heat:null,size:13});label(600,462,"into the cold floor",{align:"center",size:11.5});
+  const nm=["Radiation: infrared heat to cooler objects","Evaporation: sweat turning to vapor","Convection: air currents sweep heat away","Conduction: heat flows into what you touch","All four routes together (at rest, OpenStax)"][ph];
+  chipText(400,22,nm,C.act5,"#fff",12);
+}
+/* ===== Scene: nutrition ===== */
+function sceneNutri(t){
+  bg(C.panel);
+  // plate
+  const pc=[120,150];circ(pc[0],pc[1],108,C["panel-2"],C.rule,3);circ(pc[0],pc[1],92,C.ecf,C.rule,1);
+  const sec=[["Carbs",.45,C.glu],["Lipids",.25,C.fat],["Proteins",.3,C.amino]];let a0=-Math.PI/2;
+  sec.forEach(([n,f,c],i)=>{ctx.beginPath();ctx.moveTo(pc[0],pc[1]);ctx.arc(pc[0],pc[1],84,a0,a0+f*TAU);ctx.closePath();ctx.fillStyle=c;ctx.globalAlpha=.75;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.panel;ctx.lineWidth=3;ctx.stroke();
+    const am=a0+f*Math.PI;label(pc[0]+Math.cos(am)*52,pc[1]+Math.sin(am)*52,n,{align:"center",size:12,weight:700});a0+=f*TAU});
+  const rows=[[60,"Carbohydrates → glucose","Main quick fuel; brain's preferred fuel",(x,y,a)=>hexG(x,y,8,a)],
+    [140,"Lipids → fatty acids + glycerol","Stored energy, membranes, steroid hormones",(x,y,a)=>fattyM(x-14,y,5,a,.9)],
+    [220,"Proteins → amino acids","Build and repair; enzymes; fuel only when needed",(x,y,a)=>aminoM(x,y,a,1.1)]];
+  rows.forEach(([y,h,s,fn],i)=>{ctx.fillStyle=C["panel-2"];rr(420,y-30,366,60,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+    label(436,y-10,h,{pill:false,weight:700,size:13});label(436,y+12,s,{pill:false,size:11.5,color:C["ink-soft"]});
+    stream([[200,pc[1]-40+i*40],[310,y],[415,y]],t,3,2.5,fn,{phase:i*.3})});
+  // vitamins
+  line(16,280,784,280,C.rule,1);title(20,298,"Vitamins: no energy, but needed (many become coenzymes)");
+  // fat-soluble jar
+  ctx.fillStyle=C.fat;ctx.globalAlpha=.35;rr(30,320,230,110,12);ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C["fat-edge"];ctx.lineWidth=2;rr(30,320,230,110,12);ctx.stroke();
+  label(145,338,"Fat-soluble: A, D, E, K",{align:"center",pill:false,weight:700,size:13});label(145,356,"stored in liver and fat; can build up",{align:"center",pill:false,size:11.5});
+  const nf=6+Math.floor((t*1.2)%10);for(let i=0;i<nf;i++){const x=55+(i%9)*22,y=410-Math.floor(i/9)*20;ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);ctx.fillStyle=C.fad;ctx.fillRect(-5,-5,10,10);ctx.restore()}
+  // water-soluble jar
+  ctx.fillStyle=C.water;ctx.globalAlpha=.2;rr(290,320,230,110,12);ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.water;ctx.lineWidth=2;rr(290,320,230,110,12);ctx.stroke();
+  label(405,338,"Water-soluble: B group, C",{align:"center",pill:false,weight:700,size:13});label(405,356,"little storage; extra leaves in urine",{align:"center",pill:false,size:11.5});
+  for(let i=0;i<5;i++){const q=((t/2.5)+i/5)%1;const x=330+i*36,y=lerp(390,470,q);ctx.save();ctx.translate(x,q<.4?400:y);ctx.rotate(Math.PI/4);ctx.globalAlpha=q<.4?1:1-(q-.4)/.6;ctx.fillStyle=C.fad;ctx.fillRect(-5,-5,10,10);ctx.restore();ctx.globalAlpha=1}
+  h2oT(500,450,1,1.4);label(470,466,"urine",{align:"right",size:11});
+  // minerals
+  title(560,298,"Minerals");const M=[["Ca","bones, muscle, clotting"],["Fe","hemoglobin carries O₂"],["Na · K","nerves, fluid balance"],["I","thyroid hormone"]];const hi=Math.floor(t/1.5)%4;
+  M.forEach(([s,d],i)=>{const y=330+i*36;ctx.fillStyle=i===hi?C.co2:C["panel-2"];rr(560,y-12,48,24,4);ctx.fill();ctx.strokeStyle=C.co2;ctx.lineWidth=1.5;ctx.stroke();label(584,y,s,{align:"center",pill:false,mono:true,weight:700,size:12.5,color:i===hi?"#fff":C.ink});label(616,y,d,{pill:false,size:11.5,weight:i===hi?600:400})});
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+const SCENES={map:t=>sceneMap(t,false),recap:t=>sceneMap(t,true),cata:sceneCata,atp:sceneAtp,redox:sceneRedox,overview:sceneOverview,glyco:sceneGlyco,lactate:sceneLactate,
+  link:sceneLink,krebs:sceneKrebs,etc:sceneEtc,synthase:sceneSynthase,yield:sceneYield,gng:sceneGng,glycogen:sceneGlycogen,beta:sceneBeta,keto:sceneKeto,lipogen:sceneLipogen,
+  urea:sceneUrea,fed:t=>sceneStates(t,true),fast:t=>sceneStates(t,false),bmr:sceneBmr,heat:sceneHeat,nutri:sceneNutri};
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;
+  const s=STEPS[cur];
+  try{SCENES[s.scene](T)}catch(e){console.error(e)}
+  ctx.globalAlpha=1;
+}
+function frame(now){
+  const dt=clamp((now-last)/1000,0,.05);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

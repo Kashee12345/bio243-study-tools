@@ -1,0 +1,1803 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Development Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;--act6:#4F6F94;
+  /* development palette */
+  --ecf:#F3EEEA;
+  --ecto:#2F6FC0;--meso:#C2453B;--endo:#C99212;--ecto-wash:#DCE7F6;--meso-wash:#F6DDDA;--endo-wash:#F6EBCB;
+  --oocyte:#F6E6CC;--oocyte-edge:#B9935F;--zona:#C5DCE9;--zona-hard:#6F9DBA;--corona:#EBC9A8;--corona-edge:#B98A62;
+  --sperm:#34506E;--acro:#7B5CC9;--cortical:#C9A227;
+  --pnf:#C4644F;--pnm:#2F6FC0;--chrom:#5B3F9C;
+  --tube:#F2D9D2;--tube-edge:#B5776A;--ovary:#EAD3BF;--ovary-edge:#A8836A;--uterus:#E5AFA2;--uterus-edge:#A04F45;--endom:#F4D3CA;--myo:#D99A88;
+  --mblood:#C2392F;--troph:#A04E8C;--syncy:#7C3570;--icm:#2E8A7A;--cavity:#E4F0F4;
+  --amnion:#5F9FD3;--amfluid:#DCEBF6;--yolk:#E0BC45;--allant:#7FAA4F;--chorion:#A0629A;
+  --oxy:#D2372F;--deoxy:#3E58A8;--mixed:#8A4A9A;
+  --hcg:#1E9C7A;--prog:#B4632A;--estro:#C04E8A;--oxt:#D98A1C;--prl:#7B5CC9;--milk:#FBF5E6;--milk-edge:#BCA77A;
+  --skin:#EBCBB2;--skin-edge:#A9785A;--lung:#EEC3C8;--lung-edge:#B57580;--liver:#9A5040;--heart:#C9564C;--notch:#7FAA4F;
+  --dom:#1B6E88;--rec:#C4644F;--xc:#C04E8A;--yc:#2F6FC0;--flower-r:#C8323C;--flower-p:#E58DB0;--flower-w:#F4F1EA;
+  --glow:#F2B33B;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#8FB1D9;
+  --ecf:#1B1917;
+  --ecto:#6FA3F0;--meso:#E8746A;--endo:#E8C24A;--ecto-wash:#1C2C44;--meso-wash:#3B1E1B;--endo-wash:#3A3118;
+  --oocyte:#4A3E2C;--oocyte-edge:#C9A878;--zona:#2C4250;--zona-hard:#7FB3D3;--corona:#5A4330;--corona-edge:#C99C70;
+  --sperm:#A9C3DE;--acro:#A98BEF;--cortical:#E0BE48;
+  --pnf:#E08A74;--pnm:#6FA3F0;--chrom:#B49BF0;
+  --tube:#3E2A27;--tube-edge:#D08F80;--ovary:#4A3C30;--ovary-edge:#C2A080;--uterus:#5A3530;--uterus-edge:#D98A7E;--endom:#46302C;--myo:#7A4A40;
+  --mblood:#D24C42;--troph:#D186C0;--syncy:#B060A2;--icm:#5CC4B0;--cavity:#1A2A30;
+  --amnion:#7FB7E6;--amfluid:#1A2A38;--yolk:#E8C24A;--allant:#9CCB6A;--chorion:#C88AC0;
+  --oxy:#E8574C;--deoxy:#6F8BE0;--mixed:#B07AC4;
+  --hcg:#4FD0A8;--prog:#E39A5B;--estro:#E07AB0;--oxt:#F2A93B;--prl:#A98BEF;--milk:#3A3528;--milk-edge:#C9B48A;
+  --skin:#5A4536;--skin-edge:#C9987A;--lung:#5A3A40;--lung-edge:#D899A2;--liver:#B86E5C;--heart:#E0756A;--notch:#9CCB6A;
+  --dom:#4FB3D1;--rec:#E08A74;--xc:#E07AB0;--yc:#6FA3F0;--flower-r:#E8574C;--flower-p:#F0A6C4;--flower-w:#E8E4DA;
+  --glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#8FB1D9;
+  --ecf:#1B1917;
+  --ecto:#6FA3F0;--meso:#E8746A;--endo:#E8C24A;--ecto-wash:#1C2C44;--meso-wash:#3B1E1B;--endo-wash:#3A3118;
+  --oocyte:#4A3E2C;--oocyte-edge:#C9A878;--zona:#2C4250;--zona-hard:#7FB3D3;--corona:#5A4330;--corona-edge:#C99C70;
+  --sperm:#A9C3DE;--acro:#A98BEF;--cortical:#E0BE48;
+  --pnf:#E08A74;--pnm:#6FA3F0;--chrom:#B49BF0;
+  --tube:#3E2A27;--tube-edge:#D08F80;--ovary:#4A3C30;--ovary-edge:#C2A080;--uterus:#5A3530;--uterus-edge:#D98A7E;--endom:#46302C;--myo:#7A4A40;
+  --mblood:#D24C42;--troph:#D186C0;--syncy:#B060A2;--icm:#5CC4B0;--cavity:#1A2A30;
+  --amnion:#7FB7E6;--amfluid:#1A2A38;--yolk:#E8C24A;--allant:#9CCB6A;--chorion:#C88AC0;
+  --oxy:#E8574C;--deoxy:#6F8BE0;--mixed:#B07AC4;
+  --hcg:#4FD0A8;--prog:#E39A5B;--estro:#E07AB0;--oxt:#F2A93B;--prl:#A98BEF;--milk:#3A3528;--milk-edge:#C9B48A;
+  --skin:#5A4536;--skin-edge:#C9987A;--lung:#5A3A40;--lung-edge:#D899A2;--liver:#B86E5C;--heart:#E0756A;--notch:#9CCB6A;
+  --dom:#4FB3D1;--rec:#E08A74;--xc:#E07AB0;--yc:#6FA3F0;--flower-r:#E8574C;--flower-p:#F0A6C4;--flower-w:#E8E4DA;
+  --glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 150px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:14px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+.gl{display:inline-block;padding:0 6px;border-radius:4px;font-weight:600}
+.gl.ec{background:var(--ecto-wash);color:var(--ecto)}.gl.me{background:var(--meso-wash);color:var(--meso)}.gl.en{background:var(--endo-wash);color:var(--endo)}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Development and Inheritance &middot; USC Upstate</div>
+    <h1>Development Walkthrough</h1>
+    <p class="sub">From one fertilized cell to a newborn, and how traits pass from parents to children. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 28, Development and Inheritance (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Practice next in the <a href="Development-Lab.html">Development Lab</a>.<br>Diagrams are simplified and not to scale. Cells, sperm and the embryo are drawn far larger than life, the fetal heart and vessels are a flat schematic, and processes that take hours, days or weeks are sped up so you can watch them. Ages are counted from fertilization, as OpenStax does.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · Fertilization",col:"act1"},
+            2:{name:"Part 2 · The first two weeks",col:"act2"},
+            3:{name:"Part 3 · Building the embryo",col:"act3"},
+            4:{name:"Part 4 · Life support",col:"act4"},
+            5:{name:"Part 5 · Birth and milk",col:"act5"},
+            6:{name:"Part 6 · Inheritance",col:"act6"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: one cell becomes a person",
+ body:`<p>Every one of us started as a single cell, smaller than the period at the end of this sentence. This chapter follows that cell and then asks how it got its traits. It has six parts:</p>
+ <ol><li><b>Fertilization.</b> A sperm and an oocyte (egg) join to make a <b>zygote</b>.</li>
+ <li><b>The first two weeks.</b> The zygote divides, travels to the uterus and <b>implants</b>.</li>
+ <li><b>Building the embryo.</b> Three <b>germ layers</b> form and start making every organ.</li>
+ <li><b>Life support.</b> The <b>placenta</b>, the membranes and a special <b>fetal circulation</b> keep the baby alive.</li>
+ <li><b>Birth and milk.</b> Hormones drive <b>labor</b> and <b>lactation</b>.</li>
+ <li><b>Inheritance.</b> How <b>genes</b> from each parent decide traits.</li></ol>
+ <p>Ages here are counted from fertilization. A full pregnancy lasts about <b>38 weeks</b> from fertilization.</p>`,
+ analogy:"Building a house. First the plans from two people are combined (fertilization). Then a foundation is laid (implantation), the framing goes up (germ layers and organs), the utilities are connected (placenta), and finally the family moves in (birth).",
+ terms:[["Zygote","The single cell made when a sperm fertilizes an oocyte."],["Embryo","The developing human from week 3 through week 8."],["Fetus","The developing human from week 9 until birth."],["Gestation","The time of pregnancy, about 38 weeks from fertilization."]],
+ check:{q:"What is the very first cell of a new person called?",opts:[
+  ["A zygote",1,"Yes. The zygote forms when the sperm and oocyte join. Every cell in your body came from it."],
+  ["A blastocyst",0,"The blastocyst is a hollow ball of about 100 or more cells. It comes a few days after the zygote."],
+  ["A fetus",0,"\"Fetus\" is the name used from week 9 until birth. The first cell is much earlier."],
+  ["A morula",0,"A morula is a solid ball of cells made by dividing the zygote. It is not the first cell."]]},
+ caption:"One cell divides, implants, grows into a fetus, is born, and carries genes from both parents.",
+ legend:[["oocyte","Oocyte or early cells"],["sperm","Sperm"],["ecto","Ectoderm"],["meso","Mesoderm"],["endo","Endoderm"]]},
+
+/* ---------- Part 1 ---------- */
+{act:1,scene:"journey",id:"journey",title:"The race to the ampulla and capacitation",
+ body:`<p>At <b>ovulation</b> the ovary releases a <b>secondary oocyte</b>. The fingerlike <b>fimbriae</b> sweep it into the <b>uterine tube</b>. It can be fertilized for only about <b>24 hours</b>.</p>
+ <p>Millions of sperm are deposited in the vagina, but only a few hundred reach the oocyte. Fertilization usually happens in the <b>ampulla</b>, the wide outer part of the uterine tube.</p>
+ <p>On the way, sperm go through <b>capacitation</b>. Fluids in the female tract strip proteins and cholesterol from the sperm head. Their tails beat harder. Only capacitated sperm can fertilize the oocyte.</p>`,
+ analogy:"Runners warming up on the way to the starting line. A sperm that has not \"warmed up\" (capacitated) is not allowed to race at the finish.",
+ terms:[["Ampulla","The wide outer part of the uterine tube. The usual site of fertilization."],["Capacitation","Changes to sperm inside the female tract that make them able to fertilize."],["Secondary oocyte","The cell released at ovulation. It finishes meiosis only if fertilized."]],
+ check:{q:"Where does fertilization usually happen?",opts:[
+  ["In the ampulla of the uterine tube",1,"Right. The oocyte is swept into the tube and meets sperm in the wide ampulla."],
+  ["In the uterus",0,"The zygote reaches the uterus several days later. Fertilization happens earlier, in the tube."],
+  ["In the ovary",0,"The ovary releases the oocyte. Sperm do not meet it there."],
+  ["In the vagina",0,"Sperm are deposited there, but they still have a long trip to reach the oocyte."]]},
+ caption:"The oocyte is swept into the tube. Sperm swim up, capacitate (glow) and gather in the ampulla. (Hours are sped up.)",
+ legend:[["oocyte","Oocyte"],["sperm","Sperm"],["glow","Capacitated sperm"]]},
+
+{act:1,scene:"acro",id:"acro",title:"Breaking through: the acrosomal reaction",
+ body:`<p>The oocyte is wrapped in two layers. The outer one is the <b>corona radiata</b>, a ring of follicle cells. The inner one is the <b>zona pellucida</b>, a clear, thick protein coat.</p>
+ <p>It takes <b>many sperm</b> working together to push between the corona cells. When a sperm reaches the zona and binds to it, its <b>acrosome</b> (a cap of enzymes on the head) opens. This is the <b>acrosomal reaction</b>. The enzymes digest a path through the zona pellucida.</p>
+ <p>So hundreds of sperm help clear the way, even though only one will get in.</p>`,
+ analogy:"A crowd of people each chipping a little at a wall with tiny chisels. Many chisels make a path. Only one person gets through the door.",
+ terms:[["Corona radiata","The outer layer of follicle cells around the oocyte."],["Zona pellucida","The clear protein coat just outside the oocyte's membrane."],["Acrosome","A cap on the sperm head filled with digestive enzymes."],["Acrosomal reaction","Release of acrosome enzymes that digest the zona pellucida."]],
+ check:{q:"What do the acrosome's enzymes do?",opts:[
+  ["Digest a path through the zona pellucida",1,"Yes. The enzymes break down the zona so a sperm can reach the oocyte's membrane."],
+  ["Give the sperm energy to swim",0,"Energy for swimming comes from mitochondria in the midpiece, not the acrosome."],
+  ["Start the cortical reaction",0,"The cortical reaction is the oocyte's response after one sperm fuses. That is the next step."],
+  ["Help the sperm survive in the vagina",0,"The acrosome's enzymes act at the oocyte's coats, not earlier in the trip."]]},
+ caption:"Many sperm wedge between corona cells. Their acrosomes (purple caps) release enzymes that digest the zona pellucida.",
+ legend:[["corona","Corona radiata cells"],["zona","Zona pellucida","r"],["acro","Acrosome enzymes"],["sperm","Sperm"]]},
+
+{act:1,scene:"cortical",id:"cortical",title:"One sperm only: fusion and the cortical reaction",
+ body:`<p>The first sperm to reach the oocyte's membrane <b>fuses</b> with it. The sperm's nucleus slips into the oocyte.</p>
+ <p>Right away the oocyte blocks other sperm. Small sacs under its membrane, the <b>cortical granules</b>, release their contents into the space below the zona pellucida. This <b>cortical reaction</b> hardens the zona and removes its sperm-binding sites. The other sperm can no longer bind.</p>
+ <p>This prevents <b>polyspermy</b>, entry of more than one sperm. Polyspermy would give the cell too many chromosomes, and it could not develop normally.</p>`,
+ analogy:"The moment one guest walks through the door, the doorman slams it and changes the lock. Everyone else is still outside.",
+ terms:[["Fusion","The sperm and oocyte membranes join and the sperm nucleus enters."],["Cortical reaction","Cortical granules release enzymes that harden the zona pellucida."],["Polyspermy","Fertilization by more than one sperm. The cortical reaction blocks it."]],
+ check:{q:"Why does the oocyte need the cortical reaction?",opts:[
+  ["To stop more than one sperm from entering",1,"Right. A second sperm would add an extra set of chromosomes, and the cell could not develop normally."],
+  ["To help more sperm get through the corona",0,"It does the opposite. It shuts out all sperm after the first."],
+  ["To start ovulation",0,"Ovulation happened earlier, at the ovary. This step happens after fusion."],
+  ["To dissolve the zona pellucida",0,"It hardens the zona. Dissolving it would let more sperm in."]]},
+ caption:"One sperm fuses. A wave of cortical granules (gold) spreads around the oocyte, the zona hardens, and the other sperm bounce off.",
+ legend:[["cortical","Cortical granules"],["zona-hard","Hardened zona pellucida","r"],["sperm","Sperm"]]},
+
+{act:1,scene:"zygote",id:"zygote",title:"Two pronuclei become one zygote (2n = 46)",
+ body:`<p>The sperm's entry makes the oocyte <b>finish meiosis II</b>. It pinches off a tiny <b>second polar body</b>. What remains is now an <b>ovum</b> with 23 chromosomes.</p>
+ <p>The oocyte's nucleus and the sperm's nucleus swell into two <b>pronuclei</b>, one from each parent. Each has <b>23 chromosomes</b> (haploid, <b>n</b>).</p>
+ <p>The two pronuclei come together and their chromosomes combine. The new cell is the <b>zygote</b>, with <b>46 chromosomes</b> (diploid, <b>2n</b>): 23 pairs, one of each pair from each parent.</p>`,
+ analogy:"Two half-decks of cards, each with one of every card, shuffled together into one full deck with pairs.",
+ terms:[["Pronucleus","The nucleus of the sperm or ovum just before they combine. Each is haploid (23)."],["Second polar body","A tiny cell pinched off when the oocyte finishes meiosis II."],["Zygote","The diploid cell (2n = 46) formed when the pronuclei combine."]],
+ check:{q:"How many chromosomes does a human zygote have?",opts:[
+  ["46 (23 from each parent)",1,"Yes. Each pronucleus brings 23. Together they make 23 pairs."],
+  ["23",0,"23 is the haploid number in each sperm or ovum. The zygote combines two sets."],
+  ["92",0,"That would be four sets. Each parent gives only one set of 23."],
+  ["69",0,"That would be three sets, which can happen with polyspermy. It is why the cortical reaction matters."]]},
+ caption:"Meiosis II finishes and a polar body pinches off. The female and male pronuclei (23 each) meet and form a zygote with 46.",
+ legend:[["pnf","Female pronucleus (23)"],["pnm","Male pronucleus (23)"],["chrom","Chromosomes"]]},
+
+/* ---------- Part 2 ---------- */
+{act:2,scene:"cleave",id:"cleave",title:"Cleavage: more cells, same size",
+ body:`<p>About a day after fertilization, the zygote starts dividing by mitosis. These first divisions are called <b>cleavage</b>. One cell becomes <b>2</b>, then <b>4</b>, then <b>8</b>.</p>
+ <p>The embryo does <b>not grow</b> during cleavage. The zona pellucida is still around it, and the cells simply get smaller with each split. These small cells are <b>blastomeres</b>.</p>
+ <p>By about <b>day 3 to 4</b>, there is a solid ball of 16 or more cells called a <b>morula</b> (Latin for "mulberry").</p>`,
+ analogy:"Cutting a pizza. Each cut makes more slices, but the pizza does not get any bigger.",
+ terms:[["Cleavage","Rapid mitotic divisions of the zygote without growth."],["Blastomere","One of the cells made by cleavage."],["Morula","A solid ball of 16 or more blastomeres, about day 3 to 4."]],
+ check:{q:"During cleavage, what happens to the size of the whole embryo?",opts:[
+  ["It stays about the same while the cells get smaller",1,"Right. The cells divide without growing in between, so each blastomere is smaller."],
+  ["It doubles with every division",0,"The cells double in number, not the embryo in size. The zona pellucida still holds it."],
+  ["It shrinks to half",0,"The total stays about the same. Only each cell gets smaller."],
+  ["It grows quickly because the cells absorb nutrients",0,"Real growth comes later, after implantation, when the embryo gets nutrients from the mother."]]},
+ caption:"1 → 2 → 4 → 8 → morula. The cell count doubles while the total size inside the zona stays the same.",
+ legend:[["oocyte","Blastomeres"],["zona","Zona pellucida","r"]]},
+
+{act:2,scene:"travel",id:"travel",title:"The blastocyst travels to the uterus",
+ body:`<p>While it divides, the embryo is moved down the uterine tube by tiny <b>cilia</b> and gentle muscle contractions. It reaches the uterus around <b>day 4 to 5</b>.</p>
+ <p>Fluid then collects inside the morula, making a hollow ball called a <b>blastocyst</b>. It has three parts:</p>
+ <ol><li><b>Trophoblast:</b> the outer ring of cells. It will help form the placenta.</li>
+ <li><b>Inner cell mass:</b> a cluster of cells on one side. It will become the embryo itself.</li>
+ <li><b>Blastocoel:</b> the fluid-filled cavity.</li></ol>
+ <p>Before implanting, the blastocyst breaks out of the zona pellucida ("hatches").</p>`,
+ analogy:"A camping tent with one sleeping bag inside. The tent (trophoblast) makes contact with the ground, the open space is the blastocoel, and the sleeper (inner cell mass) is the one who will grow up.",
+ terms:[["Blastocyst","A hollow ball of cells: trophoblast, inner cell mass and blastocoel."],["Trophoblast","Outer cell layer. Forms part of the placenta."],["Inner cell mass","Cells that form the embryo itself."],["Blastocoel","The fluid-filled cavity of the blastocyst."]],
+ check:{q:"Which part of the blastocyst becomes the embryo?",opts:[
+  ["The inner cell mass",1,"Yes. The inner cell mass gives rise to the embryo. The trophoblast helps make the placenta."],
+  ["The trophoblast",0,"The trophoblast is the outer ring. It forms part of the placenta, not the baby's body."],
+  ["The blastocoel",0,"The blastocoel is just fluid in the cavity. It has no cells."],
+  ["The zona pellucida",0,"The zona is the protective coat. The blastocyst hatches out of it."]]},
+ caption:"The embryo divides as it travels: 2 cells, 8 cells, morula, then a fluid-filled blastocyst in the uterus by about day 5.",
+ legend:[["troph","Trophoblast"],["icm","Inner cell mass"],["cavity","Blastocoel"]]},
+
+{act:2,scene:"implant",id:"implant",title:"Implantation and hCG (day 6 to 7 onward)",
+ body:`<p>Around <b>day 6 to 7</b>, the blastocyst sticks to the <b>endometrium</b> (the uterine lining), with the inner cell mass side first. This is <b>implantation</b>.</p>
+ <p>The trophoblast forms an invasive outer layer, the <b>syncytiotrophoblast</b>. Its enzymes eat into the endometrium, and the blastocyst sinks in until it is completely buried.</p>
+ <p>The syncytiotrophoblast also releases <b>human chorionic gonadotropin (hCG)</b>. hCG keeps the <b>corpus luteum</b> in the ovary alive, so it keeps making <b>progesterone</b> and estrogen. That keeps the endometrium from shedding, so no menstrual period comes. <b>Home pregnancy tests detect hCG in urine.</b></p>`,
+ analogy:"A new tenant (blastocyst) moves into an apartment and immediately sends the landlord (corpus luteum) a message: \"Don't tear down the building.\" That message is hCG.",
+ terms:[["Implantation","The blastocyst embeds in the endometrium, starting about day 6 to 7."],["Syncytiotrophoblast","Invasive outer trophoblast layer. Digests endometrium and secretes hCG."],["hCG","Human chorionic gonadotropin. Keeps the corpus luteum making progesterone."],["Corpus luteum","Ovarian structure that makes progesterone and estrogen early in pregnancy."]],
+ check:{q:"What does a home pregnancy test detect?",opts:[
+  ["hCG in urine",1,"Right. hCG is made by the syncytiotrophoblast after implantation, so it only shows up when there is an embryo."],
+  ["Progesterone in urine",0,"Progesterone also rises, but tests look for hCG because only an embryo makes it."],
+  ["Oxytocin in blood",0,"Oxytocin matters at birth and for milk ejection, not for early pregnancy tests."],
+  ["Sperm in the uterus",0,"Tests detect a hormone made by the embryo, not sperm."]]},
+ caption:"The blastocyst attaches, the syncytiotrophoblast invades the endometrium and releases hCG (green), which keeps the corpus luteum alive.",
+ legend:[["syncy","Syncytiotrophoblast"],["icm","Inner cell mass"],["hcg","hCG","d"],["prog","Progesterone","s"],["endom","Endometrium","r"]]},
+
+/* ---------- Part 3 ---------- */
+{act:3,scene:"periods",id:"periods",title:"Embryo (weeks 3 to 8) versus fetus (week 9 to birth)",
+ body:`<p>Development is split into time periods:</p>
+ <ol><li><b>Pre-embryonic period</b>, weeks 1 and 2: fertilization, cleavage, implantation.</li>
+ <li><b>Embryonic period</b>, weeks 3 to 8: the germ layers form and <b>every major organ system begins</b>. This is called <b>organogenesis</b>.</li>
+ <li><b>Fetal period</b>, week 9 until birth: the organs <b>grow and mature</b>. The fetus gets much bigger.</li></ol>
+ <p>Because organs are being built in weeks 3 to 8, this is when the embryo is most sensitive to harmful substances (<b>teratogens</b>) such as alcohol and some drugs.</p>`,
+ analogy:"Weeks 3 to 8 are the construction phase, when the walls, pipes and wiring go in. The fetal period is the finishing phase: painting, furnishing and growing into the space.",
+ terms:[["Embryonic period","Weeks 3 to 8. Germ layers form and organs begin."],["Fetal period","Week 9 to birth. Organs grow and mature."],["Organogenesis","Formation of the organs from the germ layers."],["Teratogen","Something that can cause birth defects, such as alcohol."]],
+ check:{q:"Why is the embryonic period (weeks 3 to 8) the riskiest time for exposure to alcohol?",opts:[
+  ["Because the organs are first being formed then",1,"Yes. A problem while an organ is being built can cause a lasting defect."],
+  ["Because the fetus is largest then",0,"The fetus is largest near birth. The embryo is tiny in weeks 3 to 8."],
+  ["Because the placenta is fully mature then",0,"The placenta is still forming in this period. The risk is about organs being built."],
+  ["Because the heart has not started beating",0,"The heart starts beating in week 4, inside the embryonic period. That is not the reason."]]},
+ caption:"A timeline from fertilization to birth. The embryo forms its organs in weeks 3 to 8, then the fetus grows. (Sizes are rough.)",
+ legend:[["act2","Pre-embryonic (wk 1–2)"],["act3","Embryonic (wk 3–8)"],["act4","Fetal (wk 9–birth)"]]},
+
+{act:3,scene:"gastrula",id:"gastrula",title:"Gastrulation: two layers become three",
+ body:`<p>In week 2, the inner cell mass forms a flat, two-layered disc: the <b>bilaminar disc</b>. Its top layer is the <b>epiblast</b> and its bottom layer is the <b>hypoblast</b>. The amniotic cavity sits above it and the yolk sac below.</p>
+ <p>In week 3, a groove called the <b>primitive streak</b> appears on the epiblast. Epiblast cells move toward it, dive down through it and spread out. This is <b>gastrulation</b>.</p>
+ <p>The first cells to dive in replace the hypoblast and become <b>endoderm</b>. Later cells settle in between to form <b>mesoderm</b>. The cells left on top become <b>ectoderm</b>. Now the disc has three layers: the <b>trilaminar disc</b>.</p>`,
+ analogy:"People entering a stadium through one gate (the primitive streak). The first ones in fill the floor (endoderm), the next ones fill the middle rows (mesoderm), and the ones who stay outside are the top layer (ectoderm).",
+ terms:[["Bilaminar disc","Two-layered disc (epiblast and hypoblast) in week 2."],["Primitive streak","Groove on the epiblast where cells dive in during gastrulation."],["Gastrulation","Formation of the three germ layers in week 3."],["Trilaminar disc","Three-layered disc: ectoderm, mesoderm, endoderm."]],
+ check:{q:"During gastrulation, where do cells pass through to form the new layers?",opts:[
+  ["The primitive streak",1,"Right. Epiblast cells move to the primitive streak, dive through it and spread out as new layers."],
+  ["The neural tube",0,"The neural tube forms a little later, from ectoderm, during neurulation."],
+  ["The blastocoel",0,"The blastocoel was the cavity of the blastocyst. Gastrulation happens in the embryonic disc."],
+  ["The umbilical cord",0,"The cord carries blood. It is not part of forming the germ layers."]]},
+ caption:"Top: the disc seen from above with the primitive streak. Bottom: a cut through the disc as cells dive in to form endoderm and mesoderm.",
+ legend:[["ecto","Ectoderm (from epiblast)"],["meso","Mesoderm"],["endo","Endoderm"],["yolk","Hypoblast / yolk sac side"]]},
+
+{act:3,scene:"germ",id:"germ",title:"What each germ layer builds",
+ body:`<p>Every tissue in the body comes from one of the three <b>germ layers</b>:</p>
+ <ul><li><span class="gl ec">Ectoderm</span> (outer): the <b>epidermis</b> of the skin, hair and nails, and the <b>nervous system</b> (brain, spinal cord, nerves).</li>
+ <li><span class="gl me">Mesoderm</span> (middle): <b>muscle, bone</b> and other connective tissues, <b>blood</b>, the <b>heart</b> and blood vessels, and the <b>kidneys</b>.</li>
+ <li><span class="gl en">Endoderm</span> (inner): the epithelial <b>lining of the GI tract</b> and <b>respiratory tract</b>, plus the <b>liver</b> and <b>pancreas</b>.</li></ul>
+ <p>A memory trick: ecto = "outside and thinking" (skin and nerves), meso = "moving and pumping" (muscle, bone, blood, heart), endo = "inside linings" (gut and airways).</p>`,
+ analogy:"Three work crews. The outside crew (ectoderm) does the siding and the wiring. The middle crew (mesoderm) does the framing, plumbing and pumps. The inside crew (endoderm) lines the inner pipes.",
+ terms:[["Ectoderm","Outer germ layer: epidermis and nervous system."],["Mesoderm","Middle germ layer: muscle, bone, blood, heart, kidneys."],["Endoderm","Inner germ layer: linings of the GI and respiratory tracts, liver, pancreas."]],
+ check:{q:"The brain and spinal cord come from which germ layer?",opts:[
+  ["Ectoderm",1,"Yes. The nervous system forms from ectoderm, by folding into the neural tube (next step)."],
+  ["Mesoderm",0,"Mesoderm makes muscle, bone, blood, heart and kidneys, not nervous tissue."],
+  ["Endoderm",0,"Endoderm makes the inner linings of the gut and airways, plus the liver and pancreas."],
+  ["The trophoblast",0,"The trophoblast helps form the placenta. It does not become part of the baby's organs."]]},
+ caption:"Each layer lights up and sends its color to the organs it builds: blue ectoderm, red mesoderm, yellow endoderm.",
+ legend:[["ecto","Ectoderm"],["meso","Mesoderm"],["endo","Endoderm"]]},
+
+{act:3,scene:"neural",id:"neural",title:"Neurulation: building the neural tube",
+ body:`<p>A rod of mesoderm called the <b>notochord</b> lies along the middle of the embryo. It signals the ectoderm above it to thicken into a <b>neural plate</b>.</p>
+ <p>The edges of the plate rise as <b>neural folds</b>, with a <b>neural groove</b> between them. The folds curl up, meet and fuse, making a hollow <b>neural tube</b>. The neural tube becomes the <b>brain and spinal cord</b>. This process is <b>neurulation</b> and it happens in weeks 3 to 4.</p>
+ <p>Some cells at the edges of the folds break away. These <b>neural crest cells</b> travel through the body and form many structures, including parts of the <b>peripheral nervous system</b> and the pigment cells of the skin. If the tube does not close fully, a <b>neural tube defect</b> such as spina bifida results. Folic acid before and during early pregnancy lowers this risk.</p>`,
+ analogy:"Rolling a flat sheet of paper into a straw. The paper edges meet and seal, and a few scraps that fall off become useful elsewhere (neural crest).",
+ terms:[["Notochord","A rod of mesoderm that signals the neural plate to form."],["Neural tube","The tube that becomes the brain and spinal cord."],["Neural crest","Cells from the edges of the neural folds. Form peripheral nerves, pigment cells and more."],["Spina bifida","A neural tube defect: the tube does not close fully."]],
+ check:{q:"What does the neural tube become?",opts:[
+  ["The brain and spinal cord",1,"Right. The neural tube is the start of the central nervous system."],
+  ["The notochord",0,"The notochord is the mesoderm rod underneath. It signals the tube to form."],
+  ["The skin's pigment cells",0,"Pigment cells come from neural crest cells, which break away from the folds."],
+  ["The vertebral column",0,"The vertebrae form from mesoderm around the tube, not from the tube itself."]]},
+ caption:"Cross-section: the neural plate folds up, the folds fuse into a neural tube, and neural crest cells (purple) break away.",
+ legend:[["ecto","Ectoderm / neural tissue"],["act1","Neural crest cells"],["notch","Notochord"],["meso","Mesoderm"],["endo","Endoderm"]]},
+
+{act:3,scene:"fold",id:"fold",title:"Folding, organs, and the first heartbeat",
+ body:`<p>In week 4 the flat disc <b>folds</b>. The head and tail ends curl under, and the sides fold down and meet underneath. The flat disc becomes a curved, C-shaped body. The endoderm is rolled into a tube that becomes the <b>gut</b>, and the ectoderm ends up covering the outside.</p>
+ <p>Now <b>organogenesis</b> speeds up. The <b>heart</b> starts as a simple tube and begins to <b>beat in week 4</b> (around day 22). It is one of the first organs to work.</p>
+ <p>By the end of week 8, all the major organ systems have begun, limb buds have grown into arms and legs with fingers and toes, and the embryo is about 3 cm long.</p>`,
+ analogy:"Folding a flat paper template into a 3D box. The flat sheet becomes a body with an inside and an outside.",
+ terms:[["Embryonic folding","The flat disc folds into a C-shaped, tube-like body in week 4."],["Heart tube","The early heart. It begins to beat in week 4."],["Limb buds","Small swellings that grow into arms and legs."]],
+ check:{q:"About when does the embryo's heart begin to beat?",opts:[
+  ["Week 4",1,"Yes. The heart tube begins to beat around day 22, in week 4."],
+  ["Week 1",0,"In week 1 the embryo is still a ball of cells traveling down the tube. There is no heart yet."],
+  ["Week 12",0,"By week 12 the heart has been beating for about two months."],
+  ["Only at birth",0,"The heart beats for months before birth. Ultrasound can detect it early in pregnancy."]]},
+ caption:"The flat disc folds into a C-shaped embryo. The heart tube starts beating in week 4 (heart rate counter shown).",
+ legend:[["ecto","Ectoderm (outside)"],["meso","Mesoderm"],["endo","Endoderm (gut tube)"],["heart","Heart"]]},
+
+/* ---------- Part 4 ---------- */
+{act:4,scene:"membranes",id:"membranes",title:"The extraembryonic membranes",
+ body:`<p>Four membranes form outside the embryo. They are not part of the baby's body, but it cannot survive without them:</p>
+ <ol><li><b>Amnion:</b> a sac around the embryo filled with <b>amniotic fluid</b>. It cushions the baby, keeps the temperature steady and lets it move.</li>
+ <li><b>Yolk sac:</b> makes the first blood cells and the cells that will become sperm or eggs. (Humans get food from the placenta, not from yolk.)</li>
+ <li><b>Allantois:</b> a small pouch whose blood vessels become part of the <b>umbilical cord</b> vessels.</li>
+ <li><b>Chorion:</b> the outermost membrane. Its fingerlike <b>chorionic villi</b> form the baby's side of the <b>placenta</b>.</li></ol>`,
+ analogy:"A spacesuit. The amnion is the padded water layer, the yolk sac is the early supply kit, the allantois runs the hoses, and the chorion is the outer shell that plugs into the mother ship.",
+ terms:[["Amnion","Membrane around the embryo, filled with cushioning amniotic fluid."],["Yolk sac","Makes the first blood cells and the germ cells."],["Allantois","Its blood vessels help form the umbilical vessels."],["Chorion","Outermost membrane. Forms the fetal part of the placenta."]],
+ check:{q:"Which membrane forms the fetal part of the placenta?",opts:[
+  ["The chorion",1,"Right. Chorionic villi reach into the uterine wall and form the baby's side of the placenta."],
+  ["The amnion",0,"The amnion holds the amniotic fluid around the baby. It does not form the placenta."],
+  ["The yolk sac",0,"The yolk sac makes early blood cells and germ cells. It shrinks later."],
+  ["The allantois",0,"The allantois helps form the umbilical blood vessels, not the placenta itself."]]},
+ caption:"The amnion, yolk sac, allantois and chorion appear one by one around the embryo. The fluid ripples as the embryo moves.",
+ legend:[["amnion","Amnion"],["yolk","Yolk sac"],["allant","Allantois"],["chorion","Chorion"]]},
+
+{act:4,scene:"placenta",id:"placenta",title:"The placenta and the umbilical cord",
+ body:`<p>The <b>placenta</b> is where mother and baby trade materials. Fetal <b>chorionic villi</b>, full of tiny fetal capillaries, sit in pools of <b>maternal blood</b> in the uterine wall.</p>
+ <p><b>O₂ and nutrients</b> diffuse from the mother's blood into the villi. <b>CO₂ and wastes</b> diffuse the other way. The two bloods are separated by a thin barrier and <b>do not mix</b>.</p>
+ <p>The placenta is also a hormone gland. It makes <b>hCG</b>, <b>estrogen</b> and <b>progesterone</b>. By about the end of the first trimester it makes enough progesterone that the corpus luteum is no longer needed.</p>
+ <p>The <b>umbilical cord</b> connects baby to placenta. It holds <b>two umbilical arteries</b>, which carry oxygen-poor blood <b>to</b> the placenta, and <b>one umbilical vein</b>, which carries oxygen-rich blood <b>to</b> the baby.</p>`,
+ analogy:"Two rivers flowing side by side with a thin, leaky wall between them. Oxygen and food seep across one way and waste seeps back, but the river water never mixes.",
+ terms:[["Chorionic villi","Fetal fingerlike projections that sit in maternal blood."],["Placental barrier","Thin layers that keep maternal and fetal blood apart."],["Umbilical arteries (2)","Carry oxygen-poor blood from the fetus to the placenta."],["Umbilical vein (1)","Carries oxygen-rich blood from the placenta to the fetus."]],
+ check:{q:"Which vessel brings oxygen-rich blood to the fetus?",opts:[
+  ["The umbilical vein",1,"Yes. A vein carries blood toward the heart. Here that blood has just picked up O₂ in the placenta."],
+  ["The umbilical arteries",0,"Arteries carry blood away from the fetal heart, out to the placenta. That blood is oxygen-poor."],
+  ["The maternal blood pools",0,"Maternal blood stays in the mother. O₂ diffuses out of it into fetal blood."],
+  ["The yolk sac",0,"The yolk sac does not carry oxygen to the fetus."]]},
+ caption:"Left: a villus in a maternal blood pool; O₂ and nutrients cross in, CO₂ and wastes cross out, and the bloods never mix. Right: the cord cut across.",
+ legend:[["oxy","Oxygen-rich blood"],["deoxy","Oxygen-poor blood"],["mblood","Maternal blood"],["hcg","hCG","d"],["estro","Estrogen","t"],["prog","Progesterone","s"]]},
+
+{act:4,scene:"fetal",id:"fetal",title:"Fetal circulation: three shortcuts",
+ body:`<p>Before birth the <b>lungs are filled with fluid</b> and do not trade gases. The placenta does that job. So fetal blood uses three <b>shunts</b> (shortcuts):</p>
+ <ol><li>The <b>umbilical vein</b> carries oxygen-rich blood from the placenta. Most of it takes the <b>ductus venosus</b>, which <b>bypasses the liver</b>, into the <b>inferior vena cava</b> and on to the <b>right atrium</b>.</li>
+ <li>From the right atrium, much of the blood passes through the <b>foramen ovale</b>, a hole in the wall between the atria, into the <b>left atrium</b>. Then it goes to the left ventricle and out the <b>aorta</b>. This <b>bypasses the lungs</b>.</li>
+ <li>Blood that does reach the right ventricle is pumped into the <b>pulmonary trunk</b>. Most of it crosses the <b>ductus arteriosus</b> straight into the <b>aorta</b>, again <b>bypassing the lungs</b>.</li></ol>
+ <p>Blood then flows to the body, and the <b>umbilical arteries</b> carry oxygen-poor blood back to the placenta.</p>`,
+ analogy:"A highway with the bridge to one town (the lungs) still under construction. Detour signs send traffic around it: one at the liver, one between the atria and one between the pulmonary trunk and the aorta.",
+ terms:[["Ductus venosus","Shunt that lets umbilical vein blood bypass the liver."],["Foramen ovale","Hole between the right and left atria. Bypasses the lungs."],["Ductus arteriosus","Vessel from the pulmonary trunk to the aorta. Bypasses the lungs."]],
+ check:{q:"Which shunt lets blood go from the right atrium straight to the left atrium?",opts:[
+  ["The foramen ovale",1,"Right. It is an opening in the interatrial septum, so blood skips the right ventricle and lungs."],
+  ["The ductus arteriosus",0,"The ductus arteriosus connects the pulmonary trunk to the aorta, outside the heart."],
+  ["The ductus venosus",0,"The ductus venosus connects the umbilical vein to the IVC and bypasses the liver."],
+  ["The umbilical vein",0,"The umbilical vein brings blood from the placenta. It is not a shunt inside the heart."]]},
+ caption:"Red = oxygen-rich, purple = mixed, blue = oxygen-poor. Watch blood skip the liver, cross the foramen ovale and take the ductus arteriosus.",
+ legend:[["oxy","Oxygen-rich"],["mixed","Mixed"],["deoxy","Oxygen-poor"],["glow","Shunt highlighted"]]},
+
+{act:4,scene:"birth",id:"birth",title:"At birth: the shortcuts close",
+ body:`<p>When the baby takes its <b>first breath</b>, the lungs fill with air and expand. Resistance in the lung vessels drops, so blood rushes into the lungs. The cord is clamped and placental flow stops.</p>
+ <ol><li>More blood returns from the lungs to the <b>left atrium</b>, raising its pressure. That pushes the flap of the <b>foramen ovale</b> shut. It seals and becomes the <b>fossa ovalis</b>.</li>
+ <li>The <b>ductus arteriosus</b> constricts and closes. It becomes the <b>ligamentum arteriosum</b>.</li>
+ <li>The <b>ductus venosus</b> closes and becomes the <b>ligamentum venosum</b>. (The umbilical vessels also close and become ligaments.)</li></ol>
+ <p>Now all blood from the right ventricle goes to the lungs. The heart works as two separate pumps, just like yours.</p>`,
+ analogy:"The bridge opens, so the detour signs are taken down and the detour roads are blocked off. They stay as old, unused paths (ligaments).",
+ terms:[["Fossa ovalis","The sealed remnant of the foramen ovale."],["Ligamentum arteriosum","The closed remnant of the ductus arteriosus."],["Ligamentum venosum","The closed remnant of the ductus venosus."]],
+ check:{q:"What makes the foramen ovale's flap close at birth?",opts:[
+  ["Higher pressure in the left atrium once blood returns from the lungs",1,"Yes. With the lungs working, left atrial pressure rises above right and presses the flap shut."],
+  ["Oxytocin from the mother",0,"Oxytocin drives labor contractions. It does not close the foramen ovale."],
+  ["The ductus arteriosus pulling on it",0,"The two shunts close separately. The flap closes because of the pressure change."],
+  ["It stays open for life in everyone",0,"In most people it seals. When it doesn't, it is called a patent foramen ovale."]]},
+ caption:"First breath: the lungs inflate, the cord is clamped, then the foramen ovale, ductus arteriosus and ductus venosus close and become remnants.",
+ legend:[["oxy","Oxygen-rich"],["mixed","Mixed"],["deoxy","Oxygen-poor"],["ink-soft","Closed shunt (remnant)","dl"]]},
+
+/* ---------- Part 5 ---------- */
+{act:5,scene:"labor",id:"labor",title:"Labor: a positive feedback loop",
+ body:`<p>Near term, the baby's head presses on the <b>cervix</b>. Stretch receptors there send signals to the <b>hypothalamus</b>, and the <b>posterior pituitary</b> releases <b>oxytocin</b>. Oxytocin makes the uterine muscle contract harder. Harder contractions push the baby down, stretching the cervix more, which releases more oxytocin.</p>
+ <p>This is <b>positive feedback</b>: the response makes the signal stronger, until the baby is born and the stretch stops. (Prostaglandins also help.)</p>
+ <p>Labor has three stages:</p>
+ <ol><li><b>Dilation stage:</b> the cervix opens to about <b>10 cm</b>. This is the longest stage.</li>
+ <li><b>Expulsion stage:</b> the baby moves through the birth canal and is born.</li>
+ <li><b>Placental stage:</b> the placenta (afterbirth) detaches and is delivered.</li></ol>`,
+ analogy:"A snowball rolling downhill. Each turn picks up more snow, which makes it roll faster, until it hits the bottom and stops.",
+ terms:[["Oxytocin","Posterior pituitary hormone. Causes uterine contractions and milk ejection."],["Positive feedback","A loop where the response strengthens the original signal."],["Dilation stage","Cervix opens to about 10 cm."],["Placental stage","The placenta is delivered after the baby."]],
+ check:{q:"Why is labor called a positive feedback loop?",opts:[
+  ["Contractions cause more stretch, which causes more oxytocin and stronger contractions",1,"Yes. The response (contraction) boosts the stimulus (stretch) until birth ends the loop."],
+  ["Oxytocin makes contractions weaker over time",0,"That would be negative feedback. In labor, contractions get stronger."],
+  ["It keeps the uterus at a steady set point",0,"Keeping a steady set point is negative feedback. Labor builds toward an end point instead."],
+  ["The baby feels good during labor",0,"\"Positive\" here means the loop amplifies itself, not that it feels good."]]},
+ caption:"Stretch → hypothalamus → posterior pituitary → oxytocin → stronger contractions → more stretch. The loop speeds up until birth.",
+ legend:[["oxt","Oxytocin","d"],["uterus","Uterine muscle"],["glow","Nerve signal"]]},
+
+{act:5,scene:"lact",id:"lact",title:"Lactation: making milk and letting it down",
+ body:`<p>Milk is made in grapelike sacs called <b>alveoli</b> in the mammary glands. Two pituitary hormones do two different jobs:</p>
+ <ol><li><b>Prolactin</b>, from the <b>anterior pituitary</b>, tells alveolar cells to <b>make</b> milk.</li>
+ <li><b>Oxytocin</b>, from the <b>posterior pituitary</b>, makes <b>myoepithelial cells</b> around the alveoli squeeze, pushing milk into the ducts toward the nipple. This is <b>milk ejection</b> ("let-down").</li></ol>
+ <p>Suckling stimulates nerve signals that release both hormones. The more the baby feeds, the more milk is made. The first milk, <b>colostrum</b>, is rich in antibodies.</p>`,
+ analogy:"A juice factory (prolactin keeps the machines making juice) and a squeeze button (oxytocin pushes it out the tap).",
+ terms:[["Prolactin","Anterior pituitary hormone that stimulates milk production."],["Oxytocin (here)","Causes milk ejection by squeezing myoepithelial cells."],["Alveoli","Milk-making sacs in the mammary gland."],["Colostrum","The first milk. Rich in antibodies."]],
+ check:{q:"A mother makes plenty of milk, but it does not flow out well. Which hormone's action is most likely lacking?",opts:[
+  ["Oxytocin",1,"Right. Oxytocin causes milk ejection. Milk is being made, so prolactin is doing its job."],
+  ["Prolactin",0,"Prolactin makes milk. Here plenty of milk is being made, so the problem is ejection."],
+  ["hCG",0,"hCG matters in early pregnancy, not for milk flow."],
+  ["Progesterone",0,"High progesterone in pregnancy actually holds back milk production until after birth."]]},
+ caption:"Prolactin (purple) fills the alveoli with milk. Suckling releases oxytocin (orange), the myoepithelial cells squeeze, and milk flows down the duct.",
+ legend:[["prl","Prolactin","h"],["oxt","Oxytocin","d"],["milk-edge","Milk"]]},
+
+/* ---------- Part 6 ---------- */
+{act:6,scene:"alleles",id:"alleles",title:"Genes, alleles and the Punnett square",
+ body:`<p>A <b>gene</b> is a stretch of DNA for one trait. You have <b>two copies</b> of most genes, one on each chromosome of a pair. Different versions of a gene are <b>alleles</b>.</p>
+ <p>If both alleles match (<b>CC</b> or <b>cc</b>), you are <b>homozygous</b>. If they differ (<b>Cc</b>), you are <b>heterozygous</b>. Your allele pair is your <b>genotype</b>. The trait you show is your <b>phenotype</b>.</p>
+ <p>A <b>dominant</b> allele (capital letter) shows up even with one copy. A <b>recessive</b> allele (lowercase) shows up only with two copies. Example: cystic fibrosis is recessive. A <b>Cc</b> person is an unaffected <b>carrier</b>.</p>
+ <p>A <b>Punnett square</b> shows each parent's possible alleles along the edges. Each box is one equally likely child. Two carriers (Cc × Cc) give <b>1 CC : 2 Cc : 1 cc</b>, so each child has a <b>1 in 4 (25%)</b> chance of cystic fibrosis.</p>`,
+ analogy:"Each parent hands over one card from their pair. The Punnett square lists every possible pair of cards a child could be dealt.",
+ terms:[["Allele","One version of a gene."],["Homozygous / heterozygous","Two matching alleles / two different alleles."],["Genotype / phenotype","The alleles you have / the trait you show."],["Carrier","A heterozygote who has one recessive allele but does not show the trait."]],
+ check:{q:"Two carriers of cystic fibrosis (Cc × Cc) have a child. What is the chance the child has cystic fibrosis?",opts:[
+  ["1 in 4 (25%)",1,"Yes. Only the cc box shows the recessive trait, and that is 1 box out of 4."],
+  ["1 in 2 (50%)",0,"50% is the chance the child will be a carrier (Cc), the two middle boxes."],
+  ["3 in 4 (75%)",0,"75% is the chance the child will NOT have cystic fibrosis (CC or Cc)."],
+  ["0%, because neither parent has the disease",0,"Carriers can each pass on a c allele. If both do, the child is cc."]]},
+ caption:"Each parent's alleles split apart, slide to the edges and fill the boxes: 1 CC : 2 Cc : 1 cc.",
+ legend:[["dom","Dominant allele (C)"],["rec","Recessive allele (c)"],["ink","Affected (cc)","s"]]},
+
+{act:6,scene:"codom",id:"codom",title:"Incomplete dominance and codominance",
+ body:`<p>Not every gene follows simple dominant and recessive rules.</p>
+ <p><b>Incomplete dominance:</b> the heterozygote shows an <b>in-between</b> phenotype. The classic example is flower color: red × white gives all <b>pink</b>. In humans, familial hypercholesterolemia works this way: one copy gives high cholesterol, two copies give extremely high levels.</p>
+ <p><b>Codominance:</b> <b>both</b> alleles show fully. ABO blood type is the standard example. The <b>I<sup>A</sup></b> and <b>I<sup>B</sup></b> alleles are codominant, and <b>i</b> is recessive to both:</p>
+ <ul><li>I<sup>A</sup>I<sup>A</sup> or I<sup>A</sup>i → type A</li><li>I<sup>B</sup>I<sup>B</sup> or I<sup>B</sup>i → type B</li><li>I<sup>A</sup>I<sup>B</sup> → type <b>AB</b> (both antigens show)</li><li>ii → type O</li></ul>`,
+ analogy:"Incomplete dominance is mixing red and white paint to get pink. Codominance is a shirt with red AND white stripes: both colors show side by side.",
+ terms:[["Incomplete dominance","Heterozygote shows an intermediate phenotype."],["Codominance","Both alleles are fully expressed in the heterozygote."],["Multiple alleles","More than two alleles exist for one gene, like Iᴬ, Iᴮ and i."]],
+ check:{q:"A parent with type AB blood (IᴬIᴮ) and a parent with type O (ii) have children. Which blood types can the children have?",opts:[
+  ["A or B only",1,"Right. Each child gets Iᴬ or Iᴮ from the AB parent and i from the O parent: Iᴬi (A) or Iᴮi (B)."],
+  ["AB or O only",0,"A child would need both Iᴬ and Iᴮ for AB, but the O parent can only give i."],
+  ["Any of A, B, AB or O",0,"The AB parent always passes Iᴬ or Iᴮ, so no child can be O, and the O parent can't give a second I allele for AB."],
+  ["O only",0,"Type O needs ii, but the AB parent has no i allele to give."]]},
+ caption:"Left: red × white flowers give all pink (incomplete dominance). Right: IᴬIᴮ × ii, each box gets one antigen type (codominance).",
+ legend:[["flower-r","Red (RR)"],["flower-p","Pink (Rr)"],["flower-w","White (rr)"],["oxy","A antigen","t"],["dom","B antigen"]]},
+
+{act:6,scene:"xlink",id:"xlink",title:"X-linked recessive inheritance",
+ body:`<p>Some genes sit on the <b>X chromosome</b>. The Y chromosome is small and carries few genes, so <b>males (XY) have only one copy</b> of X-linked genes.</p>
+ <p>For an <b>X-linked recessive</b> trait like <b>hemophilia</b> or <b>red-green color blindness</b>, one recessive allele is enough to cause it in a male. A female needs two. That is why these conditions are <b>much more common in males</b>.</p>
+ <p>A <b>carrier mother</b> (X<sup>H</sup>X<sup>h</sup>) and an unaffected father (X<sup>H</sup>Y): each <b>son</b> has a <b>50%</b> chance of being affected, and each <b>daughter</b> has a <b>50%</b> chance of being a carrier. Sons get their X from their mother, never from their father.</p>`,
+ analogy:"A girl has a backup copy of the X instructions; a boy has only one copy. If his only copy has a typo, there is no backup to read instead.",
+ terms:[["X-linked","A gene located on the X chromosome."],["Carrier female","XᴴXʰ: one normal and one recessive allele; usually unaffected."],["Hemophilia","An X-linked recessive clotting disorder."]],
+ check:{q:"A carrier mother (XᴴXʰ) and an unaffected father (XᴴY) have a son. What is the chance he has hemophilia?",opts:[
+  ["50%",1,"Yes. A son gets Y from dad and one of mom's two X's. Half the time it's Xʰ."],
+  ["25%",0,"25% is the chance for any child before you know the sex. Once you know it's a son, it's 50%."],
+  ["0%, because the father is unaffected",0,"A son's X comes from his mother, so the father's X doesn't protect him."],
+  ["100%",0,"The mother has one normal Xᴴ too. Half her sons get that one."]]},
+ caption:"Carrier mother × unaffected father. The h allele (marked) passes to half of the sons (affected) and half of the daughters (carriers).",
+ legend:[["xc","X chromosome"],["yc","Y chromosome"],["rec","Recessive allele h"]]},
+
+{act:6,scene:"sex",id:"sex",title:"Sex determination: XX or XY",
+ body:`<p>Humans have <b>23 pairs</b> of chromosomes: <b>22 pairs of autosomes</b> and <b>1 pair of sex chromosomes</b>. Females are usually <b>XX</b> and males are usually <b>XY</b>.</p>
+ <p>Every ovum carries an X. Each sperm carries <b>either an X or a Y</b>. So the <b>sperm decides</b> the chromosomal sex: X sperm → XX (female), Y sperm → XY (male). The odds are about <b>50 : 50</b> for every pregnancy.</p>
+ <p>A gene on the Y chromosome called <b>SRY</b> switches on testis development in about week 7. Without SRY, ovaries develop.</p>`,
+ analogy:"Mom always hands over the same card (X). Dad flips a coin and hands over X or Y. Dad's coin flip decides.",
+ terms:[["Autosomes","The 22 pairs of non-sex chromosomes."],["Sex chromosomes","X and Y. XX is usually female; XY is usually male."],["SRY gene","Gene on the Y that triggers testis development."]],
+ check:{q:"Which parent's gamete determines the chromosomal sex of the baby?",opts:[
+  ["The father's sperm (X or Y)",1,"Right. Every ovum has an X, so whether the sperm brings X or Y decides it."],
+  ["The mother's ovum",0,"Every ovum carries an X, so the ovum can't make the difference."],
+  ["Both equally",0,"The mother always gives X. Only the father's gamete varies."],
+  ["Neither; it depends on the hormones in the uterus",0,"Chromosomal sex is set at fertilization by the sperm."]]},
+ caption:"Each ovum carries X. Sperm carry X or Y. Over many births, about half are XX and half are XY.",
+ legend:[["xc","X chromosome"],["yc","Y chromosome"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole story.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · Fertilization</li>
+ <li>Sperm capacitate and meet the oocyte in the ampulla.</li><li>Many sperm push through the corona; acrosome enzymes digest the zona.</li><li>One sperm fuses; the cortical reaction blocks polyspermy.</li><li>Meiosis II finishes; two pronuclei form a zygote (2n = 46).</li>
+ <li class="h">Part 2 · The first two weeks</li>
+ <li>Cleavage: 2, 4, 8 cells, no growth; morula by day 3 to 4.</li><li>Blastocyst (trophoblast, inner cell mass, blastocoel) reaches the uterus.</li><li>Implantation from day 6 to 7; syncytiotrophoblast makes hCG to keep the corpus luteum.</li>
+ <li class="h">Part 3 · Building the embryo</li>
+ <li>Embryonic period weeks 3 to 8; fetal period week 9 to birth.</li><li>Gastrulation: bilaminar → trilaminar via the primitive streak.</li><li>Ectoderm: skin and nerves. Mesoderm: muscle, bone, blood, heart, kidneys. Endoderm: gut and airway linings, liver, pancreas.</li><li>Neurulation: neural plate → neural tube; neural crest cells migrate.</li><li>Folding; organs form; heart beats in week 4.</li>
+ <li class="h">Part 4 · Life support</li>
+ <li>Amnion, yolk sac, allantois, chorion.</li><li>Placenta: exchange without mixing; hCG, estrogen, progesterone. Cord: 2 arteries, 1 vein.</li><li>Shunts: ductus venosus, foramen ovale, ductus arteriosus.</li><li>At birth they close: ligamentum venosum, fossa ovalis, ligamentum arteriosum.</li>
+ <li class="h">Part 5 · Birth and milk</li>
+ <li>Oxytocin positive feedback; dilation, expulsion, placental stages.</li><li>Prolactin makes milk; oxytocin ejects it.</li>
+ <li class="h">Part 6 · Inheritance</li>
+ <li>Alleles, genotype, phenotype; Punnett squares.</li><li>Incomplete dominance (pink); codominance (AB blood).</li><li>X-linked recessive: carrier mothers, affected sons.</li><li>XX or XY: the sperm decides.</li></ol>
+ <p>Next: sequence the first two weeks, sort the germ layers, run Punnett crosses and trace fetal blood in the <b>Development Lab</b>.</p>`,
+ analogy:"Two half-plans combine, a foundation is laid, three crews build, utilities are connected, the family moves in, and the plans get passed on again.",
+ terms:[],check:null,caption:"The whole journey, from zygote to newborn, with the genes that came along.",
+ legend:[["oocyte","Early cells"],["ecto","Ectoderm"],["meso","Mesoderm"],["endo","Endoderm"],["oxy","Oxygen-rich blood"]]}
+];
+/* ================= shared drawing kit ================= */
+let ctx;
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-ink","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash",
+ "act1","act2","act3","act4","act5","act6","ecf","ecto","meso","endo","ecto-wash","meso-wash","endo-wash","oocyte","oocyte-edge","zona","zona-hard","corona","corona-edge",
+ "sperm","acro","cortical","pnf","pnm","chrom","tube","tube-edge","ovary","ovary-edge","uterus","uterus-edge","endom","myo","mblood","troph","syncy","icm","cavity",
+ "amnion","amfluid","yolk","allant","chorion","oxy","deoxy","mixed","hcg","prog","estro","oxt","prl","milk","milk-edge","skin","skin-edge","lung","lung-edge","liver","heart","notch",
+ "dom","rec","xc","yc","flower-r","flower-p","flower-w","glow","gold","gold-wash"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function P(T,L){return ((T%L)+L)%L/L}
+function isDark(){return hx(C.ground)[0]<60}
+function onFill(){return isDark()?"#0E1519":"#fff"}
+function hx(c){let h=(c||"#888").trim();if(h[0]!=="#"){const m=h.match(/\d+/g);return m?m.slice(0,3).map(Number):[136,136,136]}h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,rot,fill,stroke,lw){ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,t,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(t).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y);return ctx.measureText(t).width}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function arrowHead(x,y,a,col,h){h=h||9;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-h*Math.cos(a-.45),y-h*Math.sin(a-.45));ctx.lineTo(x-h*Math.cos(a+.45),y-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function curveArrow(x1,y1,cx,cy,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.quadraticCurveTo(cx,cy,x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);arrowHead(x2,y2,Math.atan2(y2-cy,x2-cx),col,7+(lw||2))}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f),i,f]}d-=ls[i]}return [P_[P_.length-1][0],P_[P_.length-1][1],P_.length-2,1]}
+function pathLen(P_){let L=0;for(let i=0;i<P_.length-1;i++)L+=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);return L}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.lineJoin="round";ctx.lineCap="round";ctx.stroke();ctx.setLineDash([]);ctx.lineCap="butt"}
+function smooth(pts,col,lw,dash){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length-1;i++){const mx=(pts[i][0]+pts[i+1][0])/2,my=(pts[i][1]+pts[i+1][1])/2;ctx.quadraticCurveTo(pts[i][0],pts[i][1],mx,my)}const l=pts[pts.length-1];ctx.lineTo(l[0],l[1]);
+  ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke();ctx.setLineDash([]);ctx.lineCap="butt"}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,o.r==null?8:o.r);ctx.fillStyle=o.fill||hexA(C.panel,.8);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function flowDots(P_,n,period,T,fn,off){for(let i=0;i<n;i++){const f=P((T+(off||0))/period+i/n,1);const [x,y]=along(P_,f);fn(x,y,f,i)}}
+function satCol(s){s=clamp(s,0,1);return s<.5?mix(C.deoxy,C.mixed,s*2):mix(C.mixed,C.oxy,(s-.5)*2)}
+function blobPath(x,y,r,seed,t,amp){amp=amp==null?.06:amp;ctx.beginPath();const N=40;for(let i=0;i<=N;i++){const a=i/N*TAU;const rad=r*(1+amp*Math.sin(a*3+seed+(t||0)*1.7)+amp*.7*Math.sin(a*5+seed*2.3-(t||0)*1.1));const X=x+Math.cos(a)*rad,Y=y+Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath()}
+function hormone(x,y,col,a,s,shape){s=s||5;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();
+  if(shape==="d"){ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath()}
+  else if(shape==="t"){ctx.moveTo(x,y-s);ctx.lineTo(x+s,y+s*.8);ctx.lineTo(x-s,y+s*.8);ctx.closePath()}
+  else if(shape==="s"){ctx.rect(x-s*.8,y-s*.8,s*1.6,s*1.6)}
+  else if(shape==="h"){for(let j=0;j<6;j++){const t=j/6*TAU;ctx.lineTo(x+Math.cos(t)*s,y+Math.sin(t)*s)}ctx.closePath()}
+  else ctx.arc(x,y,s,0,TAU);
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+
+/* ---------- sperm and oocyte ---------- */
+// sperm pointing in direction ang. s = head length scale. ph = tail phase.
+function sperm(x,y,ang,s,ph,o){o=o||{};ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  const col=o.col||C.sperm;
+  if(o.cap)glow(0,0,s*1.6,C.glow,.45*o.cap);
+  ctx.beginPath();const L=s*(o.tail||6);for(let i=0;i<=26;i++){const u=i/26;const X=-s*1.15-u*L;const Y=o.still?0:Math.sin(ph*12-u*8)*s*.5*Math.min(1,u*1.6);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}
+  ctx.strokeStyle=col;ctx.lineWidth=Math.max(1,s*.15);ctx.lineCap="round";ctx.stroke();ctx.lineCap="butt";
+  rr(-s*1.3,-s*.16,s*.78,s*.32,s*.14);ctx.fillStyle=col;ctx.fill();
+  ctx.beginPath();ctx.ellipse(0,0,s*.62,s*.42,0,0,TAU);ctx.fillStyle=col;ctx.fill();
+  const ac=o.acro==null?1:o.acro;if(ac>0){ctx.globalAlpha*=ac;ctx.beginPath();ctx.ellipse(s*.1,0,s*.6,s*.46,0,-1.25,1.25);ctx.strokeStyle=C.acro;ctx.lineWidth=Math.max(1.5,s*.2);ctx.stroke()}
+  ctx.restore()}
+// oocyte: r = cytoplasm radius. o.zona (0..1 alpha), o.hard (0..1), o.corona (0..1), o.cFn(i,ang)->[dx,dy,a]
+function oocyte(x,y,r,o){o=o||{};const zr=r*1.24;
+  const cor=o.corona==null?1:o.corona;
+  if(cor>0){const n=o.cn||30;for(let k=0;k<2;k++)for(let i=0;i<n;i++){const ang=i/n*TAU+k*.11+rnd(i+k*50)*.1;const d=zr+r*(.14+k*.17)+rnd(i*3+k)*r*.04;let dx=0,dy=0,a=1;if(o.cFn){const q=o.cFn(i+k*n,ang);dx=q[0];dy=q[1];a=q[2]}
+    if(a<=0)continue;ctx.save();ctx.globalAlpha*=cor*a;ell(x+Math.cos(ang)*d+dx,y+Math.sin(ang)*d+dy,r*.12,r*.09,ang,C.corona,C["corona-edge"],1);ctx.restore()}}
+  const z=o.zona==null?1:o.zona;const hard=o.hard||0;
+  if(z>0){ctx.save();ctx.globalAlpha*=z;ctx.beginPath();ctx.arc(x,y,zr,0,TAU);ctx.arc(x,y,r,0,TAU,true);ctx.fillStyle=hexA(mix(C.zona,C["zona-hard"],hard),.85);ctx.fill("evenodd");
+    ctx.beginPath();ctx.arc(x,y,zr,0,TAU);ctx.strokeStyle=mix(C["zona-hard"],C.ink,hard*.3);ctx.lineWidth=1+hard*2.5;ctx.stroke();ctx.restore()}
+  if(o.noCell)return;
+  circ(x,y,r,C.oocyte,C["oocyte-edge"],1.6);
+  for(let i=0;i<26;i++){const a=rnd(i+300)*TAU,d=Math.sqrt(rnd(i+400))*r*.88;circ(x+Math.cos(a)*d,y+Math.sin(a)*d,Math.max(.8,r*.022),hexA(C["oocyte-edge"],.45))}}
+// a blastomere
+function cell(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:o.a;circ(x,y,r,o.fill||C.oocyte,o.edge||C["oocyte-edge"],o.lw||1.4);if(o.nuc!==false)circ(x+r*.05,y-r*.05,Math.max(1.5,r*.24),hexA(o.ncol||C.chrom,.7));ctx.restore()}
+// packed cluster positions for n cells (cleavage) inside radius R
+function clusterPos(n,R){if(n===1)return [[0,0,R]];if(n===2)return [[-R*.48,0,R*.52],[R*.48,0,R*.52]];
+  if(n===4)return [[-R*.42,-R*.3,R*.44],[R*.42,-R*.3,R*.44],[-R*.2,R*.38,R*.44],[R*.44,R*.36,R*.44]];
+  if(n===8){const o=[];for(let i=0;i<8;i++){const a=i/8*TAU+.2;const d=i%2?R*.55:R*.5;o.push([Math.cos(a)*d,Math.sin(a)*d,R*.34])}return o}
+  const o=[];const k=n;for(let i=0;i<k;i++){const a=i*2.39996;const d=Math.sqrt((i+.5)/k)*R*.78;o.push([Math.cos(a)*d,Math.sin(a)*d,R*Math.sqrt(1/k)*1.05])}return o}
+// blastocyst: o.open (blastocoel fill 0..1), o.icmSide angle
+function blastocyst(x,y,r,o){o=o||{};const open=o.open==null?1:o.open;const ang=o.icm==null?-Math.PI/2:o.icm;
+  circ(x,y,r,mix(C.troph,C.panel,.82),null);
+  const n=20;for(let i=0;i<n;i++){const a=i/n*TAU;const cx=x+Math.cos(a)*r*(1-.11),cy=y+Math.sin(a)*r*(1-.11);ell(cx,cy,r*.17,r*.11,a+Math.PI/2,mix(C.troph,C.panel,.45),C.troph,1.2);circ(cx,cy,Math.max(1.2,r*.035),hexA(C.chrom,.6))}
+  circ(x,y,r*.77*open,hexA(C.cavity,.95),null);
+  // inner cell mass
+  const ix=x+Math.cos(ang)*r*.48,iy=y+Math.sin(ang)*r*.48;
+  for(let i=0;i<9;i++){const a=i*2.4,d=Math.sqrt((i+.5)/9)*r*.3;cell(ix+Math.cos(a)*d*1.3,iy+Math.sin(a)*d*.75,r*.12,{fill:mix(C.icm,C.panel,.45),edge:C.icm,lw:1.1})}
+}
+
+/* ---------- reproductive tract map (base coordinates 800 x 380) ---------- */
+const TRACT=[[150,262],[166,212],[196,170],[236,140],[284,124],[334,121],[384,126],[430,136],[470,150],[502,170],[528,196],[552,208]];
+const TRACT_MARK={ovary:0,ampulla:.27,isthmus:.5,ut:.66,cavity:.86,implant:1};
+function tractDraw(T,o){o=o||{};
+  // right-side tube & ovary (decorative, mirrored)
+  smooth([[640,150],[690,134],[740,140],[775,170]],C["tube-edge"],16);smooth([[640,150],[690,134],[740,140],[775,170]],C.tube,12);
+  ell(790,232,34,24,.3,C.ovary,C["ovary-edge"],1.5);
+  // uterus
+  ctx.beginPath();ctx.moveTo(470,150);ctx.bezierCurveTo(480,92,640,92,650,150);ctx.bezierCurveTo(656,206,618,262,598,300);ctx.lineTo(594,352);ctx.lineTo(526,352);ctx.lineTo(522,300);ctx.bezierCurveTo(502,262,464,206,470,150);ctx.closePath();
+  ctx.fillStyle=C.myo;ctx.fill();ctx.strokeStyle=C["uterus-edge"];ctx.lineWidth=2;ctx.stroke();
+  // endometrium + cavity
+  ctx.beginPath();ctx.moveTo(492,158);ctx.bezierCurveTo(520,140,600,140,628,158);ctx.bezierCurveTo(612,210,580,262,568,300);ctx.lineTo(552,300);ctx.bezierCurveTo(540,262,508,210,492,158);ctx.closePath();
+  ctx.fillStyle=C.endom;ctx.fill();ctx.strokeStyle=hexA(C["uterus-edge"],.7);ctx.lineWidth=1.2;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(508,166);ctx.bezierCurveTo(530,156,590,156,612,166);ctx.bezierCurveTo(598,206,572,250,563,292);ctx.lineTo(557,292);ctx.bezierCurveTo(548,250,522,206,508,166);ctx.closePath();
+  ctx.fillStyle=hexA(C.cavity,.9);ctx.fill();
+  for(let i=0;i<12;i++){const t=i/11;const x=lerp(512,606,t),y=162-Math.sin(t*Math.PI)*6;line(x,y,x+(t-.5)*6,y-9,hexA(C["uterus-edge"],.35),1.2)}
+  // cervix canal
+  line(560,292,560,352,hexA(C["uterus-edge"],.8),3);
+  // left tube with varying width
+  const tw=i=>i<2?12:i<5?24:i<8?14:11;
+  for(let i=1;i<TRACT.length-2;i++){const a=TRACT[i],b=TRACT[i+1];ctx.lineCap="round";line(a[0],a[1],b[0],b[1],C["tube-edge"],tw(i)+4);}
+  for(let i=1;i<TRACT.length-2;i++){const a=TRACT[i],b=TRACT[i+1];line(a[0],a[1],b[0],b[1],C.tube,tw(i))}ctx.lineCap="butt";
+  for(let i=1;i<TRACT.length-2;i++){const a=TRACT[i],b=TRACT[i+1];line(a[0],a[1],b[0],b[1],hexA(C["tube-edge"],.35),1.2,[3,4])}
+  // fimbriae
+  for(let i=0;i<7;i++){const a=1.7+i*.32;const x0=170,y0=204;ctx.beginPath();ctx.moveTo(x0,y0);ctx.quadraticCurveTo(x0+Math.cos(a)*18,y0+Math.sin(a)*18+Math.sin(T*2+i)*2,x0+Math.cos(a)*30,y0+Math.sin(a)*30+Math.sin(T*2+i)*3);
+    ctx.strokeStyle=C["tube-edge"];ctx.lineWidth=6;ctx.lineCap="round";ctx.stroke();ctx.strokeStyle=C.tube;ctx.lineWidth=3.5;ctx.stroke();ctx.lineCap="butt"}
+  // ovary
+  ell(138,276,50,32,-.25,C.ovary,C["ovary-edge"],1.8);
+  for(let i=0;i<6;i++){circ(110+i*11,276+Math.sin(i*2)*12,4+rnd(i)*3,hexA(C.panel,.5),hexA(C["ovary-edge"],.5),1)}
+  if(o.cl){const s=o.cl;circ(160,262,9+6*s,mix(C.gold,C.ovary,.2),C["ovary-edge"],1.2);}
+  if(o.labels!==false){
+    label(104,322,"Ovary",{size:12,align:"center",weight:600});
+    label(206,236,"Fimbriae",{size:11.5,align:"left"});
+    label(246,108,"Ampulla",{size:12,align:"center",weight:600});
+    label(386,104,"Isthmus",{size:12,align:"center",weight:600});
+    label(470,368,"Uterus",{size:12,align:"center",weight:600});
+    label(660,318,"Endometrium",{size:11.5,align:"left"});line(655,318,604,250,C["ink-faint"],1);
+    label(330,152,"Uterine tube",{size:11.5,align:"center",color:C["ink-soft"],pill:false});
+  }
+}
+function tractAt(f){const [x,y]=along(TRACT,f);return [x,y]}
+
+/* ---------- small person icons, pedigree symbols ---------- */
+function pedi(x,y,s,sex,status,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:o.a;ctx.beginPath();if(sex==="m")ctx.rect(x-s,y-s,s*2,s*2);else ctx.arc(x,y,s,0,TAU);
+  ctx.fillStyle=status==="a"?(o.col||C.ink):C.panel;ctx.fill();ctx.strokeStyle=o.edge||C.ink;ctx.lineWidth=o.lw||2;ctx.stroke();
+  if(status==="c"){circ(x,y,s*.32,o.col||C.ink)}
+  ctx.restore()}
+function kid(x,y,s,col,sex,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:o.a;
+  circ(x,y-s*1.25,s*.5,C.skin,C["skin-edge"],1.2);
+  ctx.beginPath();ctx.moveTo(x-s*.6,y+s*.9);ctx.lineTo(x-s*.55,y-s*.35);ctx.quadraticCurveTo(x,y-s*.75,x+s*.55,y-s*.35);ctx.lineTo(x+s*.6,y+s*.9);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1.2;ctx.stroke();
+  if(sex){const sy=y+s*1.6;ctx.beginPath();if(sex==="m")ctx.rect(x-s*.28,sy-s*.28,s*.56,s*.56);else ctx.arc(x,sy,s*.3,0,TAU);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.4;ctx.stroke()}
+  ctx.restore()}
+function flower(x,y,s,col,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:o.a;line(x,y,x,y+s*2.2,C.notch,Math.max(2,s*.18));ell(x+s*.45,y+s*1.4,s*.45,s*.2,-.5,C.notch);
+  for(let i=0;i<5;i++){const a=i/5*TAU-Math.PI/2;ell(x+Math.cos(a)*s*.55,y+Math.sin(a)*s*.55,s*.55,s*.38,a,col,hexA(C.ink,.35),1)}circ(x,y,s*.28,C.gold,hexA(C.ink,.3),1);ctx.restore()}
+function drop(x,y,s,col,t,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:o.a;ctx.beginPath();ctx.moveTo(x,y-s*1.3);ctx.bezierCurveTo(x+s*.9,y-s*.2,x+s*.95,y+s*.9,x,y+s*.95);ctx.bezierCurveTo(x-s*.95,y+s*.9,x-s*.9,y-s*.2,x,y-s*1.3);ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1.2;ctx.stroke();if(t){ctx.font=`700 ${Math.round(s*.72)}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(t,x,y+s*.25)}ctx.restore()}
+// chromosome (X-shaped duplicated or single rod). o.band colour, o.col
+function chromo(x,y,h,col,o){o=o||{};ctx.save();ctx.translate(x,y);ctx.rotate(o.ang||0);ctx.globalAlpha*=o.a==null?1:o.a;const w=h*.2;
+  if(o.y){rr(-w/2,-h*.3,w,h*.6,w/2);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke()}
+  else{rr(-w/2,-h/2,w,h,w/2);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke()}
+  if(o.band){ctx.fillStyle=o.band;ctx.fillRect(-w/2,(o.bandY||-.15)*h,w,h*.1)}
+  ctx.restore()}
+/* ---------- embryo, fetus and organ icons ---------- */
+function embryoC(x,y,s,o){o=o||{};ctx.save();ctx.translate(x,y);if(o.rot)ctx.rotate(o.rot);ctx.globalAlpha*=o.a==null?1:o.a;
+  const col=o.col||mix(C.skin,C.meso,.12),edge=C["skin-edge"];const lb=o.limbs==null?1:o.limbs;
+  // body arc
+  ctx.beginPath();const N=30;const pts=[];for(let i=0;i<=N;i++){const u=i/N;const a=lerp(-2.5,1.9,u);const r=s*(.62-.08*u);pts.push([Math.cos(a)*r,Math.sin(a)*r,s*lerp(.34,.08,u*u)])}
+  ctx.beginPath();pts.forEach((p,i)=>{const a=Math.atan2(p[1],p[0]);const X=p[0]+Math.cos(a)*p[2],Y=p[1]+Math.sin(a)*p[2];i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});
+  for(let i=N;i>=0;i--){const p=pts[i];const a=Math.atan2(p[1],p[0]);ctx.lineTo(p[0]-Math.cos(a)*p[2],p[1]-Math.sin(a)*p[2])}ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=1.5;ctx.stroke();
+  // head
+  ell(Math.cos(-2.5)*s*.55,Math.sin(-2.5)*s*.55,s*.42,s*.38,-.5,col,edge,1.5);
+  circ(Math.cos(-2.5)*s*.6-s*.08,Math.sin(-2.5)*s*.6+s*.06,Math.max(1.2,s*.06),hexA(C.ink,.6));
+  // heart bulge
+  if(o.heart!=null){const hb=1+.18*o.heart;ell(Math.cos(-.9)*s*.18,Math.sin(-.9)*s*.1+s*.05,s*.17*hb,s*.15*hb,0,mix(C.heart,col,.2),mix(C.heart,C.ink,.3),1.2)}
+  // limb buds
+  if(lb>0){ctx.globalAlpha*=lb;ell(Math.cos(-.4)*s*.5,Math.sin(-.4)*s*.5,s*.14,s*.08,-.4+Math.PI/2,col,edge,1.2);ell(Math.cos(.9)*s*.48,Math.sin(.9)*s*.48,s*.14,s*.08,.9+Math.PI/2,col,edge,1.2)}
+  ctx.restore()}
+function fetusShape(x,y,s,o){o=o||{};ctx.save();ctx.translate(x,y);if(o.rot)ctx.rotate(o.rot);ctx.globalAlpha*=o.a==null?1:o.a;const col=o.col||C.skin,edge=C["skin-edge"];
+  // body (curled back)
+  ctx.beginPath();ctx.moveTo(-s*.25,-s*.35);ctx.bezierCurveTo(s*.45,-s*.55,s*.75,s*.05,s*.45,s*.6);ctx.bezierCurveTo(s*.25,s*.9,-s*.25,s*.85,-s*.35,s*.45);ctx.bezierCurveTo(-s*.45,s*.15,-s*.42,-s*.15,-s*.25,-s*.35);ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=1.6;ctx.stroke();
+  // leg folded
+  ctx.lineCap="round";ctx.strokeStyle=edge;ctx.lineWidth=s*.2+1.6;ctx.beginPath();ctx.moveTo(s*.35,s*.5);ctx.lineTo(-s*.05,s*.45);ctx.lineTo(s*.1,s*.78);ctx.stroke();
+  ctx.strokeStyle=col;ctx.lineWidth=s*.2;ctx.stroke();
+  // arm
+  ctx.strokeStyle=edge;ctx.lineWidth=s*.13+1.6;ctx.beginPath();ctx.moveTo(-s*.05,-s*.15);ctx.lineTo(-s*.2,s*.12);ctx.lineTo(-s*.42,-s*.05);ctx.stroke();ctx.strokeStyle=col;ctx.lineWidth=s*.13;ctx.stroke();ctx.lineCap="butt";
+  // head
+  circ(-s*.42,-s*.52,s*.4,col,edge,1.6);circ(-s*.62,-s*.52,Math.max(1,s*.04),hexA(C.ink,.55));
+  ctx.restore()}
+function heartShape(x,y,s,fill,stroke){ctx.beginPath();ctx.moveTo(x,y+s*.9);ctx.bezierCurveTo(x-s*1.2,y+s*.1,x-s*.9,y-s*.9,x,y-s*.35);ctx.bezierCurveTo(x+s*.9,y-s*.9,x+s*1.2,y+s*.1,x,y+s*.9);ctx.closePath();
+  ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke()}}
+function kidneyShape(x,y,s,fill,stroke){ctx.save();ctx.translate(x,y);ctx.beginPath();ctx.moveTo(0,-s);ctx.bezierCurveTo(s*1.1,-s*1.15,s*1.25,s*1.1,0,s);ctx.bezierCurveTo(-s*.75,s*.95,-s*.5,s*.35,-s*.22,s*.15);ctx.bezierCurveTo(-s*.42,-s*.05,-s*.6,-s*.95,0,-s);ctx.closePath();
+  ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke||hexA(C.ink,.4);ctx.lineWidth=1.5;ctx.stroke();ctx.restore()}
+// organ icon in a box of size s centered at x,y
+function ico(name,x,y,s,col){const k=s/40;const ink=hexA(C.ink,.55);ctx.save();ctx.translate(x,y);ctx.scale(k,k);ctx.lineCap="round";ctx.lineJoin="round";
+  const lt=mix(col,C.panel,.55);
+  switch(name){
+  case "skin":rr(-18,-10,36,8,2);ctx.fillStyle=col;ctx.fill();rr(-18,-2,36,16,2);ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=ink;ctx.lineWidth=1.2;rr(-18,-10,36,24,2);ctx.stroke();
+    for(let i=0;i<3;i++){line(-10+i*10,-10,-12+i*10,-20,ink,1.5)}break;
+  case "hair":for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(-14+i*7,14);ctx.quadraticCurveTo(-20+i*7,-2,-10+i*7,-16);ctx.strokeStyle=col;ctx.lineWidth=3;ctx.stroke()}line(-18,14,18,14,ink,2);break;
+  case "brain":ctx.beginPath();ctx.ellipse(0,0,19,14,0,0,TAU);ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();
+    ctx.lineWidth=1.6;for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(-14+i*8,-8);ctx.quadraticCurveTo(-10+i*8,0,-14+i*8,8);ctx.stroke()}line(0,-14,0,4,col,1.6);break;
+  case "cord":rr(-5,-19,10,38,5);ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke();for(let i=0;i<4;i++){line(-5,-12+i*8,-16,-15+i*8,col,1.8);line(5,-12+i*8,16,-15+i*8,col,1.8)}break;
+  case "nerve":ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.beginPath();ctx.moveTo(-18,10);ctx.lineTo(0,0);ctx.lineTo(16,-12);ctx.moveTo(0,0);ctx.lineTo(14,10);ctx.moveTo(8,-6);ctx.lineTo(10,-16);ctx.stroke();circ(-18,10,4,col);break;
+  case "muscle":ctx.beginPath();ctx.moveTo(-20,0);ctx.quadraticCurveTo(0,-16,20,0);ctx.quadraticCurveTo(0,16,-20,0);ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke();
+    for(let i=-2;i<=2;i++)line(i*6,-8+Math.abs(i)*1.5,i*6,8-Math.abs(i)*1.5,col,1.4);break;
+  case "bone":ctx.fillStyle=lt;ctx.strokeStyle=col;ctx.lineWidth=2.2;rr(-4,-14,8,28,3);ctx.fill();ctx.stroke();[[-4,-16],[4,-16],[-4,16],[4,16]].forEach(p=>{circ(p[0],p[1],5.5,lt,col,2.2)});rr(-3,-13,6,26,2);ctx.fillStyle=lt;ctx.fill();break;
+  case "blood":[[-7,-4],[8,5]].forEach(p=>{circ(p[0],p[1],10,col,ink,1.2);circ(p[0],p[1],4.5,hexA(C.panel,.45))});break;
+  case "heart":heartShape(0,0,17,lt,col);ctx.lineWidth=2.2;ctx.strokeStyle=col;ctx.stroke();line(-4,-10,-4,-20,col,3);line(4,-10,6,-19,col,3);break;
+  case "kidney":kidneyShape(0,0,15,lt,col);ctx.lineWidth=2.2;ctx.strokeStyle=col;break;
+  case "vessel":rr(-20,-7,40,14,7);ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();circ(-8,0,3,col);circ(4,0,3,col);break;
+  case "gut":ctx.strokeStyle=col;ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(-16,-14);ctx.quadraticCurveTo(14,-14,12,0);ctx.quadraticCurveTo(10,14,-16,14);ctx.stroke();ctx.strokeStyle=lt;ctx.lineWidth=3.5;ctx.stroke();break;
+  case "lung":line(0,-19,0,-4,col,5);ctx.strokeStyle=col;ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(-10,6);ctx.lineTo(-14,16);ctx.moveTo(-10,6);ctx.lineTo(-4,16);ctx.moveTo(0,-4);ctx.lineTo(10,6);ctx.lineTo(14,16);ctx.moveTo(10,6);ctx.lineTo(4,16);ctx.stroke();
+    for(let i=0;i<4;i++)line(-1.5,-17+i*4,1.5,-17+i*4,lt,1.2);break;
+  case "liver":ctx.beginPath();ctx.moveTo(-20,-6);ctx.bezierCurveTo(-14,-16,14,-14,20,-8);ctx.bezierCurveTo(14,4,0,14,-6,14);ctx.bezierCurveTo(-16,12,-22,2,-20,-6);ctx.closePath();ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke();line(-2,-12,2,12,col,1.2);break;
+  case "pancreas":ctx.beginPath();ctx.moveTo(-20,6);ctx.bezierCurveTo(-18,-8,-6,-6,0,-2);ctx.bezierCurveTo(8,2,16,-8,20,-4);ctx.bezierCurveTo(20,2,10,8,0,8);ctx.bezierCurveTo(-8,10,-14,12,-20,6);ctx.closePath();ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke();
+    for(let i=0;i<5;i++)circ(-14+i*7,3-((i%2)*3),1.6,col);break;
+  case "thyroid":ell(-8,2,8,12,-.2,lt,col,2.2);ell(8,2,8,12,.2,lt,col,2.2);rr(-6,4,12,6,3);ctx.fillStyle=lt;ctx.fill();line(0,-18,0,-6,col,4);break;
+  case "bladder":ctx.beginPath();ctx.moveTo(0,16);ctx.bezierCurveTo(-22,12,-20,-14,0,-14);ctx.bezierCurveTo(20,-14,22,12,0,16);ctx.closePath();ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke();line(-14,-18,-6,-10,col,2);line(14,-18,6,-10,col,2);break;
+  case "dermis":rr(-18,-10,36,7,2);ctx.fillStyle=lt;ctx.fill();rr(-18,-3,36,16,2);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=ink;ctx.lineWidth=1.2;rr(-18,-10,36,23,2);ctx.stroke();break;
+  case "eye":ell(0,0,18,11,0,lt,col,2.2);circ(0,0,7,col);circ(0,0,3,hexA(C.ink,.7));break;
+  case "teeth":for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(-16+i*11,-10);ctx.lineTo(-7+i*11,-10);ctx.lineTo(-8+i*11,12);ctx.lineTo(-11.5+i*11,6);ctx.lineTo(-15+i*11,12);ctx.closePath();ctx.fillStyle=lt;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke()}break;
+  }
+  ctx.restore()}
+// small head-in-profile with hypothalamus and pituitary
+function headProfile(x,y,s,o){o=o||{};ctx.save();ctx.translate(x,y);const col=C.skin,edge=C["skin-edge"];
+  ctx.beginPath();ctx.moveTo(-s*.1,s*.95);ctx.lineTo(-s*.1,s*.6);ctx.bezierCurveTo(-s*.75,s*.6,-s*.95,-s*.2,-s*.55,-s*.7);ctx.bezierCurveTo(-s*.1,-s*1.05,s*.7,-s*.85,s*.82,-s*.2);ctx.lineTo(s*.95,s*.08);ctx.lineTo(s*.8,s*.12);ctx.lineTo(s*.82,s*.4);ctx.lineTo(s*.35,s*.5);ctx.lineTo(s*.35,s*.95);ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=1.6;ctx.stroke();
+  ell(-s*.05,-s*.35,s*.55,s*.38,0,mix(col,C.panel,.4),hexA(edge,.6),1);
+  const hy=[s*.05,-s*.06],pi=[s*.08,s*.12];
+  circ(hy[0],hy[1],s*.09,o.hyCol||C.act1,hexA(C.ink,.4),1);line(hy[0],hy[1],pi[0],pi[1],hexA(C.ink,.5),1.5);
+  if(o.two){ell(pi[0]-s*.05,pi[1],s*.06,s*.07,0,o.antCol||C.prl,hexA(C.ink,.4),1);ell(pi[0]+s*.06,pi[1],s*.06,s*.07,0,o.postCol||C.oxt,hexA(C.ink,.4),1)}
+  else circ(pi[0],pi[1],s*.08,o.pitCol||C.oxt,hexA(C.ink,.4),1);
+  ctx.restore();return {hy:[x+hy[0],y+hy[1]],pit:[x+pi[0],y+pi[1]]}}
+// Punnett grid on canvas. cells: array of 4 {t:text, a:alpha, draw:fn(cx,cy)}
+function punnettGrid(x,y,cs,top,left,cells,o){o=o||{};
+  for(let r=0;r<2;r++)for(let c=0;c<2;c++){const cx=x+c*cs,cy=y+r*cs;const ce=cells[r*2+c]||{};rr(cx,cy,cs,cs,4);ctx.fillStyle=ce.fill||hexA(C.panel,.92);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.stroke();
+    if(ce.a>0){ctx.save();ctx.globalAlpha*=ce.a;if(ce.draw)ce.draw(cx+cs/2,cy+cs/2);ctx.restore()}}
+  rr(x,y,cs*2,cs*2,4);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=2;ctx.stroke();
+  top.forEach((t,i)=>{if(t)t(x+cs*i+cs/2,y-26)});left.forEach((t,i)=>{if(t)t(x-28,y+cs*i+cs/2)})}
+function allele(x,y,t,col,o){o=o||{};const r=o.r||15;ctx.save();ctx.globalAlpha*=o.a==null?1:o.a;circ(x,y,r,col,hexA(C.ink,.35),1.2);
+  ctx.font=`700 ${o.size||14}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(t,x,y+.5);ctx.restore()}
+// rich text with simple superscripts: "I^A" -> I with superscript A
+function supText(x,y,t,o){o=o||{};const size=o.size||14;ctx.textBaseline="middle";const parts=[];let i=0;while(i<t.length){if(t[i]==="^"){parts.push([t[i+1],1]);i+=2}else{parts.push([t[i],0]);i++}}
+  ctx.font=`${o.weight||700} ${size}px ${o.mono===false?FONT:MONO}`;let w=0;parts.forEach(p=>{ctx.font=`${o.weight||700} ${p[1]?size*.68:size}px ${o.mono===false?FONT:MONO}`;w+=ctx.measureText(p[0]).width});
+  let xx=o.align==="left"?x:o.align==="right"?x-w:x-w/2;ctx.textAlign="left";ctx.fillStyle=o.color||C.ink;
+  parts.forEach(p=>{ctx.font=`${o.weight||700} ${p[1]?size*.68:size}px ${o.mono===false?FONT:MONO}`;ctx.fillText(p[0],xx,p[1]?y-size*.32:y);xx+=ctx.measureText(p[0]).width});return w}
+
+function stageAt(f){return f<.38?"2":f<.5?"8":f<.66?"morula":f<.8?"blast":"hatched"}
+function drawConceptus(x,y,r,st,T,o){o=o||{};
+  if(st==="hatched"){blastocyst(x,y,r*.95,{icm:o.icm});return}
+  if(st==="blast"){oocyte(x,y,r*.86,{corona:0,noCell:true});blastocyst(x,y,r*.84,{icm:o.icm,open:o.open});return}
+  oocyte(x,y,r*.86,{corona:0,noCell:true});const n=st==="2"?2:st==="8"?8:16;clusterPos(n,r*.84).forEach((q,k)=>cell(x+q[0],y+q[1],q[2]*.96,{nuc:r>20}))}
+/* ================= fetal circulation module (base 800 x 480) ================= */
+const FG=(()=>{
+  const off=(pts,d)=>pts.map((p,i)=>{const a=pts[Math.max(0,i-1)],b=pts[Math.min(pts.length-1,i+1)];const dx=b[0]-a[0],dy=b[1]-a[1];const L=Math.hypot(dx,dy)||1;return [p[0]-dy/L*d,p[1]+dx/L*d]});
+  const cat=(...a)=>{const o=[];a.forEach(s=>s.forEach((p,i)=>{if(o.length&&i===0&&o[o.length-1][0]===p[0]&&o[o.length-1][1]===p[1])return;o.push(p)}));return o};
+  const CORD_V=[[116,430],[150,418],[178,408],[222,392],[262,372]];
+  const UV_IN=[[262,372],[276,350],[292,330]];
+  const DV=[[292,330],[318,312],[345,298]];
+  const LIV=[[292,330],[262,324],[238,310],[260,296],[300,296],[345,304]];
+  const IVC_UP=[[345,298],[346,262],[352,238],[362,214],[368,194]];
+  const IVC_LOW=[[566,448],[470,448],[345,448],[345,380],[345,298]];
+  const SVC=[[352,30],[352,96],[356,146],[366,168]];
+  const FO=[[372,188],[392,194],[408,194],[426,188],[452,178]];
+  const RA_RV=[[366,186],[372,224],[384,256]];
+  const RV_PT=[[384,256],[406,242],[424,210],[428,160],[428,140],[426,98]];
+  const PT_VIS=[[428,146],[428,120],[426,98]];
+  const DA=[[426,98],[448,84],[480,70]];
+  const ARCH=[[452,256],[462,210],[466,166],[468,140],[470,94],[484,64],[506,58],[524,70],[530,96]];
+  const AO_VIS=[[468,146],[470,94],[484,64],[506,58],[524,70],[530,96]];
+  const ARCH_A=[[480,70],[506,58],[524,70],[530,96]];
+  const HEAD=[[484,64],[490,30]];
+  const DESC=[[530,96],[530,250],[530,392],[548,410],[586,422]];
+  const LA_LV=[[455,174],[460,218],[452,256]];
+  const RPA=[[426,98],[404,84],[350,76],[292,80],[252,98]];
+  const RLUNG=[[252,98],[226,130],[204,176],[212,218],[244,204],[256,152],[262,118]];
+  const RPV=[[262,118],[300,108],[352,110],[400,124],[440,150],[455,168]];
+  const LPA=[[426,98],[470,100],[530,102],[590,106],[620,114]];
+  const LLUNG=[[620,114],[646,146],[668,184],[652,226],[624,214],[612,170],[606,150]];
+  const LPV=[[606,150],[560,150],[530,154],[492,162],[465,170]];
+  const UA_B=[[530,392],[480,410],[400,412],[330,400],[290,386],[262,372]];
+  const CORD_A=[[262,372],[222,392],[178,408],[150,418],[116,430]];
+  const PDA=[[480,70],[448,84],[426,98]];
+  const P={
+    uv:{pts:cat(CORD_V,UV_IN,DV,IVC_UP),sat:f=>f<.62?.93:.84},
+    uvl:{pts:cat(CORD_V,UV_IN,LIV,IVC_UP),sat:f=>f<.42?.92:f<.75?lerp(.92,.6,seg(f,.42,.75)):.6},
+    ivc:{pts:cat(IVC_LOW,IVC_UP),sat:()=>.3},
+    svc:{pts:SVC,sat:()=>.28},
+    fo:{pts:FO,sat:()=>.74},
+    rarv:{pts:cat(RA_RV,RV_PT),sat:(f,s)=>lerp(.4,.3,s.lungs)},
+    da:{pts:cat(DA,ARCH_A,DESC),sat:()=>.45},
+    pda:{pts:PDA,sat:()=>.97},
+    rl:{pts:cat(RPA,RLUNG,RPV),sat:(f,s)=>{const o=lerp(.32,.97,s.lungs);const a=pathF.rl;return f<a[0]?lerp(.4,.3,s.lungs):f>a[1]?o:lerp(lerp(.4,.3,s.lungs),o,seg(f,a[0],a[1]))}},
+    ll:{pts:cat(LPA,LLUNG,LPV),sat:(f,s)=>{const o=lerp(.32,.97,s.lungs);const a=pathF.ll;return f<a[0]?lerp(.4,.3,s.lungs):f>a[1]?o:lerp(lerp(.4,.3,s.lungs),o,seg(f,a[0],a[1]))}},
+    left:{pts:cat(LA_LV,ARCH.slice(1,6),HEAD),sat:(f,s)=>lerp(.7,.97,s.lungs)},
+    desc:{pts:cat(LA_LV,ARCH.slice(1),DESC),sat:(f,s)=>f<.4?lerp(.7,.97,s.lungs):lerp(lerp(.55,.97,s.lungs),lerp(.55,.97,s.lungs),1)},
+    ua1:{pts:cat(off(UA_B,4),off(CORD_A,5)),sat:()=>.42},
+    ua2:{pts:cat(off(UA_B,-4),off(CORD_A,-5)),sat:()=>.42}
+  };
+  // fraction of rl / ll path where lung loop starts and ends
+  const pathF={};
+  ["rl","ll"].forEach(k=>{const pa=k==="rl"?RPA:LPA,lu=k==="rl"?RLUNG:LLUNG;const L=pathLen(P[k].pts);pathF[k]=[pathLen(pa)/L,(pathLen(pa)+pathLen(lu))/L]});
+  Object.values(P).forEach(p=>p.len=pathLen(p.pts));
+  const NODES={placenta:[110,428],uv:[218,393],dv:[318,312],liver:[236,318],ivc:[345,380],svc:[352,70],ra:[366,186],fo:[408,196],la:[458,170],rv:[384,256],lv:[452,258],
+    pt:[427,118],da:[452,84],aorta:[476,80],arch:[506,58],desc:[530,250],ua:[400,412],lungs:[210,170],lungL:[648,176],head:[490,16],lower:[650,434]};
+  return {P,pathF,NODES,PT_VIS,AO_VIS,CORD_V,UV_IN,DV,LIV,IVC_UP,IVC_LOW,SVC,FO,RA_RV,RV_PT,DA,ARCH,HEAD,DESC,LA_LV,RPA,RLUNG,RPV,LPA,LLUNG,LPV,UA_B,CORD_A,off};
+})();
+function flows(s){const lungs=s.lungs;return {
+  uv:1-s.umb,uvl:.4*(1-s.umb),ivc:1,svc:1,fo:(1-s.fo)*(1-lungs)*.95+(s.pfo?0:0),rarv:1,
+  da:(1-s.da)*(1-lungs),pda:(1-s.da)*lungs,rl:lerp(.14,1,lungs),ll:lerp(.14,1,lungs),left:lerp(.8,1,lungs),desc:1,ua1:1-s.umb,ua2:1-s.umb}}
+function vessel(pts,w,sat,o){o=o||{};const a=o.a==null?1:o.a;if(a<=0)return;ctx.save();ctx.globalAlpha*=a;ctx.lineCap="round";ctx.lineJoin="round";
+  if(o.halo){poly(pts,C.panel,w+6)}
+  if(o.lig){poly(pts,hexA(C["ink-soft"],.9),3,[5,4]);ctx.restore();return}
+  poly(pts,mix(satCol(sat),C.ink,.25),w+2.5);poly(pts,mix(satCol(sat),C.panel,isDark()?.35:.55),w);
+  if(o.hl){poly(pts,hexA(C.glow,.6+.3*Math.sin(o.T*5)),w+8);poly(pts,mix(satCol(sat),C.panel,.5),w)}
+  ctx.restore()}
+function fetalHeart(T,s,o){o=o||{};const beat=1+.025*Math.max(0,Math.sin(T*7));
+  ctx.save();ctx.translate(0,28);ctx.translate(410,190);ctx.scale(beat,beat);ctx.translate(-410,-190);
+  ctx.beginPath();ctx.moveTo(338,112);ctx.bezierCurveTo(318,150,320,212,360,244);ctx.quadraticCurveTo(410,282,456,266);ctx.bezierCurveTo(496,248,502,188,488,150);ctx.bezierCurveTo(482,118,472,108,452,110);ctx.closePath();
+  ctx.fillStyle=mix(C.heart,C.panel,.15);ctx.fill();ctx.save();ctx.clip();
+  const satRA=lerp(.55,.3,s.lungs),satLA=lerp(.7,.97,s.lungs);
+  ctx.fillStyle=mix(satCol(satRA),C.panel,.55);ctx.fillRect(320,100,88,86);
+  ctx.fillStyle=mix(satCol(satLA),C.panel,.55);ctx.fillRect(408,100,100,86);
+  ctx.fillStyle=mix(satCol(lerp(.4,.3,s.lungs)),C.panel,.45);ctx.fillRect(320,186,98,100);
+  ctx.fillStyle=mix(satCol(satLA),C.panel,.45);ctx.fillRect(418,186,100,100);
+  ctx.restore();
+  ctx.strokeStyle=mix(C.heart,C.ink,.35);ctx.lineWidth=2.5;ctx.stroke();
+  // septa
+  line(408,112,408,156,mix(C.heart,C.ink,.35),3.5);line(408,176,408,186,mix(C.heart,C.ink,.35),3.5);line(330,186,488,186,mix(C.heart,C.ink,.3),2);line(418,186,428,262,mix(C.heart,C.ink,.35),3.5);
+  // foramen ovale flap
+  const fo=s.fo;const flapA=lerp(.9,0,fo);ctx.save();ctx.translate(408,176);ctx.rotate(-Math.PI/2+flapA);ctx.lineCap="round";line(0,0,22,0,mix(C.heart,C.ink,.5),3);ctx.restore();
+  if(fo>.95&&!s.pfo){line(408,156,408,176,mix(C.heart,C.ink,.35),3.5)}
+  ctx.restore();
+  if(o.labels!==false){txt(344,154,"RA",{size:11,weight:700,mono:true,color:C["ink-soft"]});txt(474,146,"LA",{size:11,weight:700,mono:true,color:C["ink-soft"]});
+    txt(346,250,"RV",{size:11,weight:700,mono:true,color:C["ink-soft"]});txt(468,262,"LV",{size:11,weight:700,mono:true,color:C["ink-soft"]})}}
+function lungShape(cx,cy,rx,ry,inf,left){ctx.save();ctx.translate(cx,cy);ctx.scale(lerp(.82,1,inf),lerp(.86,1,inf));ctx.beginPath();
+  const m=left?-1:1;ctx.moveTo(m*rx*.5,-ry);ctx.bezierCurveTo(-m*rx*.7,-ry*.95,-m*rx*1.1,ry*.2,-m*rx*.9,ry*.9);ctx.quadraticCurveTo(0,ry*1.1,m*rx*.8,ry*.85);ctx.bezierCurveTo(m*rx*.55,ry*.3,m*rx*.75,-ry*.4,m*rx*.5,-ry);ctx.closePath();
+  ctx.fillStyle=mix(mix(C.lung,C.amfluid,.55*(1-inf)),C.panel,.1);ctx.fill();ctx.strokeStyle=C["lung-edge"];ctx.lineWidth=1.6;ctx.stroke();
+  if(inf<.5){ctx.globalAlpha=(1-inf*2)*.5;for(let i=0;i<10;i++){circ((rnd(i)-.5)*rx*1.1,(rnd(i+9)-.5)*ry*1.5,3,hexA(C.amnion,.6))}}
+  else{ctx.globalAlpha=(inf-.5)*2*.55;for(let i=0;i<16;i++){circ((rnd(i)-.5)*rx*1.1,(rnd(i+9)-.5)*ry*1.5,5,null,C["lung-edge"],1)}}
+  ctx.restore()}
+function liverShape(){ctx.beginPath();ctx.moveTo(196,300);ctx.bezierCurveTo(206,272,300,268,336,286);ctx.bezierCurveTo(350,298,334,330,300,338);ctx.bezierCurveTo(260,346,206,338,196,300);ctx.closePath();
+  ctx.fillStyle=mix(C.liver,C.panel,.45);ctx.fill();ctx.strokeStyle=C.liver;ctx.lineWidth=1.6;ctx.stroke()}
+function placentaShape(T,umb){const x=110,y=428;ctx.save();ell(x,y+6,92,30,0,mix(C.mblood,C.panel,.55),C["uterus-edge"],1.5);
+  ell(x,y,84,24,0,mix(C.chorion,C.panel,.35),C.chorion,1.6);
+  for(let i=0;i<9;i++){const vx=x-64+i*16;ctx.beginPath();ctx.moveTo(vx,y+6);ctx.quadraticCurveTo(vx+4,y+18,vx-2,y+26+Math.sin(T*2+i)*1.5);ctx.strokeStyle=hexA(C.chorion,.8);ctx.lineWidth=3;ctx.stroke()}
+  ctx.restore()}
+function boxLabel(x,y,w,h,t,col){panelBox(x,y,w,h,{fill:hexA(col,.15),stroke:col,lw:1.4,r:6});txt(x+w/2,y+h/2,t,{size:11.5,weight:600,align:"center"})}
+// main draw. s: {umb,lungs,fo,da,dv,pfo,pda}; o: {labels,hl:Set,T,parts,dimFetal,pspeed,tag}
+function fetalDraw(T,s,o){o=o||{};const G=FG;const F=flows(s);const hl=o.hl||new Set();const lab=o.labels!==false;
+  // boxes
+  boxLabel(300,4,250,24,"Head and arms",C["ink-soft"]);
+  boxLabel(586,404,130,50,"Lower body",C["ink-soft"]);
+  // lungs
+  lungShape(212,170,56,86,s.lungs,false);lungShape(650,176,54,84,s.lungs,true);
+  liverShape();placentaShape(T,s.umb);
+  // cord
+  ctx.save();ctx.globalAlpha=lerp(1,.35,s.umb);ctx.lineCap="round";poly(G.CORD_V,mix(C.amfluid,C.panel,.2),28);poly(G.CORD_V,hexA(C.amnion,.5),1.2,[2,5]);ctx.restore();
+  if(s.umb>.4){const cx=lerp(178,222,.5),cy=lerp(408,392,.5);ctx.save();ctx.globalAlpha=seg(s.umb,.4,.7);rr(cx-5,cy-20,10,40,3);ctx.translate(0,0);ctx.fillStyle=C["ink-soft"];ctx.fill();ctx.restore();}
+  const umA=lerp(1,.25,s.umb);
+  // pulmonary veins (behind)
+  vessel(G.RPV,7,lerp(.32,.97,s.lungs),{a:.9,hl:hl.has("pv"),T});vessel(G.LPV,7,lerp(.32,.97,s.lungs),{a:.9,hl:hl.has("pv"),T});
+  vessel(G.RLUNG,4,lerp(.4,.6,s.lungs),{a:.35});vessel(G.LLUNG,4,lerp(.4,.6,s.lungs),{a:.35});
+  // umbilical arteries
+  vessel(G.P.ua1.pts,5,.42,{a:umA,hl:hl.has("ua"),T});vessel(G.P.ua2.pts,5,.42,{a:umA,hl:hl.has("ua"),T});
+  // IVC (bridge over umbilical arteries)
+  vessel(G.IVC_LOW,12,.3,{halo:true,hl:hl.has("ivc"),T});vessel(G.IVC_UP,12,lerp(.62,.3,s.umb),{hl:hl.has("ivc"),T});
+  // umbilical vein, liver route, ductus venosus
+  vessel(G.UV_IN,10,.93,{a:umA,hl:hl.has("uv"),T});vessel(G.CORD_V,9,.93,{a:umA,hl:hl.has("uv"),T});
+  vessel(G.LIV,4.5,.75,{a:.7*umA});
+  if(s.dv<.97)vessel(G.DV,lerp(7,2,s.dv),.88,{a:umA,hl:hl.has("dv"),T});else vessel(G.DV,2,.5,{lig:true});
+  vessel(G.SVC,11,.28,{hl:hl.has("svc"),T});
+  // pulmonary arteries
+  vessel(G.RPA,lerp(5,8,s.lungs),lerp(.4,.3,s.lungs),{hl:hl.has("pa"),T});vessel(G.LPA,lerp(5,8,s.lungs),lerp(.4,.3,s.lungs),{hl:hl.has("pa"),T});
+  // heart
+  fetalHeart(T,s,{labels:lab});
+  vessel(G.PT_VIS,12,lerp(.4,.3,s.lungs),{hl:hl.has("pt"),T});
+  // ductus arteriosus
+  const daW=lerp(8,2,s.da);
+  if(s.da<.97)vessel(G.DA,daW,F.pda>F.da?.85:.45,{hl:hl.has("da"),T});else vessel(G.DA,2,.5,{lig:true});
+  // aorta
+  vessel(G.AO_VIS,13,lerp(.7,.97,s.lungs),{hl:hl.has("aorta"),T});vessel(G.HEAD,9,lerp(.7,.97,s.lungs),{});
+  vessel(G.DESC,12,lerp(.55,.97,s.lungs),{hl:hl.has("desc"),T});
+  // particles
+  if(o.parts!==false){const sp=(o.pspeed||1)*70;
+    Object.keys(G.P).forEach(k=>{const p=G.P[k];const w=F[k];if(w<=.02)return;const n=Math.max(2,Math.round(p.len/26));
+      for(let i=0;i<n;i++){const f=P((T*sp/p.len)+i/n+(rnd(i+k.length*7)*.02),1);const [x,y]=along(p.pts,f);
+        let a=w;if(k==="uv"||k==="uvl"||k==="ua1"||k==="ua2"){a*=1}
+        ctx.globalAlpha=clamp(a,0,1)*(o.dim&&!o.dim.has(k)?.18:1);circ(x,y,3.6,satCol(p.sat(f,s)),hexA(C.ink,.35),.8);ctx.globalAlpha=1}});}
+  // labels
+  if(lab){const L=(x,y,t,al,c)=>label(x,y,t,{size:11.5,align:al||"left",weight:600,border:c});const lead=(x1,y1,x2,y2)=>line(x1,y1,x2,y2,hexA(C.ink,.4),1,[3,3]);
+    L(110,466,"Placenta","center",C.chorion);
+    if(s.umb<.5){L(150,380,"Umbilical vein","center",C.oxy);L(420,430,"Umbilical arteries","center",C.deoxy)}else{L(190,376,"Cord clamped","center")}
+    L(214,354,"Liver","center");
+    if(s.dv<.97){L(300,276,"Ductus venosus","right",hl.has("dv")?C.gold:null);lead(300,276,318,310)}else{L(300,276,"Ligamentum venosum","right",C["ink-soft"]);lead(300,276,318,310)}
+    L(318,236,"IVC","right");L(340,52,"SVC","right");
+    lead(408,316,408,204);
+    if(s.fo<.95||s.pfo)L(408,326,s.pfo&&s.fo>.5?"Foramen ovale (flap not sealed)":"Foramen ovale","center",hl.has("fo")?C.gold:null);else L(408,326,"Fossa ovalis","center",C["ink-soft"]);
+    L(236,36,"Pulmonary trunk","center");lead(290,40,424,104);
+    if(s.da<.97){L(560,36,"Ductus arteriosus","left",hl.has("da")?C.gold:null)}else L(560,36,"Ligamentum arteriosum","left",C["ink-soft"]);lead(558,38,456,82);
+    L(544,186,"Aorta","left");
+    L(150,246,s.lungs<.5?"Lung (fluid-filled)":"Lung (air-filled)","center");L(690,280,s.lungs<.5?"Lung (fluid-filled)":"Lung (air-filled)","center");
+  }
+}
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+const NA=6;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=NA;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([NA+1,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===NA+1)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
+  if(sh==="t")return `<span><i class="t" style="border-bottom-color:var(${v})"></i>${l[1]}</span>`;
+  if(sh==="h")return `<span><i class="d" style="background:var(${v});border-radius:3px;transform:none"></i>${l[1]}</span>`;
+  return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=480;
+const cv=document.getElementById("stage");ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+
+/* ================= Scene: map / recap ================= */
+function sceneMap(T,recap){
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const on=Math.floor(P(T,18)*6);
+  const names=["Fertilization","First two weeks","Building the embryo","Life support","Birth and milk","Inheritance"];
+  const cols=["act1","act2","act3","act4","act5","act6"];
+  for(let i=0;i<6;i++){const x=12+(i%3)*262,y=12+Math.floor(i/3)*234,w=252,h=222;const lit=recap||i===on;
+    panelBox(x,y,w,h,{fill:hexA(C["panel-2"],lit?1:.7),stroke:lit?C[cols[i]]:C.rule,lw:lit?2.6:1.2});
+    chipText(x+12+ctx.measureText("PART "+(i+1)).width/2+20,y+18,"PART "+(i+1),C[cols[i]]);
+    txt(x+w/2,y+h-18,names[i],{size:14,weight:700,align:"center"});
+    const cx=x+w/2,cy=y+108;ctx.save();ctx.beginPath();ctx.rect(x+2,y+30,w-4,h-58);ctx.clip();ctx.globalAlpha=lit?1:.55;
+    if(i===0){oocyte(cx+30,cy,40,{});for(let k=0;k<6;k++){const a=Math.PI+(k-2.5)*.22;const q=P(T*.25+k*.13,1);const d=lerp(150,62,ease(q));sperm(cx+30+Math.cos(a)*d,cy+Math.sin(a)*d,a+Math.PI,6,T*2+k,{cap:q})}}
+    else if(i===1){const ph=P(T,8);const n=ph<.25?1:ph<.5?2:ph<.75?4:8;oocyte(cx,cy,48,{corona:0,noCell:true});clusterPos(n,46).forEach((p,k)=>cell(cx+p[0],cy+p[1],p[2]*.96,{}));txt(cx,cy+76,n+" cell"+(n>1?"s":""),{size:12,mono:true,align:"center",color:C["ink-soft"]})}
+    else if(i===2){const lay=[["ecto","Ectoderm"],["meso","Mesoderm"],["endo","Endoderm"]];lay.forEach((l,k)=>{const yy=cy-40+k*34;ctx.beginPath();for(let xx=x+24;xx<=x+w-24;xx+=4){const yy2=yy+Math.sin(xx*.05+T*2+k)*4;xx===x+24?ctx.moveTo(xx,yy2):ctx.lineTo(xx,yy2)}ctx.strokeStyle=C[l[0]];ctx.lineWidth=20;ctx.stroke();txt(cx,yy,l[1],{size:11.5,weight:700,align:"center",color:"#fff"})})}
+    else if(i===3){ell(cx-60,cy+40,48,18,0,mix(C.chorion,C.panel,.35),C.chorion,1.5);const cord=[[cx-40,cy+28],[cx-10,cy+10],[cx+20,cy-6],[cx+38,cy-10]];smooth(cord,mix(C.amfluid,C.panel,.2),14);
+      flowDots(cord,4,2,T,(xx,yy)=>circ(xx,yy,3,C.oxy));flowDots(cord.slice().reverse(),4,2,T,(xx,yy)=>circ(xx+3,yy+4,2.6,C.deoxy));ell(cx+60,cy-14,42,48,0,hexA(C.amfluid,.8),C.amnion,1.5);fetusShape(cx+60,cy-12,44,{rot:.3})}
+    else if(i===4){const q=P(T,3);const sq=Math.max(0,Math.sin(q*TAU))*.06;ctx.save();ctx.translate(cx-30,cy);ctx.scale(1-sq,1-sq);ell(0,0,60,74,0,C.myo,C["uterus-edge"],2);ell(0,0,50,64,0,hexA(C.amfluid,.9));fetusShape(0,4,52,{rot:Math.PI*.95});ctx.restore();
+      for(let k=0;k<5;k++){const f=P(T*.4+k/5,1);hormone(cx+50+Math.sin(f*TAU)*30,cy-60+f*120,C.oxt,Math.sin(f*Math.PI),5,"d")}}
+    else{const fill=P(T,6);const cells=["CC","Cc","Cc","cc"].map((g,k)=>({a:seg(fill,.15+k*.15,.25+k*.15),draw:(xx,yy)=>{kid(xx,yy-4,7,g==="cc"?C.rec:mix(C.dom,C.panel,g==="Cc"?.35:0));txt(xx,yy+19,g,{size:10.5,mono:true,weight:700,align:"center"})}}));
+      punnettGrid(cx-30,cy-50,56,[(xx,yy)=>allele(xx,yy+6,"C",C.dom,{r:11,size:12}),(xx,yy)=>allele(xx,yy+6,"c",C.rec,{r:11,size:12})],[(xx,yy)=>allele(xx+6,yy,"C",C.dom,{r:11,size:12}),(xx,yy)=>allele(xx+6,yy,"c",C.rec,{r:11,size:12})],cells)}
+    ctx.restore()}
+  if(recap){label(400,240,"Zygote → embryo → fetus → newborn, with genes from both parents",{size:13,weight:700,align:"center",border:C.accent})}
+}
+
+/* ================= Part 1 · journey ================= */
+function sceneJourney(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,14);ctx.save();ctx.translate(0,62);tractDraw(T,{cl:seg(p,.12,.3)});ctx.restore();
+  const at=f=>{const q=tractAt(f);return [q[0],q[1]+62]};
+  // oocyte from ovary to ampulla
+  const ov=ease(seg(p,.04,.3));let op;if(ov<.5){const a=[160,324],b=at(.1);op=[lerp(a[0],b[0],ov*2),lerp(a[1],b[1],ov*2)]}else{const f=lerp(.1,.27,(ov-.5)*2);op=at(f)}
+  oocyte(op[0],op[1],10,{cn:16});
+  if(p>.02&&p<.22)label(200,348+28,"Ovulation: the oocyte leaves the ovary",{size:12,weight:600,border:C.act1});
+  // sperm
+  const N=18;for(let i=0;i<N;i++){const st=.06+rnd(i)*.25,dur=.5+rnd(i+5)*.12;const q=seg(p,st,st+dur);if(q<=0)continue;
+    const lost=i%5===2,other=i%5===4;let f,x,y;
+    const cav=[[560,410],[560,340],[562,280],[566,240]].map(v=>[v[0],v[1]]);
+    if(q<.3){const [xx,yy]=along(cav,q/.3);x=xx;y=yy}
+    else{if(other){const pth=[[566,240],[620,210],[650,212],[700,196],[750,214]];[x,y]=along(pth,(q-.3)/.7)}
+      else if(lost){[x,y]=along([[566,240],[540,262],[520,250]],(q-.3)/.7)}
+      else{f=lerp(.86,.29,(q-.3)/.7);[x,y]=at(f)}}
+    const jit=Math.sin(T*3+i*2)*4;const nx=along(cav,0)[0];
+    const prev=q<.3?along(cav,Math.max(0,q/.3-.02)):[x+1,y+1];let ang=Math.atan2(y-prev[1],x-prev[0]);if(q>=.3&&!other&&!lost)ang=Math.atan2(at(Math.max(.27,f-.01))[1]-y,at(Math.max(.27,f-.01))[0]-x);
+    const cap=(!other&&!lost)?seg(q,.4,.85):0;const a=lost?1-seg(q,.7,1):1;
+    sperm(x+Math.cos(ang+1.57)*jit,y+Math.sin(ang+1.57)*jit,ang,4.5,T*1.6+i,{cap,a,tail:5})}
+  // labels
+  if(p>.4)label(300,104+62-80,"Capacitation on the way: sperm glow when ready",{size:12,weight:600,border:C.glow});
+  if(p>.72){const [x,y]=at(.27);glow(x,y,46,C.act1,.25);label(x,y-50,"Fertilization site: the ampulla",{size:12.5,weight:700,align:"center",border:C.act1})}
+  label(560,462,"Sperm enter through the cervix",{size:11.5,align:"center"});
+  // inset: capacitation close-up
+  panelBox(600,8,192,128,{fill:hexA(C.panel,.95)});txt(696,22,"CAPACITATION CLOSE-UP",{size:10.5,mono:true,weight:600,align:"center",color:C["ink-soft"]});
+  const cq=seg(P(T,5),.1,.8);sperm(706,78,Math.PI,18,T*(1+cq*2),{cap:cq,tail:3.5});
+  for(let k=0;k<10;k++){const a=k/10*TAU;const d=lerp(10,10+60*cq,seg(cq,k*.06,k*.06+.4));circ(706+Math.cos(a)*d*1.1-4,78+Math.sin(a)*d*.8,2.4,hexA(C["ink-soft"],1-seg(cq,k*.06+.2,k*.06+.6)))}
+  txt(696,124,cq>.5?"coat stripped, tail beats harder":"coat of proteins and cholesterol",{size:11,align:"center",color:C["ink-soft"]});
+}
+
+/* ================= Part 1 · acrosomal reaction ================= */
+function sceneAcro(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const cx=400,cy=246,r=112,zr=r*1.24;const p=P(T,12);const NS=12;
+  const S=[];for(let i=0;i<NS;i++){const a=i/NS*TAU+.15+rnd(i)*.15;const st=rnd(i+20)*.08;S.push({a,st})}
+  const sDist=(s,i)=>{const t=p-s.st;if(i===1&&t>.8)return lerp(zr+8,r+4,ease(seg(t,.8,.95)));return t<.32?lerp(330,zr+r*.62,ease(seg(t,0,.32))):t<.55?lerp(zr+r*.62,zr+10,ease(seg(t,.32,.55))):zr+10};
+  // corona pushed aside near passing sperm
+  oocyte(cx,cy,r,{cn:34,cFn:(k,ang)=>{let dx=0,dy=0;S.forEach((s,i)=>{const d=sDist(s,i);if(d<zr+r*.66){let df=Math.atan2(Math.sin(ang-s.a),Math.cos(ang-s.a));if(Math.abs(df)<.16){const push=(1-Math.abs(df)/.16)*10*seg(zr+r*.66-d,0,r*.4);dx+=-Math.sin(ang)*push*Math.sign(df);dy+=Math.cos(ang)*push*Math.sign(df)}}});return [dx,dy,1]}});
+  // digested channels in zona
+  S.forEach((s,i)=>{const ac=seg(p-s.st,.55+(i%3)*.03,.68+(i%3)*.03);if(ac<=0)return;const d=lerp(zr,i===1?r:zr-10,ac);
+    ctx.save();ctx.beginPath();ctx.arc(cx,cy,zr+1,0,TAU);ctx.arc(cx,cy,r,0,TAU,true);ctx.clip("evenodd");
+    const x1=cx+Math.cos(s.a)*(zr+2),y1=cy+Math.sin(s.a)*(zr+2),x2=cx+Math.cos(s.a)*d,y2=cy+Math.sin(s.a)*d;ctx.lineCap="round";line(x1,y1,x2,y2,hexA(C.ecf,.95),9+ac*4);ctx.restore();
+    for(let k=0;k<7;k++){const f=P(T*.8+k/7,1);const sp=(rnd(k+i*9)-.5)*1.2;const dd=zr+8-f*22*ac;circ(cx+Math.cos(s.a+sp*.12)*dd,cy+Math.sin(s.a+sp*.12)*dd,2.2,hexA(C.acro,(1-f)*ac))}});
+  S.forEach((s,i)=>{const d=sDist(s,i);const ac=1-seg(p-s.st,.55+(i%3)*.03,.66+(i%3)*.03);const x=cx+Math.cos(s.a)*d,y=cy+Math.sin(s.a)*d;
+    sperm(x,y,s.a+Math.PI,8,T*1.8+i,{acro:ac,cap:.3,tail:5.5})});
+  // labels
+  label(120,40,"Corona radiata (follicle cells)",{size:12,weight:600,border:C["corona-edge"]});line(160,52,cx-r*1.36,cy-r*1.1,C["ink-faint"],1);
+  label(680,440,"Zona pellucida",{size:12,weight:600,align:"center",border:C["zona-hard"]});line(660,428,cx+zr*.72,cy+zr*.7,C["ink-faint"],1);
+  label(cx,cy+20,"Oocyte",{size:13,weight:600,align:"center"});
+  const ph=p<.32?"1. Many sperm arrive":p<.55?"2. They push between corona cells":p<.8?"3. Acrosomes burst: enzymes digest the zona":"4. One sperm reaches the oocyte membrane";
+  label(cx,cy-20,ph,{size:12.5,weight:700,align:"center",border:p<.55?C.act1:C.acro});
+  // inset sperm head
+  panelBox(612,14,180,104,{fill:hexA(C.panel,.95)});txt(702,28,"ACROSOME",{size:10.5,mono:true,weight:600,align:"center",color:C["ink-soft"]});
+  const ia=seg(P(T,4),.3,.6);sperm(712,70,Math.PI,24,0,{acro:1-ia,still:true,tail:2.4});for(let k=0;k<9;k++){const a=Math.PI+(k-4)*.25;circ(684+Math.cos(a)*ia*30,70+Math.sin(a)*ia*30,2.6,hexA(C.acro,ia*(1-seg(P(T,4),.8,1))))}
+  txt(702,108,ia>.1?"cap opens, enzymes spill out":"enzyme cap on the head",{size:11,align:"center",color:C["ink-soft"]});
+}
+
+/* ================= Part 1 · fusion + cortical reaction ================= */
+function sceneCortical(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const cx=380,cy=246,r=126,zr=r*1.22;const p=P(T,12);const fa=-.75;
+  const wave=ease(seg(p,.22,.6));
+  // corona faint
+  oocyte(cx,cy,r,{corona:.3,zona:0,noCell:true,cn:32});
+  // zona segments hardening with wave
+  const NZ=90;for(let i=0;i<NZ;i++){const a0=i/NZ*TAU,a1=(i+1.05)/NZ*TAU;const am=(a0+a1)/2;const df=Math.abs(Math.atan2(Math.sin(am-fa),Math.cos(am-fa)))/Math.PI;const h=seg(wave-df,0,.15);
+    ctx.beginPath();ctx.arc(cx,cy,zr,a0,a1);ctx.arc(cx,cy,r+3,a1,a0,true);ctx.closePath();ctx.fillStyle=hexA(mix(C.zona,C["zona-hard"],h),.88);ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,zr,a0,a1);ctx.strokeStyle=mix(C["zona-hard"],C.ink,h*.3);ctx.lineWidth=1+h*3;ctx.stroke()}
+  circ(cx,cy,r,C.oocyte,C["oocyte-edge"],1.8);
+  for(let i=0;i<26;i++){const a=rnd(i+300)*TAU,d=Math.sqrt(rnd(i+400))*r*.8;circ(cx+Math.cos(a)*d,cy+Math.sin(a)*d,2.4,hexA(C["oocyte-edge"],.4))}
+  // cortical granules
+  const NG=46;for(let i=0;i<NG;i++){const a=i/NG*TAU;const df=Math.abs(Math.atan2(Math.sin(a-fa),Math.cos(a-fa)))/Math.PI;const rel=seg(wave-df,0,.12);
+    const d=lerp(r-11,r+10,rel);ctx.globalAlpha=1-seg(rel,.6,1);circ(cx+Math.cos(a)*d,cy+Math.sin(a)*d,4,C.cortical,hexA(C.ink,.3),.8);ctx.globalAlpha=1}
+  // the winning sperm: fuses
+  const fq=ease(seg(p,.02,.2));const wx=cx+Math.cos(fa)*lerp(zr+30,r-6,fq),wy=cy+Math.sin(fa)*lerp(zr+30,r-6,fq);
+  if(p<.3)sperm(wx,wy,fa+Math.PI,9,T*2,{acro:0,a:1-seg(p,.18,.3),tail:5.5});
+  const nq=seg(p,.18,.7);const nx=lerp(wx,cx+Math.cos(fa)*r*.5,nq),ny=lerp(wy,cy+Math.sin(fa)*r*.5,nq);if(p>.16){circ(nx,ny,lerp(5,11,nq),C.pnm,hexA(C.ink,.35),1);if(p>.3)label(nx+20,ny+22,"Sperm nucleus inside",{size:11.5})}
+  // other sperm, bounce
+  const others=[.5,1.3,2.2,2.9,3.6,4.4,5.2];others.forEach((a,i)=>{const df=Math.abs(Math.atan2(Math.sin(a-fa),Math.cos(a-fa)))/Math.PI;const blocked=seg(wave-df,0,.15);
+    const back=ease(seg(p,.62+i*.02,.8+i*.02))*36;const d=zr+12+back+Math.sin(T*6+i)*2*(1-blocked);sperm(cx+Math.cos(a)*d,cy+Math.sin(a)*d,a+Math.PI,8,T*2+i,{acro:.2,tail:5});
+    if(blocked>.9&&p>.68){const bx=cx+Math.cos(a)*(zr+52+back),by=cy+Math.sin(a)*(zr+52+back);txt(bx,by,"✕",{size:16,weight:700,align:"center",color:C.bad})}});
+  // labels
+  const st=p<.2?"1. One sperm fuses with the oocyte membrane":p<.62?"2. Cortical reaction: granules release, zona hardens":"3. Other sperm can no longer bind: polyspermy blocked";
+  label(cx,22,st,{size:13,weight:700,align:"center",border:p<.2?C.act1:C.cortical});
+  if(p>.3){label(620,120,"Cortical granules",{size:12,weight:600,border:C.cortical});line(620,130,cx+Math.cos(-.3)*r,cy+Math.sin(-.3)*r,C["ink-faint"],1)}
+  if(p>.5){label(596,380,"Hardened zona pellucida",{size:12,weight:600,border:C["zona-hard"]});line(620,370,cx+Math.cos(.6)*zr,cy+Math.sin(.6)*zr,C["ink-faint"],1)}
+  // wave progress meter
+  panelBox(14,400,190,64,{fill:hexA(C.panel,.95)});txt(24,416,"ZONA HARDENED",{size:10.5,mono:true,weight:600,color:C["ink-soft"]});rr(24,428,170,12,6);ctx.fillStyle=C.sunk;ctx.fill();rr(24,428,170*wave,12,6);ctx.fillStyle=C["zona-hard"];ctx.fill();
+  txt(24,452,Math.round(wave*100)+"% of the way around",{size:11.5,color:C["ink-soft"]});
+}
+
+/* ================= Part 1 · pronuclei → zygote ================= */
+function rods(cx,cy,n,col,rad,T,seed,o){o=o||{};for(let i=0;i<n;i++){const a=rnd(i+seed)*TAU,d=Math.sqrt(rnd(i+seed+50))*rad;const x=cx+Math.cos(a)*d,y=cy+Math.sin(a)*d;chromo(x,y,7+rnd(i+seed+9)*5,col,{ang:rnd(i+seed+3)*3+Math.sin(T+i)*.15,a:o.a})}}
+function sceneZygote(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const cx=330,cy=250,r=150;const p=P(T,14);
+  oocyte(cx,cy,r,{corona:0,hard:1,cn:20});
+  // meiosis II: chromosomes at top edge separate, polar body buds off
+  const m=ease(seg(p,.03,.24));const pbx=cx+Math.cos(-1.9)*(r+16),pby=cy+Math.sin(-1.9)*(r+16);
+  const ex=cx+Math.cos(-1.9)*(r-22),ey=cy+Math.sin(-1.9)*(r-22);
+  if(m>0){circ(lerp(ex,pbx,1),lerp(ey,pby,1),lerp(0,18,seg(m,.4,1)),C.oocyte,C["oocyte-edge"],1.4)}
+  if(p<.28){for(let i=0;i<6;i++){const off=(i-2.5)*6;const bx=ex+off*Math.cos(-1.9+1.57),by=ey+off*Math.sin(-1.9+1.57);
+      chromo(lerp(bx,pbx+off*.4*Math.cos(-1.9+1.57),m),lerp(by,pby+off*.4*Math.sin(-1.9+1.57),m),8,C.pnf,{ang:-1.9});chromo(lerp(bx,cx+Math.cos(-1.9)*(r-50),m),lerp(by,cy+Math.sin(-1.9)*(r-50),m),8,C.pnf,{ang:-1.9})}
+    if(p>.05)label(pbx+30,pby-6,"Meiosis II finishes",{size:12,weight:600,border:C.pnf})}
+  else{rods(pbx,pby,5,C.pnf,8,T,7);label(pbx+26,pby-8,"Second polar body",{size:12,weight:600})}
+  // pronuclei
+  const g=seg(p,.22,.38),mv=ease(seg(p,.4,.66)),fu=ease(seg(p,.68,.86));
+  const fx0=cx+Math.cos(-1.9)*(r-56),fy0=cy+Math.sin(-1.9)*(r-56),mx0=cx-40,my0=cy+90;
+  const fx=lerp(fx0,cx-26,mv),fy=lerp(fy0,cy,mv),mx=lerp(mx0,cx+26,mv),my=lerp(my0,cy,mv);
+  const pr=lerp(10,40,g)*(1-fu*.15);
+  if(p>.24&&fu<1){ctx.globalAlpha=1-fu;circ(fx,fy,pr,hexA(C.pnf,.22),C.pnf,2.2);circ(mx,my,pr,hexA(C.pnm,.22),C.pnm,2.2);ctx.globalAlpha=1}
+  if(p<.24){circ(mx0,my0,10,hexA(C.pnm,.4),C.pnm,2)}
+  if(p>.24){// chromosomes in each pronucleus, then line up in pairs
+    const al=seg(p,.86,.96);
+    for(let i=0;i<23;i++){const a=rnd(i+11)*TAU,d=Math.sqrt(rnd(i+61))*pr*.72;const tx=cx-6,ty=cy-88+i*7.8;
+      chromo(lerp(fx+Math.cos(a)*d,tx,al),lerp(fy+Math.sin(a)*d,ty,al),lerp(7,8,al),C.pnf,{ang:lerp(rnd(i)*3,Math.PI/2,al)});
+      const b=rnd(i+33)*TAU,e=Math.sqrt(rnd(i+83))*pr*.72;chromo(lerp(mx+Math.cos(b)*e,tx+12,al),lerp(my+Math.sin(b)*e,ty,al),lerp(7,8,al),C.pnm,{ang:lerp(rnd(i+5)*3,Math.PI/2,al)})}}
+  if(p>.3&&p<.86){label(fx-pr-10,fy-pr-8,"Female pronucleus (n = 23)",{size:12,weight:600,align:"right",border:C.pnf});label(mx+pr+10,my+pr+6,"Male pronucleus (n = 23)",{size:12,weight:600,border:C.pnm})}
+  // counter panel
+  const x0=560;panelBox(x0,70,224,300,{fill:hexA(C.panel,.95)});txt(x0+112,92,"CHROMOSOME COUNT",{size:11,mono:true,weight:600,align:"center",color:C["ink-soft"]});
+  const rows=[["From the ovum",23,C.pnf,p>.24],["From the sperm",23,C.pnm,p>.24],["Zygote",46,C.act1,p>.86]];
+  rows.forEach((rw,i)=>{const y=130+i*70;const on=rw[3];ctx.globalAlpha=on?1:.35;txt(x0+16,y,rw[0],{size:13,weight:600});txt(x0+208,y,String(rw[1]),{size:22,weight:700,mono:true,align:"right",color:rw[2]});
+    rr(x0+16,y+16,192,8,4);ctx.fillStyle=C.sunk;ctx.fill();rr(x0+16,y+16,192*rw[1]/46,8,4);ctx.fillStyle=rw[2];ctx.fill();ctx.globalAlpha=1});
+  line(x0+16,318,x0+208,318,C.rule,1);wrapText(p>.86?"2n = 46: 23 pairs, one of each pair from each parent":"n = 23 in each gamete",x0+112,338,200,15,{size:11.5,align:"center",color:C["ink-soft"]});
+  if(p>.88)label(cx,cy+r+28,"Zygote (2n = 46)",{size:14,weight:700,align:"center",border:C.act1});
+}
+
+/* ================= Part 2 · cleavage ================= */
+function sceneCleave(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,16);const cx=270,cy=240,R=118;
+  const stages=[1,2,4,8,16];const si=Math.min(4,Math.floor(p*5.4));const local=(p*5.4)-si;const tr=si<4?ease(seg(local,.6,1)):0;
+  const n=stages[si];const n2=stages[Math.min(4,si+1)];
+  oocyte(cx,cy,R+4,{corona:0,noCell:true});
+  const A=clusterPos(n,R),B=clusterPos(n2,R);
+  if(tr<=0||si>=4){A.forEach((q,k)=>cell(cx+q[0]+Math.sin(T*1.5+k)*.8,cy+q[1],q[2]*.97,{fill:si===4?mix(C.oocyte,C.icm,.08):C.oocyte}))}
+  else{B.forEach((q,k)=>{const par=A[Math.min(A.length-1,Math.floor(k*n/n2))];const x=lerp(par[0],q[0],tr),y=lerp(par[1],q[1],tr),rr_=lerp(par[2]*.8,q[2],tr);cell(cx+x,cy+y,rr_*.97,{})})}
+  if(tr>0&&tr<.7)A.forEach(q=>{line(cx+q[0]-q[2]*.6,cy+q[1],cx+q[0]+q[2]*.6,cy+q[1],hexA(C.chrom,.5),1.5,[3,3])});
+  const names=["Zygote","2-cell stage","4-cell stage","8-cell stage","Morula"];const days=["about day 1","about day 1 to 2","about day 2","about day 3","day 3 to 4"];
+  label(cx,cy-R-34,names[si]+" · "+days[si],{size:13.5,weight:700,align:"center",border:C.act2});
+  label(cx,cy+R+30,"Zona pellucida still around it",{size:12,align:"center"});
+  // bars
+  const x0=520;panelBox(x0,40,264,400,{fill:hexA(C.panel,.95)});
+  txt(x0+132,62,"WATCH THE NUMBERS",{size:11,mono:true,weight:600,align:"center",color:C["ink-soft"]});
+  const nn=tr>0?lerp(n,n2,tr):n;
+  const bars=[["Number of cells",Math.log2(nn)/4,Math.round(tr>.5?n2:n)+"",C.act2],["Total size of embryo",1,"same",C.icm],["Size of each cell",1/Math.cbrt(nn),"smaller",C.act3]];
+  bars.forEach((b,i)=>{const y=100+i*104;txt(x0+18,y,b[0],{size:13.5,weight:600});rr(x0+18,y+18,228,22,6);ctx.fillStyle=C.sunk;ctx.fill();rr(x0+18,y+18,Math.max(8,228*clamp(b[1],0,1)),22,6);ctx.fillStyle=b[3];ctx.fill();
+    txt(x0+240,y+29,b[2],{size:12.5,weight:700,mono:true,align:"right",color:onFill()})});
+  txt(x0+132,410,"Cells double. The embryo does not grow.",{size:12.5,weight:600,align:"center"});
+}
+
+/* ================= Part 2 · travel to uterus ================= */
+function sceneTravel(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,15);ctx.save();ctx.translate(0,62);tractDraw(T,{cl:1});ctx.restore();
+  const f=lerp(.28,.97,ease(seg(p,.04,.92)));const [x,y0]=tractAt(f);const y=y0+62;
+  // cilia beating along the tube near the embryo
+  for(let i=0;i<18;i++){const ff=.15+i*.03;if(ff>.66)break;const [cx_,cy_]=tractAt(ff);const b=Math.sin(T*10-i*.8)*4;line(cx_,cy_+62-8,cx_+3+b,cy_+62-14,hexA(C["tube-edge"],.8),1.4);line(cx_,cy_+62+8,cx_+3+b,cy_+62+14,hexA(C["tube-edge"],.8),1.4)}
+  const st=stageAt(f);drawConceptus(x,y,11,st,T,{icm:-Math.PI/2});
+  glow(x,y,26,C.act2,.25);
+  const day=f<.38?"Day 1 to 2":f<.5?"Day 3":f<.66?"Day 3 to 4":f<.8?"Day 4 to 5":"Day 5 to 6";
+  label(x,y+28,day,{size:12,weight:700,align:"center",border:C.act2});
+  label(330,104+62-70,"Cilia and smooth muscle move the embryo toward the uterus",{size:12,weight:600,align:"center"});
+  // inset
+  panelBox(586,8,206,190,{fill:hexA(C.panel,.96)});const nm=st==="2"?"2-cell stage":st==="8"?"8-cell stage":st==="morula"?"Morula (solid ball)":st==="blast"?"Blastocyst forming":"Blastocyst hatches";
+  txt(689,24,nm.toUpperCase(),{size:10.5,mono:true,weight:600,align:"center",color:C["ink-soft"]});
+  const open=st==="blast"?seg(f,.66,.78):1;
+  if(st==="hatched"){const h=seg(f,.8,.9);ctx.save();ctx.beginPath();ctx.arc(689-h*30,108,62,.6,TAU-.6);ctx.strokeStyle=hexA(C["zona-hard"],.7*(1-seg(f,.88,.97)));ctx.lineWidth=12;ctx.stroke();ctx.restore();blastocyst(689+h*8,108,56,{})}
+  else drawConceptus(689,108,62,st,T,{open});
+  if(st==="blast"||st==="hatched"){label(689,52,"Inner cell mass",{size:11,align:"center",border:C.icm});label(689,128,"Blastocoel",{size:11,align:"center"});label(618,184,"Trophoblast",{size:11,align:"left",border:C.troph});line(640,176,644,150,C["ink-faint"],1)}
+}
+
+/* ================= Part 2 · implantation + hCG ================= */
+function sceneImplant(T){
+  const p=P(T,16);
+  ctx.fillStyle=hexA(C.cavity,1);ctx.fillRect(0,0,W,H);
+  const surf=x=>230+Math.sin(x*.035)*6;
+  // endometrium
+  ctx.beginPath();ctx.moveTo(0,H);for(let x=0;x<=W;x+=8)ctx.lineTo(x,surf(x));ctx.lineTo(W,H);ctx.closePath();ctx.fillStyle=C.endom;ctx.fill();ctx.strokeStyle=C["uterus-edge"];ctx.lineWidth=2;ctx.stroke();
+  for(let i=0;i<6;i++){const gx=60+i*130;if(Math.abs(gx-330)<60)continue;ctx.beginPath();ctx.moveTo(gx,surf(gx));ctx.bezierCurveTo(gx+14,300,gx-14,330,gx+4,372);ctx.strokeStyle=hexA(C["uterus-edge"],.55);ctx.lineWidth=7;ctx.stroke();ctx.strokeStyle=C.cavity;ctx.lineWidth=2.5;ctx.stroke()}
+  // maternal capillaries
+  const cap1=[[0,392],[120,384],[260,398],[400,388],[540,398],[680,386],[800,394]];
+  smooth(cap1,mix(C.mblood,C.ink,.25),14);smooth(cap1,mix(C.mblood,C.panel,.35),10);flowDots(cap1,16,7,T,(x,y)=>circ(x,y,3.2,C.mblood));
+  label(700,420,"Maternal capillary",{size:11.5,align:"center"});
+  label(80,470-6,"Endometrium (uterine lining)",{size:12,weight:600});
+  // blastocyst descends and sinks
+  const bx=330;const desc=ease(seg(p,.02,.18)),sink=ease(seg(p,.2,.62));const R=64;
+  const by=lerp(70,surf(bx)-R+4,desc)+sink*(R*2+14);
+  // syncytiotrophoblast
+  const sy=seg(p,.18,.6);
+  if(sy>0){ctx.save();ctx.beginPath();const N=40;for(let i=0;i<=N;i++){const a=lerp(.05,Math.PI-.05,i/N);const fing=Math.max(0,Math.sin(i*1.9))*sy*30+sy*12;const rr_=R+6+fing;const X=bx+Math.cos(a)*rr_,Y=by+Math.sin(a)*rr_;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}
+    for(let i=N;i>=0;i--){const a=lerp(.05,Math.PI-.05,i/N);ctx.lineTo(bx+Math.cos(a)*(R-2),by+Math.sin(a)*(R-2))}ctx.closePath();ctx.fillStyle=hexA(C.syncy,.75);ctx.fill();ctx.strokeStyle=C.syncy;ctx.lineWidth=1.5;ctx.stroke();ctx.restore()}
+  blastocyst(bx,by,R,{icm:Math.PI/2});
+  // re-cover lining surface above sunk blastocyst
+  if(sink>.6){const a=seg(sink,.6,1);ctx.save();ctx.globalAlpha=a;ctx.beginPath();for(let x=bx-R-20;x<=bx+R+20;x+=6)ctx.lineTo(x,surf(x));ctx.strokeStyle=C["uterus-edge"];ctx.lineWidth=3;ctx.stroke();ctx.restore()}
+  // hCG release into capillary and away
+  const hq=seg(p,.45,1);
+  if(hq>0){for(let i=0;i<14;i++){const ph=P(T*.35+i/14,1);const sx=bx-30+rnd(i)*60;const pts=[[sx,by+R+18],[sx+10,392],[sx+120,390],[800,388]];const [x,y]=along(pts,ph);hormone(x,y,C.hcg,hq*Math.min(1,ph*6)*(1-seg(ph,.92,1)),5.5,"d")}}
+  // labels
+  if(p<.2)label(bx,24,"Blastocyst arrives, inner cell mass side down",{size:12.5,weight:700,align:"center",border:C.act2});
+  else if(p<.62)label(bx,24,"Syncytiotrophoblast invades the endometrium",{size:12.5,weight:700,align:"center",border:C.syncy});
+  else label(bx,24,"Buried in the lining. hCG enters the mother's blood.",{size:12.5,weight:700,align:"center",border:C.hcg});
+  if(sy>.3){label(bx+R+40,by+R*.4,"Syncytiotrophoblast",{size:11.5,border:C.syncy})}
+  label(bx-R-14,by-R*.15,"Trophoblast",{size:11.5,align:"right"});
+  // inset: corpus luteum
+  const x0=560;panelBox(x0,12,230,150,{fill:hexA(C.panel,.96)});txt(x0+115,28,"OVARY: CORPUS LUTEUM",{size:10.5,mono:true,weight:600,align:"center",color:C["ink-soft"]});
+  ell(x0+70,86,52,36,-.2,C.ovary,C["ovary-edge"],1.6);const clr=lerp(24,26,hq)+Math.sin(T*2)*.8;circ(x0+76,84,clr,mix(C.gold,C.ovary,.15),C["ovary-edge"],1.4);
+  if(hq>0)for(let i=0;i<5;i++){const ph=P(T*.5+i/5,1);hormone(lerp(x0+20,x0+70,ph),lerp(60+i*10,84,ph),C.hcg,hq*(1-ph),4.5,"d")}
+  for(let i=0;i<6;i++){const ph=P(T*.4+i/6,1);hormone(lerp(x0+100,x0+210,ph),84+Math.sin(ph*6+i)*14,C.prog,Math.sin(ph*Math.PI),4.5,"s")}
+  wrapText(hq>.1?"hCG keeps it alive and making progesterone":"Without hCG it would break down",x0+115,146,210,13,{size:11,align:"center",color:C["ink-soft"]});
+  // inset: pregnancy test
+  const y0=176;panelBox(x0,y0,230,44,{fill:hexA(C.panel,.96)});rr(x0+10,y0+14,90,16,8);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.stroke();
+  line(x0+48,y0+16,x0+48,y0+28,"#C0405A",3);txt(x0+48,y0+8,"C",{size:9,mono:true,align:"center",color:C["ink-soft"]});
+  ctx.globalAlpha=seg(hq,.3,.8);line(x0+72,y0+16,x0+72,y0+28,"#C0405A",3);ctx.globalAlpha=1;txt(x0+72,y0+8,"T",{size:9,mono:true,align:"center",color:C["ink-soft"]});
+  txt(x0+108,y0+22,hq>.55?"hCG found: positive":hq>.1?"hCG too low yet: negative":"no hCG yet: negative",{size:11.5,weight:600});
+}
+
+/* ================= Part 3 · periods ================= */
+function sceneperiods(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,16);const wk=lerp(0,38,ease(seg(p,.03,.93)));
+  const X=w=>40+w/38*720;const ty=388;
+  [[0,2,"act2","Pre-embryonic"],[2,8,"act3","Embryonic period"],[8,38,"act4","Fetal period"]].forEach(b=>{rr(X(b[0]),ty-14,X(b[1])-X(b[0]),28,4);ctx.fillStyle=hexA(C[b[2]],.85);ctx.fill();
+    const w=X(b[1])-X(b[0]);if(w>90)txt((X(b[0])+X(b[1]))/2,ty,b[3],{size:12,weight:700,align:"center",color:onFill()})});
+  txt(X(1),ty-26,"wk 1–2",{size:10.5,mono:true,align:"center",color:C["ink-soft"]});
+  [0,2,4,8,12,20,30,38].forEach(w=>{line(X(w),ty+14,X(w),ty+22,C["ink-soft"],1.2);txt(X(w),ty+32,String(w),{size:11,mono:true,align:"center",color:C["ink-soft"]})});
+  txt(400,ty+52,"weeks after fertilization",{size:11.5,align:"center",color:C["ink-soft"]});
+  // marker
+  const mx=X(wk);line(mx,ty-22,mx,ty+18,C.ink,2.5);circ(mx,ty-24,5,C.ink);
+  // figure
+  const fx=400,fy=180;
+  if(wk<2){const st=wk<.7?"2":wk<1.2?"morula":"blast";drawConceptus(fx,fy,40,st,T,{});}
+  else if(wk<8.5){const s=lerp(26,92,seg(wk,2,8.5));embryoC(fx,fy,s,{heart:wk>3.6?Math.max(0,Math.sin(T*8)):null,limbs:seg(wk,4.5,6)})}
+  else{const s=lerp(60,112,Math.sqrt(seg(wk,8.5,38)));ell(fx,fy+6,s*1.08,s*1.12,0,hexA(C.amfluid,.8),C.amnion,1.5);fetusShape(fx+s*.08,fy+s*.16,s*.92,{rot:.2})}
+  // milestones
+  const ms=[[3,"Week 3: three germ layers form"],[4,"Week 4: heart tube starts beating"],[8,"Week 8: all organ systems begun (about 3 cm)"],[9,"Week 9: now called a fetus"],[20,"Organs grow and mature"],[38,"About week 38: birth"]];
+  let cur_=null;ms.forEach(m=>{if(wk>=m[0])cur_=m});
+  label(400,26,"Week "+Math.floor(wk+.0001),{size:15,weight:700,align:"center",mono:true,border:wk<2?C.act2:wk<8?C.act3:C.act4});
+  if(cur_)label(400,318,cur_[1],{size:13,weight:600,align:"center"});
+  ms.forEach(m=>{if(m[0]>=3){circ(X(m[0]),ty-20,3.5,wk>=m[0]?C.ink:C["ink-faint"])}});
+  if(wk>=3&&wk<8.5)label(130,120,"Most sensitive to teratogens",{size:12,weight:600,align:"center",border:C.bad});
+}
+
+/* ================= Part 3 · gastrulation ================= */
+function sceneGastrula(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,16);
+  // top view
+  const cx=400,cy=104;ctx.save();ell(cx,cy,250,70,0,mix(C.ecto,C.panel,.75),C.ecto,2);
+  const sq=seg(p,.12,.3);
+  if(sq>0){ctx.globalAlpha=sq;line(cx+40,cy,cx+40+170*sq,cy,mix(C.ecto,C.ink,.3),6);circ(cx+40,cy,8,mix(C.ecto,C.ink,.3));ctx.globalAlpha=1;
+    for(let i=0;i<22;i++){const side=i%2?1:-1;const ph=P(T*.35+rnd(i),1);const sx=cx+40+rnd(i+7)*170;const sy=cy+side*lerp(56,3,ph);circ(lerp(sx+side*20,sx,ph),sy,3.2,hexA(C.ecto,sq*(1-seg(ph,.85,1))))}
+    label(cx+130,cy-48,"Primitive streak",{size:12,weight:600,align:"center",border:mix(C.ecto,C.ink,.3)})}
+  txt(cx-250,cy+86,"Head end",{size:11,mono:true,color:C["ink-soft"]});txt(cx+250,cy+86,"Tail end",{size:11,mono:true,align:"right",color:C["ink-soft"]});
+  txt(cx-120,cy,"Epiblast seen from above",{size:12,align:"center",color:C["ink-soft"]});
+  line(cx+120,cy-74,cx+120,cy+74,hexA(C.ink,.5),1.2,[4,4]);txt(cx+128,cy+78,"cut here ↓",{size:11,color:C["ink-soft"]});
+  ctx.restore();
+  // cross-section
+  const y0=220;rr(20,y0,760,240,8);ctx.fillStyle=hexA(C.panel,.6);ctx.fill();
+  ctx.fillStyle=hexA(C.amfluid,.9);ctx.fillRect(22,y0+2,756,50);txt(40,y0+20,"Amniotic cavity",{size:11.5,color:C["ink-soft"]});
+  ctx.fillStyle=hexA(C.yolk,.18);ctx.fillRect(22,y0+186,756,52);txt(40,y0+222,"Yolk sac",{size:11.5,color:C["ink-soft"]});
+  const endoP=ease(seg(p,.25,.55)),mesoP=ease(seg(p,.5,.82)),ectoP=seg(p,.78,.9);
+  const N=26,cw=28,x0=36;const groove=sq;
+  // epiblast / ectoderm row
+  for(let i=0;i<N;i++){const x=x0+i*cw;const dg=Math.abs(x+cw/2-400);const dip=groove*Math.max(0,1-dg/50)*14;rr(x+1,y0+56+dip,cw-2,26,5);ctx.fillStyle=mix(mix(C.ecto,C.panel,.55),C.ecto,ectoP*.6);ctx.fill();ctx.strokeStyle=C.ecto;ctx.lineWidth=1.2;ctx.stroke()}
+  // hypoblast / endoderm row
+  for(let i=0;i<N;i++){const x=x0+i*cw;const dg=Math.abs(x+cw/2-400)/380;const isEndo=endoP>dg;rr(x+1,y0+150,cw-2,24,5);ctx.fillStyle=isEndo?mix(C.endo,C.panel,.15):mix(C.yolk,C.panel,.5);ctx.fill();ctx.strokeStyle=isEndo?C.endo:C.yolk;ctx.lineWidth=1.2;ctx.stroke()}
+  // mesoderm row
+  for(let i=0;i<N;i++){const x=x0+i*cw;const dg=Math.abs(x+cw/2-400)/380;if(mesoP>dg){ell(x+cw/2,y0+116,cw*.46,13,0,mix(C.meso,C.panel,.2),C.meso,1.2)}}
+  // diving cells through streak
+  if(groove>0&&p<.86){for(let i=0;i<8;i++){const ph=P(T*.5+i/8,1);const side=i%2?1:-1;const late=p>.5;const ty_=late?y0+116:y0+160;
+    const x=400+side*lerp(0,lerp(60,200,rnd(i)),seg(ph,.4,1));const y=lerp(y0+80,ty_,seg(ph,0,.4));circ(x,y,6,late?C.meso:C.endo,hexA(C.ink,.3),1)}
+    arrow(400,y0+60,400,y0+100,C["ink-soft"],2)}
+  // labels
+  const lab=(y,t,c)=>label(770,y,t,{size:12,weight:700,align:"right",border:c});
+  lab(y0+69,ectoP>.5?"Ectoderm":"Epiblast",C.ecto);
+  if(mesoP>.2)lab(y0+116,"Mesoderm",C.meso);
+  lab(y0+162,endoP>.3?"Endoderm (replacing hypoblast)":"Hypoblast",endoP>.3?C.endo:C.yolk);
+  const st=p<.12?"Week 2: bilaminar disc (two layers)":p<.5?"Week 3: cells dive through the primitive streak":p<.86?"More cells spread out between the layers":"Trilaminar disc: three germ layers";
+  label(520,y0+24,st,{size:12.5,weight:700,align:"center",border:C.act3});
+}
+
+/* ================= Part 3 · germ layer derivatives ================= */
+const GERM=[["ecto","Ectoderm",[["skin","Epidermis"],["hair","Hair, nails"],["brain","Brain"],["cord","Spinal cord"],["nerve","Nerves"]]],
+  ["meso","Mesoderm",[["muscle","Muscle"],["bone","Bone"],["blood","Blood"],["heart","Heart"],["kidney","Kidneys"]]],
+  ["endo","Endoderm",[["gut","GI lining"],["lung","Airway lining"],["liver","Liver"],["pancreas","Pancreas"]]]];
+function sceneGerm(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const on=Math.floor(P(T,13.5)*3);const q=P(T,4.5);
+  GERM.forEach((g,i)=>{const y=58+i*150;const lit=i===on;const col=C[g[0]];
+    // layer band
+    rr(16,y,170,90,10);ctx.fillStyle=lit?col:mix(col,C.panel,.6);ctx.fill();
+    for(let k=0;k<6;k++)circ(36+k*26,y+45+Math.sin(T*2+k+i)*3,8,hexA(C.panel,.35));
+    txt(101,y+24,g[1].toUpperCase(),{size:13,weight:700,mono:true,align:"center",color:lit?onFill():C.ink});
+    txt(101,y+72,["outer layer","middle layer","inner layer"][i],{size:11.5,align:"center",color:lit?onFill():C["ink-soft"]});
+    const items=g[2];const sx=240,gap=(790-sx)/items.length;
+    items.forEach((it,k)=>{const x=sx+gap*k+gap/2;const iy=y+38;
+      const got=lit?seg(q,.1+k*.12,.3+k*.12):(i<on||(on===0&&false))?1:0;
+      panelBox(x-gap/2+6,y,gap-12,90,{fill:hexA(C.panel,lit?.98:.75),stroke:lit&&got>.5?col:C.rule,lw:lit&&got>.5?2:1});
+      ico(it[0],x,iy,40,got>.5?col:C["ink-faint"]);
+      txt(x,y+76,it[1],{size:12,weight:600,align:"center",color:got>.5?C.ink:C["ink-soft"]});
+      if(lit){const f=seg(q,k*.12,.2+k*.12);if(f>0&&f<1){const [px,py]=along([[186,y+45],[x-gap/2+6,y+45],[x,iy]],f);circ(px,py,6,col,C.panel,1.5)}}});
+    if(lit)arrow(188,y+45,226,y+45,col,3)});
+}
+
+/* ================= Part 3 · neurulation ================= */
+function sceneNeural(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,16);const thick=seg(p,.03,.18),c=ease(seg(p,.18,.6)),sep=ease(seg(p,.62,.78)),crest=seg(p,.66,1);
+  const cx=400,L=230;const yb=lerp(200,258,c);
+  // amniotic cavity above, endoderm & yolk below
+  ctx.fillStyle=hexA(C.amfluid,.8);ctx.fillRect(0,0,W,150);
+  // mesoderm blocks (somites) and notochord
+  [[230,320],[570,320]].forEach(m=>{ell(m[0],m[1],100,46,0,mix(C.meso,C.panel,.45),C.meso,1.6)});
+  circ(cx,330,22,mix(C.notch,C.panel,.3),C.notch,2);
+  // endoderm
+  ctx.beginPath();ctx.moveTo(20,420);ctx.quadraticCurveTo(400,400,780,420);ctx.strokeStyle=C.endo;ctx.lineWidth=14;ctx.stroke();
+  ctx.fillStyle=hexA(C.yolk,.15);ctx.fillRect(0,428,W,52);
+  // neural plate geometry
+  const pts=[];const NN=40;
+  if(c<.01){for(let i=0;i<=NN;i++){const u=i/NN*2-1;pts.push([cx+u*L/2,yb])}}
+  else{const R=L/(TAU*c);for(let i=0;i<=NN;i++){const u=i/NN*2-1;const th=u*Math.PI*c;pts.push([cx+R*Math.sin(th),yb-R+R*Math.cos(th)])}}
+  const eL=pts[0],eR=pts[NN];
+  // surface ectoderm: from edges to fold tips, then sealed over top once separated
+  const topY=lerp(eL[1],150,sep);const lift=sep;
+  ctx.lineCap="round";
+  const surfCol=mix(C.ecto,C.panel,.35);
+  if(sep<=0){smooth([[10,200],[eL[0]-70,lerp(200,eL[1]+10,.5)],[eL[0],eL[1]]],surfCol,12);smooth([[790,200],[eR[0]+70,lerp(200,eR[1]+10,.5)],[eR[0],eR[1]]],surfCol,12)}
+  else{const ty=lerp(eL[1],176,sep);smooth([[10,200],[200,196],[cx-60,ty+6],[cx,ty],[cx+60,ty+6],[600,196],[790,200]],surfCol,12)}
+  // neural plate / tube (thicker, darker)
+  const tubeShift=sep*20;
+  ctx.save();ctx.translate(0,tubeShift);
+  ctx.beginPath();pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.strokeStyle=C.ecto;ctx.lineWidth=lerp(12,20,thick);ctx.stroke();
+  if(c>.98){circ(cx,yb-L/TAU,4,hexA(C.amfluid,.9))}
+  ctx.restore();ctx.lineCap="butt";
+  // neural crest cells
+  if(crest>0){for(let i=0;i<10;i++){const side=i%2?1:-1;const f=seg(crest,i*.04,.6+i*.04);const sx=cx+side*10,sy=lerp(eL[1],176,sep)+14;
+    const ex=cx+side*(80+i*12),ey=230+(i%5)*18;circ(lerp(sx,ex,ease(f)),lerp(sy,ey,ease(f)),5.5,C.act1,hexA(C.ink,.35),1)}}
+  // labels
+  label(cx,22,p<.18?"Notochord signals the ectoderm above it":p<.45?"Neural plate folds: neural folds rise, groove deepens":p<.62?"The folds meet and fuse":"Neural tube sinks below the surface; neural crest cells leave",{size:12.5,weight:700,align:"center",border:C.act3});
+  label(cx+44,352,"Notochord",{size:11.5,weight:600,border:C.notch});
+  label(230,320,"Mesoderm",{size:11.5,align:"center"});label(570,320,"Mesoderm",{size:11.5,align:"center"});
+  label(640,410,"Endoderm",{size:11.5,align:"center"});
+  if(c<.97)label(cx,c<.3?yb+28:yb+20,c<.3?"Neural plate":"Neural groove",{size:12,weight:600,align:"center",border:C.ecto});
+  else label(cx-52,yb-L/TAU+tubeShift,"Neural tube → brain and spinal cord",{size:12,weight:600,align:"right",border:C.ecto});
+  txt(24,30,"Amniotic cavity",{size:11.5,color:C["ink-soft"]});txt(24,52,"Weeks 3 to 4 · cut across the embryo",{size:11,mono:true,color:C["ink-soft"]});
+  if(c>.25&&c<.97){label(eL[0]-30,eL[1]-16,"Neural fold",{size:11.5,align:"right"})}
+  label(80,170,"Surface ectoderm → epidermis",{size:11.5,align:"left"});
+  if(crest>.2)label(680,262,"Neural crest cells",{size:12,weight:600,border:C.act1});
+}
+
+/* ================= Part 3 · folding + heart ================= */
+function sceneFold(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,16);const c=ease(seg(p,.05,.5));
+  // side view: three layers bent into a C (ectoderm outside)
+  const cx=270,cy=230,L=380;const lay=[["ecto",0],["meso",12],["endo",24]];
+  const yolkR=lerp(70,42,c);const em=ease(seg(p,.58,.72));let ends=null;
+  lay.forEach(l=>{const pts=[];const N=40;
+    if(c<.01){for(let i=0;i<=N;i++){const u=i/N*2-1;pts.push([cx+u*L/2,cy-40+l[1]])}}
+    else{const span=lerp(0,1.55*Math.PI,c);const R=L/span;const ccy=cy-40+R;for(let i=0;i<=N;i++){const u=i/N*2-1;const th=u*span/2;pts.push([cx+(R-l[1])*Math.sin(th),ccy-(R-l[1])*Math.cos(th)])}}
+    if(l[0]==="ecto")ends=[pts[0],pts[N]];
+    ctx.save();ctx.globalAlpha=1-.75*em;ctx.beginPath();pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.strokeStyle=C[l[0]];ctx.lineWidth=12;ctx.lineCap="round";ctx.stroke();ctx.lineCap="butt";ctx.restore()});
+  // yolk sac hanging below
+  const span=lerp(.001,1.55*Math.PI,c);const R=L/span;const yy=c<.01?cy+60:cy-40+R+lerp(40,R*.6,c);
+  const ysx=lerp(cx,cx-112,em),ysy=lerp(Math.min(yy,cy+150),cy+104,em),ysr=lerp(yolkR,26,em);
+  if(em>0)line(ysx+16,ysy-14,cx-46,cy+52,hexA(C.yolk,em),5);
+  circ(ysx,ysy,ysr,hexA(C.yolk,.35),C.yolk,2);
+  // heart tube
+  const hb=c>.6?Math.max(0,Math.sin(T*8)):0;
+  if(c>.5){const ha=seg(c,.5,.9)*(1-em);const hx_=cx-R*Math.sin(span*.32)*.85,hy_=cy-40+R-R*Math.cos(span*.32)*.85+20;ctx.save();ctx.globalAlpha=ha;heartShape(hx_+14,hy_+18,14+hb*3,C.heart,mix(C.heart,C.ink,.3));ctx.restore();
+    if(p>.4&&em<.3)label(hx_+60,hy_+48,"Heart tube beating",{size:11.5,weight:700,border:C.heart})}
+  if(em>0){ctx.save();ctx.globalAlpha=em;embryoC(cx-6,cy+34,118,{rot:.1,heart:Math.max(0,Math.sin(T*8)),limbs:seg(p,.7,.8)});ctx.restore();
+    if(em>.9){label(cx-140,cy-64,"Head",{size:11.5,align:"center"});label(cx+20,cy+150,"Tail",{size:11.5,align:"center"});label(cx+140,cy-60,"Limb buds",{size:11.5,align:"center"});label(cx+60,cy+66,"Heart",{size:11.5,align:"left",border:C.heart});line(cx+56,cy+64,cx+14,cy+28,hexA(C.ink,.4),1)}}
+  // labels
+  if(em<.5&&ends){if(c<.3){label(ends[0][0],ends[0][1]-26,"Head end",{size:11.5,align:"center"});label(ends[1][0],ends[1][1]-26,"Tail end",{size:11.5,align:"center"})}
+    else{label(ends[0][0]-44,ends[0][1],"Head fold",{size:11.5,align:"right"});label(ends[1][0]+44,ends[1][1],"Tail fold",{size:11.5,align:"left"})}}
+  label(ysx,ysy+ysr+16,"Yolk sac",{size:11.5,align:"center"});
+  label(cx,22,c<.95?"Week 4: the flat disc folds into a C shape":em<.5?"Ectoderm outside, endoderm gut tube inside":"End of week 4: a C-shaped embryo with a beating heart",{size:12.5,weight:700,align:"center",border:C.act3});
+  // heartbeat trace
+  const x0=540;panelBox(x0,30,246,120,{fill:hexA(C.panel,.96)});txt(x0+12,46,"HEARTBEAT (from week 4)",{size:10.5,mono:true,weight:600,color:C["ink-soft"]});
+  ctx.beginPath();for(let i=0;i<=220;i++){const tt=T*1.27-i*.012;const ph=P(tt,1);const v=c>.6?(ph<.08?-Math.sin(ph/.08*Math.PI)*30:ph<.14?Math.sin((ph-.08)/.06*Math.PI)*8:0):0;const X_=x0+232-i,Y_=104+v;i?ctx.lineTo(X_,Y_):ctx.moveTo(X_,Y_)}
+  ctx.strokeStyle=C.heart;ctx.lineWidth=2;ctx.stroke();txt(x0+12,138,c>.6?"beating since about day 22":"no heartbeat yet",{size:11.5,color:C["ink-soft"]});
+  // lateral folding inset
+  const ix=663,iy=320;panelBox(x0,172,246,290,{fill:hexA(C.panel,.96)});txt(x0+12,188,"CUT ACROSS: SIDES FOLD UNDER",{size:10.5,mono:true,weight:600,color:C["ink-soft"]});
+  const f2=Math.max(.02,c);[["ecto",70],["meso",56],["endo",42]].forEach(l=>{const rr_=l[1];const R=rr_/f2;const yTop=iy-20-70;const ccx=ix,ccy=yTop+(70-rr_)+R;
+    ctx.beginPath();ctx.arc(ccx,ccy,R,-Math.PI/2-Math.PI*f2*.98,-Math.PI/2+Math.PI*f2*.98);ctx.strokeStyle=C[l[0]];ctx.lineWidth=10;ctx.lineCap="round";ctx.stroke();ctx.lineCap="butt"});
+  if(f2>.9){txt(ix,iy-20,"gut",{size:11,weight:700,align:"center"});}
+  txt(ix,iy+90,f2<.05?"Flat layers":f2<.9?"Sides fold down and under":"A tube within a tube",{size:12,weight:600,align:"center"});
+  txt(ix,iy+110,"ectoderm outside, endoderm inside",{size:11,align:"center",color:C["ink-soft"]});
+}
+
+/* ================= Part 4 · membranes ================= */
+function sceneMembranes(T){
+  ctx.fillStyle=C.myo;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle=C.endom;ctx.beginPath();ctx.ellipse(360,250,330,226,0,0,TAU);ctx.fill();
+  const p=P(T,16);const sA=seg(p,.02,.2),sY=seg(p,.22,.4),sL=seg(p,.42,.6),sC=seg(p,.62,.8);
+  const cx=360,cy=240;
+  // chorion with villi
+  ctx.save();ctx.globalAlpha=lerp(.25,1,sC);ell(cx,cy,230,180,0,hexA(C.chorion,.12),C.chorion,3);
+  for(let i=0;i<46;i++){const a=i/46*TAU;const L_=12+8*Math.sin(i*1.7)+(a>.4&&a<2.6?14:0);const x1=cx+Math.cos(a)*230,y1=cy+Math.sin(a)*180;const x2=cx+Math.cos(a)*(230+L_),y2=cy+Math.sin(a)*(180+L_);line(x1,y1,x2,y2,C.chorion,3);circ(x2,y2,3,C.chorion)}ctx.restore();
+  // chorionic cavity fluid
+  // amnion
+  const ar=lerp(70,150,sA);ctx.save();ctx.globalAlpha=lerp(.3,1,sA);ell(cx-20,cy-10,ar,ar*.85,0,hexA(C.amfluid,.95),C.amnion,3);
+  for(let k=0;k<3;k++){ctx.beginPath();for(let x=-ar*.8;x<=ar*.8;x+=6){const y=Math.sin(x*.05+T*2+k*2)*4+(k-1)*ar*.4;x===-ar*.8?ctx.moveTo(cx-20+x,cy-10+y):ctx.lineTo(cx-20+x,cy-10+y)}ctx.strokeStyle=hexA(C.amnion,.35);ctx.lineWidth=1.5;ctx.stroke()}ctx.restore();
+  // embryo
+  embryoC(cx-24,cy-12+Math.sin(T*1.3)*3,60,{rot:.15+Math.sin(T*1.1)*.05,heart:Math.max(0,Math.sin(T*8)),limbs:1});
+  // connecting stalk/cord to chorion (right-bottom)
+  const stalk=[[cx+40,cy+30],[cx+110,cy+80],[cx+170,cy+110],[cx+200,cy+120]];smooth(stalk,mix(C.amfluid,C.panel,.3),16);
+  // allantois (in stalk)
+  ctx.save();ctx.globalAlpha=lerp(.15,1,sL);smooth([[cx+46,cy+36],[cx+100,cy+76],[cx+140,cy+92]],C.allant,6);line(cx+60,cy+42,cx+180,cy+112,mix(C.oxy,C.panel,.2),2.5);line(cx+60,cy+50,cx+178,cy+120,mix(C.deoxy,C.panel,.2),2.5);ctx.restore();
+  // yolk sac
+  ctx.save();ctx.globalAlpha=lerp(.2,1,sY);line(cx-6,cy+44,cx+10,cy+130,C.yolk,6);circ(cx+16,cy+150,lerp(20,38,sY),hexA(C.yolk,.45),C.yolk,2.5);
+  for(let i=0;i<5;i++){circ(cx+6+rnd(i)*24,cy+140+rnd(i+3)*22,3,C.mblood)}ctx.restore();
+  // labels
+  const L=(x,y,t,c,on)=>{ctx.globalAlpha=on?1:.35;label(x,y,t,{size:12.5,weight:700,border:c,align:"center"});ctx.globalAlpha=1};
+  L(170,90,"Amnion + amniotic fluid",C.amnion,sA>.5);
+  L(cx+16,cy+206,"Yolk sac: first blood cells",C.yolk,sY>.5);
+  L(cx+250,cy+70,"Allantois → cord vessels",C.allant,sL>.5);
+  L(cx+250,cy-196,"Chorion → chorionic villi",C.chorion,sC>.5);
+  const lst=sA<1?"Amnion":sY<1?"Yolk sac":sL<1?"Allantois":"Chorion";
+  label(694,452,"Now: "+lst,{size:12.5,weight:700,align:"center",border:C.act4});
+  label(694,24,"Uterine wall",{size:11.5,align:"center"});
+}
+
+/* ================= Part 4 · placenta + cord ================= */
+function scenePlacenta(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  // maternal blood space
+  rr(14,64,500,360,10);ctx.fillStyle=mix(C.mblood,C.panel,.72);ctx.fill();ctx.strokeStyle=C["uterus-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  // chorionic plate at top
+  rr(14,40,500,30,6);ctx.fillStyle=mix(C.chorion,C.panel,.3);ctx.fill();txt(264,55,"Chorionic plate (fetal side)",{size:11.5,weight:600,align:"center",color:onFill()});
+  // uterine wall at bottom
+  rr(14,412,500,52,6);ctx.fillStyle=C.myo;ctx.fill();txt(150,446,"Uterine wall (mother)",{size:11.5,weight:600,align:"center"});
+  // spiral artery and vein
+  smooth([[330,470],[320,440],[340,425],[330,410]],mix(C.mblood,C.ink,.2),12);for(let i=0;i<6;i++){const ph=P(T*.6+i/6,1);circ(330+Math.sin(ph*9)*30*ph,410-ph*150,4,hexA(C.mblood,1-ph))}
+  label(380,400,"Maternal artery spurts blood in",{size:11,align:"left"});
+  // maternal RBCs drifting
+  for(let i=0;i<24;i++){const x=30+((rnd(i)*480+T*14*(rnd(i+3)+.3))%470);const y=100+rnd(i+9)*290;ell(x,y,6,4.2,rnd(i)*3,mix(C.mblood,C.panel,.1),mix(C.mblood,C.ink,.3),.8)}
+  // villus
+  const vx=200;ctx.beginPath();ctx.moveTo(vx-34,70);ctx.bezierCurveTo(vx-40,180,vx-90,240,vx-70,330);ctx.bezierCurveTo(vx-60,370,vx-10,370,vx-4,330);ctx.bezierCurveTo(vx+2,290,vx+20,260,vx+40,300);ctx.bezierCurveTo(vx+56,340,vx+108,340,vx+104,290);ctx.bezierCurveTo(vx+100,220,vx+40,170,vx+34,70);ctx.closePath();
+  ctx.fillStyle=mix(C.chorion,C.panel,.62);ctx.fill();ctx.strokeStyle=C.syncy;ctx.lineWidth=3;ctx.stroke();
+  // fetal capillary loops
+  const capIn=[[vx-12,72],[vx-26,180],[vx-50,260],[vx-52,320],[vx-30,342],[vx-18,300],[vx-6,250],[vx+10,250],[vx+40,290],[vx+70,320],[vx+86,300],[vx+70,220],[vx+14,160],[vx+12,72]];
+  ctx.lineCap="round";for(let i=0;i<capIn.length-1;i++){const f=i/(capIn.length-1);line(capIn[i][0],capIn[i][1],capIn[i+1][0],capIn[i+1][1],satCol(lerp(.25,.95,f)),9)}ctx.lineCap="butt";
+  flowDots(capIn,14,6,T,(x,y,f)=>circ(x,y,3,satCol(lerp(.25,.95,f)),hexA(C.ink,.35),.6));
+  // diffusion
+  const across=[[vx-90,230,vx-46,240,"o2"],[vx-100,300,vx-52,300,"o2"],[vx+140,260,vx+70,270,"nut"],[vx+130,320,vx+80,310,"o2"]];
+  across.forEach((a,i)=>{const ph=P(T*.5+i*.27,1);const x=lerp(a[0],a[2],ph),y=lerp(a[1],a[3],ph);if(a[4]==="o2"){circ(x-3,y,3.4,C.oxy);circ(x+3,y,3.4,C.oxy)}else hormone(x,y,C.act2,Math.sin(ph*Math.PI),5,"h")});
+  const out=[[vx-40,200,vx-100,180],[vx+60,240,vx+130,220],[vx-30,330,vx-90,370]];
+  out.forEach((a,i)=>{const ph=P(T*.5+i*.31+.5,1);const x=lerp(a[0],a[2],ph),y=lerp(a[1],a[3],ph);if(i===1)hormone(x,y,C["ink-soft"],Math.sin(ph*Math.PI),5,"t");else{circ(x,y,3.4,C.deoxy);circ(x-5,y,2.4,C.deoxy);circ(x+5,y,2.4,C.deoxy)}});
+  // hormones released
+  const hs=[["hcg","d"],["estro","t"],["prog","s"]];for(let i=0;i<9;i++){const h=hs[i%3];const ph=P(T*.25+i/9,1);const sx=vx-60+rnd(i)*160;hormone(sx+Math.sin(ph*5+i)*8,lerp(180+rnd(i+2)*120,400,ph),C[h[0]],Math.sin(ph*Math.PI),4.8,h[1])}
+  arrow(30,214,112,214,C.oxy,3);label(70,196,"O₂, nutrients",{size:11,weight:700,align:"center",border:C.oxy});
+  arrow(112,300,30,300,C.deoxy,3);label(70,318,"CO₂, wastes",{size:11,weight:700,align:"center",border:C.deoxy});
+  // labels
+  label(vx+150,120,"Chorionic villus",{size:12,weight:700,border:C.syncy});
+  label(vx,385,"Fetal capillary",{size:11.5,align:"center"});
+  label(410,170,"Maternal blood",{size:12,weight:700,align:"center",border:C.mblood});
+  label(264,20,"O₂ + nutrients in · CO₂ + wastes out · the bloods never mix",{size:12.5,weight:700,align:"center",border:C.act4});
+  // cord cross-section
+  const cx=660,cy=190;txt(cx,48,"UMBILICAL CORD (cut across)",{size:11,mono:true,weight:600,align:"center",color:C["ink-soft"]});
+  circ(cx,cy,104,mix(C.amfluid,C.panel,.3),C.amnion,2.5);for(let i=0;i<40;i++){const a=rnd(i)*TAU,d=Math.sqrt(rnd(i+5))*95;circ(cx+Math.cos(a)*d,cy+Math.sin(a)*d,1.2,hexA(C.amnion,.4))}
+  const pulse=1+.06*Math.max(0,Math.sin(T*6));
+  [[cx-40,cy+38],[cx+42,cy+36]].forEach(a=>{circ(a[0],a[1],24*pulse,mix(C.deoxy,C.panel,.45),mix(C.deoxy,C.ink,.2),5);circ(a[0],a[1],9,C.deoxy)});
+  circ(cx,cy-36,36,mix(C.oxy,C.panel,.55),mix(C.oxy,C.ink,.2),3);circ(cx,cy-36,26,C.oxy);
+  label(cx,cy-36,"Vein",{size:11.5,weight:700,align:"center"});label(cx-40,cy+38,"Artery",{size:11,weight:700,align:"center"});label(cx+42,cy+36,"Artery",{size:11,weight:700,align:"center"});
+  txt(cx,cy+120,"Wharton's jelly cushions the vessels",{size:11,align:"center",color:C["ink-soft"]});
+  // flow arrows
+  const ay=356;panelBox(546,ay-26,236,108,{fill:hexA(C.panel,.95)});
+  txt(560,ay-8,"1 umbilical vein",{size:12,weight:700,color:C.oxy});txt(560,ay+10,"O₂-rich blood → to the baby",{size:11.5,color:C["ink-soft"]});
+  txt(560,ay+36,"2 umbilical arteries",{size:12,weight:700,color:C.deoxy});txt(560,ay+54,"O₂-poor blood → to the placenta",{size:11.5,color:C["ink-soft"]});
+}
+
+/* ================= Part 4 · fetal circulation ================= */
+function sceneFetal(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const k=Math.floor(P(T,18)*3);const keys=["dv","fo","da"];
+  const dims=[new Set(["uv","uvl","ivc"]),new Set(["uv","fo","left","desc"]),new Set(["svc","rarv","da","rl","ll"])];
+  fetalDraw(T,{umb:0,lungs:0,fo:0,da:0,dv:0},{hl:new Set([keys[k]]),dim:dims[k]});
+  const msg=["Shortcut 1: the ductus venosus lets placental blood bypass the liver","Shortcut 2: the foramen ovale sends blood from the right atrium to the left atrium","Shortcut 3: the ductus arteriosus sends pulmonary trunk blood into the aorta"][k];
+  label(400,470-6,msg,{size:12.5,weight:700,align:"center",border:C.gold});
+  chipText(740,54,"BEFORE BIRTH",C.act4);
+}
+
+/* ================= Part 4 · changes at birth ================= */
+function sceneBirth(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,20);const s={umb:seg(p,.06,.2),lungs:ease(seg(p,.06,.3)),fo:ease(seg(p,.34,.5)),da:ease(seg(p,.54,.72)),dv:ease(seg(p,.62,.8))};
+  const hl=new Set();if(p>.34&&p<.52)hl.add("fo");if(p>.54&&p<.74)hl.add("da");if(p>.62&&p<.82)hl.add("dv");if(p>.06&&p<.3)hl.add("pa");
+  fetalDraw(T,s,{hl});
+  const msg=p<.06?"Just before birth: blood still takes the shortcuts":p<.32?"First breath: lungs fill with air, blood rushes into them; cord clamped":p<.52?"Left atrial pressure rises: the foramen ovale flap is pushed shut":p<.74?"The ductus arteriosus constricts and closes":p<.84?"The ductus venosus closes":"Now every drop from the right ventricle goes to the lungs";
+  label(400,464,msg,{size:12.5,weight:700,align:"center",border:C.gold});
+  chipText(740,54,p<.06?"BEFORE BIRTH":"AFTER BIRTH",p<.06?C.act4:C.act5);
+  if(p>.06&&p<.3){for(let i=0;i<4;i++){const ph=P(T*.8+i/4,1);circ(212+Math.sin(i*2)*24,120+ph*80,lerp(2,7,ph),null,hexA(C.amnion,1-ph),1.5)}}
+}
+
+/* ================= Part 5 · labor ================= */
+function sceneLabor(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,22);const dil=seg(p,.03,.55)*10;const exp=ease(seg(p,.56,.76)),plac=ease(seg(p,.8,.95));
+  const rate=lerp(.7,2.2,seg(p,.03,.55));const ph=P(T*rate/2.4,1);const sq=p<.76?Math.pow(Math.max(0,Math.sin(ph*TAU)),2)*lerp(.3,1,seg(p,.03,.55)):0;
+  // uterus
+  const ux=210,uy=210;ctx.save();ctx.translate(ux,uy);ctx.scale(1-sq*.06,1-sq*.04);
+  ctx.beginPath();ctx.moveTo(0,-170);ctx.bezierCurveTo(150,-170,170,60,60,150);ctx.lineTo(-60,150);ctx.bezierCurveTo(-170,60,-150,-170,0,-170);ctx.closePath();ctx.fillStyle=mix(C.myo,C.oxt,sq*.35);ctx.fill();ctx.strokeStyle=C["uterus-edge"];ctx.lineWidth=2.5;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,-150);ctx.bezierCurveTo(124,-150,140,50,46,132);ctx.lineTo(-46,132);ctx.bezierCurveTo(-140,50,-124,-150,0,-150);ctx.closePath();ctx.fillStyle=hexA(C.amfluid,.95);ctx.fill();
+  // placenta on upper wall
+  if(plac<1){ctx.save();const py=lerp(0,320,plac);ctx.translate(0,py);ell(70,-120,46,18,.6,mix(C.chorion,C.panel,.3),C.chorion,2);ctx.restore()}
+  ctx.restore();
+  // cervix
+  const cw=lerp(8,46,dil/10);rr(ux-60,uy+150,120,40,6);ctx.fillStyle=C.myo;ctx.fill();ctx.strokeStyle=C["uterus-edge"];ctx.lineWidth=2;ctx.stroke();rr(ux-cw/2,uy+150,cw,40,cw/2);ctx.fillStyle=C.ecf;ctx.fill();
+  // fetus head down
+  const fy=uy+10+exp*260;if(exp<1){ctx.save();ctx.beginPath();ctx.rect(0,0,W,uy+200+exp*80);ctx.clip();fetusShape(ux-6,fy,122,{rot:Math.PI*1.04});ctx.restore()}
+  if(exp>.98&&plac<.3)label(ux,uy+230,"Baby born",{size:12.5,weight:700,align:"center",border:C.act5});
+  // stretch glow at cervix
+  if(p<.76){glow(ux,uy+160,40,C.glow,sq*.7)}
+  // dilation gauge
+  panelBox(18,410,200,58,{fill:hexA(C.panel,.95)});txt(28,424,"CERVIX DILATION",{size:10.5,mono:true,weight:600,color:C["ink-soft"]});rr(28,436,180,12,6);ctx.fillStyle=C.sunk;ctx.fill();rr(28,436,180*dil/10,12,6);ctx.fillStyle=C.act5;ctx.fill();txt(208,458,dil.toFixed(1)+" cm",{size:11.5,mono:true,weight:700,align:"right"});
+  // feedback loop
+  const nodes=[[560,60,"Baby's head stretches the cervix"],[700,160,"Signal to hypothalamus"],[640,282,"Posterior pituitary releases oxytocin"],[460,282,"Oxytocin in the blood"],[420,160,"Uterus contracts harder"]];
+  const loopOn=p<.76;const lp=P(T*rate/2.4,1);
+  nodes.forEach((n,i)=>{const nx=nodes[(i+1)%5];curveArrow(n[0],n[1],(n[0]+nx[0])/2+(i===4?-30:i===1?40:0),(n[1]+nx[1])/2+(i===0?-30:i===2?30:0),nx[0]+(i===4?-60:0)*0,nx[1],hexA(C.ink,loopOn?.5:.15),2)});
+  const ai=Math.floor(lp*5);
+  nodes.forEach((n,i)=>{const lit=loopOn&&i===ai;ctx.font=`600 12px ${FONT}`;const w=Math.min(176,ctx.measureText(n[2]).width+20);panelBox(n[0]-w/2,n[1]-24,w,48,{fill:lit?hexA(C.oxt,.25):hexA(C.panel,.96),stroke:lit?C.oxt:C.rule,lw:lit?2.2:1.2});wrapText(n[2],n[0],n[1]-(ctx.measureText(n[2]).width>w-14?7:0),w-12,14,{size:12,weight:600,align:"center"})});
+  if(loopOn){for(let i=0;i<6;i++){const f=P(lp*1+i/6*.2,1);hormone(lerp(600,470,f),lerp(312,312,f)+Math.sin(f*8)*4,C.oxt,.9,5,"d")}
+    label(560,350,"Positive feedback: each turn makes the next one stronger",{size:12,weight:700,align:"center",border:C.oxt})}
+  else label(560,350,"Stretch stops after birth, so the loop ends",{size:12,weight:700,align:"center",border:C.good});
+  // stage bar
+  const st=p<.56?0:p<.78?1:2;const SN=["Stage 1 · Dilation","Stage 2 · Expulsion","Stage 3 · Placental"];
+  SN.forEach((s,i)=>{const x=410+i*128;panelBox(x,404,122,60,{fill:i===st?hexA(C.act5,.2):hexA(C.panel,.9),stroke:i===st?C.act5:C.rule,lw:i===st?2.2:1});wrapText(s,x+61,i===st?426:426,112,15,{size:12,weight:i===st?700:500,align:"center"});
+    txt(x+61,450,["cervix to 10 cm","baby delivered","afterbirth out"][i],{size:11,align:"center",color:C["ink-soft"]})});
+  label(ux,24,"Uterus",{size:12,weight:600,align:"center"});
+}
+
+/* ================= Part 5 · lactation ================= */
+function sceneLact(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,16);const fill=ease(seg(p,.05,.45));const suck=seg(p,.45,.6);const ej=seg(p,.6,1);
+  const sqz=p>.6?Math.pow(Math.max(0,Math.sin((p-.6)*40)),2)*(1-seg(p,.95,1)):0;
+  // breast outline (side, schematic)
+  ctx.beginPath();ctx.moveTo(40,30);ctx.bezierCurveTo(260,30,420,120,440,230);ctx.bezierCurveTo(450,280,430,330,380,360);ctx.bezierCurveTo(300,420,100,440,40,440);ctx.closePath();ctx.fillStyle=mix(C.skin,C.panel,.35);ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=2;ctx.stroke();
+  rr(436,232,26,30,10);ctx.fillStyle=mix(C.skin,C.heart,.25);ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.stroke();
+  // ducts
+  const lobes=[[150,110],[120,210],[150,320],[250,150],[250,300]];const nip=[452,247];
+  lobes.forEach((l,i)=>{const mid=[lerp(l[0],nip[0],.55),lerp(l[1],nip[1],.6)];smooth([l,mid,nip],C["milk-edge"],5);
+    // alveoli cluster
+    for(let k=0;k<6;k++){const a=k/6*TAU+i;const ax=l[0]+Math.cos(a)*24,ay=l[1]+Math.sin(a)*22;const r=(11-sqz*2.5);
+      circ(ax,ay,r,C.panel,C["milk-edge"],1.4);circ(ax,ay,r*fill*.85*(1-ej*.25),C.milk,null);
+      ctx.beginPath();ctx.arc(ax,ay,r+2.5,0,TAU);ctx.strokeStyle=hexA(C.oxt,.4+sqz*.6);ctx.lineWidth=1.5+sqz*2;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([])}
+    // milk flow
+    if(ej>0)flowDots([l,mid,nip],4,1.6,T+i*.3,(x,y,f)=>circ(x,y,3.2,C.milk,C["milk-edge"],1))});
+  if(ej>.1){for(let k=0;k<4;k++){const f=P(T*1.5+k/4,1);circ(470+f*60,247+(k-1.5)*6*f,3,C.milk,C["milk-edge"],1)}}
+  // capillary with prolactin
+  const cap=[[30,380],[150,380],[300,330],[400,300]];if(fill<1&&p<.5)flowDots(cap,6,4,T,(x,y,f)=>hormone(x,y,C.prl,1-seg(p,.4,.5),5,"h"));
+  if(p>.6)flowDots(cap,6,4,T,(x,y)=>hormone(x,y,C.oxt,ej*(1-seg(p,.95,1)),5,"d"));
+  // pituitary panel
+  const hp=headProfile(640,150,92,{two:true});
+  label(640,24,"Pituitary gland",{size:12,weight:600,align:"center"});
+  label(560,262,"Anterior: prolactin",{size:11.5,weight:600,align:"center",border:C.prl});label(720,262,"Posterior: oxytocin",{size:11.5,weight:600,align:"center",border:C.oxt});
+  // suckling signal
+  if(suck>0&&p<.62){const path=[[470,247],[540,300],[620,290],[hp.hy[0],hp.hy[1]]];const [x,y]=along(path,suck);glow(x,y,18,C.glow,.9);poly(path.slice(0,1).concat([[x,y]]),hexA(C.glow,.6),3,[5,4])}
+  const msg=p<.45?"Prolactin (anterior pituitary) makes the alveoli fill with milk":p<.6?"Suckling sends nerve signals to the hypothalamus":"Oxytocin (posterior pituitary): myoepithelial cells squeeze, milk is ejected";
+  label(560,420,msg,{size:12.5,weight:700,align:"center",border:p<.45?C.prl:p<.6?C.glow:C.oxt});
+  label(150,58,"Alveoli (milk-making sacs)",{size:11.5,weight:600,align:"center"});label(330,212,"Duct",{size:11.5,align:"center"});
+  if(p>.6)label(210,400,"Myoepithelial cells contract",{size:11.5,align:"center",border:C.oxt});
+}
+
+/* ================= Part 6 · alleles + Punnett ================= */
+function sceneAlleles(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,16);
+  // parents with chromosome pairs
+  const par=[[90,"Parent 1"],[260,"Parent 2"]];
+  par.forEach((pp,i)=>{const x=pp[0];txt(x,26,pp[1]+": Cc (carrier)",{size:12.5,weight:700,align:"center"});pedi(x,58,14,i?"m":"f","c");
+    const sp=ease(seg(p,.08,.25));chromo(x-14-sp*18,124,70,C.chrom,{band:C.dom,bandY:-.12});chromo(x+14+sp*18,124,70,C.chrom,{band:C.rec,bandY:-.12});
+    txt(x-14-sp*18,170,"C",{size:13,weight:700,mono:true,align:"center",color:C.dom});txt(x+14+sp*18,170,"c",{size:13,weight:700,mono:true,align:"center",color:C.rec});
+    if(p>.1)label(x,190,"homologous pair",{size:10.5,align:"center",pill:false,color:C["ink-soft"]})});
+  label(175,212,"Gene locus: one allele on each chromosome",{size:11.5,align:"center"});
+  // Punnett
+  const gx=500,gy=130,cs=110;const mv=ease(seg(p,.25,.4));
+  const A1=[[90-32,250],[90+32,250]],A2=[[260-32,250],[260+32,250]];
+  const top=[(x,y)=>allele(lerp(A1[0][0],x,mv),lerp(A1[0][1],y,mv),"C",C.dom),(x,y)=>allele(lerp(A1[1][0],x,mv),lerp(A1[1][1],y,mv),"c",C.rec)];
+  const left=[(x,y)=>allele(lerp(A2[0][0],x,mv),lerp(A2[0][1],y,mv),"C",C.dom),(x,y)=>allele(lerp(A2[1][0],x,mv),lerp(A2[1][1],y,mv),"c",C.rec)];
+  const G=["CC","Cc","Cc","cc"];const names=["unaffected","carrier","carrier","has CF"];const zyg=["homozygous","heterozygous","heterozygous","homozygous"];
+  const cells=G.map((g,k)=>({a:seg(p,.42+k*.08,.48+k*.08),fill:g==="cc"?hexA(C.rec,.18):undefined,draw:(x,y)=>{allele(x-14,y-20,g[0],g[0]==="C"?C.dom:C.rec,{r:11,size:12});allele(x+14,y-20,g[1],g[1]==="C"?C.dom:C.rec,{r:11,size:12});
+    kid(x,y+14,10,g==="cc"?C.rec:mix(C.dom,C.panel,g==="CC"?0:.35),null);if(g==="Cc")circ(x,y+16,3,C.ink);txt(x,y+43,names[k],{size:11,weight:600,align:"center"})}}));
+  txt(gx+cs,gy-56,"Parent 1 gametes",{size:11.5,align:"center",color:C["ink-soft"]});
+  ctx.save();ctx.translate(gx-58,gy+cs);ctx.rotate(-Math.PI/2);txt(0,0,"Parent 2 gametes",{size:11.5,align:"center",color:C["ink-soft"]});ctx.restore();
+  punnettGrid(gx,gy,cs,top,left,cells);
+  if(p>.8){const zz=seg(p,.8,.86);ctx.globalAlpha=zz;for(let k=0;k<4;k++){const x=gx+(k%2)*cs+cs/2,y=gy+Math.floor(k/2)*cs+8;txt(x,y,zyg[k],{size:10,mono:true,align:"center",color:C["ink-soft"]})}ctx.globalAlpha=1}
+  // ratio bar
+  if(p>.74){const a=seg(p,.74,.8);ctx.globalAlpha=a;const y=372;panelBox(380,y,400,92,{fill:hexA(C.panel,.96)});
+    txt(580,y+18,"Genotype ratio  1 CC : 2 Cc : 1 cc",{size:13,weight:700,mono:true,align:"center"});
+    const segs=[[1,C.dom,"CC"],[2,mix(C.dom,C.panel,.35),"Cc"],[1,C.rec,"cc"]];let x=396;segs.forEach(s=>{const w=s[0]/4*368;rr(x,y+34,w-2,20,4);ctx.fillStyle=s[1];ctx.fill();txt(x+w/2,y+44,s[2],{size:11,weight:700,mono:true,align:"center",color:onFill()});x+=w});
+    txt(580,y+74,"Phenotype: 3 unaffected : 1 with CF (25% chance each child)",{size:12,weight:600,align:"center"});ctx.globalAlpha=1}
+  label(175,300,p<.25?"Each parent has two alleles":p<.4?"Meiosis: the alleles separate into gametes":"Each box = one equally likely child",{size:12.5,weight:700,align:"center",border:C.act6});
+  wrapText("Genotype = the letters. Phenotype = the trait you see.",175,340,300,16,{size:12,align:"center",color:C["ink-soft"]});
+}
+
+/* ================= Part 6 · incomplete dominance and codominance ================= */
+function sceneCodom(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,14);
+  // left: flowers
+  panelBox(10,10,382,460,{fill:hexA(C.panel,.6)});chipText(110,30,"INCOMPLETE DOMINANCE",C.act6);
+  flower(110,78,16,C["flower-r"]);txt(110,128,"RR (red)",{size:12,weight:700,mono:true,align:"center"});txt(200,84,"×",{size:22,weight:700,align:"center"});flower(290,78,16,C["flower-w"]);txt(290,128,"rr (white)",{size:12,weight:700,mono:true,align:"center"});
+  const gx=110,gy=196,cs=88;const fa=k=>seg(p,.1+k*.08,.16+k*.08);
+  const cells=[0,1,2,3].map(k=>({a:fa(k),draw:(x,y)=>{flower(x,y-16,13,C["flower-p"]);txt(x,y+32,"Rr",{size:12,weight:700,mono:true,align:"center"})}}));
+  const tl=t=>(x,y)=>allele(x,y,t,t==="R"?C["flower-r"]:mix(C["ink-faint"],C.panel,.2),{r:13,size:13});
+  punnettGrid(gx,gy,cs,[tl("R"),tl("R")],[tl("r"),tl("r")],cells);
+  if(p>.45)wrapText("All pink: the heterozygote is in between.",200,412,340,16,{size:12.5,weight:700,align:"center"});
+  if(p>.55)wrapText("Neither allele fully hides the other.",200,436,340,16,{size:12,align:"center",color:C["ink-soft"]});
+  // right: ABO
+  panelBox(408,10,382,460,{fill:hexA(C.panel,.6)});chipText(500,30,"CODOMINANCE · ABO",C.act6);
+  const rbcA=(x,y,ag,r)=>{circ(x,y,r,C.mblood,mix(C.mblood,C.ink,.3),1.4);circ(x,y,r*.45,hexA(C.panel,.3));for(let i=0;i<10;i++){const a=i/10*TAU+T*.15;const k=ag.length?ag[i%ag.length]:null;if(!k)continue;const ax=x+Math.cos(a)*(r+4),ay=y+Math.sin(a)*(r+4);
+    if(k==="A"){ctx.save();ctx.translate(ax,ay);ctx.rotate(a+Math.PI/2);ctx.beginPath();ctx.moveTo(0,-5);ctx.lineTo(4.5,3.5);ctx.lineTo(-4.5,3.5);ctx.closePath();ctx.fillStyle=C.oxy;ctx.fill();ctx.restore()}else circ(ax,ay,3.8,C.dom)}};
+  rbcA(500,82,["A","B"],22);supText(500,128,"I^AI^B (AB)",{size:13});txt(600,84,"×",{size:22,weight:700,align:"center"});rbcA(690,82,[],22);supText(690,128,"ii (O)",{size:13});
+  const hx=530,hy=196;
+  const ct=g=>(x,y)=>{rbcA(x,y-18,g==="A"?["A"]:["B"],15);supText(x,y+24,g==="A"?"I^Ai → A":"I^Bi → B",{size:12})};
+  const cells2=["A","B","A","B"].map((g,k)=>({a:seg(p,.3+k*.08,.36+k*.08),draw:ct(g)}));
+  const tt=t=>(x,y)=>{circ(x,y,14,t==="i"?mix(C["ink-faint"],C.panel,.2):t==="A"?C.oxy:C.dom,hexA(C.ink,.35),1.2);supText(x,y+1,t==="i"?"i":"I^"+t,{size:12,color:"#fff"})};
+  punnettGrid(hx,hy,cs,[tt("A"),tt("B")],[tt("i"),tt("i")],cells2);
+  if(p>.65)wrapText("The AB parent shows both antigens at once (codominance). Children here are type A or B, never AB or O.",600,420,350,16,{size:12,weight:600,align:"center"});
+}
+
+/* ================= Part 6 · X-linked recessive ================= */
+function sceneXlink(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const p=P(T,16);
+  // parents
+  pedi(110,46,16,"f","c");txt(110,80,"Carrier mother",{size:12,weight:700,align:"center"});
+  chromo(92,130,64,C.xc);supTag(92,170,"X^H",C.dom);chromo(128,130,64,C.xc,{band:C.rec,bandY:-.1});supTag(128,170,"X^h",C.rec);
+  pedi(290,46,16,"m","u");txt(290,80,"Unaffected father",{size:12,weight:700,align:"center"});
+  chromo(272,130,64,C.xc);supTag(272,170,"X^H",C.dom);chromo(308,124,64,C.yc,{y:true});supTag(308,170,"Y",C.yc);
+  wrapText("A boy has one X, so one h allele is enough to cause hemophilia.",200,214,330,16,{size:12,align:"center",color:C["ink-soft"]});
+  // Punnett: columns mother X^H X^h ; rows father X^H, Y
+  const gx=470,gy=96,cs=120;const mv=ease(seg(p,.08,.22));
+  const tg=(t,c,ox,oy)=>(x,y)=>{const X=lerp(ox,x,mv),Y=lerp(oy,y,mv);circ(X,Y,16,c,hexA(C.ink,.3),1.2);supText(X,Y+1,t,{size:12,color:"#fff"})};
+  const G=[["X^HX^H","f","u","daughter: unaffected"],["X^HX^h","f","c","daughter: carrier"],["X^HY","m","u","son: unaffected"],["X^hY","m","a","son: hemophilia"]];
+  const cells=G.map((g,k)=>({a:seg(p,.26+k*.08,.32+k*.08),fill:g[2]==="a"?hexA(C.rec,.18):undefined,draw:(x,y)=>{pedi(x,y-18,15,g[1],g[2],{col:C.rec});supText(x,y+16,g[0],{size:13});txt(x,y+38,g[3],{size:11,weight:600,align:"center"})}}));
+  punnettGrid(gx,gy,cs,[tg("X^H",C.xc,92,130),tg("X^h",C.rec,128,130)],[tg("X^H",C.xc,272,130),tg("Y",C.yc,308,130)],cells);
+  txt(gx+cs,gy-50,"Mother's eggs",{size:11.5,align:"center",color:C["ink-soft"]});
+  ctx.save();ctx.translate(gx-52,gy+cs);ctx.rotate(-Math.PI/2);txt(0,0,"Father's sperm",{size:11.5,align:"center",color:C["ink-soft"]});ctx.restore();
+  // pedigree summary
+  if(p>.62){const a=seg(p,.62,.7);ctx.globalAlpha=a;panelBox(20,260,380,200,{fill:hexA(C.panel,.96)});txt(210,280,"FAMILY TREE (PEDIGREE)",{size:10.5,mono:true,weight:600,align:"center",color:C["ink-soft"]});
+    pedi(150,318,13,"f","c",{col:C.rec});pedi(270,318,13,"m","u");line(163,318,257,318,C.ink,2);line(210,318,210,350,C.ink,2);line(90,350,330,350,C.ink,2);
+    [["f","u"],["f","c"],["m","u"],["m","a"]].forEach((k,i)=>{const x=90+i*80;line(x,350,x,372,C.ink,2);pedi(x,386,13,k[0],k[1],{col:C.rec})});
+    txt(210,424,"■ filled = affected   ● dot = carrier",{size:11.5,align:"center",color:C["ink-soft"]});
+    txt(210,446,"Sons: 1 in 2 affected · Daughters: 1 in 2 carriers",{size:12,weight:700,align:"center"});ctx.globalAlpha=1}
+  if(p>.62)label(590,372,"Same pattern for red-green color blindness",{size:12,weight:600,align:"center"});
+}
+function supTag(x,y,t,col){supText(x,y,t,{size:12,color:col})}
+
+/* ================= Part 6 · sex determination ================= */
+function sceneSex(T){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const per=2.2;const n=Math.floor(T/per);const ph=P(T,per);
+  // tallies
+  let xx=0,xy=0;for(let i=0;i<n;i++){if(rnd(i*3+1)<.5)xx++;else xy++}
+  const isY=rnd(n*3+1)>=.5;
+  // ovum
+  const ox=400,oy=200;oocyte(ox,oy,54,{corona:.4,cn:22});chromo(ox-8,oy,26,C.xc);txt(ox,oy+36,"X",{size:13,weight:700,mono:true,align:"center",color:C.xc});
+  label(ox,oy-100,"Every ovum carries an X",{size:12,weight:600,align:"center",border:C.xc});
+  // sperm stream: X and Y labeled
+  for(let i=0;i<5;i++){const y=90+i*48;const x=80+Math.sin(T*2+i)*6;const iy=i%2;sperm(x+60,y,0,8,T*2+i,{tail:5});label(x+80,y-16,iy?"Y":"X",{size:11,weight:700,mono:true,align:"center",border:iy?C.yc:C.xc})}
+  label(110,330,"Sperm carry X or Y (about half each)",{size:12,weight:600,align:"center"});
+  // one sperm moves to ovum
+  const f=ease(seg(ph,0,.6));const sx=lerp(140,ox-70,f),sy=lerp(186,oy,f);if(ph<.66)sperm(sx,sy,Math.atan2(oy-186,ox-70-140),9,T*2,{tail:5});label(sx,sy-22,isY?"Y":"X",{size:11,weight:700,mono:true,align:"center",border:isY?C.yc:C.xc});
+  if(ph>.6){const a=seg(ph,.6,.75);ctx.globalAlpha=a;chromo(ox+10,oy,isY?18:26,isY?C.yc:C.xc,{y:isY});label(ox,oy+76,isY?"XY → male":"XX → female",{size:13,weight:700,align:"center",border:isY?C.yc:C.xc});ctx.globalAlpha=1}
+  // bins
+  const bx=590;[["XX",xx,C.xc,"female"],["XY",xy,C.yc,"male"]].forEach((b,i)=>{const x=bx+i*100;panelBox(x,60,86,300,{fill:hexA(C.panel,.95)});txt(x+43,80,b[0],{size:16,weight:700,mono:true,align:"center",color:b[2]});txt(x+43,98,b[3],{size:11.5,align:"center",color:C["ink-soft"]});
+    const h=Math.min(220,b[1]*12);rr(x+18,340-h,50,h,4);ctx.fillStyle=hexA(b[2],.8);ctx.fill();txt(x+43,334-h-10,String(b[1]),{size:13,weight:700,mono:true,align:"center"})});
+  txt(bx+93,384,"Babies so far: "+(xx+xy),{size:12,weight:600,align:"center"});
+  wrapText("Close to 50 : 50 over many births. Each birth is a fresh coin flip.",bx+93,408,200,15,{size:11.5,align:"center",color:C["ink-soft"]});
+  // karyotype strip
+  panelBox(14,380,500,86,{fill:hexA(C.panel,.95)});txt(26,396,"22 PAIRS OF AUTOSOMES + 1 PAIR OF SEX CHROMOSOMES",{size:10.5,mono:true,weight:600,color:C["ink-soft"]});
+  for(let i=0;i<22;i++){const x=30+i*19.5;const h=lerp(40,14,i/21);chromo(x-3,438,h,C.chrom);chromo(x+3,438,h,C.chrom)}
+  chromo(470,438,30,C.xc);if(isY&&ph>.6)chromo(480,442,16,C.yc,{y:true});else chromo(480,438,30,C.xc);
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+const SCENES={map:t=>sceneMap(t,false),journey:sceneJourney,acro:sceneAcro,cortical:sceneCortical,zygote:sceneZygote,cleave:sceneCleave,travel:sceneTravel,implant:sceneImplant,
+  periods:sceneperiods,gastrula:sceneGastrula,germ:sceneGerm,neural:sceneNeural,fold:sceneFold,membranes:sceneMembranes,placenta:scenePlacenta,fetal:sceneFetal,birth:sceneBirth,
+  labor:sceneLabor,lact:sceneLact,alleles:sceneAlleles,codom:sceneCodom,xlink:sceneXlink,sex:sceneSex,recap:t=>sceneMap(t,true)};
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;
+  const s=STEPS[cur];
+  try{(SCENES[s.scene]||SCENES.map)(T)}catch(e){console.error(e)}
+  ctx.globalAlpha=1;
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+window.__n=()=>STEPS.length;
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

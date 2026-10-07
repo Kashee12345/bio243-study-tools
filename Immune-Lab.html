@@ -1,0 +1,1243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Immune Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;--act6:#4F6F94;
+  /* immune palette */
+  --ecf:#EEF3F1;--tissue:#F6EFE6;--tcell-bg:#F1E7DA;
+  --lymph:#D7EBC4;--lv:#4E9A4A;--lv-edge:#2F6B2C;--water:#3E8FD1;
+  --blood:#C2392F;--blood-edge:#82231C;--vessel:#F2D6CF;--vein:#5E5BA8;--rbc:#C2392F;--rbc-hi:#E8877C;
+  --body:#EADBC8;--body-edge:#B39773;--bone:#EADFC8;--marrow:#E6AFA0;
+  --node:#EADCF0;--node-edge:#8E6AA3;--follicle:#CFE6E1;--germ:#F3F7E6;
+  --bact:#3E8E41;--virus:#B03A8C;
+  --cyto:#EEE6F3;--cell-edge:#9A86B3;--nuc:#5B3F9C;--host:#F3DCCB;--host-edge:#B5866A;
+  --macro:#E6D3B3;--macro-edge:#A5854F;--neut:#EEE6F3;
+  --nk:#F0C9A0;--th:#2F7FC1;--tc:#C4644F;--bcell:#2E8A7A;--plasma:#BFE3DA;--mem:#B8901C;--apc:#D98A1C;
+  --mast:#ECCFE0;--hist:#2F6FD0;--comp:#C9A227;--ifn:#1E9C7A;--pyro:#E06A2F;
+  --ab:#7B5CC9;--abH:#5B3F9C;--abL:#A88BE6;--var:#D98A1C;--fc:#5B3F9C;
+  --mhc1:#A04E8C;--mhc2:#5E7A2A;--ag:#E06A2F;--perf:#A9372F;--gzm:#D98A1C;
+  --fat:#E2B93B;--skin:#EAC9A8;--kera:#F3E3C8;--mucus:#D9E8C4;--cilia:#6F7F88;--lyso:#E07A5F;
+  --igm:#2F6FD0;--igg:#C4644F;--iga:#2E8A7A;--ige:#D98A1C;--igd:#7B5CC9;
+  --heat:#E0563A;--hiv:#A9372F;
+  --glow:#F2B33B;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#8FB1D9;
+  --ecf:#131C1B;--tissue:#211D1A;--tcell-bg:#2A231C;
+  --lymph:#2B4524;--lv:#7CCB74;--lv-edge:#A8E0A0;--water:#6FB4EC;
+  --blood:#D24C42;--blood-edge:#F08A80;--vessel:#3A2725;--vein:#9C99E6;--rbc:#D24C42;--rbc-hi:#EE9A90;
+  --body:#3A3226;--body-edge:#8F7C5E;--bone:#4A4234;--marrow:#6E3B33;
+  --node:#33283B;--node-edge:#B898CF;--follicle:#1F3A35;--germ:#2C3424;
+  --bact:#6BC26E;--virus:#E07AC4;
+  --cyto:#3B3346;--cell-edge:#A592C2;--nuc:#B49BF0;--host:#3E2E25;--host-edge:#C9997A;
+  --macro:#4A4030;--macro-edge:#C9A66E;--neut:#3B3346;
+  --nk:#5A4030;--th:#5AA9E6;--tc:#E08A74;--bcell:#5CC4B0;--plasma:#22433C;--mem:#E0BE48;--apc:#F2A93B;
+  --mast:#46303C;--hist:#6FA3F0;--comp:#E0BE48;--ifn:#4FD0A8;--pyro:#F28A50;
+  --ab:#A98BEF;--abH:#B49BF0;--abL:#6E58A8;--var:#F2A93B;--fc:#B49BF0;
+  --mhc1:#D186C0;--mhc2:#A3C95A;--ag:#F28A50;--perf:#E07067;--gzm:#F2A93B;
+  --fat:#E8C24A;--skin:#5A4434;--kera:#4A3E2E;--mucus:#34452A;--cilia:#A3B2BA;--lyso:#F09A80;
+  --igm:#6FA3F0;--igg:#E08A74;--iga:#5CC4B0;--ige:#F2A93B;--igd:#A98BEF;
+  --heat:#F27A5E;--hiv:#E07067;
+  --glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#8FB1D9;
+  --ecf:#131C1B;--tissue:#211D1A;--tcell-bg:#2A231C;
+  --lymph:#2B4524;--lv:#7CCB74;--lv-edge:#A8E0A0;--water:#6FB4EC;
+  --blood:#D24C42;--blood-edge:#F08A80;--vessel:#3A2725;--vein:#9C99E6;--rbc:#D24C42;--rbc-hi:#EE9A90;
+  --body:#3A3226;--body-edge:#8F7C5E;--bone:#4A4234;--marrow:#6E3B33;
+  --node:#33283B;--node-edge:#B898CF;--follicle:#1F3A35;--germ:#2C3424;
+  --bact:#6BC26E;--virus:#E07AC4;
+  --cyto:#3B3346;--cell-edge:#A592C2;--nuc:#B49BF0;--host:#3E2E25;--host-edge:#C9997A;
+  --macro:#4A4030;--macro-edge:#C9A66E;--neut:#3B3346;
+  --nk:#5A4030;--th:#5AA9E6;--tc:#E08A74;--bcell:#5CC4B0;--plasma:#22433C;--mem:#E0BE48;--apc:#F2A93B;
+  --mast:#46303C;--hist:#6FA3F0;--comp:#E0BE48;--ifn:#4FD0A8;--pyro:#F28A50;
+  --ab:#A98BEF;--abH:#B49BF0;--abL:#6E58A8;--var:#F2A93B;--fc:#B49BF0;
+  --mhc1:#D186C0;--mhc2:#A3C95A;--ag:#F28A50;--perf:#E07067;--gzm:#F2A93B;
+  --fat:#E8C24A;--skin:#5A4434;--kera:#4A3E2E;--mucus:#34452A;--cilia:#A3B2BA;--lyso:#F09A80;
+  --igm:#6FA3F0;--igg:#E08A74;--iga:#5CC4B0;--ige:#F2A93B;--igd:#A98BEF;
+  --heat:#F27A5E;--hiv:#E07067;
+  --glow:#F2B33B;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2)}
+.legend i.s{border-radius:2px}
+.legend i.ln{width:20px;height:0;border-radius:0;border:0;border-top:3px solid}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.typebtns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.typebtn{background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 0;cursor:pointer;font-family:var(--mono);font-weight:600;font-size:15px}
+.typebtn:hover{border-color:var(--accent)}
+.typebtn.right{border-color:var(--good);background:var(--good-wash)}
+.typebtn.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.typebtn:disabled{cursor:default}
+.prog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.timer{font-family:var(--mono);font-size:18px;font-weight:600}
+/* bags */
+.bags{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 4px}
+.bag{position:relative;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:6px 4px 4px;cursor:grab;touch-action:none;user-select:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--mono);font-weight:700;font-size:14px}
+.bag svg{width:34px;height:44px;display:block}
+.bag.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.bag.ok{border-color:var(--good);background:var(--good-wash)}
+.bag.no{border-color:var(--warn);background:var(--warn-wash)}
+.bag .mk{position:absolute;top:3px;right:5px;font-size:13px}
+.bag.ghost{position:fixed;z-index:50;pointer-events:none;opacity:.9;box-shadow:0 10px 24px -8px rgba(0,0,0,.4)}
+.droptarget{outline:3px dashed var(--accent);outline-offset:-3px}
+.abbox{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;font-size:14.5px;margin-top:10px}
+/* sim */
+.ctl{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+.ctl label{font-size:14.5px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.ctl output{font-family:var(--mono);font-weight:600;color:var(--accent-ink)}
+.ctl input[type=range]{accent-color:var(--accent);width:100%}
+.ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-faint);font-family:var(--mono)}
+.readouts{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+.readouts th{text-align:left;font-weight:500;color:var(--ink-soft);padding:5px 6px 5px 0;border-top:1px solid var(--rule-soft)}
+.readouts td{padding:5px 0;border-top:1px solid var(--rule-soft);font-family:var(--mono);font-size:13.5px;text-align:right;white-space:nowrap}
+.chal{list-style:none;padding:0;margin:6px 0}
+.chal li{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.chal .ck{flex:0 0 22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:13px;font-family:var(--mono)}
+.chal li.done .ck{background:var(--good);border-color:var(--good);color:#fff}
+.status{font-size:14.5px;padding:8px 10px;border-radius:var(--r);margin-top:8px;border:1px solid var(--rule);background:var(--panel-2)}
+.status.warn{background:var(--warn-wash);border-color:var(--warn)}
+.status.bad{background:var(--bad-wash);border-color:var(--bad)}
+.status.good{background:var(--good-wash);border-color:var(--good)}
+/* sequencer */
+ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.item{display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--rule);border-left:6px solid var(--act4);border-radius:var(--r);padding:7px 8px 7px 10px;touch-action:none;user-select:none;cursor:grab;transition:background .15s,border-color .15s}
+.item.drag{box-shadow:0 10px 24px -8px rgba(0,0,0,.4);cursor:grabbing;border-color:var(--accent);z-index:2;position:relative}
+.item .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);width:20px;text-align:right;flex:0 0 auto}
+.item .grip{color:var(--ink-faint);font-size:18px;line-height:1;flex:0 0 auto}
+.item .txt{flex:1;font-size:15px;line-height:1.35}
+.item .mv{display:flex;flex-direction:column;gap:2px}
+.mv button{width:30px;height:24px;border:1px solid var(--rule);background:var(--panel-2);border-radius:4px;cursor:pointer;font-size:12px;padding:0;line-height:1}
+.mv button:hover{border-color:var(--accent)}
+.item.right{background:var(--good-wash);border-color:var(--good)}
+.item.off{background:var(--warn-wash);border-color:var(--warn)}
+.item.hinted{box-shadow:0 0 0 3px var(--gold)}
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 6px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.subtabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+.legend i.dl{width:20px;height:0;border-radius:0;border:0;border-top:3px dashed}
+.legend i.dt{width:20px;height:0;border-radius:0;border:0;border-top:3px dotted}
+/* sorter + matcher */
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:70px;padding:10px;border:1px solid var(--rule);border-radius:var(--r);background:var(--panel-2);margin-bottom:12px}
+.bins{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.bin{border:2px dashed var(--rule);border-radius:var(--r);min-height:200px;padding:8px;background:var(--panel);display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.bin:hover,.bin.target{border-color:var(--accent);background:var(--accent-wash)}
+.bin h4{margin:0 0 2px;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.bin .bsub{font-size:13px;color:var(--ink-soft);margin:0 0 4px}
+.bin .bitems{display:flex;flex-wrap:wrap;gap:6px}
+.tok{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:5px 10px 5px 5px;cursor:grab;touch-action:none;user-select:none;font-size:14.5px;line-height:1.25;text-align:left;font-family:var(--sans);color:var(--ink)}
+.tok svg{width:42px;height:42px;flex:0 0 auto;display:block}
+.tok:hover{border-color:var(--accent)}
+.tok.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.tok.ok{border-color:var(--good);background:var(--good-wash)}
+.tok.no{border-color:var(--warn);background:var(--warn-wash)}
+.tok.hinted{box-shadow:0 0 0 3px var(--gold)}
+.tok .mk{font-family:var(--mono);font-weight:700;margin-left:2px}
+.tok.ghost{position:fixed;z-index:60;pointer-events:none;opacity:.92;box-shadow:0 10px 24px -8px rgba(0,0,0,.4)}
+.anim{animation:wob 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.anim2{animation:pulse 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.anim3{animation:drift 3s ease-in-out infinite}
+@keyframes wob{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.07) rotate(-4deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+@media (prefers-reduced-motion:reduce){.anim,.anim2,.anim3{animation:none}}
+.jobs{display:flex;flex-direction:column;gap:7px}
+.job{display:flex;gap:10px;align-items:center;border:1.5px solid var(--rule);border-radius:var(--r);padding:6px 10px 6px 6px;cursor:pointer;background:var(--panel);text-align:left;font:inherit;color:inherit;width:100%}
+.job:hover,.job.target{border-color:var(--accent)}
+.job .slot{width:50px;height:50px;border:2px dashed var(--rule);border-radius:8px;display:grid;place-items:center;flex:0 0 auto;background:var(--panel-2)}
+.job .slot svg{width:44px;height:44px}
+.job .jt{flex:1;font-size:14.5px;line-height:1.35}
+.job.ok{border-color:var(--good);background:var(--good-wash)}
+.job.no{border-color:var(--warn);background:var(--warn-wash)}
+.job .why{display:block;font-size:13px;color:var(--ink-soft);margin-top:2px}
+.cells{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+/* antibody classes */
+.classes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+@media (max-width:700px){.classes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cls{border:2px dashed var(--rule);border-radius:var(--r);background:var(--panel);padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:200px;cursor:pointer;font:inherit;color:inherit;width:100%}
+.cls:hover,.cls.target{border-color:var(--accent);background:var(--accent-wash)}
+.cls svg{width:88px;height:88px}
+.cls b{font-family:var(--mono);font-size:16px}
+.cls .bitems{display:flex;flex-direction:column;gap:5px;width:100%}
+.cls .tok{font-size:13px;padding:5px 8px;width:100%}
+.actbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.actbtn{background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:8px;cursor:pointer;font-size:14.5px;display:flex;align-items:center;gap:8px;text-align:left}
+.actbtn svg{width:34px;height:34px;flex:0 0 auto}
+.actbtn:hover{border-color:var(--accent)}
+.actbtn.right{border-color:var(--good);background:var(--good-wash)}
+.actbtn.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.actbtn:disabled{cursor:default;opacity:.7}
+.steplist{list-style:none;margin:8px 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.steplist li{display:flex;gap:8px;align-items:center;font-size:14px;padding:4px 8px;border-radius:4px;background:var(--panel-2)}
+.steplist li b{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft)}
+.choices{display:flex;flex-wrap:wrap;gap:6px}
+.choice{background:var(--panel);border:1.5px solid var(--rule);border-radius:99px;padding:6px 12px;cursor:pointer;font-size:14px}
+.choice:hover{border-color:var(--accent)}
+.choice.hinted{box-shadow:0 0 0 3px var(--gold)}
+.toggles{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.toggles label{display:flex;gap:8px;align-items:center;font-size:14.5px}
+.toggles input{accent-color:var(--accent);width:18px;height:18px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.seg button{border:0;background:var(--panel-2);padding:8px 12px;cursor:pointer;font-size:14.5px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:600}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Lymphatic and Immune System &middot; USC Upstate</div>
+    <h1>Immune Lab</h1>
+    <p class="sub">Run an infection, sort the defenders, time a booster, put antibodies to work, and trace lymph back to the blood. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="sim" id="tabbtn-sim" type="button">Part 1 &middot; Infection Response</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="sort" id="tabbtn-sort" type="button">Part 2 &middot; Sort the Defenders</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="vax" id="tabbtn-vax" type="button">Part 3 &middot; Vaccine Memory</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="ab" id="tabbtn-ab" type="button">Part 4 &middot; Antibody Lab</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="trace" id="tabbtn-trace" type="button">Part 5 &middot; Lymph Flow Tracer</button>
+  </div>
+
+  <!-- PART 1: infection simulator -->
+  <section id="tab-sim" role="tabpanel" aria-labelledby="tabbtn-sim">
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvSim" role="img" aria-label="Animated tissue with a cut, a lymph vessel and a lymph node, responding to the infection."></canvas></div>
+        <div class="canvas-holder" style="margin-top:8px"><canvas id="cvChart" role="img" aria-label="Live chart of pathogen load, neutrophils, helper T cell activation and antibodies over 21 days."></canvas></div>
+        <div class="legend">
+          <span><i class="ln" style="border-top-color:var(--bact)"></i>Pathogen load</span>
+          <span><i class="dl" style="border-top-color:var(--warn)"></i>Neutrophils (innate)</span>
+          <span><i class="dt" style="border-top-color:var(--th)"></i>Helper T activation</span>
+          <span><i class="ln" style="border-top-color:var(--ab)"></i>Antibodies</span>
+          <span><i class="dl" style="border-top-color:var(--ink-faint)"></i>Your previous run (pathogen)</span>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <h3 style="margin-top:0">1. Choose the invader</h3>
+        <div class="seg" role="group" aria-label="Pathogen"><button type="button" id="pBact" aria-pressed="true">Bacteria in a cut</button><button type="button" id="pVirus" aria-pressed="false">A virus</button></div>
+        <h3>2. Change the patient</h3>
+        <div class="toggles">
+          <label><input type="checkbox" id="tVacc"> Previously vaccinated (memory cells ready)</label>
+          <label><input type="checkbox" id="tHiv"> No helper T cells (like advanced HIV)</label>
+          <label><input type="checkbox" id="tComp"> No complement proteins</label>
+        </div>
+        <h3>3. Run it</h3>
+        <div class="bar">
+          <button class="btn" id="simGo" type="button">Start infection</button>
+          <button class="tbtn" id="simReset" type="button">Reset</button>
+          <label class="mode">Speed <select id="simSpeed"><option value="0.7">slow</option><option value="1.4" selected>normal</option><option value="3">fast</option></select></label>
+        </div>
+        <table class="readouts" id="readouts"></table>
+        <div class="status" id="simStatus" role="status"></div>
+        <h3>Challenges</h3>
+        <ul class="chal" id="chal"></ul>
+        <div class="msg" id="chalMsg" role="status"></div>
+        <p class="small">A teaching model with made-up units, not a medical prediction. Changing a setting starts a fresh patient.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2: sorter + matcher -->
+  <section id="tab-sort" role="tabpanel" aria-labelledby="tabbtn-sort" hidden>
+    <div class="subtabs" role="group" aria-label="Choose an activity">
+      <button class="tbtn" id="subSorter" type="button" aria-pressed="true">Innate vs Adaptive Sorter</button>
+      <button class="tbtn" id="subMatcher" type="button" aria-pressed="false">Cell Job Matcher</button>
+    </div>
+    <div id="sorterWrap">
+      <div class="rounds" id="soRounds"></div>
+      <div class="grid">
+        <div class="card">
+          <p class="small" style="margin-top:0">Tap a card, then tap a bin. Or drag the card into a bin.</p>
+          <div class="pool" id="soPool" aria-label="Cards to sort"></div>
+          <div class="bins">
+            <div class="bin" id="binInnate" role="button" tabindex="0" data-bin="innate"><h4><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 9 L7 2 L6 7 L12 7 L7 14 L8 9 Z" fill="var(--act3)"/></svg>Innate</h4><span class="bsub">Fast, nonspecific, no memory</span><span class="bitems"></span></div>
+            <div class="bin" id="binAdaptive" role="button" tabindex="0" data-bin="adaptive"><h4><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="var(--act5)" stroke-width="2"/><circle cx="8" cy="8" r="2.4" fill="var(--act5)"/></svg>Adaptive</h4><span class="bsub">Specific, slower at first, remembers</span><span class="bitems"></span></div>
+          </div>
+        </div>
+        <aside class="card side" aria-live="polite">
+          <div class="lvl-n" id="soN"></div>
+          <h2 class="lvl-t" id="soT"></h2>
+          <div class="goal"><b class="h">Your job</b>Sort every defense into <b>innate</b> or <b>adaptive</b>. Ask: is it specific to one germ, and does it remember?</div>
+          <div class="bar">
+            <button class="btn" id="soCheck" type="button">Check</button>
+            <button class="tbtn" id="soHint" type="button">Hint</button>
+            <button class="tbtn" id="soShow" type="button">Show answer</button>
+            <button class="tbtn" id="soShuffle" type="button">Start over</button>
+          </div>
+          <div class="bar"><label class="mode"><input type="checkbox" id="soRelaxed" checked> Relaxed mode (no timer)</label><span class="timer" id="soTimer" hidden>0:00</span></div>
+          <div class="msg" id="soMsg" role="status"></div>
+          <div class="abbox" id="soWhy"><b>Tip:</b> tap any card after checking to read why it belongs where it does.</div>
+        </aside>
+      </div>
+    </div>
+    <div id="matcherWrap" hidden>
+      <div class="grid">
+        <div class="card">
+          <p class="small" style="margin-top:0">Tap a cell, then tap the job it does. Or drag the cell onto a job.</p>
+          <div class="cells" id="mtCells" aria-label="Immune cells"></div>
+          <div class="jobs" id="mtJobs"></div>
+        </div>
+        <aside class="card side" aria-live="polite">
+          <div class="lvl-n">Cell Job Matcher</div>
+          <h2 class="lvl-t">Who does what?</h2>
+          <div class="goal"><b class="h">Your job</b>Give every job to the right cell. Each cell has exactly one job here.</div>
+          <div class="bar">
+            <button class="btn" id="mtCheck" type="button">Check</button>
+            <button class="tbtn" id="mtHint" type="button">Hint</button>
+            <button class="tbtn" id="mtShow" type="button">Show answer</button>
+            <button class="tbtn" id="mtReset" type="button">Start over</button>
+          </div>
+          <div class="msg" id="mtMsg" role="status"></div>
+          <p class="small" id="mtBest"></p>
+          <p class="small">Letters on the icons (Th, Tc, B, NK…) name each cell, so you never have to rely on colour alone.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 3: vaccine memory -->
+  <section id="tab-vax" role="tabpanel" aria-labelledby="tabbtn-vax" hidden>
+    <div class="subtabs" role="group" aria-label="Choose a mode">
+      <button class="tbtn" id="vmFree" type="button" aria-pressed="true">Free play</button>
+      <button class="tbtn" id="vmCompare" type="button" aria-pressed="false">Primary vs secondary</button>
+      <button class="tbtn" id="vmBoost" type="button" aria-pressed="false">Booster timing challenge</button>
+    </div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvVax" role="img" aria-label="Antibody titer graph over 52 weeks with a protective level line."></canvas></div>
+        <div class="stagebar"><span class="caption" id="vxCap"></span></div>
+        <div class="legend">
+          <span><i class="dl" style="border-top-color:var(--igm)"></i>IgM</span>
+          <span><i class="ln" style="border-top-color:var(--igg)"></i>IgG</span>
+          <span><i class="dl" style="border-top-color:var(--good)"></i>Protective level</span>
+          <span><i class="s" style="background:var(--mem)"></i>Memory cells</span>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div id="vxFreeBox">
+          <div class="goal"><b class="h">Free play</b>Give a vaccine dose, wait, then meet the real germ. Watch IgM then IgG, and see how memory changes the second response.</div>
+          <div class="bar">
+            <button class="btn" id="vxDose" type="button">Give vaccine dose</button>
+            <button class="tbtn" id="vxExpose" type="button">Meet the real germ</button>
+          </div>
+        </div>
+        <div id="vxCmpBox" hidden>
+          <div class="goal"><b class="h">Primary vs secondary</b>Dose at week 0, then the same antigen at week 20. Compare the two responses.</div>
+          <div class="bar"><button class="btn" id="vxRunCmp" type="button">Run the comparison</button></div>
+          <table class="readouts" id="vxCmpTable"></table>
+        </div>
+        <div id="vxBoostBox" hidden>
+          <div class="goal"><b class="h">Booster challenge</b>A nursing student got dose 1 at week 0. Clinical rotations run from <b>week 40 to week 52</b>, and she must stay <b>above the protective line</b> the whole time. Place as few boosters as you can, then run the year.</div>
+          <div class="ctl"><label for="vxWeek">Booster at week <output id="vxWeekOut">20</output></label><input type="range" id="vxWeek" min="2" max="50" step="1" value="20"></div>
+          <div class="bar">
+            <button class="tbtn" id="vxAddB" type="button">Place booster</button>
+            <button class="tbtn" id="vxClearB" type="button">Remove boosters</button>
+            <button class="btn" id="vxRunB" type="button">Run the year</button>
+            <button class="tbtn" id="vxHintB" type="button">Hint</button>
+            <button class="tbtn" id="vxShowB" type="button">Show answer</button>
+          </div>
+          <p class="small" id="vxBList"></p>
+        </div>
+        <div class="bar">
+          <button class="tbtn" id="vxPause" type="button">Pause</button>
+          <button class="tbtn" id="vxReset" type="button">Reset</button>
+          <label class="mode">Speed <select id="vxSpeed"><option value="1">1 week/s</option><option value="2" selected>2 weeks/s</option><option value="4">4 weeks/s</option></select></label>
+        </div>
+        <table class="readouts" id="vxRead"></table>
+        <div class="msg" id="vxMsg" role="status"></div>
+        <p class="small">Curves show the general shape of real responses, not lab values for any one vaccine.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 4: antibody lab -->
+  <section id="tab-ab" role="tabpanel" aria-labelledby="tabbtn-ab" hidden>
+    <div class="subtabs" role="group" aria-label="Choose an activity">
+      <button class="tbtn" id="subClass" type="button" aria-pressed="true">Five classes</button>
+      <button class="tbtn" id="subAct" type="button" aria-pressed="false">Antibody actions game</button>
+    </div>
+    <div id="classWrap">
+      <div class="grid">
+        <div class="card">
+          <p class="small" style="margin-top:0">Tap a clue, then tap the antibody class it describes. Or drag it.</p>
+          <div class="pool" id="clPool"></div>
+          <div class="classes" id="clBins"></div>
+        </div>
+        <aside class="card side" aria-live="polite">
+          <div class="lvl-n">Antibody classes</div>
+          <h2 class="lvl-t">Remember GAMED</h2>
+          <div class="goal"><b class="h">Your job</b>Match all 10 clues to IgG, IgA, IgM, IgE or IgD. The shapes are drawn to help: one Y, two Ys, or five.</div>
+          <div class="bar">
+            <button class="btn" id="clCheck" type="button">Check</button>
+            <button class="tbtn" id="clHint" type="button">Hint</button>
+            <button class="tbtn" id="clShow" type="button">Show answer</button>
+            <button class="tbtn" id="clReset" type="button">Start over</button>
+          </div>
+          <div class="msg" id="clMsg" role="status"></div>
+          <div class="abbox" id="clWhy"><b>Tip:</b> after checking, tap a clue to read why.</div>
+        </aside>
+      </div>
+    </div>
+    <div id="actWrap" hidden>
+      <div class="grid">
+        <div class="card stage">
+          <div class="canvas-holder"><canvas id="cvAct" role="img" aria-label="Antibody action scene."></canvas></div>
+          <div class="stagebar"><button class="tbtn" id="acReplay" type="button">Replay</button><span class="caption" id="acCap"></span></div>
+        </div>
+        <aside class="card side" aria-live="polite">
+          <div class="sc-top"><div class="chips" id="acChips"></div></div>
+          <div class="sc-n" id="acN"></div>
+          <h2 class="sc-title" id="acTitle"></h2>
+          <p id="acDesc" style="margin:0 0 6px"></p>
+          <p class="qlab">Which antibody action solves this best?</p>
+          <div class="actbtns" id="acBtns"></div>
+          <div class="fb" id="acFb"></div>
+          <div class="bar"><button class="tbtn" id="acHint" type="button">Hint</button><button class="tbtn" id="acPrev" type="button">&larr; Previous</button><button class="btn" id="acNext" type="button">Next case &rarr;</button></div>
+          <p class="small" id="acScore"></p>
+          <p class="calm">Wrong answers are fine here. Watch what that action would do, read why, then try again.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 5: lymph flow tracer -->
+  <section id="tab-trace" role="tabpanel" aria-labelledby="tabbtn-trace" hidden>
+    <div class="rounds" id="trRounds"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvTrace" role="img" aria-label="Body outline with lymph vessels; the tracer dot follows your route."></canvas></div>
+        <div class="stagebar"><span class="caption" id="trCap"></span></div>
+        <div class="legend"><span><i class="ln" style="border-top-color:var(--lv)"></i>Lymph vessels</span><span><i style="background:var(--node)"></i>Lymph nodes</span><span><i class="ln" style="border-top-color:var(--vein)"></i>Veins</span><span><i style="background:var(--glow)"></i>Tracer dot</span></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="trN"></div>
+        <h2 class="lvl-t" id="trT"></h2>
+        <div class="goal"><b class="h">Your job</b>A drop of dye is injected here. Pick, in order, every structure it passes on its way back to the blood.</div>
+        <ol class="steplist" id="trPath"></ol>
+        <p class="qlab">Next stop:</p>
+        <div class="choices" id="trChoices"></div>
+        <div class="bar">
+          <button class="tbtn" id="trHint" type="button">Hint</button>
+          <button class="tbtn" id="trShow" type="button">Show answer</button>
+          <button class="tbtn" id="trReset" type="button">Start this route over</button>
+        </div>
+        <div class="msg" id="trMsg" role="status"></div>
+      </aside>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 21, The Lymphatic and Immune System (OpenStax A&amp;P 2e) &middot; Pair with the <a href="Immune-Walkthrough.html">Immune Walkthrough</a>.<br>Diagrams are simplified and not to scale. The infection and vaccine simulators are teaching models with made-up units, not medical predictions; real responses vary by germ, vaccine and person. In the tracer, some trunks can empty straight into a vein; the routes shown follow the simple textbook pattern.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash","act1","act2","act3","act4","act5","act6","gold",
+ "ecf","tissue","tcell-bg","lymph","lv","lv-edge","water","blood","blood-edge","vessel","vein","rbc","rbc-hi","body","body-edge","bone","marrow","node","node-edge","follicle","germ",
+ "bact","virus","cyto","cell-edge","nuc","host","host-edge","macro","macro-edge","neut","nk","th","tc","bcell","plasma","mem","apc","mast","hist","comp","ifn","pyro",
+ "ab","abH","abL","var","fc","mhc1","mhc2","ag","perf","gzm","fat","skin","kera","mucus","cilia","lyso","igm","igg","iga","ige","igd","heat","hiv","glow"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+readColors();
+let ctx;
+
+/* ================= drawing kit ================= */
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function hx(c){let h=(c||"#888").trim();if(h[0]!=="#"){const m=h.match(/\d+/g);return m&&m.length>=3?[+m[0],+m[1],+m[2]]:[136,136,136]}h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function isDark(){return hx(C.ground)[0]<60}
+function onFill(){return isDark()?"#0E1519":"#fff"}
+function P(T,L){return ((T%L)+L)%L/L}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,t,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(t).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function chipL(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;const w=ctx.measureText(t).width;return chipText(x+w/2+6,y,t,col,fg)}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f)]}d-=ls[i]}return P_[P_.length-1]}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.lineJoin="round";ctx.lineCap="round";ctx.stroke();ctx.setLineDash([]);ctx.lineCap="butt"}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,8);ctx.fillStyle=o.fill||hexA(C.panel,.8);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function blobPath(x,y,r,seed,t,amp){amp=amp==null?.06:amp;ctx.beginPath();const N=44;for(let i=0;i<=N;i++){const a=i/N*TAU;const rad=r*(1+amp*Math.sin(a*3+seed+(t||0)*1.7)+amp*.7*Math.sin(a*5+seed*2.3-(t||0)*1.1));const X=x+Math.cos(a)*rad,Y=y+Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath()}
+function withA(a,fn){ctx.save();ctx.globalAlpha*=clamp(a==null?1:a,0,1);fn();ctx.restore()}
+function title(x,y,t,col){txt(x,y,t.toUpperCase(),{size:11.5,mono:true,weight:700,color:col||C["ink-soft"]})}
+
+function beanNode(x,y,rx,ry,o){o=o||{};ctx.save();ctx.beginPath();ctx.ellipse(x,y,rx,ry,o.ang||0,0,TAU);ctx.fillStyle=o.fill||C.node;ctx.fill();ctx.strokeStyle=o.edge||C["node-edge"];ctx.lineWidth=o.lw||1.6;ctx.stroke();
+  if(o.notch!==false){ctx.beginPath();ctx.ellipse(x+rx*.98,y,rx*.22,ry*.3,0,0,TAU);ctx.fillStyle=o.bgc||C.panel;ctx.fill()}ctx.restore()}
+/* ---- germs ---- */
+function bact(x,y,ang,s,a,o){o=o||{};s=s||8;ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.globalAlpha*=a==null?1:clamp(a,0,1);
+  const sw=o.swell||0;const L=s*1.6*(1+sw*.25),Hh=s*.75*(1+sw*.6);
+  rr(-L,-Hh,L*2,Hh*2,Hh);ctx.fillStyle=o.col||C.bact;ctx.fill();ctx.strokeStyle=hexA(C.ink,.45);ctx.lineWidth=1;ctx.stroke();
+  line(-L*.55,0,L*.55,0,hexA(C.panel,.55),1.2);
+  if(o.flag){ctx.strokeStyle=hexA(o.col||C.bact,.8);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(L,0);for(let k=1;k<=6;k++)ctx.lineTo(L+k*3,Math.sin(k*1.6+(o.t||0)*8)*2.5);ctx.stroke()}
+  ctx.restore()}
+function virus(x,y,r,a,t,col){r=r||7;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);col=col||C.virus;
+  for(let k=0;k<10;k++){const an=k/10*TAU+(t||0)*.3;line(x+Math.cos(an)*r,y+Math.sin(an)*r,x+Math.cos(an)*(r+r*.45),y+Math.sin(an)*(r+r*.45),col,1.4);circ(x+Math.cos(an)*(r+r*.5),y+Math.sin(an)*(r+r*.5),r*.16,col)}
+  ctx.beginPath();for(let k=0;k<=6;k++){const an=k/6*TAU+(t||0)*.3;const X=x+Math.cos(an)*r,Y=y+Math.sin(an)*r;k?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.4);ctx.lineWidth=1;ctx.stroke();circ(x,y,r*.4,hexA(C.panel,.45));ctx.restore()}
+function diamond(x,y,s,col,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.3);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+function dotM(x,y,r,col,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);circ(x,y,r,col,hexA(C.ink,.25),.8);ctx.restore()}
+
+/* ---- epitope / receptor shapes ---- */
+function shapePath(kind,x,y,s,ang){ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.beginPath();
+  if(kind==="tri"){ctx.moveTo(-s,s*.8);ctx.lineTo(0,-s*.9);ctx.lineTo(s,s*.8);ctx.closePath()}
+  else if(kind==="sq"){ctx.rect(-s*.8,-s*.8,s*1.6,s*1.6)}
+  else if(kind==="dia"){ctx.moveTo(0,-s);ctx.lineTo(s,0);ctx.lineTo(0,s);ctx.lineTo(-s,0);ctx.closePath()}
+  else if(kind==="half"){ctx.arc(0,s*.3,s,Math.PI,0);ctx.closePath()}
+  else {ctx.arc(0,0,s*.85,0,TAU)}
+  ctx.restore()}
+function epi(kind,x,y,s,col,ang,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);shapePath(kind,x,y,s,ang);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.45);ctx.lineWidth=1;ctx.stroke();ctx.restore()}
+// receptor: stalk pointing in direction ang (radians, 0 = right), ending in a cup holding the outline of kind
+function receptor(x,y,ang,len,kind,col){const ex=x+Math.cos(ang)*len,ey=y+Math.sin(ang)*len;line(x,y,ex,ey,col,2.4);
+  ctx.save();ctx.translate(ex,ey);ctx.rotate(ang+Math.PI/2);ctx.beginPath();ctx.moveTo(-7,0);ctx.lineTo(-7,-7);ctx.moveTo(7,0);ctx.lineTo(7,-7);ctx.moveTo(-7,0);ctx.lineTo(7,0);ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke();
+  if(kind){ctx.setLineDash([2,2]);shapePath(kind,0,-6,4.6,Math.PI);ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.setLineDash([])}ctx.restore()}
+
+function socket(x,y,ang,len,kind,col,sz){const ex=x+Math.cos(ang)*len,ey=y+Math.sin(ang)*len;line(x,y,ex,ey,col,2.6);const cx=ex+Math.cos(ang)*sz*.9,cy=ey+Math.sin(ang)*sz*.9;
+  shapePath(kind,cx,cy,sz,ang+Math.PI*1.5);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();return [cx,cy]}
+/* ---- antibody (Y) ---- local: stem down from (0,0); arms up. ang rotates so arms point toward ang direction (default up = -PI/2) ---- */
+function ab(x,y,s,ang,col,o){o=o||{};ctx.save();ctx.translate(x,y);ctx.rotate((ang==null?-Math.PI/2:ang)+Math.PI/2);ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  const lw=o.lw||Math.max(1.6,s*.16);col=col||C.ab;ctx.lineCap="round";
+  ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(0,s*.9);ctx.lineTo(0,0);ctx.lineTo(-s*.62,-s*.72);ctx.moveTo(0,0);ctx.lineTo(s*.62,-s*.72);ctx.stroke();
+  if(o.tips){ctx.strokeStyle=o.tips;ctx.beginPath();ctx.moveTo(-s*.42,-s*.49);ctx.lineTo(-s*.62,-s*.72);ctx.moveTo(s*.42,-s*.49);ctx.lineTo(s*.62,-s*.72);ctx.stroke()}
+  ctx.lineCap="butt";ctx.restore()}
+// tip positions of an antibody drawn with ab(x,y,s,ang)
+function abTips(x,y,s,ang){ang=ang==null?-Math.PI/2:ang;const r=ang+Math.PI/2;const c=Math.cos(r),sn=Math.sin(r);const f=(u,v)=>[x+u*c-v*sn,y+u*sn+v*c];return [f(-s*.62,-s*.72),f(s*.62,-s*.72),f(0,s*.9)]}
+function pentamer(x,y,s,col,rot,a){for(let k=0;k<5;k++){const an=rot+k/5*TAU;ab(x+Math.cos(an)*s*.55,y+Math.sin(an)*s*.55,s*.62,an,col,{a})}circ(x,y,s*.18,col)}
+
+/* ---- MHC holder: stalk on membrane at (x,y), pointing outward along ang ---- */
+function mhc(x,y,ang,col,pep,a){ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);ctx.translate(x,y);ctx.rotate(ang+Math.PI/2);
+  ctx.strokeStyle=col;ctx.lineWidth=3;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-9);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-7,-17);ctx.quadraticCurveTo(-7,-9,0,-9);ctx.quadraticCurveTo(7,-9,7,-17);ctx.stroke();ctx.lineCap="butt";
+  if(pep){circ(0,-15,3.6,pep,hexA(C.ink,.4),.8)}ctx.restore()}
+
+/* ---- cells ---- */
+const KIND={th:["th","Th"],tc:["tc","Tc"],b:["bcell","B"],mem:["mem","M"],nk:["nk","NK"],t:["th","T"],naive:["bcell",""]};
+function lymph(x,y,r,kind,o){o=o||{};const kk=KIND[kind]||KIND.t;const col=o.col||C[kk[0]];const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  if(o.glow)glow(x,y,r*2.1,C.glow,.55*o.glow);
+  if(kind==="nk"){blobPath(x,y,r,o.seed||2,t,.05);ctx.fillStyle=C.nk;ctx.fill();ctx.strokeStyle=mix(C.nk,C.ink,.45);ctx.lineWidth=1.6;ctx.stroke();
+    circ(x-r*.1,y,r*.55,mix(C.nk,C.ink,.55));for(let i=0;i<9;i++){const an=rnd(i*3+1)*TAU,d=r*(.62+rnd(i)*.25);circ(x+Math.cos(an)*d,y+Math.sin(an)*d,Math.max(1.3,r*.08),C.perf)}}
+  else{blobPath(x,y,r,o.seed||1,t,.035);ctx.fillStyle=mix(col,C.panel,.62);ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.4,r*.07);ctx.stroke();
+    circ(x+r*.04,y-r*.03,r*.7,col);
+    // surface receptors
+    if(!o.norec){const n=o.nrec||10;for(let i=0;i<n;i++){const an=i/n*TAU+(o.rot||0);const px=x+Math.cos(an)*r,py=y+Math.sin(an)*r;
+      if(kind==="b"||kind==="naive"&&o.brec)ab(px+Math.cos(an)*r*.12,py+Math.sin(an)*r*.12,Math.max(4,r*.22),an,col,{lw:1.4});
+      else if(!o.rec){line(px,py,px+Math.cos(an)*r*.22,py+Math.sin(an)*r*.22,col,1.6);const ex=px+Math.cos(an)*r*.22,ey=py+Math.sin(an)*r*.22;line(ex-Math.sin(an)*3,ey+Math.cos(an)*3,ex+Math.sin(an)*3,ey-Math.cos(an)*3,col,1.6)}}}
+    if(o.rec){[0,1,2,3].forEach(i=>{const an=(o.rot||0)+i*TAU/4-Math.PI/2;receptor(x+Math.cos(an)*r,y+Math.sin(an)*r,an,r*.28,o.rec,col)})}
+  }
+  const lab=o.label!=null?o.label:kk[1];if(lab){ctx.font=`700 ${Math.max(9,Math.round(r*.55))}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=kind==="nk"?C.panel:onFill();ctx.fillText(lab,x+r*.04,y)}
+  ctx.restore()}
+function neut(x,y,r,o){o=o||{};const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);blobPath(x,y,r,o.seed||3,t,.07);ctx.fillStyle=C.neut;ctx.fill();ctx.strokeStyle=C["cell-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=0;i<16;i++){const an=rnd(i*7+(o.seed||3))*TAU,d=Math.sqrt(rnd(i*5+2))*r*.8;circ(x+Math.cos(an)*d,y+Math.sin(an)*d,Math.max(.8,r*.05),hexA(C["cell-edge"],.8))}
+  const L=[[-.42,.12],[-.16,-.24],[.18,-.08],[.4,.24]];ctx.strokeStyle=C.nuc;ctx.lineWidth=r*.14;ctx.lineCap="round";ctx.beginPath();L.forEach((p,i)=>i?ctx.lineTo(x+p[0]*r,y+p[1]*r):ctx.moveTo(x+p[0]*r,y+p[1]*r));ctx.stroke();ctx.lineCap="butt";L.forEach(p=>circ(x+p[0]*r,y+p[1]*r,r*.19,C.nuc));
+  ctx.restore()}
+function macro(x,y,r,o){o=o||{};const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);if(o.glow)glow(x,y,r*1.8,C.glow,.5*o.glow);
+  blobPath(x,y,r,o.seed||5,t,o.amp==null?.11:o.amp);ctx.fillStyle=C.macro;ctx.fill();ctx.strokeStyle=C["macro-edge"];ctx.lineWidth=Math.max(1.5,r*.05);ctx.stroke();
+  ctx.beginPath();ctx.ellipse(x-r*.18,y+r*.08,r*.3,r*.22,.4,0,TAU);ctx.fillStyle=mix(C["macro-edge"],C.nuc,.5);ctx.fill();
+  if(!o.nolyso)for(let i=0;i<6;i++){const an=rnd(i*11+(o.seed||5))*TAU,d=r*(.35+rnd(i*3)*.35);circ(x+Math.cos(an)*d,y+Math.sin(an)*d,Math.max(1.5,r*.07),C.lyso)}
+  if(o.lab!==false&&r>14){ctx.font=`700 ${Math.max(9,Math.round(r*.32))}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.ink;ctx.fillText(o.lab||"Mφ",x+r*.25,y-r*.35)}
+  ctx.restore()}
+function dendritic(x,y,r,o){o=o||{};const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);
+  ctx.beginPath();const N=7;for(let i=0;i<=N*12;i++){const a=i/(N*12)*TAU;const arm=Math.pow(Math.max(0,Math.cos(a*N/2+(o.seed||0))),6);const rad=r*(.62+.75*arm+.04*Math.sin(t*2+a*3));const X=x+Math.cos(a)*rad,Y=y+Math.sin(a)*rad;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath();
+  ctx.fillStyle=mix(C.apc,C.panel,.62);ctx.fill();ctx.strokeStyle=C.apc;ctx.lineWidth=1.6;ctx.stroke();circ(x,y,r*.32,mix(C.apc,C.nuc,.35));
+  if(o.lab!==false){ctx.font=`700 ${Math.max(9,Math.round(r*.3))}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText("DC",x,y)}ctx.restore()}
+function plasmaC(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);ctx.beginPath();ctx.ellipse(x,y,r*1.2,r*.9,o.ang||0,0,TAU);ctx.fillStyle=C.plasma;ctx.fill();ctx.strokeStyle=C.bcell;ctx.lineWidth=1.6;ctx.stroke();
+  const nx=x-r*.55,ny=y;circ(nx,ny,r*.45,C.bcell);for(let k=0;k<6;k++){const an=k/6*TAU;circ(nx+Math.cos(an)*r*.28,ny+Math.sin(an)*r*.28,r*.07,hexA(C.panel,.6))}
+  ctx.strokeStyle=hexA(C.bcell,.7);ctx.lineWidth=1.2;for(let k=0;k<4;k++){ctx.beginPath();ctx.arc(x-r*.2,y,r*(.55+k*.15),-0.9,0.9);ctx.stroke()}
+  if(o.lab!==false){ctx.font=`700 ${Math.max(9,Math.round(r*.32))}px ${FONT}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.ink;ctx.fillText("Plasma",x+r*.35,y+r*.62)}ctx.restore()}
+function mastC(x,y,r,deg,o){o=o||{};const t=o.t||0;ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);blobPath(x,y,r,o.seed||4,t,.05);ctx.fillStyle=C.mast;ctx.fill();ctx.strokeStyle=mix(C.mast,C.ink,.45);ctx.lineWidth=1.6;ctx.stroke();
+  circ(x,y,r*.32,mix(C.mast,C.nuc,.5));const n=Math.round(18*(1-(deg||0)*.8));for(let i=0;i<n;i++){const an=rnd(i*9+2)*TAU,d=r*(.42+rnd(i*4)*.45);circ(x+Math.cos(an)*d,y+Math.sin(an)*d,Math.max(1.5,r*.08),C.hist)}
+  if(o.lab!==false){txt(x,y+r+10,"Mast cell",{size:11,weight:600,align:"center",color:C["ink-soft"]})}ctx.restore()}
+// generic body (host) cell: rounded blob with nucleus
+function hostCell(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);const sh=o.shrink||0;const rr_=r*(1-sh*.45);
+  if(o.bleb){for(let k=0;k<7;k++){const an=k/7*TAU+.3;const d=rr_*(1+o.bleb*.45);circ(x+Math.cos(an)*d,y+Math.sin(an)*d,rr_*.32*(o.bleb),C.host,C["host-edge"],1)}}
+  blobPath(x,y,rr_,o.seed||7,o.t||0,.04);ctx.fillStyle=o.fill||C.host;ctx.fill();ctx.strokeStyle=o.edge||C["host-edge"];ctx.lineWidth=1.6;ctx.stroke();
+  circ(x+rr_*.05,y+rr_*.05,rr_*.32,o.nuc||mix(C["host-edge"],C.nuc,.35));ctx.restore()}
+function rbc(x,y,r,o){o=o||{};ctx.save();ctx.globalAlpha*=o.a==null?1:clamp(o.a,0,1);circ(x,y,r,o.col||C.rbc,C["blood-edge"],1);glow(x,y,r*.6,o.pale?C.panel:C["rbc-hi"],.6);ctx.restore()}
+
+/* ---- body figure (anterior view: body's right is viewer's left) ---- */
+function bodyFig(cx,top,s,o){o=o||{};ctx.save();ctx.translate(cx,top);ctx.scale(s,s);ctx.lineCap="round";ctx.lineJoin="round";
+  const col=o.col||C.body,ed=o.edge||C["body-edge"];
+  const limbs=[[-38,40,-80,175],[38,40,80,175],[-20,170,-28,330],[20,170,28,330]];
+  ctx.strokeStyle=ed;ctx.lineWidth=31;limbs.forEach(l=>{ctx.beginPath();ctx.moveTo(l[0],l[1]);ctx.lineTo(l[2],l[3]);ctx.stroke()});
+  ctx.strokeStyle=col;ctx.lineWidth=28;limbs.forEach(l=>{ctx.beginPath();ctx.moveTo(l[0],l[1]);ctx.lineTo(l[2],l[3]);ctx.stroke()});
+  rr(-45,26,90,155,22);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=ed;ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle=col;ctx.fillRect(-11,8,22,22);circ(0,-12,26,col,ed,1.5);
+  ctx.restore()}
+/* infection model (teaching model, arbitrary units, time in days) */
+function simInit(o){const v=o.vacc;return {day:0,P:2,N:0,NK:0,IFN:0,Ag:0,H:0,Tc:0,Pl:v?.05:0,Sw:v?.9:0,IgM:0,IgG:v?.12:0,I:0,peak:0,cleared:null,o}}
+function simStep(s,dt){const o=s.o,v=o.vacc,th=!o.hiv,cp=!o.nocomp,vir=o.mode==="virus";
+  const P=s.P;const ab=s.IgM+s.IgG;
+  const N=s.N,H=s.H;
+  let dP;
+  if(!vir){const kill=.85*N*(cp?1.3:1)+(cp?.3:0)+2.6*ab*(cp?1:.7);dP=2.3*P*(1-P/100)-kill*P}
+  else{const kill=.2*N+.5*s.NK+3.2*s.Tc+2.0*ab+(cp?.1:0);dP=2.3*P*(1-P/100)*(1-.3*s.IFN)-kill*P}
+  s.N+=dt*((vir?1.2:2.6)*(P/(P+6))*(1-N)-.55*N);
+  s.NK+=dt*(vir?(1.6*(P/(P+8))*(1-s.NK)-.4*s.NK):-.5*s.NK);
+  s.IFN+=dt*(vir?(2*(P/(P+5))*(1-s.IFN)-.5*s.IFN):-.5*s.IFN);
+  s.Ag+=dt*(.6*(P/(P+8))-.35*s.Ag);
+  const rH=v?2.2:.42;s.H+=dt*(th?(rH*s.Ag*(1-H)-(P<1?.15*H:0)):0);
+  const He=th?H:.006;
+  s.Tc+=dt*((vir?1:0.25)*(v?2.5:.6)*He*s.Ag*(1-s.Tc)-.12*s.Tc);
+  s.Pl+=dt*((v?2.6:.75)*He*s.Ag*(1-s.Pl)-.18*s.Pl);
+  s.Sw+=dt*(th?(.3*s.Pl*(1-s.Sw)):0);
+  s.IgM+=dt*(.9*s.Pl*(1-s.Sw)-.3*s.IgM);
+  s.IgG+=dt*(1.1*s.Pl*s.Sw-.035*s.IgG);
+  s.P=Math.max(0,P+dt*dP);if(s.P<.05&&s.day>1)s.P=0;
+  s.peak=Math.max(s.peak,s.P);if(s.cleared===null&&s.P<=0.05&&s.day>1)s.cleared=s.day;
+  s.day+=dt;}
+
+/* ---------------- stage helpers ---------------- */
+function makeStage(id,W,H){const cv=document.getElementById(id);const st={cv,ctx:cv.getContext("2d"),W,H,K:1};
+  st.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);st.K=cv.width/W};
+  st.toLocal=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};return st}
+function use(st){ctx=st.ctx;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,st.W,st.H);ctx.globalAlpha=1}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fmt(s){s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function setMsg(id,t,c){const m=$(id);m.className="msg"+(t?" show "+c:"");m.innerHTML=t}
+function starStr(n){return `<span class="stars">${"★".repeat(n)}${"☆".repeat(3-n)}</span>`}
+function bg(col,st){ctx.fillStyle=col||C.panel;ctx.fillRect(0,0,st?st.W:800,st?st.H:480)}
+
+/* ================= PART 1: infection simulator ================= */
+const S1=makeStage("cvSim",800,380),S1c=makeStage("cvChart",800,230);
+let simOpt={mode:"bact",vacc:false,hiv:false,nocomp:false};
+let sim=null,hist=[],ghost=null,simRun=false,simDone=false,simAcc=0;
+const chalDone=store.get("im-chal")||{};
+const CHAL=[
+ {id:"c1",t:"Clear a bacterial infection in a healthy patient (no boxes ticked).",ok:(o,s)=>o.mode==="bact"&&!o.vacc&&!o.hiv&&!o.nocomp&&s.cleared!==null,
+  why:"Innate defenses (neutrophils, macrophages, complement) slow the bacteria in the first days, but it takes the adaptive response (helper T cells, then antibodies) about a week to finish the job."},
+ {id:"c2",t:"Clear the same bacteria in a previously vaccinated patient.",ok:(o,s)=>o.mode==="bact"&&o.vacc&&!o.hiv&&!o.nocomp&&s.cleared!==null,
+  why:"Memory cells skip the slow clonal selection step. Helper T cells and antibodies rise within a day or two, so the peak is far smaller and the infection ends days sooner. That is the secondary response."},
+ {id:"c3",t:"Remove helper T cells and run to day 21. What happens to antibodies?",ok:(o,s)=>o.hiv&&s.day>=20.9,
+  why:"Without helper T cells, B cells get no cytokine signal, so very few become plasma cells, and cytotoxic T cells stay weak. Innate defenses hold on, but the germ is never fully cleared. This is why HIV is so dangerous."},
+ {id:"c4",t:"Remove complement and fight bacteria. Compare the peak.",ok:(o,s)=>o.mode==="bact"&&o.nocomp&&!o.hiv&&(s.cleared!==null||s.day>=14),
+  why:"Without complement there is no opsonization and no membrane attack complex, so phagocytes work less well and bacteria reach a higher peak. Antibodies still win in the end, a little later."},
+ {id:"c5",t:"Beat a virus in a healthy patient. Who does most of the killing?",ok:(o,s)=>o.mode==="virus"&&!o.vacc&&!o.hiv&&s.cleared!==null,
+  why:"Neutrophils cannot reach viruses hiding inside cells. NK cells and interferons slow the virus early, then cytotoxic T cells kill infected cells and antibodies neutralize free virus."}];
+function chalRender(){const ul=$("#chal");ul.innerHTML="";CHAL.forEach((c,i)=>{const li=document.createElement("li");li.className=chalDone[c.id]?"done":"";li.innerHTML=`<span class="ck">${chalDone[c.id]?"✓":i+1}</span><span>${c.t}</span>`;ul.appendChild(li)})}
+function simReset(keepGhost){if(hist.length>20&&keepGhost!==false)ghost=hist.map(h=>[h.d,h.P]);sim=simInit(Object.assign({},simOpt));hist=[];simRun=false;simDone=false;$("#simGo").textContent="Start infection";simReadouts();simStatus()}
+function simStatus(){const s=sim,o=simOpt;let t,c="";
+  if(!simRun&&s.day===0){t="Ready. Press <b>Start infection</b>.";}
+  else if(s.cleared!==null){t=`<b>Cleared on day ${s.cleared.toFixed(1)}.</b> Peak pathogen load ${Math.round(s.peak)}%.`;c="good"}
+  else if(s.day>=21){t=`<b>Day 21 and still infected.</b> Pathogen load ${Math.round(s.P)}%. The adaptive response never got going.`;c="bad"}
+  else if(s.day<2.5)t="Innate defenses respond first: inflammation brings neutrophils within hours.";
+  else if(s.H<.3&&!o.hiv)t="Dendritic cells carry antigen to the lymph node. Clonal selection takes days.";
+  else if(o.hiv)t="Helper T cells are missing, so B cells and cytotoxic T cells get no go-ahead.";
+  else t=o.mode==="virus"?"Cytotoxic T cells and antibodies are now attacking the virus.":"Plasma cells are pouring out antibodies.";
+  const el=$("#simStatus");el.className="status "+c;el.innerHTML=t}
+function abDisp(s){return Math.min(100,(s.IgM+s.IgG)*15)}
+function simReadouts(){const s=sim;const rows=[["Day",s.day.toFixed(1)],["Pathogen load",Math.round(s.P)+"%"],["Neutrophils",Math.round(s.N*100)+"%"],
+  ["Helper T activation",simOpt.hiv?"none (no helper T)":Math.round(s.H*100)+"%"],["Cytotoxic T activity",Math.round(s.Tc*100)+"%"],["Antibodies (IgM / IgG)",Math.round(abDisp(s))+"% ("+(s.IgM+s.IgG>0.01?Math.round(100*s.IgM/(s.IgM+s.IgG+1e-9))+"% IgM":"none")+")"]];
+  $("#readouts").innerHTML=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}
+function simTick(dt){if(!simRun||simDone)return;simAcc+=dt*(+$("#simSpeed").value);while(simAcc>=.02){simAcc-=.02;simStep(sim,.02);if(Math.round(sim.day*50)%5===0)hist.push({d:sim.day,P:sim.P,N:sim.N*100,H:sim.H*100,A:abDisp(sim),T:sim.Tc*100});
+    if(sim.day>=21||(sim.cleared!==null&&sim.day>=sim.cleared+3)){simDone=true;simRun=false;$("#simGo").textContent="Run again";checkChal();break}}
+  simReadouts();simStatus()}
+function checkChal(){let newly=null;CHAL.forEach(c=>{if(!chalDone[c.id]&&c.ok(simOpt,sim)){chalDone[c.id]=1;newly=c}});store.set("im-chal",chalDone);chalRender();
+  if(newly)setMsg("#chalMsg",`<b>Challenge done!</b> ${newly.why}`,"good");else{const m=CHAL.find(c=>c.ok(simOpt,sim));if(m)setMsg("#chalMsg",`<b>What happened?</b> ${m.why}`,"info")}
+  const n=CHAL.filter(c=>chalDone[c.id]).length;if(n===CHAL.length)setMsg("#chalMsg",($("#chalMsg").innerHTML||"")+`<br>${starStr(3)} All five challenges complete.`,"good")}
+$("#simGo").onclick=()=>{if(simDone){simReset();}if(simRun){simRun=false;$("#simGo").textContent="Resume"}else{simRun=true;$("#simGo").textContent="Pause";setMsg("#chalMsg","","")}};
+$("#simReset").onclick=()=>{simReset();setMsg("#chalMsg","","")};
+function setMode(m){simOpt.mode=m;$("#pBact").setAttribute("aria-pressed",m==="bact");$("#pVirus").setAttribute("aria-pressed",m==="virus");simReset()}
+$("#pBact").onclick=()=>setMode("bact");$("#pVirus").onclick=()=>setMode("virus");
+$("#tVacc").onchange=e=>{simOpt.vacc=e.target.checked;simReset()};$("#tHiv").onchange=e=>{simOpt.hiv=e.target.checked;simReset()};$("#tComp").onchange=e=>{simOpt.nocomp=e.target.checked;simReset()};
+
+// scene
+const TCELLS=[[80,150],[170,120],[300,140],[390,180],[110,250],[220,230],[340,250],[50,300],[250,298],[420,290]];
+function drawSim(T){use(S1);const s=sim,o=simOpt;const vir=o.mode==="virus";
+  bg(C.tissue,S1);
+  // skin with cut
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(470,0);ctx.lineTo(470,46);ctx.lineTo(250,46);ctx.lineTo(225,100);ctx.lineTo(200,46);ctx.lineTo(0,46);ctx.closePath();ctx.fillStyle=C.kera;ctx.fill();ctx.strokeStyle=mix(C.kera,C.ink,.3);ctx.lineWidth=1.2;ctx.stroke();
+  for(let x=10;x<430;x+=40){if(x>165&&x<255)continue;line(x,14,x+30,14,hexA(C["body-edge"],.3),1);line(x+15,30,x+45,30,hexA(C["body-edge"],.3),1)}
+  txt(14,62,vir?"Tissue (virus enters body cells)":"Tissue with a cut",{size:11.5,weight:700,color:C["ink-soft"]});
+  // blood capillary
+  const vy=352;rr(0,vy-14,470,28,14);ctx.fillStyle=C.vessel;ctx.fill();ctx.strokeStyle=C["blood-edge"];ctx.lineWidth=1.2;ctx.stroke();
+  for(let k=0;k<9;k++){const q=P(T*.25+k/9,1);rbc(q*470,vy,6)}label(14,vy,"blood capillary",{size:10.5,color:C.blood,weight:600});
+  // inflammation glow
+  if(s.N>.05)glow(225,170,170,C.heat,Math.min(.28,s.N*.3));
+  // host cells
+  const nInf=vir?Math.round(Math.min(1,s.P/60)*TCELLS.length):0;
+  TCELLS.forEach((c,i)=>{const inf=i<nInf;hostCell(c[0],c[1],20,{seed:i,t:T*.4,fill:inf?mix(C.host,C.virus,.25):C.host});if(inf){virus(c[0]-5,c[1]-3,4,1,T);virus(c[0]+6,c[1]+5,4,1,T)}
+    if(vir&&s.IFN>.2&&!inf){withA(s.IFN*.8,()=>circ(c[0],c[1],25,null,C.ifn,1.6))}});
+  // pathogens
+  const nP=Math.round(Math.min(100,s.P)/100*(vir?40:70));
+  for(let k=0;k<nP;k++){const a=rnd(k*3+1)*TAU,d=Math.pow(rnd(k*7+2),.7)*(60+s.P*1.6);let x=225+Math.cos(a)*d*1.2,y=150+Math.sin(a)*d*.7;x=clamp(x,12,458);y=clamp(y,64,320);
+    x+=Math.sin(T*1.3+k)*3;y+=Math.cos(T*1.1+k*.7)*3;
+    if(vir)virus(x,y,4.5,1,T);else{bact(x,y,a+T*.2,5.5,1);if(!o.nocomp&&k%3===0)circ(x+5,y-4,2.2,C.comp)}}
+  // antibodies
+  const nA=Math.round(abDisp(s)/100*36);for(let k=0;k<nA;k++){const a=rnd(k*5+9)*TAU,d=40+rnd(k*11)*150;const x=clamp(225+Math.cos(a)*d*1.2+Math.sin(T+k)*6,12,458),y=clamp(170+Math.sin(a)*d*.6+Math.cos(T*.8+k)*6,70,320);ab(x,y,8,a+T*.5,C.ab,{lw:2})}
+  // neutrophils + macrophages + NK + Tc
+  const nN=Math.round(s.N*9);for(let k=0;k<nN;k++){const a=k/9*TAU+T*.15,d=60+30*Math.sin(T*.5+k);neut(225+Math.cos(a)*d*1.3,175+Math.sin(a)*d*.8,12,{t:T,seed:k})}
+  macro(90,200,20,{t:T,seed:1,lab:false});macro(380,110,20,{t:T,seed:4,lab:false});
+  if(vir){const nk=Math.round(s.NK*4);for(let k=0;k<nk;k++)lymph(140+k*70,90+Math.sin(T+k)*8,12,"nk",{t:T,label:""});
+    const ntc=Math.round(s.Tc*7);for(let k=0;k<ntc;k++){const c=TCELLS[k%TCELLS.length];lymph(c[0]+24+Math.sin(T*2+k)*4,c[1]-18,11,"tc",{t:T,label:"",norec:true})}}
+  // neutrophils leaving capillary
+  if(s.N>.1)for(let k=0;k<3;k++){const q=P(T*.4+k/3,1);neut(120+k*110,lerp(vy,250,q),10,{t:T,seed:k+5,a:1-q})}
+  // lymphatic vessel to node
+  const lvp=[[440,240],[470,200],[520,170],[560,170]];poly(lvp,C.lv,12);poly(lvp,C.lymph,8);
+  for(let k=0;k<5;k++){const q=P(T*.3+k/5,1);const [x,y]=along(lvp,q);dotM(x,y,2.6,C.lv)}
+  if(s.Ag>.08){const q=P(T*.25,1);const [x,y]=along(lvp,q);dendritic(x,y-2,11,{t:T,lab:false});circ(x,y-2,3,C.ag)}
+  txt(452,262,"lymph",{size:10.5,color:C.lv,weight:600});
+  // node
+  const cx=665,cy=175;beanNode(cx,cy,118,92,{bgc:C.tissue});txt(cx,48,"Lymph node",{size:12,weight:700,align:"center"});
+  [[-70,-40],[-80,22],[-30,-66],[30,-70],[-40,62]].forEach((p,i)=>{const g=s.Pl;circ(cx+p[0],cy+p[1],20,mix(C.follicle,C.glow,g*.5),hexA(C.bcell,.6),1.2);circ(cx+p[0],cy+p[1],7+g*7,C.germ);for(let k=0;k<5;k++){const an=k/5*TAU+T*.2;circ(cx+p[0]+Math.cos(an)*14,cy+p[1]+Math.sin(an)*14,3,C.bcell)}});
+  for(let k=0;k<6;k++){const x=cx-10+(k%3)*30,y=cy-14+Math.floor(k/3)*34;if(o.hiv){withA(.35,()=>lymph(x,y,11,"th",{label:"",norec:true}));txt(x,y,"✕",{size:12,weight:700,align:"center",color:C.bad})}else lymph(x,y,11,"th",{label:"Th",norec:true,glow:s.H,t:T})}
+  const npl=Math.round(s.Pl*4);for(let k=0;k<npl;k++)plasmaC(cx+70,cy-40+k*24,9,{lab:false});
+  if(o.hiv)label(cx,cy+102,"no helper T cells",{size:11,align:"center",border:C.bad});
+  // efferent to blood, antibodies out
+  const ef=[[cx+100,cy+20],[790,cy+40],[790,vy],[470,vy]];poly(ef.slice(0,2),C.lv,10);poly(ef.slice(0,2),C.lymph,6);poly(ef.slice(1),hexA(C.blood,.35),6);
+  const nOut=Math.round(s.Pl*6);for(let k=0;k<nOut;k++){const q=P(T*.2+k/6,1);const [x,y]=along(ef,q);ab(x,y,7,q*8,C.ab,{lw:1.8})}
+  txt(780,vy-20,"to blood",{size:10.5,align:"right",color:C["ink-soft"]});
+  if(o.nocomp&&!vir)label(360,82,"no complement",{size:11,align:"center",border:C.comp});
+  if(o.vacc)label(cx,cy-112,"memory cells ready",{size:11,align:"center",border:C.mem});
+  // day badge
+  label(14,84,"Day "+s.day.toFixed(1),{size:13,weight:700,mono:true});
+}
+function drawChart(){use(S1c);bg(C.panel,S1c);const x0=46,x1=786,y0=196,y1=14;const X=d=>lerp(x0,x1,d/21),Y=v=>lerp(y0,y1,clamp(v,0,100)/100);
+  line(x0,y0,x1,y0,C.ink,1.2);line(x0,y0,x0,y1,C.ink,1.2);
+  for(let d=0;d<=21;d+=3){line(X(d),y0,X(d),y0+4,C.ink,1);txt(X(d),y0+14,d+"",{size:10.5,align:"center",mono:true,color:C["ink-soft"]})}
+  txt((x0+x1)/2,y0+28,"days after infection",{size:11,align:"center",color:C["ink-soft"]});
+  [0,50,100].forEach(v=>{txt(x0-6,Y(v),v+"%",{size:10,align:"right",mono:true,color:C["ink-soft"]});if(v)line(x0,Y(v),x1,Y(v),hexA(C.rule,.6),1,[3,4])});
+  if(ghost){ctx.beginPath();ghost.forEach((g,i)=>i?ctx.lineTo(X(g[0]),Y(g[1])):ctx.moveTo(X(g[0]),Y(g[1])));ctx.strokeStyle=C["ink-faint"];ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([])}
+  const ser=[["P",C.bact,[],3],["N",C.warn,[7,5],2.2],["H",C.th,[2,4],2.6],["A",C.ab,[],3]];
+  ser.forEach(([k,col,dash,lw])=>{if(!hist.length)return;ctx.beginPath();hist.forEach((h,i)=>i?ctx.lineTo(X(h.d),Y(h[k])):ctx.moveTo(X(h.d),Y(h[k])));ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.setLineDash(dash);ctx.lineCap="round";ctx.stroke();ctx.setLineDash([]);ctx.lineCap="butt"});
+  if(hist.length){const h=hist[hist.length-1];line(X(h.d),y0,X(h.d),y1,hexA(C.ink,.25),1)}
+  if(sim.cleared!==null){label(X(sim.cleared),y1+12,"cleared",{size:10.5,align:"center",border:C.good})}
+}
+
+/* ================= SVG icons (drawn, theme-aware) ================= */
+function ySVG(x,y,s,col,rot,w){return `<g transform="translate(${x} ${y}) rotate(${rot||0})"><path d="M0 ${s*.9} L0 0 L${-s*.62} ${-s*.72} M0 0 L${s*.62} ${-s*.72}" stroke="${col}" stroke-width="${w||2.4}" fill="none" stroke-linecap="round"/></g>`}
+function cellSVG(fill,edge,lab,extra,cls){return `<g class="${cls||"anim"}"><circle cx="24" cy="24" r="17" fill="${fill}" stroke="${edge}" stroke-width="2"/>${extra||""}<text x="24" y="28.5" text-anchor="middle" font-family="IBM Plex Sans,system-ui,sans-serif" font-weight="700" font-size="${lab.length>2?10:12.5}" fill="var(--panel)">${lab}</text></g>`}
+function lymSVG(col,lab,rec){let r="";for(let k=0;k<8;k++){const a=k/8*Math.PI*2;const x=24+Math.cos(a)*19,y=24+Math.sin(a)*19;r+=rec==="y"?ySVG(x,y,4,col,a*180/Math.PI+90,1.6):`<line x1="${24+Math.cos(a)*17}" y1="${24+Math.sin(a)*17}" x2="${x+Math.cos(a)*2}" y2="${y+Math.sin(a)*2}" stroke="${col}" stroke-width="1.8"/>`}
+  return `<g class="anim">${r}<circle cx="24" cy="24" r="17" fill="color-mix(in srgb, ${col} 35%, var(--panel))" stroke="${col}" stroke-width="2"/><circle cx="24" cy="24" r="12" fill="${col}"/><text x="24" y="28.5" text-anchor="middle" font-family="IBM Plex Sans,system-ui,sans-serif" font-weight="700" font-size="${lab.length>2?9.5:12}" fill="var(--panel)">${lab}</text></g>`}
+const BACT=(x,y,r)=>`<rect x="${x-7}" y="${y-3.5}" width="14" height="7" rx="3.5" fill="var(--bact)" transform="rotate(${r||0} ${x} ${y})"/>`;
+const ICONS={
+ skin:`<g>${[0,1,2].map(i=>`<rect x="${4+(i%2)*4}" y="${24+i*7}" width="${36}" height="6" rx="3" fill="var(--kera)" stroke="color-mix(in srgb, var(--kera) 60%, var(--ink))" stroke-width=".8"/>`).join("")}<g class="anim3">${BACT(24,12,15)}</g><path d="M30 18 l4 -4 M18 18 l-4 -4" stroke="var(--ink-soft)" stroke-width="1.4"/></g>`,
+ mucus:`<g><path d="M2 24 Q12 18 24 24 T46 24 L46 30 L2 30 Z" fill="var(--mucus)"/>${[6,12,18,24,30,36,42].map((x,i)=>`<path class="anim3" d="M${x} 40 q2 -5 ${i%2?3:-3} -9" stroke="var(--cilia)" stroke-width="1.5" fill="none"/>`).join("")}<rect x="2" y="40" width="44" height="6" fill="var(--host)"/>${BACT(20,24,-10)}</g>`,
+ lyso:`<g><path class="anim2" d="M18 24 L30 17 A13 13 0 1 0 30 31 Z" fill="var(--lyso)"/>${BACT(36,24,0)}<path d="M30 21 l3 1 M30 27 l3 -1" stroke="var(--ink)" stroke-width="1"/></g>`,
+ acid:`<g><path d="M14 8 C40 6 42 40 22 42 C6 44 6 28 14 24 C18 20 10 12 14 8 Z" fill="color-mix(in srgb, var(--host) 80%, var(--blood))" stroke="var(--host-edge)" stroke-width="1.5"/><path d="M9 30 C12 40 30 44 38 34 L38 30 Z" fill="color-mix(in srgb, var(--fat) 60%, transparent)"/>${[14,22,30].map(x=>`<circle class="anim2" cx="${x}" cy="34" r="2" fill="none" stroke="var(--ink-soft)"/>`).join("")}<text x="28" y="22" font-size="9" font-weight="700" fill="var(--ink)" font-family="IBM Plex Mono,monospace">H⁺</text></g>`,
+ neut:`<g class="anim"><circle cx="24" cy="24" r="18" fill="var(--neut)" stroke="var(--cell-edge)" stroke-width="2"/><path d="M13 27 L19 18 L27 22 L35 29" stroke="var(--nuc)" stroke-width="3" fill="none" stroke-linecap="round"/>${[[13,27],[19,18],[27,22],[35,29]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="var(--nuc)"/>`).join("")}</g>`,
+ macro:`<g><path class="anim" d="M8 22 C6 10 20 4 30 8 C42 12 44 22 40 30 C36 40 22 44 14 38 C8 34 10 28 8 22 Z" fill="var(--macro)" stroke="var(--macro-edge)" stroke-width="2"/><ellipse cx="20" cy="26" rx="6" ry="4.5" fill="color-mix(in srgb, var(--macro-edge) 50%, var(--nuc))"/>${BACT(33,20,30)}<circle cx="28" cy="32" r="2" fill="var(--lyso)"/></g>`,
+ nk:`<g class="anim"><circle cx="24" cy="24" r="17" fill="var(--nk)" stroke="color-mix(in srgb, var(--nk) 55%, var(--ink))" stroke-width="2"/>${[[12,16],[36,18],[14,34],[34,33],[24,9]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="2.2" fill="var(--perf)"/>`).join("")}<text x="24" y="28.5" text-anchor="middle" font-family="IBM Plex Sans,system-ui,sans-serif" font-weight="700" font-size="12" fill="var(--ink)">NK</text></g>`,
+ inflam:`<g><rect x="2" y="26" width="44" height="14" rx="7" fill="color-mix(in srgb, var(--blood) 45%, var(--vessel))" stroke="var(--blood-edge)" stroke-width="1.2"/><circle cx="14" cy="33" r="3.5" fill="var(--rbc)"/><circle cx="30" cy="33" r="3.5" fill="var(--rbc)"/>${[12,24,36].map(x=>`<path class="anim2" d="M${x} 20 q-3 -4 0 -8 q3 -4 0 -8" stroke="var(--heat)" stroke-width="2" fill="none"/>`).join("")}</g>`,
+ fever:`<g><rect x="20" y="4" width="8" height="30" rx="4" fill="var(--panel)" stroke="var(--rule)" stroke-width="1.5"/><circle cx="24" cy="38" r="7" fill="var(--heat)"/><rect class="anim2" x="22" y="14" width="4" height="22" rx="2" fill="var(--heat)"/><path d="M33 12 h6 M33 18 h4 M33 24 h6" stroke="var(--ink-soft)" stroke-width="1.2"/></g>`,
+ comp:`<g>${BACT(24,30,0).replace('width="14" height="7"','width="22" height="11"').replace(`x="17" y="26.5"`,`x="13" y="24.5"`)}<g class="anim2">${[0,1,2,3,4].map(k=>{const a=Math.PI+k*Math.PI/4;return `<circle cx="${24+Math.cos(a)*14}" cy="${28+Math.sin(a)*14}" r="3.6" fill="var(--comp)" stroke="var(--ink)" stroke-width=".6"/>`}).join("")}</g></g>`,
+ ifn:`<g><circle cx="16" cy="28" r="11" fill="color-mix(in srgb, var(--host) 75%, var(--virus))" stroke="var(--host-edge)" stroke-width="1.5"/><circle cx="16" cy="28" r="3" fill="var(--virus)"/>${[[32,12],[38,26],[33,40]].map(p=>`<path class="anim3" d="M${p[0]} ${p[1]-4} l4 4 l-4 4 l-4 -4 z" fill="var(--ifn)"/>`).join("")}</g>`,
+ mast:`<g class="anim"><circle cx="24" cy="24" r="17" fill="var(--mast)" stroke="color-mix(in srgb, var(--mast) 55%, var(--ink))" stroke-width="2"/>${[[14,16],[30,14],[34,26],[16,32],[26,36],[22,22],[30,32],[12,24]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="2.4" fill="var(--hist)"/>`).join("")}</g>`,
+ th:lymSVG("var(--th)","Th"),tc:lymSVG("var(--tc)","Tc"),b:lymSVG("var(--bcell)","B","y"),mem:lymSVG("var(--mem)","M","y"),memT:lymSVG("var(--mem)","MT"),
+ plasma:`<g class="anim"><ellipse cx="24" cy="24" rx="20" ry="15" fill="var(--plasma)" stroke="var(--bcell)" stroke-width="2"/><circle cx="15" cy="24" r="7" fill="var(--bcell)"/>${[0,1,2].map(k=>`<path d="M${24+k*4} 14 q6 10 0 20" stroke="var(--bcell)" stroke-width="1.3" fill="none"/>`).join("")}${ySVG(42,10,4,"var(--ab)",40,1.6)}</g>`,
+ ab:`<g class="anim">${ySVG(24,24,15,"var(--ab)",0,4)}<path d="M14.7 15.4 L11 11 M33.3 15.4 L37 11" stroke="var(--var)" stroke-width="4" stroke-linecap="round"/></g>`,
+ vacab:`<g><rect x="4" y="30" width="26" height="9" rx="2" fill="color-mix(in srgb, var(--ab) 25%, var(--panel))" stroke="var(--ink)" stroke-width="1.2" transform="rotate(-30 17 34)"/>${ySVG(34,20,8,"var(--ab)",0,3)}${ySVG(42,30,6,"var(--ab)",30,2.4)}</g>`,
+ clonal:`<g><circle cx="10" cy="24" r="7" fill="var(--bcell)"/><path d="M18 24 L24 24" stroke="var(--ink-soft)" stroke-width="1.5"/>${[12,24,36].map(y=>`<circle class="anim2" cx="34" cy="${y}" r="6" fill="var(--bcell)"/>`).join("")}<path d="M24 24 L28 13 M24 24 L28 24 M24 24 L28 35" stroke="var(--ink-soft)" stroke-width="1.5"/></g>`,
+ dc:`<g class="anim"><path d="M24 4 L28 18 L44 14 L31 24 L42 38 L26 31 L20 44 L18 30 L4 34 L15 23 L6 10 L20 17 Z" fill="color-mix(in srgb, var(--apc) 40%, var(--panel))" stroke="var(--apc)" stroke-width="1.8" stroke-linejoin="round"/><circle cx="23" cy="24" r="5" fill="var(--apc)"/></g>`,
+ ige:`<g><path d="M4 44 Q24 30 44 44" fill="var(--mast)" stroke="color-mix(in srgb, var(--mast) 55%, var(--ink))" stroke-width="1.6"/><g class="anim">${ySVG(24,22,11,"var(--ige)",0,3.5)}</g><circle cx="12" cy="40" r="2" fill="var(--hist)"/><circle cx="34" cy="41" r="2" fill="var(--hist)"/></g>`};
+function icon(k){return `<svg viewBox="0 0 48 48" aria-hidden="true">${ICONS[k]||""}</svg>`}
+
+/* ---------------- generic tap / drag ---------------- */
+function draggable(el,{onTap,targetSel,onDrop,canDrag}){let sx=0,sy=0,down=false,ghost=null,pid=null,lastT=null;
+  el.addEventListener("pointerdown",e=>{if(canDrag&&!canDrag())return;down=true;sx=e.clientX;sy=e.clientY;pid=e.pointerId;try{el.setPointerCapture(pid)}catch(_){}});
+  el.addEventListener("pointermove",e=>{if(!down)return;if(!ghost&&Math.hypot(e.clientX-sx,e.clientY-sy)>7){ghost=el.cloneNode(true);ghost.classList.add("ghost");ghost.style.width=el.offsetWidth+"px";document.body.appendChild(ghost)}
+    if(ghost){ghost.style.left=(e.clientX-20)+"px";ghost.style.top=(e.clientY-20)+"px";const t=document.elementFromPoint(e.clientX,e.clientY);const tg=t&&t.closest(targetSel);if(lastT&&lastT!==tg)lastT.classList.remove("target");if(tg)tg.classList.add("target");lastT=tg}});
+  const end=e=>{if(!down)return;down=false;if(lastT)lastT.classList.remove("target");
+    if(ghost){ghost.remove();ghost=null;const t=document.elementFromPoint(e.clientX,e.clientY);const tg=t&&t.closest(targetSel);if(tg)onDrop(tg)}else if(e.type==="pointerup")onTap();lastT=null};
+  el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
+  el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onTap()}})}
+
+/* ================= PART 2a: innate vs adaptive sorter ================= */
+const SITEMS={
+ skin:["Skin","skin","innate","Skin blocks every germ the same way, from birth. A barrier: innate."],
+ neut:["Neutrophil","neut","innate","Neutrophils eat any bacteria they find within hours. Fast and nonspecific: innate."],
+ th:["Helper T cell","th","adaptive","Helper T cells recognize one specific antigen on MHC II, then coordinate the response. Adaptive."],
+ ab:["Antibody","ab","adaptive","Each antibody fits one epitope and is made by plasma cells. Adaptive."],
+ fever:["Fever","fever","innate","Fever is a body-wide response to any infection. It does not target one germ: innate."],
+ mem:["Memory B cell","mem","adaptive","Memory B cells remember one specific antigen for years. Memory is the trademark of adaptive immunity."],
+ comp:["Complement proteins","comp","innate","Complement is always in the plasma and attacks many germs the same way. Innate (even though antibodies can switch it on)."],
+ tc:["Cytotoxic T cell","tc","adaptive","Cytotoxic T cells kill only cells showing their one matching antigen on MHC I. Adaptive."],
+ mucus:["Mucus and cilia","mucus","innate","A physical barrier that traps anything. Innate."],
+ nk:["Natural killer cell","nk","innate","NK cells are lymphocytes, but they kill any cell with missing MHC I badges, with no specific antigen and no memory. Innate."],
+ plasma:["Plasma cell","plasma","adaptive","Plasma cells come from a selected B cell clone and make one specific antibody. Adaptive."],
+ ifn:["Interferon","ifn","innate","Interferons are general antiviral warnings, not specific to one virus. Innate."],
+ clonal:["Clonal expansion","clonal","adaptive","Only the one lymphocyte whose receptor fits a specific antigen is copied. This is the heart of adaptive immunity."],
+ inflam:["Inflammation","inflam","innate","Redness, heat, swelling and pain happen the same way for any injury or germ. Innate."],
+ b:["B cell","b","adaptive","Each B cell has receptors for one antigen. Adaptive."],
+ lyso:["Lysozyme in tears","lyso","innate","An enzyme that attacks bacterial walls in general. Innate."],
+ macro:["Macrophage showing antigen","macro","innate","Macrophages eat any germ they meet, from birth, with no memory. Showing antigen on MHC II helps START the adaptive response, but the macrophage itself is innate."],
+ vacab:["Antibodies made after a vaccine","vacab","adaptive","Your own plasma cells made them after the vaccine trained your B cells. Adaptive (artificial active immunity)."],
+ acid:["Stomach acid","acid","innate","Acid kills most swallowed germs, whatever they are. Innate."],
+ ige:["IgE on a mast cell","ige","adaptive","IgE is an antibody, made by plasma cells against a specific antigen. Adaptive, even though the mast cell it sits on is innate."],
+ mast:["Mast cell releasing histamine","mast","innate","Mast cells start inflammation. Innate."],
+ dc:["Dendritic cell","dc","innate","Dendritic cells capture any antigen in the tissues and carry it to lymph nodes. They are innate cells that act as the bridge to adaptive immunity."],
+ memT:["Memory T cell","memT","adaptive","Memory T cells remember a specific antigen. Adaptive."]};
+const SROUNDS=[{name:"Round 1",items:["skin","neut","th","ab","fever","mem","comp","tc"]},
+ {name:"Round 2",items:["mucus","nk","plasma","ifn","clonal","inflam","b","lyso"]},
+ {name:"Round 3 · Tricky ones",items:["nk","macro","vacab","acid","ige","mast","dc","memT"]}];
+let soR=0,soSel=null,soChecks=0,soHints=0,soSolved=false,soT0=0;const soBest=store.get("im-so")||{};
+function soRounds(){const box=$("#soRounds");box.innerHTML="";SROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===soR);b.innerHTML=r.name+(soBest[i]?`<span class="ok">${"★".repeat(soBest[i])}</span>`:"");b.onclick=()=>{soR=i;soNew()};box.appendChild(b)})}
+function soTok(id){const it=SITEMS[id];const el=document.createElement("button");el.type="button";el.className="tok";el.dataset.id=id;el.innerHTML=icon(it[1])+`<span>${it[0]}</span><span class="mk"></span>`;
+  draggable(el,{targetSel:".bin,#soPool",canDrag:()=>!soSolved,onTap:()=>soTap(el),onDrop:tg=>soPlace(el,tg)});return el}
+function soTap(el){const it=SITEMS[el.dataset.id];if(el.classList.contains("no")&&!soSolved)$("#soWhy").innerHTML=`<b>Clue · ${it[0]}:</b> ${it[3].split(". ")[0].replace(/\.$/,"")}. Is that specific to one germ, with memory?`;else if(el.classList.contains("ok")||soSolved)$("#soWhy").innerHTML=`<b>${it[0]}:</b> ${it[3]}`;if(soSolved)return;
+  document.querySelectorAll("#tab-sort .tok.sel").forEach(x=>x.classList.remove("sel"));if(soSel===el){soSel=null;return}soSel=el;el.classList.add("sel")}
+function soPlace(el,tg){if(soSolved)return;const dest=tg.id==="soPool"?$("#soPool"):tg.querySelector(".bitems");dest.appendChild(el);el.classList.remove("sel","ok","no","hinted");el.querySelector(".mk").textContent="";soSel=null}
+document.querySelectorAll(".bin").forEach(b=>b.addEventListener("click",e=>{if(soSel&&!e.target.closest(".tok"))soPlace(soSel,b)}));
+$("#soPool").addEventListener("click",e=>{if(soSel&&!e.target.closest(".tok")&&soSel.parentElement!==$("#soPool"))soPlace(soSel,$("#soPool"))});
+function soNew(){soSel=null;soChecks=0;soHints=0;soSolved=false;soT0=performance.now();document.querySelectorAll(".bin .bitems").forEach(b=>b.innerHTML="");const pool=$("#soPool");pool.innerHTML="";
+  shuffle(SROUNDS[soR].items).forEach(id=>pool.appendChild(soTok(id)));$("#soN").textContent=`${SROUNDS[soR].name} · 8 cards`;$("#soT").textContent=soR===2?"Careful: some look like the other side":"Innate or adaptive?";
+  setMsg("#soMsg","","");$("#soWhy").innerHTML="<b>Tip:</b> after checking, tap any card to read why it belongs where it does.";soRounds()}
+function soWhere(el){const b=el.closest(".bin");return b?b.dataset.bin:null}
+$("#soCheck").onclick=()=>{if(soSolved)return;const toks=[...document.querySelectorAll("#tab-sort #sorterWrap .tok")];const unplaced=toks.filter(t=>!soWhere(t));
+  if(unplaced.length){setMsg("#soMsg",`Place all the cards first. ${unplaced.length} still in the tray.`,"warn");return}
+  soChecks++;let n=0;toks.forEach(t=>{const ok=soWhere(t)===SITEMS[t.dataset.id][2];t.classList.toggle("ok",ok);t.classList.toggle("no",!ok);t.querySelector(".mk").textContent=ok?"✓":"✕";if(ok)n++});
+  if(n===toks.length){soSolved=true;const el=(performance.now()-soT0)/1000;const st=soHints===0&&soChecks===1?3:soHints<=2&&soChecks<=3?2:1;if(!soBest[soR]||st>soBest[soR])soBest[soR]=st;store.set("im-so",soBest);soRounds();
+    setMsg("#soMsg",`${starStr(st)}<br><b>All sorted!</b> ${$("#soRelaxed").checked?"":"Time "+fmt(el)+". "}Tap any card to read why.${soR<2?' <button class="tbtn" id="soNextR" type="button">Next round →</button>':""}`,"good");const nb=$("#soNextR");if(nb)nb.onclick=()=>{soR++;soNew()}}
+  else setMsg("#soMsg",`<b>${n} of ${toks.length}</b> are right. Tap a ✕ card to read a clue, then move it and check again.`,"warn")};
+$("#soHint").onclick=()=>{if(soSolved)return;const toks=[...document.querySelectorAll("#sorterWrap .tok")];const t=toks.find(t=>soWhere(t)!==SITEMS[t.dataset.id][2]);if(!t)return;soHints++;
+  const bin=SITEMS[t.dataset.id][2]==="innate"?$("#binInnate"):$("#binAdaptive");soPlace(t,bin);t.classList.add("hinted");$("#soWhy").innerHTML=`<b>Hint · ${SITEMS[t.dataset.id][0]}:</b> ${SITEMS[t.dataset.id][3]}`};
+$("#soShow").onclick=()=>{[...document.querySelectorAll("#sorterWrap .tok")].forEach(t=>{const bin=SITEMS[t.dataset.id][2]==="innate"?$("#binInnate"):$("#binAdaptive");bin.querySelector(".bitems").appendChild(t);t.classList.remove("no","sel");t.classList.add("ok");t.querySelector(".mk").textContent="✓"});
+  soSolved=true;setMsg("#soMsg","Here is the answer. Tap any card to read why, then press <b>Start over</b> to try it yourself.","info")};
+$("#soShuffle").onclick=soNew;$("#soRelaxed").onchange=e=>{$("#soTimer").hidden=e.target.checked};
+
+/* ================= PART 2b: cell job matcher ================= */
+const MCELLS={neut:["Neutrophil","neut"],macro:["Macrophage","macro"],nk:["NK cell","nk"],th:["Helper T cell","th"],tc:["Cytotoxic T cell","tc"],b:["B cell","b"],plasma:["Plasma cell","plasma"],mem:["Memory B cell","mem"],dc:["Dendritic cell","dc"],mast:["Mast cell","mast"]};
+const MJOBS=[["neut","First phagocyte to rush into infected tissue; short-lived.","The most common white blood cell. It arrives within hours and dies after eating."],
+ ["macro","Large, long-lived eater that also shows antigen on MHC II.","It develops from a monocyte."],
+ ["nk","Kills cells that are missing their MHC I badges, with no training needed.","An innate lymphocyte."],
+ ["th","Reads MHC II and releases cytokines that switch on B cells and cytotoxic T cells.","Carries CD4. The cell HIV destroys."],
+ ["tc","Reads MHC I and kills infected cells with perforin and granzymes.","Carries CD8."],
+ ["b","Binds antigen with antibody-like receptors, then needs a go-ahead to divide.","Matures in the bone marrow."],
+ ["plasma","Antibody factory packed with rough ER.","What an activated B cell becomes."],
+ ["mem","Waits for years and launches a fast secondary response.","Made during clonal expansion, alongside the antibody factories."],
+ ["dc","Captures antigen in tissue and carries it to a lymph node.","Star-shaped, with long arms. The best antigen-presenting cell."],
+ ["mast","Releases histamine to start inflammation; has IgE on its surface in allergy.","Packed with dark granules."]];
+let mtSel=null,mtAsg={},mtChecks=0,mtHints=0,mtSolved=false;const mtBest=store.get("im-mt")||0;
+function mtNew(){mtSel=null;mtAsg={};mtChecks=0;mtHints=0;mtSolved=false;const cb=$("#mtCells");cb.innerHTML="";
+  shuffle(Object.keys(MCELLS)).forEach(id=>{const el=document.createElement("button");el.type="button";el.className="tok";el.dataset.id=id;el.innerHTML=icon(MCELLS[id][1])+`<span>${MCELLS[id][0]}</span>`;
+    draggable(el,{targetSel:".job",canDrag:()=>!mtSolved,onTap:()=>{if(mtSolved)return;cb.querySelectorAll(".tok").forEach(x=>x.classList.remove("sel"));if(mtSel===id){mtSel=null;return}mtSel=id;el.classList.add("sel")},onDrop:tg=>mtAssign(+tg.dataset.j,id)});cb.appendChild(el)});
+  const jb=$("#mtJobs");jb.innerHTML="";shuffle(MJOBS.map((j,i)=>i)).forEach(i=>{const b=document.createElement("button");b.type="button";b.className="job";b.dataset.j=i;b.innerHTML=`<span class="slot"></span><span class="jt">${MJOBS[i][1]}<span class="why"></span></span>`;
+    b.onclick=()=>{if(mtSolved)return;if(mtSel)mtAssign(i,mtSel);else if(mtAsg[i]){delete mtAsg[i];mtDraw()}};jb.appendChild(b)});
+  setMsg("#mtMsg","","");$("#mtBest").innerHTML=mtBest?"Best: "+starStr(mtBest):"";mtDraw()}
+function mtAssign(j,id){Object.keys(mtAsg).forEach(k=>{if(mtAsg[k]===id)delete mtAsg[k]});mtAsg[j]=id;mtSel=null;$("#mtCells").querySelectorAll(".tok").forEach(x=>x.classList.remove("sel"));mtDraw()}
+function mtDraw(){document.querySelectorAll("#mtJobs .job").forEach(b=>{const j=+b.dataset.j;const id=mtAsg[j];b.querySelector(".slot").innerHTML=id?icon(MCELLS[id][1]):"";b.classList.remove("ok","no");b.querySelector(".why").textContent="";b.setAttribute("aria-label",MJOBS[j][1]+(id?" — assigned: "+MCELLS[id][0]:" — empty"))});
+  const used=new Set(Object.values(mtAsg));$("#mtCells").querySelectorAll(".tok").forEach(x=>{x.style.opacity=used.has(x.dataset.id)?.45:1})}
+$("#mtCheck").onclick=()=>{if(mtSolved)return;if(Object.keys(mtAsg).length<MJOBS.length){setMsg("#mtMsg",`Give every job a cell first. ${MJOBS.length-Object.keys(mtAsg).length} jobs are still empty.`,"warn");return}
+  mtChecks++;let n=0;document.querySelectorAll("#mtJobs .job").forEach(b=>{const j=+b.dataset.j;const ok=mtAsg[j]===MJOBS[j][0];if(ok)n++;b.classList.add(ok?"ok":"no");b.querySelector(".why").textContent=ok?"✓ "+MCELLS[MJOBS[j][0]][0]:"Not quite. Clue: "+MJOBS[j][2]});
+  if(n===MJOBS.length){mtSolved=true;const st=mtHints===0&&mtChecks===1?3:mtHints<=2&&mtChecks<=3?2:1;if(st>(store.get("im-mt")||0))store.set("im-mt",st);setMsg("#mtMsg",`${starStr(st)}<br><b>Every job matched!</b> Checks: ${mtChecks}. Hints: ${mtHints}.`,"good")}
+  else setMsg("#mtMsg",`<b>${n} of ${MJOBS.length}</b> are right. Read the clues on the orange jobs and swap cells.`,"warn")};
+$("#mtHint").onclick=()=>{if(mtSolved)return;const j=MJOBS.findIndex((x,i)=>mtAsg[i]!==x[0]);if(j<0)return;mtHints++;mtAssign(j,MJOBS[j][0]);const b=document.querySelector(`#mtJobs .job[data-j="${j}"]`);b.classList.add("ok");b.querySelector(".why").textContent="Hint: "+MCELLS[MJOBS[j][0]][0]+". "+MJOBS[j][2]};
+$("#mtShow").onclick=()=>{MJOBS.forEach((x,i)=>mtAsg[i]=x[0]);mtDraw();document.querySelectorAll("#mtJobs .job").forEach(b=>{b.classList.add("ok");b.querySelector(".why").textContent="✓ "+MCELLS[MJOBS[+b.dataset.j][0]][0]});mtSolved=true;setMsg("#mtMsg","Here is the answer. Press <b>Start over</b> to try it yourself.","info")};
+$("#mtReset").onclick=mtNew;
+$("#subSorter").onclick=()=>{$("#subSorter").setAttribute("aria-pressed","true");$("#subMatcher").setAttribute("aria-pressed","false");$("#sorterWrap").hidden=false;$("#matcherWrap").hidden=true};
+$("#subMatcher").onclick=()=>{$("#subSorter").setAttribute("aria-pressed","false");$("#subMatcher").setAttribute("aria-pressed","true");$("#sorterWrap").hidden=true;$("#matcherWrap").hidden=false};
+let soTimerTick=()=>{if(!$("#soRelaxed").checked&&!soSolved)$("#soTimer").textContent=fmt((performance.now()-soT0)/1000)};
+
+document.querySelectorAll(".bin").forEach(b=>b.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&soSel&&e.target===b){e.preventDefault();soPlace(soSel,b)}}));
+
+/* ================= PART 3: vaccine memory ================= */
+const S3=makeStage("cvVax",800,420);
+let vx={week:0,run:false,ev:[],mode:"free",boosters:[],msgShown:{},ended:false,status:"healthy",statusUntil:0};
+const PROT=100;
+function gam(x,on,pk,amp,k){if(x<=on)return 0;const tp=pk-on,u=(x-on)/tp;return amp*Math.pow(u,k)*Math.exp(k*(1-u))}
+function iggC(e,t){const x=t-e.w;if(x<=e.on)return 0;if(x<e.pk){const u=(x-e.on)/(e.pk-e.on);return e.gA*u*u}return e.fl+(e.gA-e.fl)*Math.pow(.5,(x-e.pk)/e.half)}
+function igmC(e,t){return gam(t-e.w,e.on*.6,e.mpk,e.mA,3)}
+function titerAt(t,evs){evs=evs||vx.ev;let m=0,g=0;evs.forEach(e=>{if(t>=e.w){m+=igmC(e,t);g+=iggC(e,t)}});return {m,g,tot:1+m+g}}
+function memFormed(t,evs){return (evs||vx.ev).filter(e=>t-e.w>=3).length}
+function addEvent(kind,w){const m=memFormed(w);const now=titerAt(w).tot;let e;
+  if(m===0)e={w,kind,prim:true,on:1,pk:3,gA:60,half:5,fl:6,mA:32,mpk:1.5};
+  else{const bf=clamp(1-now/1000,.15,1);e={w,kind,prim:false,on:.3,pk:1.5,gA:Math.min(2500,700*(1+.4*(m-1)))*bf,half:8+2*(m-1),fl:20*m,mA:8*bf,mpk:1,bf}}
+  let outcome=null;
+  if(kind==="germ"){if(now>=PROT){outcome="protected";e.gA*=.5}else if(m>0)outcome="mild";else outcome="sick"}
+  e.outcome=outcome;vx.ev.push(e);return e}
+function vxReset(){vx.week=0;vx.run=false;vx.ev=[];vx.ended=false;vx.status="healthy";vx.statusUntil=0;vx.msgShown={};$("#vxPause").textContent="Pause";setMsg("#vxMsg","","");
+  if(vx.mode==="boost"){addEvent("dose",0)}vxRead();vxCap()}
+function vxCap(){let c;if(vx.mode==="free")c=vx.ev.length?"Week "+vx.week.toFixed(1)+". Watch IgM rise first, then IgG.":"Press Give vaccine dose to start the clock.";
+  else if(vx.mode==="compare")c="Dose at week 0, the same antigen again at week 20.";else c="Dose 1 at week 0 (fixed). Shaded band: clinical rotations, weeks 40 to 52.";
+  $("#vxCap").textContent=c}
+function vxRead(){const t=titerAt(vx.week);const rows=[["Week",vx.week.toFixed(1)],["IgM",Math.round(t.m)],["IgG",Math.round(t.g)],["Total titer",Math.round(t.tot)+(t.tot>=PROT?" (protective)":" (below protective)")],["Memory responses ready",memFormed(vx.week)]];
+  $("#vxRead").innerHTML=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");vxCap()}
+function vxTick(dt){if(!vx.run||vx.ended)return;vx.week=Math.min(52,vx.week+dt*(+$("#vxSpeed").value));
+  // pending scheduled events
+  if(vx.sched){vx.sched=vx.sched.filter(s=>{if(vx.week>=s.w){const e=addEvent(s.kind,s.w);vxEventMsg(e);return false}return true})}
+  if(vx.week>=52){vx.ended=true;vx.run=false;vxEnd()}vxRead()}
+function vxEventMsg(e){if(e.kind==="germ"){vx.status=e.outcome;vx.statusUntil=e.w+(e.outcome==="sick"?2.5:e.outcome==="mild"?1:0.8);
+    const t={protected:"<b>Protected.</b> Antibodies were already above the protective line, so they neutralized the germ before it could spread. No illness, and the exposure acted like a booster.",
+      mild:"<b>Mild, short illness.</b> Antibody was below the line, but memory cells launched a <b>secondary response</b> within days.",
+      sick:"<b>Sick for about two weeks.</b> No memory cells yet, so this is a slow <b>primary response</b>: a lag, IgM first, then IgG."}[e.outcome];setMsg("#vxMsg",t,e.outcome==="sick"?"warn":"good")}
+  else if(vx.mode!=="boost"){setMsg("#vxMsg",e.prim?"<b>Primary response.</b> A lag of about a week while clones are selected and expand. IgM rises first, then IgG. Memory cells form over the next few weeks.":
+    e.bf<.6?"<b>Booster given while antibody was still high.</b> Existing antibodies mop up much of the vaccine antigen, so this boost adds less. (Simplified.)":
+    w3(e)?"<b>Too soon.</b> Memory cells from the last dose were not ready yet.":"<b>Secondary response.</b> Memory cells answer within days with a much bigger, mostly IgG response that lasts longer.","info")}}
+function w3(e){return vx.ev.some(o=>o!==e&&e.w-o.w>0&&e.w-o.w<3)}
+$("#vxDose").onclick=()=>{if(vx.week>=52)return;const e=addEvent("dose",vx.week);vx.run=true;$("#vxPause").textContent="Pause";vxEventMsg(e)};
+$("#vxExpose").onclick=()=>{if(vx.week>=52)return;const e=addEvent("germ",vx.week);vx.run=true;$("#vxPause").textContent="Pause";vxEventMsg(e)};
+$("#vxPause").onclick=()=>{if(vx.ended)return;vx.run=!vx.run;$("#vxPause").textContent=vx.run?"Pause":"Resume"};
+$("#vxReset").onclick=()=>{vx.sched=null;vxReset();if(vx.mode==="compare")$("#vxCmpTable").innerHTML=""};
+$("#vxRunCmp").onclick=()=>{vxReset();vx.sched=[{w:0,kind:"dose"},{w:20,kind:"germ"}];vx.run=true;$("#vxCmpTable").innerHTML=""};
+function respStats(e){const own=t=>igmC(e,t)+iggC(e,t);let lag=null,pk=0,pkw=0;for(let t=e.w;t<=Math.min(52,e.w+12);t+=.05){const v=own(t);if(lag===null&&v>=10)lag=t-e.w;if(v>pk){pk=v;pkw=t-e.w}}
+  const mPk=Math.max(...Array.from({length:120},(_,i)=>igmC(e,e.w+i*.1)));return {lag,pk,pkw,mShare:mPk/(pk||1)}}
+function vxEnd(){if(vx.mode==="compare"&&vx.ev.length>=2){const a=respStats(vx.ev[0]),b=respStats(vx.ev[1]);const f=x=>x===null?"never":(x*7).toFixed(0)+" days";
+    $("#vxCmpTable").innerHTML=`<tr><th></th><td style="padding-left:12px"><b>Primary</b></td><td style="padding-left:12px"><b>Secondary</b></td></tr><tr><th>Lag (until antibody is detectable)</th><td>${f(a.lag)}</td><td>${f(b.lag)}</td></tr><tr><th>Peak titer</th><td>${Math.round(a.pk)}</td><td>${Math.round(b.pk)}</td></tr><tr><th>Time to peak</th><td>${f(a.pkw)}</td><td>${f(b.pkw)}</td></tr><tr><th>Bigger by</th><td></td><td>about ${Math.round(b.pk/a.pk)}×</td></tr>`;
+    setMsg("#vxMsg","<b>Same antigen, very different response.</b> The secondary response starts sooner, climbs far higher, is mostly IgG, and fades more slowly, all because memory cells skipped the slow clonal selection step.","good")}
+  if(vx.mode==="boost"){let ok=true;for(let t=40;t<=52;t+=.1)if(titerAt(t).tot<PROT){ok=false;break}const nb=vx.ev.length-1;
+    if(ok){const st=nb<=1?3:2;const best=store.get("im-vx")||0;if(st>best)store.set("im-vx",st);setMsg("#vxMsg",`${starStr(st)}<br><b>Protected for all of rotations</b> with ${nb} booster${nb===1?"":"s"}. ${nb>1?"Can you do it with just one?":"A single, well-timed booster is enough."}`,"good")}
+    else{let low=40;for(let t=40;t<=52;t+=.1)if(titerAt(t).tot<PROT){low=t;break}const early=vx.ev.slice(1).every(e=>e.w<26),late=vx.ev.slice(1).some(e=>e.w>39);
+      setMsg("#vxMsg",`<b>Not protected from week ${low.toFixed(0)}.</b> ${nb===0?"One dose only gives a small primary response that never reaches the line. Add a booster.":late?"A booster after week 39 has not had time to rise by week 40.":early?"The booster came early, so its antibodies faded below the line before rotations ended. Try later.":"Look at where the curve dips under the line and adjust."} Press <b>Run the year</b> again after changing boosters.`,"warn")}}}
+// booster challenge controls
+$("#vxWeek").oninput=e=>{$("#vxWeekOut").textContent=e.target.value};
+function vxBList(){$("#vxBList").textContent=vx.boosters.length?"Boosters planned at week "+vx.boosters.join(", ")+".":"No boosters planned yet (max 2)."}
+$("#vxAddB").onclick=()=>{const w=+$("#vxWeek").value;if(vx.boosters.length>=2){setMsg("#vxMsg","You can plan at most 2 boosters. Remove them to start over.","warn");return}if(vx.boosters.includes(w))return;vx.boosters.push(w);vx.boosters.sort((a,b)=>a-b);vxBList();vxPreview()};
+$("#vxClearB").onclick=()=>{vx.boosters=[];vxBList();vxPreview()};
+function vxPreview(){vx.sched=null;vxReset();}
+$("#vxRunB").onclick=()=>{vxReset();vx.sched=vx.boosters.map(w=>({w,kind:"dose"}));vx.run=true};
+$("#vxHintB").onclick=()=>setMsg("#vxMsg","<b>Hint:</b> after a booster, antibodies peak in about 1 to 2 weeks and then fall by half about every 8 weeks. Give it late enough that it is still above the line at week 52, but early enough to rise before week 40. Somewhere in the late 20s to 30s works.","info");
+$("#vxShowB").onclick=()=>{vx.boosters=[34];$("#vxWeek").value=34;$("#vxWeekOut").textContent="34";vxBList();vxReset();vx.sched=[{w:34,kind:"dose"}];vx.run=true};
+function vxMode(m){vx.mode=m;["Free","Compare","Boost"].forEach(k=>$("#vm"+k).setAttribute("aria-pressed",k.toLowerCase()===(m==="compare"?"compare":m)));$("#vxFreeBox").hidden=m!=="free";$("#vxCmpBox").hidden=m!=="compare";$("#vxBoostBox").hidden=m!=="boost";vx.sched=null;vxReset();vxBList()}
+$("#vmFree").onclick=()=>vxMode("free");$("#vmCompare").onclick=()=>vxMode("compare");$("#vmBoost").onclick=()=>vxMode("boost");
+function drawVax(T){use(S3);bg(C.panel,S3);const x0=70,x1=780,y0=382,y1=112;const X=w=>lerp(x0,x1,w/52),LG=Math.log10(3000),Y=v=>y0-Math.log10(Math.max(1,v))/LG*(y0-y1);
+  // rotation band
+  if(vx.mode==="boost"){ctx.fillStyle=hexA(C.act6,.12);ctx.fillRect(X(40),y1,X(52)-X(40),y0-y1);txt((X(40)+X(52))/2,y1+12,"rotations",{size:11,weight:700,align:"center",color:C.act6})}
+  line(x0,y0,x1,y0,C.ink,1.3);line(x0,y0,x0,y1,C.ink,1.3);
+  for(let w=0;w<=52;w+=4){line(X(w),y0,X(w),y0+4,C.ink,1);txt(X(w),y0+14,w+"",{size:10.5,align:"center",mono:true,color:C["ink-soft"]})}txt((x0+x1)/2,y0+26,"weeks",{size:11,align:"center",color:C["ink-soft"]});
+  [1,10,100,1000].forEach(v=>{txt(x0-8,Y(v),String(v),{size:10,align:"right",mono:true,color:C["ink-soft"]});line(x0,Y(v),x1,Y(v),hexA(C.rule,.5),1,[2,5])});
+  ctx.save();ctx.translate(18,(y0+y1)/2);ctx.rotate(-Math.PI/2);txt(0,0,"antibody titer (log)",{size:11,align:"center",color:C["ink-soft"]});ctx.restore();
+  line(x0,Y(PROT),x1,Y(PROT),C.good,2,[8,5]);txt(x1-4,Y(PROT)-9,"protective level",{size:10.5,weight:700,align:"right",color:C.good});
+  // planned boosters (challenge)
+  if(vx.mode==="boost")vx.boosters.forEach(w=>{if(!vx.ev.some(e=>e.w===w)){line(X(w),y0,X(w),y1,hexA(C.accent,.5),1.5,[3,3]);txt(X(w),y1-8,"planned",{size:10,align:"center",color:C.accent})}});
+  // curves up to now
+  const now=vx.week;const drawC=(k,col,dash)=>{ctx.beginPath();let st=false;for(let t=0;t<=now+1e-6;t+=.1){const v=titerAt(t)[k];const yy=Y(k==="m"?v+1:v+1);st?ctx.lineTo(X(t),yy):ctx.moveTo(X(t),yy);st=true}ctx.strokeStyle=col;ctx.lineWidth=3;ctx.setLineDash(dash);ctx.lineCap="round";ctx.stroke();ctx.setLineDash([]);ctx.lineCap="butt"};
+  if(vx.ev.length){drawC("m",C.igm,[7,5]);drawC("g",C.igg,[]);const t=titerAt(now);circ(X(now),Y(t.g+1),4.5,C.igg)}
+  // event markers
+  vx.ev.forEach(e=>{const x=X(e.w);line(x,y0,x,y1,hexA(e.kind==="germ"?C.virus:C.accent,.45),1.2,[4,4]);
+    if(e.kind==="germ")virus(x,y1-14,7,1,T);else{ctx.save();ctx.translate(x,y1-14);ctx.rotate(-.6);rr(-14,-4,22,8,2);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=1.2;ctx.stroke();line(8,0,16,0,C.ink,1.2);ctx.restore()}
+    txt(x+(e.w>46?-8:8),y1-14,e.kind==="germ"?"germ":(e.prim?"dose":"booster"),{size:10.5,weight:600,align:e.w>46?"right":"left",color:e.kind==="germ"?C.virus:C.accent})});
+  // top strip: person + memory cells
+  panelBox(10,8,780,72,{fill:hexA(C["panel-2"],.95)});
+  const st=now<vx.statusUntil?vx.status:"healthy";const pc=st==="sick"?C.warn:st==="mild"?C.gold:C.good;
+  circ(50,30,11,C.body,C["body-edge"],1.2);rr(38,42,24,30,8);ctx.fillStyle=C.body;ctx.fill();ctx.strokeStyle=C["body-edge"];ctx.stroke();
+  if(st==="protected"||(st==="healthy"&&titerAt(now).tot>=PROT)){ctx.beginPath();ctx.arc(50,46,32,0,TAU);ctx.strokeStyle=hexA(C.good,.6+.3*Math.sin(T*4));ctx.lineWidth=2.5;ctx.stroke()}
+  txt(92,30,st==="sick"?"Sick: primary response":st==="mild"?"Mildly sick: secondary response":st==="protected"?"Protected: germ neutralized":titerAt(now).tot>=PROT?"Protected now":"Not protected right now",{size:13,weight:700,color:pc});
+  txt(92,54,"Week "+now.toFixed(1)+" · total titer "+Math.round(titerAt(now).tot),{size:11.5,mono:true,color:C["ink-soft"]});
+  const nm=Math.min(12,vx.ev.filter(e=>now-e.w>=3).reduce((a,e)=>a+(e.prim?2:3),0));txt(520,44,"Memory cells",{size:11.5,weight:700,align:"right",color:C.mem});
+  for(let k=0;k<12;k++){const x=540+k*20;if(k<nm)lymph(x,44,8,"mem",{label:"",norec:true,t:T});else circ(x,44,7,null,hexA(C.rule,.9),1)}
+  if(vx.ev.some(e=>now-e.w>=0&&now-e.w<3&&e.prim))txt(540,66,"forming…",{size:10.5,color:C["ink-soft"]});
+  // labels on curves
+  const fe=vx.ev[0];if(fe&&now>fe.w+1.6)label(X(fe.w+1.6),Y(igmC(fe,fe.w+1.6)+iggC(fe,fe.w+1.6)+1)-26,"IgM first",{size:11,weight:700,color:C.igm,align:"center"});
+}
+
+/* ================= PART 4a: antibody classes ================= */
+const CLS={IgG:{col:"var(--igg)",svg:()=>ySVG(44,44,26,"var(--igg)",0,5)},
+ IgA:{col:"var(--iga)",svg:()=>ySVG(24,44,20,"var(--iga)",-90,4.5)+ySVG(64,44,20,"var(--iga)",90,4.5)+`<circle cx="44" cy="44" r="4.5" fill="var(--comp)"/>`},
+ IgM:{col:"var(--igm)",svg:()=>{let s="";for(let k=0;k<5;k++){const a=k*72-90;const r=a*Math.PI/180;s+=ySVG(44+Math.cos(r)*20,44+Math.sin(r)*20,15,"var(--igm)",a+90,3.4)}return s+`<circle cx="44" cy="44" r="6" fill="var(--igm)"/>`}},
+ IgE:{col:"var(--ige)",svg:()=>`<path d="M6 84 Q44 62 82 84" fill="var(--mast)" stroke="color-mix(in srgb, var(--mast) 55%, var(--ink))" stroke-width="2"/>`+ySVG(44,46,22,"var(--ige)",0,5)+`<circle cx="22" cy="80" r="3" fill="var(--hist)"/><circle cx="62" cy="80" r="3" fill="var(--hist)"/>`},
+ IgD:{col:"var(--igd)",svg:()=>`<path d="M4 86 Q44 64 84 86" fill="color-mix(in srgb, var(--bcell) 35%, var(--panel))" stroke="var(--bcell)" stroke-width="2"/>`+ySVG(44,46,22,"var(--igd)",0,5)+`<text x="44" y="84" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)" font-family="IBM Plex Sans,sans-serif">B cell</text>`}};
+const CLUES=[["Most abundant antibody in the blood","IgG","IgG makes up most of the antibody in plasma."],
+ ["The only class that crosses the placenta","IgG","Its small monomer form is carried across the placenta, giving the newborn passive immunity."],
+ ["Main antibody of a secondary response","IgG","Memory B cells switch quickly to making IgG."],
+ ["Found in tears, saliva, mucus and breast milk","IgA","IgA guards the mucous membranes and passes to a nursing baby in milk."],
+ ["Usually two Y units joined together (a dimer)","IgA","Secreted IgA is a dimer held together by a small joining chain."],
+ ["First antibody made in a primary response","IgM","IgM appears first, before the switch to IgG."],
+ ["Five Y units in a star with 10 binding sites","IgM","A pentamer, which makes it very good at clumping germs and activating complement."],
+ ["Sits on mast cells and basophils","IgE","Its stem binds mast cells; when an allergen links two IgE, histamine pours out."],
+ ["Rises in allergies and parasitic worm infections","IgE","High IgE is a sign of allergy or worm infection."],
+ ["Found mostly on B cells as a receptor","IgD","IgD (along with monomer IgM) is a B-cell receptor on naive B cells."]];
+let clSel=null,clChecks=0,clHints=0,clSolved=false;
+function clBuild(){const bins=$("#clBins");bins.innerHTML="";Object.keys(CLS).forEach(k=>{const d=document.createElement("div");d.className="cls";d.setAttribute("role","button");d.tabIndex=0;d.dataset.cls=k;
+  d.innerHTML=`<svg viewBox="0 0 88 88" aria-hidden="true">${CLS[k].svg()}</svg><b style="color:${CLS[k].col}">${k}</b><span class="bitems"></span>`;
+  d.addEventListener("click",e=>{if(clSel&&!e.target.closest(".tok"))clPlace(clSel,d)});d.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&clSel&&e.target===d){e.preventDefault();clPlace(clSel,d)}});bins.appendChild(d)})}
+function clTok(i){const el=document.createElement("button");el.type="button";el.className="tok";el.dataset.i=i;el.innerHTML=`<span>${CLUES[i][0]}</span><span class="mk"></span>`;
+  draggable(el,{targetSel:".cls,#clPool",canDrag:()=>!clSolved,onTap:()=>{if(el.classList.contains("no")&&!clSolved)$("#clWhy").innerHTML=`<b>Nudge:</b> ${CLUES[i][2].replace(/Ig[GAMED]/g,"this class")} Look at the shapes again.`;else if(el.classList.contains("ok")||clSolved)$("#clWhy").innerHTML=`<b>${CLUES[i][1]}:</b> ${CLUES[i][2]}`;if(clSolved)return;
+    document.querySelectorAll("#classWrap .tok.sel").forEach(x=>x.classList.remove("sel"));if(clSel===el){clSel=null;return}clSel=el;el.classList.add("sel")},onDrop:tg=>clPlace(el,tg)});return el}
+function clPlace(el,tg){if(clSolved)return;const dest=tg.id==="clPool"?$("#clPool"):tg.querySelector(".bitems");dest.appendChild(el);el.classList.remove("sel","ok","no","hinted");el.querySelector(".mk").textContent="";clSel=null}
+$("#clPool").addEventListener("click",e=>{if(clSel&&!e.target.closest(".tok")&&clSel.parentElement!==$("#clPool"))clPlace(clSel,$("#clPool"))});
+function clNew(){clBuild();clSel=null;clChecks=0;clHints=0;clSolved=false;const p=$("#clPool");p.innerHTML="";shuffle(CLUES.map((c,i)=>i)).forEach(i=>p.appendChild(clTok(i)));setMsg("#clMsg","","");$("#clWhy").innerHTML="<b>Tip:</b> after checking, tap a clue to read why."}
+const clWhere=el=>{const b=el.closest(".cls");return b?b.dataset.cls:null};
+$("#clCheck").onclick=()=>{if(clSolved)return;const toks=[...document.querySelectorAll("#classWrap .tok")];const un=toks.filter(t=>!clWhere(t));if(un.length){setMsg("#clMsg",`Place all the clues first. ${un.length} left.`,"warn");return}
+  clChecks++;let n=0;toks.forEach(t=>{const ok=clWhere(t)===CLUES[+t.dataset.i][1];t.classList.toggle("ok",ok);t.classList.toggle("no",!ok);t.querySelector(".mk").textContent=ok?"✓":"✕";if(ok)n++});
+  if(n===toks.length){clSolved=true;const st=clHints===0&&clChecks===1?3:clHints<=2&&clChecks<=3?2:1;if(st>(store.get("im-cl")||0))store.set("im-cl",st);setMsg("#clMsg",`${starStr(st)}<br><b>GAMED mastered!</b> Tap any clue to review why.`,"good")}
+  else setMsg("#clMsg",`<b>${n} of ${toks.length}</b> are right. Tap a ✕ clue for a nudge, move it, and check again.`,"warn")};
+$("#clHint").onclick=()=>{if(clSolved)return;const t=[...document.querySelectorAll("#classWrap .tok")].find(t=>clWhere(t)!==CLUES[+t.dataset.i][1]);if(!t)return;clHints++;clPlace(t,document.querySelector(`.cls[data-cls="${CLUES[+t.dataset.i][1]}"]`));t.classList.add("hinted");$("#clWhy").innerHTML=`<b>Hint · ${CLUES[+t.dataset.i][1]}:</b> ${CLUES[+t.dataset.i][2]}`};
+$("#clShow").onclick=()=>{[...document.querySelectorAll("#classWrap .tok")].forEach(t=>{document.querySelector(`.cls[data-cls="${CLUES[+t.dataset.i][1]}"] .bitems`).appendChild(t);t.classList.remove("no","sel");t.classList.add("ok");t.querySelector(".mk").textContent="✓"});clSolved=true;setMsg("#clMsg","Here is the answer. Tap any clue to read why, then press <b>Start over</b>.","info")};
+$("#clReset").onclick=clNew;
+
+/* ================= PART 4b: antibody actions game ================= */
+const S4=makeStage("cvAct",800,360);
+const ACTS_={neut:["Neutralize",`<svg viewBox="0 0 34 34">${'<circle cx="17" cy="17" r="7" fill="var(--virus)"/>'+[0,1,2,3].map(k=>{const a=k*90;const r=a*Math.PI/180;return ySVG(17+Math.cos(r)*12,17+Math.sin(r)*12,5,"var(--ab)",a-90,2)}).join("")}</svg>`],
+ agg:["Agglutinate",`<svg viewBox="0 0 34 34">${[[9,10],[25,10],[9,24],[25,24]].map(p=>`<rect x="${p[0]-5}" y="${p[1]-3}" width="10" height="6" rx="3" fill="var(--bact)"/>`).join("")+ySVG(17,17,5,"var(--ab)",0,2)}</svg>`],
+ ops:["Opsonize",`<svg viewBox="0 0 34 34"><path d="M2 17 C2 4 16 2 20 8 L14 17 L20 26 C16 32 2 30 2 17Z" fill="var(--macro)" stroke="var(--macro-edge)"/><rect x="18" y="13" width="12" height="8" rx="4" fill="var(--bact)"/>${ySVG(30,12,4,"var(--ab)",200,1.6)}</svg>`],
+ comp:["Activate complement",`<svg viewBox="0 0 34 34"><rect x="5" y="14" width="24" height="12" rx="6" fill="var(--bact)"/><ellipse cx="17" cy="14" rx="5" ry="3" fill="none" stroke="var(--comp)" stroke-width="2.5"/>${ySVG(17,6,4,"var(--ab)",180,1.6)}</svg>`]};
+const ACASES=[
+ {t:"Rabies at the nerve",d:"Rabies viruses in a bite wound are drifting toward nerve cells. They must latch onto receptors on the nerve cell to get in.",target:"virus",ctx:"cells",ans:"neut",
+  f:{neut:"Yes. Antibodies cover the viral parts that bind receptors, so the virus cannot enter. This is how the rabies shot series protects after a bite.",agg:"Clumping a few viruses helps a little, but uncovered viruses on the edge of a clump could still bind. Covering the binding parts works better.",ops:"Eating viruses helps, but no phagocyte is right here. The urgent job is stopping attachment to the nerve.",comp:"Complement can damage some viruses, but the fastest fix is simply blocking the parts the virus uses to attach."}},
+ {t:"Tetanus toxin",d:"Tetanus bacteria release a toxin molecule that binds nerve cells and causes muscle spasms.",target:"toxin",ctx:"cells",ans:"neut",
+  f:{neut:"Right. A toxin that is covered cannot bind its target. The tetanus shot trains your B cells to make these neutralizing antibodies.",agg:"A toxin is a molecule, not a cell. Clumping does not stop its binding site from working; covering it does.",ops:"Phagocytes do clear coated toxin eventually, but the urgent problem is that the toxin binds nerves right now.",comp:"Complement punches holes in cell membranes. A toxin molecule has no membrane to punch."}},
+ {t:"Bacteria scattered in the blood",d:"Dozens of single bacteria are spread through the bloodstream. Macrophages in the spleen catch big clumps far more easily than single cells.",target:"bact",ctx:"blood",ans:"agg",
+  f:{agg:"Yes. Each antibody has two (IgM has ten) binding sites, so it links bacteria into clumps that are easy to trap.",neut:"Neutralization blocks attachment, but these bacteria are already loose in the blood. The goal is to gather them.",ops:"Coating helps, but there is no phagocyte right here in the bloodstream. Clumping lets the spleen catch them all at once.",comp:"Complement could kill some, but the question asks how to make them easy for the spleen to catch."}},
+ {t:"The slippery capsule",d:"A macrophage keeps losing its grip on a bacterium covered by a smooth, slippery capsule.",target:"bact",ctx:"macro",ans:"ops",
+  f:{ops:"Right. Antibodies coat the capsule, and the macrophage grabs their stems with its Fc receptors. Coated = easy to eat.",neut:"Neutralization stops attachment to host cells. The problem here is the macrophage's grip.",agg:"A clump of slippery bacteria is still slippery. The macrophage needs a handle.",comp:"Complement can help coat too, but the classic answer for 'phagocyte can't grip' is antibody opsonization."}},
+ {t:"Burst the bacterium",d:"A bacterium with a thin outer membrane is in the blood. Plasma proteins nearby can drill holes once something triggers them.",target:"bact",ctx:"blood",ans:"comp",
+  f:{comp:"Yes. Complement binds the antibody stems, the cascade runs, and the membrane attack complex makes pores. Water rushes in and it bursts.",neut:"Covering the bacterium does not make it burst.",agg:"Clumping gathers bacteria but does not burst them.",ops:"There is no phagocyte here, and the goal is to burst the cell where it is."}},
+ {t:"Neutrophils can't hold on",d:"Neutrophils have reached an infected cut, but bacteria keep slipping out of their grasp.",target:"bact",ctx:"macro",ans:"ops",
+  f:{ops:"Right. Antibody coating gives the phagocyte something to grab, so eating speeds up.",neut:"Blocking attachment does not help a phagocyte grip.",agg:"Clumps can help, but the problem is grip. Coating the germ is the direct fix.",comp:"Complement can also tag germs, but this question asks what antibodies do to help phagocytes grip: opsonization."}},
+ {t:"Germs spread out in lymph",d:"Germs are floating singly in lymph. Lymph node macrophages trap big clumps more easily than single particles.",target:"bact",ctx:"blood",ans:"agg",
+  f:{agg:"Yes. Linking germs into clumps makes them easy to trap and eat.",neut:"Neutralization stops binding to cells, but the goal here is to gather the germs.",ops:"Coating helps eating, but the clue is clumps. That is agglutination.",comp:"Complement kills by bursting, but the clue is gathering them into clumps."}},
+ {t:"Call in the demolition crew",d:"IgM antibodies are stuck all over a bacterium. You want the plasma proteins to finish it off.",target:"bact",ctx:"blood",ans:"comp",
+  f:{comp:"Right. IgM is especially good at triggering complement, which ends with the membrane attack complex.",neut:"The bacterium is already covered. The plasma proteins that destroy it are complement.",agg:"Clumping gathers but does not destroy.",ops:"There is no phagocyte here; the plasma proteins can do the job directly."}}];
+let ai=0,aChoice=null,aT0=0;const aState=ACASES.map(()=>({solved:false,first:true}));
+function acRender(){const s=ACASES[ai];$("#acChips").innerHTML="";ACASES.forEach((x,i)=>{const b=document.createElement("button");b.type="button";b.className="chip"+(i===ai?" cur":"")+(aState[i].solved?" done":"");b.textContent=i+1;b.setAttribute("aria-label","Case "+(i+1)+": "+x.t);b.onclick=()=>{ai=i;aChoice=null;acRender()};$("#acChips").appendChild(b)});
+  $("#acN").textContent=`Case ${ai+1} of ${ACASES.length}`;$("#acTitle").textContent=s.t;$("#acDesc").textContent=s.d;
+  const box=$("#acBtns");box.innerHTML="";Object.keys(ACTS_).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="actbtn";b.innerHTML=ACTS_[k][1]+`<span>${ACTS_[k][0]}</span>`;b.onclick=()=>acPick(k,b);box.appendChild(b)});
+  const f=$("#acFb");f.className="fb";f.textContent="";acScore();aT0=performance.now();$("#acNext").textContent=ai===ACASES.length-1?"Back to case 1":"Next case →"}
+function acPick(k,b){const s=ACASES[ai],S=aState[ai];aChoice=k;aT0=performance.now();$("#acBtns").querySelectorAll(".actbtn").forEach(x=>x.classList.remove("wrong"));const f=$("#acFb");
+  if(k===s.ans){b.classList.add("right");f.className="fb show ok";f.textContent="✓ "+s.f[k];S.solved=true}else{b.classList.add("wrong");f.className="fb show no";f.textContent="Not quite. "+s.f[k];if(!S.solved)S.first=false}acScore();
+  [...$("#acChips").children].forEach((c,i)=>c.classList.toggle("done",aState[i].solved))}
+function acScore(){const n=aState.filter(x=>x.solved).length,ft=aState.filter(x=>x.solved&&x.first).length;let h=`Solved: ${n} of ${ACASES.length} · right on the first try: ${ft}`;
+  if(n===ACASES.length){const st=ft>=7?3:ft>=5?2:1;h+=" "+starStr(st);if(st>(store.get("im-ac")||0))store.set("im-ac",st)}$("#acScore").innerHTML=h}
+$("#acHint").onclick=()=>{const s=ACASES[ai];const h={neut:"Hint: the danger is something ATTACHING to our cells. Block the attachment.",agg:"Hint: think about gathering many small things into one big target.",ops:"Hint: the phagocyte needs a handle to grab.",comp:"Hint: think of the plasma proteins that punch holes."}[s.ans];const f=$("#acFb");f.className="fb show no";f.textContent=h;aState[ai].first=false;acScore()};
+$("#acPrev").onclick=()=>{if(ai>0){ai--;aChoice=null;acRender()}};$("#acNext").onclick=()=>{ai=(ai+1)%ACASES.length;aChoice=null;acRender()};$("#acReplay").onclick=()=>{aT0=performance.now()};
+const APOS=[[250,120],[340,90],[430,130],[520,95],[610,125],[380,170]];
+function drawAct(now){use(S4);const s=ACASES[ai];const T=now/1000;const u=clamp((now-aT0)/1000/5,0,1);const k=aChoice;bg(s.ctx==="blood"?mix(C.blood,C.panel,.86):C.tissue,S4);
+  // context
+  if(s.ctx==="cells"){ctx.fillStyle=C.host;ctx.fillRect(0,290,800,70);line(0,290,800,290,C["host-edge"],2);for(let x=60;x<800;x+=90){line(x,290,x,276,C["host-edge"],3);ctx.beginPath();ctx.arc(x,270,7,Math.PI,0,true);ctx.strokeStyle=C["host-edge"];ctx.lineWidth=2.5;ctx.stroke()}
+    txt(16,340,s.target==="toxin"?"nerve cells with receptors":"nerve cells with receptors",{size:11.5,weight:600,color:C["host-edge"]})}
+  if(s.ctx==="blood"){for(let j=0;j<10;j++){const q=P(T*.05+j/10,1);rbc(q*800,40+((j*67)%280),9,{a:.5})}txt(16,344,"blood",{size:11.5,weight:600,color:C.blood})}
+  let mx=-80;if(s.ctx==="macro"||k==="ops"){mx=k==="ops"?lerp(-60,150,ease(seg(u,.3,.6))):100;macro(mx,200,s.ctx==="macro"?62:52,{t:T,seed:2,lab:false});txt(Math.max(30,mx),286,s.ctx==="macro"?"phagocyte":"",{size:11.5,align:"center",weight:600})}
+  // targets
+  const coat=k?ease(seg(u,0,.35)):0;const cx=430,cy=140;
+  APOS.forEach((p,i)=>{let x=p[0],y=p[1],a=1,sw=0,gone=false;
+    if(!k){if(s.ctx==="cells")y=p[1]+Math.sin(T+i)*6+P(T*.1+i*.1,1)*40;else{x+=Math.sin(T*.6+i)*10;y+=Math.cos(T*.5+i)*8}}
+    if(k==="neut"){const dn=seg(u,.35,.75);y=p[1]+Math.sin(Math.PI*dn)*(s.ctx==="cells"?120:40)}
+    if(k==="agg"){const c=ease(seg(u,.35,.7));x=lerp(p[0],cx+(i%3-1)*30,c);y=lerp(p[1],cy+(Math.floor(i/3)-.5)*30,c)}
+    if(k==="ops"){const e=seg(u,.55+i*.06,.68+i*.06);if(e>=1)gone=true;x=lerp(p[0],mx+30,e);y=lerp(p[1],200,e);a=1-e*.8}
+    if(k==="comp"&&s.target!=="toxin"){sw=seg(u,.55,.8);if(u>.82)gone=true}
+    if(gone){if(k==="comp")for(let j=0;j<6;j++){const an=j/6*TAU;dotM(x+Math.cos(an)*(14+u*20),y+Math.sin(an)*(10+u*14),3,C.bact,1-seg(u,.85,1))}return}
+    withA(a,()=>{if(s.target==="virus")virus(x,y,11,1,T);else if(s.target==="toxin"){diamond(x,y,10,C.virus);line(x-10,y,x-16,y-6,C.virus,2.5)}else bact(x,y,i*.6,10,1,{swell:sw})});
+    if(k&&coat>0){const n=k==="agg"?0:4;for(let j=0;j<n;j++){const an=j/n*TAU+.4;withA(coat*a,()=>ab(x+Math.cos(an)*24,y+Math.sin(an)*18,9,an+Math.PI,C.ab))}
+      if(k==="comp"&&coat>=1&&s.target!=="toxin"){const c1=seg(u,.35,.55);for(let j=0;j<2;j++){const an=j*Math.PI+.4;circ(x+Math.cos(an)*34,y+Math.sin(an)*26,4,C.comp,null);if(c1>=1){ctx.beginPath();ctx.ellipse(x+(j?8:-8),y,4,3,0,0,TAU);ctx.strokeStyle=C.comp;ctx.lineWidth=2.5;ctx.stroke()}}}}});
+  if(k==="agg"&&u>.5){for(let j=0;j<6;j++){const an=j*1.05;withA(seg(u,.5,.75),()=>ab(cx+Math.cos(an)*24,cy+Math.sin(an)*18,10,an,C.ab))}}
+  if(k==="comp"&&s.target==="toxin"&&u>.5)label(430,220,"nothing to punch: a toxin has no membrane",{size:12,align:"center",border:C.warn});
+  if(k==="neut"&&s.ctx==="cells"&&u>.6)label(430,236,s.ans==="neut"?"covered: cannot attach":"",{size:12,align:"center",border:C.good});
+  const right=k&&k===s.ans;
+  if(k&&u>.85){label(400,24,right?"✓ That solved it":"Not the best fit for this case",{size:13,weight:700,align:"center",border:right?C.good:C.warn})}
+  const cap=!k?"Pick an action to watch it happen.":ACTS_[k][0]+(right?": the right tool here.":": watch what it does, then read why.");if($("#acCap").textContent!==cap)$("#acCap").textContent=cap}
+$("#subClass").onclick=()=>{$("#subClass").setAttribute("aria-pressed","true");$("#subAct").setAttribute("aria-pressed","false");$("#classWrap").hidden=false;$("#actWrap").hidden=true};
+$("#subAct").onclick=()=>{$("#subClass").setAttribute("aria-pressed","false");$("#subAct").setAttribute("aria-pressed","true");$("#classWrap").hidden=true;$("#actWrap").hidden=false;fitAll()};
+
+/* ================= PART 5: lymph flow tracer ================= */
+const S5=makeStage("cvTrace",800,480);
+const TS={cap:["Lymphatic capillary","cap"],coll:["Collecting vessel (with valves)","coll"],axn:["Axillary lymph nodes (armpit)","node"],ing:["Inguinal lymph nodes (groin)","node"],
+ rtr:["Right subclavian trunk","trunk"],ltr:["Left subclavian trunk","trunk"],lum:["Lumbar trunk","trunk"],cist:["Cisterna chyli","cist"],td:["Thoracic duct","duct"],rld:["Right lymphatic duct","duct"],
+ rsv:["Right subclavian vein","vein"],lsv:["Left subclavian vein","vein"],art:["Subclavian artery","art"]};
+const TROUTES=[{name:"Right index finger",seq:["cap","coll","axn","rtr","rld","rsv"],extra:["td","ing","lsv","cist","art"],
+   pts:{cap:[-84,184],coll:[-64,118],axn:[-42,54],rtr:[-30,36],rld:[-19,28],rsv:[-40,27]}},
+ {name:"Left big toe",seq:["cap","coll","ing","lum","cist","td","lsv"],extra:["axn","rld","rsv","art"],
+   pts:{cap:[30,330],coll:[25,250],ing:[22,172],lum:[10,152],cist:[0,140],td:[6,80],lsv:[40,27]}},
+ {name:"Left hand",seq:["cap","coll","axn","ltr","td","lsv"],extra:["rld","rsv","ing","cist","art"],
+   pts:{cap:[84,184],coll:[64,118],axn:[42,54],ltr:[30,36],td:[17,28],lsv:[40,27]}}];
+const TWHY={
+ td:r=>r===0?"The thoracic duct drains the left side and everything below the diaphragm. The right arm drains to the right lymphatic duct.":"Not yet. The thoracic duct is one of the last stops, after the smaller vessels, nodes and trunks.",
+ rld:()=>"The right lymphatic duct only drains the upper RIGHT part of the body: right arm, right side of the head and chest.",
+ ing:()=>"Inguinal nodes sit in the groin and filter lymph from the leg. This dye is not in the leg.",
+ axn:r=>r===1?"Axillary nodes sit in the armpit and filter lymph from the arm. This dye started in the foot.":"Close, but something smaller comes first.",
+ lsv:r=>r===0?"Right-arm lymph rejoins the blood on the RIGHT side, at the right subclavian vein.":"That is the very last stop. Lymph has to pass through nodes, trunks and a duct first.",
+ rsv:r=>r===0?"That is the last stop. Lymph passes through nodes, a trunk and a duct first.":"Lymph from the left side and lower body rejoins the blood at the LEFT subclavian vein.",
+ cist:r=>r===1?"Not yet. The cisterna chyli is a sac in the abdomen that collects lymph from the trunks below it.":"The cisterna chyli collects lymph from the legs and abdomen. Arm lymph never passes through it.",
+ art:()=>"Lymph never enters an artery. It returns to the blood through veins at the base of the neck.",
+ cap:()=>"The lymphatic capillary is where lymph starts. It is already done.",coll:()=>"Lymph moves from smallest to largest. Look for the next bigger structure.",
+ rtr:()=>"Close. Lymph reaches a trunk after it has been filtered by a node.",ltr:()=>"Close. Lymph reaches a trunk after it has been filtered by a node.",lum:()=>"Close. The lumbar trunk comes after the inguinal nodes."};
+let tR=0,tStep=0,tWrong=0,tHints=0,tAnim=null;const tBest=store.get("im-tr")||{};
+function trRounds(){const box=$("#trRounds");box.innerHTML="";TROUTES.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===tR);b.innerHTML=`Route ${i+1} · ${r.name}`+(tBest[i]?`<span class="ok">${"★".repeat(tBest[i])}</span>`:"");b.onclick=()=>{tR=i;trNew()};box.appendChild(b)})}
+function trNew(){tStep=0;tWrong=0;tHints=0;tAnim=null;const r=TROUTES[tR];$("#trN").textContent=`Route ${tR+1} of ${TROUTES.length}`;$("#trT").textContent="Start: "+r.name;setMsg("#trMsg","","");
+  tStep=1;trPath();trChoices();trRounds()}
+function trPath(){const r=TROUTES[tR];$("#trPath").innerHTML=r.seq.slice(0,tStep).map((id,i)=>`<li><b>${i+1}</b>${TS[id][0]}</li>`).join("")}
+function trChoices(){const r=TROUTES[tR];const box=$("#trChoices");box.innerHTML="";if(tStep>=r.seq.length){box.innerHTML='<span class="small">Route complete.</span>';return}
+  const pool=shuffle(r.seq.slice(tStep).concat(r.extra));pool.forEach(id=>{const b=document.createElement("button");b.type="button";b.className="choice";b.dataset.id=id;b.textContent=TS[id][0];b.onclick=()=>trPick(id,b);box.appendChild(b)})}
+function trPick(id,b){const r=TROUTES[tR];if(tStep>=r.seq.length)return;if(id===r.seq[tStep]){tAnim={from:r.seq[tStep-1],to:id,t0:performance.now()};tStep++;trPath();trChoices();setMsg("#trMsg","","");
+    if(tStep>=r.seq.length){const st=tWrong===0&&tHints===0?3:tWrong+tHints<=2?2:1;if(!tBest[tR]||st>tBest[tR])tBest[tR]=st;store.set("im-tr",tBest);trRounds();
+      setMsg("#trMsg",`${starStr(st)}<br><b>Back in the blood!</b> Wrong picks: ${tWrong}. Hints: ${tHints}.${tR<2?' <button class="tbtn" id="trNextR" type="button">Next route →</button>':""}`,"good");const nb=$("#trNextR");if(nb)nb.onclick=()=>{tR++;trNew()}}}
+  else{tWrong++;const w=TWHY[id];setMsg("#trMsg","Not quite. "+(r.seq.indexOf(id)>tStep?"That one comes later. Lymph moves from the smallest vessels to the largest: capillary, collecting vessel, node, trunk, duct, vein.":(w?w(tR):"")),"warn")}}
+$("#trHint").onclick=()=>{const r=TROUTES[tR];if(tStep>=r.seq.length)return;tHints++;const b=document.querySelector(`#trChoices .choice[data-id="${r.seq[tStep]}"]`);if(b)b.classList.add("hinted");setMsg("#trMsg","Hint: the glowing choice is next.","info")};
+$("#trShow").onclick=()=>{const r=TROUTES[tR];tHints+=9;const go=()=>{if(tStep<r.seq.length){const id=r.seq[tStep];tAnim={from:r.seq[tStep-1],to:id,t0:performance.now()};tStep++;trPath();trChoices();setTimeout(go,900)}else setMsg("#trMsg","That is the full route. Press <b>Start this route over</b> to try it yourself.","info")};go()};
+$("#trReset").onclick=trNew;
+function drawTrace(now){use(S5);bg(C.panel,S5);const T=now/1000;const S=1.12,X0=230,Y0=60;const B=p=>[X0+p[0]*S,Y0+p[1]*S];const r=TROUTES[tR];
+  bodyFig(X0,Y0,S);
+  poly([B([-70,28]),B([-16,26]),B([-4,42]),B([-4,70])],C.vein,4.5);poly([B([70,28]),B([16,26]),B([-4,42])],C.vein,4.5);poly([B([-16,-8]),B([-16,26])],C.vein,3);poly([B([16,-8]),B([16,26])],C.vein,3);circ(...B([-4,80]),12,C.blood,C["blood-edge"],1.2);
+  const paths=[[[-84,184],[-64,118],[-42,54],[-30,36],[-19,28],[-16,26]],[[84,184],[64,118],[42,54],[30,36],[17,28],[16,26]],[[-30,330],[-25,250],[-22,172],[-10,152],[0,140]],[[30,330],[25,250],[22,172],[10,152],[0,140],[3,100],[6,80],[10,50],[16,26]],[[-12,-26],[-14,2],[-16,26]],[[12,-26],[14,2],[16,26]]];
+  paths.forEach(p=>poly(p.map(B),C.lv,2.4));ctx.beginPath();ctx.ellipse(...B([0,140]),7,12,0,0,TAU);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2;ctx.stroke();
+  [[-42,54],[42,54],[-22,172],[22,172],[-14,6],[14,6]].forEach(n=>{const [x,y]=B(n);ctx.beginPath();ctx.ellipse(x,y,7,5,.4,0,TAU);ctx.fillStyle=C.node;ctx.fill();ctx.strokeStyle=C["node-edge"];ctx.lineWidth=1.4;ctx.stroke()});
+  label(...B([-64,-36]),"R",{size:12,weight:700,align:"center",mono:true});label(...B([64,-36]),"L",{size:12,weight:700,align:"center",mono:true});
+  // start marker
+  const st=B(r.pts[r.seq[0]]);ctx.beginPath();ctx.arc(st[0],st[1],13+2*Math.sin(T*4),0,TAU);ctx.strokeStyle=C.accent;ctx.lineWidth=2;ctx.stroke();
+  // visited path
+  const visited=r.seq.slice(0,tStep).map(id=>B(r.pts[id]));if(visited.length>1)poly(visited,C.glow,4);
+  // tracer dot
+  let pos=visited[visited.length-1];let curType=TS[r.seq[tStep-1]][1];
+  if(tAnim){const u=clamp((now-tAnim.t0)/800,0,1);const a=B(r.pts[tAnim.from]),b2=B(r.pts[tAnim.to]);pos=[lerp(a[0],b2[0],ease(u)),lerp(a[1],b2[1],ease(u))];if(u>=1)tAnim=null}
+  glow(pos[0],pos[1],18,C.glow,.7);circ(pos[0],pos[1],6,C.glow,C.ink,1.2);
+  r.seq.slice(0,tStep).forEach((id,i)=>{const p=B(r.pts[id]);if(i>0)badge(p[0]+(r.pts[id][0]<0?-16:16),p[1]-10,i+1,C.accent)});
+  // inset
+  panelBox(470,14,318,452,{fill:hexA(C["panel-2"],.95)});title(486,34,"Zoom: "+TS[r.seq[tStep-1]][0]);trInset(curType,T,629,250);
+  const cap=tStep>=r.seq.length?"The dye is back in the blood.":"The dye is in the "+TS[r.seq[tStep-1]][0].toLowerCase()+". Where does it go next?";if($("#trCap").textContent!==cap)$("#trCap").textContent=cap}
+function trInset(type,T,cx,cy){
+  if(type==="cap"){ctx.beginPath();ctx.moveTo(cx+140,cy-40);ctx.lineTo(cx-90,cy-40);ctx.arc(cx-90,cy,40,-Math.PI/2,Math.PI/2,true);ctx.lineTo(cx+140,cy+40);ctx.fillStyle=C.lymph;ctx.fill();line(cx-90,cy+40,cx+140,cy+40,C.lv,3);
+    for(let i=0;i<4;i++){const op=Math.max(0,Math.sin(T*2+i));ctx.save();ctx.translate(cx-80+i*56,cy-40);ctx.rotate(op*.5);rr(0,-4,58,8,4);ctx.fillStyle=mix(C.lymph,C.lv,.35);ctx.fill();ctx.strokeStyle=C["lv-edge"];ctx.lineWidth=1.5;ctx.stroke();ctx.restore()}
+    for(let k=0;k<10;k++){const q=P(T*.3+k/10,1);if(q<.4)dotM(cx-60+(k%4)*56+20,lerp(cy-120,cy-44,q/.4),3,C.water);else dotM(cx-40+(k%4)*56+(q-.4)*200,cy-10+(k%3)*14,3,C.lv,clamp((cx+140-(cx-40+(k%4)*56+(q-.4)*200))/20,0,1))}
+    txt(cx,cy+90,"one-way flaps let fluid in",{size:12,align:"center",weight:600})}
+  else if(type==="coll"){const sq=Math.max(0,Math.sin(T*2.4));rr(cx-26,cy-170,52,340,20);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2;ctx.stroke();
+    [cy-90,cy+10,cy+110].forEach((vy,i)=>{const o=i===2?1-sq:sq;[-1,1].forEach(sd=>line(cx+sd*24,vy+10,cx+sd*lerp(2,18,o),vy-12,C["lv-edge"],3))});
+    for(let k=0;k<14;k++){const d=((k*24+(Math.floor(T*2.4/Math.PI)+ease(Math.min(1,(T*2.4%Math.PI)/Math.PI*1.4)))*60)%330);dotM(cx+(rnd(k)-.5)*30,cy+160-d,3,C.lv)}
+    txt(cx,cy+196,"valves keep lymph moving one way",{size:12,align:"center",weight:600})}
+  else if(type==="node"){beanNode(cx,cy,110,80,{bgc:C["panel-2"]});for(let k=0;k<5;k++){const an=Math.PI*.7+k*.4;circ(cx+Math.cos(an)*78,cy+Math.sin(an)*54,16,C.follicle,hexA(C.bcell,.6),1)}
+    macro(cx+10,cy,22,{t:T,seed:3,lab:false});for(let k=0;k<8;k++){const q=P(T*.25+k/8,1);const [x,y]=along([[cx-180,cy-60],[cx-90,cy-40],[cx,cy],[cx+100,cy],[cx+150,cy+10]],q);dotM(x,y,3,C.lv)}
+    const q=P(T*.25,1);if(q<.45){const [x,y]=along([[cx-180,cy-60],[cx-90,cy-40],[cx,cy]],q/.45);bact(x,y,.4,6)}txt(cx,cy+110,"macrophages filter out germs",{size:12,align:"center",weight:600})}
+  else if(type==="trunk"||type==="duct"||type==="cist"){const w=type==="cist"?60:type==="duct"?34:24;rr(cx-w/2,cy-170,w,340,w/2);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.lineWidth=2.5;ctx.stroke();
+    for(let k=0;k<16;k++){const q=P(T*.25+k/16,1);dotM(cx+(rnd(k)-.5)*(w-10),cy+170-q*340,3,C.lv)}
+    if(type!=="cist")for(let s_=0;s_<3;s_++){const y=cy-120+s_*110;line(cx-60,y+40,cx-w/2,y,C.lv,6)}
+    txt(cx,cy+196,type==="cist"?"a sac that collects lymph from below":type==="duct"?"the biggest lymph vessels":"many vessels merge into a trunk",{size:12,align:"center",weight:600})}
+  else if(type==="vein"){rr(cx-150,cy-24,300,48,24);ctx.fillStyle=mix(C.vein,C.panel,.6);ctx.fill();ctx.strokeStyle=C.vein;ctx.lineWidth=2;ctx.stroke();rr(cx-14,cy-180,28,160,14);ctx.fillStyle=C.lymph;ctx.fill();ctx.strokeStyle=C.lv;ctx.stroke();
+    for(let k=0;k<10;k++){const q=P(T*.3+k/10,1);if(q<.5)dotM(cx,lerp(cy-170,cy,q/.5),3,C.lv);else dotM(lerp(cx,cx+150,(q-.5)/.5),cy+(k%3-1)*8,3,mix(C.lv,C.blood,(q-.5)*2))}
+    for(let k=0;k<6;k++){const q=P(T*.2+k/6,1);rbc(cx-150+q*300,cy+(k%2?10:-10),6)}txt(cx,cy+60,"lymph joins the blood",{size:12,align:"center",weight:600})}}
+
+/* ---------------- tabs / theme / loop ---------------- */
+let curTab="sim";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;["sim","sort","vax","ab","trace"].forEach(k=>$("#tab-"+k).hidden=k!==curTab);fitAll()});
+function fitAll(){[S1,S1c,S3,S4,S5].forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  try{if(curTab==="sim"){if(!window.__manual)simTick(dt);drawSim(now/1000);drawChart()}else if(curTab==="sort"){soTimerTick()}else if(curTab==="vax"){if(!window.__manual)vxTick(dt);drawVax(now/1000);vxCap&&0}
+    else if(curTab==="ab"){if(!$("#actWrap").hidden)drawAct(now)}else drawTrace(now)}catch(err){console.error(err)}
+  requestAnimationFrame(frame)}
+/* test hooks */
+window.__im={tab:k=>document.querySelector(`.tab[data-tab="${k}"]`).click(),
+  simRun:(days,o)=>{if(o){Object.assign(simOpt,o);}simReset(false);simRun=true;for(let i=0;i<days*50&&!simDone;i++){simTick(.02/(+$("#simSpeed").value))}return {day:sim.day,P:sim.P,cleared:sim.cleared,peak:sim.peak}},
+  vx:(mode)=>{vxMode(mode)},vxAdvance:w=>{vx.run=true;for(let i=0;i<w*20;i++)vxTick(.05/(+$("#vxSpeed").value))},vxState:()=>({week:vx.week,ev:vx.ev.length,msg:$("#vxMsg").textContent}),
+  ac:(i,k)=>{ai=i;aChoice=null;acRender();if(k){const b=[...document.querySelectorAll("#acBtns .actbtn")][Object.keys(ACTS_).indexOf(k)];b.click()}},acAge:s=>{aT0=performance.now()-s*1000},
+  tr:i=>{tR=i;trNew()},sub:id=>$(id).click()};
+chalRender();simReset(false);soNew();mtNew();clNew();vxMode("free");acRender();trNew();fitAll();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

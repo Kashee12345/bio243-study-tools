@@ -1,0 +1,1624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Heart Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--act4:#2E8A7A;--act5:#A04E8C;--act6:#4F6F94;
+  /* heart palette */
+  --ecf:#F4EEEA;--oxy:#C2392F;--oxy-edge:#82231C;--deoxy:#3F6DB3;--deoxy-edge:#24457A;
+  --myo:#D99A8E;--myo-dark:#B8705F;--myo-edge:#8E4A3E;--endo:#F1D3CB;--fat:#EED48E;--fat-edge:#B9993F;
+  --fib:#CDB48E;--fib-edge:#8F7652;--serous:#EBC9B8;--fluid:#CFE5F1;
+  --valve:#F5EEDC;--valve-edge:#7E6A48;--chord:#EDE5D2;
+  --node:#D98A1C;--cond:#C9A227;--glow:#F2B33B;--ecg:#1E8A5A;--grid:#E8C9C4;
+  --na:#2F7FC1;--ca:#D98A1C;--k:#7B5CC9;--ne:#C4644F;--ach:#2E8A7A;
+  --lvp:#C2392F;--aop:#7B5CC9;--lap:#D98A1C;--vol:#2E8A7A;
+  --symp:#C4644F;--para:#2E8A7A;--nerve:#D9B65A;--dead:#8B9094;--plaque:#E2C35A;
+  --lung:#EBB8B2;--lung-edge:#B5655A;--body:#E9DCCB;--body-edge:#A88B6A;--skin:#F2DFD2;--skin-edge:#B9937A;--bone:#EFE6D2;--bone-edge:#B9A88C;
+  --gold:#C9A227;--gold-wash:#F6EFD3;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#8FB1D9;
+  --ecf:#1B1A1C;--oxy:#D9483D;--oxy-edge:#F08A80;--deoxy:#5B8AD6;--deoxy-edge:#A9C4F0;
+  --myo:#7A4A42;--myo-dark:#9A5C50;--myo-edge:#D49384;--endo:#5A3A34;--fat:#7A6630;--fat-edge:#D9BC64;
+  --fib:#6E5C40;--fib-edge:#C9AE80;--serous:#5E4038;--fluid:#1F3A4A;
+  --valve:#E8DDC2;--valve-edge:#F2E6C8;--chord:#D8CDB2;
+  --node:#F2A93B;--cond:#E0BE48;--glow:#F2B33B;--ecg:#4FD08A;--grid:#3A2A2A;
+  --na:#5AA9E6;--ca:#F2A93B;--k:#A98BEF;--ne:#E08A74;--ach:#5CC4B0;
+  --lvp:#E5645A;--aop:#A98BEF;--lap:#F2A93B;--vol:#5CC4B0;
+  --symp:#E08A74;--para:#5CC4B0;--nerve:#D9B65A;--dead:#6F767B;--plaque:#E0BE48;
+  --lung:#6E3E3A;--lung-edge:#D98A7E;--body:#3E3528;--body-edge:#B39773;--skin:#3A2E28;--skin-edge:#B9937A;--bone:#4A4234;--bone-edge:#8F7C5E;
+  --gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--act4:#5CC4B0;--act5:#D186C0;--act6:#8FB1D9;
+  --ecf:#1B1A1C;--oxy:#D9483D;--oxy-edge:#F08A80;--deoxy:#5B8AD6;--deoxy-edge:#A9C4F0;
+  --myo:#7A4A42;--myo-dark:#9A5C50;--myo-edge:#D49384;--endo:#5A3A34;--fat:#7A6630;--fat-edge:#D9BC64;
+  --fib:#6E5C40;--fib-edge:#C9AE80;--serous:#5E4038;--fluid:#1F3A4A;
+  --valve:#E8DDC2;--valve-edge:#F2E6C8;--chord:#D8CDB2;
+  --node:#F2A93B;--cond:#E0BE48;--glow:#F2B33B;--ecg:#4FD08A;--grid:#3A2A2A;
+  --na:#5AA9E6;--ca:#F2A93B;--k:#A98BEF;--ne:#E08A74;--ach:#5CC4B0;
+  --lvp:#E5645A;--aop:#A98BEF;--lap:#F2A93B;--vol:#5CC4B0;
+  --symp:#E08A74;--para:#5CC4B0;--nerve:#D9B65A;--dead:#6F767B;--plaque:#E0BE48;
+  --lung:#6E3E3A;--lung-edge:#D98A7E;--body:#3E3528;--body-edge:#B39773;--skin:#3A2E28;--skin-edge:#B9937A;--bone:#4A4234;--bone-edge:#8F7C5E;
+  --gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 170px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.r{border-radius:3px;width:14px}
+.legend i.l{width:18px;height:4px;border-radius:2px;border:0}
+.legend i.t{width:0;height:0;border-radius:0;border:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid;background:none!important}
+.legend i.dl{width:18px;height:0;border-radius:0;border:0;border-top:2px dashed;background:none!important}
+.legend b{font-weight:700;font-family:var(--mono);font-size:14px;line-height:1}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Heart &middot; USC Upstate</div>
+    <h1>Heart Walkthrough</h1>
+    <p class="sub">How the heart is built, how blood moves through it, how each beat starts, and how much it pumps. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 19, The Cardiovascular System: The Heart (OpenStax Anatomy &amp; Physiology 2e) &middot; Use the left and right arrow keys to move between steps. Practice next in the <a href="Heart-Lab.html">Heart Lab</a>.<br>Diagrams are simplified and not to scale. Oxygen-poor blood is drawn blue only as a label (all blood is red). The heart drawing is an original simplified frontal section; the great vessels are straightened, only two pulmonary veins are drawn on most views, and most animations are slowed down so you can watch them. Pressures, volumes and timings are rounded textbook values for a resting adult at about 75 beats per minute.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- drawing kit ---------------- */
+let ctx=null;
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-ink","accent-wash","good","warn","bad","good-wash","warn-wash","bad-wash",
+ "act1","act2","act3","act4","act5","act6","gold","gold-wash",
+ "ecf","oxy","oxy-edge","deoxy","deoxy-edge","myo","myo-dark","myo-edge","endo","fat","fat-edge","fib","fib-edge","serous","fluid","valve","valve-edge","chord",
+ "node","cond","glow","ecg","grid","na","ca","k","ne","ach","lvp","aop","lap","vol","symp","para","nerve","dead","plaque",
+ "lung","lung-edge","body","body-edge","skin","skin-edge","bone","bone-edge"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const smooth=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const gauss=(t,m,s)=>Math.exp(-((t-m)*(t-m))/(2*s*s));
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function isDark(){return hx(C.ground)[0]<60}
+function onFill(){return isDark()?"#0E1519":"#fff"}
+function P(T,L){return ((T%L)+L)%L/L}
+function hx(c){let h=(c||"#888").trim();if(h[0]!=="#")return [136,136,136];h=h.slice(1);if(h.length===3)h=h.split("").map(x=>x+x).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hx(a),B=hx(b);t=clamp(t,0,1);return "#"+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,"0")).join("")}
+function hexA(c,a){const A=hx(c);return `rgba(${A[0]},${A[1]},${A[2]},${clamp(a,0,1)})`}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(r<=0)return;const A=hx(col);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${A},${clamp(a==null?1:a,0,1)})`);g.addColorStop(1,`rgba(${A},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill()}
+function label(x,y,t,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(t).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y+.5);return w}
+function txt(x,y,t,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;ctx.fillText(t,x,y)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,t,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(t).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||onFill();ctx.fillText(t,x,y+.5);return w+12}
+function badge(x,y,n,col,r){r=r||10;circ(x,y,r,col||C.ink,C.panel,1.5);ctx.font=`700 ${r>10?13:11.5}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=onFill();ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function along(P_,p){let L=0;const ls=[];for(let i=0;i<P_.length-1;i++){const l=Math.hypot(P_[i+1][0]-P_[i][0],P_[i+1][1]-P_[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P_[i][0],P_[i+1][0],f),lerp(P_[i][1],P_[i+1][1],f)]}d-=ls[i]}return P_[P_.length-1]}
+function poly(pts,col,lw,dash){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[]);ctx.lineJoin="round";ctx.stroke();ctx.setLineDash([])}
+function panelBox(x,y,w,h,o){o=o||{};rr(x,y,w,h,o.r||8);ctx.fillStyle=o.fill||hexA(C.panel,.8);ctx.fill();ctx.strokeStyle=o.stroke||C.rule;ctx.lineWidth=o.lw||1.2;ctx.stroke()}
+function wrapText(t,x,y,w,lh,o){o=o||{};ctx.font=`${o.weight||500} ${o.size||12}px ${o.mono?MONO:FONT}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=o.color||C.ink;
+  const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function bez(p0,p1,p2,p3,t){const u=1-t;return [u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]]}
+/* sample a list of ops [["M",x,y],["C",..6],["L",x,y]] into a polyline */
+function sampleOps(ops,n){n=n||14;const out=[];let cx=0,cy=0;ops.forEach(o=>{if(o[0]==="M"){cx=o[1];cy=o[2];out.push([cx,cy])}else if(o[0]==="L"){for(let i=1;i<=4;i++)out.push([lerp(cx,o[1],i/4),lerp(cy,o[2],i/4)]);cx=o[1];cy=o[2]}
+  else{const p0=[cx,cy];for(let i=1;i<=n;i++)out.push(bez(p0,[o[1],o[2]],[o[3],o[4]],[o[5],o[6]],i/n));cx=o[5];cy=o[6]}});return out}
+function opsPath(ops,skipFlag){const p=new Path2D();ops.forEach(o=>{if(o[0]==="M")p.moveTo(o[1],o[2]);else if(o[0]==="L"){if(skipFlag&&o[3]==="v")p.moveTo(o[1],o[2]);else p.lineTo(o[1],o[2])}else p.bezierCurveTo(o[1],o[2],o[3],o[4],o[5],o[6])});return p}
+/* curved leader-line label: from point (px,py) to label at (lx,ly) */
+function lead(px,py,lx,ly,t,o){o=o||{};const a=o.a==null?1:o.a;if(a<=0)return;ctx.save();ctx.globalAlpha*=a;line(px,py,lx,ly,o.lc||C["ink-soft"],1.2);circ(px,py,2.6,o.lc||C["ink-soft"]);
+  label(lx,ly,t,{size:o.size||12.5,weight:o.weight||600,align:o.align||(lx<px?"right":"left"),border:o.border,color:o.color});ctx.restore()}
+function pulseRing(x,y,r,col,p){ctx.save();ctx.globalAlpha*=(1-p);ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(x,y,r*(.4+p),0,TAU);ctx.stroke();ctx.restore()}
+function ionDot(x,y,kind,a,r){r=r||5;const col=kind==="na"?C.na:kind==="ca"?C.ca:C.k;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);
+  if(kind==="ca"){ctx.beginPath();ctx.moveTo(x,y-r-1);ctx.lineTo(x+r+1,y);ctx.lineTo(x,y+r+1);ctx.lineTo(x-r-1,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke()}
+  else if(kind==="k"){rr(x-r,y-r,2*r,2*r,1.5);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hexA(C.ink,.35);ctx.lineWidth=1;ctx.stroke()}
+  else circ(x,y,r,col,hexA(C.ink,.35),1);
+  ctx.restore()}
+function bloodDot(x,y,ox,a,r){r=r||4.2;const col=typeof ox==="number"?mix(C.deoxy,C.oxy,ox):ox;ctx.save();ctx.globalAlpha*=a==null?1:clamp(a,0,1);circ(x,y,r,col,hexA(C.ink,.3),.8);circ(x-r*.3,y-r*.3,r*.35,hexA("#ffffff",.35));ctx.restore()}
+/* ================= the heart: one original frontal-section drawing used everywhere =================
+   Local coordinates, origin near the middle of the heart, y down. The viewer looks at the front of the
+   patient, so the patient's RIGHT side (right atrium, right ventricle) is on the viewer's LEFT. */
+const HG=(function(){
+  const outer=[["M",-120,-62],["C",-160,-50,-168,20,-140,45],["C",-150,110,-70,190,20,205],["C",60,214,88,232,102,224],["C",150,182,178,92,162,22],
+    ["C",176,-10,168,-82,140,-98],["C",112,-112,72,-106,50,-96],["C",20,-62,-30,-62,-60,-72],["C",-82,-80,-102,-76,-120,-62]];
+  const cav={
+    RA:[["M",-112,-56],["C",-150,-46,-152,22,-132,44],["L",-62,42,"v"],["C",-56,12,-56,-36,-74,-54],["C",-86,-62,-100,-62,-112,-56]],
+    RV:[["M",-132,44],["L",-62,42,"v"],["C",-42,40,-38,0,-31,-31],["L",-3,-15,"v"],["C",-2,10,4,38,10,60],["C",22,105,34,155,40,178],["C",0,182,-90,152,-126,84],["C",-134,68,-136,54,-132,44]],
+    RVc:[["M",-132,44],["L",-62,42,"v"],["C",-45,52,-15,68,2,80],["C",20,120,35,160,40,178],["C",0,182,-90,152,-126,84],["C",-134,68,-136,54,-132,44]],
+    LA:[["M",54,-86],["C",90,-100,140,-96,146,-62],["C",152,-30,142,0,132,4],["L",56,8,"v"],["C",50,-20,48,-58,54,-86]],
+    LV:[["M",56,8],["L",132,4,"v"],["C",146,40,142,122,108,190],["C",98,206,86,206,78,192],["C",60,150,40,90,26,45],["C",20,30,15,15,15,3],["L",43,-5,"v"],["C",48,-1,52,3,56,8]]
+  };
+  const ves={
+    DAO:{ops:[["M",114,-190],["C",118,-120,118,40,118,252]],w:30,b:"o",layer:0},
+    IVC:{ops:[["M",-150,252],["C",-150,150,-140,80,-132,30]],w:36,b:"d",layer:0},
+    RPV:{ops:[["M",-232,-58],["C",-170,-75,-60,-102,62,-82]],w:14,b:"o",layer:0},
+    RPA:{ops:[["M",35,-112],["C",-20,-126,-120,-126,-222,-118]],w:24,b:"d",layer:0},
+    SVC:{ops:[["M",-108,-252],["C",-107,-180,-106,-110,-106,-62]],w:34,b:"d",layer:1},
+    LPV1:{ops:[["M",232,-82],["C",205,-80,185,-74,168,-70]],w:15,b:"o",layer:1},
+    LPV2:{ops:[["M",232,-34],["C",205,-36,190,-36,170,-35]],w:15,b:"o",layer:1},
+    AO:{ops:[["M",29,-1],["C",18,-50,-12,-110,-12,-150],["C",-14,-210,100,-225,114,-172]],w:32,b:"o",layer:2},
+    BR1:{ops:[["M",-6,-186],["C",-8,-205,-12,-225,-15,-250]],w:13,b:"o",layer:2},
+    BR2:{ops:[["M",34,-204],["C",34,-220,35,-235,36,-252]],w:11,b:"o",layer:2},
+    BR3:{ops:[["M",76,-202],["C",80,-218,84,-232,90,-250]],w:12,b:"o",layer:2},
+    PT:{ops:[["M",-17,-23],["C",-5,-60,15,-95,35,-112]],w:32,b:"d",layer:3},
+    LPA:{ops:[["M",35,-112],["C",90,-130,160,-128,222,-118]],w:24,b:"d",layer:3}
+  };
+  const conn={SVC:[-106,-80,-106,-44,30],LPV1:[176,-70,138,-68,11],LPV2:[178,-35,140,-36,11]};
+  const valves={tri:[-132,44,-62,42,0,1],mit:[56,8,132,4,0.05,1],pul:[-31,-31,-3,-15,.5,-.87],aor:[15,3,43,-5,-.27,-.96]};
+  const pap={tri:[[-118,152,-112,118],[-62,168,-74,128]],mit:[[72,182,80,138],[132,160,118,118]]};
+  const center={RA:[-100,-8],RV:[-60,110],LA:[98,-46],LV:[96,100]};
+  /* conduction system (shown on the RVc version of the heart) */
+  const cond={SA:[-110,-50],AV:[-52,38],
+    inter:[[[-110,-50],[-80,-46],[-62,-6],[-52,38]],[[-110,-50],[-96,-8],[-74,22],[-52,38]],[[-110,-50],[-134,-10],[-110,34],[-52,38]]],
+    bach:[[-104,-56],[-40,-74],[40,-88],[110,-90]],
+    his:[[-52,38],[-20,52],[12,62]],
+    rbb:[[12,62],[16,92],[30,140],[48,186]],
+    lbb:[[12,62],[34,88],[52,140],[72,190]],
+    purR:[[48,186],[10,190],[-60,170],[-116,124],[-136,70]],
+    purL:[[72,192],[110,200],[146,140],[158,80],[150,30]]};
+  const P={outer:opsPath(outer)};
+  for(const k in cav){P[k]=opsPath(cav[k]);P[k+"w"]=opsPath(cav[k],true)}
+  for(const k in ves){ves[k].path=opsPath(ves[k].ops);ves[k].pts=sampleOps(ves[k].ops,16)}
+  P.walls=new Path2D();["outer","RA","RVc","LA","LV"].forEach(k=>P.walls.addPath(P[k]));
+  return {outer,cav,ves,conn,valves,pap,center,cond,P};
+})();
+let HT={x:0,y:0,s:1};
+function hp(x,y){return [HT.x+x*HT.s,HT.y+y*HT.s]}
+function vesAt(id,f){return along(HG.ves[id].pts,f)}
+function bloodCol(b){return b==="o"?C.oxy:C.deoxy}
+function sideOf(id){return ({RA:"d",RV:"d",LA:"o",LV:"o"})[id]}
+/* draw one valve. open 0..1. returns leaflet tip points */
+function drawValve(v,open,o){o=o||{};const [ax,ay,bx,by,dx0,dy0]=v;const dl=Math.hypot(dx0,dy0),dx=dx0/dl,dy=dy0/dl;const mx=(ax+bx)/2,my=(ay+by)/2;const half=Math.hypot(bx-ax,by-ay)/2;
+  const e=ease(clamp(open,0,1));const tips=[];
+  [[ax,ay],[bx,by]].forEach(h=>{const ux=(mx-h[0])/half,uy=(my-h[1])/half;let vx=lerp(ux,dx,e),vy=lerp(uy,dy,e);const vl=Math.hypot(vx,vy)||1;vx/=vl;vy/=vl;
+    const L=half*(o.len||1.02);const tx=h[0]+vx*L,ty=h[1]+vy*L;const bulge=(1-e)*(o.bulge==null?7:o.bulge);
+    const cx=h[0]+vx*L*.5-dx*bulge,cy=h[1]+vy*L*.5-dy*bulge;
+    ctx.beginPath();ctx.moveTo(h[0],h[1]);ctx.quadraticCurveTo(cx,cy,tx,ty);ctx.lineCap="round";
+    ctx.strokeStyle=o.edge||C["valve-edge"];ctx.lineWidth=(o.w||5)+2.4;ctx.stroke();ctx.strokeStyle=o.col||C.valve;ctx.lineWidth=o.w||5;ctx.stroke();ctx.lineCap="butt";
+    tips.push([tx,ty])});
+  if(o.hl){glow(mx,my,half*1.3,o.hl,.55)}
+  return tips}
+function vesselDraw(id,col,o){o=o||{};const v=HG.ves[id];ctx.lineCap=o.cap||"butt";ctx.lineJoin="round";
+  ctx.strokeStyle=o.edge||mix(col,C.ink,.45);ctx.lineWidth=v.w+3.5;ctx.stroke(v.path);ctx.strokeStyle=col;ctx.lineWidth=v.w;ctx.stroke(v.path);
+  ctx.strokeStyle=hexA("#ffffff",.13);ctx.lineWidth=v.w*.28;ctx.stroke(v.path);ctx.lineCap="butt"}
+function vesselHL(id,col,a){const v=HG.ves[id];ctx.save();ctx.globalAlpha*=a==null?.55:a;ctx.lineCap="round";ctx.strokeStyle=col;ctx.lineWidth=v.w+14;ctx.stroke(v.path);ctx.restore()}
+/* o: {x,y,s, ext:false (external view), conus:true, valves:{tri,mit,pul,aor}, vsq, asq, fill:{id:color}, hl:{id:color}, alpha, vesA, noPap, wall:color}
+   fill ids: SVC IVC RA RV PT RPA LPA RPV LPV LA LV AO (AO also colours DAO and branches) */
+function drawHeart(o){o=o||{};HT={x:o.x||0,y:o.y||0,s:o.s||1};const F=o.fill||{};const H=o.hl||{};
+  const col=id=>F[id]||(id==="DAO"||id.startsWith("BR")?F.AO:null)||(id.startsWith("LPV")||id==="RPV"?F.PV||F.LPV:null)||(id==="LPA"||id==="RPA"?F.PA:null)||bloodCol((HG.ves[id]||{}).b||sideOf(id));
+  const V=o.valves||{tri:1,mit:1,pul:0,aor:0};const vsq=o.vsq||0,asq=o.asq||0;const conus=o.conus!==false;
+  ctx.save();ctx.translate(HT.x,HT.y);ctx.scale(HT.s,HT.s);ctx.globalAlpha*=o.alpha==null?1:o.alpha;
+  const vA=o.vesA==null?1:o.vesA;
+  // back vessels
+  ctx.save();ctx.globalAlpha*=vA;["DAO","IVC","RPV","RPA","SVC","LPV1","LPV2"].forEach(id=>{if(id==="RPV"&&!o.rpv)return;if(H[id])vesselHL(id,H[id]);vesselDraw(id,col(id))});ctx.restore();
+  // body of the heart
+  const myo=o.wall||C.myo;
+  ctx.fillStyle=myo;ctx.fill(HG.P.outer);ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=2.2;ctx.stroke(HG.P.outer);
+  if(o.ext){ // external surface: soft shading + grooves
+    ctx.save();ctx.clip(HG.P.outer);const g=ctx.createRadialGradient(-30,40,20,0,40,230);g.addColorStop(0,hexA("#ffffff",.16));g.addColorStop(1,hexA(C.ink,.16));ctx.fillStyle=g;ctx.fillRect(-200,-140,420,400);
+    // auricles
+    ctx.restore();
+  } else {
+    const rv=conus?"RV":"RVc";
+    const fills=[["RA","RA"],[rv,"RV"],["LA","LA"],["LV","LV"]];
+    fills.forEach(([pk,id])=>{ctx.fillStyle=col(id);ctx.fill(HG.P[pk]);
+      const sq=(id==="RV"||id==="LV")?vsq*(id==="LV"?16:10):asq*7;
+      ctx.save();ctx.clip(HG.P[pk]);ctx.lineJoin="round";ctx.strokeStyle=C.endo;ctx.lineWidth=4+sq*2;ctx.stroke(HG.P[pk+"w"]);
+      if(sq>0){ctx.strokeStyle=myo;ctx.lineWidth=sq*2;ctx.stroke(HG.P[pk+"w"])}ctx.restore();
+      if(H[id]){ctx.save();ctx.strokeStyle=H[id];ctx.lineWidth=6;ctx.globalAlpha*=.85;ctx.setLineDash([8,5]);ctx.stroke(HG.P[pk]);ctx.restore()}});
+    // connectors (lumen running through the wall)
+    ctx.save();ctx.globalAlpha*=vA;ctx.lineCap="round";for(const k in HG.conn){const c=HG.conn[k];ctx.strokeStyle=col(k);ctx.lineWidth=c[4];ctx.beginPath();ctx.moveTo(c[0],c[1]);ctx.lineTo(c[2],c[3]);ctx.stroke()}ctx.lineCap="butt";
+    // IVC opening
+    ctx.beginPath();ctx.ellipse(-124,24,15,8,-.3,0,TAU);ctx.fillStyle=mix(col("IVC"),C.ink,.35);ctx.fill();ctx.restore();
+    // papillary muscles + chordae + AV valves
+    const tipsT=drawValveSet("tri",V.tri,o);const tipsM=drawValveSet("mit",V.mit,o);
+    if(!o.noPap){[["tri",tipsT,vsq*.6],["mit",tipsM,vsq]].forEach(([k,tips,sq])=>{HG.pap[k].forEach((p,i)=>{const tx=p[2],ty=p[3]+sq*-6;
+        ctx.beginPath();ctx.moveTo(p[0]-9,p[1]);ctx.quadraticCurveTo(tx-8,ty+14,tx,ty);ctx.quadraticCurveTo(tx+8,ty+14,p[0]+9,p[1]);ctx.closePath();ctx.fillStyle=myo;ctx.fill();ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=1.2;ctx.stroke();
+        const tp=tips[i];for(let j=-1;j<=1;j++){line(tp[0]+j*3,tp[1],tx+j*2,ty,C.chord,1.3)}})})}
+  }
+  // front vessels
+  ctx.save();ctx.globalAlpha*=vA;["AO","BR1","BR2","BR3"].forEach(id=>{if(H.AO&&id==="AO"){vesselHL("AO",H.AO);vesselHL("DAO",H.AO,.35)}vesselDraw(id,col(id))});ctx.restore();
+  if(!o.ext)drawValveSet("aor",V.aor,o);
+  ctx.save();ctx.globalAlpha*=vA*(conus||o.ext?1:.45);["PT","LPA"].forEach(id=>{if(H[id])vesselHL(id,H[id]);if(H.PA&&(id==="LPA"))vesselHL("LPA",H.PA);vesselDraw(id,col(id))});ctx.restore();
+  if(H.PA)vesselHL("RPA",H.PA,.3);
+  if(!o.ext&&conus)drawValveSet("pul",V.pul,o);
+  ctx.restore();
+}
+function drawValveSet(k,open,o){const hl=(o.hl||{})[k];return drawValve(HG.valves[k],open,{hl,w:k==="tri"||k==="mit"?5:4,len:k==="tri"||k==="mit"?1.0:.95})}
+/* local point -> is inside structure? (for click games). uses an offscreen 2D context */
+const _hc=document.createElement("canvas").getContext("2d");
+function hitStructure(lx,ly,ids){for(const id of ids){
+  if(HG.valves[id]){const v=HG.valves[id];const mx=(v[0]+v[2])/2,my=(v[1]+v[3])/2;if(Math.hypot(lx-mx,ly-my)<20)return id;continue}
+  if(HG.ves[id]){_hc.lineWidth=HG.ves[id].w+10;if(_hc.isPointInStroke(HG.ves[id].path,lx,ly))return id;continue}
+  if(HG.P[id]&&_hc.isPointInPath(HG.P[id],lx,ly))return id}
+  return null}
+
+/* ================= one cardiac cycle at 75 beats/min (0.8 s), the Wiggers model =================
+   t in seconds from the start of the P wave. Values are rounded textbook numbers (left heart). */
+const CYC=0.8;
+const PH=[ // [start,end,name,short]
+  [0.00,0.18,"Atrial systole","atria contract"],
+  [0.18,0.23,"Isovolumic contraction","all valves shut"],
+  [0.23,0.48,"Ventricular ejection","semilunar valves open"],
+  [0.48,0.56,"Isovolumic relaxation","all valves shut"],
+  [0.56,0.80,"Ventricular filling","AV valves open"]];
+function wrapT(t){return ((t%CYC)+CYC)%CYC}
+function wVol(t){t=wrapT(t);if(t<0.14)return 100+20*smooth(t/0.14);if(t<0.23)return 120;if(t<0.48){const u=(t-0.23)/0.25;return 120-70*(1-Math.pow(1-u,2.2))}if(t<0.56)return 50;
+  const u=(t-0.56)/0.24;return 50+50*(1-Math.exp(-u*4))/(1-Math.exp(-4))}
+function wLVP(t){t=wrapT(t);if(t<0.18)return 6+4*gauss(t,0.1,0.035);if(t<0.23){const u=(t-0.18)/0.05;return 6.3+(80-6.3)*Math.pow(u,1.6)}
+  if(t<0.48){const u=(t-0.23)/0.25;return u<.5?80+42*Math.sin(Math.PI*u):122-22*Math.pow((u-.5)/.5,1.3)}
+  if(t<0.56){const u=(t-0.48)/0.08;return 6+94*(1-smooth(u))}return 4+2*(t-0.56)/0.24}
+function wAOP(t){t=wrapT(t);if(t>=0.23&&t<0.48){const u=(t-0.23)/0.25;return wLVP(t)-3*Math.sin(Math.PI*u)}
+  const tt=t>=0.48?t:t+CYC;const base=100-20*Math.pow((tt-0.48)/0.55,0.8);return base-6*gauss(tt,0.492,0.006)+2.5*gauss(tt,0.51,0.012)}
+function wLAP(t){t=wrapT(t);if(t>=0.56)return Math.max(6+6*Math.exp(-(t-0.56)/0.04),wLVP(t)+2);if(t<0.18)return wLVP(t)+2+1.5*gauss(t,0.09,0.03);return 8.3-4.3*smooth((t-0.18)/0.04)+8*smooth((t-0.22)/0.34)}
+function wECG(t){t=wrapT(t);return 0.15*gauss(t,0.045,0.018)-0.12*gauss(t,0.163,0.006)+1.0*gauss(t,0.18,0.008)-0.26*gauss(t,0.197,0.007)+0.3*gauss(t,0.42,0.035)}
+function avOpen(t){t=wrapT(t);if(t>=0.56)return seg(t,0.56,0.59);if(t<0.18)return 1-seg(t,0.165,0.18);return 0}
+function slOpen(t){t=wrapT(t);if(t>=0.23&&t<0.48)return Math.min(seg(t,0.23,0.25),1-seg(t,0.465,0.48));return 0}
+function atrSq(t){t=wrapT(t);return t>0.04&&t<0.15?Math.sin(Math.PI*(t-0.04)/0.11):0}
+function phaseAt(t){t=wrapT(t);for(const p of PH)if(t>=p[0]&&t<p[1])return p;return PH[0]}
+/* heart pose for a moment in the cycle */
+function pose(t){return {valves:{tri:avOpen(t),mit:avOpen(t),pul:slOpen(t),aor:slOpen(t)},vsq:(120-wVol(t))/70,asq:atrSq(t)}}
+/* ECG building blocks for the rhythm simulator: shape of each wave, t = time since the wave started (s) */
+const WAVES={
+  P:t=>t<0||t>0.1?0:0.15*Math.sin(Math.PI*t/0.1)**2,
+  QRS:t=>t<0||t>0.1?0:-0.12*gauss(t,0.013,0.006)+1.0*gauss(t,0.03,0.008)-0.26*gauss(t,0.047,0.007),
+  T:t=>t<0||t>0.2?0:0.3*Math.sin(Math.PI*t/0.2)**2,
+  WQRS:t=>t<0||t>0.18?0:-0.15*gauss(t,0.02,0.012)+1.25*gauss(t,0.07,0.025)-0.5*gauss(t,0.13,0.02),
+  WT:t=>t<0||t>0.26?0:-0.42*Math.sin(Math.PI*t/0.26)**2};
+/* ================= shared scene helpers ================= */
+const cat=(...a)=>[].concat(...a);
+const V_=id=>HG.ves[id].pts;
+const RA_RV=[[-97,44],[-92,85],[-70,122],[-40,100],[-25,45],[-21,5],[-17,-23]];
+const ROUTE_S=cat(V_("SVC"),[[-104,-40],[-100,-10],[-98,20]],RA_RV,V_("PT").slice(1),V_("LPA").slice(1));
+const ROUTE_I=cat(V_("IVC"),[[-118,28],[-104,38]],RA_RV,V_("PT").slice(1),V_("RPA").slice(1));
+const LV_OUT=[[94,6],[98,60],[102,130],[92,172],[70,152],[50,96],[34,40],[29,-1]];
+const ROUTE_O=cat(V_("LPV1"),[[150,-69],[128,-66],[104,-52],[95,-28]],LV_OUT,V_("AO").slice(1),V_("DAO").filter(p=>p[1]>-165));
+const ROUTE_O2=cat(V_("LPV2"),[[150,-35],[120,-30],[100,-14]],LV_OUT,V_("AO").slice(1,30),V_("BR2"));
+function flowRoute(route,n,period,T,oxF,r,a){for(let i=0;i<n;i++){const f=P(T/period+i/n+rnd(i*7.3)*.02,1);const [x,y]=along(route,f);const [X,Y]=hp(x,y);const ox=typeof oxF==="function"?oxF(f):oxF;bloodDot(X,Y,ox,a==null?.9:a,r||3.6*Math.max(.7,HT.s))}}
+function polyPart(pts,f,col,lw){if(f<=0)return null;let L=0;const ls=[];for(let i=0;i<pts.length-1;i++){const l=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);ls.push(l);L+=l}
+  let d=clamp(f,0,1)*L;ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);let end=pts[0];for(let i=0;i<ls.length;i++){if(d>=ls[i]){ctx.lineTo(pts[i+1][0],pts[i+1][1]);d-=ls[i];end=pts[i+1]}else{const q=d/ls[i];end=[lerp(pts[i][0],pts[i+1][0],q),lerp(pts[i][1],pts[i+1][1],q)];ctx.lineTo(end[0],end[1]);break}}
+  ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke();ctx.lineCap="butt";return end}
+function H2C(pts){return pts.map(p=>hp(p[0],p[1]))}
+/* simple axes box for graphs */
+function graphBox(x,y,w,h,o){o=o||{};panelBox(x,y,w,h,{fill:o.fill||hexA(C.panel,.92)});
+  if(o.grid){ctx.save();ctx.strokeStyle=hexA(C.grid,.6);ctx.lineWidth=.8;for(let gx=x+o.grid;gx<x+w;gx+=o.grid){ctx.beginPath();ctx.moveTo(gx,y+2);ctx.lineTo(gx,y+h-2);ctx.stroke()}for(let gy=y+o.grid;gy<y+h;gy+=o.grid){ctx.beginPath();ctx.moveTo(x+2,gy);ctx.lineTo(x+w-2,gy);ctx.stroke()}ctx.restore()}
+  if(o.title)txt(o.tr?x+w-10:x+10,y+14,o.title,{size:11,mono:true,weight:700,color:C["ink-soft"],align:o.tr?"right":"left"})}
+function plotFn(fn,t0,t1,x,y,w,h,v0,v1,col,lw,dash,upto){ctx.beginPath();const N=Math.max(40,Math.round(w));let started=false;for(let i=0;i<=N;i++){const t=lerp(t0,t1,i/N);if(upto!=null&&t>upto)break;const v=fn(t);const X=x+w*i/N,Y=y+h-(v-v0)/(v1-v0)*h;started?ctx.lineTo(X,Y):(ctx.moveTo(X,Y),started=true)}
+  ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.lineJoin="round";ctx.stroke();ctx.setLineDash([])}
+function stethoscope(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=3;ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(-14,-40);ctx.quadraticCurveTo(-18,-10,0,0);ctx.quadraticCurveTo(18,-10,14,-40);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(0,30,40,20,40,50);ctx.stroke();circ(40,58,11,C["ink-faint"],C["ink-soft"],2.5);circ(40,58,5,C.panel);circ(-14,-42,3.5,C["ink-soft"]);circ(14,-42,3.5,C["ink-soft"]);ctx.restore()}
+function lvShape(cx,top,w,h,vfrac,o){ // a stand-alone left ventricle cut open. vfrac 0..1 fill (cavity size)
+  o=o||{};const wall=o.wall||16;const cw=(w/2-wall)*(0.45+0.55*vfrac),ch=(h-wall-10)*(0.55+0.45*vfrac);
+  // outer
+  ctx.beginPath();ctx.moveTo(cx-w/2,top);ctx.bezierCurveTo(cx-w/2-6,top+h*.55,cx-w*.18,top+h,cx,top+h+6);ctx.bezierCurveTo(cx+w*.18,top+h,cx+w/2+6,top+h*.55,cx+w/2,top);ctx.closePath();
+  ctx.fillStyle=o.myo||C.myo;ctx.fill();ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=2;ctx.stroke();
+  // cavity
+  ctx.beginPath();ctx.moveTo(cx-cw,top);ctx.bezierCurveTo(cx-cw-3,top+ch*.6,cx-cw*.35,top+ch,cx,top+ch+2);ctx.bezierCurveTo(cx+cw*.35,top+ch,cx+cw+3,top+ch*.6,cx+cw,top);ctx.closePath();
+  ctx.fillStyle=o.blood||C.oxy;ctx.fill();ctx.strokeStyle=C.endo;ctx.lineWidth=2;ctx.stroke();return {cw,ch}}
+
+
+const LUNG_R=[[-232,-118],[-270,-170],[-330,-150],[-350,-80],[-300,-30],[-245,-55]];
+const LUNG_L=LUNG_R.map(p=>[-p[0],p[1]]);
+const TRACE=(function(){const segs=[];const add=(stop,pts)=>segs.push({stop,pts});
+  add(0,[[-150,300],...V_("IVC").slice(0,-3)]);add(1,[...V_("IVC").slice(-3),[-118,28],[-104,34]]);add(2,[[-97,44]]);add(3,[[-92,85],[-70,122],[-40,100],[-25,45]]);add(4,[[-21,5],[-17,-23]]);
+  add(5,V_("PT").slice(1));add(6,V_("LPA").slice(1));add(7,LUNG_L);add(8,[[232,-82],...V_("LPV1").slice(1),[150,-69],[128,-66]]);add(9,[[104,-52],[95,-28]]);add(10,[[94,6]]);
+  add(11,[[98,60],[102,130],[92,172],[70,152],[50,96],[34,40]]);add(12,[[29,-1]]);add(13,[...V_("AO").slice(1),...V_("DAO").filter(p=>p[1]>-165)]);add(14,[[118,300],[-20,316],[-150,300]]);
+  const pts=[],tags=[];segs.forEach(s=>s.pts.forEach(p=>{pts.push(p);tags.push(s.stop)}));
+  let L=0;const cum=[0];for(let i=1;i<pts.length;i++){L+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);cum.push(L)}
+  return {pts,tags,cum,L}})();
+const STOPS=["Venae cavae","Right atrium","Tricuspid valve","Right ventricle","Pulmonary semilunar valve","Pulmonary trunk","Pulmonary arteries","Lungs (capillaries)","Pulmonary veins","Left atrium","Mitral valve","Left ventricle","Aortic semilunar valve","Aorta","Body tissues"];
+const STOP_HL=[["IVC","SVC"],["RA"],["tri"],["RV"],["pul"],["PT"],["LPA","RPA"],[],["LPV1","LPV2"],["LA"],["mit"],["LV"],["aor"],["AO"],[]];
+function traceAt(f){const d=f*TRACE.L;let i=0;while(i<TRACE.cum.length-1&&TRACE.cum[i+1]<d)i++;return TRACE.tags[i]}
+function lungShape(cx,cy,sx,flip,o){o=o||{};ctx.save();ctx.translate(cx,cy);ctx.scale(sx*(flip?-1:1),sx);ctx.beginPath();ctx.moveTo(0,-110);ctx.bezierCurveTo(-50,-100,-78,-20,-80,60);ctx.bezierCurveTo(-80,100,-40,110,0,100);ctx.bezierCurveTo(30,95,30,40,20,10);ctx.bezierCurveTo(30,-30,28,-90,0,-110);ctx.closePath();
+  ctx.fillStyle=o.fill||C.lung;ctx.fill();ctx.strokeStyle=o.edge||C["lung-edge"];ctx.lineWidth=2/sx;ctx.stroke();ctx.clip();for(let k=0;k<18;k++){circ(-70+rnd(k*3)*100,-90+rnd(k*7)*190,7+rnd(k)*6,hexA(C["lung-edge"],.14))}ctx.restore()}
+function bodyBox(x,y,w,h,t,hl){panelBox(x,y,w,h,{fill:hl?mix(C.body,C.glow,.35):C.body,stroke:hl?C.glow:C["body-edge"],lw:hl?3:1.5});
+  for(let k=0;k<8;k++){const xx=x+12+k*(w-24)/7;ctx.beginPath();ctx.moveTo(xx,y+h*.3);ctx.bezierCurveTo(xx+8,y+h*.5,xx-8,y+h*.6,xx,y+h*.75);ctx.strokeStyle=hexA(C["body-edge"],.5);ctx.lineWidth=1.2;ctx.stroke()}
+  txt(x+w/2,y+h/2,t,{size:12,weight:700,align:"center"})}
+
+function condBase(o){o=o||{};const c=HG.cond;ctx.save();ctx.translate(HT.x,HT.y);ctx.scale(HT.s,HT.s);ctx.lineCap="round";ctx.lineJoin="round";
+  const base=o.dim?hexA(C.cond,.45):C.cond;[...c.inter,c.bach,c.his,c.rbb,c.lbb,c.purR,c.purL].forEach(p=>{poly(p,mix(base,C.ink,.25),5.2);poly(p,base,3.2)});
+  // Purkinje twigs
+  [[c.purR,1],[c.purL,-1]].forEach(([pp,sg])=>{for(let i=1;i<pp.length;i++){const [x,y]=pp[i];line(x,y,x+sg*10,y-14,base,1.6);line(x,y,x+sg*14,y+2,base,1.6)}});
+  circ(c.SA[0],c.SA[1],9,C.node,C.ink,1.5);circ(c.AV[0],c.AV[1],9,C.node,C.ink,1.5);ctx.restore()}
+function condFire(t,o){o=o||{};const c=HG.cond;const g=C.glow;ctx.save();ctx.translate(HT.x,HT.y);ctx.scale(HT.s,HT.s);
+  // depolarization tints
+  const aw=seg(t,0,.09),afade=1-seg(t,.15,.3);if(aw>0&&afade>0){ctx.save();ctx.clip(HG.P.walls,"evenodd");ctx.beginPath();ctx.rect(-260,-260,520,300);ctx.clip();ctx.globalAlpha=.4*afade;ctx.fillStyle=g;ctx.beginPath();ctx.arc(c.SA[0],c.SA[1],aw*260,0,TAU);ctx.fill();ctx.restore()}
+  const vw=seg(t,.18,.235),vfade=1-seg(t,.4,.5);if(vw>0&&vfade>0){ctx.save();ctx.clip(HG.P.walls,"evenodd");ctx.beginPath();ctx.rect(-260,44,520,300);ctx.clip();ctx.globalAlpha=.42*vfade;ctx.fillStyle=g;ctx.beginPath();ctx.arc(80,215,vw*300,0,TAU);ctx.fill();ctx.restore()}
+  ctx.lineCap="round";ctx.lineJoin="round";
+  const lit=(pts,f,lw)=>{if(f<=0)return;const e=polyPart(pts,f,g,lw||5);if(f<1&&e)glow(e[0],e[1],16,g,.9)};
+  c.inter.forEach(pp=>lit(pp,seg(t,0,.05)));lit(c.bach,seg(t,0,.06));
+  const avA=t>.04&&t<.16?1:0;if(avA){glow(c.AV[0],c.AV[1],26+5*Math.sin(t*120),g,.9)}
+  lit(c.his,seg(t,.15,.16),6);lit(c.rbb,seg(t,.16,.18));lit(c.lbb,seg(t,.16,.18));lit(c.purR,seg(t,.18,.215),4);lit(c.purL,seg(t,.18,.215),4);
+  if(t<.03)glow(c.SA[0],c.SA[1],34,g,1-t/.03);
+  ctx.restore();ctx.lineCap="butt"}
+
+/* ================= Wiggers chart (shared by the cycle scene and the lab) ================= */
+const PHC=["act5","act3","bad","act4","accent"];
+function phonoV(t){t=wrapT(t);return gauss(t,.205,.018)*Math.sin(TAU*42*t)+.75*gauss(t,.497,.012)*Math.sin(TAU*58*t)}
+function wiggers(x,y,w,h,t,o){o=o||{};const X=tt=>x+w*tt/CYC;
+  const rows={ph:[y,24],pr:[y+30,h*.44],vo:[y+38+h*.44,h*.2],ec:[y+46+h*.64,h*.17],so:[y+52+h*.81,h*.19-52]};
+  // phase bar
+  PH.forEach((p,i)=>{const a=X(p[0]),b=X(p[1]);rr(a+1,rows.ph[0],b-a-2,rows.ph[1],5);const on=t>=p[0]&&t<p[1];ctx.fillStyle=on?C[PHC[i]]:hexA(C[PHC[i]],.25);ctx.fill();
+    txt((a+b)/2,rows.ph[0]+12.5,b-a>60?["1 Atrial systole","2","3 Ejection","4","5 Filling"][i]:String(i+1),{size:10.5,weight:700,align:"center",color:on?onFill():C.ink})});
+  // shading: valve-closed periods
+  const shade=(a,b)=>{ctx.fillStyle=hexA(C.ink,.05);ctx.fillRect(X(a),rows.pr[0],X(b)-X(a),rows.so[0]+rows.so[1]-rows.pr[0])};shade(.18,.23);shade(.48,.56);
+  // pressure
+  graphBox(x,rows.pr[0],w,rows.pr[1],{title:"PRESSURE (mmHg)"});const pp=[rows.pr[0]+18,rows.pr[1]-24];
+  [[0,""],[40,"40"],[80,"80"],[120,"120"]].forEach(([v,s_])=>{const Y=pp[0]+pp[1]-v/130*pp[1];line(x+2,Y,x+w-2,Y,hexA(C.rule,.7),.8);if(s_)txt(x+w-4,Y-7,s_,{size:10,mono:true,align:"right",color:C["ink-faint"]})});
+  plotFn(wLAP,0,CYC,x,pp[0],w,pp[1],0,130,C.lap,2);plotFn(wAOP,0,CYC,x,pp[0],w,pp[1],0,130,C.aop,2.2);plotFn(wLVP,0,CYC,x,pp[0],w,pp[1],0,130,C.lvp,2.6);
+  if(o.labels!==false){label(X(.33),pp[0]+pp[1]-wLVP(.33)/130*pp[1]-14,"LV",{size:11,weight:700,color:C.lvp,bga:.8});label(X(.65),pp[0]+pp[1]-wAOP(.65)/130*pp[1]-12,"aorta",{size:11,weight:700,color:C.aop,bga:.8});label(X(.7),pp[0]+pp[1]-wLAP(.7)/130*pp[1]-12,"LA",{size:11,weight:700,color:C.lap,bga:.8})}
+  // volume
+  graphBox(x,rows.vo[0],w,rows.vo[1],{title:"LV VOLUME (mL)"});const vp=[rows.vo[0]+16,rows.vo[1]-22];plotFn(wVol,0,CYC,x,vp[0],w,vp[1],40,130,C.vol,2.6);
+  if(o.labels!==false){txt(X(.2),vp[0]+vp[1]-(120-40)/90*vp[1]-8,"EDV 120",{size:10.5,mono:true,weight:700,align:"center",color:C.vol});txt(X(.52),vp[0]+vp[1]-(50-40)/90*vp[1]-8,"ESV 50",{size:10.5,mono:true,weight:700,align:"center",color:C.vol})}
+  // ecg
+  graphBox(x,rows.ec[0],w,rows.ec[1],{title:"ECG",tr:true});plotFn(wECG,0,CYC,x,rows.ec[0]+10,w,rows.ec[1]-14,-.4,1.15,C.ecg,2.2);
+  if(o.labels!==false){[[.045,"P"],[.18,"QRS"],[.42,"T"]].forEach(([tt,s_])=>txt(X(tt)+(s_==="QRS"?18:0),rows.ec[0]+16,s_,{size:10.5,mono:true,weight:700,align:"center",color:C.ecg}))}
+  // sounds
+  graphBox(x,rows.so[0],w,rows.so[1],{title:"HEART SOUNDS"});plotFn(phonoV,0,CYC,x,rows.so[0]+6,w,rows.so[1]-6,-1.2,1.2,C["ink-soft"],1.4);
+  txt(X(.205),rows.so[0]+12,"S1 lub",{size:10.5,mono:true,weight:700,align:"center",color:C.act5});txt(X(.497),rows.so[0]+12,"S2 dub",{size:10.5,mono:true,weight:700,align:"center",color:C.act2});
+  // cursor
+  const cx=X(t);line(cx,y,cx,rows.so[0]+rows.so[1],C.ink,1.6);circ(cx,pp[0]+pp[1]-wLVP(t)/130*pp[1],4.5,C.lvp,C.panel,1.5);circ(cx,pp[0]+pp[1]-wAOP(t)/130*pp[1],4,C.aop,C.panel,1.5);circ(cx,vp[0]+vp[1]-(wVol(t)-40)/90*vp[1],4.5,C.vol,C.panel,1.5);
+  return rows}
+function valveChips(x,y,ps){const av=ps.valves.mit>.5,sl=ps.valves.aor>.5;
+  [["AV valves",av],["Semilunar valves",sl]].forEach(([n,o],i)=>{const yy=y+i*28;rr(x,yy,214,24,12);ctx.fillStyle=o?C["good-wash"]:C["bad-wash"];ctx.fill();ctx.strokeStyle=o?C.good:C.bad;ctx.lineWidth=1.4;ctx.stroke();
+    txt(x+12,yy+12.5,n,{size:12,weight:600});txt(x+202,yy+12.5,o?"OPEN":"SHUT",{size:11.5,mono:true,weight:700,align:"right",color:o?C.good:C.bad})})}
+
+/* Frank-Starling teaching model: SV (mL) from EDV (mL), contractility factor c and afterload factor af. SV(120)=70 at rest. */
+function fsSV(edv,c,af){c=c==null?1:c;af=af==null?1:af;return Math.max(0,107.03*(1-Math.exp(-(edv-35)/80))*c*af)}
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · Heart anatomy",col:"act1"},
+            2:{name:"Part 2 · Valves & blood flow",col:"act2"},
+            3:{name:"Part 3 · Feeding the heart",col:"act3"},
+            4:{name:"Part 4 · The electrical system",col:"act4"},
+            5:{name:"Part 5 · The cardiac cycle",col:"act5"},
+            6:{name:"Part 6 · Cardiac output",col:"act6"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: one heart, two pumps",
+ body:`<p>The <b>heart</b> is a hollow, muscular pump about the size of your fist. At a resting rate of about 75 beats per minute it beats more than 100,000 times a day.</p>
+ <p>It is really <b>two pumps side by side</b>. The <b>right side</b> sends oxygen-poor blood (drawn <b>blue</b>) to the lungs. The <b>left side</b> sends oxygen-rich blood (drawn <b>red</b>) to the rest of the body. Real blood is always red; the blue is just a label.</p>
+ <p>This walkthrough has six parts:</p>
+ <ol><li><b>Anatomy:</b> where the heart sits, its coverings, wall and chambers.</li><li><b>Valves and blood flow:</b> the one-way path blood takes.</li><li><b>Feeding the heart:</b> coronary vessels, heart attacks, and heart muscle cells.</li><li><b>The electrical system:</b> how each beat starts and spreads, and the ECG.</li><li><b>The cardiac cycle:</b> what happens during one beat, and the heart sounds.</li><li><b>Cardiac output:</b> how much blood the heart pumps and what changes it.</li></ol>`,
+ analogy:"A duplex house with two separate apartments that share one wall. Each apartment has a small upstairs room that collects blood and a big downstairs room that pumps it out.",
+ terms:[["Oxygen-poor blood","Blood returning from the body. Drawn blue in pictures."],["Oxygen-rich blood","Blood returning from the lungs. Drawn red."]],
+ check:null,caption:"The heart beats while oxygen-poor (blue) and oxygen-rich (red) blood move through it.",
+ legend:[["deoxy","Oxygen-poor blood"],["oxy","Oxygen-rich blood"],["myo","Heart muscle"]]},
+
+/* ---------- Part 1 ---------- */
+{act:1,scene:"loc",id:"loc",title:"Where the heart sits: the mediastinum",
+ body:`<p>The heart sits in the chest (the <b>thoracic cavity</b>) between the two lungs. That middle space is the <b>mediastinum</b>. The <b>sternum</b> (breastbone) is in front of the heart and the vertebrae are behind it.</p>
+ <p>The heart is tilted. Its wide top, the <b>base</b>, is where the large blood vessels attach, at about the level of the third costal cartilage. Its pointed bottom, the <b>apex</b>, points down and to the left. It sits just left of the sternum, between the fourth and fifth ribs.</p>
+ <p>An adult heart is about 12 cm long, 8 cm wide and 6 cm thick, and weighs about 250 to 350 grams.</p>`,
+ analogy:"A fist tucked between two pillows (the lungs), leaning a little to the left, with a board in front of it (the sternum).",
+ terms:[["Mediastinum","The space in the middle of the chest, between the lungs."],["Base","The wide top of the heart, where the great vessels attach."],["Apex","The pointed bottom tip. It points down and to the left."]],
+ check:{q:"Where is the apex of the heart?",opts:[
+  ["At the bottom, pointing down and to the left, near the 4th and 5th ribs.",1,"Yes. That tilt is why you feel your heartbeat a bit left of your breastbone."],
+  ["At the top, where the large vessels attach.",0,"That wide top is the base. The apex is the pointed tip at the bottom."],
+  ["Behind the sternum, pointing straight up.",0,"The apex points down, not up. The base is the part near the top."],
+  ["On the right side, under the right lung.",0,"Most of the heart leans to the left. The apex points to the left."]]},
+ caption:"The heart beats in the mediastinum. The base is up near the great vessels; the apex points down and to the left.",
+ legend:[["myo","Heart"],["lung","Lungs"],["bone","Ribs and sternum","s"]]},
+
+{act:1,scene:"peri",id:"peri",title:"The pericardium: a sac with a slippery lining",
+ body:`<p>The heart sits inside a two-part sac called the <b>pericardium</b>.</p>
+ <p>The outer part is the tough <b>fibrous pericardium</b>. It anchors the heart in place and keeps it from over-filling.</p>
+ <p>Inside it is the thin <b>serous pericardium</b>, which folds back on itself to make two layers. The <b>parietal layer</b> lines the inside of the fibrous sac. The <b>visceral layer</b> sticks to the heart's surface; it is the same thing as the <b>epicardium</b>. The narrow space between the two layers is the <b>pericardial cavity</b>. It holds a small amount of slippery <b>pericardial fluid</b>, so the beating heart slides without friction.</p>
+ <p>If too much fluid or blood collects in this space, it squeezes the heart so it cannot fill. This emergency is called <b>cardiac tamponade</b>.</p>`,
+ analogy:"Push your fist into a soft, partly filled water balloon. The balloon wall touching your fist is the visceral layer, the outer wall is the parietal layer, and the water in between is the pericardial fluid.",
+ terms:[["Fibrous pericardium","Tough outer sac that anchors and protects the heart."],["Parietal / visceral layers","The two layers of serous pericardium. Visceral = epicardium."],["Pericardial fluid","Slippery fluid in the pericardial cavity that reduces friction."]],
+ check:{q:"Which layer is the same thing as the epicardium?",opts:[
+  ["The visceral layer of the serous pericardium",1,"Right. The visceral layer is stuck to the heart's surface, so it is also the outer layer of the heart wall."],
+  ["The fibrous pericardium",0,"The fibrous pericardium is the tough outer sac. It does not touch the heart's surface."],
+  ["The parietal layer of the serous pericardium",0,"The parietal layer lines the fibrous sac, on the far side of the pericardial cavity."],
+  ["The endocardium",0,"The endocardium is the inner lining of the chambers, the opposite side of the wall."]]},
+ caption:"Each beat, the heart slides inside its sac. Fluid in the pericardial cavity keeps it slippery.",
+ legend:[["fib","Fibrous pericardium"],["serous","Serous pericardium"],["fluid","Pericardial fluid"],["myo","Myocardium"]]},
+
+{act:1,scene:"wall",id:"wall",title:"Three layers of the heart wall",
+ body:`<p>The heart wall has three layers, from outside to inside:</p>
+ <ol><li><b>Epicardium.</b> The thin outer layer (the visceral pericardium). Fat and the coronary blood vessels run in it.</li>
+ <li><b>Myocardium.</b> The thick middle layer of <b>cardiac muscle</b>. This is the layer that contracts and pumps. It is thickest in the left ventricle.</li>
+ <li><b>Endocardium.</b> The thin, smooth inner lining of the chambers and valves. Its surface is <b>endothelium</b>, the same kind of lining found inside all blood vessels.</li></ol>
+ <p>Watch the middle layer: the muscle cells shorten together and the wall thickens with each beat.</p>`,
+ analogy:"A padded winter jacket: a thin outer shell (epicardium), thick padding that does the work (myocardium), and a smooth inner lining (endocardium).",
+ terms:[["Epicardium","Outer layer of the wall; same as the visceral pericardium."],["Myocardium","Thick middle layer of cardiac muscle. Does the pumping."],["Endocardium","Smooth inner lining of chambers and valves (endothelium)."]],
+ check:{q:"Which layer of the heart wall actually contracts to pump blood?",opts:[
+  ["Myocardium",1,"Yes. \"Myo\" means muscle. It is the thick muscle layer."],
+  ["Epicardium",0,"The epicardium is a thin outer covering. It carries the coronary vessels but does not pump."],
+  ["Endocardium",0,"The endocardium is a thin smooth lining. It keeps blood flowing smoothly but does not contract."],
+  ["Fibrous pericardium",0,"That is part of the sac around the heart, not the heart wall."]]},
+ caption:"A slice through the wall: epicardium outside, thick myocardium contracting, smooth endocardium next to the blood.",
+ legend:[["serous","Epicardium"],["fat","Fat"],["myo","Myocardium"],["endo","Endocardium"],["oxy","Blood in chamber"]]},
+
+{act:1,scene:"chambers",id:"chambers",title:"Four chambers and the great vessels",
+ body:`<p>The heart has four chambers. The two <b>atria</b> on top are receiving chambers. The two <b>ventricles</b> below are the pumping chambers.</p>
+ <p><b>Right side:</b> oxygen-poor blood from the body enters the <b>right atrium</b> through the <b>superior</b> and <b>inferior venae cavae</b> (and the coronary sinus). The <b>right ventricle</b> pumps it into the <b>pulmonary trunk</b>, which splits into the pulmonary arteries.</p>
+ <p><b>Left side:</b> oxygen-rich blood from the lungs enters the <b>left atrium</b> through the <b>pulmonary veins</b>. The <b>left ventricle</b> pumps it into the <b>aorta</b>.</p>
+ <p>A wall called a <b>septum</b> separates the two sides (interatrial and interventricular septum). Pictures show the heart facing you, so its right side is on <b>your left</b>.</p>`,
+ analogy:"Two apartments side by side. Each has an upstairs mudroom where blood comes in (atrium) and a downstairs room that pushes it out (ventricle). There is no door between the apartments.",
+ terms:[["Atria","The two upper, receiving chambers."],["Ventricles","The two lower, pumping chambers."],["Great vessels","Venae cavae, pulmonary trunk, pulmonary veins and aorta."],["Septum","The wall between the right and left sides."]],
+ check:{q:"Which chamber pumps blood into the aorta?",opts:[
+  ["Left ventricle",1,"Right. The left ventricle sends oxygen-rich blood into the aorta and out to the body."],
+  ["Right ventricle",0,"The right ventricle pumps into the pulmonary trunk, toward the lungs."],
+  ["Left atrium",0,"The left atrium receives blood from the pulmonary veins and passes it down to the left ventricle."],
+  ["Right atrium",0,"The right atrium receives blood from the venae cavae. It does not touch the aorta."]]},
+ caption:"Atria on top receive blood; ventricles below pump it out. The heart's right side is on your left.",
+ legend:[["deoxy","Oxygen-poor blood"],["oxy","Oxygen-rich blood"],["myo","Myocardium"],["glow","Structure being named"]]},
+
+/* ---------- Part 2 ---------- */
+{act:2,scene:"valves",id:"valves",title:"Four one-way valves, pushed by pressure",
+ body:`<p>Four valves keep blood moving in one direction.</p>
+ <p>The <b>atrioventricular (AV) valves</b> sit between each atrium and ventricle: the <b>tricuspid valve</b> on the right (three cusps) and the <b>mitral valve</b>, also called the <b>bicuspid valve</b>, on the left (two cusps).</p>
+ <p>The <b>semilunar valves</b> guard the exits: the <b>pulmonary semilunar valve</b> (right ventricle to pulmonary trunk) and the <b>aortic semilunar valve</b> (left ventricle to aorta).</p>
+ <p>Valves have no muscle. They are pushed open or shut by <b>pressure differences</b>. When the ventricles relax, the AV valves are open and the semilunar valves are shut. When the ventricles contract, the AV valves slam shut and the semilunar valves are pushed open.</p>`,
+ analogy:"Swinging doors that only open one way. Push from behind and they open. Push from the front and they slam shut.",
+ terms:[["AV valves","Tricuspid (right) and mitral or bicuspid (left)."],["Semilunar valves","Pulmonary and aortic. They guard the exits of the ventricles."],["Pressure gradient","Blood moves from higher to lower pressure and pushes the valve that way."]],
+ check:{q:"What opens and closes the heart valves?",opts:[
+  ["Differences in blood pressure on the two sides of each valve.",1,"Yes. Higher pressure behind a valve pushes it open; higher pressure in front pushes it shut."],
+  ["Small muscles inside each valve cusp.",0,"Valve cusps have no muscle of their own. They move passively."],
+  ["Nerve signals sent to each valve.",0,"No nerve opens a valve. Only pressure does."],
+  ["The chordae tendineae pulling them open.",0,"The chordae only keep the AV cusps from flipping backward. They do not open the valve."]]},
+ caption:"Ventricles relax: AV valves open. Ventricles contract: AV valves close and semilunar valves open.",
+ legend:[["valve","Valve cusp"],["deoxy","Right side"],["oxy","Left side"]]},
+
+{act:2,scene:"chordae",id:"chordae",title:"Chordae tendineae and papillary muscles",
+ body:`<p>The cusps of the AV valves are tied to the ventricle wall by thin cords called <b>chordae tendineae</b> ("heart strings"). The cords attach to cone-shaped <b>papillary muscles</b>.</p>
+ <p>When the ventricle contracts, pressure pushes the cusps up and shut. The papillary muscles contract at the same time and pull the chordae tight. That stops the cusps from being blown back into the atrium (<b>everting</b>).</p>
+ <p>The chordae do <b>not</b> open the valve. If a chorda tears or a papillary muscle is damaged, a cusp can flip back (<b>prolapse</b>) and blood leaks backward into the atrium. That backward leak is <b>regurgitation</b>. The semilunar valves have no chordae; their cup shape holds them shut.</p>`,
+ analogy:"The guy-ropes on a tent. In a strong wind they keep the tent flaps from blowing inside out.",
+ terms:[["Chordae tendineae","Cords that tie AV valve cusps to papillary muscles."],["Papillary muscles","Muscles on the ventricle wall that tighten the chordae."],["Regurgitation","Blood leaking backward through a valve that does not seal."]],
+ check:{q:"What is the job of the chordae tendineae?",opts:[
+  ["To keep the AV valve cusps from flipping back into the atria when the ventricles contract.",1,"Right. They act like tethers, held tight by the papillary muscles."],
+  ["To pull the AV valves open so the ventricles can fill.",0,"The valves open because atrial pressure is higher than ventricular pressure, not because the cords pull."],
+  ["To carry the electrical signal to the valves.",0,"Valves do not need an electrical signal. The chordae are tough connective tissue cords."],
+  ["To hold the semilunar valves in place.",0,"Semilunar valves have no chordae. Their cup shape keeps them shut."]]},
+ caption:"Left: papillary muscles pull the chordae tight, so the cusps seal. Right: a torn chorda lets a cusp prolapse and blood leaks back.",
+ legend:[["valve","Mitral valve cusp"],["chord","Chordae tendineae","r"],["myo","Papillary muscle"],["oxy","Blood"]]},
+
+{act:2,scene:"flow",id:"flow",title:"The path of blood through the heart",
+ body:`<p>Follow the bright drop. Blood always takes this path:</p>
+ <ol><li>Superior and inferior <b>venae cavae</b></li><li><b>Right atrium</b></li><li><b>Tricuspid valve</b></li><li><b>Right ventricle</b></li><li><b>Pulmonary semilunar valve</b></li><li><b>Pulmonary trunk</b></li><li><b>Pulmonary arteries</b></li><li><b>Lungs</b> (blood drops off CO₂ and picks up O₂)</li><li><b>Pulmonary veins</b></li><li><b>Left atrium</b></li><li><b>Mitral (bicuspid) valve</b></li><li><b>Left ventricle</b></li><li><b>Aortic semilunar valve</b></li><li><b>Aorta</b></li><li><b>Body tissues</b>, then back to the venae cavae</li></ol>
+ <p>Memory trick: on each side it goes <b>atrium, valve, ventricle, valve, artery</b>. Notice that the pulmonary <b>arteries</b> carry oxygen-poor blood. Arteries carry blood <b>away</b> from the heart, whatever its oxygen level.</p>`,
+ analogy:"A figure-eight racetrack with the heart at the crossing. Every lap goes through the lungs once and through the body once.",
+ terms:[["Pulmonary arteries","Carry oxygen-poor blood from the heart to the lungs."],["Pulmonary veins","Carry oxygen-rich blood from the lungs to the left atrium."],["Venae cavae","Bring oxygen-poor blood from the body to the right atrium."]],
+ check:{q:"Blood has just left the right ventricle. Which valve does it pass through next?",opts:[
+  ["The pulmonary semilunar valve",1,"Yes. It guards the exit from the right ventricle into the pulmonary trunk."],
+  ["The tricuspid valve",0,"Blood already passed the tricuspid valve on the way into the right ventricle."],
+  ["The aortic semilunar valve",0,"That valve is the exit of the left ventricle, later in the trip."],
+  ["The mitral valve",0,"The mitral valve is between the left atrium and left ventricle."]]},
+ caption:"One full lap: body → right heart → lungs → left heart → body. Blood turns oxygen-rich in the lungs.",
+ legend:[["deoxy","Oxygen-poor blood"],["oxy","Oxygen-rich blood"],["glow","The tracer drop"],["lung","Lungs"],["body","Body tissues","s"]]},
+
+{act:2,scene:"circ",id:"circ",title:"Pulmonary and systemic circuits",
+ body:`<p>Blood travels in two loops, or <b>circuits</b>.</p>
+ <p>The <b>pulmonary circuit</b> runs from the right ventricle to the lungs and back to the left atrium. It is short, and the pressure is low (the right ventricle peaks around 25 mmHg).</p>
+ <p>The <b>systemic circuit</b> runs from the left ventricle to every body tissue and back to the right atrium. It is long, with much higher pressure (the left ventricle peaks around 120 mmHg).</p>
+ <p>That is why the <b>left ventricle wall is much thicker</b> than the right. But each beat, both ventricles pump the <b>same volume</b> of blood. If they did not, blood would pile up in one circuit.</p>`,
+ analogy:"Two pumps on one machine: a small pump that waters the backyard garden (the lungs) and a powerful pump that supplies the whole neighborhood (the body). Both move the same amount of water.",
+ terms:[["Pulmonary circuit","Right heart → lungs → left heart. Low pressure."],["Systemic circuit","Left heart → body → right heart. High pressure."]],
+ check:{q:"Why is the left ventricle wall thicker than the right ventricle wall?",opts:[
+  ["It pumps into the long, high-pressure systemic circuit.",1,"Yes. More resistance to push against means more muscle is needed."],
+  ["It pumps more blood with each beat than the right ventricle.",0,"Both ventricles pump the same volume each beat. The difference is pressure, not volume."],
+  ["Oxygen-rich blood is heavier.",0,"Oxygen barely changes how heavy blood is. The difference is the pressure needed."],
+  ["It receives blood from the whole body.",0,"Blood from the body enters the right atrium, not the left ventricle."]]},
+ caption:"Pulmonary loop on top (low pressure), systemic loop below (high pressure). Same volume through both.",
+ legend:[["deoxy","Oxygen-poor blood"],["oxy","Oxygen-rich blood"],["lung","Lung capillaries"],["body","Body capillaries","s"]]},
+
+/* ---------- Part 3 ---------- */
+{act:3,scene:"coro",id:"coro",title:"Coronary circulation: the heart feeds itself",
+ body:`<p>The heart muscle cannot take oxygen from the blood rushing through its chambers. The wall is too thick. It has its own vessels, the <b>coronary circulation</b>.</p>
+ <p>The two <b>coronary arteries</b> branch off the aorta just above the aortic valve. The <b>left coronary artery</b> splits into the <b>anterior interventricular artery</b> (also called the LAD), which runs down the front, and the <b>circumflex artery</b>, which wraps around the left side. The <b>right coronary artery</b> gives off the <b>marginal arteries</b> and the <b>posterior interventricular artery</b>.</p>
+ <p>Coronary blood flows mostly while the heart <b>relaxes</b>, because contraction squeezes these vessels shut.</p>
+ <p>Used blood drains into <b>cardiac veins</b> (great, middle and small cardiac veins). Most of them empty into the <b>coronary sinus</b> on the back of the heart, which empties into the <b>right atrium</b>.</p>`,
+ analogy:"Cooks in a busy kitchen cannot eat the food passing through on plates. They need their own staff meal, delivered separately.",
+ terms:[["Coronary arteries","Left and right; the first branches of the aorta."],["Anterior interventricular artery","Branch of the left coronary artery on the front of the heart (LAD)."],["Coronary sinus","Large vein on the back that returns coronary blood to the right atrium."]],
+ check:{q:"Where does blood from the coronary sinus empty?",opts:[
+  ["Into the right atrium",1,"Yes. It is oxygen-poor blood from the heart muscle, so it joins the other returning blood in the right atrium."],
+  ["Into the left atrium",0,"The left atrium only receives oxygen-rich blood from the pulmonary veins."],
+  ["Into the aorta",0,"The coronary arteries come from the aorta. Coronary veins drain away from it."],
+  ["Into the pulmonary trunk",0,"The pulmonary trunk carries blood out of the right ventricle. The coronary sinus drains into the right atrium."]]},
+ caption:"Arteries (red) fill mostly between beats. Cardiac veins (blue) drain into the coronary sinus and the right atrium.",
+ legend:[["oxy","Coronary arteries"],["deoxy","Cardiac veins"],["myo","Heart surface"]]},
+
+{act:3,scene:"mi",id:"mi",title:"When a coronary artery is blocked: myocardial infarction",
+ body:`<p>In <b>coronary artery disease</b>, fatty <b>plaque</b> builds up inside a coronary artery wall (<b>atherosclerosis</b>) and narrows it. Narrowed arteries can cause chest pain during exertion, called <b>angina</b>.</p>
+ <p>If a plaque breaks open, a <b>blood clot</b> can form on it and block the artery completely. Heart muscle downstream gets no oxygen. This is <b>ischemia</b>. If the block lasts, the cells die. This is a <b>myocardial infarction (MI)</b>, a heart attack.</p>
+ <p>Dead heart muscle is replaced by <b>scar tissue</b>, which cannot contract. Dying cells leak proteins such as <b>troponin</b> into the blood, which is why a blood test helps diagnose an MI. Doctors say "time is muscle": the sooner flow is restored, the more muscle is saved.</p>`,
+ analogy:"A road to a town gets narrower from construction. Then a crash blocks it completely. Deliveries stop and the town starts to shut down.",
+ terms:[["Atherosclerosis","Fatty plaque building up in an artery wall."],["Ischemia","Not enough blood flow, so not enough oxygen."],["Myocardial infarction","Death of heart muscle from a blocked coronary artery."]],
+ check:{q:"What directly causes heart muscle cells to die during an MI?",opts:[
+  ["They do not get enough oxygen because the blood supply is blocked.",1,"Yes. No flow means no oxygen, and cardiac muscle depends on aerobic respiration."],
+  ["The clot attacks the muscle cells.",0,"The clot blocks the artery. The damage comes from the missing oxygen downstream."],
+  ["Troponin leaks out and poisons them.",0,"Troponin leaks out because cells are already damaged. It is a sign, not the cause."],
+  ["The heart beats too slowly.",0,"The problem is a blocked artery, not the heart rate."]]},
+ caption:"Plaque narrows the artery, a clot blocks it, and the muscle downstream turns ischemic and then dies.",
+ legend:[["plaque","Plaque"],["oxy","Blood flow"],["dead","Dead (infarcted) muscle"],["deoxy","Ischemic muscle"]]},
+
+{act:3,scene:"cells",id:"cells",title:"Cardiac muscle cells work as one",
+ body:`<p>Heart muscle cells (<b>cardiomyocytes</b>) are striated like skeletal muscle, but they are <b>short</b>, <b>branched</b>, and usually have <b>one central nucleus</b>. They are packed with mitochondria, because the heart never gets to rest.</p>
+ <p>The cells join end to end at <b>intercalated discs</b>. Each disc has two kinds of connections:</p>
+ <ol><li><b>Desmosomes</b> hold the cells tightly together so they do not pull apart when they contract.</li>
+ <li><b>Gap junctions</b> are tiny channels that let ions flow straight from one cell to the next.</li></ol>
+ <p>Because of the gap junctions, an electrical signal spreads from cell to cell very fast, and the cells contract almost together. The heart works as a <b>functional syncytium</b>: many cells acting like one big unit.</p>`,
+ analogy:"A row of people holding hands. A squeeze passes quickly from hand to hand (gap junctions), and their grip keeps the line from breaking when everyone pulls (desmosomes).",
+ terms:[["Intercalated disc","The joint between two cardiac muscle cells."],["Gap junction","A channel that lets ions pass between cells."],["Desmosome","A spot-weld that holds cells together."],["Functional syncytium","Cells that act together as one unit."]],
+ check:{q:"Which part of the intercalated disc lets the electrical signal pass from cell to cell?",opts:[
+  ["Gap junctions",1,"Right. Ions flow through them, carrying the signal to the next cell."],
+  ["Desmosomes",0,"Desmosomes hold cells together mechanically. They do not pass ions."],
+  ["The nucleus",0,"The nucleus holds DNA. It is not part of the disc."],
+  ["Mitochondria",0,"Mitochondria make ATP. They are not part of the disc."]]},
+ caption:"A wave of depolarization jumps cell to cell through gap junctions. Below: a close-up of one intercalated disc.",
+ legend:[["myo","Cardiac muscle cell"],["glow","Electrical signal"],["na","Ions through gap junctions"],["fib","Desmosome","s"]]},
+
+/* ---------- Part 4 ---------- */
+{act:4,scene:"cond",id:"cond",title:"The conduction system: how each beat starts and spreads",
+ body:`<p>The heart starts its own beats. Special <b>autorhythmic</b> cells make the signal, and the <b>cardiac conduction system</b> carries it:</p>
+ <ol><li><b>SA node</b> (sinoatrial node), in the upper wall of the right atrium: the <b>pacemaker</b>. It sets the normal rhythm, usually <b>60 to 100 beats per minute</b> at rest.</li>
+ <li><b>Internodal pathways</b> carry the signal across the atria to the AV node. The atria contract.</li>
+ <li><b>AV node</b> (atrioventricular node): the signal is <b>delayed about 100 ms</b>, so the atria finish emptying into the ventricles.</li>
+ <li><b>AV bundle (bundle of His)</b>, then the <b>right and left bundle branches</b> down the interventricular septum.</li>
+ <li><b>Purkinje fibers</b> spread the signal through the ventricle walls, starting at the apex. The ventricles contract from the <b>apex toward the base</b>, squeezing blood up toward the exits.</li></ol>`,
+ analogy:"A relay race with a planned pause. The first runner (SA node) starts, the baton waits a moment at the hand-off (AV node), then the last runners sprint down and up the field (bundle branches and Purkinje fibers).",
+ terms:[["SA node","The pacemaker in the right atrium wall."],["AV node","Delays the signal about 100 ms."],["Bundle of His / branches","Carry the signal down the septum."],["Purkinje fibers","Spread the signal through the ventricle walls."]],
+ check:{q:"Why does the AV node delay the signal?",opts:[
+  ["So the atria finish contracting and emptying before the ventricles contract.",1,"Yes. Without the delay, atria and ventricles would squeeze at the same time."],
+  ["So the SA node can recharge.",0,"The SA node keeps working on its own schedule. The delay is about timing the atria and ventricles."],
+  ["Because the AV node is damaged in most people.",0,"The delay is normal and useful, not a defect."],
+  ["So the ventricles contract from the base downward.",0,"The ventricles contract from the apex upward, thanks to the Purkinje fibers."]]},
+ caption:"Watch the signal: SA node → atria → pause at the AV node → bundle of His → bundle branches → Purkinje fibers. Slowed down a lot.",
+ legend:[["node","Nodes"],["cond","Conduction pathways","r"],["glow","Spreading signal"],["ecg","ECG trace","r"]]},
+
+{act:4,scene:"ecg",id:"ecg",title:"Reading the ECG: P, QRS and T",
+ body:`<p>An <b>electrocardiogram (ECG)</b> records the heart's electrical activity using electrodes on the skin. It shows electrical events, which happen just before the muscle contracts.</p>
+ <ol><li><b>P wave:</b> the atria <b>depolarize</b>. The atria contract right after.</li>
+ <li><b>QRS complex:</b> the ventricles depolarize. The ventricles contract right after. The atria <b>repolarize</b> at the same time, but that small signal is <b>hidden</b> inside the large QRS.</li>
+ <li><b>T wave:</b> the ventricles <b>repolarize</b>.</li></ol>
+ <p>The time from the start of the P wave to the start of the QRS (the <b>PR interval</b>) includes the AV node delay. Changes in the size, shape or timing of these waves help clinicians find heart problems.</p>`,
+ analogy:"Sheet music for the heartbeat. The P, QRS and T are the notes, and the spaces between them are the rests.",
+ terms:[["P wave","Atrial depolarization."],["QRS complex","Ventricular depolarization (hides atrial repolarization)."],["T wave","Ventricular repolarization."],["PR interval","Start of P to start of QRS; includes the AV delay."]],
+ check:{q:"Why is there no separate wave for atrial repolarization?",opts:[
+  ["It happens during the QRS complex and is hidden by that much larger signal.",1,"Right. The ventricles have far more muscle, so their signal covers the atrial one."],
+  ["The atria never repolarize.",0,"Every cell must repolarize before it can fire again. The atria do too."],
+  ["Atrial repolarization is the T wave.",0,"The T wave is ventricular repolarization."],
+  ["It is the P wave.",0,"The P wave is atrial depolarization."]]},
+ caption:"The trace is drawn as the signal moves. Bright regions on the small heart show which part is depolarizing.",
+ legend:[["ecg","ECG trace","r"],["glow","Depolarizing"],["k","Repolarizing"]]},
+
+{act:4,scene:"pace",id:"pace",title:"Pacemaker cells: a beat with no outside signal",
+ body:`<p>Cells in the SA node are <b>autorhythmic</b>. They have no stable resting potential. Instead, their voltage slowly creeps upward by itself.</p>
+ <ol><li><b>Prepotential:</b> starting near <b>−60 mV</b>, slow <b>Na⁺ influx</b> makes the inside slowly less negative.</li>
+ <li><b>Depolarization:</b> at the threshold of about <b>−40 mV</b>, <b>Ca²⁺ channels</b> open. Ca²⁺ rushes in and the voltage climbs to about +5 mV.</li>
+ <li><b>Repolarization:</b> <b>K⁺ channels</b> open, K⁺ flows out, and the voltage drops back to about −60 mV.</li></ol>
+ <p>Then the slow creep starts again. No nerve is needed to start a beat. Nerves only speed the creep up or slow it down.</p>`,
+ analogy:"A bucket under a dripping faucet. It slowly fills (prepotential), tips over when full (depolarization), empties (repolarization), and starts filling again.",
+ terms:[["Autorhythmic cell","A cell that fires on its own, with no outside signal."],["Prepotential","Slow drift toward threshold from Na⁺ leaking in."],["Threshold","About −40 mV. Ca²⁺ channels open here."]],
+ check:{q:"What causes the slow upward drift (the prepotential) in an SA node cell?",opts:[
+  ["A slow inflow of Na⁺",1,"Yes. A slow trickle of Na⁺ makes the inside gradually less negative."],
+  ["A fast outflow of K⁺",0,"K⁺ leaving makes the inside more negative. That is repolarization."],
+  ["Ca²⁺ being pumped out",0,"Ca²⁺ rushing IN causes the fast rise after threshold. Pumping it out would not raise the voltage."],
+  ["Acetylcholine from the vagus nerve",0,"ACh actually slows the drift. The drift happens on its own."]]},
+ caption:"The SA node cell's voltage creeps up (Na⁺ in), fires (Ca²⁺ in), and resets (K⁺ out), over and over.",
+ legend:[["na","Na⁺"],["ca","Ca²⁺","d"],["k","K⁺","s"],["ecg","Membrane voltage","r"]]},
+
+{act:4,scene:"cap",id:"cap",title:"Contractile cells: the plateau and the long refractory period",
+ body:`<p>Most heart cells are <b>contractile cells</b>. They rest at about <b>−80 to −90 mV</b> and wait for the signal to arrive through gap junctions.</p>
+ <ol><li><b>Rapid depolarization:</b> fast <b>Na⁺ channels</b> open and the voltage shoots up to about +30 mV.</li>
+ <li><b>Plateau:</b> slow <b>Ca²⁺ channels</b> let Ca²⁺ in while some K⁺ leaks out, so the voltage stays near 0 mV for a long time. This Ca²⁺ also triggers more Ca²⁺ release from the sarcoplasmic reticulum, which powers contraction.</li>
+ <li><b>Repolarization:</b> Ca²⁺ channels close, K⁺ flows out, and the cell returns to rest.</li></ol>
+ <p>The whole action potential lasts about 250 to 300 ms, far longer than in skeletal muscle. The <b>refractory period</b> lasts almost until the contraction ends, so a new signal cannot restart the cell early. The heart <b>cannot go into tetanus</b>; it must relax and refill between beats.</p>`,
+ analogy:"A revolving door that will not take the next person until the last one is all the way through.",
+ terms:[["Plateau","Long period near 0 mV held up by Ca²⁺ influx."],["Refractory period","Time when the cell cannot fire again."],["Tetanus","A sustained contraction from signals piling up. The heart cannot do this."]],
+ check:{q:"Why can't cardiac muscle go into tetanus?",opts:[
+  ["Its long refractory period lasts until the contraction is almost over.",1,"Yes. A second signal arriving early is simply ignored, so the heart always relaxes and refills."],
+  ["It has no calcium.",0,"Cardiac muscle uses a lot of calcium. That is what makes the plateau."],
+  ["Its action potential is shorter than skeletal muscle's.",0,"It is much longer, which is the point."],
+  ["The vagus nerve blocks extra signals.",0,"This protection is built into each muscle cell, not supplied by a nerve."]]},
+ caption:"Na⁺ in (spike), Ca²⁺ in (plateau), K⁺ out (reset). An early second signal is blocked by the refractory period.",
+ legend:[["ecg","Voltage","r"],["act3","Muscle tension","dl"],["na","Na⁺"],["ca","Ca²⁺","d"],["k","K⁺","s"]]},
+
+/* ---------- Part 5 ---------- */
+{act:5,scene:"cycle",id:"cycle",title:"The cardiac cycle in five phases",
+ body:`<p>One <b>cardiac cycle</b> is everything that happens in one heartbeat. <b>Systole</b> means contracting; <b>diastole</b> means relaxing. At 75 beats per minute one cycle takes about <b>0.8 seconds</b>.</p>
+ <ol><li><b>Atrial systole:</b> the atria contract and top off the ventricles. Most filling (about 70 to 80 percent) already happened passively.</li>
+ <li><b>Isovolumic contraction:</b> the ventricles start contracting. Pressure rises fast, but <b>all four valves are closed</b>, so the volume stays the same.</li>
+ <li><b>Ventricular ejection:</b> ventricular pressure beats aortic pressure, the semilunar valves open, and blood is pushed out.</li>
+ <li><b>Isovolumic relaxation:</b> the ventricles relax, the semilunar valves close, and again all valves are shut.</li>
+ <li><b>Ventricular filling:</b> ventricular pressure falls below atrial pressure, the AV valves open, and blood flows in.</li></ol>
+ <p>The chart on the right is a <b>Wiggers diagram</b>. Read it top to bottom at the moving line.</p>`,
+ analogy:"Filling a squeeze bottle with the cap shut: you can squeeze hard before anything comes out. The squeeze before the cap pops is isovolumic contraction.",
+ terms:[["Systole / diastole","Contraction / relaxation."],["Isovolumic","Same volume: all valves closed."],["Wiggers diagram","Pressures, volume and ECG plotted on one time line."]],
+ check:{q:"During isovolumic contraction, which is true?",opts:[
+  ["All four valves are closed, so pressure rises but volume stays the same.",1,"Right. The ventricles squeeze a closed chamber until pressure is high enough to open the semilunar valves."],
+  ["The AV valves are open and blood is still entering.",0,"The AV valves closed at the start of this phase. That closing is the first heart sound."],
+  ["The semilunar valves are open and blood is leaving.",0,"That is the next phase, ventricular ejection."],
+  ["The ventricles are relaxing.",0,"Isovolumic relaxation is the relaxing phase. Here they are contracting."]]},
+ caption:"Watch the moving line: valves, pressures, volume and ECG all change together. Slowed about 6 times.",
+ legend:[["lvp","LV pressure","r"],["aop","Aortic pressure","r"],["lap","LA pressure","r"],["vol","LV volume","r"],["ecg","ECG","r"]]},
+
+{act:5,scene:"sounds",id:"sounds",title:"Heart sounds: lub and dub",
+ body:`<p>Listening with a stethoscope is called <b>auscultation</b>. A normal heart makes two main sounds each beat:</p>
+ <ol><li><b>S1, "lub":</b> the <b>AV valves close</b> at the start of ventricular systole. It is the longer, louder sound.</li>
+ <li><b>S2, "dub":</b> the <b>semilunar valves close</b> at the start of ventricular diastole.</li></ol>
+ <p>The sounds come from blood bouncing against the valves as they snap shut, not from the cusps clapping together.</p>
+ <p>An unusual whooshing sound is a <b>heart murmur</b>. It can mean blood is leaking backward through a valve that does not seal, or squeezing through a valve that is too narrow.</p>`,
+ analogy:"Two doors in a hallway. Lub is the first set of doors swinging shut behind you; dub is the second set closing after you walk out.",
+ terms:[["S1 (lub)","AV valves closing; start of ventricular systole."],["S2 (dub)","Semilunar valves closing; start of ventricular diastole."],["Murmur","Abnormal sound from turbulent flow, often a valve problem."]],
+ check:{q:"The second heart sound (S2, dub) is caused by:",opts:[
+  ["The semilunar valves closing",1,"Yes. They shut as the ventricles start to relax and pressure drops below arterial pressure."],
+  ["The AV valves closing",0,"That makes S1, the lub, at the start of ventricular systole."],
+  ["The atria contracting",0,"Atrial contraction does not normally make an audible sound."],
+  ["The AV valves opening",0,"Opening valves are normally silent."]]},
+ caption:"S1 rings out as the AV valves close; S2 as the semilunar valves close. Slowed about 4 times.",
+ legend:[["act5","S1 (lub)"],["act2","S2 (dub)"],["valve","Valves"]]},
+
+/* ---------- Part 6 ---------- */
+{act:6,scene:"co",id:"co",title:"Cardiac output = heart rate × stroke volume",
+ body:`<p><b>Cardiac output (CO)</b> is the amount of blood one ventricle pumps in one minute.</p>
+ <p><b>Stroke volume (SV)</b> is the amount pumped in one beat. The ventricle does not empty all the way:</p>
+ <ol><li><b>End-diastolic volume (EDV):</b> volume when full, about <b>120 mL</b>.</li>
+ <li><b>End-systolic volume (ESV):</b> volume left after the beat, about <b>50 mL</b>.</li>
+ <li><b>SV = EDV − ESV</b> = 120 − 50 = <b>70 mL</b>.</li></ol>
+ <p>Then <b>CO = HR × SV</b>. At 75 beats per minute: 75 × 70 mL = 5,250 mL per minute, or about <b>5.25 L/min</b>. That is roughly all of your blood, every minute.</p>`,
+ analogy:"Filling a bucket with a cup. How fast it fills depends on how many scoops you take per minute (heart rate) and how much each scoop holds (stroke volume).",
+ terms:[["Cardiac output","CO = HR × SV, in liters per minute."],["Stroke volume","SV = EDV − ESV."],["EDV / ESV","Volume in the ventricle when full / after ejection."]],
+ check:{q:"EDV is 130 mL, ESV is 60 mL, and the heart rate is 70 beats per minute. What is the cardiac output?",opts:[
+  ["4.9 L/min",1,"Yes. SV = 130 − 60 = 70 mL. CO = 70 beats/min × 70 mL = 4,900 mL/min = 4.9 L/min."],
+  ["9.1 L/min",0,"That multiplies the heart rate by EDV. Only the stroke volume (EDV − ESV) leaves each beat."],
+  ["4.2 L/min",0,"That multiplies the heart rate by ESV, the blood left behind."],
+  ["0.07 L/min",0,"That is one stroke volume. Multiply by the 70 beats in a minute."]]},
+ caption:"The ventricle fills to EDV and squeezes to ESV. Each beat ejects the difference, the stroke volume.",
+ legend:[["oxy","Blood in the left ventricle"],["vol","Ejected blood"],["myo","Ventricle wall"]]},
+
+{act:6,scene:"pre",id:"pre",title:"Preload and the Frank–Starling mechanism",
+ body:`<p><b>Preload</b> is how much the ventricle is stretched by blood just before it contracts. It mostly depends on the <b>EDV</b>, which depends on how much blood returns to the heart (<b>venous return</b>) and how long the ventricle has to fill.</p>
+ <p>The <b>Frank–Starling mechanism</b>: the more the cardiac muscle is stretched, the more strongly it contracts, so <b>stroke volume rises</b>. In simple words, more blood in means more blood out.</p>
+ <p>Stretching moves the sarcomeres closer to the length where actin and myosin overlap best. This is also how the two ventricles stay matched beat to beat.</p>
+ <p>Preload rises with more venous return, as in exercise. It falls with blood loss or dehydration, and when a very fast heart rate leaves too little time to fill.</p>`,
+ analogy:"A rubber band: stretch it farther and it snaps back harder, up to a limit.",
+ terms:[["Preload","Stretch on the ventricle before contraction (≈ EDV)."],["Frank–Starling mechanism","More stretch → stronger contraction → larger SV."],["Venous return","Blood flowing back to the heart in the veins."]],
+ check:{q:"Venous return increases. According to the Frank–Starling mechanism, what happens?",opts:[
+  ["EDV rises, the muscle is stretched more, and stroke volume increases.",1,"Yes. More blood in leads to a stronger contraction and more blood out."],
+  ["Stroke volume falls because the ventricle is too full.",0,"Within the normal range, more stretch gives a stronger contraction, not a weaker one."],
+  ["Heart rate must fall to make room.",0,"Frank–Starling is about the strength of each beat, not the heart rate."],
+  ["Afterload rises, so stroke volume falls.",0,"Afterload is the pressure the ventricle pushes against. Venous return changes preload."]]},
+ caption:"Same heart, two preloads. More stretch (higher EDV) gives a stronger squeeze and a bigger stroke volume.",
+ legend:[["oxy","Blood"],["vol","Stroke volume","s"],["act6","Frank–Starling curve","r"]]},
+
+{act:6,scene:"contr",id:"contr",title:"Contractility and afterload",
+ body:`<p><b>Contractility</b> is how forcefully the muscle contracts at any given stretch. Things that increase it are <b>positive inotropic</b> factors: sympathetic stimulation (norepinephrine), epinephrine, thyroid hormone, extra Ca²⁺, and drugs such as digitalis. Higher contractility squeezes out more blood: <b>ESV falls and SV rises</b>. <b>Negative inotropic</b> factors, such as beta blockers, calcium channel blockers, low oxygen and acidosis, reduce it.</p>
+ <p><b>Afterload</b> is the force the ventricle must make to open the semilunar valve and push blood out. If arterial pressure is high (hypertension) or the valve is narrowed (stenosis), afterload rises. The valve opens later, less blood leaves, and <b>SV falls</b>.</p>`,
+ analogy:"Pushing a door open. Contractility is how hard you push. Afterload is how heavy the door is.",
+ terms:[["Contractility","Force of contraction at a given preload."],["Positive inotrope","Something that increases contractility (e.g., norepinephrine)."],["Afterload","Pressure the ventricle must overcome to eject blood."]],
+ check:{q:"A patient has very high blood pressure. If nothing else changes, what happens to stroke volume?",opts:[
+  ["It falls, because afterload is higher.",1,"Right. The ventricle must reach a higher pressure before the aortic valve opens, so less blood gets out."],
+  ["It rises, because the blood is pushed harder.",0,"High arterial pressure is something the ventricle pushes against. It makes ejection harder."],
+  ["It does not change; only heart rate changes.",0,"Afterload directly affects how much blood each beat can eject."],
+  ["It rises, because preload falls.",0,"Lower preload would lower SV, not raise it, and blood pressure mainly changes afterload."]]},
+ caption:"Left: more contractility squeezes more blood out. Right: higher afterload (aortic pressure) lets less blood out.",
+ legend:[["ne","Norepinephrine"],["ca","Ca²⁺","d"],["aop","Aortic pressure","r"],["vol","Stroke volume","s"]]},
+
+{act:6,scene:"ctrl",id:"ctrl",title:"Autonomic and chemical control of heart rate",
+ body:`<p>The SA node sets the beat, but the brain adjusts the rate. The <b>cardiovascular centers</b> are in the <b>medulla oblongata</b>.</p>
+ <ol><li>The <b>cardioaccelerator center</b> sends <b>sympathetic</b> signals through the <b>cardiac accelerator nerves</b>. They release <b>norepinephrine</b> at the SA node, AV node and myocardium. The pacemaker drift gets steeper, so <b>heart rate rises</b>, and contractions get stronger.</li>
+ <li>The <b>cardioinhibitory center</b> sends <b>parasympathetic</b> signals through the <b>vagus nerve</b> (cranial nerve X). It releases <b>acetylcholine</b> at the SA and AV nodes. The drift gets flatter, so <b>heart rate falls</b>. At rest this <b>vagal tone</b> keeps the rate below the SA node's own rate.</li></ol>
+ <p>The centers respond to <b>baroreceptors</b> (blood pressure), <b>chemoreceptors</b> (O₂, CO₂, pH) and <b>proprioceptors</b> (movement). Chemicals matter too: <b>epinephrine</b> and <b>thyroid hormone</b> raise heart rate, a higher body temperature raises it, and abnormal K⁺ or Ca²⁺ levels can disturb the rhythm.</p>`,
+ analogy:"The SA node is a car's engine idling on its own. The sympathetic nerves press the gas pedal and the vagus nerve presses the brake.",
+ terms:[["Cardioaccelerator center","Sends sympathetic signals; norepinephrine raises HR."],["Cardioinhibitory center","Sends vagus (parasympathetic) signals; ACh lowers HR."],["Bradycardia / tachycardia","Resting HR below 60 / above 100 beats per minute."]],
+ check:{q:"What does stimulation of the vagus nerve do to the heart?",opts:[
+  ["Slows the heart rate by releasing acetylcholine at the SA and AV nodes.",1,"Yes. ACh flattens the pacemaker drift, so the SA node fires less often."],
+  ["Speeds the heart rate by releasing norepinephrine.",0,"That is the sympathetic cardiac accelerator nerves."],
+  ["Makes the ventricles contract much more strongly.",0,"Stronger contraction comes from sympathetic stimulation. The vagus mainly affects the nodes."],
+  ["Stops the SA node from ever firing again.",0,"The vagus slows the SA node; it does not shut it off for good."]]},
+ caption:"Gas and brake: sympathetic signals (norepinephrine) speed the SA node; vagus signals (ACh) slow it.",
+ legend:[["symp","Sympathetic (cardioaccelerator)"],["para","Parasympathetic (vagus)"],["ne","Norepinephrine"],["ach","Acetylcholine"]]},
+
+{act:0,scene:"recap",id:"recap",title:"You made it. Here is the whole heart.",
+ body:`<ol class="recap">
+ <li class="h">Part 1 · Anatomy</li>
+ <li>The heart sits in the mediastinum; the apex points down and to the left.</li><li>Pericardium: fibrous sac, then parietal and visceral (epicardium) layers with fluid between.</li><li>Wall: epicardium, myocardium, endocardium. Four chambers: two atria, two ventricles.</li>
+ <li class="h">Part 2 · Valves &amp; flow</li>
+ <li>Tricuspid, pulmonary, mitral (bicuspid), aortic. Pressure opens and closes them; chordae stop eversion.</li><li>Venae cavae → RA → tricuspid → RV → pulmonary valve → pulmonary arteries → lungs → pulmonary veins → LA → mitral → LV → aortic valve → aorta → body.</li>
+ <li class="h">Part 3 · Feeding the heart</li>
+ <li>Coronary arteries feed the muscle; cardiac veins drain to the coronary sinus and RA. A blocked artery causes an MI.</li><li>Intercalated discs (gap junctions, desmosomes) make a functional syncytium.</li>
+ <li class="h">Part 4 · Electrical system</li>
+ <li>SA node → internodal pathways → AV node (100 ms delay) → bundle of His → bundle branches → Purkinje fibers.</li><li>P = atria depolarize; QRS = ventricles depolarize; T = ventricles repolarize.</li><li>Pacemaker cells drift up on their own; contractile cells have a plateau and a long refractory period.</li>
+ <li class="h">Part 5 · Cardiac cycle</li>
+ <li>Atrial systole, isovolumic contraction, ejection, isovolumic relaxation, filling. S1 = AV valves close; S2 = semilunar valves close.</li>
+ <li class="h">Part 6 · Cardiac output</li>
+ <li>CO = HR × SV; SV = EDV − ESV (75 × 70 mL ≈ 5.25 L/min). SV rises with preload and contractility, falls with afterload. Sympathetic nerves speed the heart; the vagus slows it.</li></ol>
+ <p>Next: put it to work in the <b>Heart Lab</b>: trace the blood path, break the conduction system, scrub through a heartbeat and run the cardiac output simulator.</p>`,
+ analogy:"Two pumps, four one-way doors, one built-in spark plug, and a gas pedal and brake from the brain.",
+ terms:[],check:null,caption:"The whole heart at work, with all six parts of the chapter.",
+ legend:[["deoxy","Oxygen-poor blood"],["oxy","Oxygen-rich blood"],["glow","Electrical signal"]]}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]]];
+  for(let a=1;a<=6;a++)groups.push([a,ACTS[a].name,ACTS[a].col,[]]);
+  groups.push([7,"Finish","accent",[STEPS.length-1]]);
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===7)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function legendHTML(l){const v="--"+l[0];const sh=l[2]||"c";
+  if(sh==="dl")return `<span><i class="dl" style="border-top-color:var(${v})"></i>${l[1]}</span>`;
+  if(sh==="t")return `<span><i class="t" style="border-bottom-color:var(${v})"></i>${l[1]}</span>`;
+  return `<span><i class="${sh}" style="background:var(${v})"></i>${l[1]}</span>`}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(legendHTML).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=480;
+const cv=document.getElementById("stage");ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+
+/* ================= Scene: map ================= */
+function sceneMap(T){
+  const ct=T/3;drawHeart({x:205,y:248,s:.8,...pose(ct)});
+  flowRoute(ROUTE_S,9,6,T,0);flowRoute(ROUTE_I,9,6,T+2,0);flowRoute(ROUTE_O,10,6,T,1);flowRoute(ROUTE_O2,6,6,T+1,1);
+  const parts=[["Anatomy","act1"],["Valves & flow","act2"],["Feeding the heart","act3"],["Electrical system","act4"],["Cardiac cycle","act5"],["Cardiac output","act6"]];
+  const on=Math.floor(T/2)%6;
+  parts.forEach((pt,i)=>{const col=i%2,row=Math.floor(i/2);const x=420+col*188,y=22+row*150,w=176,h=138;const lit=i===on;
+    panelBox(x,y,w,h,{stroke:lit?C[pt[1]]:C.rule,lw:lit?3:1.2,fill:hexA(C.panel,lit?.97:.85)});
+    const cx=x+w/2,cy=y+60;ctx.save();ctx.globalAlpha=lit?1:.6;
+    if(i===0){ctx.save();ctx.translate(cx,cy+2);ctx.scale(.2,.2);ctx.fillStyle=C.myo;ctx.fill(HG.P.outer);ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=8;ctx.stroke(HG.P.outer);
+      [["RA",C.deoxy],["RV",C.deoxy],["LA",C.oxy],["LV",C.oxy]].forEach(c=>{ctx.fillStyle=c[1];ctx.fill(HG.P[c[0]])});ctx.restore()}
+    else if(i===1){const op=lit?(Math.sin(T*3)*.5+.5):.5;ctx.save();ctx.translate(cx-35,cy-10);drawValve([0,0,70,0,0,1],op,{w:6});ctx.restore();for(let k=0;k<4;k++){const q=P(T*.8+k/4,1);bloodDot(cx+(k-1.5)*12,cy-36+q*70*op,0.2,op*.9)}}
+    else if(i===2){ctx.save();ctx.translate(cx,cy);circ(0,0,40,C.myo,C["myo-edge"],2);const br=[[0,-40,-4,0],[-4,0,-22,30],[-4,0,14,34],[-4,0,-30,4],[14,34,26,24]];br.forEach(b=>line(b[0],b[1],b[2],b[3],C.oxy,4));ctx.restore();
+      const q=P(T*.6,1);const [px,py]=along([[cx,cy-40],[cx-4,cy],[cx+14,cy+34]],q);bloodDot(px,py,1,1,4)}
+    else if(i===3){ctx.beginPath();for(let k=0;k<=140;k++){const t=k/140*1.6;const X=cx-70+k,Y=cy+10-wECG(t)*34;k?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.strokeStyle=C.ecg;ctx.lineWidth=2;ctx.stroke();
+      const k=Math.floor(P(T*.5,1)*140);circ(cx-70+k,cy+10-wECG(k/140*1.6)*34,4,C.glow)}
+    else if(i===4){plotFn(wLVP,0,.8,cx-70,cy-30,140,60,0,130,C.lvp,2);plotFn(wAOP,0,.8,cx-70,cy-30,140,60,0,130,C.aop,2);const q=P(T*.4,1);line(cx-70+q*140,cy-34,cx-70+q*140,cy+34,C.ink,1.2,[3,3])}
+    else{ctx.beginPath();ctx.arc(cx,cy+18,42,Math.PI,TAU);ctx.strokeStyle=C.rule;ctx.lineWidth=8;ctx.stroke();ctx.beginPath();ctx.arc(cx,cy+18,42,Math.PI,Math.PI*1.62);ctx.strokeStyle=C.act6;ctx.stroke();
+      const a=Math.PI*(1+.62+(lit?Math.sin(T*2)*.06:0));line(cx,cy+18,cx+Math.cos(a)*34,cy+18+Math.sin(a)*34,C.ink,3);circ(cx,cy+18,5,C.ink);txt(cx,cy+36,"5.25 L/min",{size:11,mono:true,align:"center",weight:700})}
+    ctx.restore();
+    txt(cx,y+h-26,pt[0],{size:13,weight:700,align:"center"});txt(cx,y+h-10,"Part "+(i+1),{size:11,mono:true,align:"center",color:C[pt[1]]})});
+  label(205,20,"Right side (blue)  |  Left side (red)",{size:12,align:"center",weight:600,color:C["ink-soft"]});
+}
+
+/* ================= Scene: location ================= */
+function sceneLoc(T){
+  const p=P(T,14);const CX=400;
+  ctx.beginPath();ctx.moveTo(150,46);ctx.quadraticCurveTo(CX,6,650,46);ctx.quadraticCurveTo(684,60,676,120);ctx.lineTo(620,476);ctx.lineTo(180,476);ctx.lineTo(124,120);ctx.quadraticCurveTo(116,60,150,46);ctx.closePath();
+  ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=2;ctx.stroke();
+  const lungR=[[330,72],[284,92],[222,170],[196,282],[190,384],[262,398],[342,388],[372,330],[378,180],[364,104]];
+  const lungL=[[470,72],[516,92],[578,170],[604,282],[610,384],[540,398],[476,392],[468,366],[520,336],[540,300],[470,214],[438,180],[436,104]];
+  [lungR,lungL].forEach(L=>{ctx.beginPath();L.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.closePath();ctx.fillStyle=C.lung;ctx.fill();ctx.strokeStyle=C["lung-edge"];ctx.lineWidth=2;ctx.lineJoin="round";ctx.stroke();
+    ctx.save();ctx.clip();for(let k=0;k<26;k++){circ(L[0][0]-130+rnd(k*3+(L===lungR?0:50))*260,90+rnd(k*5+7)*300,6+rnd(k)*6,hexA(C["lung-edge"],.12))}ctx.restore()});
+  ctx.beginPath();ctx.moveTo(176,400);ctx.quadraticCurveTo(290,340,CX,372);ctx.quadraticCurveTo(510,340,624,400);ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=4;ctx.stroke();
+  // ribs (behind the heart in this drawing so the heart stays clear)
+  ctx.save();ctx.globalAlpha=.7;for(let n=1;n<=7;n++){const y0=20+n*44;[-1,1].forEach(sg=>{ctx.beginPath();ctx.moveTo(CX+sg*14,y0);ctx.quadraticCurveTo(CX+sg*150,y0-18,CX+sg*(232-n*4),y0+62);ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=11;ctx.lineCap="round";ctx.stroke();ctx.strokeStyle=C.bone;ctx.lineWidth=7;ctx.stroke();ctx.lineCap="butt"})}ctx.restore();
+  const ps=pose(T/2.4);const s0=.6,hs=s0*(1-.03*ps.vsq),ang=-.35,hx0=438,hy0=200;
+  ctx.save();ctx.translate(hx0,hy0);ctx.rotate(ang);drawHeart({x:0,y:0,s:hs,ext:true});ctx.restore();
+  const rp=(lx,ly)=>[hx0+(lx*Math.cos(ang)-ly*Math.sin(ang))*s0,hy0+(lx*Math.sin(ang)+ly*Math.cos(ang))*s0];
+  ctx.save();ctx.globalAlpha=.55;rr(CX-13,62,26,270,8);ctx.fillStyle=C.bone;ctx.fill();ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=2;ctx.stroke();ctx.restore();
+  [3,4,5].forEach(n=>label(CX-34,20+n*44,"rib "+n,{size:10.5,mono:true,weight:700,align:"center",color:C["ink-soft"],bga:.7}));
+  const a1=seg(p,.02,.08),a2=seg(p,.26,.32),a3=seg(p,.5,.56),a4=seg(p,.74,.8);
+  ctx.save();ctx.globalAlpha=a1;line(378,54,438,54,C.act1,2.5);line(378,48,378,60,C.act1,2.5);line(438,48,438,60,C.act1,2.5);ctx.restore();
+  lead(408,56,408,30,"Mediastinum (between the lungs)",{a:a1,align:"center",border:C.act1});
+  lead(240,250,170,206,"Right lung",{a:a1,align:"right"});lead(590,300,700,206,"Left lung",{a:a1,align:"left"});
+  lead(CX,316,250,446,"Sternum",{a:a1,align:"right"});lead(560,384,706,440,"Diaphragm",{a:a1,align:"left"});
+  const base=rp(0,-62);ctx.save();ctx.globalAlpha=a2;line(CX-190,base[1],CX+60,base[1],C.act2,1.6,[6,5]);ctx.restore();
+  lead(base[0],base[1],196,128,"Base",{a:a2,border:C.act2,align:"right"});ctx.save();ctx.globalAlpha=a2;txt(196,148,"about the 3rd costal cartilage",{size:11.5,align:"right",color:C["ink-soft"]});ctx.restore();
+  const apx=rp(100,224);lead(apx[0],apx[1],690,330,"Apex",{a:a3,border:C.act3,align:"left"});ctx.save();ctx.globalAlpha=a3;txt(690,350,"points down and left",{size:11.5,color:C["ink-soft"]});ctx.restore();
+  if(a3>0){pulseRing(apx[0],apx[1],18,C.act3,P(T,1.2))}
+  ctx.save();ctx.globalAlpha=a4;line(CX,24,CX,470,C.ink,1.3,[4,5]);txt(CX+6,456,"midline",{size:11,mono:true,color:C["ink-soft"]});const b2=rp(0,-40),a2p=rp(96,200);arrow(b2[0],b2[1],a2p[0],a2p[1],C.act3,3);
+  label(a2p[0]+14,a2p[1]+30,"tilted to the left",{size:12,weight:700,align:"left",color:C.act3});ctx.restore();
+  txt(140,28,"PATIENT'S RIGHT",{size:11,mono:true,weight:700,color:C["ink-soft"]});txt(660,28,"PATIENT'S LEFT",{size:11,mono:true,weight:700,align:"right",color:C["ink-soft"]});
+}
+
+/* ================= Scene: pericardium ================= */
+function scenePeri(T){
+  const ps=pose(T/2.6);const cx=270,cy=270,s=.68;const sq=1-.06*ps.vsq;
+  ctx.fillStyle=hexA(C.panel,.4);ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.translate(cx,cy);ctx.scale(s,s);
+  // great vessel stubs passing through the sac
+  [["AO",C.oxy],["PT",C.deoxy],["SVC",C.deoxy]].forEach(v=>vesselDraw(v[0],v[1]));
+  ctx.lineJoin="round";
+  ctx.strokeStyle=C["fib-edge"];ctx.lineWidth=96;ctx.stroke(HG.P.outer);ctx.strokeStyle=C.fib;ctx.lineWidth=90;ctx.stroke(HG.P.outer);
+  ctx.strokeStyle=C.serous;ctx.lineWidth=70;ctx.stroke(HG.P.outer);
+  const fl=56+6*Math.sin(T*.4);ctx.strokeStyle=C.fluid;ctx.lineWidth=fl;ctx.stroke(HG.P.outer);
+  ctx.restore();
+  // fluid shimmer dots along the cavity
+  const ring=sampleOps(HG.outer,10);for(let i=0;i<46;i++){const f=P(T*.03+i/46,1);const [x,y]=along(ring,f);const n=(rnd(i)-.5)*30;circ(cx+(x+n*.0)*s*1.12,cy+(y)*s*1.1,1.8,hexA(C.na,.5))}
+  // the beating heart inside
+  ctx.save();ctx.translate(cx+10*s,cy+60*s);ctx.scale(sq,sq);ctx.translate(-(cx+10*s),-(cy+60*s));
+  ctx.save();ctx.translate(cx,cy);ctx.scale(s,s);ctx.fillStyle=C.myo;ctx.fill(HG.P.outer);ctx.save();ctx.clip(HG.P.outer);const g=ctx.createRadialGradient(-30,40,20,0,40,230);g.addColorStop(0,hexA("#ffffff",.15));g.addColorStop(1,hexA(C.ink,.15));ctx.fillStyle=g;ctx.fillRect(-200,-140,420,400);ctx.restore();
+  ctx.strokeStyle=C.serous;ctx.lineWidth=9;ctx.stroke(HG.P.outer);ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=1.5;ctx.stroke(HG.P.outer);ctx.restore();ctx.restore();
+  // slide arrows
+  const sl=Math.sin(T/2.6*TAU/CYC*.0+T*2.4);ctx.save();ctx.globalAlpha=.8;arrow(cx-128*s,cy+60*s,cx-128*s,cy+(60+18*sl)*s,C.accent,2);ctx.restore();
+  ctx.save();ctx.translate(cx,cy);ctx.scale(s,s);[["LAD",C.oxy],["RCA",C.oxy],["CX",C.oxy],["GCV",C.deoxy]].forEach(v=>{ctx.beginPath();COR[v[0]].forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.strokeStyle=v[1];ctx.lineWidth=6;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke()});ctx.restore();
+  // labels (right side)
+  const lp=(lx,ly)=>[cx+lx*s,cy+ly*s];
+  const L=[[lp(197,146),"Fibrous pericardium","Tough outer sac",C["fib-edge"]],[lp(187,142),"Parietal layer","Serous pericardium lining the sac",C["myo-edge"]],[lp(171,137),"Pericardial cavity + fluid","Slippery, so no friction",C.na],[lp(153,131),"Visceral layer = epicardium","Serous layer on the heart",C["myo-edge"]],[lp(118,122),"Myocardium","The heart muscle",C["myo-edge"]]];
+  const p=P(T,12);
+  L.forEach((l,i)=>{const a=seg(p,.04+i*.1,.1+i*.1);const ly=60+i*72;lead(l[0][0],l[0][1],548,ly,l[1],{a,align:"left",border:i===2?C.na:null});ctx.save();ctx.globalAlpha=a;txt(553,ly+19,l[2],{size:11.5,color:C["ink-soft"]});ctx.restore()});
+  // tamponade inset
+  const ta=seg(p,.62,.7);if(ta>0){ctx.save();ctx.globalAlpha=ta;panelBox(10,10,200,86,{stroke:C.bad});txt(22,26,"CARDIAC TAMPONADE",{size:11,mono:true,weight:700,color:C.bad});
+    const f=.5+.5*Math.sin(T*1.2);const ix=46,iy=62;circ(ix,iy,30,C.fib,C["fib-edge"],2);circ(ix,iy,27,C.serous);circ(ix,iy,25,mix(C.fluid,C.oxy,.25));circ(ix,iy,22-9*f*.6,C.myo,C["myo-edge"],1.5);
+    wrapText("Extra fluid fills the sac and squeezes the heart so it cannot fill.",84,46,120,14,{size:11});ctx.restore()}
+}
+
+/* ================= Scene: wall layers ================= */
+function sceneWall(T){
+  const ps=pose(T/2.4);const sq=ps.vsq;const X0=20,X1=560;
+  // layer y-bounds (thicken myocardium when contracting)
+  const yF=30,yP=48,yCav=62,yEpi=80,myoT=196+28*sq,yMyo=yEpi+46,yEndo=yMyo+myoT,yCh=yEndo+22;
+  ctx.fillStyle=C.fib;ctx.fillRect(X0,yF,X1-X0,yP-yF);ctx.fillStyle=C.serous;ctx.fillRect(X0,yP,X1-X0,yCav-yP);
+  ctx.fillStyle=C.fluid;ctx.fillRect(X0,yCav,X1-X0,yEpi-yCav);
+  for(let i=0;i<20;i++){const x=X0+P(T*.02+i/20,1)*(X1-X0);circ(x,yCav+9+Math.sin(T*2+i)*3,1.8,hexA(C.na,.55))}
+  // epicardium: serous surface + fat + coronary vessels
+  ctx.fillStyle=C.serous;ctx.fillRect(X0,yEpi,X1-X0,10);ctx.fillStyle=mix(C.serous,C.fat,.4);ctx.fillRect(X0,yEpi+10,X1-X0,yMyo-yEpi-10);
+  for(let i=0;i<14;i++){const x=X0+20+i*38+rnd(i)*10;circ(x,yEpi+26+rnd(i+3)*10,9+rnd(i+9)*4,C.fat,C["fat-edge"],1)}
+  const pulse=.5+.5*Math.sin(T*2.6);circ(170,yEpi+28,14+pulse*1.2,C["myo-edge"]);circ(170,yEpi+28,9+pulse*1.2,C.oxy);circ(420,yEpi+28,13,C["deoxy-edge"]);circ(420,yEpi+28,10,C.deoxy);
+  // myocardium: branching striated cells that shorten
+  ctx.fillStyle=C.myo;ctx.fillRect(X0,yMyo,X1-X0,myoT);
+  const rows=6,rh=myoT/rows;const shorten=1-.1*sq;
+  ctx.save();ctx.beginPath();ctx.rect(X0,yMyo,X1-X0,myoT);ctx.clip();
+  for(let r=0;r<rows;r++){const y=yMyo+r*rh+3;const off=(r%2)*55;for(let c=-1;c<6;c++){const x0=X0+off+c*110;const xa=290+(x0-290)*shorten,xb=290+(x0+104-290)*shorten;
+      rr(xa,y,xb-xa,rh-6,6);ctx.fillStyle=C["myo-dark"];ctx.globalAlpha=.55;ctx.fill();ctx.globalAlpha=1;
+      ctx.strokeStyle=hexA(C["myo-edge"],.5);ctx.lineWidth=1;for(let sx=xa+6;sx<xb-4;sx+=5.5*shorten){ctx.beginPath();ctx.moveTo(sx,y+2);ctx.lineTo(sx,y+rh-8);ctx.stroke()}
+      ctx.beginPath();ctx.ellipse((xa+xb)/2,y+(rh-6)/2,8,4.5,0,0,TAU);ctx.fillStyle=hexA(C["myo-edge"],.85);ctx.fill();
+      line(xb+2,y,xb+2,y+rh-6,C.ink,2.2)}}ctx.restore();
+  // endocardium: flat endothelial cells
+  ctx.fillStyle=C.endo;ctx.fillRect(X0,yEndo,X1-X0,22);for(let x=X0;x<X1;x+=36){ctx.beginPath();ctx.ellipse(x+18,yEndo+16,15,4,0,0,TAU);ctx.strokeStyle=hexA(C["myo-edge"],.6);ctx.lineWidth=1;ctx.stroke();ctx.beginPath();ctx.ellipse(x+18,yEndo+16,5,2.4,0,0,TAU);ctx.fillStyle=hexA(C["myo-edge"],.7);ctx.fill()}
+  // chamber blood
+  ctx.fillStyle=hexA(C.oxy,.25);ctx.fillRect(X0,yCh,X1-X0,H-14-yCh);
+  for(let i=0;i<16;i++){const x=X0+P(T*.12+i/16,1)*(X1-X0);const y=yCh+12+rnd(i)*(H-40-yCh);ctx.beginPath();ctx.ellipse(x,y,8,5,0,0,TAU);ctx.fillStyle=C.oxy;ctx.fill()}
+  ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.strokeRect(X0,yF,X1-X0,H-14-yF);
+  // brackets and labels
+  const br=(y1,y2,t,sub,col)=>{line(X1+14,y1+2,X1+14,y2-2,col,3);line(X1+8,y1+2,X1+14,y1+2,col,3);line(X1+8,y2-2,X1+14,y2-2,col,3);txt(X1+24,(y1+y2)/2-7,t,{size:13,weight:700});txt(X1+24,(y1+y2)/2+10,sub,{size:11.5,color:C["ink-soft"]})};
+  br(yF,yCav,"Fibrous + parietal","pericardial sac",C["fib-edge"]);
+  txt(X1+24,yCav+9,"pericardial cavity",{size:11,mono:true,color:C.na});
+  br(yEpi,yMyo,"1 Epicardium","fat, coronary vessels",C["fat-edge"]);
+  br(yMyo,yEndo,"2 Myocardium","cardiac muscle: pumps",C["myo-edge"]);
+  br(yEndo,yEndo+22,"3 Endocardium","endothelium lining",C["myo-edge"]);
+  txt(X1+24,yCh+30,"Blood in the chamber",{size:12.5,weight:600,color:C.oxy});
+  label(170,yEpi+28,"coronary artery",{size:11,align:"center",bga:.75});label(420,yEpi+28,"cardiac vein",{size:11,align:"center",bga:.75});
+  label(290,yMyo+myoT/2,sq>.3?"Contracting: wall thickens":"Relaxed",{size:12.5,weight:700,align:"center",color:sq>.3?C.act3:C.ink,bga:.85});
+}
+
+/* ================= Scene: chambers and great vessels ================= */
+const CH_L=[["RA",[-100,-10],"Right atrium","L",150],["RV",[-70,120],"Right ventricle","L",330],["SVC",[-107,-200],"Superior vena cava","L",62],["IVC",[-148,200],"Inferior vena cava","L",420],["RPA",[-180,-119],"R. pulmonary artery","L",115],
+  ["LA",[110,-60],"Left atrium","R",210],["LV",[110,110],"Left ventricle","R",330],["AO",[-14,-160],"Aorta","R",40],["PT",[15,-80],"Pulmonary trunk","R",130],["LPV1",[205,-80],"Pulmonary veins","R",170],["SEP",[38,120],"Interventricular septum","R",400]];
+function sceneChambers(T){
+  const ct=T/3.2;const k=Math.floor(T/1.6)%CH_L.length;const cur_=CH_L[k][0];const hl={};
+  if(cur_!=="SEP"){hl[cur_]=C.glow;if(cur_==="LPV1")hl.LPV2=C.glow}
+  drawHeart({x:340,y:252,s:.8,...pose(ct),hl});
+  flowRoute(ROUTE_S,7,7,T,0,3,.75);flowRoute(ROUTE_I,7,7,T+2,0,3,.75);flowRoute(ROUTE_O,8,7,T,1,3,.75);
+  if(cur_==="SEP"){const pts=H2C([[8,58],[22,105],[36,150],[52,185]]);poly(pts,C.glow,8)}
+  CH_L.forEach((c,i)=>{const [X,Y]=hp(c[1][0],c[1][1]);const lx=c[3]==="L"?140:560;const on=i<=k||T>CH_L.length*1.6;
+    lead(X,Y,lx,c[4],c[2],{a:on?(i===k?1:.75):0,border:i===k?C.glow:null})});
+  txt(30,470,"YOUR LEFT = HEART'S RIGHT",{size:11,mono:true,weight:700,color:C["ink-soft"]});txt(770,470,"YOUR RIGHT = HEART'S LEFT",{size:11,mono:true,weight:700,align:"right",color:C["ink-soft"]});
+}
+
+/* ================= Scene: valves ================= */
+function sceneValves(T){
+  const ct=T/3.2;const ps=pose(ct);drawHeart({x:280,y:252,s:.8,...ps});
+  flowRoute(ROUTE_S,7,7,T,0,3,.6);flowRoute(ROUTE_O,8,7,T,1,3,.6);
+  const vv=[["tri","Tricuspid","RA → RV"],["pul","Pulmonary semilunar","RV → pulmonary trunk"],["mit","Mitral (bicuspid)","LA → LV"],["aor","Aortic semilunar","LV → aorta"]];
+  const lpos={tri:[14,436,"left"],pul:[14,56,"left"],mit:[548,436,"right"],aor:[548,56,"right"]};
+  vv.forEach(v=>{const val=HG.valves[v[0]];const [X,Y]=hp((val[0]+val[2])/2,(val[1]+val[3])/2);const o=ps.valves[v[0]]>.5;lead(X,Y,lpos[v[0]][0],lpos[v[0]][1],v[1]+(o?" · OPEN":" · SHUT"),{border:o?C.good:C.bad,align:lpos[v[0]][2]})});
+  // pressure panel
+  const t=wrapT(ct);const x0=560,y0=20;panelBox(x0,y0,228,440);txt(x0+12,y0+18,"WHO PUSHES HARDER?",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  const bars=[["Left atrium",wLAP(t),C.lap],["Left ventricle",wLVP(t),C.lvp],["Aorta",wAOP(t),C.aop]];
+  bars.forEach((b,i)=>{const bx=x0+22+i*70,by=y0+300;const h=b[1]/130*230;rr(bx,by-230,40,230,4);ctx.fillStyle=C.sunk;ctx.fill();rr(bx,by-h,40,h,4);ctx.fillStyle=b[2];ctx.fill();
+    txt(bx+20,by+14,b[0].split(" ")[0],{size:11,align:"center",weight:600});if(b[0].split(" ")[1])txt(bx+20,by+28,b[0].split(" ")[1],{size:11,align:"center",weight:600});txt(bx+20,by-h-10,Math.round(b[1])+"",{size:11,mono:true,align:"center"})});
+  txt(x0+12,y0+52,"mmHg",{size:10.5,mono:true,color:C["ink-faint"]});
+  const mo=ps.valves.mit>.5,ao=ps.valves.aor>.5;
+  wrapText(mo?"Atrium > ventricle, so the mitral valve is pushed OPEN. Aorta > ventricle, so the aortic valve stays SHUT.":ao?"Ventricle > aorta, so the aortic valve is pushed OPEN. Ventricle > atrium, so the mitral valve stays SHUT.":"Ventricle pressure is between the other two, so BOTH valves are shut.",x0+14,y0+362,200,16,{size:12,weight:600});
+  {const tt=wrapT(ct);label(280,20,tt>=.18&&tt<.48?"Ventricles contracting":tt>=.48&&tt<.56?"Ventricles relaxing":"Ventricles relaxed and filling",{size:13,weight:700,align:"center",border:C.act2})}
+}
+
+/* ================= Scene: chordae tendineae ================= */
+function sceneChordae(T){
+  const ct=T/3;const t=wrapT(ct);const sys=t>=0.18&&t<0.56;const vs=(120-wVol(t))/70;const open=avOpen(t);
+  [[200,"NORMAL",false],[600,"TORN CHORDA",true]].forEach(([cx,ttl,torn])=>{
+    const L=cx-170;panelBox(L,12,340,440,{fill:hexA(C.panel,.5)});txt(cx,32,ttl,{size:12,mono:true,weight:700,align:"center",color:torn?C.bad:C.good});
+    const top=170;
+    // atrium
+    ctx.beginPath();ctx.moveTo(cx-118,top);ctx.bezierCurveTo(cx-140,90,cx-90,48,cx,48);ctx.bezierCurveTo(cx+90,48,cx+140,90,cx+118,top);ctx.closePath();ctx.fillStyle=C.myo;ctx.fill();ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx-102,top);ctx.bezierCurveTo(cx-122,98,cx-80,62,cx,62);ctx.bezierCurveTo(cx+80,62,cx+122,98,cx+102,top);ctx.closePath();ctx.fillStyle=C.oxy;ctx.fill();
+    txt(cx,84,"left atrium",{size:11.5,weight:700,align:"center",color:"#fff"});
+    // ventricle
+    ctx.beginPath();ctx.moveTo(cx-140,top);ctx.bezierCurveTo(cx-150,top+160,cx-60,top+262,cx,top+268);ctx.bezierCurveTo(cx+60,top+262,cx+150,top+160,cx+140,top);ctx.closePath();ctx.fillStyle=C.myo;ctx.fill();ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=2;ctx.stroke();
+    const iw=104-vs*20;ctx.beginPath();ctx.moveTo(cx-100,top);ctx.bezierCurveTo(cx-iw-12,top+140,cx-44,top+228-vs*18,cx,top+234-vs*26);ctx.bezierCurveTo(cx+44,top+228-vs*18,cx+iw+12,top+140,cx+100,top);ctx.closePath();ctx.fillStyle=C.oxy;ctx.fill();ctx.strokeStyle=C.endo;ctx.lineWidth=2;ctx.stroke();
+    txt(cx,top+200,"left ventricle",{size:11.5,weight:700,align:"center",color:"#fff"});
+    // papillary muscles (shorten in systole)
+    const pap=[[cx-52,top+214-vs*22,cx-50,top+160-vs*12],[cx+52,top+214-vs*22,cx+50,top+160-vs*12]];
+    pap.forEach(q=>{ctx.beginPath();ctx.moveTo(q[0]-15,q[1]+12);ctx.quadraticCurveTo(q[2]-11,q[3]+26,q[2],q[3]);ctx.quadraticCurveTo(q[2]+11,q[3]+26,q[0]+15,q[1]+12);ctx.closePath();ctx.fillStyle=mix(C.myo,C.act3,vs*.4);ctx.fill();ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=1.4;ctx.stroke()});
+    // leaflets
+    const tips=[];[[cx-100,1],[cx+100,-1]].forEach(([hx,sg],i)=>{const ev=torn&&i===1&&sys;let a=lerp(-.12,1.15,ease(open));if(ev)a=lerp(-.12,-1.9,ease(seg(t,.2,.26)));
+      const dx=Math.cos(a)*sg,dy=Math.sin(a);const Lf=100;const tx=hx+dx*Lf,ty=top+dy*Lf;
+      ctx.beginPath();ctx.moveTo(hx,top);ctx.quadraticCurveTo(hx+dx*Lf*.5,top+dy*Lf*.5-(1-open)*10,tx,ty);ctx.lineCap="round";ctx.strokeStyle=C["valve-edge"];ctx.lineWidth=10;ctx.stroke();ctx.strokeStyle=C.valve;ctx.lineWidth=7.5;ctx.stroke();ctx.lineCap="butt";tips.push([tx,ty])});
+    // chordae
+    tips.forEach((tp,i)=>{const q=pap[i];const broken=torn&&i===1;for(let j=-1;j<=1;j++){
+      if(broken){line(q[2]+j*4,q[3],q[2]+j*5+Math.sin(T*3+j)*5,q[3]-28,C.chord,2);continue}
+      const taut=sys;const mx=(tp[0]+q[2])/2+(taut?0:(i?-10:10)),my=(tp[1]+q[3])/2+(taut?0:10);
+      ctx.beginPath();ctx.moveTo(tp[0]+j*3,tp[1]);ctx.quadraticCurveTo(mx+j*3,my,q[2]+j*3,q[3]);ctx.strokeStyle=C.chord;ctx.lineWidth=2;ctx.stroke()}});
+    if(torn){const tp=tips[1];if(!sys)for(let j=-1;j<=1;j++)line(tp[0]+j*3,tp[1],tp[0]+j*4+Math.sin(T*2+j)*4,tp[1]+26,C.chord,2)}
+    if(sys&&vs>.02){for(let k=-1;k<=1;k++)arrow(cx+k*46,top+150,cx+k*46,top+92,hexA(C.panel,.8),3)}
+    for(let i=0;i<10;i++){const q=P(T*.7+i/10,1);if(!sys&&open>.5){bloodDot(cx-50+rnd(i)*100,lerp(80,top+150,q),1,1,4.5)}
+      else if(torn&&sys&&t>0.22){bloodDot(cx+36+rnd(i)*50,lerp(top+30,70,q),1,1,4.5)}}
+    if(torn&&sys&&t>0.22)label(cx+68,128,"Blood leaks back!",{size:12.5,weight:700,align:"center",border:C.bad,color:C.bad});
+    if(!torn&&sys&&vs>.1)label(cx,132,"Cusps sealed",{size:12.5,weight:700,align:"center",border:C.good});
+    const qL=pap[0];lead(qL[2]-8,qL[3]+30,L+8,top+254,"papillary muscle",{size:11.5,align:"left"});lead((tips[0][0]+qL[2])/2,(tips[0][1]+qL[3])/2,L+8,top+60,"chordae",{size:11.5,align:"left"});
+    lead(cx-100+12,top+4,L+8,top-28,"mitral cusp",{size:11.5,align:"left"});
+  });
+  label(400,466,sys?"Ventricles contracting (systole)":"Ventricles relaxing and filling (diastole)",{size:13,weight:700,align:"center",border:C.act2});
+}
+
+/* ================= Scene: full blood flow path ================= */
+function sceneFlow(T){
+  const s=.72,hx0=400,hy0=236;HT={x:hx0,y:hy0,s};const f=P(T,22);const stop=traceAt(f);
+  const hl={};STOP_HL[stop].forEach(id=>hl[id]=C.glow);
+  // lungs
+  const [lrx,lry]=hp(-270,-90),[llx,lly]=hp(270,-90);lungShape(lrx,lry,1,false,{});lungShape(llx,lly,1,true,stop===7?{fill:mix(C.lung,C.glow,.35),edge:C.glow}:{});
+  label(lrx-20,lry+126,"Right lung",{size:12,weight:700,align:"center"});label(llx+20,lly+126,"Left lung",{size:12,weight:700,align:"center"});
+  bodyBox(250,444,300,30,"Lower body tissues",stop===14);bodyBox(280,10,240,28,"Upper body tissues",stop===14);
+  drawHeart({x:hx0,y:hy0,s,...pose(T/3.2),hl,rpv:true});
+  // background particles: two loops
+  const F1=cat(ROUTE_I,LUNG_R,V_("RPV"),[[90,-60],[95,-28]],LV_OUT,V_("AO").slice(1),V_("DAO").filter(p=>p[1]>-165),[[118,290],[-150,290]]);
+  const n1=ROUTE_I.length+LUNG_R.length;const f1a=n1/F1.length;
+  for(let i=0;i<26;i++){const q=P(T/22+i/26,1);const [x,y]=along(TRACE.pts,q);const tg=traceAt(q);const ox=tg<7?0:tg===7?seg(q,.42,.5):tg>=14?1-seg(q,.93,.99):1;const [X,Y]=hp(x,y);bloodDot(X,Y,ox,.55,3)}
+  for(let i=0;i<14;i++){const q=P(T/24+i/14,1);const [x,y]=along(F1,q);const ox=q<f1a*.8?0:q<f1a?seg(q,f1a*.8,f1a):q>.95?0:1;const [X,Y]=hp(x,y);bloodDot(X,Y,ox,.45,2.8)}
+  // the tracer
+  const [x,y]=along(TRACE.pts,f);const [X,Y]=hp(x,y);const ox=stop<7?0:stop===7?seg(f,.42,.5):stop===14?1-seg(f,.93,.99):1;glow(X,Y,22,C.glow,.75);bloodDot(X,Y,ox,1,6.5);
+  // stop banner
+  rr(560,420,226,52,10);ctx.fillStyle=hexA(C.panel,.95);ctx.fill();ctx.strokeStyle=C.glow;ctx.lineWidth=2;ctx.stroke();
+  txt(574,436,`STOP ${stop+1} OF 15`,{size:11,mono:true,weight:700,color:C["ink-soft"]});txt(574,456,STOPS[stop],{size:15,weight:700});
+  if(stop===7)label(llx,lly-82,"CO₂ out, O₂ in",{size:12,weight:700,align:"center",border:C.glow});
+  if(stop===14)label(400,420,"O₂ delivered, CO₂ picked up",{size:12,weight:700,align:"center",border:C.glow});
+}
+
+/* ================= Scene: two circuits ================= */
+function sceneCirc(T){
+  const bed=(x,y,w,h,lab,hiCol,col)=>{rr(x,y,w,h,22);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=hiCol;ctx.lineWidth=2;ctx.stroke();for(let k=0;k<9;k++){const xx=x+20+k*(w-40)/8;ctx.beginPath();ctx.moveTo(xx,y+10);ctx.bezierCurveTo(xx+10,y+h*.4,xx-10,y+h*.6,xx,y+h-10);ctx.strokeStyle=hexA(hiCol,.5);ctx.lineWidth=1.4;ctx.stroke()}};
+  bed(290,22,220,64,"",C["lung-edge"],C.lung);bed(270,396,260,64,"",C["body-edge"],C.body);
+  const ps=pose(T/2.8);const vs=ps.vsq;
+  const pul=[[318,286],[262,286],[238,200],[256,100],[300,54],[400,54],[500,54],[548,100],[560,160],[530,196],[488,196]];
+  const sys=[[482,286],[536,300],[552,350],[528,420],[480,428],[400,428],[320,428],[268,420],[226,350],[224,240],[256,196],[312,196]];
+  poly(pul,hexA(C.deoxy,.3),12);poly(sys,hexA(C.oxy,.3),14);
+  const box=(x,y,w,h,col,lab,wall)=>{rr(x-wall,y-wall,w+2*wall,h+2*wall,14);ctx.fillStyle=C.myo;ctx.fill();ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=1.5;ctx.stroke();rr(x,y,w,h,10);ctx.fillStyle=col;ctx.fill();txt(x+w/2,y+h/2,lab,{size:12.5,weight:700,align:"center",color:"#fff"})};
+  box(318,170,70,52,C.deoxy,"RA",6);box(412,170,70,52,C.oxy,"LA",6);
+  const shR=vs*6,shL=vs*10;box(318+shR,250+shR,70-2*shR,70-2*shR,C.deoxy,"RV",8+shR);box(412+shL,250+shL,70-2*shL,70-2*shL,C.oxy,"LV",20+shL);
+  // the left lung bed is between fractions; colour change happens in the capillaries
+  const fa=.38,fb=.62;
+  for(let i=0;i<16;i++){const q=P(T/7+i/16,1);const [x,y]=along(pul,q);bloodDot(x,y,q<fa?0:q<fb?seg(q,fa,fb):1,1,4.8)}
+  for(let i=0;i<20;i++){const q=P(T/8+i/20,1);const [x,y]=along(sys,q);bloodDot(x,y,q<.36?1:q<.64?1-seg(q,.36,.64):0,1,4.8)}
+  label(400,32,"Lung capillaries: pick up O₂",{size:12.5,weight:700,align:"center"});label(400,450,"Body capillaries: drop off O₂",{size:12.5,weight:700,align:"center"});
+  panelBox(14,40,204,140,{stroke:C.deoxy,lw:2});txt(28,60,"PULMONARY CIRCUIT",{size:11,mono:true,weight:700,color:C.deoxy});wrapText("Right ventricle → lungs → left atrium. Short loop, low pressure.",28,82,180,16,{size:12.5});
+  txt(28,150,"RV peak ≈ 25 mmHg",{size:13,weight:700,mono:true});
+  panelBox(582,300,204,140,{stroke:C.oxy,lw:2});txt(596,320,"SYSTEMIC CIRCUIT",{size:11,mono:true,weight:700,color:C.oxy});wrapText("Left ventricle → body → right atrium. Long loop, high pressure.",596,342,180,16,{size:12.5});
+  txt(596,410,"LV peak ≈ 120 mmHg",{size:13,weight:700,mono:true});
+  const g=(x,y,v,max,col,lab)=>{ctx.beginPath();ctx.arc(x,y,24,Math.PI,TAU);ctx.strokeStyle=C.sunk;ctx.lineWidth=7;ctx.stroke();ctx.beginPath();ctx.arc(x,y,24,Math.PI,Math.PI*(1+clamp(v/max,0,1)));ctx.strokeStyle=col;ctx.stroke();txt(x,y+12,Math.round(v)+" mmHg",{size:10.5,mono:true,align:"center",weight:700});txt(x,y-34,lab,{size:10.5,mono:true,align:"center",color:C["ink-soft"]})};
+  const t=wrapT(T/2.8);g(353,374,wLVP(t)*25/122,130,C.deoxy,"RV");g(447,374,wLVP(t),130,C.oxy,"LV");
+  label(400,124,"Each beat: about 70 mL from EACH ventricle",{size:12,weight:700,align:"center",border:C.act2});
+  if(vs>.05){chipText(353,240,"70 mL",C.deoxy,"#fff");chipText(447,240,"70 mL",C.oxy,"#fff")}
+  lead(310,300,150,262,"thin RV wall",{size:11.5,align:"right"});lead(492,276,650,250,"thick LV wall",{size:11.5,align:"left"});
+}
+
+/* ================= Scene: coronary circulation ================= */
+const COR={LCA:[[30,-12],[48,-15],[64,-10]],LAD:[[64,-10],[56,30],[52,80],[60,140],[78,190],[96,222]],CX:[[64,-10],[100,-6],[135,2],[160,18],[168,40]],
+  RCA:[[18,-4],[0,6],[-40,22],[-80,40],[-115,52],[-140,64],[-150,90]],MARG:[[-128,58],[-126,100],[-100,150],[-60,185]],
+  GCV:[[92,212],[70,150],[64,90],[70,30],[80,4],[112,10],[148,26],[164,52]],SCV:[[-56,190],[-106,146],[-134,84],[-150,100]],ACV:[[-80,130],[-104,80],[-112,46]]};
+function vesLine(pts,col,w,dash){const c=H2C(pts);ctx.save();ctx.lineCap="round";poly(c,mix(col,C.ink,.4),w+2.5,dash);poly(c,col,w,dash);ctx.restore()}
+function sceneCoro(T){
+  const ct=T/2.6;const t=wrapT(ct);const dia=t>=0.48||t<0.18;const p=P(T,16);const artOn=p<.5,veinOn=p>=.45;
+  const s=.86;drawHeart({x:290,y:246,s:s*(1-.025*pose(ct).vsq),ext:true});
+  // arteries
+  ctx.save();ctx.globalAlpha=artOn?1:.45;vesLine(COR.LCA,C.oxy,5,[4,3]);["LAD","CX","RCA","MARG"].forEach(k=>vesLine(COR[k],C.oxy,k==="MARG"?3.5:5));ctx.restore();
+  ctx.save();ctx.globalAlpha=veinOn?1:.45;["GCV","SCV","ACV"].forEach(k=>vesLine(COR[k],C.deoxy,k==="ACV"?3:4.2));ctx.restore();
+  // flow dots: arteries mostly in diastole
+  const rate=dia?1:.25;
+  if(artOn)["LAD","CX","RCA","MARG"].forEach((k,j)=>{for(let i=0;i<5;i++){const q=P(T*.25*rate+i/5+j*.13,1);const [x,y]=along(COR[k],q);const [X,Y]=hp(x,y);bloodDot(X,Y,1,1,3.4)}});
+  if(veinOn)["GCV","SCV","ACV"].forEach((k,j)=>{for(let i=0;i<4;i++){const q=P(T*.2+i/4+j*.2,1);const [x,y]=along(COR[k],q);const [X,Y]=hp(x,y);bloodDot(X,Y,0,1,3.2)}});
+  const L=[["LCA",[44,-14],"Left coronary artery",568,30],["LAD",[56,90],"Anterior interventricular a. (LAD)",568,62],["CX",[140,3],"Circumflex artery",568,94],["RCA",[-60,30],"Right coronary artery",40,60],["MARG",[-120,110],"Marginal artery",40,96],
+    ["GCV",[66,120],"Great cardiac vein",568,150],["SCV",[-120,128],"Small cardiac vein",40,150],["ACV",[-100,74],"Anterior cardiac veins",40,186]];
+  L.forEach(l=>{const isA=["LCA","LAD","CX","RCA","MARG"].includes(l[0]);const on=isA?artOn:veinOn;const [X,Y]=hp(l[1][0],l[1][1]);lead(X,Y,l[3],l[4],l[2],{a:on?1:.25,align:l[3]<300?"left":"left",border:isA?C.oxy:C.deoxy})});
+  // posterior inset
+  const ix=668,iy=338;panelBox(552,214,234,254);txt(566,286,"BACK OF THE HEART",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  ctx.save();ctx.translate(ix,iy+8);ctx.scale(-.42,.42);ctx.fillStyle=C.myo;ctx.fill(HG.P.outer);ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=4;ctx.stroke(HG.P.outer);
+  const CS=[[160,22],[100,32],[20,42],[-60,46],[-104,38]],MCV=[[86,214],[60,150],[42,84],[30,44]],PIV=[[-150,90],[-110,62],[-30,52],[10,64],[36,132],[72,206]];
+  const pl=(pts,col,w)=>{ctx.beginPath();pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle=col;ctx.lineWidth=w;ctx.stroke()};
+  ctx.globalAlpha=artOn?1:.4;pl(PIV,C.oxy,9);ctx.globalAlpha=veinOn?1:.4;pl(CS,C.deoxy,20);pl(MCV,C.deoxy,8);ctx.globalAlpha=1;
+  if(veinOn)for(let i=0;i<5;i++){const q=P(T*.25+i/5,1);const [x,y]=along(CS,q);circ(x,y,7,C.deoxy,hexA(C.ink,.3),2)}
+  ctx.restore();
+  const csEnd=[ix+104*.42,iy+8+38*.42];lead(csEnd[0],csEnd[1],778,254,"Coronary sinus → RA",{a:veinOn?1:.3,align:"right",border:C.deoxy,size:11.5});
+  lead(ix-30*.42,iy+8+132*.42,560,452,"Posterior interventricular a.",{a:artOn?.95:.3,align:"left",size:11});
+  label(290,18,dia?"Heart relaxed: coronary arteries fill":"Heart contracting: coronary vessels squeezed",{size:12.5,weight:700,align:"center",border:dia?C.good:C.warn});
+  label(290,462,artOn?"Supply: aorta → coronary arteries → capillaries in the myocardium":"Drain: cardiac veins → coronary sinus → right atrium",{size:12,weight:600,align:"center"});
+}
+
+/* ================= Scene: myocardial infarction ================= */
+function sceneMI(T){
+  const p=P(T,18);const plaque=ease(seg(p,.02,.28)),clot=ease(seg(p,.32,.44)),isch=seg(p,.46,.6),dead=seg(p,.68,.84);
+  const stages=["1 Plaque narrows","2 Clot blocks","3 Ischemia: no O₂","4 Infarct: cells die"];const st=p<.3?0:p<.45?1:p<.66?2:3;
+  stages.forEach((s,i)=>{const x=14+i*195;rr(x,8,186,28,8);ctx.fillStyle=i===st?C.act3:C["panel-2"];ctx.fill();ctx.strokeStyle=i===st?C.act3:C.rule;ctx.lineWidth=1.2;ctx.stroke();txt(x+93,22.5,s,{size:12.5,weight:700,align:"center",color:i===st?onFill():C["ink-soft"]})});
+  // artery
+  const y0=150,y1=290,X0=20,X1=400;panelBox(X0-6,y0-60,X1-X0+12,y1-y0+120,{fill:hexA(C.panel,.6)});txt(X0+6,y0-44,"INSIDE THE ANTERIOR INTERVENTRICULAR ARTERY",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  ctx.fillStyle=C["myo-edge"];ctx.fillRect(X0,y0-16,X1-X0,16);ctx.fillRect(X0,y1,X1-X0,16);ctx.fillStyle=hexA(C.oxy,.15);ctx.fillRect(X0,y0,X1-X0,y1-y0);
+  const pc=200,pw=90;const ph=(y1-y0)*.62*plaque;
+  ctx.beginPath();ctx.moveTo(pc-pw,y1);ctx.bezierCurveTo(pc-pw*.4,y1-ph,pc+pw*.4,y1-ph,pc+pw,y1);ctx.closePath();ctx.fillStyle=C.plaque;ctx.fill();ctx.strokeStyle=mix(C.plaque,C.ink,.4);ctx.lineWidth=1.5;ctx.stroke();
+  for(let k=0;k<7;k++)circ(pc-50+k*16,y1-ph*.45+Math.sin(k)*4,3.5*plaque,hexA(C.warn,.5));
+  if(clot>0){ctx.save();ctx.globalAlpha=clot;const top=y0,bot=y1-ph*.9;for(let k=0;k<26;k++){const a=rnd(k)*TAU;line(pc-30+rnd(k+1)*60,lerp(top,bot,rnd(k+2)),pc-30+rnd(k+3)*60,lerp(top,bot,rnd(k+4)),mix(C.oxy,C.ink,.5),2.2)}
+    for(let k=0;k<9;k++){ctx.beginPath();ctx.ellipse(pc-26+rnd(k+9)*52,lerp(top+10,bot-6,rnd(k+11)),9,6,rnd(k),0,TAU);ctx.fillStyle=C.oxy;ctx.fill()}ctx.restore()}
+  const open=1-.62*plaque-clot*.38;
+  for(let i=0;i<22;i++){const lane=rnd(i*3);const y=y0+14+lane*(y1-y0-28);let x=X0+P(T*.12*(1+rnd(i)*.4)+i/22,1)*(X1-X0);
+    const blocked=clot>.9;if(x>pc-pw-10&&y>y1-ph-6&&!blocked){continue}
+    if(blocked&&x>pc-pw){x=pc-pw-6-rnd(i+5)*120}
+    if(!blocked&&x>pc+pw&&rnd(i+7)>open+.1)continue;
+    ctx.beginPath();ctx.ellipse(x,y,9,5.5,0,0,TAU);ctx.fillStyle=C.oxy;ctx.fill()}
+  label(pc,y1+48,st===0?"Fatty plaque builds in the wall (atherosclerosis)":st===1?"Plaque breaks open; a clot forms and blocks the artery":"No blood gets past the block",{size:12,weight:600,align:"center"});
+  arrow(X0+10,y0-26,X0+70,y0-26,C.oxy,2);txt(X0+76,y0-26,"flow",{size:11,color:C["ink-soft"]});
+  // heart
+  const s=.66,hx0=600,hy0=250;drawHeart({x:hx0,y:hy0,s,ext:true});
+  ctx.save();ctx.translate(hx0,hy0);ctx.scale(s,s);ctx.clip(HG.P.outer);
+  const zone=new Path2D();zone.moveTo(38,40);zone.bezierCurveTo(70,20,140,40,158,120);zone.bezierCurveTo(150,190,110,232,80,222);zone.bezierCurveTo(40,200,20,130,38,40);
+  if(isch>0&&dead<1){ctx.globalAlpha=isch*(1-dead)*(.55+.2*Math.sin(T*4));ctx.fillStyle=C.deoxy;ctx.fill(zone)}
+  if(dead>0){ctx.globalAlpha=dead;ctx.fillStyle=C.dead;ctx.fill(zone);ctx.globalAlpha=dead*.5;for(let k=0;k<20;k++)line(40+rnd(k)*110,40+rnd(k+3)*170,52+rnd(k)*110,46+rnd(k+3)*170,C.ink,1)}
+  ctx.restore();
+  vesLine(COR.LAD.slice(0,3),C.oxy,5);vesLine(COR.LAD.slice(2),clot>.9?C.dead:C.oxy,5);vesLine(COR.CX,C.oxy,5);vesLine(COR.RCA,C.oxy,5);
+  const [bx,by]=hp(52,80);circ(bx,by,8,C.plaque,C.ink,1.5);if(clot>.5){line(bx-7,by-7,bx+7,by+7,C.bad,3);line(bx-7,by+7,bx+7,by-7,C.bad,3)}
+  lead(bx,by,470,96,"Blockage",{border:C.bad,align:"right"});
+  if(isch>0){const [zx,zy]=hp(110,140);lead(zx,zy,700,420,dead>.5?"Infarct: dead muscle → scar":"Ischemic muscle",{a:1,border:dead>.5?C.dead:C.deoxy,align:"center"})}
+  if(dead>.3){for(let k=0;k<6;k++){const q=P(T*.3+k/6,1);const [zx,zy]=hp(90+k*10,120);ctx.save();ctx.globalAlpha=1-q;ionDot(zx+Math.sin(T+k)*6,zy-q*120,"k",1,4);ctx.restore()}label(hx0+120,92,"troponin leaks into blood",{size:11.5,align:"center",color:C.k})}
+}
+
+/* ================= Scene: cardiac muscle cells ================= */
+const CELLS=(function(){const c=[];const rows=[[70,[[24,196],[204,372],[380,560],[568,776]]],[150,[[24,118],[126,296],[304,472],[480,650],[658,776]]]];
+  rows.forEach(([y,list])=>list.forEach(([a,b])=>c.push({y,a,b})));return c})();
+function sceneCells(T){
+  const per=3.2;const t=P(T,per)*per;const speed=420;
+  const actAt=x=>x/speed+Math.floor(x/180)*.05;
+  ctx.fillStyle=hexA(C.panel,.35);ctx.fillRect(0,0,W,H);
+  // branches (diagonal links between rows)
+  const links=[[250,300],[460,520],[690,720],[120,160]];
+  links.forEach(([x1,x2])=>{const act=t>actAt(x1)&&t<actAt(x1)+1.2;ctx.beginPath();ctx.moveTo(x1-18,98);ctx.lineTo(x1+18,98);ctx.lineTo(x2+18,152);ctx.lineTo(x2-18,152);ctx.closePath();ctx.fillStyle=act?mix(C.myo,C.glow,.4):C.myo;ctx.fill()});
+  CELLS.forEach((c,i)=>{const mid=(c.a+c.b)/2;const ta=actAt(c.a);const act=t>ta&&t<ta+1.0;const sh=act?Math.sin(clamp((t-ta)/1.0,0,1)*Math.PI)*.06:0;
+    const a=mid+(c.a-mid)*(1-sh),b=mid+(c.b-mid)*(1-sh);rr(a,c.y-30,b-a,58,12);ctx.fillStyle=act?mix(C.myo,C.glow,.45*(1-clamp((t-ta)/1.0,0,1))+.15):C.myo;ctx.fill();ctx.strokeStyle=C["myo-edge"];ctx.lineWidth=1.4;ctx.stroke();
+    ctx.save();rr(a,c.y-30,b-a,58,12);ctx.clip();ctx.strokeStyle=hexA(C["myo-edge"],.45);ctx.lineWidth=1.2;for(let x=a+5;x<b;x+=6*(1-sh)){line(x,c.y-28,x,c.y+26,hexA(C["myo-edge"],.45),1.2)}ctx.restore();
+    ctx.beginPath();ctx.ellipse(mid,c.y,13,8,0,0,TAU);ctx.fillStyle=mix(C["myo-edge"],C.k,.3);ctx.fill();
+    // intercalated disc at the right end (step-shaped)
+    if(c.b<770){ctx.beginPath();for(let k=0;k<=6;k++){const yy=c.y-30+k*58/6;ctx.lineTo(b+(k%2?4:-2),yy)}ctx.strokeStyle=C.ink;ctx.lineWidth=3;ctx.stroke()}
+    if(i===1)lead(mid+30,c.y-14,mid+90,24,"one central nucleus",{size:11.5,align:"left"})});
+  // wave front marker
+  const wx=clamp(t*speed,0,780);if(t<1.9){glow(wx,110,60,C.glow,.35);label(Math.min(700,wx+20),206,"signal spreads →",{size:12,weight:700,color:C.act2})}
+  lead(377,60,300,24,"intercalated disc",{size:11.5,align:"right",border:C.ink});
+  // zoom box of one disc
+  const zx=40,zy=236,zw=720,zh=232;panelBox(zx,zy,zw,zh,{fill:hexA(C.panel,.92)});line(377,98,zx+300,zy,C["ink-faint"],1,[4,4]);line(377,98,zx+420,zy,C["ink-faint"],1,[4,4]);
+  txt(zx+12,zy+16,"CLOSE-UP OF ONE INTERCALATED DISC",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  const mx=zx+zw/2;ctx.fillStyle=C.myo;ctx.fillRect(zx+20,zy+30,mx-zx-34,zh-44);ctx.fillRect(mx+14,zy+30,zx+zw-mx-34,zh-44);
+  line(mx-14,zy+30,mx-14,zy+zh-14,C["myo-edge"],3);line(mx+14,zy+30,mx+14,zy+zh-14,C["myo-edge"],3);
+  txt(zx+150,zy+zh-24,"Cell 1",{size:12,weight:700,align:"center"});txt(zx+zw-150,zy+zh-24,"Cell 2",{size:12,weight:700,align:"center"});
+  // desmosomes
+  [zy+64,zy+186].forEach(y=>{rr(mx-24,y-14,10,28,2);ctx.fillStyle=C.fib;ctx.fill();rr(mx+14,y-14,10,28,2);ctx.fill();for(let k=-2;k<=2;k++){line(mx-14,y+k*5,mx+14,y+k*5,C["fib-edge"],1.6)}
+    for(let k=0;k<5;k++){line(mx-24,y-10+k*5,mx-80,y-30+k*14,hexA(C["fib-edge"],.7),1.4);line(mx+24,y-10+k*5,mx+80,y-30+k*14,hexA(C["fib-edge"],.7),1.4)}});
+  lead(mx-80,zy+64,zx+60,zy+56,"Desmosome: holds cells together",{size:12,align:"left",border:C["fib-edge"]});
+  // gap junctions
+  const gy=[zy+108,zy+128,zy+148];gy.forEach(y=>{rr(mx-22,y-6,44,12,3);ctx.fillStyle=C.act4;ctx.globalAlpha=.75;ctx.fill();ctx.globalAlpha=1;line(mx-22,y,mx+22,y,C.panel,3)});
+  for(let i=0;i<12;i++){const q=P(T*.6+i/12,1);const y=gy[i%3];const x=lerp(mx-140,mx+140,q);if(Math.abs(x-mx)>22&&rnd(i)>.5){ionDot(x,y+(rnd(i+3)-.5)*40,"na",.8,4)}else ionDot(x,y,"na",1,4)}
+  lead(mx+30,zy+128,zx+zw-30,zy+56,"Gap junctions: ions flow cell to cell",{size:12,align:"right",border:C.act4});
+  label(mx,zy+zh-24,"→ one cell excites the next: a functional syncytium",{size:12,weight:600,align:"center",bga:.9});
+}
+
+/* ================= Scene: conduction system ================= */
+const CSTAGES=[[0,.02,"SA node fires (pacemaker)"],[.02,.05,"Internodal pathways: atria depolarize"],[.05,.15,"AV node: delay of about 100 ms"],[.15,.16,"AV bundle (bundle of His)"],[.16,.18,"Right and left bundle branches"],[.18,.23,"Purkinje fibers: apex first"],[.23,.48,"Ventricles contract, apex to base"],[.48,.8,"Relax and refill"]];
+function sceneCond(T){
+  const ct=T/5;const t=wrapT(ct);
+  drawHeart({x:214,y:250,s:.8,conus:false,...pose(ct),vesA:.55});condBase();condFire(t);
+  const c=HG.cond;const [sx,sy]=hp(c.SA[0],c.SA[1]),[ax,ay]=hp(c.AV[0],c.AV[1]);
+  lead(sx,sy,40,110,"SA node",{align:"left",border:C.node});lead(ax,ay,30,330,"AV node",{align:"left",border:C.node});
+  const [hx,hy]=hp(-15,52);lead(hx,hy,250,446,"Bundle of His",{size:11.5,align:"center"});const [px,py]=hp(150,120);lead(px,py,400,330,"Purkinje fibers",{size:11.5,align:"right"});
+  const [bx,by]=hp(40,130);lead(bx,by,330,400,"Bundle branches",{size:11.5,align:"right"});
+  if(t>.05&&t<.15)label(ax+60,ay-30,"waiting… ≈100 ms",{size:12,weight:700,border:C.glow});
+  // ECG panel
+  const ex=430,ey=24,ew=356,eh=170;graphBox(ex,ey,ew,eh,{grid:20,title:"ECG (drawn as the signal moves)"});
+  ctx.save();ctx.beginPath();ctx.rect(ex,ey,ew,eh);ctx.clip();plotFn(wECG,0,.8,ex+8,ey+30,ew-16,eh-40,-.4,1.1,hexA(C.ecg,.18),2);plotFn(wECG,0,.8,ex+8,ey+30,ew-16,eh-40,-.4,1.1,C.ecg,2.4,null,t);ctx.restore();
+  const cxp=ex+8+(ew-16)*t/.8;line(cxp,ey+22,cxp,ey+eh-4,C.ink,1.2,[3,3]);
+  const wl=(tt,s_)=>{if(t>tt){const X=ex+8+(ew-16)*tt/.8;txt(X,ey+eh-12,s_,{size:12,mono:true,weight:700,align:"center",color:C.ecg})}};wl(.045,"P");wl(.18,"QRS");wl(.42,"T");
+  // stage list
+  const lx=430,ly=208;panelBox(lx,ly,356,262);CSTAGES.forEach((s_,i)=>{const on=t>=s_[0]&&t<s_[1];const y=ly+20+i*30;rr(lx+8,y-12,340,26,6);ctx.fillStyle=on?hexA(C.glow,.35):"rgba(0,0,0,0)";ctx.fill();
+    badge(lx+24,y+1,i+1,on?C.act4:C["ink-faint"]);txt(lx+44,y+1.5,s_[2],{size:12.5,weight:on?700:500,color:on?C.ink:C["ink-soft"]})});
+}
+
+/* ================= Scene: ECG waves ================= */
+function sceneEcg(T){
+  const slow=3,win=1.6;const tt=T/slow;const t=wrapT(tt);const sweep=P(tt,win)*win;
+  // mini heart
+  drawHeart({x:118,y:104,s:.36,conus:false,...pose(tt),vesA:.4,noPap:true});condBase({dim:true});
+  ctx.save();ctx.translate(HT.x,HT.y);ctx.scale(HT.s,HT.s);ctx.clip(HG.P.walls,"evenodd");
+  const aDep=t<.12?seg(t,0,.09):0,aRep=t>=.12&&t<.24?1-seg(t,.21,.24):0,vDep=t>=.15&&t<.36?seg(t,.15,.21):0,vRep=t>=.36&&t<.5?1-seg(t,.46,.5):0;
+  const zone=(y0,y1,col,a)=>{if(a<=0)return;ctx.save();ctx.globalAlpha=a*.55;ctx.fillStyle=col;ctx.fillRect(-260,y0,520,y1-y0);ctx.restore()};
+  zone(-260,40,C.glow,aDep);zone(-260,40,C.k,aRep);zone(44,260,C.glow,vDep);zone(44,260,C.k,vRep);ctx.restore();
+  const now=aDep>0?"Atria depolarizing":vDep>0&&aRep>0?"Ventricles depolarize; atria repolarize":vDep>0?"Ventricles depolarized":vRep>0?"Ventricles repolarizing":"Resting between beats";
+  label(124,196,now,{size:11.5,weight:700,align:"center",border:C.act4});
+  // cards
+  const cards=[["P wave","Atria depolarize",.0,.1],["QRS complex","Ventricles depolarize (atria repolarize, hidden)",.15,.22],["T wave","Ventricles repolarize",.35,.49]];
+  cards.forEach((c,i)=>{const x=250+i*180,y=20,w=170,h=170;const on=t>=c[2]&&t<c[3];panelBox(x,y,w,h,{stroke:on?C.ecg:C.rule,lw:on?3:1.2,fill:hexA(C.panel,on?.98:.85)});
+    plotFn(wECG,c[2]-.03,c[3]+.03,x+12,y+40,w-24,70,i===1?-.4:-.05,i===1?1.1:.38,on?C.ecg:C["ink-faint"],2.4);txt(x+w/2,y+20,c[0],{size:13.5,weight:700,align:"center"});wrapText(c[1],x+12,y+128,w-24,15,{size:12})});
+  // big strip
+  const sx=20,sy=214,sw=760,sh=250;graphBox(sx,sy,sw,sh,{grid:19,title:"ECG, about 2 beats"});
+  const base=sy+175,amp=110;const ex=x=>sx+8+(sw-16)*x/win;
+  ctx.save();ctx.beginPath();ctx.rect(sx,sy,sw,sh);ctx.clip();
+  // previous sweep (faint) after eraser gap, current sweep bright
+  ctx.beginPath();let st=false;for(let i=0;i<=sw-16;i++){const x=i/(sw-16)*win;if(x>sweep&&x<sweep+.06){st=false;continue}const cyc=Math.floor(tt/win)*win+(x<=sweep?0:-win);const v=wECG(cyc+x);const X=ex(x),Y=base-v*amp;st?ctx.lineTo(X,Y):(ctx.moveTo(X,Y),st=true)}
+  ctx.strokeStyle=C.ecg;ctx.lineWidth=2.4;ctx.lineJoin="round";ctx.stroke();ctx.restore();
+  glow(ex(sweep),base-wECG(tt)*amp,14,C.ecg,.8);
+  // interval brackets on the first beat when drawn
+  const br=(a,b,y,t_,col,dy,al)=>{if(sweep<b&&Math.floor(tt/win)===0)return;line(ex(a),y,ex(b),y,col,2);line(ex(a),y-5,ex(a),y+5,col,2);line(ex(b),y-5,ex(b),y+5,col,2);label(al==="left"?ex(a):(ex(a)+ex(b))/2,y+dy,t_,{size:11.5,align:al||"center",weight:600,color:col})};
+  br(.005,.155,base+40,"PR interval (0.12–0.20 s)",C.act4,14,"left");br(.155,.48,base+66,"QT interval",C.act5,14);
+  if(sweep>.21||Math.floor(tt/win)>0){const y=base-138;line(ex(.155),y,ex(.21),y,C.act4,2);line(ex(.155),y-5,ex(.155),y+5,C.act4,2);line(ex(.21),y-5,ex(.21),y+5,C.act4,2);label(ex(.21)+10,y,"QRS complex",{size:11.5,weight:600,color:C.act4})}
+  [[.045,"P"],[.18,"R"],[.164,"Q"],[.2,"S"],[.42,"T"]].forEach(([x,s_])=>{if(sweep>x||Math.floor(tt/win)>0){const v=wECG(x);txt(ex(x),base-v*amp+(v<0?16:-14),s_,{size:13,mono:true,weight:700,align:"center",color:C.ink})}});
+}
+
+/* ================= Scene: pacemaker potential ================= */
+function paceV(u){u=((u%CYC)+CYC)%CYC;if(u<.5)return -60+20*Math.pow(u/.5,1.3);if(u<.58)return -40+45*smooth((u-.5)/.08);return 5-65*smooth((u-.58)/.22)}
+function pacePhase(u){u=((u%CYC)+CYC)%CYC;return u<.5?0:u<.58?1:2}
+function sceneSApace(T){
+  const slow=1.6,win=2.4;const tt=T/slow;const sweep=P(tt,win)*win;const u=tt%CYC;const ph=pacePhase(tt);
+  // membrane patch
+  const mx0=14,my=232;panelBox(mx0,14,306,452,{fill:hexA(C.panel,.6)});txt(mx0+12,32,"SA NODE CELL MEMBRANE",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  txt(mx0+150,64,"Outside the cell",{size:12,align:"center",color:C["ink-soft"]});txt(mx0+150,412,"Inside the cell",{size:12,align:"center",color:C["ink-soft"]});
+  ctx.fillStyle=C.serous;ctx.fillRect(mx0+10,my-16,286,32);for(let x=mx0+14;x<mx0+296;x+=9){circ(x,my-12,3.5,C.myo);circ(x,my+12,3.5,C.myo)}
+  const ch=[[mx0+60,"na","slow Na⁺",ph===0],[mx0+150,"ca","Ca²⁺",ph===1],[mx0+240,"k","K⁺",ph===2]];
+  ch.forEach(([x,k,lab,open])=>{const gap=open?9:2;rr(x-18,my-24,18-gap,48,4);ctx.fillStyle=k==="na"?C.na:k==="ca"?C.ca:C.k;ctx.fill();rr(x+gap,my-24,18-gap,48,4);ctx.fill();
+    txt(x,my+46,lab,{size:11.5,weight:700,align:"center"});txt(x,my+62,open?"OPEN":"closed",{size:11,mono:true,weight:700,align:"center",color:open?C.good:C["ink-faint"]})});
+  // ions
+  for(let i=0;i<10;i++){ionDot(mx0+30+rnd(i)*250,96+rnd(i+4)*70,"na",.8,4.5);ionDot(mx0+30+rnd(i+20)*250,120+rnd(i+9)*60,"ca",.8,4.5);ionDot(mx0+30+rnd(i+40)*250,300+rnd(i+11)*80,"k",.8,4.5)}
+  const n=ph===0?3:ph===1?7:6;for(let i=0;i<n;i++){const q=P(T*(ph===0?.5:1.4)+i/n,1);const x=ch[ph][0]+(rnd(i)-.5)*10;const y=ph===2?lerp(my+70,my-90,q):lerp(my-90,my+70,q);ionDot(x,y,ch[ph][1],1,5)}
+  arrow(ch[ph][0]+28,ph===2?my+26:my-56,ch[ph][0]+28,ph===2?my-56:my+26,C.ink,2);
+  const msg=["Na⁺ trickles in: slow drift up (prepotential)","Threshold reached: Ca²⁺ rushes in","K⁺ flows out: back to −60 mV"][ph];
+  label(mx0+153,448,msg,{size:12,weight:700,align:"center",border:[C.na,C.ca,C.k][ph]});
+  // graph
+  const gx=336,gy=14,gw=450,gh=452;graphBox(gx,gy,gw,gh,{title:"MEMBRANE VOLTAGE (mV)"});
+  const vy=v=>gy+60+(20-v)/90*(gh-110);const X=x=>gx+50+(gw-66)*x/win;
+  [[0,"0"],[-40,"−40"],[-60,"−60"]].forEach(([v,s_])=>{line(gx+46,vy(v),gx+gw-12,vy(v),hexA(C.rule,.9),1,v===-40?[6,5]:[]);txt(gx+40,vy(v),s_,{size:11,mono:true,align:"right",color:C["ink-soft"]})});
+  txt(gx+gw-14,vy(-40)-10,"threshold",{size:11,mono:true,align:"right",color:C.warn});
+  ctx.beginPath();let st=false;const cy0=Math.floor(tt/win)*win;for(let i=0;i<=gw-66;i++){const x=i/(gw-66)*win;if(x>sweep&&x<sweep+.08){st=false;continue}const tm=cy0+x-(x>sweep?win:0);const v=paceV(tm);const Xp=X(x),Yp=vy(v);st?ctx.lineTo(Xp,Yp):(ctx.moveTo(Xp,Yp),st=true)}
+  ctx.strokeStyle=C.ecg;ctx.lineWidth=2.6;ctx.stroke();glow(X(sweep),vy(paceV(tt)),14,[C.na,C.ca,C.k][ph],.9);
+  // phase labels on first cycle
+  const lab=(x,v,t_,col)=>label(X(x),vy(v),t_,{size:12,weight:700,align:"center",border:col});
+  lab(.24,-50,"1 prepotential (Na⁺ in)",C.na);lab(.47,12,"2 depolarization (Ca²⁺ in)",C.ca);lab(.74,-18,"3 repolarization (K⁺ out)",C.k);
+  label(gx+gw/2,gy+gh-24,"No outside signal needed: it fires again and again by itself",{size:12,weight:600,align:"center"});
+  txt(gx+gw-14,gy+14,Math.round(paceV(tt))+" mV",{size:15,mono:true,weight:700,align:"right"});
+}
+
+/* ================= Scene: contractile cell action potential ================= */
+function capV(u){const one=x=>{if(x<0)return -85;if(x<.006)return -85+115*x/.006;if(x<.025)return 30-22*smooth((x-.006)/.019);if(x<.22)return 8-13*(x-.025)/.195;if(x<.29)return -5-80*smooth((x-.22)/.07);return -85};
+  return Math.max(one(u-.05),one(u-.45))}
+function capTen(u){const one=x=>x<.03||x>.37?0:Math.pow(Math.sin(Math.PI*(x-.03)/.34),1.6);return one(u-.05)+one(u-.45)}
+function sceneCap(T){
+  const slow=5,win=.8;const u=P(T/slow,win)*win;
+  const gx=14,gy=14,gw=520,gh=320;graphBox(gx,gy,gw,gh,{title:"CONTRACTILE CELL: VOLTAGE AND TENSION"});
+  const X=x=>gx+50+(gw-66)*x/win,vy=v=>gy+46+(40-v)/135*(gh-90);
+  // refractory shading
+  ctx.fillStyle=hexA(C.bad,.13);ctx.fillRect(X(.05),gy+30,X(.33)-X(.05),gh-60);ctx.fillStyle=hexA(C.warn,.1);ctx.fillRect(X(.33),gy+30,X(.37)-X(.33),gh-60);
+  txt((X(.05)+X(.33))/2,gy+40,"refractory period",{size:11.5,mono:true,weight:700,align:"center",color:C.bad});
+  [[30,"+30"],[0,"0"],[-85,"−85"]].forEach(([v,s_])=>{line(gx+46,vy(v),gx+gw-12,vy(v),hexA(C.rule,.9),1);txt(gx+40,vy(v),s_,{size:11,mono:true,align:"right",color:C["ink-soft"]})});
+  ctx.save();ctx.beginPath();ctx.rect(gx,gy,gw,gh);ctx.clip();
+  plotFn(capV,0,win,X(0),vy(40),X(win)-X(0),vy(-95)-vy(40),-95,40,hexA(C.ecg,.2),2);plotFn(capV,0,win,X(0),vy(40),X(win)-X(0),vy(-95)-vy(40),-95,40,C.ecg,2.6,null,u);
+  plotFn(capTen,0,win,X(0),vy(-20),X(win)-X(0),vy(-85)-vy(-20),0,1.2,C.act3,2.4,[7,5],u);ctx.restore();
+  glow(X(u),vy(capV(u)),12,C.ecg,.8);
+  // stimuli
+  const stim=(x,ok,dy)=>{if(u<x)return;arrow(X(x),gy+gh-8,X(x),gy+gh-30,ok?C.good:C.bad,2.5);label(X(x),gy+gh-42-(dy||0),ok?"new signal: fires":"early signal: blocked",{size:11.5,weight:700,align:"center",color:ok?C.good:C.bad})};
+  stim(.05,true,22);stim(.2,false);stim(.45,true,22);
+  if(u>.06)label(X(.13),vy(-22),"plateau (Ca²⁺ in)",{size:12,weight:700,align:"center",border:C.ca});
+  if(u>.3)label(X(.25),vy(-60),"repolarization",{size:12,weight:700,align:"left",border:C.k});
+  if(u>.05)label(X(.065),vy(34),"rapid depolarization (Na⁺ in)",{size:11.5,weight:700,align:"left",border:C.na});
+  if(u>.25)label(X(.3),vy(-30)+6,"tension",{size:11.5,weight:700,align:"left",color:C.act3});
+  // ion box
+  const ph=u<.05?-1:(u<.056||(u>=.45&&u<.456))?0:((u<.27)||(u>=.45&&u<.67))?1:((u<.34)||(u>=.45&&u<.74))?2:-1;
+  const bx=548,by=14,bw=238,bh=196;panelBox(bx,by,bw,bh);txt(bx+12,by+18,"WHAT THE IONS ARE DOING",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  const my=by+108;ctx.fillStyle=C.serous;ctx.fillRect(bx+10,my-12,bw-20,24);txt(bx+bw-14,by+40,"outside",{size:11,align:"right",color:C["ink-faint"]});txt(bx+bw-14,by+bh-14,"inside",{size:11,align:"right",color:C["ink-faint"]});
+  const moves=ph===0?[["na",1,8]]:ph===1?[["ca",1,4],["k",-1,3]]:ph===2?[["k",-1,7]]:[];
+  moves.forEach(([k,dir,n],j)=>{const x=bx+70+j*90;for(let i=0;i<n;i++){const q=P(T*1.2+i/n,1);ionDot(x+(rnd(i)-.5)*30,dir>0?lerp(my-60,my+60,q):lerp(my+60,my-60,q),k,1,5)}});
+  txt(bx+bw/2,by+bh-34,ph===0?"Na⁺ rushes in":ph===1?"Ca²⁺ in, K⁺ out: plateau":ph===2?"K⁺ out: repolarization":"Resting at about −85 mV",{size:12.5,weight:700,align:"center"});
+  // compare box
+  const cx=548,cy=224,cw=238,chh=242;panelBox(cx,cy,cw,chh);txt(cx+12,cy+18,"WHY NO TETANUS?",{size:11,mono:true,weight:700,color:C["ink-soft"]});
+  const mini=(x,y,w,h,f,col)=>{ctx.beginPath();for(let i=0;i<=w;i++){const v=f(i/w);i?ctx.lineTo(x+i,y+h-v*h):ctx.moveTo(x+i,y+h-v*h)}ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke()};
+  txt(cx+12,cy+44,"Skeletal muscle: signals pile up",{size:12,weight:600});
+  mini(cx+14,cy+56,210,56,x=>Math.min(1,x<.15?x/.15*.5:.5+.5*seg(x,.15,.6))*(x>.9?1-seg(x,.9,1):1),C.act3);for(let i=0;i<9;i++)line(cx+14+i*20,cy+114,cx+14+i*20,cy+104,C.ink,1.5);
+  txt(cx+200,cy+66,"tetanus",{size:11,mono:true,weight:700,align:"right",color:C.act3});
+  txt(cx+12,cy+140,"Cardiac muscle: must relax first",{size:12,weight:600});
+  mini(cx+14,cy+152,210,56,x=>Math.pow(Math.max(0,Math.sin(Math.PI*clamp((x-.02)/.42,0,1))),1.6)+Math.pow(Math.max(0,Math.sin(Math.PI*clamp((x-.52)/.42,0,1))),1.6),C.act3);
+  txt(cx+120,cy+226,"each beat relaxes → the heart can refill",{size:11.5,align:"center",color:C["ink-soft"]});
+}
+
+function sceneCycle(T){
+  const ct=T/6;const t=wrapT(ct);const ps=pose(ct);
+  drawHeart({x:146,y:236,s:.56,...ps});
+  // blood in/out arrows
+  if(ps.valves.mit>.5){for(let i=0;i<4;i++){const q=P(T*.5+i/4,1);const [X,Y]=hp(94,lerp(-40,80,q));bloodDot(X,Y,1,1,3.4);const [X2,Y2]=hp(-97,lerp(-30,90,q));bloodDot(X2,Y2,0,1,3.4)}}
+  if(ps.valves.aor>.5){for(let i=0;i<4;i++){const q=P(T*.6+i/4,1);const [x,y]=along(V_("AO"),q*.6);const [X,Y]=hp(x,y);bloodDot(X,Y,1,1,3.4);const [x2,y2]=along(V_("PT"),q);const [X2,Y2]=hp(x2,y2);bloodDot(X2,Y2,0,1,3.4)}}
+  const ph=phaseAt(t);label(146,20,ph[2],{size:14,weight:700,align:"center",border:C[PHC[PH.indexOf(ph)]]});
+  valveChips(40,402,ps);
+  wiggers(300,8,488,464,t);
+}
+
+/* ================= Scene: heart sounds ================= */
+function sceneSounds(T){
+  const ct=T/4;const t=wrapT(ct);const ps=pose(ct);
+  drawHeart({x:210,y:250,s:.72,...ps});
+  const ring=(id,p,col)=>{const v=HG.valves[id];const [X,Y]=hp((v[0]+v[2])/2,(v[1]+v[3])/2);for(let k=0;k<3;k++){const q=clamp(p-k*.18,0,1);if(q>0&&q<1){ctx.save();ctx.globalAlpha=1-q;ctx.strokeStyle=col;ctx.lineWidth=3;ctx.beginPath();ctx.arc(X,Y,10+q*70,0,TAU);ctx.stroke();ctx.restore()}}};
+  const s1=seg(t,.18,.34),s2=seg(t,.48,.62);
+  if(s1>0&&s1<1){ring("tri",s1,C.act5);ring("mit",s1,C.act5);ctx.save();ctx.globalAlpha=1-s1*.6;txt(210,36,"LUB",{size:40,weight:700,align:"center",color:C.act5,mono:true});ctx.restore()}
+  if(s2>0&&s2<1){ring("pul",s2,C.act2);ring("aor",s2,C.act2);ctx.save();ctx.globalAlpha=1-s2*.6;txt(210,36,"DUB",{size:40,weight:700,align:"center",color:C.act2,mono:true});ctx.restore()}
+  const lab=(id,t_,lx,ly,col,on)=>{const v=HG.valves[id];const [X,Y]=hp((v[0]+v[2])/2,(v[1]+v[3])/2);lead(X,Y,lx,ly,t_,{border:on?col:null,a:on?1:.55,align:"left"})};
+  lab("tri","Tricuspid",16,440,C.act5,s1>0&&s1<1);lab("mit","Mitral",330,440,C.act5,s1>0&&s1<1);lab("pul","Pulmonary",16,96,C.act2,s2>0&&s2<1);lab("aor","Aortic",330,96,C.act2,s2>0&&s2<1);
+  // phonocardiogram
+  const gx=436,gy=20,gw=350,gh=220;graphBox(gx,gy,gw,gh,{title:"WHAT THE STETHOSCOPE HEARS"});
+  const win=1.6;const sweep=P(ct,win)*win;const X=x=>gx+10+(gw-20)*x/win;
+  ctx.save();ctx.beginPath();ctx.rect(gx,gy,gw,gh);ctx.clip();
+  ctx.beginPath();let st=false;for(let i=0;i<=gw-20;i++){const x=i/(gw-20)*win;if(x>sweep&&x<sweep+.06){st=false;continue}const v=phonoV(x);const Y=gy+95-v*55;st?ctx.lineTo(X(x),Y):(ctx.moveTo(X(x),Y),st=true)}ctx.strokeStyle=C.ink;ctx.lineWidth=1.6;ctx.stroke();
+  ctx.beginPath();st=false;for(let i=0;i<=gw-20;i++){const x=i/(gw-20)*win;if(x>sweep&&x<sweep+.06){st=false;continue}const Y=gy+190-wECG(x)*44;st?ctx.lineTo(X(x),Y):(ctx.moveTo(X(x),Y),st=true)}ctx.strokeStyle=hexA(C.ecg,.7);ctx.lineWidth=1.6;ctx.stroke();ctx.restore();
+  line(X(sweep),gy+24,X(sweep),gy+gh-6,C.ink,1.2,[3,3]);txt(gx+gw-10,gy+150,"ECG for timing",{size:10.5,mono:true,align:"right",color:C.ecg});
+  [0,.8].forEach(o=>{txt(X(o+.205),gy+32,"S1",{size:11.5,mono:true,weight:700,align:"center",color:C.act5});txt(X(o+.497),gy+32,"S2",{size:11.5,mono:true,weight:700,align:"center",color:C.act2})});
+  stethoscope(470,330,1);
+  panelBox(540,262,246,200);txt(554,282,"S1 · LUB",{size:12,mono:true,weight:700,color:C.act5});wrapText("AV valves (tricuspid, mitral) close as the ventricles start to contract.",554,302,220,16,{size:12.5});
+  txt(554,362,"S2 · DUB",{size:12,mono:true,weight:700,color:C.act2});wrapText("Semilunar valves (pulmonary, aortic) close as the ventricles start to relax.",554,382,220,16,{size:12.5});
+  txt(554,444,"Slowed about 4×",{size:11,mono:true,color:C["ink-faint"]});
+}
+
+/* ================= Scene: cardiac output ================= */
+function sceneCO(T){
+  const ct=T/3;const t=wrapT(ct);const vol=wVol(t);const ej=t>=.23&&t<.48;
+  // LV cutaway
+  const cx=160,top=118;const vf=(vol-30)/100;
+  // aorta + valve
+  rr(cx+16,24,44,100,8);ctx.fillStyle=C["myo-edge"];ctx.fill();rr(cx+22,24,32,100,6);ctx.fillStyle=C.oxy;ctx.fill();
+  drawValve([cx+22,118,cx+54,118,0,-1],slOpen(t),{w:4});
+  rr(cx-70,30,60,94,10);ctx.fillStyle=C.myo;ctx.fill();rr(cx-62,38,44,86,8);ctx.fillStyle=C.oxy;ctx.fill();drawValve([cx-62,120,cx-18,120,0,1],avOpen(t),{w:4});
+  txt(cx-40,22,"LA",{size:11,mono:true,weight:700,align:"center"});txt(cx+38,16,"aorta",{size:11,mono:true,weight:700,align:"center"});
+  lvShape(cx,top,236,280,vf,{wall:30});
+  if(ej){for(let i=0;i<8;i++){const q=P(T*.9+i/8,1);bloodDot(cx+28+(rnd(i)-.5)*18,lerp(130,20,q),1,1,4.5)}}
+  if(avOpen(t)>.5){for(let i=0;i<5;i++){const q=P(T*.6+i/5,1);bloodDot(cx-40+(rnd(i)-.5)*20,lerp(60,190,q),1,1,4.5)}}
+  label(cx,top+150,Math.round(vol)+" mL",{size:22,weight:700,align:"center",mono:true,bga:.85});
+  txt(cx,top+300,"Left ventricle",{size:12.5,weight:700,align:"center"});
+  // volume meter
+  const mx=330,my0=80,mh=300;rr(mx,my0,26,mh,6);ctx.fillStyle=C.sunk;ctx.fill();const vy=v=>my0+mh-(v/140)*mh;
+  rr(mx,vy(vol),26,my0+mh-vy(vol),6);ctx.fillStyle=C.oxy;ctx.fill();
+  [[120,"EDV 120"],[50,"ESV 50"]].forEach(([v,s_])=>{line(mx-6,vy(v),mx+34,vy(v),C.ink,2);txt(mx+40,vy(v),s_,{size:12,mono:true,weight:700})});
+  ctx.save();line(mx+120,vy(120),mx+120,vy(50),C.vol,3);line(mx+114,vy(120),mx+126,vy(120),C.vol,3);line(mx+114,vy(50),mx+126,vy(50),C.vol,3);ctx.restore();
+  txt(mx+132,(vy(120)+vy(50))/2-8,"SV",{size:13,mono:true,weight:700,color:C.vol});txt(mx+132,(vy(120)+vy(50))/2+10,"70 mL",{size:13,mono:true,weight:700,color:C.vol});
+  label(mx+13,my0-22,ej?"ejecting":t>=.56||t<.18?"filling":"valves shut",{size:12,weight:700,align:"center",border:C.act6});
+  // fast-forward minute
+  const p=P(T,16);const beats=Math.min(75,Math.floor(seg(p,.04,.8)*75.999));const mL=beats*70;
+  const jx=600,jy=110,jw=120,jh=270;ctx.beginPath();ctx.moveTo(jx,jy);ctx.lineTo(jx+6,jy+jh);ctx.lineTo(jx+jw-6,jy+jh);ctx.lineTo(jx+jw,jy);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=3;ctx.stroke();
+  const lvl=mL/6000*jh;ctx.beginPath();ctx.moveTo(jx+6*(1-lvl/jh)+3,jy+jh-lvl);ctx.lineTo(jx+jw-3-6*(1-lvl/jh),jy+jh-lvl);ctx.lineTo(jx+jw-8,jy+jh-2);ctx.lineTo(jx+8,jy+jh-2);ctx.closePath();ctx.fillStyle=hexA(C.oxy,.8);ctx.fill();
+  for(let L=1;L<=6;L++){const y=jy+jh-L/6*jh;line(jx+jw-24,y,jx+jw-4,y,C["ink-soft"],1.5);txt(jx+jw+8,y,L+" L",{size:11,mono:true,color:C["ink-soft"]})}
+  if(p<.82&&beats<75){const q=P(T*4.7,1);bloodDot(jx+jw/2,lerp(jy-40,jy+jh-lvl,q),1,1,5)}
+  panelBox(450,14,336,82);txt(464,34,"CO = HR × SV",{size:16,mono:true,weight:700});
+  txt(464,58,`${beats} beats × 70 mL = ${mL.toLocaleString()} mL`,{size:13.5,mono:true,weight:600});
+  txt(464,80,beats>=75?"= 5.25 L/min, every minute at rest":"fast-forwarding one minute…",{size:12.5,weight:700,color:beats>=75?C.good:C["ink-soft"]});
+  txt(jx+jw/2,jy+jh+24,(mL/1000).toFixed(2)+" L",{size:18,mono:true,weight:700,align:"center"});txt(jx+jw/2,jy+jh+44,"pumped by the left ventricle",{size:11.5,align:"center",color:C["ink-soft"]});
+  txt(460,404,"HR",{size:11,mono:true,weight:700,color:C["ink-soft"]});txt(460,424,"75 / min",{size:15,mono:true,weight:700});
+}
+
+/* ================= Scene: preload / Frank-Starling ================= */
+function scenePre(T){
+  const ct=T/3;const t=wrapT(ct);const w=(wVol(t)-50)/70;
+  const H2=[[120,"LOW PRELOAD",90],[330,"HIGH PRELOAD",150]];
+  H2.forEach(([cx,ttl,edv])=>{const sv=fsSV(edv);const esv=edv-sv;const vol=esv+w*sv;
+    txt(cx,24,ttl,{size:12,mono:true,weight:700,align:"center",color:C["ink-soft"]});
+    lvShape(cx,44,150+edv*.35,200,clamp((vol-20)/150,0,1),{wall:22});
+    label(cx,150,Math.round(vol)+" mL",{size:15,mono:true,weight:700,align:"center",bga:.85});
+    // venous return arrow
+    const vr=edv>100?3:1.5;for(let i=0;i<(edv>100?6:3);i++){const q=P(T*.5+i/6,1);if(t>=.56||t<.15)bloodDot(cx-30+i*10,lerp(36,90,q),1,1,3.5)}
+    // sarcomere
+    const sl=(edv>100?1:.82)*(1-.14*(1-w));const sx=cx,sy=300;const half=78*sl;line(sx-half,sy-22,sx-half,sy+22,C.ink,3);line(sx+half,sy-22,sx+half,sy+22,C.ink,3);
+    for(let k=-1;k<=1;k++){rr(sx-38,sy+k*14-3,76,6,3);ctx.fillStyle=C.k;ctx.fill();line(sx-half,sy+k*14-7,sx-half+58,sy+k*14-7,C.act3,3);line(sx+half,sy+k*14+7,sx+half-58,sy+k*14+7,C.act3,3)}
+    txt(cx,sy+40,edv>100?"more stretched: closer to the best overlap":"less stretched: weaker pull",{size:11.5,align:"center",color:C["ink-soft"]});
+    // SV bar
+    const by=420;rr(cx-80,by,160,18,4);ctx.fillStyle=C.sunk;ctx.fill();rr(cx-80,by,160*sv/100,18,4);ctx.fillStyle=C.vol;ctx.fill();txt(cx,by+34,`EDV ${edv} → SV ${Math.round(sv)} mL`,{size:12.5,mono:true,weight:700,align:"center"})});
+  txt(120,262,"sarcomere",{size:11,mono:true,align:"center",color:C["ink-faint"]});txt(330,262,"sarcomere",{size:11,mono:true,align:"center",color:C["ink-faint"]});
+  // Frank-Starling curve
+  const gx=470,gy=20,gw=316,gh=420;graphBox(gx,gy,gw,gh,{title:"FRANK–STARLING CURVE"});
+  const X=e=>gx+46+(e-40)/170*(gw-66),Y=s=>gy+gh-46-s/110*(gh-90);
+  line(X(40),Y(0),X(210),Y(0),C["ink-soft"],1.5);line(X(40),Y(0),X(40),Y(110),C["ink-soft"],1.5);
+  [60,100,140,180].forEach(e=>txt(X(e),Y(0)+14,e+"",{size:10.5,mono:true,align:"center",color:C["ink-soft"]}));[20,40,60,80,100].forEach(s=>txt(X(40)-6,Y(s),s+"",{size:10.5,mono:true,align:"right",color:C["ink-soft"]}));
+  txt(X(125),Y(0)+32,"EDV, mL (preload)",{size:11.5,align:"center",weight:600});ctx.save();ctx.translate(gx+14,Y(55));ctx.rotate(-Math.PI/2);txt(0,0,"Stroke volume, mL",{size:11.5,align:"center",weight:600});ctx.restore();
+  ctx.beginPath();for(let e=40;e<=210;e+=2){const s=fsSV(e);e===40?ctx.moveTo(X(e),Y(s)):ctx.lineTo(X(e),Y(s))}ctx.strokeStyle=C.act6;ctx.lineWidth=3;ctx.stroke();
+  const pulse=4+Math.sin(T*3)*1.2;[[90,"low"],[150,"high"]].forEach(([e,s_])=>{circ(X(e),Y(fsSV(e)),pulse+3,C.vol,C.panel,2);label(X(e)+10,Y(fsSV(e))+18,s_+" preload",{size:11.5,weight:700})});
+  const m=P(T,8);const e=lerp(90,150,ease(m<.5?m*2:2-m*2));circ(X(e),Y(fsSV(e)),5,C.glow,C.ink,1.2);
+  label(gx+gw/2,gy+40,"more blood in → more blood out",{size:12.5,weight:700,align:"center",border:C.act6});
+}
+
+/* ================= Scene: contractility and afterload ================= */
+function sceneContr(T){
+  const ct=T/3;const t=wrapT(ct);const w=(wVol(t)-50)/70;const ph=Math.floor(T/6)%2;const chg=ph===1;
+  const panel=(x0,ttl,col)=>{panelBox(x0,10,378,460,{stroke:chg?col:C.rule,lw:chg?2.5:1.2,fill:hexA(C.panel,.55)});txt(x0+16,30,ttl,{size:12.5,mono:true,weight:700,color:col})};
+  panel(10,"CONTRACTILITY ↑",C.ne);panel(410,"AFTERLOAD ↑",C.aop);
+  // left: contractility
+  {const esv=chg?30:50;const vol=esv+w*(120-esv);const cx=199;lvShape(cx,92,200,230,clamp((vol-20)/120,0,1),{wall:chg?30:24,myo:chg?mix(C.myo,C.ne,.2):C.myo});
+    label(cx,190,Math.round(vol)+" mL",{size:15,mono:true,weight:700,align:"center",bga:.85});
+    // sympathetic terminal releasing NE
+    ctx.beginPath();ctx.moveTo(30,66);ctx.bezierCurveTo(70,66,90,76,110,86);ctx.strokeStyle=C.symp;ctx.lineWidth=4;ctx.stroke();circ(112,88,9,C.symp);
+    if(chg){for(let i=0;i<8;i++){const q=P(T*.6+i/8,1);ionDot(lerp(118,170+rnd(i)*60,q),lerp(92,150+rnd(i+3)*60,q),"na",1-q*.3,3.5);}for(let i=0;i<6;i++){ionDot(130+rnd(i+7)*140,150+rnd(i+2)*120+Math.sin(T*3+i)*4,"ca",.9,4.5)}
+      ctx.save();ctx.fillStyle=C.ne;for(let i=0;i<8;i++){const q=P(T*.6+i/8,1);circ(lerp(118,170+rnd(i)*60,q),lerp(92,150+rnd(i+3)*60,q),4,C.ne)}ctx.restore()}
+    txt(30,54,"sympathetic nerve",{size:11,color:C["ink-soft"]});
+    wrapText(chg?"Norepinephrine lets more Ca²⁺ in. The same stretch gives a stronger squeeze: ESV falls to 30 mL.":"Normal squeeze: ESV about 50 mL.",30,356,340,16,{size:12.5,weight:600});
+    const sv=120-esv;bars(30,400,[["Normal",70],[chg?"With NE":"Now",sv]],chg?C.ne:C.vol)}
+  // right: afterload
+  {const esv=chg?75:50;const vol=esv+w*(120-esv);const cx=599;lvShape(cx,92,200,230,clamp((vol-20)/120,0,1),{wall:24});label(cx,190,Math.round(vol)+" mL",{size:15,mono:true,weight:700,align:"center",bga:.85});
+    rr(cx+30,30,40,64,6);ctx.fillStyle=C["myo-edge"];ctx.fill();rr(cx+36,30,28,64,5);ctx.fillStyle=C.oxy;ctx.fill();
+    const open=t>=(chg?.27:.23)&&t<(chg?.42:.48)?1:0;drawValve([cx+36,92,cx+64,92,0,-1],open,{w:4});
+    // pressure gauge
+    const ap=chg?140:80;const gx=cx+130,gy=70;ctx.beginPath();ctx.arc(gx,gy,30,Math.PI,TAU);ctx.strokeStyle=C.sunk;ctx.lineWidth=8;ctx.stroke();ctx.beginPath();ctx.arc(gx,gy,30,Math.PI,Math.PI*(1+ap/180));ctx.strokeStyle=C.aop;ctx.stroke();
+    txt(gx,gy+16,ap+" mmHg",{size:11.5,mono:true,weight:700,align:"center"});txt(gx,gy-42,"aortic pressure",{size:11,align:"center",color:C["ink-soft"]});
+    if(chg){for(let k=0;k<3;k++)arrow(cx+50+(k-1)*12,40,cx+50+(k-1)*12,78,hexA(C.aop,.9),2)}
+    wrapText(chg?"High aortic pressure: the ventricle must push harder before the valve opens. Less blood gets out: ESV rises to 75 mL.":"Normal aortic pressure: the valve opens at about 80 mmHg.",430,356,340,16,{size:12.5,weight:600});
+    const sv=120-esv;bars(430,400,[["Normal",70],[chg?"High afterload":"Now",sv]],chg?C.aop:C.vol)}
+  label(400,462,chg?"Changed: compare the stroke volumes":"Normal heart (EDV 120 mL)",{size:12.5,weight:700,align:"center",border:C.act6});
+}
+function bars(x,y,list,col){list.forEach((b,i)=>{const yy=y+i*24;txt(x,yy+8,b[0],{size:12,weight:600});rr(x+110,yy,200,16,4);ctx.fillStyle=C.sunk;ctx.fill();rr(x+110,yy,200*b[1]/100,16,4);ctx.fillStyle=i?col:C.vol;ctx.fill();txt(x+116+200*b[1]/100,yy+8.5,"SV "+b[1]+" mL",{size:11.5,mono:true,weight:700})})}
+
+/* ================= Scene: autonomic and chemical control ================= */
+const CTRL_MODES=[["Rest: vagal tone",70,.25,.8],["Exercise: sympathetic",130,1,.1],["Strong vagal signal",50,.1,1]];
+function sceneCtrl(T){
+  const per=7;const m=Math.floor(T/per)%3;const md=CTRL_MODES[m];const hr=md[1];const sy=md[2],va=md[3];
+  let cyc=0;for(let k=0;k<Math.floor(T/per);k++)cyc+=per*CTRL_MODES[k%3][1]/60/1.6;cyc+=(T%per)*hr/60/1.6;const ct=(cyc%1)*CYC;
+  // brainstem + cord
+  ctx.beginPath();ctx.moveTo(60,40);ctx.bezierCurveTo(60,20,170,20,170,40);ctx.bezierCurveTo(170,90,140,130,132,160);ctx.lineTo(98,160);ctx.bezierCurveTo(90,130,60,90,60,40);ctx.closePath();ctx.fillStyle=C.body;ctx.fill();ctx.strokeStyle=C["body-edge"];ctx.lineWidth=2;ctx.stroke();
+  rr(98,160,34,300,12);ctx.fillStyle=C.body;ctx.fill();ctx.stroke();ctx.save();ctx.translate(115,400);ctx.rotate(-Math.PI/2);txt(0,0,"spinal cord",{size:10.5,align:"center",color:C["ink-soft"]});ctx.restore();
+  circ(92,74,15,hexA(C.symp,.25+.75*sy),C.symp,2);circ(140,74,15,hexA(C.para,.25+.75*va),C.para,2);
+  txt(115,32,"MEDULLA",{size:10.5,mono:true,weight:700,align:"center",color:C["ink-soft"]});
+  // heart
+  drawHeart({x:470,y:236,s:.55,conus:false,...pose(ct),vesA:.5,noPap:true});condBase({dim:true});
+  const c=HG.cond;const SA=hp(c.SA[0],c.SA[1]),AV=hp(c.AV[0],c.AV[1]),VM=hp(120,130);
+  const symP=[[115,180],[176,236],[260,236],[340,200],SA],symP2=[[176,236],[300,280],AV],symP3=[[176,236],[300,330],VM];
+  line(176,196,176,330,C.symp,2);[216,256,296].forEach(y=>circ(176,y,9,C.nerve,C.symp,2));
+  const vagP=[[140,88],[220,110],[300,130],SA],vagP2=[[300,130],[340,190],AV];
+  const nerve=(pts,col,act)=>{poly(pts,mix(col,C.ink,.3),4.5);poly(pts,col,3);if(act>0){const n=Math.round(2+act*5);for(let i=0;i<n;i++){const q=P(T*(.4+act*.6)+i/n,1);const [x,y]=along(pts,q);glow(x,y,10,C.glow,.6+.4*act);circ(x,y,3,C.glow)}}};
+  nerve(symP,C.symp,sy);nerve(symP2,C.symp,sy);nerve(symP3,C.symp,sy);nerve(vagP,C.para,va);nerve(vagP2,C.para,va);
+  label(10,116,"Cardioaccelerator center",{size:11,weight:700,color:C.symp,bga:.92});label(186,56,"Cardioinhibitory center",{size:11,weight:700,color:C.para,bga:.92});
+  line(92,90,60,108,C.symp,1.2);line(150,64,186,58,C.para,1.2);
+  label(196,346,"cardiac accelerator nerves (sympathetic)",{size:11,weight:700,color:C.symp,bga:.9});label(222,150,"vagus nerve (X)",{size:11.5,weight:700,color:C.para,bga:.9});
+  label(176,320,"chain ganglia",{size:10.5,align:"center",color:C["ink-soft"],bga:.9});
+  for(let i=0;i<10;i++){const a=i/10*TAU+T;if(sy>.3){circ(SA[0]+Math.cos(a)*15,SA[1]+Math.sin(a)*15,3.3*sy,C.ne);circ(AV[0]+Math.cos(a+1)*13,AV[1]+Math.sin(a+1)*13,3.3*sy,C.ne);circ(VM[0]+Math.cos(a+2)*15,VM[1]+Math.sin(a+2)*15,3*sy,C.ne)}
+    if(va>.3){rr(SA[0]+Math.cos(a+.3)*21-3,SA[1]+Math.sin(a+.3)*21-3,6*va,6*va,1.5);ctx.fillStyle=C.ach;ctx.fill();rr(AV[0]+Math.cos(a+.9)*19-3,AV[1]+Math.sin(a+.9)*19-3,6*va,6*va,1.5);ctx.fill()}}
+  panelBox(640,14,146,96,{stroke:m===1?C.symp:C.para,lw:2.5});txt(713,36,"HEART RATE",{size:11,mono:true,weight:700,align:"center",color:C["ink-soft"]});
+  txt(713,70,hr+"",{size:34,mono:true,weight:700,align:"center"});txt(713,96,"beats/min",{size:11,align:"center",color:C["ink-soft"]});
+  label(470,18,md[0],{size:14,weight:700,align:"center",border:m===1?C.symp:C.para});
+  const gx=618,gy=150,gw=168,gh=150;graphBox(gx,gy,gw,gh,{title:"SA NODE DRIFT"});
+  const slope=m===1?2.1:m===0?1:.72;const base=m===2?-65:-60;const vy=v=>gy+gh-14-(v+70)/80*(gh-40);line(gx+6,vy(-40),gx+gw-6,vy(-40),C.warn,1,[5,4]);
+  ctx.beginPath();for(let i=0;i<=gw-16;i++){const tt=i/(gw-16)*2.2;const f=(tt*slope)%1;const v=f<.75?base+(-40-base)*(f/.75):(f<.85?-40+50*seg(f,.75,.85):10-(10-base)*seg(f,.85,1));i?ctx.lineTo(gx+8+i,vy(v)):ctx.moveTo(gx+8+i,vy(v))}ctx.strokeStyle=C.ecg;ctx.lineWidth=2;ctx.stroke();
+  txt(gx+gw-8,gy+gh+14,m===1?"steeper drift (NE)":m===2?"flatter drift (ACh)":"normal drift",{size:11,mono:true,weight:700,align:"right",color:m===1?C.symp:C.para});
+  panelBox(618,326,168,140);txt(630,344,"CHEMICAL CONTROL",{size:10.5,mono:true,weight:700,color:C["ink-soft"]});
+  [["Epinephrine: ↑ HR",C.ne],["Thyroid hormone: ↑ HR",C.act5],["Fever: ↑ HR",C.warn],["Abnormal K⁺ or Ca²⁺:",C.bad],["  rhythm problems",C.bad]].forEach((cp,i)=>{if(i<4)circ(634,368+i*22,4,cp[1]);txt(644,368+i*22,cp[0],{size:11.5,weight:600})});
+}
+
+/* ================= Scene: recap ================= */
+function sceneRecap(T){
+  const ct=T/3;drawHeart({x:200,y:236,s:.74,...pose(ct)});
+  flowRoute(ROUTE_S,8,6,T,0);flowRoute(ROUTE_I,8,6,T+2,0);flowRoute(ROUTE_O,9,6,T,1);flowRoute(ROUTE_O2,5,6,T+1,1);
+  const parts=[["Anatomy","act1","Mediastinum, pericardium, 3 wall layers, 4 chambers"],["Valves & flow","act2","4 valves pushed by pressure; RA→RV→lungs→LA→LV"],["Feeding the heart","act3","Coronary arteries and veins; MI; intercalated discs"],
+    ["Electrical system","act4","SA → AV (delay) → His → branches → Purkinje; P, QRS, T"],["Cardiac cycle","act5","5 phases; S1 = AV close, S2 = semilunar close"],["Cardiac output","act6","CO = HR × SV; preload, contractility, afterload"]];
+  const on=Math.floor(P(T,13)*7);
+  parts.forEach((pt,i)=>{const x=412,y=12+i*76,w=374,h=68;const lit=i<=on;panelBox(x,y,w,h,{stroke:lit?C[pt[1]]:C.rule,lw:lit?2.5:1.2,fill:hexA(C.panel,lit?.97:.6)});
+    ctx.save();ctx.globalAlpha=lit?1:.45;badge(x+22,y+h/2,i+1,C[pt[1]],12);txt(x+44,y+22,pt[0],{size:14,weight:700});wrapText(pt[2],x+44,y+44,w-56,15,{size:12,color:C["ink-soft"]});ctx.restore()});
+  const ex=30,ey=420,ew=340,eh=50;ctx.beginPath();for(let i=0;i<=ew;i++){const tt=i/ew*2.4;const v=wECG(tt);i?ctx.lineTo(ex+i,ey+30-v*26):ctx.moveTo(ex+i,ey+30-v*26)}ctx.strokeStyle=C.ecg;ctx.lineWidth=2;ctx.stroke();
+  const k=P(ct,2.4)*ew;glow(ex+k,ey+30-wECG(P(ct,2.4)*2.4)*26,12,C.ecg,.8);
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+const SCENES={map:sceneMap,loc:sceneLoc,peri:scenePeri,wall:sceneWall,chambers:sceneChambers,valves:sceneValves,chordae:sceneChordae,flow:sceneFlow,circ:sceneCirc,
+  coro:sceneCoro,mi:sceneMI,cells:sceneCells,cond:sceneCond,ecg:sceneEcg,pace:sceneSApace,cap:sceneCap,cycle:sceneCycle,sounds:sceneSounds,co:sceneCO,pre:scenePre,contr:sceneContr,ctrl:sceneCtrl,recap:sceneRecap};
+function draw(){
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;
+  const s=STEPS[cur];
+  try{(SCENES[s.scene]||sceneRecap)(T)}catch(e){console.error(e)}
+  ctx.globalAlpha=1;
+}
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  draw();
+  requestAnimationFrame(frame);
+}
+window.__setT=v=>{T=v;paused=true;draw()};
+window.__go=i=>go(i);
+window.__n=()=>STEPS.length;
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+
+})();
+</script>
+</body>
+</html>

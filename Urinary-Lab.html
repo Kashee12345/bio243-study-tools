@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Urinary Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#C4644F;--act2:#7B5CC9;--act3:#2F7FC1;--act4:#2F8A57;--act5:#B4632A;
+  /* urinary palette */
+  --ecf:#EEF2F4;--skin:#F1DCCB;--skin-edge:#B08A6E;--bodyin:#F7E9DD;
+  --kid:#B9574A;--kid-edge:#7A3328;--cortex:#DB9483;--medulla:#A9473C;--pelvis:#F2E2B0;--pelvis-edge:#B89A4A;
+  --urine:#E0B92E;--urine-lt:#F3E39A;--urine-dk:#B9781A;
+  --art:#C0392B;--vein:#3E63B0;--cap:#D9665A;--cap-wash:#F6D9D5;
+  --tub:#EBD6AA;--tub-edge:#A78850;--lumen:#FBF4DC;--cell:#F4E6D6;--cell-edge:#B79A7E;--nuc:#D9CBEA;--nuc-edge:#7E68A8;
+  --water:#2F7FC1;--na:#7B5CC9;--cl:#7F8C93;--glu:#2F8A57;--aa:#8F6B3A;--urea:#D98A1C;--prot:#C9A227;--rbc:#C0392B;
+  --k:#1B8A86;--h:#D14A8B;--drug:#5C6BC0;--cre:#6D4C41;--renin:#E0457B;--ang:#3949AB;--ald:#9A5B2E;--adh:#00838F;--anp:#AD1457;
+  --osm-lo:#F4ECD6;--osm-hi:#CC7A33;--osm-dil:#D9E9F5;
+  --nerve:#C9A227;--muscle:#D1897C;--muscle-edge:#8E4A3E;--skm:#A23B3B;--podo:#8E7CC3;--bm:#9C8466;--endo:#DB9483;
+  --liver:#8E3B2E;--lung:#E8A8A0;--adrenal:#E0B04A;--brain:#EED3CF;--brain-edge:#B4847D;--heart:#C2453D;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#E08A74;--act2:#A98BEF;--act3:#5AA9E6;--act4:#5CC98A;--act5:#E39A5B;
+  --ecf:#131D23;--skin:#3A2E26;--skin-edge:#9C7F66;--bodyin:#2C231D;
+  --kid:#B8604F;--kid-edge:#E39A8B;--cortex:#6B3A31;--medulla:#9A4A3C;--pelvis:#4F4425;--pelvis-edge:#C9A85A;
+  --urine:#E8C64F;--urine-lt:#9A8A3E;--urine-dk:#D89A2F;
+  --art:#E0665A;--vein:#7C9BE3;--cap:#C9584D;--cap-wash:#3A1F1C;
+  --tub:#4C4030;--tub-edge:#C9A877;--lumen:#2A2518;--cell:#3A3128;--cell-edge:#A88E70;--nuc:#4A3F5E;--nuc-edge:#A98BEF;
+  --water:#5AA9E6;--na:#A98BEF;--cl:#A3B2BA;--glu:#5CC98A;--aa:#C9A27A;--urea:#F2A93B;--prot:#E0BE48;--rbc:#E0665A;
+  --k:#4CC2BD;--h:#EE7BB0;--drug:#8C9BEF;--cre:#BCAAA4;--renin:#F2709A;--ang:#7986CB;--ald:#D9925A;--adh:#4DD0E1;--anp:#F48FB1;
+  --osm-lo:#1E2528;--osm-hi:#A8592A;--osm-dil:#152B3B;
+  --nerve:#E0BE48;--muscle:#8A4A40;--muscle-edge:#D08A7C;--skm:#D46A6A;--podo:#A898DA;--bm:#B39773;--endo:#B8604F;
+  --liver:#B8604F;--lung:#8A4E48;--adrenal:#C9993A;--brain:#5A4450;--brain-edge:#B48CA0;--heart:#E0665A;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#E08A74;--act2:#A98BEF;--act3:#5AA9E6;--act4:#5CC98A;--act5:#E39A5B;
+  --ecf:#131D23;--skin:#3A2E26;--skin-edge:#9C7F66;--bodyin:#2C231D;
+  --kid:#B8604F;--kid-edge:#E39A8B;--cortex:#6B3A31;--medulla:#9A4A3C;--pelvis:#4F4425;--pelvis-edge:#C9A85A;
+  --urine:#E8C64F;--urine-lt:#9A8A3E;--urine-dk:#D89A2F;
+  --art:#E0665A;--vein:#7C9BE3;--cap:#C9584D;--cap-wash:#3A1F1C;
+  --tub:#4C4030;--tub-edge:#C9A877;--lumen:#2A2518;--cell:#3A3128;--cell-edge:#A88E70;--nuc:#4A3F5E;--nuc-edge:#A98BEF;
+  --water:#5AA9E6;--na:#A98BEF;--cl:#A3B2BA;--glu:#5CC98A;--aa:#C9A27A;--urea:#F2A93B;--prot:#E0BE48;--rbc:#E0665A;
+  --k:#4CC2BD;--h:#EE7BB0;--drug:#8C9BEF;--cre:#BCAAA4;--renin:#F2709A;--ang:#7986CB;--ald:#D9925A;--adh:#4DD0E1;--anp:#F48FB1;
+  --osm-lo:#1E2528;--osm-hi:#A8592A;--osm-dil:#152B3B;
+  --nerve:#E0BE48;--muscle:#8A4A40;--muscle-edge:#D08A7C;--skm:#D46A6A;--podo:#A898DA;--bm:#B39773;--endo:#B8604F;
+  --liver:#B8604F;--lung:#8A4E48;--adrenal:#C9993A;--brain:#5A4450;--brain-edge:#B48CA0;--heart:#E0665A;
+  --glow:#F2B33B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.tbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:16px;align-items:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.legend i.s{border-radius:2px}.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.tri{clip-path:polygon(50% 0,100% 100%,0 100%);border:0;border-radius:0;width:12px;height:11px}
+.legend i.hex{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border:0;border-radius:0;width:13px;height:12px}
+.legend i.drop{border-radius:50% 0 50% 50%;transform:rotate(-45deg);width:10px;height:10px}
+.legend i.disc{width:15px;height:9px;border-radius:50%}
+.legend i.ln{width:20px;height:0;border-radius:0;border:0;border-top:3px solid}
+.legend i.dash{width:20px;height:0;border-radius:0;border:0;border-top:3px dashed}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold,#C9A227);margin-left:4px}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side h3:first-child{margin-top:0}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.ctl{margin:0 0 12px}
+.ctl .lab{display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:4px}
+.ctl .lab span{font-family:var(--mono);font-weight:600}
+.ctl input[type=range]{width:100%;accent-color:var(--accent)}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg .tbtn{flex:1 1 auto;padding:6px 8px;font-size:13.5px}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 4px}
+.ro{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 9px}
+.ro b{display:block;font-family:var(--mono);font-size:17px}
+.ro small{font-size:12px;color:var(--ink-soft)}
+.ro .tag{font-size:12px;font-weight:600}
+.chal{list-style:none;padding:0;margin:4px 0}
+.chal li{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-top:1px solid var(--rule-soft);font-size:14px}
+.chal li .st{font-family:var(--mono);width:20px;flex:0 0 auto;color:var(--ink-faint)}
+.chal li.done .st{color:var(--good)}
+.chal li.done{color:var(--ink-soft)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.stars{font-size:22px;letter-spacing:2px;color:#C9A227}
+.small{font-size:13px;color:var(--ink-soft)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+/* scenarios */
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 6px}
+.sc-desc{margin:0 0 8px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.score{font-family:var(--mono);font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+/* order list */
+ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.item{display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--rule);border-left:6px solid var(--ink-faint);border-radius:var(--r);padding:6px 8px 6px 10px;touch-action:none;user-select:none;cursor:grab;transition:background .15s,border-color .15s}
+.item.drag{box-shadow:0 10px 24px -8px rgba(0,0,0,.4);cursor:grabbing;border-color:var(--accent);z-index:2;position:relative}
+.item.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.item .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);width:22px;text-align:right;flex:0 0 auto}
+.item .grip{color:var(--ink-faint);font-size:18px;line-height:1;flex:0 0 auto}
+.item .txt{flex:1;font-size:15px}
+.item .mv{display:flex;flex-direction:column;gap:2px}
+.mv button{width:30px;height:22px;border:1px solid var(--rule);background:var(--panel-2);border-radius:4px;cursor:pointer;font-size:12px;padding:0;line-height:1}
+.mv button:hover{border-color:var(--accent)}
+.item.right{background:var(--good-wash);border-color:var(--good)}
+.item.off{background:var(--warn-wash);border-color:var(--warn)}
+.item.hinted{box-shadow:0 0 0 3px #C9A227}
+.item.art{border-left-color:var(--art)}.item.vein{border-left-color:var(--vein)}.item.capl{border-left-color:var(--cap)}.item.tub{border-left-color:var(--tub-edge)}.item.ur{border-left-color:var(--urine)}
+.timer{font-family:var(--mono);font-size:18px;font-weight:600;min-width:60px}
+.instr{color:var(--ink-soft);font-size:14.5px;margin:0 0 10px}
+.qbox{font-size:16.5px;font-weight:600;margin:4px 0 10px}
+.trail{font-family:var(--mono);font-size:13px;color:var(--ink-soft);margin:6px 0}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Urinary System &middot; USC Upstate</div>
+    <h1>Urinary Lab</h1>
+    <p class="sub">Run a nephron, change the filtration pressures, trace molecules, and break the kidney on purpose. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="sim" id="tb-sim" type="button">Part 1 &middot; Nephron Simulator</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="filt" id="tb-filt" type="button">Part 2 &middot; Filtration Pressure</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="seq" id="tb-seq" type="button">Part 3 &middot; Urine's Journey</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="brk" id="tb-brk" type="button">Part 4 &middot; What breaks if&hellip;?</button>
+  </div>
+
+  <!-- PART 1 -->
+  <section id="tab-sim" role="tabpanel" aria-labelledby="tb-sim">
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvSim" role="img" aria-label="Animated nephron"></canvas></div>
+        <div class="stagebar"><button class="tbtn" id="simPause" type="button">Pause</button><span class="caption" id="simCap"></span></div>
+        <div class="legend">
+          <span><i class="drop" style="background:var(--water)"></i>Water</span><span><i style="background:var(--na)"></i>Na⁺</span><span><i class="hex" style="background:var(--glu)"></i>Glucose</span>
+          <span><i class="tri" style="background:var(--urea)"></i>Urea</span><span><i class="s" style="background:var(--prot)"></i>Protein (stays in blood)</span><span><i class="disc" style="background:var(--rbc)"></i>Blood cell (stays in blood)</span>
+        </div>
+        <div class="canvas-holder" style="margin-top:10px"><canvas id="cvSimG" role="img" aria-label="Live graph of urine volume, urine concentration and GFR over the last minute"></canvas></div>
+        <div class="legend"><span><i class="ln" style="border-color:var(--water)"></i>Urine volume (L/day)</span><span><i class="ln" style="border-color:var(--urine-dk)"></i>Urine concentration (mOsm)</span><span><i class="dash" style="border-color:var(--accent)"></i>GFR (mL/min)</span></div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <h3>Controls</h3>
+        <div class="ctl"><div class="lab">Hydration (sets ADH)</div><div class="seg" id="hydSeg"></div></div>
+        <div class="ctl"><div class="lab">Aldosterone</div><div class="seg" id="aldSeg"></div></div>
+        <div class="ctl"><div class="lab"><label for="bgR">Blood glucose</label><span id="bgV"></span></div><input type="range" id="bgR" min="60" max="400" step="5" value="90"></div>
+        <div class="ctl"><div class="lab"><label for="mapR">Mean arterial pressure</label><span id="mapV"></span></div><input type="range" id="mapR" min="40" max="200" step="5" value="95"></div>
+        <button class="tbtn" id="simReset" type="button">Reset to normal</button>
+        <h3>Live readouts</h3>
+        <div class="readouts" id="ro"></div>
+        <h3>Challenges</h3>
+        <ul class="chal" id="chal"></ul>
+        <div class="bar"><button class="tbtn" id="chHint" type="button">Hint</button><span class="small" id="chStars"></span></div>
+        <div class="msg info" id="chMsg" role="status"></div>
+        <p class="calm">Teaching model: numbers are rounded, time is sped up, and particle counts are exaggerated. In a real body, low blood pressure would also switch on RAAS and ADH by itself; here you set them by hand.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section id="tab-filt" role="tabpanel" aria-labelledby="tb-filt" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvF" role="img" aria-label="Glomerulus with three pressures"></canvas></div>
+        <div class="legend"><span><i class="ln" style="border-color:var(--art)"></i>GBHP pushes out</span><span><i class="ln" style="border-color:var(--urine)"></i>CHP pushes back</span><span><i class="ln" style="border-color:var(--ang)"></i>BCOP pulls in</span><span><i class="drop" style="background:var(--water)"></i>Filtrate</span></div>
+        <div class="canvas-holder" style="margin-top:10px"><canvas id="cvFG" role="img" aria-label="Live graph of GFR"></canvas></div>
+      </div>
+      <aside class="card side">
+        <h3>Pressures (mmHg)</h3>
+        <div class="ctl"><div class="lab"><label for="gbR">GBHP: blood pressure in glomerulus</label><span id="gbV"></span></div><input type="range" id="gbR" min="20" max="90" step="1" value="55"></div>
+        <div class="ctl"><div class="lab"><label for="chR">CHP: capsule pushes back</label><span id="chV"></span></div><input type="range" id="chR" min="0" max="50" step="1" value="15"></div>
+        <div class="ctl"><div class="lab"><label for="bcR">BCOP: protein pull</label><span id="bcV"></span></div><input type="range" id="bcR" min="10" max="50" step="1" value="30"></div>
+        <div class="bar"><button class="tbtn" id="fNormal" type="button">Back to normal (55 / 15 / 30)</button></div>
+        <h3>Predict, then watch</h3>
+        <div class="rounds" id="fRounds" aria-label="Scenarios"></div>
+        <div id="fBox">
+          <p class="qbox" id="fTitle"></p>
+          <p class="small" id="fDesc" style="font-size:14.5px;color:var(--ink)"></p>
+          <p class="qlab">1. Which pressure changes?</p><div class="opts" id="fQ1"></div><p class="fb" id="fF1"></p>
+          <div id="fQ2w" hidden><p class="qlab">2. What happens to NFP and GFR?</p><div class="opts" id="fQ2"></div><p class="fb" id="fF2"></p></div>
+          <div class="bar"><button class="tbtn" id="fHint" type="button">Hint</button><button class="tbtn" id="fShow" type="button">Show answer</button></div>
+          <div class="msg" id="fMsg" role="status"></div>
+        </div>
+        <p class="small" id="fScore"></p>
+        <p class="calm">The pressures change instantly here. In a real kidney, autoregulation would partly push GFR back toward normal.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section id="tab-seq" role="tabpanel" aria-labelledby="tb-seq" hidden>
+    <div class="rounds" id="sRounds" aria-label="Rounds"></div>
+    <div id="seqPane">
+      <div class="grid2">
+        <div class="card">
+          <p class="instr" id="sInstr"></p>
+          <div class="bar"><span class="timer" id="sTimer">0:00</span><label class="mode"><input type="checkbox" id="sRelaxed" checked> Relaxed mode (timer hidden)</label></div>
+          <ol class="list" id="sList" aria-label="Cards to put in order"></ol>
+          <div class="bar" style="margin-top:12px">
+            <button class="btn" id="sCheck" type="button">Check my order</button>
+            <button class="tbtn" id="sHint" type="button">Hint</button>
+            <button class="tbtn" id="sShuffle" type="button">Shuffle again</button>
+            <button class="tbtn" id="sAnswer" type="button">Show answer</button>
+          </div>
+          <div class="msg" id="sMsg" role="status"></div>
+          <p class="calm">Drag a card, use the &#9650; &#9660; buttons, or tap one card and then tap another to swap them.</p>
+        </div>
+        <div class="card stage">
+          <div class="canvas-holder"><canvas id="cvS" role="img" aria-label="Diagram that labels each place as you get it right"></canvas></div>
+          <p class="small" id="sCap" style="margin:8px 4px 0"></p>
+        </div>
+      </div>
+    </div>
+    <div id="trPane" hidden>
+      <div class="grid">
+        <div class="card stage">
+          <div class="canvas-holder"><canvas id="cvT" role="img" aria-label="Nephron map showing where the traced molecule is"></canvas></div>
+          <p class="trail" id="tTrail"></p>
+        </div>
+        <aside class="card side" aria-live="polite">
+          <h3>Pick a molecule</h3>
+          <div class="seg" id="tMol"></div>
+          <h3 id="tStepN"></h3>
+          <p class="qbox" id="tQ"></p>
+          <div class="opts" id="tOpts"></div>
+          <p class="fb" id="tFb"></p>
+          <div class="bar"><button class="tbtn" id="tHint" type="button">Hint</button><button class="tbtn" id="tShow" type="button">Show answer</button><button class="tbtn" id="tRestart" type="button">Start over</button></div>
+          <div class="msg" id="tMsg" role="status"></div>
+          <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 4 -->
+  <section id="tab-brk" role="tabpanel" aria-labelledby="tb-brk" hidden>
+    <div class="card">
+      <div class="sc-top"><div class="chips" id="bChips"></div><div class="score" id="bScore"></div></div>
+      <div class="grid2">
+        <div>
+          <div class="sc-n" id="bN"></div>
+          <h2 class="sc-title" id="bTitle"></h2>
+          <p class="sc-desc" id="bDesc"></p>
+          <p class="qlab">1. What part of the urinary system is affected?</p>
+          <div class="opts" id="bQ1"></div><p class="fb" id="bF1"></p>
+          <div id="bQ2w" hidden><p class="qlab">2. What happens to the urine?</p><div class="opts" id="bQ2"></div><p class="fb" id="bF2"></p></div>
+          <div class="explain" id="bExp"></div>
+          <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+        </div>
+        <div>
+          <div class="canvas-holder"><canvas id="cvB" role="img" aria-label="Normal urine compared with this patient's urine"></canvas></div>
+          <div class="stagebar"><button class="btn" id="bShow" type="button">Show me</button><span class="caption" id="bCap"></span></div>
+        </div>
+      </div>
+      <div class="bar" style="margin-top:14px"><button class="tbtn" id="bPrev" type="button">&larr; Previous</button><button class="btn" id="bNext" type="button">Next scenario &rarr;</button></div>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 25, The Urinary System (OpenStax Anatomy &amp; Physiology 2e) &middot; Learn the steps first in the <a href="Urinary-Walkthrough.html">Urinary System Walkthrough</a>.<br>Simplified teaching models: values are rounded textbook numbers, time is sped up, particle counts are exaggerated, and diagrams are not to scale. Clinical cases are simplified for learning and are not medical advice.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let ctx=null,W=800,H=480;const C={};
+function readColors(){const s=getComputedStyle(document.documentElement);
+  const names=[];for(const sh of document.styleSheets){try{for(const r of sh.cssRules){if(r.selectorText===":root"&&r.style)for(const p of r.style)if(p.startsWith("--"))names.push(p.slice(2))}}catch(e){}}
+  names.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,fill,stroke,lw,rot){ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(!(r>0))return;const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const a0=ctx.globalAlpha;
+  if(o.pill!==false){ctx.globalAlpha=a0*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=a0;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);return w}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw,dash){line(x1,y1,x2,y2,col,lw||2,dash);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function curveArrow(P,col,lw,dash){ctx.beginPath();ctx.moveTo(P[0][0],P[0][1]);if(P.length===3)ctx.quadraticCurveTo(P[1][0],P[1][1],P[2][0],P[2][1]);else ctx.bezierCurveTo(P[1][0],P[1][1],P[2][0],P[2][1],P[3][0],P[3][1]);
+  ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);
+  const n=P.length-1,a=Math.atan2(P[n][1]-P[n-1][1],P[n][0]-P[n-1][0]),x2=P[n][0],y2=P[n][1];
+  const h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function bez(P,t){const u=1-t;if(P.length===3)return [u*u*P[0][0]+2*u*t*P[1][0]+t*t*P[2][0],u*u*P[0][1]+2*u*t*P[1][1]+t*t*P[2][1]];
+  return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
+function chipText(x,y,txt,col,fg){ctx.font=`600 11px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);return w+10}
+function badge(x,y,n,col){circ(x,y,10,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function plen(P){let L=0;for(let i=0;i<P.length-1;i++)L+=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);return L}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function dirAt(P,p){const a=along(P,clamp(p-.004,0,1)),b=along(P,clamp(p+.004,0,1));return Math.atan2(b[1]-a[1],b[0]-a[0])}
+function poly(P){ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]))}
+function tube(P,w,wall,lumen,lw){ctx.lineCap="round";ctx.lineJoin="round";poly(P);ctx.strokeStyle=wall;ctx.lineWidth=w;ctx.stroke();
+  if(lumen){poly(P);ctx.strokeStyle=lumen;ctx.lineWidth=w-(lw||5);ctx.stroke()}ctx.lineCap="butt";ctx.lineJoin="miter"}
+function subPath(P,a,b){const out=[];const n=24;for(let i=0;i<=n;i++)out.push(along(P,lerp(a,b,i/n)));return out}
+function wrapText(t,x,y,w,lh){const words=t.split(" ");let ln="";let yy=y;words.forEach(wd=>{const test=ln?ln+" "+wd:wd;if(ctx.measureText(test).width>w&&ln){ctx.fillText(ln,x,yy);ln=wd;yy+=lh}else ln=test});if(ln)ctx.fillText(ln,x,yy);return yy}
+function title(x,y,t,col){ctx.font=`600 11.5px ${MONO}`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.fillText(t.toUpperCase(),x,y)}
+function panelBox(x,y,w,h,on,col){ctx.fillStyle=on?C["panel-2"]:C.panel;rr(x,y,w,h,8);ctx.fill();ctx.strokeStyle=on?(col||C.accent):C.rule;ctx.lineWidth=on?2.2:1;ctx.stroke()}
+function hex2rgb(h){h=(h||"#000").replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hex2rgb(a),B=hex2rgb(b);t=clamp(t,0,1);return `rgb(${Math.round(lerp(A[0],B[0],t))},${Math.round(lerp(A[1],B[1],t))},${Math.round(lerp(A[2],B[2],t))})`}
+function osmCol(o){return o<300?mix(C["osm-dil"],C["osm-lo"],clamp((o-50)/250,0,1)):mix(C["osm-lo"],C["osm-hi"],(o-300)/900)}
+function urineCol(o){return o<300?mix(C["urine-lt"],C.urine,clamp((o-50)/250,0,1)):mix(C.urine,C["urine-dk"],(o-300)/900)}
+function A(a){ctx.globalAlpha=a==null?1:clamp(a,0,1)}
+function meter(x,y,w,h,f,col,txt){ctx.fillStyle=C["panel-2"];rr(x,y,w,h,5);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle=col||C.accent;rr(x+3,y+3,Math.max(0,(w-6)*clamp(f,0,1)),h-6,3);ctx.fill();
+  if(txt)label(x+w/2,y+h/2,txt,{align:"center",size:11.5,weight:600,mono:true,bga:.75})}
+
+/* ---------- particle shapes (shape + colour, so colour is never the only signal) ---------- */
+function drop(x,y,s,col,a){A(a);ctx.beginPath();ctx.moveTo(x,y-s*1.5);ctx.bezierCurveTo(x+s*.9,y-s*.4,x+s,y+s,x,y+s);ctx.bezierCurveTo(x-s,y+s,x-s*.9,y-s*.4,x,y-s*1.5);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.25)";ctx.lineWidth=.8;ctx.stroke();ctx.globalAlpha=1}
+function dotP(x,y,r,col,a){A(a);circ(x,y,r,col,"rgba(0,0,0,.3)",1);ctx.globalAlpha=1}
+function sqP(x,y,s,col,a){A(a);rr(x-s,y-s,2*s,2*s,1.5);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function diaP(x,y,s,col,a){A(a);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function triP(x,y,s,col,a){A(a);ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x+s*.95,y+s*.7);ctx.lineTo(x-s*.95,y+s*.7);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function hexP(x,y,s,col,a){A(a);ctx.beginPath();for(let i=0;i<6;i++){const an=i*Math.PI/3;const px=x+s*Math.cos(an),py=y+s*Math.sin(an);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+function beads(x,y,n,col,a,r){r=r||3;A(a);for(let i=0;i<n;i++){const d=(i-(n-1)/2)*r*1.6;circ(x+d,y+Math.sin(i*1.9)*r*.7,r,col,"rgba(0,0,0,.3)",1)}ctx.globalAlpha=1}
+function rbcP(x,y,s,a){A(a);ell(x,y,s,s*.62,C.rbc,"rgba(0,0,0,.3)",1);ell(x,y,s*.45,s*.22,"rgba(0,0,0,.18)");ctx.globalAlpha=1}
+function pill(x,y,s,col,a){A(a);rr(x-s*1.3,y-s*.6,s*2.6,s*1.2,s*.6);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();line(x,y-s*.6,x,y+s*.6,"rgba(255,255,255,.6)",1);ctx.globalAlpha=1}
+function ring(x,y,r,col,a){A(a);circ(x,y,r,null,col,2.4);ctx.globalAlpha=1}
+function steroid(x,y,s,col,a){A(a);[-1,1].forEach(d=>{ctx.beginPath();for(let i=0;i<6;i++){const an=i*Math.PI/3+Math.PI/6;const px=x+d*s*.9+s*Math.cos(an),py=y+s*Math.sin(an);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke()});ctx.globalAlpha=1}
+function part(k,x,y,a,s){
+  switch(k){
+    case "w":drop(x,y,s||3.4,C.water,a);break;
+    case "u":drop(x,y,s||3.4,C.urine,a);break;
+    case "na":dotP(x,y,s||4,C.na,a);break;
+    case "cl":dotP(x,y,s||3.2,C.cl,a);break;
+    case "nacl":dotP(x-2.5,y,s||3.6,C.na,a);dotP(x+3,y+1,(s||3.6)*.8,C.cl,a);break;
+    case "glu":hexP(x,y,s||5,C.glu,a);break;
+    case "aa":sqP(x,y,s||3.6,C.aa,a);break;
+    case "urea":triP(x,y,s||5,C.urea,a);break;
+    case "prot":beads(x,y,4,C.prot,a,s||3);break;
+    case "rbc":rbcP(x,y,s||9,a);break;
+    case "k":sqP(x,y,s||3.8,C.k,a);break;
+    case "h":diaP(x,y,s||4.6,C.h,a);break;
+    case "drug":pill(x,y,s||4,C.drug,a);break;
+    case "cre":ring(x,y,s||3.6,C.cre,a);break;
+    case "renin":sqP(x,y,s||3.4,C.renin,a);break;
+    case "ang1":beads(x,y,3,C.ang,a,s||3);break;
+    case "ang2":beads(x,y,2,C.ang,a,s||3.4);break;
+    case "ald":steroid(x,y,s||4,C.ald,a);break;
+    case "adh":beads(x,y,3,C.adh,a,s||2.8);break;
+    case "anp":dotP(x,y,s||4.2,C.anp,a);break;
+    default:dotP(x,y,s||4,C.ink,a)}}
+/* stream of particles along a path */
+function stream(P,T,n,period,kind,opt){opt=opt||{};const on=opt.on==null?1:opt.on;if(on<=0)return;
+  for(let i=0;i<n;i++){const q=((T/period)+i/n+(opt.phase||0))%1;if(opt.from!=null&&q<opt.from)continue;if(opt.to!=null&&q>opt.to)continue;
+    const pos=opt.curve?bez(P,q):along(P,q);const fade=opt.nofade?1:Math.min(1,q*8,(1-q)*8);
+    const j=opt.jit||0;part(typeof kind==="function"?kind(i):kind,pos[0]+Math.sin(i*3.1+T*2)*j,pos[1]+Math.cos(i*2.3+T*1.7)*j,fade*on,opt.size)}}
+
+/* ---------- shared drawings ---------- */
+/* kidney bean in local coords (hilum on +x side) spanning x -80..55, y -100..100 */
+function beanPath(){ctx.beginPath();ctx.moveTo(0,-100);ctx.bezierCurveTo(-60,-100,-80,-40,-80,0);ctx.bezierCurveTo(-80,40,-60,100,0,100);
+  ctx.bezierCurveTo(40,100,56,72,46,40);ctx.bezierCurveTo(32,20,32,-20,46,-40);ctx.bezierCurveTo(56,-72,40,-100,0,-100);ctx.closePath()}
+function kidneySmall(x,y,s,flip,on){ctx.save();ctx.translate(x,y);ctx.scale(flip?-s:s,s);beanPath();ctx.fillStyle=C.kid;ctx.fill();ctx.strokeStyle=on?C.glow:C["kid-edge"];ctx.lineWidth=(on?4:2)/s;ctx.stroke();
+  // hint of inner pelvis
+  ctx.beginPath();ctx.ellipse(30,0,12,26,0,0,TAU);ctx.fillStyle=C.pelvis;ctx.globalAlpha=.85;ctx.fill();ctx.globalAlpha=1;ctx.restore()}
+const PYR=[120,155,180,205,240].map(d=>{const a=d*Math.PI/180,dx=Math.cos(a),dy=Math.sin(a);const H0=[35,0];
+  const R0=d===180?40:38,R1=(d===120||d===240)?92:(d===180?100:98);
+  const ap=[H0[0]+R0*dx,H0[1]+R0*dy],bc=[H0[0]+R1*dx,H0[1]+R1*dy],px=-dy,py=dx,hw=19;
+  return {a,ap,b1:[bc[0]+px*hw,bc[1]+py*hw],b2:[bc[0]-px*hw,bc[1]-py*hw],bc}});
+/* big frontal-section kidney; returns transform helper */
+function bigKidney(cx,cy,s,o){o=o||{};const X=p=>[cx+p[0]*s,cy+p[1]*s];
+  ctx.save();ctx.translate(cx,cy);ctx.scale(s,s);
+  beanPath();ctx.fillStyle=C.cortex;ctx.fill();ctx.strokeStyle=C["kid-edge"];ctx.lineWidth=3/s;ctx.stroke();
+  // pyramids
+  PYR.forEach((p,i)=>{ctx.beginPath();ctx.moveTo(p.ap[0],p.ap[1]);ctx.lineTo(p.b1[0],p.b1[1]);ctx.quadraticCurveTo(p.bc[0]+Math.cos(p.a)*6,p.bc[1]+Math.sin(p.a)*6,p.b2[0],p.b2[1]);ctx.closePath();
+    ctx.fillStyle=o.hiPyr===i?mix(C.medulla,C.glow,.35):C.medulla;ctx.fill();ctx.strokeStyle=C["kid-edge"];ctx.lineWidth=1/s;ctx.stroke();
+    // striations
+    ctx.strokeStyle="rgba(0,0,0,.18)";ctx.lineWidth=.6/s;for(let k=1;k<6;k++){const f=k/6;const bx=lerp(p.b1[0],p.b2[0],f),by=lerp(p.b1[1],p.b2[1],f);ctx.beginPath();ctx.moveTo(lerp(bx,p.ap[0],.08),lerp(by,p.ap[1],.08));ctx.lineTo(lerp(bx,p.ap[0],.85),lerp(by,p.ap[1],.85));ctx.stroke()}});
+  if(!o.noPelvis){
+    // calyces and pelvis
+    ctx.fillStyle=C.pelvis;ctx.strokeStyle=C["pelvis-edge"];ctx.lineWidth=1.2/s;
+    const M1=[26,-20],M2=[26,20],PV=[44,0];
+    ctx.lineCap="round";
+    PYR.forEach((p,i)=>{const M=i<2?M2:(i>2?M1:[24,0]);const cx2=p.ap[0]+Math.cos(p.a)*-4,cy2=p.ap[1]+Math.sin(p.a)*-4;
+      ctx.beginPath();ctx.moveTo(cx2,cy2);ctx.lineTo(M[0],M[1]);ctx.strokeStyle=C["pelvis-edge"];ctx.lineWidth=6;ctx.stroke();ctx.strokeStyle=C.pelvis;ctx.lineWidth=4.2;ctx.stroke();
+      // cup around papilla
+      ctx.beginPath();ctx.arc(p.ap[0],p.ap[1],8,p.a+Math.PI*.55,p.a+Math.PI*1.45);ctx.strokeStyle=C["pelvis-edge"];ctx.lineWidth=4;ctx.stroke();ctx.strokeStyle=C.pelvis;ctx.lineWidth=2.4;ctx.stroke()});
+    [M1,M2,[24,0]].forEach(M=>{ctx.beginPath();ctx.moveTo(M[0],M[1]);ctx.lineTo(PV[0],PV[1]);ctx.strokeStyle=C["pelvis-edge"];ctx.lineWidth=10;ctx.stroke();ctx.strokeStyle=C.pelvis;ctx.lineWidth=7.6;ctx.stroke()});
+    // ureter
+    ctx.beginPath();ctx.moveTo(PV[0],PV[1]);ctx.quadraticCurveTo(58,30,54,120);ctx.strokeStyle=C["pelvis-edge"];ctx.lineWidth=9;ctx.stroke();ctx.strokeStyle=C.pelvis;ctx.lineWidth=6.4;ctx.stroke();
+    ctx.lineCap="butt";
+  }
+  ctx.restore();return X}
+
+/* standard nephron geometry (800x480 space). cortex y<210, medulla below */
+const NG=(function(){
+  const G=[330,100];
+  const pct=[[302,128]];for(let i=1;i<=40;i++){const f=i/40;pct.push([lerp(300,158,f),118+Math.sin(f*Math.PI*5)*20*(1-f*.3)])}
+  pct.push([150,165]);pct.push([150,200]);
+  const dl=[[150,200],[150,420]];
+  const bend=[];for(let i=0;i<=12;i++){const a=Math.PI-i/12*Math.PI;bend.push([172+22*Math.cos(a),420+22*Math.sin(a)])}
+  const al=[[194,420],[194,195]];
+  const dct=[[194,195],[230,182],[300,176],[352,160],[376,138]];for(let i=1;i<=24;i++){const f=i/24;dct.push([lerp(380,520,f),142+Math.sin(f*Math.PI*4)*14])}
+  dct.push([548,140]);
+  const cd=[[560,112],[560,140],[560,458]];
+  const all=[...pct,...dl.slice(1),...bend.slice(1),...al.slice(1),...dct.slice(1),[560,150],[560,458]];
+  return {G,pct,dl,bend,al,dct,cd,all,
+    aff:[[480,30],[420,50],[356,76]],eff:[[362,92],[430,96],[476,108]]}})();
+function nephronBase(o){o=o||{};
+  // zones
+  ctx.fillStyle=o.cortexCol||C.cortex;ctx.globalAlpha=o.zoneA==null?.35:o.zoneA;ctx.fillRect(0,0,W,210);
+  if(o.gradient){for(let y=210;y<H;y+=6){ctx.fillStyle=osmCol(lerp(300,1200,(y-210)/(H-210)));ctx.globalAlpha=o.zoneA==null?.55:o.zoneA+.2;ctx.fillRect(0,y,W,6)}}
+  else{ctx.fillStyle=C.medulla;ctx.globalAlpha=o.zoneA==null?.22:o.zoneA*.6;ctx.fillRect(0,210,W,H-210)}
+  ctx.globalAlpha=1;line(0,210,W,210,C["ink-faint"],1,[5,5]);
+  if(!o.noZoneLabels){label(W-12,196,"CORTEX",{align:"right",size:11,mono:true,weight:600,color:C["ink-soft"]});label(W-12,226,"MEDULLA",{align:"right",size:11,mono:true,weight:600,color:C["ink-soft"]})}
+  // arterioles
+  tube(NG.aff,13,C.art,mix(C.art,C.panel,.45),4);tube(NG.eff,10,C.art,mix(C.art,C.panel,.45),4);
+  // capsule + glomerulus
+  const [gx,gy]=NG.G;circ(gx,gy,40,C.lumen,C["tub-edge"],5);
+  for(let i=0;i<9;i++){const a=i/9*TAU+.3;circ(gx+Math.cos(a)*14,gy+Math.sin(a)*13,9,C.cap,"rgba(0,0,0,.25)",1)}circ(gx,gy,8,C.cap);
+  const hi=o.hi||{};const hw=(k,col)=>{if(hi[k]){const P=k==="pct"?NG.pct:k==="dl"?NG.dl:k==="al"?NG.al:k==="dct"?NG.dct:k==="bend"?NG.bend:NG.cd;tube(P,24,col||C.glow,null)}};
+  ["pct","dl","bend","al","dct","cd"].forEach(k=>{if(hi[k]){ctx.globalAlpha=hi[k];hw(k);ctx.globalAlpha=1}});
+  tube(NG.pct,16,C["tub-edge"],C.tub,4);tube(NG.dl,10,C["tub-edge"],C.tub,4);tube(NG.bend,10,C["tub-edge"],C.tub,4);
+  tube([[194,420],[194,330]],10,C["tub-edge"],C.tub,4);tube([[194,330],[194,195]],15,C["tub-edge"],C.tub,4);
+  tube(NG.dct,15,C["tub-edge"],C.tub,4);
+  // collecting duct with a second feeder
+  tube([[640,120],[600,132],[566,150]],12,C["tub-edge"],C.tub,4);
+  tube(NG.cd,20,C["tub-edge"],C.tub,4);
+  // lumen line
+  [[NG.pct,8],[NG.dl,4],[NG.bend,4],[[[194,420],[194,330]],4],[[[194,330],[194,195]],7],[NG.dct,7],[[[560,140],[560,458]],12]].forEach(([P,w])=>{tube(P,w,C.lumen,null)});
+}
+const NSEG=[["Glomerular capsule",0],["Proximal convoluted tubule (PCT)",1],["Descending limb",2],["Ascending limb",3],["Distal convoluted tubule (DCT)",4],["Collecting duct",5]];
+/* full filtrate path from capsule to end of CD, as one polyline with segment markers */
+const FPATH=(function(){const P=[[NG.G[0]-10,NG.G[1]+16],[302,128],...NG.pct.slice(1),...NG.dl.slice(1),...NG.bend.slice(1),...NG.al.slice(1),...NG.dct.slice(1),[560,150],[560,458]];
+  // fractions where each part begins
+  const L=plen(P);const cum=[0];for(let i=0;i<P.length-1;i++)cum.push(cum[i]+Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]));
+  const idx=pt=>{let b=0,bd=1e9;P.forEach((p,i)=>{const d=Math.hypot(p[0]-pt[0],p[1]-pt[1]);if(d<bd){bd=d;b=i}});return cum[b]/L};
+  return {P,L,mark:[0,idx([302,128]),idx([150,200]),idx([194,420]),idx([194,195]),idx([548,140]),1]}})();
+function segOf(q){const m=FPATH.mark;for(let i=m.length-2;i>=0;i--)if(q>=m[i])return i;return 0}
+
+/* ---------------- canvas management ---------------- */
+const CV={};
+function mk(id,w,h){const cv=document.getElementById(id);const o={cv,ctx:cv.getContext("2d"),w,h,k:1};CV[id]=o;return o}
+function fitC(o){const w=o.cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;o.cv.style.height=(w*o.h/o.w)+"px";o.cv.width=Math.round(w*dpr);o.cv.height=Math.round(w*o.h/o.w*dpr);o.k=o.cv.width/o.w}
+function fitAll(){Object.values(CV).forEach(fitC)}
+window.addEventListener("resize",fitAll);
+function on(o,fn){if(!o.cv.offsetParent)return;ctx=o.ctx;W=o.w;H=o.h;ctx.setTransform(o.k,0,0,o.k,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;try{fn()}catch(e){console.error(e)}ctx.globalAlpha=1}
+function gfrCurve(m){return m<80?Math.max(0,125*(m-45)/35):m<=180?125+(m-80)*.08:133+(m-180)*2.2}
+function strip(hist,keys,o){// keys: [[field,max,col,dash]]
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);const x0=50,x1=W-60,y0=H-26,y1=14;
+  line(x0,y0,x1,y0,C.rule,1);for(let k=0;k<=4;k++){const y=lerp(y0,y1,k/4);line(x0,y,x1,y,C["rule-soft"],1)}
+  keys.forEach(([f,mx,col,dash,side,unit],ki)=>{ctx.beginPath();hist.forEach((h,i)=>{const x=lerp(x0,x1,i/(o.n-1)+(o.n-hist.length)/(o.n-1));const y=lerp(y0,y1,clamp(h[f]/mx,0,1.05));i?ctx.lineTo(x,y):ctx.moveTo(x,y)});
+    ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.setLineDash(dash?[6,4]:[]);ctx.stroke();ctx.setLineDash([]);
+    if(side){for(let k=0;k<=2;k++){const v=mx*k/2;label(side==="L"?x0-6:x1+6,lerp(y0,y1,k/2),(mx>=100?Math.round(v):v.toFixed(0)),{align:side==="L"?"right":"left",size:10.5,mono:true,pill:false,color:col})}}});
+  label((x0+x1)/2,H-10,o.xl||"last 60 seconds →",{align:"center",size:11,pill:false,color:C["ink-soft"]})}
+
+/* ================= PART 1: nephron simulator ================= */
+const SIM={hyd:"normal",ald:"normal",bg:90,map:95,adh:.5,gfr:125,v:1.2,osm:504,exc:0,paused:false,parts:[],acc:0,urineN:0,hist:[],ht:0,done:store.get("ul-sim")||{}};
+const HYD={dehydrated:["Dehydrated",1],normal:["Normal",.5],overhydrated:["Overhydrated",.05]};
+const ALD={low:["Low",.25,1.3],normal:["Normal",.55,1],high:["High",.9,.8]};
+function segBtns(el,obj,key,cb){const box=$(el);box.innerHTML="";Object.keys(obj).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.textContent=obj[k][0];
+  b.setAttribute("aria-pressed",SIM[key]===k);b.onclick=()=>{SIM[key]=k;segBtns(el,obj,key,cb);cb&&cb()};box.appendChild(b)})}
+function simModel(){const g=gfrCurve(SIM.map);const filt=g*SIM.bg/100;const exc=Math.max(0,filt-225);
+  const uo=80+1120*Math.pow(SIM.adh,1.4);const gF=clamp(g/125,0,1.25);const sol=600*ALD[SIM.ald][2]*gF+exc*8;
+  let v=sol/uo;if(g<3)v=0;return {g,filt,exc,uo,v}}
+const CH=[
+ {id:"conc",t:"Concentrate: make urine above 1000 mOsm.",h:"Set hydration to Dehydrated. High ADH puts aquaporins in the collecting duct.",ok:m=>m.uo>1000},
+ {id:"flush",t:"Flush: make more than 5 L/day of urine with no glucose in it.",h:"Overhydrated means low ADH. Keep blood glucose normal.",ok:m=>m.v>5&&m.exc<=0},
+ {id:"sugar",t:"Spill sugar: get glucose into the urine.",h:"Raise blood glucose above the renal threshold, about 180 mg/dL.",ok:m=>m.exc>0},
+ {id:"auto",t:"Autoregulate: push MAP to 160 or more and see GFR stay within 10% of 125.",h:"Slide mean arterial pressure up. Watch GFR barely move until 180.",ok:m=>SIM.map>=160&&Math.abs(m.g-125)<12.5},
+ {id:"shock",t:"Low-pressure kidney: drop GFR below 60 mL/min.",h:"Below about 80 mmHg autoregulation can't keep up. Try 60 mmHg.",ok:m=>m.g<60},
+ {id:"salt",t:"Salt saver: keep the most Na⁺ and secrete the most K⁺.",h:"Which hormone tells principal cells to take Na⁺ back and secrete K⁺?",ok:m=>SIM.ald==="high"}];
+function chRender(){const ul=$("#chal");ul.innerHTML="";CH.forEach(c=>{const li=document.createElement("li");const d=SIM.done[c.id];li.className=d?"done":"";li.innerHTML=`<span class="st">${d?"★":"☆"}</span><span>${c.t}</span>`;ul.appendChild(li)});
+  const n=CH.filter(c=>SIM.done[c.id]).length;$("#chStars").textContent=n+" of "+CH.length+" challenges done"}
+$("#chHint").onclick=()=>{const c=CH.find(c=>!SIM.done[c.id]);const m=$("#chMsg");m.className="msg info show";m.textContent=c?"Hint: "+c.h:"All challenges done. Try making the darkest and the palest urine you can."};
+function simReset(){SIM.hyd="normal";SIM.ald="normal";SIM.bg=90;SIM.map=95;$("#bgR").value=90;$("#mapR").value=95;simUI()}
+function simUI(){segBtns("#hydSeg",HYD,"hyd",simUI);segBtns("#aldSeg",ALD,"ald",simUI);SIM.bg=+$("#bgR").value;SIM.map=+$("#mapR").value;$("#bgV").textContent=SIM.bg+" mg/dL";$("#mapV").textContent=SIM.map+" mmHg"}
+$("#bgR").oninput=simUI;$("#mapR").oninput=simUI;$("#simReset").onclick=simReset;
+$("#simPause").onclick=()=>{SIM.paused=!SIM.paused;$("#simPause").textContent=SIM.paused?"Play":"Pause"};
+function gluTag(exc){return exc<=0?"Negative":exc<25?"Trace":exc<75?"+":exc<150?"++":"+++"}
+function simRead(m){const ro=$("#ro");const col=urineCol(m.uo);
+  const vTag=m.v<.4?"oliguria":m.v>2.5?"polyuria":"normal";
+  const naTag={low:"high (Na⁺ lost)",normal:"normal",high:"low (Na⁺ kept)"}[SIM.ald];
+  ro.innerHTML=`<div class="ro"><small>GFR</small><b>${Math.round(SIM.gfr)} mL/min</b><span class="tag" style="color:var(--${SIM.gfr<90?"warn":"good"})">${SIM.gfr<60?"low":SIM.gfr<90?"below normal":"normal"}</span></div>
+   <div class="ro"><small>Urine volume</small><b>${SIM.v.toFixed(1)} L/day</b><span class="tag" style="color:var(--${vTag==="normal"?"good":"warn"})">${vTag}</span></div>
+   <div class="ro"><small>Urine concentration</small><b>${Math.round(SIM.osm)} mOsm</b><span class="tag"><i style="display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;background:${col};border:1px solid var(--rule)"></i> ${m.uo>800?"dark":m.uo>300?"yellow":"pale"}</span></div>
+   <div class="ro"><small>Urine glucose</small><b>${gluTag(m.exc)}</b><span class="tag" style="color:var(--${m.exc>0?"warn":"good"})">${m.exc>0?"over Tm":"all reabsorbed"}</span></div>
+   <div class="ro"><small>ADH level</small><b>${SIM.adh>.7?"High":SIM.adh>.3?"Normal":"Low"}</b><span class="tag">${Math.round(SIM.adh*100)}%</span></div>
+   <div class="ro"><small>Urine Na⁺</small><b style="font-size:14px">${naTag}</b><span class="tag">K⁺ secreted: ${SIM.ald==="high"?"more":SIM.ald==="low"?"less":"normal"}</span></div>`;
+  $("#simCap").textContent=`GFR ${Math.round(SIM.gfr)} mL/min → ${SIM.v.toFixed(1)} L/day of urine at ${Math.round(SIM.osm)} mOsm${m.exc>0?", with glucose":""}.`;
+  $("#cvSim").setAttribute("aria-label","Nephron animation. "+$("#simCap").textContent)}
+function spawnPart(m){const r=Math.random(),gs=.12*SIM.bg/90;const tot=.5+.25+.12+gs;const x=r*tot;
+  const k=x<.5?"w":x<.75?"na":x<.87?"urea":"glu";let fate=-1;const R=Math.random;
+  if(k==="w"){if(R()<.6)fate=1;else if(R()<.35)fate=2;else if(R()<SIM.adh*.9)fate=5}
+  else if(k==="na"){if(R()<.6)fate=1;else if(R()<.7)fate=3;else if(R()<ALD[SIM.ald][1])fate=4}
+  else if(k==="glu"){if(R()<Math.min(1,225/Math.max(1,m.filt)))fate=1}
+  else{if(R()<.45)fate=1;else if(R()<.3)fate=5}
+  const mk=FPATH.mark;let at=2;if(fate>0){const a=mk[fate],b=mk[fate+1];at=lerp(a,b,.15+R()*.7)}
+  SIM.parts.push({k,s:0,at,out:0,fate,side:R()<.5?-1:1})}
+function simStep(dt){const m=simModel();
+  SIM.adh+=(HYD[SIM.hyd][1]-SIM.adh)*Math.min(1,dt*.8);SIM.gfr+=(m.g-SIM.gfr)*Math.min(1,dt*2);
+  SIM.v+=(m.v-SIM.v)*Math.min(1,dt*1.2);SIM.osm+=(m.uo-SIM.osm)*Math.min(1,dt*1.2);
+  SIM.acc+=dt*7*SIM.gfr/125;while(SIM.acc>1){SIM.acc-=1;spawnPart(m)}
+  const sp=.075;SIM.parts.forEach(p=>{if(p.fate>0&&p.s>=p.at){p.out+=dt*1.3}else p.s+=dt*sp});
+  SIM.parts=SIM.parts.filter(p=>{if(p.out>=1)return false;if(p.s>=1){SIM.urineN++;return false}return true});
+  SIM.ht+=dt;if(SIM.ht>.25){SIM.ht=0;SIM.hist.push({v:SIM.v,o:SIM.osm,g:SIM.gfr});if(SIM.hist.length>240)SIM.hist.shift()}
+  let ch=false;CH.forEach(c=>{if(!SIM.done[c.id]&&c.ok(m)){SIM.done[c.id]=1;ch=true;const mm=$("#chMsg");mm.className="msg good show";mm.innerHTML=`<span class="stars">★</span> Challenge done: ${c.t}`}});
+  if(ch){store.set("ul-sim",SIM.done);chRender()}
+  return m}
+let roT=0;
+function drawSim(m){
+  nephronBase({gradient:true,zoneA:.4,noZoneLabels:true});label(12,196,"CORTEX",{size:11,mono:true,weight:600,color:C["ink-soft"]});label(12,226,"MEDULLA",{size:11,mono:true,weight:600,color:C["ink-soft"]});
+  // blood: arterioles
+  const bp=lerp(4,1.6,clamp((SIM.map-40)/160,0,1));stream(NG.aff,TT,4,bp,"rbc",{size:5});stream(NG.aff,TT+.5,3,bp,"prot",{size:2.4});
+  stream(NG.eff,TT,3,2.2,"rbc",{size:4.5});stream(NG.eff,TT+.7,3,2.2,"prot",{size:2.2});
+  // ADH aquaporins on CD wall
+  const nA=Math.round(SIM.adh*8);for(let k=0;k<8;k++){const y=230+k*28;ctx.fillStyle=k<nA?C.water:C.rule;rr(568,y,6,12,2);ctx.fill();rr(546,y,6,12,2);ctx.fill()}
+  // aldosterone marks on DCT
+  const nAl={low:1,normal:3,high:6}[SIM.ald];for(let k=0;k<6;k++){const p=along(NG.dct,.35+k*.1);ctx.fillStyle=k<nAl?C.na:C.rule;rr(p[0]-3,p[1]+9,6,6,1);ctx.fill()}
+  // particles
+  SIM.parts.forEach(p=>{const pt=along(FPATH.P,p.s);let x=pt[0],y=pt[1],a=Math.min(1,p.s*30);
+    if(p.out>0){const ang=dirAt(FPATH.P,p.s)+p.side*Math.PI/2;x+=Math.cos(ang)*p.out*40;y+=Math.sin(ang)*p.out*40;a=1-p.out}
+    part(p.k,x,y,a,p.k==="glu"?4.2:p.k==="urea"?4.2:p.k==="w"?2.8:3.2)});
+  // gradient bar
+  for(let y=214;y<470;y+=2){ctx.fillStyle=osmCol(lerp(300,1200,(y-214)/256));ctx.fillRect(770,y,18,2)}ctx.strokeStyle=C.rule;ctx.strokeRect(770,214,18,256);
+  label(766,222,"300",{align:"right",size:10.5,mono:true});label(766,462,"1200",{align:"right",size:10.5,mono:true});label(779,478-2,"",{});
+  ctx.save();ctx.translate(752,340);ctx.rotate(-Math.PI/2);label(0,0,"medullary gradient (mOsm)",{align:"center",size:10.5,pill:false,color:C["ink-soft"]});ctx.restore();
+  // urine cup
+  const cx=600,cy=360,vf=clamp(SIM.v/8,0,1);ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+8,cy+108);ctx.lineTo(cx+92,cy+108);ctx.lineTo(cx+100,cy);ctx.stroke();
+  const fy=cy+106-vf*100;ctx.fillStyle=urineCol(SIM.osm);ctx.beginPath();ctx.moveTo(cx+2+(fy-cy)/108*8,fy);ctx.lineTo(cx+9,cy+106);ctx.lineTo(cx+91,cy+106);ctx.lineTo(cx+98-(fy-cy)/108*8,fy);ctx.closePath();ctx.fill();
+  if(m.exc>0)for(let i=0;i<Math.min(6,Math.ceil(m.exc/40));i++)part("glu",cx+20+i*12,cy+96-((i*13)%Math.max(8,vf*80)),1,4);
+  stream([[560,456],[575,470],[600,470],[628,cy+40]],TT,4,1.5,"u",{size:2.8});
+  label(cx+50,cy-14,SIM.v.toFixed(1)+" L/day",{align:"center",size:12,weight:700,mono:true});
+  // labels
+  label(250,40,"Glomerulus",{align:"center",size:12});label(226,80,"PCT",{align:"center",size:12});label(138,300,"Descending",{align:"right",size:11.5});label(206,300,"Ascending",{size:11.5});
+  label(452,182,"DCT"+(SIM.ald!=="normal"?" · aldosterone "+SIM.ald:""),{align:"center",size:11.5});label(546,250,"CD · ADH "+(SIM.adh>.7?"high":SIM.adh>.3?"normal":"low"),{align:"right",size:11.5});
+  label(492,20,"afferent arteriole · MAP "+SIM.map,{size:11,color:C.art});
+  label(14,24,"GFR "+Math.round(SIM.gfr)+" mL/min",{size:13,weight:700,mono:true,border:C.accent});
+}
+
+/* ================= PART 2: filtration pressure ================= */
+const F={gb:55,ch:15,bc:30,tg:null,hist:[],ht:0,drops:[],acc:0};
+const FS=[
+ {t:"Severe bleeding (hemorrhage)",d:"A patient loses a lot of blood in a car crash. Blood pressure falls, so less pressure reaches the glomerulus.",v:{gb:47},ans:"gb",dir:"down",
+  w:{ch:"Fluid in the capsule is not the first thing that changes here. Think about where blood pressure acts.",bc:"Blood proteins are not suddenly gained or lost. The change is in blood pressure."},
+  hint:"Bleeding lowers blood pressure. Which pressure is blood pressure inside the glomerulus?",exp:"Less blood means lower GBHP. With less push outward, NFP falls and so does GFR. Urine output drops, which helps save fluid. Sympathetic nerves also constrict the afferent arterioles, lowering GBHP even more."},
+ {t:"Kidney stone blocking a ureter",d:"A stone blocks the ureter. Urine backs up into the renal pelvis and the nephrons.",v:{ch:22},ans:"ch",dir:"down",
+  w:{gb:"Blood pressure in the glomerulus is not the main change. Think about fluid backing up behind the blockage.",bc:"Blood proteins do not change because of a stone."},
+  hint:"Where does the backed-up fluid push from?",exp:"Fluid backing up raises capsular hydrostatic pressure (CHP). More push-back means a smaller NFP and a lower GFR. That is one reason a blockage can damage the kidney."},
+ {t:"Low plasma protein",d:"Severe liver disease means the liver makes much less albumin, so the blood has fewer proteins.",v:{bc:20},ans:"bc",dir:"up",
+  w:{gb:"Blood pressure is not what the liver problem changes. Think about what albumin does.",ch:"Capsule pressure is not directly changed by liver disease."},
+  hint:"Albumin is the main protein that pulls water back into the blood.",exp:"Fewer proteins means a weaker pull back into the capillary, so BCOP falls. NFP rises and more fluid is filtered. The same low protein also lets fluid leak into tissues elsewhere (edema)."},
+ {t:"Afferent arteriole constricts",d:"During a scary moment, sympathetic nerves squeeze the afferent arterioles.",v:{gb:48},ans:"gb",dir:"down",
+  w:{ch:"Capsule pressure is downstream. Narrowing the inflow vessel changes the pressure inside the glomerulus first.",bc:"Narrowing a vessel does not change how much protein is in the blood."},
+  hint:"The afferent arteriole is the inflow pipe. What happens to pressure past a squeezed inflow pipe?",exp:"A narrower inflow vessel lets less pressure into the glomerulus, so GBHP falls. NFP and GFR drop. This saves blood volume during stress or bleeding."},
+ {t:"Efferent arteriole constricts",d:"Angiotensin II squeezes the efferent arterioles more than the afferent ones.",v:{gb:62},ans:"gb",dir:"up",
+  w:{ch:"Capsule pressure is not the main change. Think about blood backing up inside the glomerulus.",bc:"Blood proteins are not added or removed by squeezing a vessel."},
+  hint:"The efferent arteriole is the outflow pipe. Squeeze the outflow and pressure upstream…",exp:"Squeezing the outflow pipe makes blood back up in the glomerulus, so GBHP rises. NFP and GFR go up. This is how angiotensin II helps hold GFR up when blood pressure is low."},
+ {t:"Severe dehydration",d:"After a long hot hike with no water, plasma volume drops and the plasma proteins become more concentrated.",v:{bc:35},ans:"bc",dir:"down",
+  w:{gb:"Blood pressure dips a little too, but the special change here is in how concentrated the proteins are.",ch:"Capsule pressure does not rise when you are dehydrated."},
+  hint:"Less water, same amount of protein. What happens to protein concentration?",exp:"With less plasma water, the same proteins are more concentrated, so BCOP rises. The stronger pull back into the blood lowers NFP and GFR, and the body makes less urine."}];
+const PN={gb:"GBHP (glomerular blood pressure)",ch:"CHP (capsular pressure)",bc:"BCOP (protein pull)"};
+let fi=0;const fState=FS.map(()=>({q1:null,q2:null,first:null}));
+const fBest=store.get("ul-filt")||{};
+function nfp(){return F.gb-F.ch-F.bc}
+function fSync(){$("#gbR").value=Math.round(F.gb);$("#chR").value=Math.round(F.ch);$("#bcR").value=Math.round(F.bc);$("#gbV").textContent=Math.round(F.gb);$("#chV").textContent=Math.round(F.ch);$("#bcV").textContent=Math.round(F.bc)}
+["gb","ch","bc"].forEach(k=>{$("#"+k+"R").oninput=e=>{F.tg=null;F[k]=+e.target.value;fSync()}});
+$("#fNormal").onclick=()=>{F.tg={gb:55,ch:15,bc:30}};
+function fClear(){["#fF1","#fF2"].forEach(x=>{$(x).textContent="";$(x).className="fb"});$("#fMsg").className="msg"}
+function fRender(){
+  const rb=$("#fRounds");rb.innerHTML="";FS.forEach((s,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===fi);b.innerHTML=(i+1)+(fState[i].q2===true||fBest[i]?'<span class="ok">★</span>':"");b.setAttribute("aria-label","Scenario "+(i+1)+": "+s.t);b.onclick=()=>{fi=i;F.tg={gb:55,ch:15,bc:30};fClear();fRender()};rb.appendChild(b)});
+  const s=FS[fi],st=fState[fi];$("#fTitle").textContent=(fi+1)+". "+s.t;$("#fDesc").textContent=s.d;
+  const q1=$("#fQ1");q1.innerHTML="";const f1=$("#fF1");
+  ["gb","ch","bc"].forEach(k=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=PN[k];if(st.q1===true&&k===s.ans)b.classList.add("right");
+    b.onclick=()=>{if(st.q1===true)return;if(k===s.ans){st.q1=true;if(st.first===null)st.first=true;f1.className="fb ok show";f1.textContent="✓ Yes. "+PN[k].split(" (")[0]+" is the pressure that changes here.";fRender()}
+      else{st.first=false;b.classList.add("wrong");f1.className="fb no show";f1.textContent="Not quite. "+s.w[k]}};q1.appendChild(b)});
+  if(st.q1===true){f1.className="fb ok show";f1.textContent="✓ Yes. "+PN[s.ans].split(" (")[0]+" is the pressure that changes here."}else if(!f1.textContent.startsWith("Not"))f1.className="fb";
+  $("#fQ2w").hidden=st.q1!==true;const q2=$("#fQ2");q2.innerHTML="";const f2=$("#fF2");
+  const D={up:"NFP and GFR go up",down:"NFP and GFR go down",same:"NFP and GFR stay the same"};
+  Object.keys(D).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=D[k];if(st.q2===true&&k===s.dir)b.classList.add("right");
+    b.onclick=()=>{if(st.q2===true)return;if(k===s.dir){st.q2=true;fWin();fRender()}else{st.first=false;b.classList.add("wrong");f2.className="fb no show";
+      f2.textContent="Not quite. "+(k==="same"?"Any change in one of the three pressures changes NFP. Remember NFP = GBHP − (CHP + BCOP).":"Check the sign. "+(s.ans==="gb"?"GBHP pushes fluid out, so":"CHP and BCOP push fluid back in, so")+" a "+(s.dir==="up"?(s.ans==="gb"?"rise":"fall"):(s.ans==="gb"?"fall":"rise"))+" in "+s.ans.toUpperCase()+" makes NFP go "+s.dir+".")}};q2.appendChild(b)});
+  if(st.q2===true){f2.className="fb ok show";f2.textContent="✓ Right. Watch the sliders move and the glomerulus respond."}else if(!f2.textContent.startsWith("Not"))f2.className="fb";
+  const m=$("#fMsg");if(st.q2===true){m.className="msg good show";m.innerHTML=(st.first?'<span class="stars">★★★</span><br>':'<span class="stars">★★☆</span><br>')+"<b>Why:</b> "+s.exp}else if(!m.dataset.keep){m.className="msg"}
+  m.dataset.keep="";
+  const got=fState.filter(x=>x.q2===true).length,first=fState.filter(x=>x.first===true&&x.q2===true).length;$("#fScore").textContent=`Solved ${got} of ${FS.length} · first try ${first}`}
+function fWin(){const s=FS[fi];F.tg=Object.assign({gb:55,ch:15,bc:30},s.v);fBest[fi]=1;store.set("ul-filt",fBest)}
+$("#fHint").onclick=()=>{const m=$("#fMsg");m.className="msg info show";m.dataset.keep="1";m.textContent="Hint: "+FS[fi].hint};
+$("#fShow").onclick=()=>{const st=fState[fi];st.q1=true;st.q2=true;st.first=false;$("#fF1").textContent="";$("#fF2").textContent="";fWin();fRender()};
+function filtStep(dt){if(F.tg){let d=0;["gb","ch","bc"].forEach(k=>{F[k]+= (F.tg[k]-F[k])*Math.min(1,dt*2);d+=Math.abs(F.tg[k]-F[k])});if(d<.05){["gb","ch","bc"].forEach(k=>F[k]=F.tg[k]);F.tg=null}fSync()}
+  const n=nfp();F.acc+=dt*Math.max(0,n)*1.4;while(F.acc>1){F.acc-=1;F.drops.push({x:120+Math.random()*290,y:0,t:0})}
+  F.drops.forEach(d=>d.t+=dt);F.drops=F.drops.filter(d=>d.t<2.4);
+  F.ht+=dt;if(F.ht>.25){F.ht=0;F.hist.push({g:Math.max(0,n)*12.5});if(F.hist.length>240)F.hist.shift()}}
+function drawFilt(){const n=nfp(),gfr=Math.max(0,n)*12.5;
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  // capsule
+  const cx=250,cy=190;circ(cx,cy+10,200,C["tub-edge"]);circ(cx,cy+10,192,C.lumen);
+  tube([[cx,cy+190],[cx,H+20]],40,C["tub-edge"],C.lumen,6);label(cx+30,H-16,"to PCT",{size:11.5});
+  label(cx,cy+150,"capsular space",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  // capillary loop (U)
+  const R=95,loop=[[cx-R,-10],[cx-R,cy]];for(let i=0;i<=20;i++){const a=Math.PI-i/20*Math.PI;loop.push([cx+R*Math.cos(a),cy+R*Math.sin(a)])}loop.push([cx+R,-10]);
+  tube(loop,58,C.cap,C["cap-wash"],6);
+  // podocyte dots along outer wall
+  for(let i=0;i<=26;i++){const p=along(loop,.06+i/26*.88);const an=dirAt(loop,.06+i/26*.88)+Math.PI/2;ell(p[0]-Math.cos(an)*31,p[1]-Math.sin(an)*31,5,3,C.podo,null,1,an)}
+  label(cx-R,24,"afferent (in)",{align:"center",size:11.5,color:C.art});label(cx+R,24,"efferent (out)",{align:"center",size:11.5,color:C.art});
+  stream(loop,TT,9,4,"rbc",{size:8,nofade:true});stream(loop,TT+1,7,4,"prot",{size:2.8,nofade:true,jit:9});
+  // GBHP: outward from capillary
+  const gl=F.gb*.75;[[cx-R-32,cy-40,Math.PI],[cx+R+32,cy-40,0],[cx,cy+R+32,Math.PI/2]].forEach(([x,y,a])=>{if(gl>2)arrow(x,y,x+Math.cos(a)*gl,y+Math.sin(a)*gl,C.art,5)});
+  // CHP: inward from capsule wall
+  const cl=F.ch*1.2;[[cx-172,cy+110,-.55],[cx+172,cy+110,Math.PI+.55]].forEach(([x,y,a])=>{if(cl>2)arrow(x,y,x+Math.cos(a)*cl,y+Math.sin(a)*cl,C.urine,5)});
+  // BCOP: pulling water back into the capillary (inner side of the U)
+  const bl=F.bc*1.1;[[cx-R+32,cy-60,-1],[cx+R-32,cy-60,1]].forEach(([x,y,d])=>{arrow(x-d*bl,y,x,y,C.ang,5)});
+  label(cx-R-40,cy-66,"GBHP "+Math.round(F.gb),{align:"right",size:12.5,weight:700,color:C.art,border:C.art});
+  label(cx-150,cy+150,"CHP "+Math.round(F.ch),{align:"center",size:12.5,weight:700,color:C.urine,border:C.urine});
+  label(cx,cy-96,"BCOP "+Math.round(F.bc),{align:"center",size:12.5,weight:700,color:C.ang,border:C.ang});
+  // filtrate drops
+  F.drops.forEach(d=>{const q=d.t/2.4;const side=d.x<cx?-1:1;const sx=cx+side*(R+30),sy=cy-80+(d.x%120);const x=lerp(sx,cx,q*q),y=lerp(sy,cy+190,q);part("w",x,y,Math.min(1,(1-q)*4,d.t*6),3.4)});
+  // right panel
+  const px=500;panelBox(px,20,290,380,true,n<=0?C.bad:C.act3);title(px+14,40,"Net filtration pressure",C.act3);
+  ctx.font=`600 15px ${MONO}`;ctx.fillStyle=C.ink;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(`NFP = ${Math.round(F.gb)} − (${Math.round(F.ch)} + ${Math.round(F.bc)})`,px+14,72);
+  ctx.font=`700 30px ${MONO}`;ctx.fillStyle=n<=0?C.bad:C.act3;ctx.fillText(Math.round(n)+" mmHg",px+14,112);
+  const sc=2.4,bx=px+14;ctx.fillStyle=C.art;rr(bx,146,F.gb*sc,22,4);ctx.fill();ctx.fillStyle=C.urine;rr(bx,176,F.ch*sc,22,4);ctx.fill();ctx.fillStyle=C.ang;rr(bx+F.ch*sc,176,F.bc*sc,22,4);ctx.fill();
+  line(bx+(F.ch+F.bc)*sc,140,bx+(F.ch+F.bc)*sc,204,C.ink,1.5,[3,3]);
+  label(bx,216,"out (top) vs back in (bottom)",{size:11,pill:false,color:C["ink-soft"]});
+  meter(px+14,240,262,24,gfr/250,n<=0?C.bad:C.water,"GFR "+Math.round(gfr)+" mL/min");
+  const st=gfr<=0?"No filtration at all.":gfr<90?"Low GFR: less filtrate, less urine.":gfr>160?"High GFR: more filtrate.":"About normal.";
+  label(px+14,282,st,{size:12.5,weight:600,pill:false,color:gfr<=0?C.bad:C.ink});
+  label(px+14,312,"GFR here ≈ 12.5 × NFP",{size:11.5,pill:false,color:C["ink-soft"]});label(px+14,330,"(normal: 10 mmHg → 125 mL/min)",{size:11.5,pill:false,color:C["ink-soft"]});
+  if(n<=0){glow(px+150,112,60,C.bad,.25)}
+}
+
+/* ================= PART 3: sequencer + tracer ================= */
+const VL=["Renal artery","Segmental artery","Interlobar artery","Arcuate artery","Cortical radiate artery","Afferent arteriole","Glomerulus","Efferent arteriole","Peritubular capillaries or vasa recta","Cortical radiate vein","Arcuate vein","Interlobar vein","Renal vein"];
+const SR=[
+ {id:"path",name:"Round 1 · Urine's path",instr:"Put the places in the order urine passes through them, from the end of a nephron to outside the body. Eight cards.",
+  items:["Collecting duct","Renal papilla","Minor calyx","Major calyx","Renal pelvis","Ureter","Urinary bladder","Urethra"],cls:()=>"ur"},
+ {id:"neph",name:"Round 2 · Nephron segments",instr:"Put the parts in the order filtrate flows through them, starting where blood is filtered. Seven cards.",
+  items:["Glomerulus","Glomerular (Bowman's) capsule","Proximal convoluted tubule (PCT)","Descending limb of the nephron loop","Ascending limb of the nephron loop","Distal convoluted tubule (DCT)","Collecting duct"],cls:i=>i===0?"capl":"tub"},
+ {id:"blood",name:"Round 3 · Blood flow",instr:"Follow a drop of blood from the renal artery to the renal vein. Thirteen cards. Use the card colors: red arteries, pink capillaries, blue veins.",
+  items:VL,cls:i=>i<6?"art":i<9?"capl":"vein"},
+ {id:"trace",name:"Round 4 · Trace a molecule"}];
+let SRi=0;const SQ={order:[],checks:0,hints:0,solved:false,start:0,el:0,run:false,rev:new Set(),sel:null};
+const sBest=store.get("ul-seq")||{};
+function fmt(s){s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function sRounds(){const rb=$("#sRounds");rb.innerHTML="";SR.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===SRi);b.innerHTML=r.name+(sBest[r.id]?'<span class="ok">'+"★".repeat(sBest[r.id])+'</span>':"");b.onclick=()=>{SRi=i;sNew()};rb.appendChild(b)})}
+function sShuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function sNew(){sRounds();const r=SR[SRi];const tr=r.id==="trace";$("#seqPane").hidden=tr;$("#trPane").hidden=!tr;
+  if(tr){fitAll();tRender();return}
+  const idx=r.items.map((_,i)=>i);let o;do{o=sShuffle(idx)}while(o.filter((c,i)=>c===i).length>1);
+  const list=$("#sList");list.innerHTML="";o.forEach(i=>list.appendChild(sItem(i)));$("#sInstr").textContent=r.instr;
+  Object.assign(SQ,{checks:0,hints:0,solved:false,start:performance.now(),el:0,run:true,rev:new Set(),sel:null});sMsg("","");sRenum();fitAll()}
+function sItem(i){const r=SR[SRi];const li=document.createElement("li");li.className="item "+r.cls(i);li.dataset.i=i;
+  li.innerHTML=`<span class="pos"></span><span class="grip" aria-hidden="true">⋮⋮</span><span class="txt">${r.items[i]}</span><span class="mv"><button type="button" aria-label="Move up">▲</button><button type="button" aria-label="Move down">▼</button></span>`;
+  const list=$("#sList");const [up,dn]=li.querySelectorAll(".mv button");
+  up.onclick=()=>{const p=li.previousElementSibling;if(p&&!SQ.solved){list.insertBefore(li,p);sChanged();up.focus()}};
+  dn.onclick=()=>{const n=li.nextElementSibling;if(n&&!SQ.solved){list.insertBefore(n,li);sChanged();dn.focus()}};
+  let down=false,moved=false,y0=0;
+  li.addEventListener("pointerdown",e=>{if(e.target.closest("button")||SQ.solved)return;down=true;moved=false;y0=e.clientY;li.setPointerCapture(e.pointerId)});
+  li.addEventListener("pointermove",e=>{if(!down)return;if(!moved&&Math.abs(e.clientY-y0)<6)return;if(!moved){moved=true;li.classList.add("drag")}
+    const kids=[...list.children];const me=kids.indexOf(li);
+    for(let k=0;k<kids.length;k++){const el=kids[k];if(el===li)continue;const rc=el.getBoundingClientRect();
+      if(e.clientY>rc.top&&e.clientY<rc.bottom){const mid=rc.top+rc.height/2;
+        if(k>me&&e.clientY>mid){list.insertBefore(el,li);sChanged()}else if(k<me&&e.clientY<mid){list.insertBefore(el,li.nextElementSibling);sChanged()}break}}});
+  const end=()=>{if(!down)return;down=false;li.classList.remove("drag");
+    if(!moved){ // tap to select / swap
+      if(SQ.sel&&SQ.sel!==li&&SQ.sel.parentElement===list){const a=SQ.sel,b=li;const na=a.nextElementSibling===b?a:a.nextElementSibling;list.insertBefore(a,b);list.insertBefore(b,na===b?a:na);a.classList.remove("sel");SQ.sel=null;sChanged()}
+      else if(SQ.sel===li){li.classList.remove("sel");SQ.sel=null}else{if(SQ.sel)SQ.sel.classList.remove("sel");SQ.sel=li;li.classList.add("sel")}}};
+  li.addEventListener("pointerup",end);li.addEventListener("pointercancel",end);
+  li.tabIndex=0;li.addEventListener("keydown",e=>{if(e.key==="ArrowUp"){e.preventDefault();up.click();li.focus()}if(e.key==="ArrowDown"){e.preventDefault();dn.click();li.focus()}});
+  return li}
+function sRenum(){[...$("#sList").children].forEach((li,i)=>li.querySelector(".pos").textContent=i+1)}
+function sChanged(){sRenum();[...$("#sList").children].forEach(li=>li.classList.remove("right","off","hinted"))}
+function sCur(){return [...$("#sList").children].map(li=>+li.dataset.i)}
+function sMsg(t,c){const m=$("#sMsg");m.className="msg"+(t?" show "+c:"");m.innerHTML=t}
+$("#sCheck").onclick=()=>{if(SQ.solved)return;SQ.checks++;const o=sCur();let n=0;[...$("#sList").children].forEach((li,i)=>{const ok=o[i]===i;if(ok){n++;SQ.rev.add(i)}li.classList.toggle("right",ok);li.classList.toggle("off",!ok)});
+  if(n===o.length)sWin();else sMsg(`<b>${n} of ${o.length}</b> cards are in the right spot. Green ones now show on the diagram. ${n>=o.length-2?"So close!":"Ask yourself: what has to come right before this?"}`,"warn")};
+$("#sHint").onclick=()=>{if(SQ.solved)return;const o=sCur();const i=o.findIndex((c,k)=>c!==k);if(i<0)return;SQ.hints++;const list=$("#sList");const li=list.querySelector(`[data-i="${i}"]`);list.insertBefore(li,list.children[i]);sChanged();li.classList.add("hinted");SQ.rev.add(i);
+  sMsg(`Hint: card ${i+1} is <b>${SR[SRi].items[i]}</b>.`,"warn")};
+$("#sShuffle").onclick=sNew;
+$("#sAnswer").onclick=()=>{const r=SR[SRi];const list=$("#sList");list.innerHTML="";r.items.forEach((_,i)=>{const li=sItem(i);li.classList.add("right");list.appendChild(li);SQ.rev.add(i)});sRenum();SQ.solved=true;SQ.run=false;
+  sMsg("Here is the correct order. Read it through once, then press <b>Shuffle again</b> and try it yourself.","warn")};
+function sWin(){SQ.solved=true;SQ.run=false;const stars=SQ.hints===0&&SQ.checks<=2?3:(SQ.hints<=2?2:1);const r=SR[SRi];sBest[r.id]=Math.max(sBest[r.id]||0,stars);store.set("ul-seq",sBest);
+  sMsg(`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>All in order!</b> ${$("#sRelaxed").checked?"":"Time "+fmt(SQ.el)+". "}Checks: ${SQ.checks}. Hints: ${SQ.hints}. <button class="tbtn" id="sNextR" type="button">Next round →</button>`,"good");
+  $("#sNextR").onclick=()=>{SRi=Math.min(SR.length-1,SRi+1);sNew()};sRounds()}
+$("#sRelaxed").onchange=e=>$("#sTimer").style.visibility=e.target.checked?"hidden":"visible";
+setInterval(()=>{if(SQ.run){SQ.el=(performance.now()-SQ.start)/1000;$("#sTimer").textContent=fmt(SQ.el)}},250);
+function node(x,y,i,on,txt,side,lx,ly){const col=on?C.good:C["ink-faint"];
+  if(lx!=null){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(lx-6,ly);ctx.strokeStyle=on?C.good:C.rule;ctx.lineWidth=1.2;ctx.stroke()}
+  circ(x,y,11,on?C.good:C.panel,col,2);ctx.font=`700 11px ${MONO}`;ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(i+1),x,y+.5);
+  const tx=lx!=null?lx:side==="l"?x-17:side==="a"?x:x+17,ty=lx!=null?ly:side==="a"?y-32:side==="b"?y+22:y,al=lx!=null?"left":side==="l"?"right":(side==="a"||side==="b")?"center":"left";
+  label(tx,ty,on?txt:(lx!=null?(i+1)+"  ?":"?"),{align:al,size:12,weight:on?600:500,border:on?C.good:null,color:on?C.ink:C["ink-faint"]})}
+const SHORT={path:["Collecting duct","Renal papilla","Minor calyx","Major calyx","Renal pelvis","Ureter","Urinary bladder","Urethra"],neph:["Glomerulus","Capsule","PCT","Descending limb","Ascending limb","DCT","Collecting duct"]};
+function drawSeq(){const r=SR[SRi];const R=SQ.rev;
+  if(r.id==="path"){ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);const X=bigKidney(190,215,2.0);
+    const end=X([54,118]);tube([end,[end[0]+20,end[1]+12],[560,440],[618,392]],10,C["pelvis-edge"],C.pelvis,3);
+    const bx=680,by=380;ell(bx,by,66,48,C.muscle,C["muscle-edge"],2);ell(bx,by,58,40,C.lumen);ctx.save();ctx.beginPath();ctx.ellipse(bx,by,58,40,0,0,TAU);ctx.clip();ctx.fillStyle=C.urine;ctx.fillRect(bx-70,by,140,60);ctx.restore();
+    tube([[bx,by+44],[bx,490]],10,C["muscle-edge"],C.lumen,3);
+    stream([X([-21,26]),X([-1,17]),X([26,20]),X([46,0]),X([56,60]),end,[560,440],[618,392]],TT,10,6,"u",{size:3});
+    const P=[X([-21,26]),X([-1,17]),X([10,12]),X([33,12]),X([47,-2]),X([56,80]),[bx,by-20],[bx,470]];
+    P.forEach((p,i)=>{if(i<6)node(p[0],p[1],i,R.has(i),SHORT.path[i],"r",430,40+i*42);else node(p[0],p[1],i,R.has(i),SHORT.path[i],i===6?"a":"l")})}
+  else if(r.id==="neph"){ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);nephronBase({});stream(FPATH.P,TT,30,12,"w",{size:2.6});
+    const P=[[[330,100],"r"],[[292,70],"l"],[[226,112],"l"],[[150,300],"l"],[[194,330],"r"],[[460,150],"r"],[[560,360],"r"]];
+    P.forEach((p,i)=>node(p[0][0],p[0][1],i,R.has(i),SHORT.neph[i],p[1]))}
+  else if(r.id==="blood"){ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+    const N=[];for(let i=0;i<6;i++)N.push([110,40+i*62]);N.push([260,440],[400,440],[540,440]);for(let i=0;i<4;i++)N.push([690,350-i*96]);
+    const P=[[110,10],...N.slice(0,6),[150,420],...N.slice(6,9),[650,420],...N.slice(9),[690,10]];
+    tube([[110,10],...N.slice(0,6),[150,420],[260,440]],18,C.art,null);tube([[260,440],[400,440],[540,440]],12,C.cap,null);tube([[540,440],[650,420],...N.slice(9),[690,10]],20,C.vein,null);
+    const g=N[6];circ(g[0],g[1],22,C.lumen,C["tub-edge"],3);for(let k=0;k<6;k++){const a=k/6*TAU;circ(g[0]+Math.cos(a)*8,g[1]+Math.sin(a)*7,5,C.cap)}
+    const pc=N[8];for(let k=0;k<3;k++){ctx.beginPath();for(let x=-34;x<=34;x+=3)ctx.lineTo(pc[0]+x,pc[1]-12+k*12+Math.sin(x/5)*4);ctx.strokeStyle=C.cap;ctx.lineWidth=3;ctx.stroke()}
+    stream(P,TT,16,12,"rbc",{size:6});
+    label(110,10,"in from aorta",{align:"left",size:11,color:C.art,pill:true});label(690,10,"out to inferior vena cava",{align:"right",size:11,color:C.vein,pill:true});
+    N.forEach((p,i)=>node(p[0],p[1],i,R.has(i),VL[i],i<6?"r":i<9?(i===7?"b":"a"):"l"));
+    label(400,250,"arteries → two capillary beds → veins",{align:"center",size:12,pill:false,color:C["ink-soft"]})}
+  $("#sCap").textContent=R.size+" of "+r.items.length+" places labeled on the diagram.";
+}
+/* tracer */
+const LOC={aff:[430,50,"Afferent arteriole"],glom:[330,100,"Glomerulus"],eff:[440,100,"Efferent arteriole (stays in blood)"],cap:[296,134,"Glomerular capsule"],pct:[226,112,"PCT"],ptc:[220,62,"Peritubular capillary"],vein:[56,36,"Renal vein"],
+  loop:[172,440,"Nephron loop"],dct:[452,146,"DCT"],cd:[560,330,"Collecting duct"],pelvis:[560,466,"Calyces and renal pelvis"],bladder:[700,410,"Ureter, then bladder"]};
+const TR={
+ glu:{n:"Glucose",k:"glu",steps:[
+  {at:"aff",ok:"glom",o:{glom:"Yes. The afferent arteriole feeds the glomerulus.",dct:"The DCT is a tubule. Blood vessels do not empty into it.",vein:"Too soon. Blood passes through two capillary beds before reaching a vein.",cd:"The collecting duct carries filtrate, not blood."},h:"Afferent means 'arriving'. Where does it arrive?"},
+  {at:"glom",ok:"cap",o:{cap:"Right. Glucose is small, so it is filtered into the glomerular capsule.",eff:"Some glucose does stay in the blood, but this molecule is small enough to be filtered. Follow the filtered one.",pct:"The capsule catches the filtrate before the PCT.",bladder:"Way too far ahead."},h:"Small molecules pass the filter. What catches the filtrate?"},
+  {at:"cap",ok:"pct",o:{pct:"Yes. The capsule drains straight into the PCT.",loop:"The PCT comes first, right after the capsule.",cd:"The collecting duct is near the end of the line.",ptc:"Not yet. Reabsorption happens from the tubule, so it must enter the PCT first."},h:"Which tubule segment starts at the capsule?"},
+  {at:"pct",ok:"ptc",o:{ptc:"Right. Glucose is reabsorbed with Na⁺ in the PCT and moves into the peritubular capillaries.",loop:"Normally no glucose is left by the end of the PCT, so it never reaches the loop.",bladder:"Only when blood glucose is above the renal threshold, as in uncontrolled diabetes.",glom:"Filtrate cannot flow backward into the glomerulus."},h:"The PCT takes back all the glucose. Where does reabsorbed glucose go?"},
+  {at:"ptc",ok:"vein",o:{vein:"Yes. The peritubular capillaries drain into veins and out the renal vein, back to the body.",pct:"It was just reabsorbed from the PCT. Blood carries it away now.",cd:"Capillaries do not empty into the collecting duct.",aff:"Blood does not flow backward to the afferent arteriole."},h:"Capillaries drain into…"}],
+  end:"Glucose is back in the blood. That is why normal urine has no glucose."},
+ urea:{n:"Urea",k:"urea",steps:[
+  {at:"aff",ok:"glom",o:{glom:"Yes. The afferent arteriole feeds the glomerulus.",dct:"The DCT is a tubule. Blood vessels do not empty into it.",vein:"Too soon. Blood passes through capillaries first.",cd:"The collecting duct carries filtrate, not blood."},h:"Afferent means 'arriving'."},
+  {at:"glom",ok:"cap",o:{cap:"Right. Urea is a small waste molecule, so it is filtered.",eff:"Some urea stays in the blood, but this molecule is filtered. Follow it.",pct:"The capsule comes before the PCT.",bladder:"Too far ahead."},h:"Small waste molecules pass the filter easily."},
+  {at:"cap",ok:"pct",o:{pct:"Yes. The capsule drains into the PCT.",loop:"The PCT comes first.",cd:"The collecting duct is near the end.",ptc:"It has to be in the tubule before anything can be reabsorbed."},h:"Which segment starts at the capsule?"},
+  {at:"pct",ok:"loop",o:{loop:"Right. About half of urea is reabsorbed in the PCT, but this molecule stays in the filtrate and moves on.",ptc:"About half of urea is reabsorbed, but this one stays in the tubule. Follow it on.",dct:"The loop comes before the DCT.",bladder:"Still a few stops to go."},h:"After the PCT the tubule dips into the medulla."},
+  {at:"loop",ok:"dct",o:{dct:"Yes. The ascending limb leads into the DCT.",cd:"The DCT comes between the loop and the collecting duct.",pct:"Filtrate does not flow backward.",ptc:"This molecule stays in the tubule."},h:"Which twisty segment comes after the loop?"},
+  {at:"dct",ok:"cd",o:{cd:"Right. Many DCTs drain into a collecting duct.",loop:"Filtrate does not flow backward.",glom:"The glomerulus is the start, not the next stop.",vein:"Urea in the tubule does not jump into a vein."},h:"Several nephrons share this duct."},
+  {at:"cd",ok:"pelvis",o:{pelvis:"Yes. Urine leaves at a papilla and drains through the calyces into the renal pelvis.",ptc:"Some urea leaks out of the deep collecting duct to help keep the medulla salty, but most leaves in urine. Follow this one out.",dct:"Filtrate does not flow backward.",glom:"That is the start of the nephron."},h:"Papilla, then calyces, then…"},
+  {at:"pelvis",ok:"bladder",o:{bladder:"Right. The ureter carries it to the bladder by peristalsis.",vein:"Urine never enters blood vessels.",cd:"Urine does not flow backward.",glom:"That is back at the start."},h:"The renal pelvis narrows into the ureter."}],
+  end:"Urea leaves in urine. Getting rid of nitrogen waste like urea is one of the kidney's main jobs."}};
+const TUB=new Set(["cap","pct","loop","dct","cd"]);
+function fpS(pt){let b=0,bd=1e9;for(let i=0;i<=600;i++){const p=along(FPATH.P,i/600);const d=Math.hypot(p[0]-pt[0],p[1]-pt[1]);if(d<bd){bd=d;b=i/600}}return b}
+const FPS={};
+function legPath(a,b){if(TUB.has(a)&&TUB.has(b)){const sa=FPS[a]??(FPS[a]=fpS(LOC[a])),sb=FPS[b]??(FPS[b]=fpS(LOC[b]));const o=[];for(let i=0;i<=40;i++)o.push(along(FPATH.P,lerp(sa,sb,i/40)));return o}
+  if(a==="pelvis"&&b==="bladder")return [LOC.pelvis,[600,462],[640,450],[680,420],LOC.bladder];
+  if(a==="cd"&&b==="pelvis")return [LOC.cd,[560,460],LOC.pelvis];
+  if(a==="pct"&&b==="ptc")return [LOC.pct,[222,88],LOC.ptc];
+  if(a==="ptc"&&b==="vein")return [LOC.ptc,[140,62],[100,46],LOC.vein];
+  if(a==="aff"&&b==="glom")return [LOC.aff,[356,76],LOC.glom];
+  return [LOC[a],LOC[b]]}
+const TS={mol:"glu",step:0,wrong:0,pos:[430,50],from:[430,50],t:1,path:["aff"],done:false};
+function tReset(m){Object.assign(TS,{leg:null,mol:m||TS.mol,step:0,wrong:0,pos:LOC.aff.slice(0,2),from:LOC.aff.slice(0,2),t:1,path:["aff"],done:false});["#tFb","#tMsg"].forEach(s=>{$(s).className=s==="#tFb"?"fb":"msg";$(s).textContent=""});tRender()}
+function tRender(){const box=$("#tMol");box.innerHTML="";Object.keys(TR).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.textContent="Trace "+TR[k].n.toLowerCase();b.setAttribute("aria-pressed",TS.mol===k);b.onclick=()=>tReset(k);box.appendChild(b)});
+  const tr=TR[TS.mol];const o=$("#tOpts");o.innerHTML="";
+  if(TS.done){$("#tStepN").textContent="Done";$("#tQ").textContent=tr.end;}
+  else{const st=tr.steps[TS.step];$("#tStepN").textContent="Step "+(TS.step+1)+" of "+tr.steps.length;$("#tQ").textContent=`The ${tr.n.toLowerCase()} molecule is in the ${LOC[st.at][2].split(" (")[0].toLowerCase()}. Where does it go next?`;
+    Object.keys(st.o).sort((a,b)=>((a.charCodeAt(0)*7+TS.step)%11)-((b.charCodeAt(0)*7+TS.step)%11)).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=LOC[k][2];
+      b.onclick=()=>tPick(k,b);o.appendChild(b)})}
+  $("#tTrail").textContent="Path so far: "+TS.path.map(p=>LOC[p][2].split(" (")[0]).join(" → ");
+  $("#cvT").setAttribute("aria-label","Tracing "+tr.n+". "+$("#tTrail").textContent)}
+function tPick(k,b){const tr=TR[TS.mol],st=tr.steps[TS.step];const fb=$("#tFb");
+  if(k===st.ok){fb.className="fb ok show";fb.textContent="✓ "+st.o[k];TS.from=TS.pos.slice();TS.pos=LOC[k].slice(0,2);TS.leg=legPath(st.at,k);TS.t=0;TS.path.push(k);TS.step++;
+    if(TS.step>=tr.steps.length){TS.done=true;const stars=TS.wrong===0?3:TS.wrong<=2?2:1;const m=$("#tMsg");m.className="msg good show";m.innerHTML=`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Trace complete.</b> Wrong tries: ${TS.wrong}. Try the other molecule next.`;
+      const best=store.get("ul-trace")||{};best[TS.mol]=Math.max(best[TS.mol]||0,stars);store.set("ul-trace",best)}
+    tRender()}
+  else{TS.wrong++;b.classList.add("wrong");fb.className="fb no show";fb.textContent="Not quite. "+st.o[k]}}
+$("#tHint").onclick=()=>{if(TS.done)return;const m=$("#tMsg");m.className="msg info show";m.textContent="Hint: "+TR[TS.mol].steps[TS.step].h};
+$("#tShow").onclick=()=>{if(TS.done)return;TS.wrong++;const st=TR[TS.mol].steps[TS.step];const btn=[...$("#tOpts").children].find(b=>b.textContent===LOC[st.ok][2]);tPick(st.ok,btn)};
+$("#tRestart").onclick=()=>tReset();
+function drawTrace(dt){ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);nephronBase({zoneA:.25});
+  const pc=[];for(let i=0;i<=20;i++){const f=i/20;pc.push([lerp(330,140,f),62+Math.sin(f*TAU*2)*6])}tube([[476,108],[500,60],[400,40],[330,62]],7,C.cap,null);tube(pc,8,C.cap,null);tube([[140,62],[100,46],[40,36]],12,C.vein,null);
+  tube([[560,458],[560,472]],14,C["pelvis-edge"],C.pelvis,3);tube([[566,470],[640,450],[680,420]],8,C["pelvis-edge"],C.pelvis,3);ell(712,404,34,26,C.muscle,C["muscle-edge"],2);ell(712,404,27,19,C.urine);
+  label(560,20,"from renal artery",{size:11,color:C.art});label(14,70,"to renal vein",{size:11,color:C.vein});
+  stream([[476,108],[500,60],[400,40],[330,62],...pc,[100,46],[40,36]],TT,8,6,"rbc",{size:4});
+  // visited path
+  ctx.setLineDash([5,5]);for(let i=1;i<TS.path.length;i++){if(i===TS.path.length-1&&TS.t<1)break;poly(legPath(TS.path[i-1],TS.path[i]));ctx.strokeStyle=C.accent;ctx.lineWidth=2.5;ctx.stroke()}ctx.setLineDash([]);
+  TS.path.forEach(p=>circ(LOC[p][0],LOC[p][1],4,C.accent));
+  // options as targets
+  if(!TS.done){const st=TR[TS.mol].steps[TS.step];Object.keys(st.o).forEach(k=>{const L=LOC[k];circ(L[0],L[1],10,null,C["ink-faint"],1.5);label(L[0]+14,L[1]-12,L[2].split(" (")[0],{size:10.5,color:C["ink-soft"]})})}
+  TS.t=Math.min(1,TS.t+dt*.8);const e=ease(TS.t);const lp=TS.leg&&TS.t<1?along(TS.leg,e):TS.pos;const x=lp[0],y=lp[1];
+  glow(x,y,26,C.glow,.9);part(TR[TS.mol].k,x,y,1,8);
+  label(x,y+22,TR[TS.mol].n,{align:"center",size:12,weight:700,border:C.glow});
+}
+
+/* ================= PART 4: what breaks if ================= */
+const BK=[
+ {t:"Uncontrolled diabetes mellitus",d:"Maria has type 1 diabetes and ran out of insulin. Her blood glucose is 350 mg/dL. She is very thirsty and urinating a lot.",
+  q1:[["Glucose carriers in the PCT are overwhelmed (transport maximum exceeded)",1,"Right. So much glucose is filtered that every carrier is busy, and the extra stays in the tubule."],["The glomerular filtration membrane is torn",0,"A torn filter would let protein and blood cells through. Her filter is fine; there is just too much glucose."],["The posterior pituitary stopped releasing ADH",0,"That is diabetes insipidus. Here the problem is high blood sugar."],["The thick ascending limb stopped pumping NaCl",0,"That is what a loop diuretic does. The pump is working; glucose is the issue."]],
+  q2:[["Glucose in the urine and a large urine volume",1,"Yes. Glucose left in the tubule holds water with it, so she makes lots of sugary urine."],["A small amount of dark, concentrated urine",0,"Her urine volume goes up, not down, because glucose drags water along."],["Protein and blood in the urine",0,"Those point to glomerular damage. Uncontrolled diabetes shows glucose."],["Urine stays completely normal",0,"Above about 180 mg/dL glucose spills into urine. At 350 it definitely does."]],
+  exp:"350 mg/dL is far above the renal threshold. The PCT carriers hit their transport maximum and extra glucose stays in the filtrate, pulling water with it: polyuria and thirst. Ketones may also show up when the body burns fat for fuel.",
+  u:{v:4,osm:350,glu:3,prot:0,bld:0},site:[226,112,"PCT carriers saturated"]},
+ {t:"Diabetes insipidus",d:"After a head injury, Sam's posterior pituitary releases almost no ADH. He makes many liters of very pale urine a day and drinks water constantly.",
+  q1:[["Collecting duct cells cannot insert aquaporins (no ADH)",1,"Right. Without ADH, the collecting duct stays waterproof."],["PCT glucose carriers",0,"Glucose handling is normal. There is no sugar in his urine."],["The glomerular filtration membrane",0,"His filter is fine. The problem is at the end of the tubule."],["JG cells releasing renin",0,"Renin starts RAAS. The missing hormone here is ADH."]],
+  q2:[["A huge volume of very dilute, pale urine with no glucose",1,"Yes. Water that should leave into the salty medulla stays in the duct and is lost."],["A small volume of dark urine",0,"That happens with high ADH. He has almost none."],["Glucose in the urine",0,"'Insipidus' means not sweet: no glucose."],["Protein and blood in the urine",0,"His filter is not damaged."]],
+  exp:"Diabetes insipidus means lots of urine that is not sweet. With no ADH there are no aquaporins in the collecting duct, so water cannot leave into the salty medulla. Urine can reach many liters a day at very low concentration, and dehydration is a real risk.",
+  u:{v:10,osm:80,glu:0,prot:0,bld:0},site:[560,330,"No ADH: no aquaporins"]},
+ {t:"Loop diuretic (furosemide)",d:"Mr. Jones has heart failure with fluid in his lungs. He gets furosemide (Lasix), which blocks the Na⁺-K⁺-2Cl⁻ pump in the thick ascending limb.",
+  q1:[["The thick ascending limb of the nephron loop",1,"Right. Furosemide blocks the NaCl pump there."],["The descending limb of the nephron loop",0,"The descending limb moves water and has no NaCl pump to block."],["The glomerulus",0,"Filtration is not the target. The drug acts on a tubule pump."],["Collecting duct aquaporins",0,"That is where ADH acts. This drug acts earlier, in the loop."]],
+  q2:[["More urine, with more Na⁺ and K⁺ lost",1,"Yes. NaCl stays in the tubule, the medullary gradient weakens, and water follows the salt out."],["Less urine",0,"Diuretics make more urine. That is their purpose."],["Glucose in the urine",0,"Glucose is handled in the PCT, which this drug does not block."],["Protein in the urine",0,"The filter is not affected."]],
+  exp:"With the pump blocked, NaCl stays in the ascending limb. The medulla becomes less salty, so the collecting duct cannot pull out as much water. Lots of salty urine is made, lowering blood volume and easing fluid in the lungs. Nurses watch potassium, because extra K⁺ is lost too.",
+  u:{v:4,osm:300,glu:0,prot:0,bld:0},site:[194,300,"NaCl pump blocked"]},
+ {t:"ACE inhibitor",d:"Ms. Lee has high blood pressure and starts lisinopril, an ACE inhibitor.",
+  q1:[["Conversion of angiotensin I to angiotensin II (mostly in the lungs)",1,"Right. ACE inhibitors block that step of RAAS."],["Renin release from JG cells",0,"Renin is still released. The block is one step later, at ACE."],["The glomerular filtration membrane",0,"The filter is not the target."],["Glucose carriers in the PCT",0,"That describes SGLT2 inhibitor drugs."]],
+  q2:[["Less aldosterone, so a bit more Na⁺ and water leave in urine and blood pressure falls",1,"Yes. Less angiotensin II means relaxed vessels and less aldosterone and ADH."],["Much less urine and higher blood pressure",0,"That is what more angiotensin II would cause. This drug lowers it."],["Glucose in the urine",0,"RAAS does not handle glucose."],["Blood in the urine",0,"ACE inhibitors do not damage the filter."]],
+  exp:"With little angiotensin II, arterioles relax and less aldosterone and ADH are released, so the kidneys keep less Na⁺ and water. Blood pressure falls. Because aldosterone also drives K⁺ secretion, blood K⁺ can rise. A dry cough is a common side effect.",
+  u:{v:1.9,osm:420,glu:0,prot:0,bld:0},site:[372,140,"RAAS blocked at ACE"]},
+ {t:"Kidney stone in the ureter",d:"Jordan has sudden, severe pain in the side and back. A scan shows a stone stuck in the left ureter.",
+  q1:[["Urine backs up, raising capsular hydrostatic pressure",1,"Right. The blockage raises pressure all the way back to the capsule."],["Glomerular blood pressure rises",0,"The stone does not change blood pressure in the glomerulus."],["ADH stops being released",0,"ADH is unaffected. This is a plumbing blockage."],["Plasma proteins drop",0,"A stone does not change blood proteins."]],
+  q2:[["GFR falls on that side, and blood shows up in the urine",1,"Yes. Higher CHP lowers NFP, and the stone scrapes the ureter lining, causing hematuria."],["Glucose in the urine",0,"Glucose handling is unchanged."],["A very large volume of pale urine",0,"A blocked kidney makes less urine, not more."],["No change at all",0,"The blockage changes pressure and usually causes bleeding."]],
+  exp:"The stone blocks urine flow. Pressure backs up into the renal pelvis and nephrons, raising capsular hydrostatic pressure, so NFP and GFR fall on that side. The stone scrapes the lining, so blood appears in the urine. Most small stones pass with fluids and pain control.",
+  u:{v:1,osm:600,glu:0,prot:0,bld:2},site:[560,460,"Stone below: pressure backs up"]},
+ {t:"Glomerulonephritis",d:"Two weeks after strep throat, Ava has puffy eyes, cola-colored urine and high blood pressure. Her glomeruli are inflamed.",
+  q1:[["The glomerular filtration membrane",1,"Right. Inflammation damages the filter."],["PCT glucose carriers",0,"The problem is upstream, at the filter itself."],["Collecting duct aquaporins",0,"ADH and aquaporins are not the issue."],["The external urethral sphincter",0,"The sphincter controls when urine leaves, not what is in it."]],
+  q2:[["Protein and blood in the urine, often with less urine",1,"Yes. A leaky filter lets proteins and red cells through, and inflamed glomeruli filter less."],["Glucose in the urine",0,"Glucose spills only when carriers are overwhelmed. Here the filter is the problem."],["A huge volume of pale urine",0,"Inflamed glomeruli usually filter less, so urine output drops."],["Completely normal urine",0,"A damaged filter shows up clearly on a dipstick."]],
+  exp:"Inflamed glomeruli have a leaky filtration membrane, so protein (proteinuria) and red blood cells (hematuria) get into the urine, making it dark or cola-colored. GFR drops, so salt and water are kept, causing swelling and high blood pressure.",
+  u:{v:.7,osm:500,glu:0,prot:3,bld:3,red:1},site:[330,100,"Leaky filter"]},
+ {t:"Severe hemorrhage",d:"A trauma patient has lost a lot of blood. Mean arterial pressure is 60 mmHg.",
+  q1:[["Glomerular blood pressure (GBHP) falls",1,"Right. Low blood pressure means less push in the glomerulus, and sympathetic nerves constrict the afferent arterioles."],["Capsular pressure rises",0,"Nothing is blocking the outflow here."],["Plasma proteins fall sharply",0,"Bleeding loses whole blood. The first big change is pressure."],["The bladder stops storing urine",0,"The bladder is fine. The kidneys are making less urine."]],
+  q2:[["Very little, concentrated urine (oliguria)",1,"Yes. Low GFR plus high ADH and aldosterone save every drop of fluid."],["Lots of dilute urine",0,"The body is trying to save fluid, so urine is small and concentrated."],["Glucose and protein in the urine",0,"The filter and carriers are not damaged."],["No change, because autoregulation fixes it",0,"60 mmHg is below the autoregulation range of about 80 to 180 mmHg."]],
+  exp:"At 60 mmHg, pressure is below the autoregulation range, so GBHP and GFR fall. Sympathetic nerves constrict the afferent arterioles, RAAS and ADH switch on, and urine output drops below 400 mL a day (oliguria). Nurses track urine output because it shows how well the kidneys are perfused.",
+  u:{v:.3,osm:1100,glu:0,prot:0,bld:0},site:[420,56,"Low pressure in"]},
+ {t:"SGLT2 inhibitor drug",d:"Mr. Patel has type 2 diabetes and starts empagliflozin, which blocks the Na⁺-glucose carriers (SGLT2) in the PCT. His blood glucose is now 120 mg/dL.",
+  q1:[["Na⁺-glucose carriers in the PCT",1,"Right. Blocking them on purpose sends glucose out in the urine."],["Insulin release from the pancreas",0,"This drug works in the kidney, not the pancreas."],["The glomerular filtration membrane",0,"The filter is untouched."],["ADH and aquaporins",0,"Water channels are not the target."]],
+  q2:[["Glucose in the urine even though blood glucose is near normal",1,"Yes. With carriers blocked, far less glucose can be taken back."],["No glucose in urine, because blood glucose is normal",0,"Normally true, but this drug blocks the carriers that would take it back."],["Protein and blood in the urine",0,"The drug does not damage the filter."],["Much less urine",0,"Glucose in the tubule holds water, so urine goes up a little, not down."]],
+  exp:"SGLT2 inhibitors block glucose reabsorption in the PCT, so glucose leaves in urine and blood sugar falls. A positive urine glucose is expected with this drug, and urine volume rises a little because glucose pulls water along.",
+  u:{v:2.2,osm:420,glu:2,prot:0,bld:0},site:[226,112,"Carriers blocked"]}];
+let bi=0;const bState=BK.map(()=>({q1:null,q2:null,first:null,show:0}));
+function bRender(){const s=BK[bi],st=bState[bi];
+  const ch=$("#bChips");ch.innerHTML="";BK.forEach((x,i)=>{const b=document.createElement("button");b.type="button";b.className="chip"+(i===bi?" cur":"")+(bState[i].q2===true?" done":"");b.textContent=i+1;b.setAttribute("aria-label","Scenario "+(i+1)+": "+x.t);b.onclick=()=>{bi=i;bRender()};ch.appendChild(b)});
+  const got=bState.filter(x=>x.q2===true).length,first=bState.filter(x=>x.first===true&&x.q2===true).length;$("#bScore").textContent=`Solved ${got} of ${BK.length} · first try ${first}`;
+  $("#bN").textContent="Scenario "+(bi+1)+" of "+BK.length;$("#bTitle").textContent=s.t;$("#bDesc").textContent=s.d;
+  const mkQ=(box,fbx,opts,key,next)=>{const el=$(box);el.innerHTML="";const fb=$(fbx);
+    opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];if(st[key]===true&&o[1])b.classList.add("right");
+      b.onclick=()=>{if(st[key]===true)return;if(o[1]){st[key]=true;if(st.first===null)st.first=true;fb.className="fb ok show";fb.textContent="✓ "+o[2];next();bRender()}
+        else{st.first=false;el.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));b.classList.add("wrong");fb.className="fb no show";fb.textContent="Not quite. "+o[2]}};el.appendChild(b)});
+    if(st[key]!==true&&!fb.textContent.startsWith("Not"))fb.className="fb";};
+  mkQ("#bQ1","#bF1",s.q1,"q1",()=>{});
+  $("#bQ2w").hidden=st.q1!==true;mkQ("#bQ2","#bF2",s.q2,"q2",()=>{st.show=performance.now()});
+  const e=$("#bExp");e.classList.toggle("show",st.q2===true);e.innerHTML=st.q2===true?"<b>Why:</b> "+s.exp:"";
+  $("#bPrev").disabled=bi===0;$("#bNext").textContent=bi===BK.length-1?"Back to scenario 1":"Next scenario →";
+  $("#bCap").textContent=st.show?"Normal urine on the left, this patient on the right.":"Press Show me to compare this patient's urine with normal.";
+  $("#cvB").setAttribute("aria-label","Comparison of normal urine and the urine in: "+s.t+". "+(st.show?`Patient urine about ${s.u.v} liters a day, ${s.u.osm} mOsm, glucose ${["negative","+","++","+++"][s.u.glu]}, protein ${["negative","+","++","+++"][s.u.prot]}, blood ${["negative","+","++","+++"][s.u.bld]}.`:""))}
+$("#bPrev").onclick=()=>{bi=Math.max(0,bi-1);bRender()};$("#bNext").onclick=()=>{bi=(bi+1)%BK.length;bRender()};
+$("#bShow").onclick=()=>{bState[bi].show=performance.now();bRender()};
+function cup(x,y,w,h,vf,col,ttl,u,bad){ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+8,y+h);ctx.lineTo(x+w-8,y+h);ctx.lineTo(x+w,y);ctx.stroke();
+  const fy=y+h-2-vf*(h-6);ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x+2+(fy-y)/h*8,fy);ctx.lineTo(x+9,y+h-2);ctx.lineTo(x+w-9,y+h-2);ctx.lineTo(x+w-2-(fy-y)/h*8,fy);ctx.closePath();ctx.fill();
+  label(x+w/2,y-30,ttl,{align:"center",size:14,weight:700,border:bad?C.warn:C.good});
+  label(x+w+16,y+10,u.v.toFixed(1)+" L/day",{size:13,mono:true,weight:700,pill:false});label(x+w+16,y+30,Math.round(u.osm)+" mOsm",{size:13,mono:true,pill:false});
+  const pads=[["Glucose",u.glu,C.glu],["Protein",u.prot,C.prot],["Blood",u.bld,C.rbc]];
+  pads.forEach((p,i)=>{const py=y+58+i*24;ctx.fillStyle=mix("#EDE3C8",p[2],p[1]/3);rr(x+w+16,py-8,22,16,3);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+    const lv=p[1],tg=lv<=.05?"negative":lv<.75?"trace":["+","++","+++"][clamp(Math.round(lv)-1,0,2)];label(x+w+44,py,p[0]+": "+tg,{size:12.5,pill:false,weight:p[1]>0?700:500,color:p[1]>0?C.warn:C.ink})})}
+function drawBreak(){const s=BK[bi],st=bState[bi];const a=st.show?ease(clamp((performance.now()-st.show)/1800,0,1)):0;
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  const sc=.72,ox=-60;
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,344);ctx.clip();ctx.translate(ox,0);ctx.scale(sc,sc);const pW=W,pH=H;W=1000;H=480;nephronBase({zoneA:.22,noZoneLabels:true});stream(FPATH.P,TT,20,12,"w",{size:3.4});
+  const [sx,sy,sl]=s.site;const pul=.6+.4*Math.sin(TT*4);glow(sx,sy,60,C.bad,.35*pul+.2);circ(sx,sy,30,null,C.bad,5);
+  line(sx-14,sy-14,sx+14,sy+14,C.bad,5);line(sx+14,sy-14,sx-14,sy+14,C.bad,5);W=pW;H=pH;ctx.restore();
+  line(0,344,W,344,C.rule,1.5);
+  const lx=sx*sc+ox,ly=sy*sc;label(clamp(lx,90,W-90),ly>60?ly-34:ly+34,sl,{align:"center",size:13,weight:700,color:C.bad,border:C.bad});
+  const N={v:1.5,osm:500,glu:0,prot:0,bld:0};const P=s.u;const cur={v:lerp(N.v,P.v,a),osm:lerp(N.osm,P.osm,a),glu:P.glu*a,prot:P.prot*a,bld:P.bld*a};
+  const cy=404,ch=110;
+  cup(40,cy,90,ch,N.v/10,urineCol(N.osm),"Normal",N,false);
+  const pc=P.red?mix(urineCol(cur.osm),C.rbc,.5*a):urineCol(cur.osm);
+  cup(320,cy,90,ch,clamp(cur.v/10,0,1),pc,"This patient",cur,a>.5);
+  label(W/2,H-12,"Cup height: 0 to 10 L/day",{align:"center",size:11.5,pill:false,color:C["ink-soft"]});
+  if(P.glu>0&&a>.3)for(let i=0;i<3;i++)part("glu",344+i*20,cy+ch-10-((TT*20+i*17)%Math.max(10,clamp(cur.v/10,0,1)*ch-14)),a,4.6);
+  if(P.bld>0&&a>.3){const fh=Math.max(6,clamp(cur.v/10,0,1)*(ch-6));for(let i=0;i<3;i++)rbcP(346+i*20,cy+ch-5-((TT*14+i*23)%fh),4,a)}
+  if(!st.show){ctx.globalAlpha=.88;ctx.fillStyle=C.panel;rr(300,358,290,180,8);ctx.fill();ctx.globalAlpha=1;label(445,440,"Answer the questions or press Show me",{align:"center",size:12.5,weight:600,pill:false})}
+}
+
+/* ---------------- tabs, theme, loop ---------------- */
+let TAB="sim";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{TAB=t.dataset.tab;document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  ["sim","filt","seq","brk"].forEach(k=>$("#tab-"+k).hidden=k!==TAB);fitAll()});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+const oSim=mk("cvSim",800,480),oSimG=mk("cvSimG",800,170),oF=mk("cvF",800,420),oFG=mk("cvFG",800,150),oS=mk("cvS",800,480),oT=mk("cvT",800,480),oB=mk("cvB",600,560);
+let TT=0,last=performance.now(),roAcc=0;
+function frame(now){const dt=clamp((now-last)/1000,0,.05);last=now;TT+=dt;
+  if(TAB==="sim"){let m;if(!SIM.paused)m=simStep(dt);else m=simModel();on(oSim,()=>drawSim(m));on(oSimG,()=>strip(SIM.hist,[["v",10,C.water,false,"L"],["o",1300,C["urine-dk"],false,"R"],["g",200,C.accent,true]],{n:240}));
+    roAcc+=dt;if(roAcc>.3){roAcc=0;simRead(m)}}
+  else if(TAB==="filt"){filtStep(dt);on(oF,drawFilt);on(oFG,()=>strip(F.hist,[["g",250,C.water,false,"L"]],{n:240,xl:"GFR (mL/min) over the last 60 seconds →"}))}
+  else if(TAB==="seq"){if(SR[SRi].id==="trace")on(oT,()=>drawTrace(dt));else on(oS,drawSeq)}
+  else on(oB,drawBreak);
+  requestAnimationFrame(frame)}
+window.__tab=k=>document.querySelector(`.tab[data-tab="${k}"]`).click();
+window.__sim=o=>{Object.assign(SIM,o);if(o.bg)$("#bgR").value=o.bg;if(o.map)$("#mapR").value=o.map;simUI()};
+window.__lab={SIM,F,SQ,TS,bState,setRound:i=>{SRi=i;sNew()},setScen:i=>{bi=i;bRender()},setF:i=>{fi=i;fClear();fRender()}};
+readColors();simUI();chRender();fSync();fRender();sNew();bRender();fitAll();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

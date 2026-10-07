@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autonomic Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --gold:#C9A227;--gold-wash:#F6EFD3;--act1:#4F62B8;--act2:#C4502F;--act3:#2C8A63;--act4:#7B5CC9;--act5:#B8901C;--act6:#1B8A86;
+  /* autonomic palette */
+  --sym:#C4502F;--sym-wash:#F7E0D8;--para:#2C8A63;--para-wash:#DDEFE5;--soma:#4F62B8;
+  --ach:#2F7FC1;--ne:#D98A1C;--epi:#B03A78;--glu:#6F8F24;--na:#5C7F99;
+  --nic:#7B5CC9;--musc:#1B8A86;--alpha:#8A5A2B;--beta:#B8901C;--drug:#3D4A52;--drugok:#2F8A57;
+  --skin:#EBD9C8;--skin-edge:#B89A80;--heart:#C4544A;--lung:#EDC3BD;--lung-edge:#B9746C;
+  --liver:#A2533F;--gut:#E6BC97;--gut-edge:#A87650;--kidney:#B5654F;--adrenal:#E0B24A;--bladder:#E8D27A;
+  --cns:#F0E3C6;--cns-edge:#B59A66;--gray:#CDB596;--blood:#C23B3B;--vessel:#EBC2BA;--vessel-edge:#A8483D;
+  --smooth:#D69C94;--bone:#E4DCCB;--bone-edge:#B3A587;--ganglion:#EBCFA6;--gang-edge:#A7804F;--sweat:#5E9FD0;
+  --membrane:#E0B967;--tail:#F3E7CC;--cyto:#F6E9E5;--ecf:#EAF1F5;--glow:#F2B33B;--muscle:#C98A84;--muscle-edge:#94504A;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --gold:#E0BE48;--gold-wash:#352E14;--act1:#8FA0F0;--act2:#F07A5A;--act3:#5CC98F;--act4:#A98BEF;--act5:#E0BE48;--act6:#4CC2BD;
+  --sym:#F07A5A;--sym-wash:#3A2119;--para:#5CC98F;--para-wash:#173023;--soma:#8FA0F0;
+  --ach:#5AA9E6;--ne:#F2A93B;--epi:#E07AB5;--glu:#A8C95A;--na:#9DB6C9;
+  --nic:#A98BEF;--musc:#4CC2BD;--alpha:#D6A66A;--beta:#E0BE48;--drug:#C9D3D9;--drugok:#5CC98A;
+  --skin:#3A3029;--skin-edge:#8C7460;--heart:#E07067;--lung:#5A3532;--lung-edge:#B9746C;
+  --liver:#B86A58;--gut:#6B4A33;--gut-edge:#C29068;--kidney:#A0604E;--adrenal:#B08A35;--bladder:#6B5E2A;
+  --cns:#4A4030;--cns-edge:#A08A5E;--gray:#6B5E4E;--blood:#E06060;--vessel:#4A2A28;--vessel-edge:#C46A5E;
+  --smooth:#7A4A44;--bone:#3C372E;--bone-edge:#7D735E;--ganglion:#5A4630;--gang-edge:#C29A63;--sweat:#7FB8E0;
+  --membrane:#9C7E45;--tail:#352E22;--cyto:#2A1D1B;--ecf:#14222A;--glow:#F2B33B;--muscle:#7A4440;--muscle-edge:#C47A72;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --gold:#E0BE48;--gold-wash:#352E14;--act1:#8FA0F0;--act2:#F07A5A;--act3:#5CC98F;--act4:#A98BEF;--act5:#E0BE48;--act6:#4CC2BD;
+  --sym:#F07A5A;--sym-wash:#3A2119;--para:#5CC98F;--para-wash:#173023;--soma:#8FA0F0;
+  --ach:#5AA9E6;--ne:#F2A93B;--epi:#E07AB5;--glu:#A8C95A;--na:#9DB6C9;
+  --nic:#A98BEF;--musc:#4CC2BD;--alpha:#D6A66A;--beta:#E0BE48;--drug:#C9D3D9;--drugok:#5CC98A;
+  --skin:#3A3029;--skin-edge:#8C7460;--heart:#E07067;--lung:#5A3532;--lung-edge:#B9746C;
+  --liver:#B86A58;--gut:#6B4A33;--gut-edge:#C29068;--kidney:#A0604E;--adrenal:#B08A35;--bladder:#6B5E2A;
+  --cns:#4A4030;--cns-edge:#A08A5E;--gray:#6B5E4E;--blood:#E06060;--vessel:#4A2A28;--vessel-edge:#C46A5E;
+  --smooth:#7A4A44;--bone:#3C372E;--bone-edge:#7D735E;--ganglion:#5A4630;--gang-edge:#C29A63;--sweat:#7FB8E0;
+  --membrane:#9C7E45;--tail:#352E22;--cyto:#2A1D1B;--ecf:#14222A;--glow:#F2B33B;--muscle:#7A4440;--muscle-edge:#C47A72;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--panel)}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.legend i.ln{width:20px;height:0;border-radius:0;border-top:2.5px solid}
+.legend i.dash{width:20px;height:0;border-radius:0;border-top:2.5px dashed}
+.legend i.t{border-radius:0;clip-path:polygon(50% 0,100% 100%,0 100%);width:12px}
+.legend i.d{border-radius:1px;transform:rotate(45deg);width:9px;height:9px}
+.legend i.h{border-radius:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);width:12px}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 13px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--gold);margin-left:4px;letter-spacing:0}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.lvl-n{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.lvl-t{font-family:var(--serif);font-size:22px;font-weight:600;margin:4px 0 8px;line-height:1.25}
+.goal{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:15px}
+.goal b.h{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.msg{margin:10px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.msg.info{background:var(--panel-2);color:var(--ink);border:1px solid var(--rule)}
+.msg .stars,.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.small{font-size:13px;color:var(--ink-soft)}
+.totstars{font-family:var(--mono);font-size:14px}
+.totstars b{color:var(--gold)}
+.timer{font-family:var(--mono);font-size:16px;font-weight:600}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+/* sorter */
+.tray{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+.scard{background:var(--panel);border:1.5px solid var(--rule);border-radius:8px;padding:8px 11px;cursor:grab;font-size:14.5px;line-height:1.3;text-align:left;touch-action:none;user-select:none;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.scard:hover{border-color:var(--accent)}
+.scard.sel{border-color:var(--accent);background:var(--accent-wash);box-shadow:0 0 0 3px var(--accent-wash)}
+.scard.lift{opacity:.35}
+.scard.hint{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-wash)}
+.scard.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+.ghost{position:fixed;pointer-events:none;z-index:50;opacity:.92;transform:rotate(-2deg);box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.bin{border:2px dashed var(--rule);border-radius:10px;padding:10px;min-height:120px;background:var(--panel-2);display:flex;flex-direction:column;gap:6px}
+.bin.over{border-style:solid;border-color:var(--accent);background:var(--accent-wash)}
+.bin.sym{border-color:var(--sym)}.bin.para{border-color:var(--para)}
+.bin .bh{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.bin .bt{font-weight:600;font-size:15px}
+.bin.sym .bt{color:var(--sym)}.bin.para .bt{color:var(--para)}
+.binbtn{font-size:13px;padding:5px 10px}
+.placed{font-size:13.5px;padding:4px 8px;border-radius:6px;background:var(--panel);border:1px solid var(--rule-soft)}
+.placed::before{content:"✓ ";color:var(--good);font-weight:700}
+/* switchboard */
+.slider{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;margin:10px 0}
+.slider label{font-weight:600;font-size:14.5px}
+.slider output{font-family:var(--mono);font-size:14px}
+.slider input{grid-column:1/3;width:100%;height:28px}
+.slider.sym input{accent-color:var(--sym)}.slider.para input{accent-color:var(--para)}
+.slider.sym label{color:var(--sym)}.slider.para label{color:var(--para)}
+.scen{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.scen .tbtn{text-align:left;font-size:14px}
+.readouts{width:100%;border-collapse:collapse;font-size:14px}
+.readouts td{padding:4px 2px;border-top:1px solid var(--rule-soft)}
+.readouts td:nth-child(2){font-family:var(--mono);text-align:right;white-space:nowrap}
+.readouts td:nth-child(3){font-family:var(--mono);text-align:right;width:62px;color:var(--ink-soft);white-space:nowrap}
+.now{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;font-size:14.5px;min-height:64px}
+.chart-holder{margin-top:8px}
+/* drug lab */
+.drugs{display:grid;grid-template-columns:1fr;gap:6px}
+.drug{display:flex;align-items:center;gap:10px;text-align:left;padding:9px 12px}
+.drug .dk{font-family:var(--mono);font-weight:700;font-size:12px;border-radius:99px;padding:1px 7px;color:var(--panel)}
+.drug .dd{font-size:12.5px;color:var(--ink-soft);display:block;font-weight:400}
+select{font:inherit;font-size:14px;padding:5px 8px;border-radius:6px;border:1px solid var(--rule);background:var(--panel);color:var(--ink)}
+.druginfo{font-size:14.5px}
+.druginfo p{margin:6px 0}
+/* scenarios */
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:2px 0 6px}
+.sc-desc{margin:0 0 8px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:7px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:8px 0 0;font-size:14.5px;padding:8px 10px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.score{font-family:var(--mono);font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+/* builder */
+.slots{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:10px}
+@media (max-width:1100px){.slots{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.slots{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.slot{border:2px dashed var(--rule);border-radius:8px;padding:6px 8px;min-height:74px;background:var(--panel-2);text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:3px;font-size:13.5px;line-height:1.25}
+.slot .sl{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
+.slot .sv{font-weight:600}
+.slot.filled{border-style:solid;background:var(--panel)}
+.slot.over{border-color:var(--accent);background:var(--accent-wash)}
+.slot.ok{border-color:var(--good);background:var(--good-wash)}
+.slot.no{border-color:var(--warn);background:var(--warn-wash)}
+.slot .mk{font-family:var(--mono);font-size:12px;font-weight:700}
+.slot.ok .mk{color:var(--good)}.slot.no .mk{color:var(--warn)}
+.ptray h4{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:10px 0 5px}
+.ptray .tray{gap:6px}
+.tile{display:inline-flex;align-items:center;gap:7px;background:var(--panel);border:1.5px solid var(--rule);border-radius:8px;padding:6px 9px;cursor:grab;font-size:13.5px;touch-action:none;user-select:none;text-align:left}
+.tile svg{flex:0 0 auto}
+.tile:hover{border-color:var(--accent)}
+.tile.sel{border-color:var(--accent);background:var(--accent-wash);box-shadow:0 0 0 3px var(--accent-wash)}
+.tile.lift{opacity:.35}
+.why{font-size:14px;margin:6px 0 0;padding-left:18px}
+.why li{margin-bottom:4px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Autonomic Nervous System &middot; USC Upstate</div>
+    <h1>Autonomic Lab</h1>
+    <p class="sub">Sort the effects, run the switchboard, test drugs on receptors, and wire up the pathways yourself. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist" aria-label="Lab parts">
+    <button class="tab" role="tab" aria-selected="true" data-tab="sort" id="tabbtn-sort" aria-controls="tab-sort" type="button">Part 1 &middot; Fight or Flight vs Rest and Digest</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="sw" id="tabbtn-sw" aria-controls="tab-sw" type="button">Part 2 &middot; Autonomic Switchboard</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="drug" id="tabbtn-drug" aria-controls="tab-drug" type="button">Part 3 &middot; Receptor &amp; Drug Lab</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="path" id="tabbtn-path" aria-controls="tab-path" type="button">Part 4 &middot; Pathway Builder</button>
+  </div>
+
+  <!-- PART 1: SORTER -->
+  <section id="tab-sort" role="tabpanel" aria-labelledby="tabbtn-sort">
+    <div class="rounds" id="sRounds" aria-label="Rounds"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvSort" role="img" aria-label="Two bodies: fight or flight and rest and digest"></canvas></div>
+        <div class="bins">
+          <div class="bin sym" id="binF" data-bin="F">
+            <div class="bh"><span class="bt">Fight or flight (sympathetic)</span><button class="tbtn binbtn" type="button" data-bin="F">Place selected card here</button></div>
+            <div class="plist" id="listF"></div>
+          </div>
+          <div class="bin para" id="binR" data-bin="R">
+            <div class="bh"><span class="bt">Rest and digest (parasympathetic)</span><button class="tbtn binbtn" type="button" data-bin="R">Place selected card here</button></div>
+            <div class="plist" id="listR"></div>
+          </div>
+        </div>
+      </div>
+      <aside class="card side" aria-live="polite">
+        <div class="lvl-n" id="sN"></div>
+        <h2 class="lvl-t" id="sT"></h2>
+        <div class="goal"><b class="h">How to play</b>Drag each card into the right box. Or tap a card, then tap <b>Place selected card here</b>. Every correct card changes the matching body.</div>
+        <h3>Cards to sort</h3>
+        <div class="tray" id="sTray" aria-label="Cards to sort"></div>
+        <div class="bar" style="margin-top:12px">
+          <button class="tbtn" id="sHint" type="button">Hint</button>
+          <button class="tbtn" id="sShow" type="button">Show answer</button>
+          <button class="tbtn" id="sReset" type="button">Shuffle and restart</button>
+        </div>
+        <div class="bar"><label class="mode"><input type="checkbox" id="sRelaxed" checked> Relaxed mode (timer hidden)</label><span class="timer" id="sTimer" hidden>0:00</span></div>
+        <div class="msg" id="sMsg" role="status"></div>
+        <h3>Stars</h3>
+        <p class="small" style="margin:0">3 stars: one mistake or fewer. 2 stars: three or fewer. 1 star: finished, or used Show answer.</p>
+        <p class="totstars" id="sTot"></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2: SWITCHBOARD -->
+  <section id="tab-sw" role="tabpanel" aria-labelledby="tabbtn-sw" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvSw" role="img" aria-label="Body and organ dashboard responding to autonomic activity"></canvas></div>
+        <div class="stagebar"><button class="tbtn" id="swPause" type="button">Pause</button><span class="caption" id="swCap"></span></div>
+        <div class="canvas-holder chart-holder"><canvas id="cvChart" role="img" aria-label="Line chart of heart rate, blood glucose and blood epinephrine over the last 60 seconds"></canvas></div>
+        <div class="legend">
+          <span><i class="ln" style="border-color:var(--heart)"></i>Heart rate (bpm)</span>
+          <span><i class="dash" style="border-color:var(--glu)"></i>Blood glucose (mg/dL)</span>
+          <span><i class="ln" style="border-color:var(--epi)"></i>Blood epinephrine (relative)</span>
+          <span><i style="background:var(--sym)"></i>Sympathetic setting</span>
+          <span><i style="background:var(--para)"></i>Parasympathetic setting</span>
+        </div>
+      </div>
+      <aside class="card side">
+        <div class="lvl-n">Simulator</div>
+        <h2 class="lvl-t">Turn the two dials</h2>
+        <div class="slider sym"><label for="sSym">Sympathetic activity</label><output id="oSym">30%</output><input type="range" id="sSym" min="0" max="100" value="30"></div>
+        <div class="slider para"><label for="sPara">Parasympathetic activity</label><output id="oPara">50%</output><input type="range" id="sPara" min="0" max="100" value="50"></div>
+        <h3>Scenarios</h3>
+        <div class="scen" id="scen"></div>
+        <h3>What is happening right now</h3>
+        <div class="now" id="swNow" aria-live="polite"></div>
+        <h3>Live readouts <span class="small" style="text-transform:none;letter-spacing:0">(change from rest)</span></h3>
+        <table class="readouts" id="swRead"></table>
+        <p class="calm">Teaching model: values are rounded and time is sped up. Epinephrine and glucose change more slowly than nerve signals, just like in a real body.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 3: DRUG LAB -->
+  <section id="tab-drug" role="tabpanel" aria-labelledby="tabbtn-drug" hidden>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvDrug" role="img" aria-label="Receptors and organ effects"></canvas></div>
+        <div class="stagebar"><span class="caption" id="dCap"></span></div>
+        <div class="legend">
+          <span><i style="background:var(--ach)"></i>ACh</span>
+          <span><i class="d" style="background:var(--ne)"></i>Norepinephrine</span>
+          <span><i class="t" style="background:var(--epi)"></i>Epinephrine</span>
+          <span><i style="background:var(--drug);border-radius:3px"></i>Blocker drug (antagonist), marked with an X</span>
+          <span><i style="background:var(--drugok);border-radius:3px"></i>Activator drug (agonist)</span>
+        </div>
+      </div>
+      <aside class="card side">
+        <div class="lvl-n">Drug shelf</div>
+        <h2 class="lvl-t">Apply a drug</h2>
+        <p class="small" style="margin:0 0 8px">Tap to apply or remove. You can combine drugs.</p>
+        <div class="drugs" id="drugBtns"></div>
+        <div class="bar"><label class="small" for="bbType">Beta blocker type:</label>
+          <select id="bbType"><option value="non">Nonselective (propranolol): β1 and β2</option><option value="sel">β1-selective (metoprolol)</option></select></div>
+        <div class="bar"><button class="tbtn" id="dClear" type="button">Clear all drugs and conditions</button></div>
+        <h3>What the active drugs do</h3>
+        <div class="druginfo" id="dInfo"></div>
+      </aside>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="sc-top">
+        <div class="chips" id="scChips"></div>
+        <div class="score" id="scScore"></div>
+      </div>
+      <div class="grid2">
+        <div>
+          <div class="sc-n" id="scN"></div>
+          <h2 class="sc-title" id="scTitle"></h2>
+          <p class="sc-desc" id="scDesc"></p>
+          <div class="bar"><button class="btn" id="scRun" type="button">Show me in the lab above</button></div>
+          <p class="qlab">1. Which receptor or part of the system is involved?</p>
+          <div class="opts" id="scQ1"></div>
+          <p class="fb" id="scF1"></p>
+          <div id="q2wrap" hidden>
+            <p class="qlab">2. What happens to the patient?</p>
+            <div class="opts" id="scQ2"></div>
+            <p class="fb" id="scF2"></p>
+          </div>
+          <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+        </div>
+        <div>
+          <div class="canvas-holder"><canvas id="cvCase" role="img" aria-label="Case illustration"></canvas></div>
+          <div class="explain" id="scExp"></div>
+        </div>
+      </div>
+      <div class="bar" style="margin-top:14px">
+        <button class="tbtn" id="scPrev" type="button">&larr; Previous</button>
+        <button class="btn" id="scNext" type="button">Next case &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 4: PATHWAY BUILDER -->
+  <section id="tab-path" role="tabpanel" aria-labelledby="tabbtn-path" hidden>
+    <div class="rounds" id="pRounds" aria-label="Pathways to build"></div>
+    <div class="grid">
+      <div class="card stage">
+        <div class="canvas-holder"><canvas id="cvPath" role="img" aria-label="The pathway you are building"></canvas></div>
+        <div class="slots" id="slots"></div>
+        <div class="bar" style="margin-top:10px">
+          <button class="btn" id="pCheck" type="button">Check my pathway</button>
+          <button class="tbtn" id="pHint" type="button">Hint</button>
+          <button class="tbtn" id="pShow" type="button">Show answer</button>
+          <button class="tbtn" id="pClear" type="button">Clear</button>
+        </div>
+        <div class="msg" id="pMsg" role="status"></div>
+      </div>
+      <aside class="card side ptray">
+        <div class="lvl-n" id="pN"></div>
+        <h2 class="lvl-t" id="pT"></h2>
+        <div class="goal"><b class="h">Your goal</b><span id="pGoal"></span></div>
+        <p class="small" style="margin:0">Drag a piece onto a slot below the picture, or tap a piece and then tap a slot. Pieces can be used more than once.</p>
+        <div id="pTray"></div>
+        <h3>Stars</h3>
+        <p class="small" style="margin:0">3 stars: right on the first check with no hint. 2 stars: right within two checks. 1 star: any other finish.</p>
+        <p class="totstars" id="pTot"></p>
+      </aside>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 15, The Autonomic Nervous System (OpenStax A&amp;P 2e) &middot; Pair with the <a href="Autonomic-Walkthrough.html">Autonomic Nervous System Walkthrough</a>.<br>Diagrams are simplified and not to scale. The switchboard and drug lab use a teaching model with rounded numbers; real drug effects depend on dose and on the person. This page is for learning, not for medical advice.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let ctx=null,W=800,H=520;
+const C={};
+const KEYS=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","bad","gold","gold-wash",
+ "sym","sym-wash","para","para-wash","soma","ach","ne","epi","glu","na","nic","musc","alpha","beta","drug","drugok","skin","skin-edge","heart","lung","lung-edge",
+ "liver","gut","gut-edge","kidney","adrenal","bladder","cns","cns-edge","gray","blood","vessel","vessel-edge","smooth","bone","bone-edge","ganglion","gang-edge","sweat",
+ "membrane","tail","cyto","ecf","glow","muscle","muscle-edge"];
+function readColors(){const s=getComputedStyle(document.documentElement);KEYS.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+readColors();
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const cyc=(t,P)=>((t%P)+P)%P;
+const bump=(t,a,b,f)=>{f=f||.2;return Math.min(seg(t,a,a+f),1-seg(t,b-f,b))};
+const TAU=Math.PI*2;
+const FONT='"IBM Plex Sans",system-ui,sans-serif',MONO='"IBM Plex Mono",ui-monospace,monospace';
+let STATE={};
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ell(x,y,rx,ry,rot,fill,stroke,lw){ctx.beginPath();ctx.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){if(a!=null&&a<=0)return;const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:clamp(a,0,1);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?MONO:FONT}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  const al=o.alpha==null?1:clamp(o.alpha,0,1);if(al<=0)return w;ctx.globalAlpha=al;
+  if(o.pill!==false){ctx.globalAlpha=al*(o.bga==null?.9:o.bga);ctx.fillStyle=o.bg||C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=al;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1;return w}
+function hdr(x,y,txt,col,o){o=o||{};ctx.font=`600 ${o.size||11.5}px ${MONO}`;ctx.textAlign=o.align||"left";ctx.textBaseline="middle";ctx.fillStyle=col||C["ink-soft"];ctx.globalAlpha=o.alpha==null?1:o.alpha;ctx.fillText(txt.toUpperCase(),x,y);ctx.globalAlpha=1}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=7+(lw||2);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipT(x,y,txt,col,fg,o){o=o||{};ctx.font=`600 ${o.size||11}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.globalAlpha=o.alpha==null?1:o.alpha;ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1;return w+12}
+function badge(x,y,n,col){circ(x,y,9.5,col||C.ink,C.panel,1.5);ctx.font=`700 11.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(String(n),x,y+.5)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function poly(P,col,lw,dash,a){if(!P.length)return;ctx.globalAlpha=a==null?1:a;ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.lineJoin="round";ctx.lineCap="round";ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1}
+function bez(p0,p1,p2,p3,n){n=n||24;const o=[];for(let i=0;i<=n;i++){const t=i/n,u=1-t;o.push([u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]])}return o}
+function qb(p0,p1,p2,n){n=n||20;const o=[];for(let i=0;i<=n;i++){const t=i/n,u=1-t;o.push([u*u*p0[0]+2*u*t*p1[0]+t*t*p2[0],u*u*p0[1]+2*u*t*p1[1]+t*t*p2[1]])}return o}
+function cat(){const o=[];for(const P of arguments){P.forEach((p,i)=>{if(i===0&&o.length&&Math.hypot(p[0]-o[o.length-1][0],p[1]-o[o.length-1][1])<.5)return;o.push(p)})}return o}
+function plen(P){let L=0;for(let i=0;i<P.length-1;i++)L+=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);return L}
+function along(P,p){let L=0;const ls=[];for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);ls.push(l);L+=l}
+  let d=clamp(p,0,1)*L;for(let i=0;i<ls.length;i++){if(d<=ls[i]||i===ls.length-1){const f=ls[i]?Math.min(1,d/ls[i]):0;return [lerp(P[i][0],P[i+1][0],f),lerp(P[i][1],P[i+1][1],f)]}d-=ls[i]}return P[P.length-1]}
+function sub(P,a,b){const o=[];const n=Math.max(2,Math.round(40*(b-a)));for(let i=0;i<=n;i++)o.push(along(P,lerp(a,b,i/n)));return o}
+function angAt(P,p){const a=along(P,clamp(p-.01,0,1)),b=along(P,clamp(p+.01,0,1));return Math.atan2(b[1]-a[1],b[0]-a[0])}
+function bg(col){ctx.fillStyle=col||C.panel;ctx.fillRect(0,0,W,H)}
+
+/* ---- molecules (shape + colour; colour is never the only signal) ---- */
+function mol(k,x,y,a,s){if(a!=null&&a<=0)return;ctx.globalAlpha=a==null?1:clamp(a,0,1);s=s||1;
+  if(k==="ach"){circ(x,y,4.3*s,C.ach,"rgba(0,0,0,.3)",1)}
+  else if(k==="ne"){const r=5.4*s;ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x+r,y);ctx.lineTo(x,y+r);ctx.lineTo(x-r,y);ctx.closePath();ctx.fillStyle=C.ne;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke()}
+  else if(k==="epi"){const r=6*s;ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x+r*.95,y+r*.7);ctx.lineTo(x-r*.95,y+r*.7);ctx.closePath();ctx.fillStyle=C.epi;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke()}
+  else if(k==="glu"){const r=5.2*s;ctx.beginPath();for(let i=0;i<6;i++){const an=i/6*TAU;i?ctx.lineTo(x+r*Math.cos(an),y+r*Math.sin(an)):ctx.moveTo(x+r*Math.cos(an),y+r*Math.sin(an))}ctx.closePath();ctx.fillStyle=C.glu;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke()}
+  else if(k==="na"){circ(x,y,4.2*s,C.na,"rgba(0,0,0,.3)",1);ctx.fillStyle="#fff";ctx.font=`700 ${8*s}px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("+",x,y+.5)}
+  else if(k==="k"){const r=4*s;rr(x-r,y-r,2*r,2*r,1.5);ctx.fillStyle=C.nic;ctx.fill()}
+  else if(k==="sweat"||k==="saliva"){ctx.beginPath();ctx.moveTo(x,y-5*s);ctx.quadraticCurveTo(x+4*s,y+1*s,x,y+3.5*s);ctx.quadraticCurveTo(x-4*s,y+1*s,x,y-5*s);ctx.fillStyle=C.sweat;ctx.fill()}
+  else if(k==="rbc"){ell(x,y,4.5*s,3*s,0,C.blood);ell(x,y,2*s,1.2*s,0,"rgba(0,0,0,.18)")}
+  else if(k==="air"){circ(x,y,2.4*s,C["ink-faint"])}
+  ctx.globalAlpha=1}
+function puff(x,y,q,k,n,spread,seed,a0,a1){if(q<=0||q>=1)return;a0=a0==null?0:a0;a1=a1==null?Math.PI:a1;
+  for(let i=0;i<n;i++){const an=lerp(a0,a1,rnd(seed+i*3.1));const d=spread*(.35+.65*rnd(seed+i*7.7))*ease(q);mol(k,x+Math.cos(an)*d,y+Math.sin(an)*d,1-seg(q,.7,1))}}
+function capsule(x,y,txt,col,a,fg){if(a!=null&&a<=0)return;ctx.globalAlpha=a==null?1:clamp(a,0,1);ctx.font=`700 9.5px ${MONO}`;const w=Math.max(18,ctx.measureText(txt).width+9);
+  rr(x-w/2,y-7,w,14,7);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=1;ctx.stroke();ctx.fillStyle=fg||C.panel;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1}
+
+/* ---- neurons ---- */
+function soma(x,y,r,col){circ(x,y,r,col,"rgba(0,0,0,.3)",1.2);circ(x-r*.15,y-r*.1,r*.38,C.panel)}
+function axon(P,col,o){o=o||{};const a=o.alpha==null?1:o.alpha;
+  poly(P,col,o.lw||3,o.dash,a);
+  if(o.beads){const L=plen(P);ctx.globalAlpha=a;for(let d=14;d<L-10;d+=15){const p=d/L;const q=along(P,p),an=angAt(P,p);ctx.save();ctx.translate(q[0],q[1]);ctx.rotate(an);rr(-5,-(o.lw||3)/2-2,10,(o.lw||3)+4,3);ctx.fillStyle=C.panel;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.stroke();ctx.restore()}ctx.globalAlpha=1}
+  if(o.vari){const L=plen(P);ctx.globalAlpha=a;for(let d=30;d<L-6;d+=34){const q=along(P,d/L);circ(q[0],q[1],(o.lw||3)*.9+1.5,col)}ctx.globalAlpha=1}
+  if(o.term!==false){const e=P[P.length-1];ctx.globalAlpha=a;circ(e[0],e[1],(o.lw||3)+2,col);ctx.globalAlpha=1}
+  if(o.soma){ctx.globalAlpha=a;soma(P[0][0],P[0][1],o.soma,col);ctx.globalAlpha=1}}
+function pulseOn(P,p,col,r){if(p<=0||p>=1)return;const q=along(P,p);glow(q[0],q[1],r||18,col||C.glow,.95);circ(q[0],q[1],4,col||C.glow)}
+function ganglion(x,y,rx,ry,on,txt){ell(x,y,rx,ry,0,C.ganglion,C["gang-edge"],1.6);if(on>0)glow(x,y,Math.max(rx,ry)*1.6,C.glow,on*.7);
+  const n=Math.max(2,Math.round(rx*ry/90));for(let i=0;i<Math.min(n,9);i++){const a=i/Math.min(n,9)*TAU+.4;circ(x+Math.cos(a)*rx*.5,y+Math.sin(a)*ry*.5,Math.min(rx,ry)*.18,C["gang-edge"])}
+  if(txt)label(x,y-ry-10,txt,{align:"center",size:11.5,weight:600})}
+
+/* ---- organs ---- */
+function heartPath(x,y,r){ctx.beginPath();ctx.moveTo(x,y+r*.95);ctx.bezierCurveTo(x-r*1.35,y+r*.05,x-r*1.05,y-r*1.05,x,y-r*.42);ctx.bezierCurveTo(x+r*1.05,y-r*1.05,x+r*1.35,y+r*.05,x,y+r*.95);ctx.closePath()}
+function heartIcon(x,y,r,pl,o){o=o||{};const s=1+.13*(pl||0)*(o.force||1);heartPath(x,y,r*s);ctx.fillStyle=C.heart;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.4;ctx.stroke();
+  ctx.globalAlpha=.35;heartPath(x-r*.25,y-r*.15,r*s*.35);ctx.fillStyle="#fff";ctx.fill();ctx.globalAlpha=1;
+  if(pl>.3&&o.glow!==false)glow(x,y,r*1.9,C.heart,pl*.35)}
+const pulseF=ph=>ph<.2?Math.sin(ph/.2*Math.PI):0;
+function beatInfo(hrFn,t){let acc=0;const dt=.02;const beats=[];for(let x=0;x<t;x+=dt){const a2=acc+hrFn(x)/60*dt;if(Math.floor(a2)>Math.floor(acc))beats.push(x);acc=a2}return {ph:acc%1,beats}}
+function pqrst(u){const g=(m,s)=>Math.exp(-((u-m)*(u-m))/(2*s*s));return .12*g(-.16,.025)-.1*g(-.03,.008)+1*g(0,.011)-.25*g(.03,.01)+.25*g(.25,.045)}
+function ecg(x0,y0,w,h,beats,tNow,win,col){const N=220;ctx.beginPath();for(let i=0;i<=N;i++){const t=tNow-win+win*i/N;let v=0;for(const b of beats){if(Math.abs(t-b)<.5)v+=pqrst(t-b)}const x=x0+w*i/N,y=y0-v*h;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}
+  ctx.strokeStyle=col||C.heart;ctx.lineWidth=2;ctx.lineJoin="round";ctx.stroke()}
+function eyeIcon(x,y,r,pupil,o){o=o||{};ctx.save();ctx.beginPath();ctx.moveTo(x-r*1.6,y);ctx.quadraticCurveTo(x,y-r*1.25,x+r*1.6,y);ctx.quadraticCurveTo(x,y+r*1.25,x-r*1.6,y);ctx.closePath();
+  ctx.fillStyle="#F6F3EC";ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=1.5;ctx.stroke();ctx.clip();
+  circ(x,y,r*.82,"#6E8FAE");ctx.strokeStyle="rgba(20,40,60,.35)";ctx.lineWidth=1;for(let i=0;i<20;i++){const a=i/20*TAU;line(x+Math.cos(a)*r*.3,y+Math.sin(a)*r*.3,x+Math.cos(a)*r*.8,y+Math.sin(a)*r*.8,"rgba(20,40,60,.3)",1)}
+  const pr=r*.82*(.18+.66*clamp(pupil,0,1));circ(x,y,pr,"#0B0F12");circ(x-pr*.35,y-pr*.35,Math.max(1,pr*.22),"rgba(255,255,255,.75)");ctx.restore()}
+function airway(x,y,R,open,T,o){o=o||{};// cross-section: smooth muscle ring around lumen
+  const lr=R*(.22+.5*clamp(open,0,1));circ(x,y,R,C.lung,C["lung-edge"],1.5);
+  // smooth muscle ring
+  ctx.beginPath();ctx.arc(x,y,lr+R*.16,0,TAU);ctx.strokeStyle=C.smooth;ctx.lineWidth=R*.2;ctx.stroke();
+  ctx.strokeStyle="rgba(0,0,0,.18)";ctx.lineWidth=1;for(let i=0;i<14;i++){const a=i/14*TAU;line(x+Math.cos(a)*(lr+R*.07),y+Math.sin(a)*(lr+R*.07),x+Math.cos(a)*(lr+R*.25),y+Math.sin(a)*(lr+R*.25),"rgba(0,0,0,.18)",1)}
+  circ(x,y,lr,C.panel,"rgba(0,0,0,.25)",1.2);
+  const n=Math.round(3+lr/3.2);for(let i=0;i<n;i++){const a=rnd(i+9)*TAU+T*.6*(i%2?1:-1);const d=lr*.65*rnd(i+33);mol("air",x+Math.cos(a)*d,y+Math.sin(a)*d,.9)}}
+function vesselX(x,y,R,open,T){const lr=R*(.25+.55*clamp(open,0,1));circ(x,y,R,C.vessel,C["vessel-edge"],1.5);
+  ctx.beginPath();ctx.arc(x,y,lr+R*.14,0,TAU);ctx.strokeStyle=C.smooth;ctx.lineWidth=R*.2;ctx.stroke();
+  circ(x,y,lr,"#F2D6D2","rgba(0,0,0,.25)",1.2);
+  ctx.save();ctx.beginPath();ctx.arc(x,y,lr,0,TAU);ctx.clip();const n=Math.max(2,Math.round(lr*lr/40));for(let i=0;i<n;i++){const a=rnd(i+3)*TAU+T*.4;const d=lr*.6*rnd(i+17);mol("rbc",x+Math.cos(a)*d,y+Math.sin(a)*d,1,.9)}ctx.restore()}
+function gutTube(x,y,w,h,T,mot,o){o=o||{};// horizontal tube with travelling squeeze waves
+  const N=60,ph=T*(.35+.9*mot);const top=[],bot=[];
+  for(let i=0;i<=N;i++){const u=i/N;let sq=0;for(let k=0;k<2;k++){const c=((ph*.5+k*.5)%1);const d=(u-c);sq+=Math.exp(-d*d/.004)}const r=h/2*(1-.45*clamp(mot,0,1.5)/1.5*sq);top.push([x+u*w,y-r]);bot.push([x+u*w,y+r])}
+  ctx.beginPath();top.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));for(let i=bot.length-1;i>=0;i--)ctx.lineTo(bot[i][0],bot[i][1]);ctx.closePath();
+  ctx.fillStyle=C.gut;ctx.fill();ctx.strokeStyle=C["gut-edge"];ctx.lineWidth=1.6;ctx.stroke();
+  // food boluses ride the waves
+  for(let k=0;k<2;k++){const c=((ph*.5+k*.5)%1)-.06;if(c>0&&c<1)ell(x+c*w,y,7,h*.22,0,C["gut-edge"])}
+  if(o.label)label(x+w/2,y+h/2+12,o.label,{align:"center",size:11})}
+function gland(x,y,r,rate,T,seed,o){o=o||{};seed=seed||1;
+  for(let i=0;i<7;i++){const a=i/7*TAU;circ(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.5,r*.42,C.adrenal,"rgba(0,0,0,.25)",1)}circ(x,y,r*.4,C.adrenal,"rgba(0,0,0,.25)",1);
+  const dx=o.dx==null?0:o.dx,dy=o.dy==null?1:o.dy;const L=o.len||r*2.2;line(x,y,x+dx*L,y+dy*L,C["gut-edge"],3);
+  const n=Math.round(4*clamp(rate,0,1.5));for(let i=0;i<n;i++){const q=cyc(T*.7+i/n+seed*.13,1);mol("saliva",x+dx*L*q,y+dy*L*q+ (dy?0:0),1-q*.3,.9)}}
+function sweatGland(x,y,s,rate,T){ // y = skin surface; duct down to a coiled gland
+  line(x,y,x,y+30*s,C.sweat,2.6*s);
+  ctx.beginPath();for(let i=0;i<=70;i++){const a=i/70*TAU*4;const px=x+(i/70-.5)*30*s+Math.cos(a)*6*s,py=y+40*s+Math.sin(a)*7*s;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.strokeStyle=C.sweat;ctx.lineWidth=2.6*s;ctx.lineJoin="round";ctx.stroke();
+  const n=Math.round(4*clamp(rate,0,1.2));for(let i=0;i<n;i++){const q=cyc(T*.5+i/4,1);mol("sweat",x,y+30*s-q*30*s,1-seg(q,.85,1),.9)}
+  if(rate>.3)for(let i=0;i<3;i++)mol("sweat",x-12*s+i*12*s,y-6,clamp((rate-.3)*1.6,0,1),1.1)}
+function muscleFiber(x,y,w,h,sh){const ww=w*(1-.14*sh);rr(x+(w-ww)/2,y,ww,h,h/2);ctx.fillStyle=C.muscle;ctx.fill();ctx.strokeStyle=C["muscle-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=1;i<14;i++){const xx=x+(w-ww)/2+ww*i/14;line(xx,y+3,xx,y+h-3,C["muscle-edge"],1)}}
+function bladderIcon(x,y,r,fill,empt,T){const s=.55+.45*fill;ell(x,y,r*s,r*.85*s,0,C.bladder,"rgba(0,0,0,.3)",1.5);
+  if(empt>.2)for(let i=0;i<3;i++){const q=cyc(T*.9+i/3,1);mol("sweat",x,y+r*.85*s+4+q*22,empt*(1-q))}}
+function kidneyAd(x,y,s,epi){ell(x,y+8*s,8*s,12*s,0,C.kidney,"rgba(0,0,0,.3)",1);ctx.beginPath();ctx.moveTo(x-7*s,y-2*s);ctx.lineTo(x,y-9*s);ctx.lineTo(x+7*s,y-2*s);ctx.closePath();ctx.fillStyle=C.adrenal;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();if(epi>0)glow(x,y-4*s,16*s,C.epi,epi*.6)}
+
+/* ---- the body ---- */
+const NEUT={pupil:.45,hr:72,force:1,bronch:.5,gut:.6,saliva:.3,skin:.5,muscle:.4,glucose:0,sweat:0,bladder:0,epi:0};
+const FIGHT={pupil:1,hr:128,force:1.5,bronch:1,gut:.08,saliva:0,skin:.08,muscle:1,glucose:1,sweat:1,bladder:0,epi:1};
+const REST={pupil:.08,hr:60,force:.9,bronch:.28,gut:1.5,saliva:1,skin:.55,muscle:.35,glucose:0,sweat:0,bladder:1,epi:0};
+function mixS(a,b,q){const o={};for(const k in a)o[k]=lerp(a[k],b[k]==null?a[k]:b[k],q);return o}
+const BODY={eye:[13,38],eyeL:[-13,38],mouth:[0,57],gland:[17,58],glandL:[-17,58],trachea:[0,100],bronch:[30,132],lung:[-30,140],lungR:[30,140],heart:[8,160],liver:[-28,196],stomach:[28,194],gut:[0,236],gutL:[-24,236],adrenal:[46,212],adrenalL:[-46,212],bladder:[0,274],arm:[-82,160],armR:[82,160],forearm:[-92,215],thigh:[-29,330],thighR:[29,330],forehead:[0,14],skin:[-64,120],brain:[0,28],brainstem:[0,52],cordT1:[0,100],cordL2:[0,214],sacral:[0,246],neck:[0,76]};
+function bp(cx,y0,s,k){const p=Array.isArray(k)?k:BODY[k];return [cx+p[0]*s,y0+p[1]*s]}
+function torsoPath(){ctx.beginPath();ctx.moveTo(-14,84);ctx.lineTo(-56,92);ctx.quadraticCurveTo(-74,96,-72,118);ctx.lineTo(-61,200);ctx.quadraticCurveTo(-58,240,-62,262);ctx.quadraticCurveTo(-60,292,-30,292);
+  ctx.lineTo(30,292);ctx.quadraticCurveTo(60,292,62,262);ctx.quadraticCurveTo(58,240,61,200);ctx.lineTo(72,118);ctx.quadraticCurveTo(74,96,56,92);ctx.lineTo(14,84);ctx.closePath()}
+const GUTP=[[-36,226],[30,226],[36,232],[30,238],[-30,238],[-36,244],[-30,250],[34,250]];
+function body(cx,y0,s,st,T,o){o=o||{};st=Object.assign({},NEUT,st);
+  ctx.save();ctx.translate(cx,y0);ctx.scale(s,s);
+  const sk=C.skin,ed=C["skin-edge"];ctx.lineCap="round";ctx.lineJoin="round";
+  [-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(27*d,268);ctx.lineTo(33*d,436);ctx.strokeStyle=ed;ctx.lineWidth=37;ctx.stroke();ctx.strokeStyle=sk;ctx.lineWidth=34;ctx.stroke()});
+  [-1,1].forEach(d=>{ctx.beginPath();ctx.moveTo(62*d,106);ctx.lineTo(84*d,180);ctx.lineTo(96*d,250);ctx.strokeStyle=ed;ctx.lineWidth=25;ctx.stroke();ctx.strokeStyle=sk;ctx.lineWidth=22;ctx.stroke()});
+  ctx.fillStyle=sk;ctx.fillRect(-13,60,26,32);ctx.strokeStyle=ed;ctx.lineWidth=1.5;line(-13,62,-13,88,ed,1.5);line(13,62,13,88,ed,1.5);
+  torsoPath();ctx.fillStyle=sk;ctx.fill();ctx.strokeStyle=ed;ctx.lineWidth=1.5;ctx.stroke();
+  circ(0,38,32,sk,ed,1.5);
+  // skin blood flow: pale when vessels narrow, flushed when wide
+  const pale=clamp(.5-st.skin,0,.5)*2,flush=clamp(st.skin-.5,0,.5)*2;
+  if(pale>0){ctx.globalAlpha=pale*.28;torsoPath();ctx.fillStyle="#FFFFFF";ctx.fill();circ(0,38,32,"#FFFFFF");ctx.globalAlpha=1}
+  if(flush>0){ctx.globalAlpha=flush*.18;torsoPath();ctx.fillStyle=C.blood;ctx.fill();circ(0,38,32,C.blood);ctx.globalAlpha=1}
+  // skeletal muscle (arms, thighs) with blood supply
+  [-1,1].forEach(d=>{ctx.globalAlpha=.25+.45*st.muscle;ell(76*d,150,8,24,-.26*d,C.muscle);ell(29*d,330,12,40,.03*d,C.muscle);ctx.globalAlpha=1;
+    line(76*d,128,78*d,172,C.blood,.6+2.6*st.muscle);line(29*d,295,31*d,368,C.blood,.6+3.2*st.muscle);
+    line(88*d,196,95*d,240,C.blood,.5+2.2*st.skin)});
+  if(o.cns){ctx.globalAlpha=.95;ell(0,26,25,17,0,C.cns,C["cns-edge"],1.2);ctx.globalAlpha=1;line(0,48,0,252,C["cns-edge"],5);
+    if(o.symHL>0){ctx.globalAlpha=o.symHL;line(0,100,0,214,C.sym,8);ctx.globalAlpha=1}
+    if(o.paraHL>0){ctx.globalAlpha=o.paraHL;circ(0,50,6,C.para);line(0,238,0,252,C.para,8);ctx.globalAlpha=1}}
+  // lungs + bronchial tree
+  const br=1+.035*Math.sin(T*TAU*(st.hr/72)/4);
+  [-1,1].forEach(d=>ell(30*d,140,22*br,40*br,0,C.lung,C["lung-edge"],1.3));
+  const bw=1.4+3.6*st.bronch;ctx.strokeStyle=C["lung-edge"];ctx.lineCap="round";
+  poly([[0,92],[0,118]],C["lung-edge"],5);
+  [-1,1].forEach(d=>{poly([[0,118],[16*d,128],[26*d,150],[30*d,168]],C["lung-edge"],bw);poly([[16*d,128],[34*d,122]],C["lung-edge"],bw*.8);poly([[26*d,150],[40*d,152]],C["lung-edge"],bw*.7);poly([[22*d,140],[14*d,158]],C["lung-edge"],bw*.6)});
+  // liver, stomach, intestines
+  ctx.beginPath();ctx.moveTo(-58,186);ctx.quadraticCurveTo(-30,174,10,182);ctx.quadraticCurveTo(0,204,-30,210);ctx.quadraticCurveTo(-56,212,-58,186);ctx.closePath();ctx.fillStyle=C.liver;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.25)";ctx.lineWidth=1;ctx.stroke();
+  const ch=1+.06*st.gut*Math.sin(T*3*(.4+st.gut));ell(28,194,18*ch,12/ch,-.4,C.gut,C["gut-edge"],1.3);
+  poly(GUTP,C["gut-edge"],10);poly(GUTP,C.gut,7.5);
+  {const L=plen(GUTP);for(let k=0;k<4;k++){const q=cyc(T*.05*(.15+st.gut)+k/4,1);const p=along(GUTP,q),an=angAt(GUTP,q);ctx.save();ctx.translate(p[0],p[1]);ctx.rotate(an);rr(-2,-5.5,4,11,2);ctx.fillStyle=C["gut-edge"];ctx.globalAlpha=.4+.5*clamp(st.gut,0,1);ctx.fill();ctx.globalAlpha=1;ctx.restore()}}
+  [-1,1].forEach(d=>kidneyAd(46*d,214,1,st.epi));
+  bladderIcon(0,274,13,1-.5*st.bladder,st.bladder,T);
+  // glucose leaving liver
+  if(st.glucose>0){for(let i=0;i<6;i++){const q=cyc(T*.35+i/6,1);mol("glu",-30+q*40,196-q*44+Math.sin(q*6+i)*4,st.glucose*(1-q*.6),.75)}}
+  // heart
+  heartIcon(8,160,13,o.beat||0,{force:st.force,glow:false});
+  // epinephrine in the blood
+  if(st.epi>0){const loop=[[46,206],[60,150],[40,100],[-40,100],[-62,160],[-46,220],[-20,260],[20,262],[46,206]];for(let i=0;i<8;i++){const q=cyc(T*.12+i/8,1);const p=along(loop,q);mol("epi",p[0],p[1],st.epi*.9,.7)}}
+  // face: eyes, mouth, salivary glands, sweat
+  [-1,1].forEach(d=>{ell(17*d,58,5,4,0,C.adrenal,"rgba(0,0,0,.25)",1)});
+  if(st.saliva>.05)for(let i=0;i<3;i++){const q=cyc(T*.6+i/3,1);[-1,1].forEach(d=>mol("saliva",d*(17-q*15),58-q*2,st.saliva*(1-q*.5),.55))}
+  line(-7,52,7,52,ed,2);
+  [-1,1].forEach(d=>eyeIcon(13*d,36,4.6,st.pupil));
+  if(st.sweat>.05)[[-14,12],[10,10],[0,18],[-70,128],[70,128]].forEach((p,i)=>{const q=cyc(T*.4+i*.27,1);mol("sweat",p[0],p[1]+q*8,st.sweat*(1-q*.4),.7)});
+  if(o.hl)for(const k in o.hl){const p=BODY[k];if(p&&o.hl[k][1]>0)glow(p[0],p[1],20,o.hl[k][0],o.hl[k][1]*.75)}
+  ctx.restore()}
+
+/* ---- spinal cord column helper ---- */
+const SEGN=[];[["C",8],["T",12],["L",5],["S",5]].forEach(([l,n])=>{for(let i=1;i<=n;i++)SEGN.push(l+i)});
+function cordCol(x,y0,sh,o){o=o||{};const n=30;const yb=y0+n*sh;
+  rr(x-13,y0-6,26,n*sh+12,12);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  for(let i=1;i<n;i++)line(x-13,y0+i*sh,x+13,y0+i*sh,C["cns-edge"],.6);
+  if(o.sym!==false){ctx.globalAlpha=o.symA==null?.28:o.symA;ctx.fillStyle=C.sym;rr(x-13,y0+8*sh,26,14*sh,4);ctx.fill();ctx.globalAlpha=1;
+    for(let i=8;i<22;i++){circ(x-6,y0+(i+.5)*sh,2,C.sym);circ(x+6,y0+(i+.5)*sh,2,C.sym)}}
+  if(o.para){ctx.globalAlpha=o.paraA==null?.28:o.paraA;ctx.fillStyle=C.para;rr(x-13,y0+26*sh,26,3*sh,4);ctx.fill();ctx.globalAlpha=1}
+  if(o.labels){[["C1",0],["T1",8],["T12",19],["L2",21],["S5",29]].forEach(([t,i])=>{ctx.font=`500 10.5px ${MONO}`;ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];ctx.fillText(t,x-17,y0+(i+.5)*sh)})}
+  return i=>y0+(i+.5)*sh}
+
+/* ---- receptors on a horizontal membrane (ligands arrive from above) ---- */
+function membraneH(x0,x1,y,h){h=h||16;ctx.fillStyle=C.tail;ctx.fillRect(x0,y-h/2,x1-x0,h);for(let x=x0+4;x<x1;x+=8){circ(x,y-h/2+2.5,3,C.membrane);circ(x,y+h/2-2.5,3,C.membrane)}}
+function recep(x,y,type,state,o){o=o||{};const on=state===1,bl=state===2;
+  if(type==="nic"){const g=on?4:0;rr(x-13-g,y-15,9,30,4);ctx.fillStyle=C.nic;ctx.fill();rr(x+4+g,y-15,9,30,4);ctx.fill();
+    if(on){ctx.globalAlpha=.3;ctx.fillStyle=C.na;ctx.fillRect(x-4-g+4,y-14,2*g,28);ctx.globalAlpha=1}}
+  else if(type==="musc"){ctx.beginPath();for(let i=0;i<=7;i++){const xx=x-14+i*4;ctx.lineTo(xx,i%2?y+11:y-13)}ctx.strokeStyle=C.musc;ctx.lineWidth=3.2;ctx.lineJoin="round";ctx.stroke();ctx.beginPath();ctx.arc(x,y-16,6,Math.PI,0);ctx.stroke()}
+  else{const col=type[0]==="a"?C.alpha:C.beta;rr(x-8,y-12,16,24,3);ctx.fillStyle=col;ctx.fill();rr(x-12,y-26,7,16,3);ctx.fill();rr(x+5,y-26,7,16,3);ctx.fill()}
+  if(on)glow(x,y-8,26,C.glow,.55);
+  if(o.lab!==false){const t={nic:"nicotinic",musc:"muscarinic",a1:"α1",b1:"β1",b2:"β2",a:"α",b:"β"}[type];ctx.font=`600 10.5px ${MONO}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C["ink-soft"];ctx.fillText(t,x,y+26)}
+  if(bl){capsule(x,y-30,o.drug||"BB",C.drug,1);line(x-5,y-21,x+5,y-11,C.bad,2);line(x+5,y-21,x-5,y-11,C.bad,2)}}
+
+
+function makeStage(id,w,h){const cv=document.getElementById(id);const st={cv,ctx:cv.getContext("2d"),W:w,H:h,K:1};
+  st.fit=()=>{const ww=cv.parentElement.clientWidth;if(!ww)return;const dpr=window.devicePixelRatio||1;cv.style.height=(ww*h/w)+"px";cv.width=Math.round(ww*dpr);cv.height=Math.round(ww*h/w*dpr);st.K=cv.width/w};
+  return st}
+function use(st){ctx=st.ctx;W=st.W;H=st.H;ctx.setTransform(st.K,0,0,st.K,0,0);ctx.clearRect(0,0,W,H)}
+const fmtPct=v=>Math.round(v)+"%";
+const arrowWord=(v,b,tol)=>{tol=tol||.06;const r=v/b;return r>1+tol?"↑ up":r<1-tol?"↓ down":"· same"};
+
+/* ---------------- tabs + theme ---------------- */
+let TAB="sort";
+function setTab(t){TAB=t;document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));["sort","sw","drug","path"].forEach(k=>{$("#tab-"+k).hidden=k!==t});fitAll()}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
+$(".tabs").addEventListener("keydown",e=>{const tabs=[...document.querySelectorAll(".tab")];const i=tabs.indexOf(document.activeElement);if(i<0)return;
+  if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();const j=(i+(e.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length;tabs[j].focus();setTab(tabs[j].dataset.tab)}});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- drag + tap helper ---------------- */
+function dragify(el,o){let st=null;
+  const hit=e=>{const t=document.elementFromPoint(e.clientX,e.clientY);return t?t.closest(o.targetSel):null};
+  el.addEventListener("pointerdown",e=>{if(e.button!==0)return;st={x:e.clientX,y:e.clientY,id:e.pointerId,drag:false,ghost:null};try{el.setPointerCapture(e.pointerId)}catch(_){}});
+  el.addEventListener("pointermove",e=>{if(!st)return;const dx=e.clientX-st.x,dy=e.clientY-st.y;
+    if(!st.drag&&Math.hypot(dx,dy)>6){st.drag=true;const r=el.getBoundingClientRect();const g=el.cloneNode(true);g.classList.add("ghost");g.classList.remove("sel","hint");g.removeAttribute("id");g.style.width=r.width+"px";st.ox=st.x-r.left;st.oy=st.y-r.top;document.body.appendChild(g);st.ghost=g;el.classList.add("lift")}
+    if(st.drag){st.ghost.style.left=(e.clientX-st.ox)+"px";st.ghost.style.top=(e.clientY-st.oy)+"px";if(o.onOver)o.onOver(hit(e))}});
+  const end=(e,cancel)=>{if(!st)return;const s=st;st=null;try{el.releasePointerCapture(s.id)}catch(_){}
+    if(s.ghost){s.ghost.remove();el.classList.remove("lift");if(o.onOver)o.onOver(null);if(!cancel){const t=hit(e);if(t)o.onDrop(t)}}else if(!cancel)o.onTap()};
+  el.addEventListener("pointerup",e=>end(e,false));el.addEventListener("pointercancel",e=>end(e,true));
+  el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();o.onTap()}})}
+
+/* ---------------- shared physiology model ---------------- */
+const adrenalDrive=S=>clamp((S-.25)/.75,0,1)*.95;
+const E0=adrenalDrive(.3);
+function physio(S,P,E,d){d=d||{};const nic=d.nic?1:0,atr=d.atr?1:0,bb=d.bb?1:0,alb=d.alb?1:0,ep=d.epi?1:0,tx=d.cond==="transplant";
+  const Sg=clamp(S+.35*nic,0,1),Pg=clamp(P+.25*nic,0,1);
+  const Et=clamp(E+.8*ep,0,1.6);
+  const m=Pg*(1-.9*atr),mSw=Sg*(1-.9*atr);
+  const b1=clamp(.7*(tx?0:Sg)+.6*Et+.25*alb,0,1)*(1-.85*bb);
+  const b2=clamp(.25*Sg+.9*Et+.9*alb,0,1.6)*(1-.85*bb*(d.bbSel?.1:1));
+  const a1=clamp(.8*Sg+.5*Et,0,1.5);
+  const mh=tx?0:m;
+  const hr=clamp(95+70*b1-85*mh,38,190);
+  const force=1+.8*b1;
+  const pupil=clamp(4.5+3.5*a1-3.5*m,2,8);
+  const as=d.cond==="asthma",an=d.cond==="anaph";
+  const air=Math.max(22,100+60*b2-50*m*(as?2:1)-(as?22:0)-(an?32:0));
+  const gut=clamp(.4+1.3*m-.5*Sg,.05,2);
+  const sal=clamp(.2+1.2*m-.3*Sg,0,1.6);
+  const ves=clamp(100-45*a1+(an?42:0),35,160);
+  const musv=100+40*b2-15*a1;
+  const sweat=clamp(1.3*mSw-.35,0,1);
+  const gluT=88+75*Et+8*Sg;
+  return {Sg,Pg,Et,m,b1,b2,a1,hr,force,pupil,air,gut,sal,ves,musv,sweat,gluT}}
+const BASE=physio(.3,.5,E0);
+const bpRel=o=>100*Math.pow((o.hr*o.force)/(BASE.hr*BASE.force),.45)*Math.pow(BASE.ves/o.ves,1.1);
+function toBody(o,G){return {pupil:clamp((o.pupil-2)/6,0,1),hr:o.hr,force:o.force,bronch:clamp((o.air-50)/110,0,1),gut:clamp(o.gut/BASE.gut*.6,0,1.6),saliva:clamp(o.sal/BASE.sal*.3,0,1),
+  skin:clamp((o.ves-35)/100,0,1),muscle:clamp((o.musv-80)/80,0,1),glucose:clamp(((G||o.gluT)-100)/40,0,1),sweat:o.sweat,bladder:clamp((o.m-.6)/.3,0,1),epi:clamp(o.Et*1.2,0,1)}}
+
+/* ======================= PART 1: SORTER ======================= */
+const SROUNDS=[
+ {name:"The basics",wire:false,cards:[
+  ["Pupils dilate","F",{pupil:1},"eyeL","Sympathetic fibers contract the radial (dilator) muscle of the iris, so more light gets in.","In danger, would you want more light or less?"],
+  ["Pupils constrict","R",{pupil:.08},"eyeL","Parasympathetic fibers in cranial nerve III contract the circular (sphincter) muscle.","This is the calm, close-up reading setting."],
+  ["Heart rate speeds up","F",{hr:128,force:1.5},"heart","β1 receptors on the heart respond to NE and epinephrine.","Running from danger needs more blood pumped."],
+  ["Heart rate slows","R",{hr:58,force:.9},"heart","The vagus nerve releases ACh onto muscarinic receptors on the pacemaker.","Think of the vagus as the brake."],
+  ["Bronchioles dilate","F",{bronch:1},"bronch","β2 receptors relax bronchiolar smooth muscle, so more air gets in.","Hard work needs more oxygen."],
+  ["Digestion speeds up","R",{gut:1.5},"gut","The vagus increases gut movement and secretion.","Digesting is a calm, after-lunch job."],
+  ["Digestion slows down","F",{gut:.08},"gut","Sympathetic signals reduce gut movement and secretion so energy goes to the muscles.","Digesting can wait until the emergency is over."],
+  ["Saliva flows","R",{saliva:1},"gland","Cranial nerves VII and IX turn up the salivary glands.","Think about smelling your favorite food at dinner time."]]},
+ {name:"Body-wide",wire:false,cards:[
+  ["Liver releases glucose","F",{glucose:1},"liver","Epinephrine tells the liver to break down glycogen, so muscles get fuel.","Muscles in an emergency need fuel right now."],
+  ["Sweating increases","F",{sweat:1},"forehead","Sweat glands get only sympathetic fibers (which release ACh).","Sweat cools you during hard work."],
+  ["Bladder empties","R",{bladder:1},"bladder","Sacral parasympathetic fibers (S2 to S4) contract the bladder wall.","Is this a good time-out-of-danger job?"],
+  ["Skin and gut blood vessels narrow","F",{skin:.08},"skin","α1 receptors on vessel smooth muscle contract, sending blood elsewhere.","Blood is being moved to where the action is."],
+  ["More blood to skeletal muscle","F",{muscle:1},"arm","Vessels in working muscle widen while skin and gut vessels narrow.","Which tissues do the running?"],
+  ["Bronchioles narrow a little","R",{bronch:.28},"bronch","Parasympathetic ACh on muscarinic receptors contracts bronchiolar smooth muscle a bit.","At rest you don't need extra air."],
+  ["Adrenal medulla releases epinephrine","F",{epi:1},"adrenal","The adrenal medulla is a modified sympathetic ganglion.","Adrenaline is famous for which response?"],
+  ["Stomach makes more digestive juice","R",{gut:1.5},"stomach","The vagus increases stomach secretion and churning.","Food is in. Time to digest it."]]},
+ {name:"Wiring and chemicals",wire:true,cards:[
+  ["Outflow from T1 to L2 (thoracolumbar)","F",{},"cordT1","Sympathetic preganglionic neurons sit in the lateral horns from T1 to L2.","The middle of the spinal cord."],
+  ["Outflow from the brainstem and S2 to S4 (craniosacral)","R",{},"brainstem","Parasympathetic outflow leaves the two ends of the CNS.","The top and bottom ends."],
+  ["Short preganglionic, long postganglionic fibers","F",{},"cordT1","Sympathetic ganglia are close to the spinal cord.","Where are this division's ganglia?"],
+  ["Long preganglionic, short postganglionic fibers","R",{},"stomach","Parasympathetic ganglia are in or near the organ.","Ganglia near the organ make which fiber long?"],
+  ["Ganglia in a chain beside the spine","F",{},"cordT1","The sympathetic chain (paravertebral) ganglia.","The elevator beside the building."],
+  ["Terminal ganglia in or near the organ wall","R",{},"stomach","Also called intramural ganglia.","Close to the target."],
+  ["Most postganglionic fibers release norepinephrine","F",{},"heart","These fibers are adrenergic. (Sweat glands are the exception.)","NE belongs to which division?"],
+  ["Postganglionic fibers release ACh onto muscarinic receptors","R",{},"heart","All parasympathetic postganglionic fibers are cholinergic.","Which division uses ACh at both synapses?"],
+  ["The vagus nerve carries most of its output","R",{},"neck","Cranial nerve X reaches the heart, lungs and most abdominal organs.","Cranial nerve X belongs to which division?"],
+  ["Includes the adrenal medulla, which releases epinephrine","F",{},"adrenal","Preganglionic sympathetic fibers go straight to the adrenal medulla.","Adrenaline, again."]]}
+];
+const sStage=makeStage("cvSort",800,430);
+let sR=0,sDeck=[],sPlaced=[],sSel=null,sMist=0,sShown=false,sHintI=null,sT0=0,sDone=false,sFlash=null;
+const sStars=store.get("al-sort-stars")||{};
+const SB={F:Object.assign({},NEUT),R:Object.assign({},NEUT)},SBt={F:Object.assign({},NEUT),R:Object.assign({},NEUT)};
+const sWire={F:0,R:0};
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function sBuildRounds(){const box=$("#sRounds");box.innerHTML="";SROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",String(i===sR));
+  const st=sStars[i]||0;b.innerHTML=`Round ${i+1} · ${r.name}`+(st?`<span class="ok" aria-label="${st} stars">${"★".repeat(st)}</span>`:"");b.onclick=()=>sStart(i);box.appendChild(b)});
+  const tot=Object.values(sStars).reduce((a,b)=>a+b,0);$("#sTot").innerHTML=`Your stars: <b>${tot}</b> of ${SROUNDS.length*3}`}
+function sStart(i){sR=i;sDeck=shuffle(SROUNDS[i].cards.map((c,k)=>k));sPlaced=[];sSel=null;sMist=0;sShown=false;sHintI=null;sT0=performance.now();sDone=false;sFlash=null;
+  ["F","R"].forEach(b=>{SB[b]=Object.assign({},NEUT);SBt[b]=Object.assign({},NEUT);sWire[b]=0});
+  $("#sN").textContent=`Round ${i+1} of ${SROUNDS.length}`;$("#sT").textContent=SROUNDS[i].name;sMsg("","");sBuildRounds();sRender()}
+function sMsg(h,cls){const m=$("#sMsg");m.className="msg"+(h?" show "+cls:"");m.innerHTML=h}
+function sRender(){const R=SROUNDS[sR];const tray=$("#sTray");tray.innerHTML="";
+  sDeck.filter(k=>!sPlaced.includes(k)).forEach(k=>{const c=R.cards[k];const b=document.createElement("button");b.type="button";b.className="scard"+(sSel===k?" sel":"")+(sHintI===k?" hint":"");b.textContent=c[0];b.dataset.k=k;
+    b.setAttribute("aria-pressed",String(sSel===k));
+    dragify(b,{targetSel:".bin",onTap:()=>{sSel=sSel===k?null:k;sRender();const nb=document.querySelector(`.scard[data-k="${k}"]`);if(nb)nb.focus()},onDrop:t=>sPlace(k,t.dataset.bin,b),
+      onOver:t=>document.querySelectorAll(".bin").forEach(x=>x.classList.toggle("over",x===t))});
+    tray.appendChild(b)});
+  if(!tray.children.length)tray.innerHTML=`<span class="small">All sorted.</span>`;
+  ["F","R"].forEach(bn=>{$("#list"+bn).innerHTML=sPlaced.filter(k=>R.cards[k][1]===bn).map(k=>`<div class="placed">${R.cards[k][0]}</div>`).join("")})}
+function sPlace(k,bin,el){if(sDone)return;const c=SROUNDS[sR].cards[k];
+  if(c[1]===bin){sPlaced.push(k);sSel=null;sHintI=null;Object.assign(SBt[bin],c[2]);sWire[bin]++;sFlash={bin,organ:c[3],text:c[0],t0:performance.now()};
+    sMsg(`✓ <b>${c[0]}</b>: ${bin==="F"?"fight or flight":"rest and digest"}. ${c[4]}`,"good");sRender();sCheckDone()}
+  else{sMist++;sMsg(`Not quite. <b>${c[0]}</b> belongs to ${c[1]==="F"?"fight or flight (sympathetic)":"rest and digest (parasympathetic)"}. ${c[4]}`,"warn");
+    const b=el||document.querySelector(`.scard[data-k="${k}"]`);if(b){b.classList.remove("shake");void b.offsetWidth;b.classList.add("shake")}}}
+function sCheckDone(){const R=SROUNDS[sR];if(sPlaced.length<R.cards.length)return;sDone=true;
+  const stars=sShown?1:(sMist<=1?3:(sMist<=3?2:1));if(stars>(sStars[sR]||0)){sStars[sR]=stars;store.set("al-sort-stars",sStars)}
+  const secs=Math.round((performance.now()-sT0)/1000);const best=store.get("al-sort-best-"+sR);if(!sShown&&(best==null||secs<best))store.set("al-sort-best-"+sR,secs);
+  const tm=$("#sRelaxed").checked?"":` Time: ${Math.floor(secs/60)}:${String(secs%60).padStart(2,"0")}.`;
+  const nxt=sR<SROUNDS.length-1?`<br><button class="btn" id="sNext" type="button" style="margin-top:8px">Next round &rarr;</button>`:"";
+  sMsg(`<span class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Round complete.</b> ${sMist} mistake${sMist===1?"":"s"}.${tm} Look at the two bodies: every card you placed changed one of them.${nxt}`,"good");
+  sBuildRounds();const n=$("#sNext");if(n)n.onclick=()=>sStart(sR+1)}
+document.querySelectorAll(".binbtn").forEach(b=>b.addEventListener("click",()=>{if(sSel==null){sMsg("Tap a card first, then choose a box.","info");return}sPlace(sSel,b.dataset.bin)}));
+document.querySelectorAll(".bin").forEach(b=>b.addEventListener("click",e=>{if(e.target.closest("button"))return;if(sSel!=null)sPlace(sSel,b.dataset.bin)}));
+$("#sHint").onclick=()=>{const left=sDeck.filter(k=>!sPlaced.includes(k));if(!left.length)return;const k=sSel!=null&&left.includes(sSel)?sSel:left[0];sHintI=k;const c=SROUNDS[sR].cards[k];
+  sMsg(`Hint for <b>${c[0]}</b>: ${c[5]} Ask yourself: does this help you <b>run or fight</b>, or help you <b>rest, digest and store energy</b>?`,"info");sRender()};
+$("#sShow").onclick=()=>{sShown=true;const R=SROUNDS[sR];const left=sDeck.filter(k=>!sPlaced.includes(k));let i=0;
+  const step=()=>{if(i>=left.length)return;const k=left[i++];const c=R.cards[k];sPlaced.push(k);Object.assign(SBt[c[1]],c[2]);sWire[c[1]]++;sFlash={bin:c[1],organ:c[3],text:c[0],t0:performance.now()};sRender();if(i<left.length)setTimeout(step,260);else sCheckDone()};step()};
+$("#sReset").onclick=()=>sStart(sR);
+$("#sRelaxed").onchange=()=>{$("#sTimer").hidden=$("#sRelaxed").checked};
+function drawSort(T,dt){use(sStage);bg();
+  ["F","R"].forEach(b=>{for(const k in SB[b])SB[b][k]=lerp(SB[b][k],SBt[b][k],Math.min(1,dt*2.2))});
+  const wire=SROUNDS[sR].wire;
+  [["F",0,C["sym-wash"],C.sym,"Fight or flight"],["R",400,C["para-wash"],C.para,"Rest and digest"]].forEach(([b,x0,wash,col,nm])=>{
+    ctx.globalAlpha=.55;ctx.fillStyle=wash;ctx.fillRect(x0,0,400,H);ctx.globalAlpha=1;
+    const cx=x0+200,y0=40,s=.86;const st=SB[b];
+    const bi=beatPh[b]=(beatPh[b]+dt*st.hr/60)%1;
+    const n=SROUNDS[sR].cards.filter((c,k)=>c[1]===b).length,done=sPlaced.filter(k=>SROUNDS[sR].cards[k][1]===b).length;
+    body(cx,y0,s,st,T,{beat:pulseF(bi),cns:wire,symHL:b==="F"&&wire?.25+.75*done/n:0,paraHL:b==="R"&&wire?.25+.75*done/n:0});
+    if(wire&&b==="R"&&done>0){const PP=[[[0,52],[8,80],[12,100],[14,124],[8,156]],[[0,52],[8,80],[12,100],[18,150],[26,190]],[[0,248],[6,260],[0,268]],[[0,50],[-8,44],[-13,38]],[[0,52],[8,80],[12,100],[28,134]]];
+      PP.slice(0,done).forEach((pp,i)=>{const P=pp.map(p=>bp(cx,y0,s,p));poly(P,C.para,2.4);const e=P[P.length-1];ell(e[0],e[1],4,3,0,C.ganglion,C["gang-edge"],1);pulseOn(P,cyc(T*.6+i*.2,1),C.glow,9)})}
+    if(wire&&b==="F"&&done>0){const TG=[[110,"heart"],[120,"lungR"],[150,"stomach"],[170,"adrenal"],[190,"liver"]];TG.slice(0,done).forEach(([yy,k],i)=>{const a=bp(cx,y0,s,[0,yy]),g=bp(cx,y0,s,[i%2?-14:14,yy]),e=bp(cx,y0,s,k);const P=[a,g,e];
+      poly(P,C.sym,2.2,null,.9);ell(g[0],g[1],4,3,0,C.ganglion,C["gang-edge"],1);pulseOn(P,cyc(T*.8+i*.2,1),C.glow,8)})}
+    chipT(cx,18,nm+` · ${done} of ${n}`,col,"#fff",{size:11.5});
+    const ix=b==="F"?x0+52:x0+348;circ(ix,370,36,C.panel,C.rule,1.5);eyeIcon(ix,370,20,st.pupil);label(ix,322,"pupil",{align:"center",size:10.5,pill:false,color:C["ink-soft"]});
+    label(b==="F"?x0+16:x0+384,60,Math.round(st.hr)+" bpm",{align:b==="F"?"left":"right",size:13,weight:600,mono:true,color:col});
+    if(sFlash&&sFlash.bin===b){const a=1-seg((performance.now()-sFlash.t0)/1000,2.2,3.2);if(a>0){const p=bp(cx,y0,s,sFlash.organ);glow(p[0],p[1],34,col,a*.8);
+      const lx=b==="F"?x0+16:x0+384;const ly=clamp(p[1]-40,40,400);line(p[0],p[1],b==="F"?lx+150:lx-150,ly,col,1.4);label(lx,ly,sFlash.text,{align:b==="F"?"left":"right",size:12.5,weight:600,color:col,border:col,alpha:a})}}
+  });
+  line(400,0,400,H,C.rule,1.5);
+  if(!$("#sRelaxed").checked&&!sDone){const secs=Math.floor((performance.now()-sT0)/1000);$("#sTimer").textContent=`${Math.floor(secs/60)}:${String(secs%60).padStart(2,"0")}`}}
+const beatPh={F:0,R:0};
+
+/* ======================= PART 2: SWITCHBOARD ======================= */
+const swStage=makeStage("cvSw",800,540),chStage=makeStage("cvChart",800,170);
+const SW={S:.3,P:.5,E:E0,G:BASE.gluT,t:0,hist:[],acc:0,scen:null,st:0,beat:0,beats:[],paused:false};
+const SCN=[
+ {id:"rest",name:"Resting",steps:[[0,.3,.5]],txt:"Resting: both divisions at their normal tone. The vagus keeps the heart near 70 bpm."},
+ {id:"exam",name:"Exam stress",steps:[[0,null,null],[4,.72,.22],[60,.72,.22]],txt:"Exam stress: a steady rise in sympathetic activity. Heart up, pupils wider, mouth dry, stomach uneasy."},
+ {id:"meal",name:"After a big meal",steps:[[0,null,null],[4,.16,.88],[60,.16,.88]],txt:"After a big meal: parasympathetic takes over. Gut and saliva up, heart down."},
+ {id:"scare",name:"Sudden scare",steps:[[0,null,null],[.4,1,.04],[3.5,1,.04],[9,.32,.5],[60,.3,.5]],txt:"Sudden scare: a burst of sympathetic activity that fades fast. Watch epinephrine keep the heart up after the nerves calm down."},
+ {id:"sleep",name:"Falling asleep",steps:[[0,null,null],[5,.12,.68],[60,.12,.68]],txt:"Falling asleep: sympathetic tone drops and parasympathetic tone rises a little."},
+ {id:"stairs",name:"Running up stairs",steps:[[0,null,null],[2,.85,.12],[14,.85,.12],[22,.35,.48],[60,.3,.5]],txt:"Running up stairs: exercise turns up the sympathetic side and turns down the vagus."}];
+function swBuild(){const box=$("#scen");SCN.forEach(s=>{const b=document.createElement("button");b.type="button";b.className="tbtn";b.textContent=s.name;b.dataset.id=s.id;b.setAttribute("aria-pressed","false");
+  b.onclick=()=>{SW.scen={def:s,t:0,S0:SW.S,P0:SW.P};document.querySelectorAll("#scen .tbtn").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));$("#swCap").textContent=s.txt};box.appendChild(b)})}
+function swSetSliders(){$("#sSym").value=Math.round(SW.S*100);$("#sPara").value=Math.round(SW.P*100);$("#oSym").textContent=Math.round(SW.S*100)+"%";$("#oPara").textContent=Math.round(SW.P*100)+"%"}
+["sSym","sPara"].forEach(id=>$("#"+id).addEventListener("input",()=>{SW.scen=null;document.querySelectorAll("#scen .tbtn").forEach(x=>x.setAttribute("aria-pressed","false"));
+  SW.S=+$("#sSym").value/100;SW.P=+$("#sPara").value/100;swSetSliders();$("#swCap").textContent="Free play: you are setting the two dials yourself."}));
+$("#swPause").onclick=()=>{SW.paused=!SW.paused;$("#swPause").textContent=SW.paused?"Play":"Pause"};
+function swStep(dt){if(SW.paused)return;
+  if(SW.scen){const sc=SW.scen;sc.t+=dt;const st=sc.def.steps.map(s=>[s[0],s[1]==null?sc.S0:s[1],s[2]==null?sc.P0:s[2]]);let a=st[0],b=st[st.length-1];
+    for(let i=0;i<st.length-1;i++)if(sc.t>=st[i][0]&&sc.t<st[i+1][0]){a=st[i];b=st[i+1];break}
+    if(sc.t>=st[st.length-1][0]){a=b}const f=a===b?1:ease(clamp((sc.t-a[0])/(b[0]-a[0]),0,1));SW.S=lerp(a[1],b[1],f);SW.P=lerp(a[2],b[2],f);swSetSliders()}
+  const A=adrenalDrive(SW.S);SW.E+=(A-SW.E)*Math.min(1,dt/(A>SW.E?2.2:7));
+  const o=physio(SW.S,SW.P,SW.E);SW.G+=(o.gluT-SW.G)*Math.min(1,dt/7);SW.o=o;
+  SW.t+=dt;const nb=SW.beat+dt*o.hr/60;if(Math.floor(nb)>Math.floor(SW.beat))SW.beats.push(SW.t);SW.beat=nb;SW.beats=SW.beats.filter(b=>b>SW.t-4);
+  SW.acc+=dt;if(SW.acc>=.25){SW.acc=0;SW.hist.push({t:SW.t,hr:o.hr,G:SW.G,E:SW.E,S:SW.S,P:SW.P});if(SW.hist.length>241)SW.hist.shift()}}
+function tile(x,y,w,h,ttl,val,word){rr(x,y,w,h,8);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  hdr(x+10,y+15,ttl);label(x+w-10,y+16,val,{align:"right",size:14,weight:600,mono:true,pill:false});
+  const col=word[0]==="↑"?C.sym:word[0]==="↓"?C.para:C["ink-soft"];label(x+w-10,y+h-13,word,{align:"right",size:11.5,weight:600,pill:false,color:col})}
+function drawSw(T,dt){swStep(dt);use(swStage);bg();const o=SW.o||physio(SW.S,SW.P,SW.E);
+  // body
+  ctx.globalAlpha=.35;ctx.fillStyle=SW.S>SW.P+.25?C["sym-wash"]:SW.P>SW.S+.25?C["para-wash"]:C["panel-2"];ctx.fillRect(0,0,300,H);ctx.globalAlpha=1;
+  body(150,22,.98,toBody(o,SW.G),T,{beat:pulseF(SW.beat%1)});
+  const bar=(y,lab,v,col)=>{label(16,y,lab,{size:11,weight:600,mono:true,pill:false,color:col});rr(70,y-6,210,12,6);ctx.fillStyle=C.sunk;ctx.fill();rr(70,y-6,Math.max(12,210*v),12,6);ctx.fillStyle=col;ctx.fill()};
+  bar(500,"SYM",SW.S,C.sym);bar(522,"PARA",SW.P,C.para);
+  // tiles
+  const X=[310,556],Y=[8,140,272,404],w=236,h=126;
+  {const x=X[0],y=Y[0];tile(x,y,w,h,"Heart",Math.round(o.hr)+" bpm",arrowWord(o.hr,BASE.hr));heartIcon(x+40,y+66,22,pulseF(SW.beat%1),{force:o.force});ecg(x+76,y+84,w-90,30,SW.beats,SW.t,3,C.heart)}
+  {const x=X[1],y=Y[0];tile(x,y,w,h,"Pupil",o.pupil.toFixed(1)+" mm",arrowWord(o.pupil,BASE.pupil));eyeIcon(x+w/2-20,y+68,28,clamp((o.pupil-2)/6,0,1))}
+  {const x=X[0],y=Y[1];tile(x,y,w,h,"Bronchioles",fmtPct(o.air/BASE.air*100),arrowWord(o.air,BASE.air));airway(x+w/2-30,y+68,42,clamp((o.air-40)/120,0,1),T)}
+  {const x=X[1],y=Y[1];tile(x,y,w,h,"Gut movement",fmtPct(o.gut/BASE.gut*100),arrowWord(o.gut,BASE.gut,.08));gutTube(x+14,y+68,w-28,36,T,clamp(o.gut/BASE.gut*.6,0,1.5))}
+  {const x=X[0],y=Y[2];tile(x,y,w,h,"Salivation",fmtPct(o.sal/BASE.sal*100),arrowWord(o.sal,BASE.sal,.08));gland(x+70,y+60,24,clamp(o.sal/BASE.sal*.35,0,1.3),T,2,{dx:1,dy:.5,len:80})}
+  {const x=X[1],y=Y[2];tile(x,y,w,h,"Skin and gut vessels",fmtPct(o.ves/BASE.ves*100),arrowWord(o.ves,BASE.ves));vesselX(x+w/2-30,y+68,42,clamp((o.ves-35)/100,0,1),T)}
+  {const x=X[0],y=Y[3];tile(x,y,w,h,"Blood glucose",Math.round(SW.G)+" mg/dL",arrowWord(SW.G,BASE.gluT,.04));const f=clamp((SW.G-80)/90,0,1);
+    rr(x+16,y+40,22,72,5);ctx.fillStyle=C.sunk;ctx.fill();rr(x+16,y+40+72*(1-f),22,72*f,5);ctx.fillStyle=C.glu;ctx.fill();
+    const n=Math.round(3+10*f);for(let i=0;i<n;i++){const q=cyc(T*.15+rnd(i)*1,1);mol("glu",x+60+rnd(i+5)*150,y+46+q*60,.85)}}
+  {const x=X[1],y=Y[3];tile(x,y,w,h,"Epinephrine",Math.round(SW.E/.95*100)+"% of max",arrowWord(SW.E,E0,.25));kidneyAd(x+40,y+70,2.6,clamp(SW.E,0,1));
+    const n=Math.round(14*clamp(SW.E,0,1));for(let i=0;i<n;i++){const q=cyc(T*.25+i/14,1);mol("epi",x+70+q*140,y+50+rnd(i)*56,1-q*.6)}}
+  // chart
+  use(chStage);bg();const g={x0:46,x1:752,y0:14,y1:128};
+  [40,80,120,160].forEach(v=>{const y=g.y1-(v-40)/140*(g.y1-g.y0);line(g.x0,y,g.x1,y,C["rule-soft"],1);label(g.x0-6,y,String(v),{align:"right",size:10.5,mono:true,pill:false,color:C.heart})});
+  [80,120,160].forEach(v=>{const y=g.y1-(v-70)/100*(g.y1-g.y0);label(g.x1+6,y,String(v),{align:"left",size:10.5,mono:true,pill:false,color:C.glu})});
+  label(g.x0-6,6,"bpm",{align:"right",size:10,mono:true,pill:false,color:C.heart});label(g.x1+6,6,"mg/dL",{align:"left",size:10,mono:true,pill:false,color:C.glu});
+  const hs=SW.hist,tN=SW.t,xs=t=>g.x1-(tN-t)/60*(g.x1-g.x0);
+  const tr=(fn,col,dash)=>{ctx.beginPath();hs.forEach((p,i)=>{const x=xs(p.t),y=fn(p);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])};
+  ctx.save();ctx.beginPath();ctx.rect(g.x0,0,g.x1-g.x0,H);ctx.clip();
+  tr(p=>g.y1-(p.hr-40)/140*(g.y1-g.y0),C.heart);tr(p=>g.y1-(p.G-70)/100*(g.y1-g.y0),C.glu,[6,4]);tr(p=>g.y1-p.E*(g.y1-g.y0)*.9,C.epi);
+  hs.forEach(p=>{const x=xs(p.t);ctx.globalAlpha=.25+.75*p.S;ctx.fillStyle=C.sym;ctx.fillRect(x,138,4,9);ctx.globalAlpha=.25+.75*p.P;ctx.fillStyle=C.para;ctx.fillRect(x,151,4,9)});ctx.globalAlpha=1;ctx.restore();
+  label(g.x0-6,142,"S",{align:"right",size:10,mono:true,pill:false,color:C.sym});label(g.x0-6,155,"P",{align:"right",size:10,mono:true,pill:false,color:C.para});
+  label(g.x0,164,"60 s ago",{size:10,pill:false,color:C["ink-faint"]});label(g.x1,164,"now",{align:"right",size:10,pill:false,color:C["ink-faint"]});
+  swText(o)}
+let swLastTxt=0;
+function swText(o){const now=performance.now();if(now-swLastTxt<400)return;swLastTxt=now;
+  const rows=[["Heart rate",Math.round(o.hr)+" bpm",o.hr,BASE.hr],["Pupil",o.pupil.toFixed(1)+" mm",o.pupil,BASE.pupil],["Airway width",fmtPct(o.air/BASE.air*100),o.air,BASE.air],
+   ["Gut movement",fmtPct(o.gut/BASE.gut*100),o.gut,BASE.gut],["Saliva",fmtPct(o.sal/BASE.sal*100),o.sal,BASE.sal],["Skin and gut vessels",fmtPct(o.ves/BASE.ves*100),o.ves,BASE.ves],
+   ["Sweating",o.sweat>.5?"heavy":o.sweat>.15?"light":"none",o.sweat>.15?2:1,1],["Blood glucose",Math.round(SW.G)+" mg/dL",SW.G,BASE.gluT],["Blood epinephrine",Math.round(SW.E/.95*100)+"% of max",SW.E,E0]];
+  $("#swRead").innerHTML=rows.map(r=>{const d=Math.round((r[2]/r[3]-1)*100);let w=Math.abs(d)<5?"·":(d>0?"↑ "+d+"%":"↓ "+(-d)+"%");if(r[0]==="Sweating")w=d>0?"↑":"·";if(r[0]==="Blood epinephrine")w=d>25?"↑":"·";return `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${w}</td></tr>`}).join("");
+  let t;const d=SW.S-SW.P;
+  if(d>.3)t="<b>Sympathetic is in charge.</b> Fight or flight: heart faster and stronger, pupils wide, airways open, gut and saliva turned down, glucose rising.";
+  else if(d<-.3)t="<b>Parasympathetic is in charge.</b> Rest and digest: heart slower, pupils small, gut and salivary glands busy.";
+  else t="<b>Both divisions are active</b>, close to their resting tone. Neither one fully wins; each organ sits near its normal setting.";
+  if(SW.E>.35&&SW.S<.55)t+=" <b>Epinephrine is still in the blood</b>, so the heart stays fast for a while even though the nerves have calmed down. Hormones are slower to clear than nerve signals.";
+  if(o.sweat>.4)t+=" Sweat glands (sympathetic only) are switched on.";
+  $("#swNow").innerHTML=t}
+
+/* ======================= PART 3: RECEPTOR & DRUG LAB ======================= */
+const dStage=makeStage("cvDrug",800,540),caStage=makeStage("cvCase",560,300);
+const D={bb:0,alb:0,atr:0,epi:0,nic:0,bbSel:false,cond:null};
+const DRUGS=[["bb","BB","Beta blocker","blocks β receptors",C=>C.drug],["alb","A","Albuterol","activates β2 receptors",C=>C.drugok],["atr","At","Atropine","blocks muscarinic receptors",C=>C.drug],
+  ["epi","Epi","Epinephrine (EpiPen dose)","activates α and β receptors",C=>C.drugok],["nic","N","Nicotine","activates nicotinic receptors",C=>C.drugok]];
+function dBuild(){const box=$("#drugBtns");box.innerHTML="";DRUGS.forEach(d=>{const b=document.createElement("button");b.type="button";b.className="tbtn drug";b.dataset.d=d[0];b.setAttribute("aria-pressed",String(!!D[d[0]]));
+  b.innerHTML=`<span class="dk" style="background:var(--${d[4](C)===C.drug?"drug":"drugok"})">${d[1]}</span><span><b>${d[2]}</b><span class="dd">${d[3]}</span></span>`;
+  b.onclick=()=>{D[d[0]]=D[d[0]]?0:1;dBuild();dInfo()};box.appendChild(b)})}
+$("#bbType").onchange=()=>{D.bbSel=$("#bbType").value==="sel";dInfo()};
+$("#dClear").onclick=()=>{["bb","alb","atr","epi","nic"].forEach(k=>D[k]=0);D.cond=null;dBuild();dInfo()};
+const COND={asthma:"Condition: asthma (airways already irritable)",transplant:"Condition: transplanted heart (no autonomic nerves to the heart)",anaph:"Condition: anaphylaxis (severe allergic reaction)"};
+function dState(){const E=E0+.35*D.nic;return physio(.3,.5,E,{bb:D.bb,bbSel:D.bbSel,alb:D.alb,atr:D.atr,epi:D.epi,nic:D.nic,cond:D.cond})}
+function dInfo(){const o=dState();const p=[];
+  if(D.bb)p.push(`<p><b>Beta blocker${D.bbSel?" (β1-selective)":" (nonselective)"}:</b> blocks β1 on the heart, so heart rate and force go down.${D.bbSel?" It mostly spares β2, so the airways are less affected.":" It also blocks β2, so the airways lose their main relaxing signal. That matters in asthma."}</p>`);
+  if(D.alb)p.push(`<p><b>Albuterol:</b> a β2 agonist. Bronchiolar smooth muscle relaxes and the airways widen. A little spillover onto the heart can speed it up.</p>`);
+  if(D.atr)p.push(`<p><b>Atropine:</b> a muscarinic antagonist. Parasympathetic effects are blocked: pupils dilate, heart speeds up, saliva and gut slow. Sweating drops too, because sweat glands use muscarinic receptors.</p>`);
+  if(D.epi)p.push(`<p><b>Epinephrine:</b> activates α1 (vessels narrow, blood pressure up), β1 (heart faster and stronger) and β2 (airways open). It also raises blood glucose.</p>`);
+  if(D.nic)p.push(`<p><b>Nicotine:</b> a nicotinic agonist. It stimulates ganglia of <b>both</b> divisions and the adrenal medulla, so the effects are mixed. Heart rate and blood pressure usually rise; the gut may speed up.</p>`);
+  if(D.cond)p.push(`<p><b>${COND[D.cond]}</b></p>`);
+  if(!p.length)p.push(`<p>No drugs applied. Every receptor is getting its normal signal at resting tone.</p>`);
+  $("#dInfo").innerHTML=p.join("");
+  const act=DRUGS.filter(d=>D[d[0]]).map(d=>d[2]);$("#dCap").textContent=(act.length?"Active: "+act.join(", ")+". ":"No drugs. ")+`Heart ${Math.round(o.hr)} bpm, pupil ${o.pupil.toFixed(1)} mm, airway ${fmtPct(o.air/BASE.air*100)} of normal.`;
+  dStage.cv.setAttribute("aria-label","Receptors and organ effects. "+$("#dCap").textContent)}
+function drawDrug(T,dt){use(dStage);bg();const o=dState();
+  const RP=[{k:"nic",nm:"Nicotinic",wh:"ganglia, adrenal medulla",lig:"ach",lv:1+.8*D.nic,dr:D.nic?["N",1]:null},
+    {k:"musc",nm:"Muscarinic",wh:"para targets, sweat glands",lig:"ach",lv:o.m/BASE.m,dr:D.atr?["At",2]:null},
+    {k:"a1",nm:"Alpha-1 (α1)",wh:"vessels, iris dilator",lig:"ne",lv:o.a1/BASE.a1,dr:D.epi?["Epi",1]:null},
+    {k:"b1",nm:"Beta-1 (β1)",wh:"heart",lig:"ne",lv:o.b1/BASE.b1,dr:D.bb?["BB",2]:(D.epi?["Epi",1]:(D.alb?["A",1]:null))},
+    {k:"b2",nm:"Beta-2 (β2)",wh:"bronchioles",lig:"epi",lv:o.b2/BASE.b2,dr:D.bb&&!D.bbSel?["BB",2]:(D.alb?["A",1]:(D.epi?["Epi",1]:null))}];
+  RP.forEach((r,i)=>{const x=8+i*158,w=150,cx=x+w/2;rr(x,8,w,226,8);ctx.fillStyle=C["panel-2"];ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+    label(cx,26,r.nm,{align:"center",size:13,weight:600,pill:false});label(cx,44,r.wh,{align:"center",size:10.5,pill:false,color:C["ink-soft"]});
+    membraneH(x+8,x+w-8,128,14);const blocked=r.dr&&r.dr[1]===2,ag=r.dr&&r.dr[1]===1;
+    const ph=cyc(T*(.35+.5*Math.min(2,r.lv))+i*.17,1);const bound=!blocked&&ph>.4&&ph<.8;
+    recep(cx,128,r.k,blocked?2:(bound||ag?1:0),{lab:false,drug:r.dr?r.dr[0]:"BB"});
+    if(ag)capsule(cx,96,r.dr[0],C.drugok,1);
+    if(blocked){const q=cyc(T*.7+i*.3,1);const y=q<.5?lerp(58,86,q*2):lerp(86,58,(q-.5)*2);mol(r.lig,cx+20,y,.9,1.1)}
+    else if(!ag){const y=ph<.4?lerp(58,104,ease(ph/.4)):ph<.8?104:lerp(104,58,(ph-.8)/.2);mol(r.lig,cx,y,1,1.1)}
+    const v=clamp(r.lv,0,2.4);rr(x+12,180,w-24,12,6);ctx.fillStyle=C.sunk;ctx.fill();rr(x+12,180,Math.max(10,(w-24)*v/2.4),12,6);ctx.fillStyle=blocked?C.drug:(v>1.15?C.sym:v<.85?C.para:C.accent);ctx.fill();
+    line(x+12+(w-24)/2.4,176,x+12+(w-24)/2.4,196,C.ink,1.5);
+    const word=blocked?"BLOCKED":v>1.15?"Activated "+Math.round(v*100)+"%":v<.85?"Reduced "+Math.round(v*100)+"%":"Normal";
+    label(cx,212,word,{align:"center",size:11.5,weight:600,mono:true,pill:false,color:blocked?C.bad:C.ink})});
+  label(400,240,"Activation compared with normal resting tone (the black tick = 100%)",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+  // body + effects
+  body(120,262,.6,toBody(o),T,{beat:pulseF(cyc(T*o.hr/60,1))});
+  const rows=[["Heart rate",Math.round(o.hr)+" bpm",o.hr,BASE.hr],["Force of contraction",fmtPct(o.force/BASE.force*100),o.force,BASE.force],["Blood pressure",fmtPct(bpRel(o)),bpRel(o),100],["Pupil size",o.pupil.toFixed(1)+" mm",o.pupil,BASE.pupil],
+    ["Airway width",fmtPct(o.air/BASE.air*100),o.air,BASE.air],["Gut movement",fmtPct(o.gut/BASE.gut*100),o.gut,BASE.gut],["Saliva",fmtPct(o.sal/BASE.sal*100),o.sal,BASE.sal],["Sweating",o.sweat>.15?"on":"low",o.sweat+.3,BASE.sweat+.3],["Blood glucose",Math.round(o.gluT)+" mg/dL",o.gluT,BASE.gluT]];
+  const x0=250,y0=268;hdr(x0,y0-8,"Organ effects");
+  rows.forEach((r,i)=>{const y=y0+14+i*28;rr(x0,y-11,540,24,5);ctx.fillStyle=i%2?C.panel:C["panel-2"];ctx.fill();label(x0+8,y,r[0],{size:12.5,weight:600,pill:false});
+    const ratio=clamp(r[2]/r[3],0,2.2);const bx=x0+180,bw=200;rr(bx,y-5,bw,10,5);ctx.fillStyle=C.sunk;ctx.fill();const mid=bx+bw/2.2;
+    const xe=bx+bw*ratio/2.2;const col=ratio>1.06?C.sym:ratio<.94?C.para:C.accent;ctx.fillStyle=col;if(xe>=mid)ctx.fillRect(mid,y-5,xe-mid,10);else ctx.fillRect(xe,y-5,mid-xe,10);line(mid,y-9,mid,y+9,C.ink,1.5);
+    label(x0+400,y,r[1],{size:12.5,mono:true,weight:600,pill:false});const w=arrowWord(r[2],r[3]);label(x0+532,y,w,{align:"right",size:12,weight:600,pill:false,color:w[0]==="↑"?C.sym:w[0]==="↓"?C.para:C["ink-soft"]})});
+  if(D.cond)chipT(600,260,COND[D.cond].replace("Condition: ",""),C.warn,"#fff",{size:10.5})}
+
+/* ---- What breaks if...? cases ---- */
+const CASES=[
+ {t:"Asthma and a beta blocker",d:"A 58-year-old with asthma starts propranolol, a nonselective beta blocker, for high blood pressure. A week later she is wheezing and short of breath.",run:{bb:1,bbSel:false,cond:"asthma"},art:"asthma",
+  q1:[["β2 receptors on bronchiolar smooth muscle",1,"Yes. A nonselective beta blocker blocks β2 as well as β1, and β2 is the receptor that keeps the airways relaxed."],["β1 receptors on the heart",0,"Blocking β1 explains the slower heart, not the wheezing."],["Muscarinic receptors",0,"Propranolol does not act on muscarinic receptors."],["Nicotinic receptors in ganglia",0,"Beta blockers act on adrenergic receptors, not ganglia."]],
+  q2:[["Airways narrow, so she wheezes; her heart rate also drops",1,"Right. With β2 blocked, parasympathetic constriction and the asthma win in the airways."],["Airways widen and breathing is easier",0,"That is what a β2 agonist like albuterol does. A β2 blocker does the opposite."],["Her pupils constrict",0,"Pupils are controlled by α1 and muscarinic receptors, not β."],["Her heart rate rises sharply",0,"Blocking β1 slows the heart."]],
+  exp:"Prescribers often prefer a <b>β1-selective</b> blocker (like metoprolol) for people with asthma, and even then use it with care. Try switching the beta blocker type in the lab and watch the airway width."},
+ {t:"The dilated eye exam",d:"An eye doctor puts drops in a patient's eyes that block ACh at the iris, like atropine. Twenty minutes later the pupils are huge, and the patient can't read his phone up close.",run:{atr:1},art:"eye",
+  q1:[["Muscarinic receptors on the circular (sphincter) muscle of the iris",1,"Yes. With muscarinic receptors blocked, the parasympathetic side can't constrict the pupil."],["α1 receptors on the radial (dilator) muscle",0,"The dilator still works normally. It wins because its opponent was switched off."],["Nicotinic receptors in the ciliary ganglion",0,"Atropine-type drugs block muscarinic receptors at the target, not nicotinic receptors in ganglia."],["β2 receptors",0,"β2 receptors are not the main players in the iris."]],
+  q2:[["Big pupils, light sensitivity, and blurry close-up vision for a few hours",1,"Right. Parasympathetic signals also help the eye focus up close, so near vision blurs too."],["Tiny pupils and dim vision",0,"That would come from too much ACh, not a blocker."],["No change, because the sympathetic side controls the pupil alone",0,"The pupil has dual innervation. Removing one side lets the other win."],["A very slow heart rate",0,"Eye drops act mostly on the eye. Atropine in the blood would speed the heart, not slow it."]],
+  exp:"Dual innervation is a tug-of-war. Block one team and the other team wins. In the lab, atropine applied to the whole body also speeds the heart and dries the mouth."},
+ {t:"Anaphylaxis and the EpiPen",d:"A teenager stung by a bee has hives, a swollen throat, wheezing and very low blood pressure. A friend gives an epinephrine auto-injector.",run:{epi:1,cond:"anaph"},art:"bee",
+  q1:[["α1 receptors (vessels) and β2 receptors (airways), plus β1 on the heart",1,"Yes. Epinephrine hits all three: α1 squeezes leaky, wide vessels; β2 opens the airways; β1 strengthens the heartbeat."],["Muscarinic receptors only",0,"Epinephrine does not act on muscarinic receptors."],["Nicotinic receptors in ganglia",0,"Epinephrine is a hormone that acts on adrenergic receptors."],["β1 receptors only",0,"β1 helps, but the life-saving effects in anaphylaxis come from α1 on vessels and β2 in the airways."]],
+  q2:[["Blood pressure rises and breathing gets easier within minutes",1,"Right. That buys time to get to emergency care, which is still needed."],["Blood pressure drops further",0,"α1 activation narrows vessels and raises pressure."],["The airways close more",0,"β2 activation relaxes the airways."],["Nothing changes until the allergy wears off",0,"Epinephrine works fast. That is why it is the first treatment for anaphylaxis."]],
+  exp:"In the lab, anaphylaxis widens the vessels and narrows the airways. Adding epinephrine pushes both back toward normal. Real patients still need emergency care after using an auto-injector."},
+ {t:"Too many puffs of albuterol",d:"A student with asthma uses his albuterol inhaler again and again before a big game. His breathing is fine now, but his heart is racing and his hands are shaky.",run:{alb:1},art:"inhaler",
+  q1:[["β2 receptors in the airways (the target), with spillover to other β receptors",1,"Yes. Albuterol targets β2, but at high doses it also stimulates β receptors elsewhere."],["Muscarinic receptors in the airways",0,"Albuterol does not block muscarinic receptors. It activates β2."],["α1 receptors on blood vessels",0,"Albuterol is a β2 agonist, not an α1 agonist."],["Nicotinic receptors",0,"Albuterol does not act at ganglia."]],
+  q2:[["Fast heart rate and tremor, from extra β stimulation (heart and skeletal muscle)",1,"Right. These are common side effects. They are a sign to talk to a doctor about asthma control."],["A very slow heart rate",0,"β stimulation speeds the heart up."],["Constricted airways",0,"Albuterol opens the airways; that part is working."],["Constricted pupils",0,"Albuterol does not act on the pupil muscles."]],
+  exp:"No drug is perfectly selective. More drug means more spillover. Needing rescue puffs often is itself a warning sign that asthma is not well controlled."},
+ {t:"A transplanted heart",d:"A man had a heart transplant last year. The new heart has no autonomic nerves connected to it. His resting heart rate is about 95 bpm, and when he exercises his heart speeds up only slowly.",run:{cond:"transplant"},art:"transplant",
+  q1:[["The autonomic nerves to the heart, especially the vagus that sets resting tone",1,"Yes. Without the vagus brake, the pacemaker runs at its own built-in rate."],["The heart's own pacemaker",0,"The pacemaker works fine. That is why the heart beats at all."],["β1 receptors on the heart cells",0,"The receptors are still there. They can respond to epinephrine in the blood."],["The adrenal medulla",0,"His adrenal glands are normal and can still release epinephrine."]],
+  q2:[["Resting rate near 100, and during exercise the rate climbs slowly as epinephrine builds up in the blood",1,"Right. Hormones from the adrenal medulla still reach the heart, but they are slower than nerves."],["Resting rate of 40",0,"Losing the vagus removes the brake, so the rate goes up, not down."],["The heart cannot speed up at all",0,"It can, through circulating epinephrine on β1 receptors."],["The heart stops during exercise",0,"Exercise raises epinephrine, which speeds the heart."]],
+  exp:"This is autonomic tone in real life. At rest a normal heart is held back by the vagus. Remove the nerves and you see the pacemaker's own rate."},
+ {t:"The first cigarette of the day",d:"A smoker lights her first cigarette in the morning. Within minutes her heart rate and blood pressure are up, and she feels the urge to use the bathroom.",run:{nic:1},art:"cig",
+  q1:[["Nicotinic receptors in all autonomic ganglia and the adrenal medulla",1,"Yes. Nicotine stimulates the ganglia of both divisions at once, plus the adrenal medulla."],["Muscarinic receptors at target organs",0,"Nicotine acts at nicotinic receptors, which are in ganglia, not at most target organs."],["β2 receptors only",0,"Nicotine does not act directly on adrenergic receptors."],["Only the sympathetic chain",0,"It acts on parasympathetic ganglia too, which is why the gut speeds up."]],
+  q2:[["Mixed effects: heart rate and blood pressure up, gut more active",1,"Right. Sympathetic ganglia and adrenal epinephrine raise heart rate and pressure, while parasympathetic ganglia stir the gut."],["Only rest-and-digest effects",0,"Sympathetic ganglia and the adrenal medulla are stimulated too."],["Only fight-or-flight effects",0,"Parasympathetic ganglia are stimulated too, which explains the gut."],["No autonomic effects",0,"Nicotinic receptors are in every autonomic ganglion, so effects are widespread."]],
+  exp:"Nicotine also acts in the brain and at the neuromuscular junction. Its effects on blood pressure and blood vessels are part of why smoking raises the risk of heart disease."}];
+let cI=0;const cDone=store.get("al-case-done")||{};let cQ1=false,cFirst=true;const cScore=store.get("al-case-first")||{};
+function cBuild(){const box=$("#scChips");box.innerHTML="";CASES.forEach((c,i)=>{const b=document.createElement("button");b.type="button";b.className="chip"+(i===cI?" cur":"")+(cDone[i]?" done":"");b.textContent=i+1;b.setAttribute("aria-label","Case "+(i+1)+": "+c.t+(cDone[i]?" (done)":""));b.onclick=()=>cGo(i);box.appendChild(b)});
+  const n=Object.keys(cScore).length;$("#scScore").textContent=`First-try answers: ${Object.values(cScore).reduce((a,b)=>a+b,0)} of ${CASES.length*2}`}
+function cOpts(el,opts,fb,onRight,qn){el.innerHTML="";let first=true,solved=false;shuffle(opts.slice()).forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+  b.onclick=()=>{if(solved)return;el.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));if(o[1]){solved=true;b.classList.add("right");fb.className="fb show ok";fb.textContent="✓ "+o[2];if(first){cScore[cI+"-"+qn]=1;store.set("al-case-first",cScore)}onRight();cBuild()}
+    else{b.classList.add("wrong");fb.className="fb show no";fb.textContent="Not quite. "+o[2];if(first){cScore[cI+"-"+qn]=cScore[cI+"-"+qn]||0;store.set("al-case-first",cScore)}}first=false};el.appendChild(b)})}
+function cGo(i){cI=(i+CASES.length)%CASES.length;const c=CASES[cI];$("#scN").textContent=`Case ${cI+1} of ${CASES.length}`;$("#scTitle").textContent=c.t;$("#scDesc").textContent=c.d;
+  $("#scF1").className="fb";$("#scF2").className="fb";$("#q2wrap").hidden=true;$("#scExp").className="explain";$("#scExp").innerHTML="";
+  cOpts($("#scQ1"),c.q1,$("#scF1"),()=>{$("#q2wrap").hidden=false},1);
+  cOpts($("#scQ2"),c.q2,$("#scF2"),()=>{$("#scExp").className="explain show";$("#scExp").innerHTML="<b>Why it matters.</b> "+c.exp;cDone[cI]=1;store.set("al-case-done",cDone)},2);
+  caStage.cv.setAttribute("aria-label","Illustration: "+c.t);cBuild()}
+$("#scPrev").onclick=()=>cGo(cI-1);$("#scNext").onclick=()=>cGo(cI+1);
+$("#scRun").onclick=()=>{const r=CASES[cI].run;["bb","alb","atr","epi","nic"].forEach(k=>D[k]=r[k]?1:0);D.bbSel=!!r.bbSel;$("#bbType").value=D.bbSel?"sel":"non";D.cond=r.cond||null;dBuild();dInfo();
+  $("#tab-drug").scrollIntoView({behavior:"smooth",block:"start"})};
+function drawCase(T){use(caStage);bg(C["panel-2"]);const a=CASES[cI].art;const t=cyc(T,6);
+  if(a==="asthma"){[-1,1].forEach(d=>ell(280+d*70,150,56,100,0,C.lung,C["lung-edge"],2));const op=.25+.15*Math.sin(T*2);poly([[280,30],[280,80]],C["lung-edge"],12);
+    [-1,1].forEach(d=>{poly([[280,80],[280+d*40,100],[280+d*66,170]],C["lung-edge"],3+6*op);poly([[280+d*40,100],[280+d*86,110]],C["lung-edge"],2+4*op)});
+    airway(470,150,60,op,T);label(470,228,"Bronchiole: narrow",{align:"center",size:12,weight:600,pill:false,color:C.bad});
+    rr(40,110,90,40,20);ctx.fillStyle=C.drug;ctx.fill();label(85,130,"Propranolol",{align:"center",size:11,weight:600,pill:false,color:C.panel});
+    for(let i=0;i<3;i++){const q=cyc(T*.6+i/3,1);label(160+q*40,90-q*30,"~",{size:22,weight:700,pill:false,color:C["ink-faint"],alpha:1-q})}label(150,200,"wheeze",{size:12,pill:false,color:C["ink-soft"]})}
+  else if(a==="eye"){const p=ease(seg(t,.5,3))*(1-seg(t,5.3,6));ell(280,150,190,100,0,C.skin);eyeIcon(280,150,70,.3+.68*p);
+    const dq=seg(t,0,.8);if(dq<1){mol("sweat",280,lerp(10,70,dq),1,2.4)}label(280,270,p>.5?"Pupil dilated: muscarinic receptors blocked":"Drops going in",{align:"center",size:12,weight:600,pill:false})}
+  else if(a==="bee"){const q=ease(seg(t,1,3))*(1-seg(t,5.3,6));const bx=90+Math.sin(T*3)*10,by=70+Math.cos(T*4)*6;ell(bx,by,18,12,0,C.gold);for(let i=-1;i<=1;i++)line(bx+i*7,by-11,bx+i*7,by+11,C.ink,3);ell(bx-4,by-14,10,6,-.4,"rgba(200,220,255,.8)");
+    vesselX(280,150,70,.95-.55*q,T);label(280,240,q>.5?"Epinephrine: vessels tighten, pressure up":"Allergy: leaky, wide vessels, low pressure",{align:"center",size:12,weight:600,pill:false});
+    rr(430,70,26,130,8);ctx.fillStyle=C.warn;ctx.fill();rr(434,60,18,14,4);ctx.fillStyle=C.ink;ctx.fill();label(443,214,"auto-injector",{align:"center",size:11,pill:false,color:C["ink-soft"]});
+    for(let i=0;i<Math.round(8*q);i++){const z=cyc(T*.5+i/8,1);mol("epi",380-z*60,140+Math.sin(i*2)*30,1-z)}}
+  else if(a==="inhaler"){rr(80,60,40,60,8);ctx.fillStyle=C["ink-soft"];ctx.fill();rr(70,110,60,80,10);ctx.fillStyle=C.accent;ctx.fill();rr(40,160,40,26,6);ctx.fill();
+    for(let i=0;i<10;i++){const q=cyc(T*.8+i/10,1);circ(40-q*20,172+(rnd(i)-.5)*30*q,3,C.drugok)}
+    const hr=110+8*Math.sin(T);heartIcon(300,120,46,pulseF(cyc(T*hr/60,1)));label(300,200,Math.round(hr)+" bpm",{align:"center",size:16,weight:600,mono:true,pill:false,color:C.sym});
+    const sh=Math.sin(T*40)*3;ctx.save();ctx.translate(460+sh,150);rr(-24,-40,48,70,14);ctx.fillStyle=C.skin;ctx.fill();ctx.strokeStyle=C["skin-edge"];ctx.lineWidth=2;ctx.stroke();for(let i=0;i<4;i++){rr(-22+i*12,-70,10,34,5);ctx.fill();ctx.stroke()}ctx.restore();label(460,230,"tremor",{align:"center",size:12,weight:600,pill:false})}
+  else if(a==="transplant"){heartIcon(280,150,70,pulseF(cyc(T*95/60,1)));[[150,40],[410,40]].forEach((p,i)=>{poly([p,[lerp(p[0],280,.45),lerp(p[1],100,.45)]],i?C.para:C.sym,4);const m=[lerp(p[0],280,.55),lerp(p[1],100,.55)];line(m[0]-8,m[1]-8,m[0]+8,m[1]+8,C.bad,3);line(m[0]+8,m[1]-8,m[0]-8,m[1]+8,C.bad,3)});
+    label(150,24,"sympathetic: cut",{align:"center",size:11.5,weight:600,pill:false,color:C.sym});label(410,24,"vagus: cut",{align:"center",size:11.5,weight:600,pill:false,color:C.para});label(280,260,"95 bpm at rest: the pacemaker's own rate",{align:"center",size:12,weight:600,pill:false});
+    for(let i=0;i<5;i++){const q=cyc(T*.3+i/5,1);mol("epi",60+q*160,240-q*60,1-q)}label(80,280,"epinephrine still arrives by blood",{size:11,pill:false,color:C.epi})}
+  else{rr(40,130,170,22,4);ctx.fillStyle="#F3EFE6";ctx.fill();rr(170,130,40,22,4);ctx.fillStyle="#C99A5B";ctx.fill();glow(40,141,20,C.warn,.6+.3*Math.sin(T*5));
+    for(let i=0;i<4;i++){const q=cyc(T*.3+i/4,1);circ(40-q*10+Math.sin(q*8+i)*6,120-q*90,4+q*10,null,C["ink-faint"],1)}
+    [["Sympathetic ganglion",110,C.sym],["Parasympathetic ganglion",190,C.para]].forEach(([n,y,col],i)=>{ganglion(380,y-40,24,16,.5+.5*Math.sin(T*4+i));capsule(380,y-66,"N",C.drugok,1);label(380,y-10,n,{align:"center",size:11.5,weight:600,pill:false,color:col})});
+    kidneyAd(500,170,2.6,.8);label(500,232,"adrenal medulla",{align:"center",size:11,pill:false,color:C.epi})}}
+
+/* ======================= PART 4: PATHWAY BUILDER ======================= */
+const pStage=makeStage("cvPath",800,380);
+const TILES={origin:[["brainstem","Brainstem (cranial nerve)"],["tl","Lateral horn, T1 to L2"],["sacral","Sacral cord, S2 to S4"],["vh","Ventral horn (somatic motor)"],["cortex","Cerebral cortex"]],
+  pre:[["preS","Short preganglionic"],["preL","Long preganglionic"]],
+  gang:[["chain","Chain (paravertebral) ganglion"],["coll","Collateral (prevertebral) ganglion"],["term","Terminal (intramural) ganglion"],["adr","No separate ganglion: adrenal medulla"]],
+  post:[["postL","Long postganglionic"],["postS","Short postganglionic"],["postN","No postganglionic axon"]],
+  sig:[["achN","ACh → nicotinic"],["achM","ACh → muscarinic"],["neA","NE → adrenergic (α, β)"],["epiB","Epinephrine into the blood"]]};
+const TCAT={};const TNAME={};for(const c in TILES)TILES[c].forEach(t=>{TCAT[t[0]]=c;TNAME[t[0]]=t[1]});
+const CATN={origin:"a cell-body location",pre:"a preganglionic fiber",gang:"a ganglion",post:"a postganglionic fiber",sig:"a chemical signal"};
+const SLOTS=[["origin","1 · Preganglionic cell body","origin"],["pre","2 · Neuron 1 fiber","pre"],["gang","3 · Ganglion","gang"],["sig1","4 · Signal in the ganglion","sig"],["post","5 · Neuron 2 fiber","post"],["sig2","6 · Signal at the target","sig"]];
+const SW_T={sym:"Sympathetic",para:"Parasympathetic"};
+const PR=[
+ {id:"sh",name:"Sympathetic → heart",div:"sym",tg:"heart",goal:"Wire the pathway that speeds up the heart and makes it beat harder.",
+  ans:{origin:"tl",pre:"preS",gang:"chain",sig1:"achN",post:"postL",sig2:"neA"},
+  why:{origin:"Sympathetic preganglionic cell bodies sit in the lateral horn, T1 to L2.",pre:"Sympathetic ganglia sit near the cord, so neuron 1 is short.",gang:"Heart fibers synapse in the sympathetic chain (cervical and upper thoracic chain ganglia).",sig1:"Every preganglionic neuron releases ACh onto nicotinic receptors.",post:"From the chain to the heart is a long trip.",sig2:"Most sympathetic postganglionic fibers release NE. On the heart it binds β1."}},
+ {id:"ph",name:"Parasympathetic → heart",div:"para",tg:"heart",goal:"Wire the pathway that slows the heart at rest.",
+  ans:{origin:"brainstem",pre:"preL",gang:"term",sig1:"achN",post:"postS",sig2:"achM"},
+  why:{origin:"The vagus nerve (cranial nerve X) starts in the brainstem.",pre:"The vagus runs all the way to the heart, so neuron 1 is long.",gang:"It synapses in terminal ganglia on the heart itself.",sig1:"Every preganglionic neuron releases ACh onto nicotinic receptors.",post:"The ganglion is on the heart, so neuron 2 is short.",sig2:"Parasympathetic postganglionic fibers release ACh onto muscarinic receptors."}},
+ {id:"sg",name:"Sympathetic → stomach",div:"sym",tg:"stomach",goal:"Wire the pathway that slows digestion in the stomach.",
+  ans:{origin:"tl",pre:"preS",gang:"coll",sig1:"achN",post:"postL",sig2:"neA"},
+  why:{origin:"Sympathetic outflow: lateral horn, T1 to L2 (for the stomach, mid-thoracic).",pre:"Sympathetic preganglionic fibers are short compared with the postganglionic ones.",gang:"Fibers to the stomach pass through the chain and synapse in the celiac (collateral) ganglion.",sig1:"ACh onto nicotinic receptors, as in every autonomic ganglion.",post:"From the celiac ganglion out to the stomach wall is the longer leg.",sig2:"NE onto adrenergic receptors slows gut movement and secretion."}},
+ {id:"pb",name:"Parasympathetic → bladder",div:"para",tg:"bladder",goal:"Wire the pathway that contracts the bladder wall so it empties.",
+  ans:{origin:"sacral",pre:"preL",gang:"term",sig1:"achN",post:"postS",sig2:"achM"},
+  why:{origin:"Pelvic organs get parasympathetic fibers from S2 to S4.",pre:"Neuron 1 runs all the way to the bladder, so it is long.",gang:"Terminal ganglia sit in or near the bladder wall.",sig1:"ACh onto nicotinic receptors in the ganglion.",post:"Short, because the ganglion is at the bladder.",sig2:"ACh onto muscarinic receptors contracts the bladder wall."}},
+ {id:"ss",name:"Sympathetic → sweat gland",div:"sym",tg:"sweat",goal:"Wire the pathway that makes you sweat. Watch out for the exception.",
+  ans:{origin:"tl",pre:"preS",gang:"chain",sig1:"achN",post:"postL",sig2:"achM"},
+  why:{origin:"Sweat glands are sympathetic only, so the cell body is in the lateral horn, T1 to L2.",pre:"Short, to the chain beside the spine.",gang:"Chain ganglion, then back out through a spinal nerve to the skin.",sig1:"ACh onto nicotinic receptors in the ganglion.",post:"A long trip out to the skin.",sig2:"The exception: sympathetic fibers to sweat glands release ACh onto muscarinic receptors."}},
+ {id:"sa",name:"Sympathetic → adrenal medulla",div:"sym",tg:"adrenal",goal:"Wire the pathway that releases epinephrine into the blood.",
+  ans:{origin:"tl",pre:["preL","preS"],gang:"adr",sig1:"achN",post:"postN",sig2:"epiB"},
+  why:{origin:"Lateral horn, T1 to L2 (lower thoracic for the adrenal glands).",pre:"This preganglionic fiber passes through the chain and runs all the way to the adrenal gland. Either length label is accepted here; the key is that it goes straight to the gland.",gang:"No separate ganglion: the adrenal medulla itself acts as the ganglion.",sig1:"ACh onto nicotinic receptors on the chromaffin cells.",post:"Chromaffin cells are modified postganglionic neurons with no axons.",sig2:"They release epinephrine (and some NE) into the blood as hormones."}},
+ {id:"pe",name:"Parasympathetic → pupil",div:"para",tg:"eye",goal:"Wire the pathway that constricts the pupil.",
+  ans:{origin:"brainstem",pre:"preL",gang:"term",sig1:"achN",post:"postS",sig2:"achM"},
+  why:{origin:"Cranial nerve III (oculomotor) starts in the brainstem.",pre:"Neuron 1 runs from the brainstem to the back of the eye: the long one.",gang:"The ciliary ganglion sits right behind the eye, near its target.",sig1:"ACh onto nicotinic receptors in the ganglion.",post:"Short, from the ciliary ganglion into the eye.",sig2:"ACh onto muscarinic receptors contracts the circular (sphincter) muscle."}}];
+let pR=0,pFill={},pSel=null,pChecks=0,pHint=false,pShown=false,pSolved=false,pSolvedT=0,pMarks={};
+const pStars=store.get("al-path-stars")||{};
+function okFor(r,slot,v){const a=PR[r].ans[slot];return Array.isArray(a)?a.includes(v):a===v}
+function pBuildRounds(){const box=$("#pRounds");box.innerHTML="";PR.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",String(i===pR));const st=pStars[r.id]||0;
+  b.innerHTML=`${i+1} · ${r.name}`+(st?`<span class="ok" aria-label="${st} stars">${"★".repeat(st)}</span>`:"");b.onclick=()=>pStart(i);box.appendChild(b)});
+  const tot=Object.values(pStars).reduce((a,b)=>a+b,0);$("#pTot").innerHTML=`Your stars: <b>${tot}</b> of ${PR.length*3}`}
+function pStart(i){pR=i;pFill={};pSel=null;pChecks=0;pHint=false;pShown=false;pSolved=false;pMarks={};const r=PR[i];
+  $("#pN").textContent=`Pathway ${i+1} of ${PR.length} · ${SW_T[r.div]}`;$("#pT").textContent=r.name;$("#pGoal").textContent=r.goal;pMsg("","");pBuildRounds();pRenderSlots();pRenderTray()}
+function pMsg(h,c){const m=$("#pMsg");m.className="msg"+(h?" show "+c:"");m.innerHTML=h}
+function tileSVG(id){const c=TCAT[id];const s=(b)=>`<svg width="34" height="18" viewBox="0 0 34 18" aria-hidden="true">${b}</svg>`;
+  if(c==="pre")return s(`<circle cx="5" cy="9" r="4" fill="var(--accent)"/><line x1="9" y1="9" x2="${id==="preS"?16:31}" y2="9" stroke="var(--accent)" stroke-width="3"/>`);
+  if(c==="post")return id==="postN"?s(`<line x1="6" y1="4" x2="28" y2="14" stroke="var(--bad)" stroke-width="2"/><line x1="28" y1="4" x2="6" y2="14" stroke="var(--bad)" stroke-width="2"/>`):s(`<circle cx="5" cy="9" r="3.5" fill="var(--ink-soft)"/><line x1="8" y1="9" x2="${id==="postS"?16:31}" y2="9" stroke="var(--ink-soft)" stroke-width="2"/>`);
+  if(c==="gang")return s(`<ellipse cx="17" cy="9" rx="12" ry="7" fill="var(--ganglion)" stroke="var(--gang-edge)" stroke-width="1.5"/>`);
+  if(c==="sig"){if(id==="achN")return s(`<circle cx="8" cy="9" r="5" fill="var(--ach)"/><rect x="18" y="2" width="5" height="14" rx="2" fill="var(--nic)"/><rect x="25" y="2" width="5" height="14" rx="2" fill="var(--nic)"/>`);
+    if(id==="achM")return s(`<circle cx="8" cy="9" r="5" fill="var(--ach)"/><polyline points="17,3 20,15 23,3 26,15 29,3 32,15" fill="none" stroke="var(--musc)" stroke-width="2"/>`);
+    if(id==="neA")return s(`<rect x="4" y="4" width="10" height="10" transform="rotate(45 9 9)" fill="var(--ne)"/><rect x="21" y="6" width="9" height="11" rx="2" fill="var(--beta)"/>`);
+    return s(`<polygon points="9,2 16,15 2,15" fill="var(--epi)"/><path d="M19 9 h13" stroke="var(--blood)" stroke-width="4"/>`)}
+  return s(`<rect x="2" y="2" width="30" height="14" rx="5" fill="var(--cns)" stroke="var(--cns-edge)"/>`)}
+function pRenderTray(){const box=$("#pTray");box.innerHTML="";[["origin","Cell body location"],["pre","Neuron 1 (preganglionic)"],["gang","Ganglion"],["post","Neuron 2 (postganglionic)"],["sig","Chemical signal"]].forEach(([c,h])=>{
+  const hh=document.createElement("h4");hh.textContent=h;box.appendChild(hh);const tr=document.createElement("div");tr.className="tray";
+  TILES[c].forEach(t=>{const b=document.createElement("button");b.type="button";b.className="tile"+(pSel===t[0]?" sel":"");b.dataset.t=t[0];b.setAttribute("aria-pressed",String(pSel===t[0]));b.innerHTML=tileSVG(t[0])+`<span>${t[1]}</span>`;
+    dragify(b,{targetSel:".slot",onTap:()=>{pSel=pSel===t[0]?null:t[0];pRenderTray();const nb=document.querySelector(`.tile[data-t="${t[0]}"]`);if(nb)nb.focus();if(pSel)pMsg(`Selected <b>${t[1]}</b>. Now tap a slot under the picture.`,"info")},
+      onDrop:s=>pPut(s.dataset.s,t[0]),onOver:s=>document.querySelectorAll(".slot").forEach(x=>x.classList.toggle("over",x===s))});
+    tr.appendChild(b)});box.appendChild(tr)})}
+function pRenderSlots(){const box=$("#slots");box.innerHTML="";SLOTS.forEach(([k,lab])=>{const b=document.createElement("button");b.type="button";const v=pFill[k];const mk=pMarks[k];
+  b.className="slot"+(v?" filled":"")+(mk==="ok"?" ok":mk==="no"?" no":"");b.dataset.s=k;
+  b.innerHTML=`<span class="sl">${lab}</span><span class="sv">${v?TNAME[v]:"empty"}</span>${mk?`<span class="mk">${mk==="ok"?"✓ right":"✗ not this"}</span>`:""}`;
+  b.setAttribute("aria-label",lab+": "+(v?TNAME[v]:"empty")+(mk?(mk==="ok"?", correct":", incorrect"):""));
+  b.onclick=()=>{if(pSel)pPut(k,pSel);else if(v){delete pFill[k];delete pMarks[k];pRenderSlots()}else pMsg("Pick a piece from the shelf first, then tap this slot.","info")};box.appendChild(b)})}
+function pPut(slot,t){if(pSolved)return;const want=SLOTS.find(s=>s[0]===slot)[2];if(TCAT[t]!==want){pMsg(`That piece is ${CATN[TCAT[t]]}. This slot needs ${CATN[want]}.`,"warn");return}
+  pFill[slot]=t;delete pMarks[slot];pSel=null;pMsg("","");pRenderSlots();pRenderTray()}
+$("#pCheck").onclick=()=>{const r=PR[pR];const miss=SLOTS.filter(s=>!pFill[s[0]]);if(miss.length){pMsg(`Fill every slot first. Still empty: ${miss.map(s=>s[1].replace(/^\d · /,"")).join(", ")}.`,"info");return}
+  pChecks++;const wrong=[];SLOTS.forEach(([k])=>{const ok=okFor(pR,k,pFill[k]);pMarks[k]=ok?"ok":"no";if(!ok)wrong.push(k)});pRenderSlots();
+  if(!wrong.length)pWin();else pMsg(`Not quite. ${wrong.length} slot${wrong.length>1?"s are":" is"} off. Here is why:<ul class="why">${wrong.map(k=>`<li><b>${SLOTS.find(s=>s[0]===k)[1].replace(/^\d · /,"")}:</b> ${r.why[k]}</li>`).join("")}</ul>Fix the orange slots and check again.`,"warn")};
+function pWin(){const r=PR[pR];pSolved=true;pSolvedT=performance.now();const stars=pShown?1:(pChecks<=1&&!pHint?3:(pChecks<=2?2:1));if(stars>(pStars[r.id]||0)){pStars[r.id]=stars;store.set("al-path-stars",pStars)}
+  const nxt=pR<PR.length-1?`<br><button class="btn" id="pNext" type="button" style="margin-top:8px">Next pathway &rarr;</button>`:"";
+  pMsg(`<span class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Pathway complete.</b> Watch the signal run through your wiring.<ul class="why">${SLOTS.map(([k,l])=>`<li><b>${l.replace(/^\d · /,"")}:</b> ${r.why[k]}</li>`).join("")}</ul>${nxt}`,"good");
+  pBuildRounds();const n=$("#pNext");if(n)n.onclick=()=>pStart(pR+1)}
+$("#pHint").onclick=()=>{pHint=true;const r=PR[pR];const k=(SLOTS.find(([k])=>!pFill[k]||!okFor(pR,k,pFill[k]))||[])[0];if(!k){pMsg("Everything you placed looks right. Press Check.","info");return}
+  pMsg(`Hint for <b>${SLOTS.find(s=>s[0]===k)[1].replace(/^\d · /,"")}</b>: ${r.why[k]}`,"info")};
+$("#pShow").onclick=()=>{pShown=true;const r=PR[pR];SLOTS.forEach(([k])=>{const a=r.ans[k];pFill[k]=Array.isArray(a)?a[0]:a;pMarks[k]="ok"});pRenderSlots();pWin()};
+$("#pClear").onclick=()=>pStart(pR);
+function drawPath(T){use(pStage);bg();const r=PR[pR];const F=pFill;const col=r.div==="sym"?C.sym:C.para;
+  // CNS
+  ell(88,64,72,44,0,C.cns,C["cns-edge"],1.5);for(let i=0;i<4;i++){ctx.beginPath();ctx.arc(46+i*28,60+(i%2?5:-5),14,.3,2.7);ctx.strokeStyle=C["cns-edge"];ctx.lineWidth=1;ctx.stroke()}
+  rr(104,100,22,40,8);ctx.fillStyle=C.cns;ctx.fill();ctx.strokeStyle=C["cns-edge"];ctx.stroke();rr(106,136,18,236,9);ctx.fill();ctx.stroke();
+  ctx.globalAlpha=.25;ctx.fillStyle=C.sym;ctx.fillRect(107,176,16,104);ctx.fillStyle=C.para;ctx.fillRect(107,318,16,36);ctx.fillRect(105,104,20,32);ctx.globalAlpha=1;
+  label(100,130,"brainstem",{align:"right",size:10.5,pill:false,color:C["ink-soft"]});label(100,228,"T1–L2",{align:"right",size:10.5,pill:false,color:C["ink-soft"]});label(100,336,"S2–S4",{align:"right",size:10.5,pill:false,color:C["ink-soft"]});
+  label(88,30,"brain",{align:"center",size:10.5,pill:false,color:C["ink-soft"]});
+  const OP={brainstem:[115,120],tl:[121,228],sacral:[121,336],vh:[110,252],cortex:[70,52]};
+  // target organ
+  const ty=200,tx=710;const solved=pSolved;const st=solved?seg((performance.now()-pSolvedT)/1000,2.2,3.2):0;
+  if(r.tg==="heart"){const hr=r.div==="sym"?72+50*st:72-16*st;heartIcon(tx,ty,40,pulseF(cyc(T*hr/60,1)));label(tx,ty+56,solved?Math.round(hr)+" bpm":"Heart",{align:"center",size:12,weight:600,pill:false,color:solved?col:C.ink})}
+  else if(r.tg==="stomach"){gutTube(tx-60,ty,120,46,T,1.1-1*st);label(tx,ty+42,solved?"Stomach slows":"Stomach",{align:"center",size:12,weight:600,pill:false,color:solved?col:C.ink})}
+  else if(r.tg==="bladder"){bladderIcon(tx,ty,36,1-.5*st,st,T);label(tx,ty+68,solved?"Bladder empties":"Bladder",{align:"center",size:12,weight:600,pill:false,color:solved?col:C.ink})}
+  else if(r.tg==="sweat"){ctx.fillStyle=C.skin;ctx.fillRect(tx-70,ty-50,140,130);line(tx-70,ty-30,tx+70,ty-30,C["skin-edge"],2);sweatGland(tx,ty-30,1.6,st,T);label(tx,ty+94,solved?"Sweating":"Sweat gland (skin)",{align:"center",size:12,weight:600,pill:false,color:solved?col:C.ink})}
+  else if(r.tg==="adrenal"){kidneyAd(tx,ty-10,3,st);for(let i=0;i<Math.round(10*st);i++){const q=cyc(T*.4+i/10,1);mol("epi",tx+30+q*60,ty-20+Math.sin(i*2.3)*40,1-q)}label(tx,ty+76,solved?"Epinephrine into blood":"Adrenal gland",{align:"center",size:12,weight:600,pill:false,color:solved?col:C.ink})}
+  else{eyeIcon(tx,ty,30,.6-.5*st);label(tx,ty+46,solved?"Pupil constricts":"Eye (iris)",{align:"center",size:12,weight:600,pill:false,color:solved?col:C.ink})}
+  // aorta hint for collateral position
+  ctx.globalAlpha=.25;rr(392,40,18,320,9);ctx.fillStyle=C.blood;ctx.fill();ctx.globalAlpha=1;label(401,372,"aorta",{align:"center",size:10,pill:false,color:C["ink-faint"]});
+  // chain beads
+  for(let i=0;i<14;i++)ell(190,60+i*22,5,3.5,0,C.ganglion,C["gang-edge"],1);label(190,44,"chain",{align:"center",size:10,pill:false,color:C["ink-faint"]});
+  const GX={chain:190,coll:401,term:tx-90,adr:tx-30};
+  const o=F.origin?OP[F.origin]:null;const gx=F.gang?GX[F.gang]:430;const gy=F.gang==="chain"?(o?o[1]:ty):ty;
+  if(o){glow(o[0],o[1],22,C.glow,.6+.3*Math.sin(T*3));circ(o[0],o[1],6,col)}else{label(150,180,"1 ?",{size:12,weight:700,color:C["ink-faint"],border:C.rule})}
+  // neuron 1
+  const n1=o?(F.gang==="chain"?[[o[0]+6,o[1]],[gx-6,gy]]:bez([o[0]+6,o[1]],[o[0]+60,o[1]],[gx-140,gy],[gx-(F.gang==="adr"?40:12),gy],24)):null;
+  if(n1){if(F.pre)axon(n1,col,{lw:3,beads:true,term:F.gang==="adr"});else poly(n1,C["ink-faint"],2,[5,5]);
+    const m=along(n1,.5);label(m[0],m[1]-14,F.pre?TNAME[F.pre]:"2 ?",{align:"center",size:11,weight:600,color:F.pre?col:C["ink-faint"],border:F.pre?null:C.rule})}
+  // ganglion
+  if(F.gang&&F.gang!=="adr"){ganglion(gx,gy,14,11,0);label(gx,gy+24,TNAME[F.gang].replace(/ \(.*\)/,"").replace(" ganglion",""),{align:"center",size:10.5,weight:600,pill:true})}
+  else if(!F.gang){ctx.setLineDash([4,4]);ell(gx,gy,14,11,0,null,C["ink-faint"],1.5);ctx.setLineDash([]);label(gx,gy+24,"3 ?",{align:"center",size:11,weight:700,color:C["ink-faint"],border:C.rule})}
+  // signal 1
+  const s1x=F.gang==="adr"?tx-190:gx-30,s1y=F.gang==="adr"?ty-40:gy+44;
+  if(F.sig1){mol(F.sig1==="neA"?"ne":F.sig1==="epiB"?"epi":"ach",s1x-10,s1y,1,1.1);label(s1x+2,s1y,TNAME[F.sig1],{size:10.5,weight:600,pill:true})}else label(s1x,s1y,"4 ?",{align:"center",size:11,weight:700,color:C["ink-faint"],border:C.rule});
+  // neuron 2
+  let n2=null;if(F.gang!=="adr"){n2=[[gx+14,gy],[tx-48,ty]];if(F.post&&F.post!=="postN")axon(n2,col,{lw:2.2,soma:5,term:true});else if(!F.post)poly(n2,C["ink-faint"],2,[5,5]);
+    const m=along(n2,.5);label(m[0],m[1]+16,F.post?TNAME[F.post]:"5 ?",{align:"center",size:11,weight:600,color:F.post?(F.post==="postN"?C.bad:C["ink-soft"]):C["ink-faint"],border:F.post?null:C.rule})}
+  else label(tx-150,ty+40,F.post?TNAME[F.post]:"5 ?",{align:"center",size:11,weight:600,color:F.post?C["ink-soft"]:C["ink-faint"],border:F.post?null:C.rule});
+  // signal 2
+  const s2x=tx-200,s2y=ty-80;if(F.sig2){mol(F.sig2==="neA"?"ne":F.sig2==="epiB"?"epi":"ach",s2x-10,s2y,1,1.1);label(s2x+2,s2y,TNAME[F.sig2],{size:10.5,weight:600,pill:true})}else label(s2x,s2y,"6 ?",{align:"center",size:11,weight:700,color:C["ink-faint"],border:C.rule});
+  // solved animation
+  if(solved&&n1){const tt=(performance.now()-pSolvedT)/1000,c=cyc(tt,4);pulseOn(n1,seg(c,0,1),C.glow,14);if(n2&&F.post!=="postN"){puff(gx,gy,seg(c,1,1.4),"ach",5,14,3,0,TAU);pulseOn(n2,seg(c,1.3,2.1),C.glow,14)}
+    puff(tx-48,ty,seg(c,2.1,2.6),F.sig2==="neA"?"ne":F.sig2==="epiB"?"epi":"ach",6,18,5,-1.5,1.5)}
+  chipT(400,16,SW_T[r.div]+" pathway to the "+({heart:"heart",stomach:"stomach",bladder:"bladder",sweat:"sweat gland",adrenal:"adrenal medulla",eye:"pupil"})[r.tg],col,"#fff",{size:11})}
+
+/* ---------------- loop ---------------- */
+const STAGES=[sStage,swStage,chStage,dStage,caStage,pStage];
+function fitAll(){STAGES.forEach(s=>s.fit())}
+window.addEventListener("resize",fitAll);
+let T=0,last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;
+  try{if(TAB==="sort")drawSort(T,dt);else if(TAB==="sw")drawSw(T,dt);else if(TAB==="drug"){drawDrug(T,dt);drawCase(T)}else drawPath(T)}catch(e){console.error(e)}
+  if(TAB!=="sw"){swStep(dt)}
+  requestAnimationFrame(frame)}
+window.__lab={setTab,sStart,sPlace:(k,b)=>sPlace(k,b),pStart,cGo,D,dInfo,dBuild,SW,SCN,state:()=>({sR,sPlaced:sPlaced.length,pR,pSolved,cI})};
+sBuildRounds();sStart(0);swBuild();swSetSliders();$("#swCap").textContent="Free play: drag the two dials, or pick a scenario.";dBuild();dInfo();cGo(0);pStart(0);fitAll();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
