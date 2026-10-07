@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skeleton Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;--gold-wash:#F6EFD3;
+  /* skeleton palette */
+  --bf:#EEDFC0;--bf2:#E6D2AA;--bf3:#F3E8D0;--bfB:#D9C59C;--be:#6B5432;--deep:#9C8762;--hole:#4A3B28;
+  --tooth:#FBF8EF;--cart:#C4DEEC;--cart-edge:#5C8FAE;--hl:#E3A51C;--hl-wash:#FCEFC9;
+  --ax:#2E6FA8;--ap:#B85C2E;
+  --rC:#7B5CC9;--rT:#2F8A57;--rL:#1B6E88;--rS:#B4632A;--rX:#A9372F;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;--gold-wash:#352E14;
+  --bf:#CDBB94;--bf2:#C2AD83;--bf3:#D8C8A6;--bfB:#A8946C;--be:#3E2F1A;--deep:#5E4F36;--hole:#1A140C;
+  --tooth:#E4DED0;--cart:#5E8EA6;--cart-edge:#9BC6DE;--hl:#F2C14E;--hl-wash:#3A3115;
+  --ax:#6FB0E8;--ap:#E8955F;
+  --rC:#A98BEF;--rT:#6BC293;--rL:#4FB3D1;--rS:#E39A5B;--rX:#E07067;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;--gold-wash:#352E14;
+  --bf:#CDBB94;--bf2:#C2AD83;--bf3:#D8C8A6;--bfB:#A8946C;--be:#3E2F1A;--deep:#5E4F36;--hole:#1A140C;
+  --tooth:#E4DED0;--cart:#5E8EA6;--cart-edge:#9BC6DE;--hl:#F2C14E;--hl-wash:#3A3115;
+  --ax:#6FB0E8;--ap:#E8955F;
+  --rC:#A98BEF;--rT:#6BC293;--rL:#4FB3D1;--rS:#E39A5B;--rX:#E07067;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+.instr{color:var(--ink-soft);font-size:15px;margin:0 0 10px}
+.msg{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--good);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--warn);border:1px solid var(--warn)}
+.msg.info{background:var(--accent-wash);color:var(--accent-ink);border:1px solid var(--accent)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+[hidden]{display:none!important}
+.bigidea{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 14px;font-size:15px}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 14px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--good);margin-left:5px;font-family:var(--mono);font-size:12.5px}
+.meter{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:14px;color:var(--ink-soft)}
+.meter b{color:var(--ink)}
+.pbar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.pbar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.why{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none;font-size:15px}
+.why.show{display:block}
+.why.no{background:var(--warn-wash);border-left-color:var(--warn)}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+footer p{margin:2px 0}
+/* study panels */
+details.study{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);margin:0 0 14px;box-shadow:var(--shadow)}
+details.study>summary{cursor:pointer;padding:11px 16px;font-weight:600;list-style:none;display:flex;align-items:center;gap:10px}
+details.study>summary::-webkit-details-marker{display:none}
+details.study>summary::before{content:"+";font-family:var(--mono);width:22px;height:22px;border-radius:4px;background:var(--accent-wash);color:var(--accent-ink);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+details.study[open]>summary::before{content:"\2212"}
+details.study>summary small{font-weight:400;color:var(--ink-soft)}
+.studyin{padding:0 16px 16px}
+/* svg base */
+svg{display:block;width:100%;height:auto}
+.bn{fill:var(--bf);stroke:var(--be);stroke-width:1.5;stroke-linejoin:round}
+.bn.t2{fill:var(--bf2)}.bn.t3{fill:var(--bf3)}.bn.bk{fill:var(--bfB)}
+.shd{fill:url(#gShade);pointer-events:none}.shd.lg{fill:url(#gShaft)}
+.hole{fill:var(--hole);stroke:var(--be);stroke-width:1.2}
+.deep{fill:var(--deep)}
+.facet{fill:var(--cart);stroke:var(--cart-edge);stroke-width:1.1}
+.sut{fill:none;stroke:var(--be);stroke-width:1.25;stroke-linejoin:round;stroke-linecap:round}
+.dl{fill:none;stroke:var(--be);stroke-width:1;opacity:.55;stroke-linecap:round}
+.rough{fill:none;stroke:var(--be);stroke-width:.9;opacity:.5;stroke-dasharray:1.5 2.2;stroke-linecap:round}
+.tooth{fill:var(--tooth);stroke:var(--be);stroke-width:.8}
+.spg{fill:url(#pSpongy)}
+.orient{font:500 11px var(--mono);fill:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase}
+.bgp{fill:var(--panel-2)}
+/* label it */
+.lgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+@media (max-width:900px){.lgrid{grid-template-columns:1fr}}
+.diag{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px;margin:0 auto;width:100%}
+.bank{display:flex;flex-wrap:wrap;gap:6px;min-height:44px;padding:8px;background:var(--panel-2);border:1px dashed var(--rule);border-radius:var(--r);margin-bottom:12px}
+.bank:empty::after{content:"All labels placed. Press Check.";color:var(--ink-faint);font-size:14px;align-self:center;padding:0 4px}
+.chip{background:var(--panel);border:1.5px solid var(--accent);color:var(--accent-ink);border-radius:99px;padding:5px 12px;font-size:14px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;line-height:1.3}
+.chip:hover{background:var(--accent-wash)}
+.chip.sel{background:var(--accent);color:#fff;box-shadow:0 0 0 3px var(--gold)}
+.chip.ghost{position:fixed;z-index:50;pointer-events:none;transform:translate(-50%,-130%);box-shadow:0 10px 24px -8px rgba(0,0,0,.45);background:var(--accent);color:#fff}
+.chip.hinted{box-shadow:0 0 0 3px var(--gold)}
+.slots{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.slot{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:var(--panel);border:1.5px dashed var(--rule);border-radius:var(--r);padding:3px 8px;cursor:pointer;font-size:14px;min-height:33px}
+.slot .num{font-family:var(--mono);font-size:12.5px;font-weight:600;width:24px;height:24px;border-radius:50%;background:var(--accent-wash);color:var(--accent-ink);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.slot .val{flex:1;color:var(--ink-faint)}
+.slot.filled{border-style:solid;border-color:var(--accent)}
+.slot.filled .val{color:var(--ink);font-weight:500}
+.slot .mk{font-family:var(--mono);font-weight:700;width:18px;text-align:center}
+.slot.right{background:var(--good-wash);border-color:var(--good)}.slot.right .mk{color:var(--good)}
+.slot.wrong{background:var(--warn-wash);border-color:var(--warn)}.slot.wrong .mk{color:var(--warn)}
+.slot.hinted,.slot.over{box-shadow:0 0 0 3px var(--gold)}
+.armed .slot:not(.filled){border-color:var(--accent)}
+.dot{cursor:pointer}
+.dot circle{fill:var(--panel);stroke:var(--accent);stroke-width:2.2}
+.dot text{font:700 12px var(--mono);fill:var(--accent-ink);text-anchor:middle;pointer-events:none}
+.dot.filled circle{fill:var(--accent)}.dot.filled text{fill:#fff}
+.dot.right circle{fill:var(--good);stroke:var(--good)}.dot.right text{fill:#fff}
+.dot.wrong circle{fill:var(--warn);stroke:var(--warn)}.dot.wrong text{fill:#fff}
+.dot.hinted circle,.dot.over circle,.dot:focus-visible circle{stroke:var(--gold);stroke-width:4.5}
+.dot:focus{outline:none}
+.armed .dot circle{animation:pulse 1.4s infinite}
+@keyframes pulse{50%{stroke-width:4}}
+.lead{stroke:var(--ink-soft);stroke-width:1.1;fill:none}
+.anc{fill:var(--ink);stroke:var(--panel);stroke-width:1}
+.slab{font:600 13px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--panel-2);stroke-width:3.2px;stroke-linejoin:round}
+.keylist{columns:2 200px;font-size:14px;margin:8px 0 0;padding-left:22px}
+.keylist li{margin:1px 0}
+.scorebox{font-family:var(--mono);font-size:14px;color:var(--ink-soft);margin-bottom:6px}
+.scorebox b{color:var(--ink)}
+/* vertebra game */
+.vgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.vgrid{grid-template-columns:1fr}}
+.pic{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:8px}
+.clue{font-family:var(--serif);font-size:21px;line-height:1.35;margin:4px 0 12px;min-height:56px}
+.bins{display:grid;grid-template-columns:1fr;gap:7px}
+.bin{border:2px solid var(--rule);background:var(--panel);border-radius:var(--r);padding:9px 12px;cursor:pointer;text-align:left;font-size:15px;font-weight:600;display:flex;align-items:center;gap:10px}
+.bin i{width:14px;height:14px;border-radius:3px;flex:0 0 auto}
+.bin small{font-weight:400;color:var(--ink-soft);margin-left:auto;font-family:var(--mono);font-size:12.5px}
+.bin:hover{border-color:var(--accent)}
+.bin.right{border-color:var(--good);background:var(--good-wash)}
+.bin.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.bin .mk{font-family:var(--mono);font-weight:700}
+.qlab{font-weight:600;margin:14px 0 8px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:520px){.opts{grid-template-columns:1fr}}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.hl{stroke:var(--hl)!important;stroke-width:3.4!important;filter:drop-shadow(0 0 3px var(--hl));animation:hlp 1.2s ease-in-out infinite}
+@keyframes hlp{50%{stroke-width:5.2}}
+.calm .hl{stroke:var(--be)!important;stroke-width:1.2!important;filter:none;animation:none}.calm path.callL.hl{display:none}
+.call{font:700 12.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--panel-2);stroke-width:3.4px;stroke-linejoin:round}
+.callL{stroke:var(--hl);stroke-width:1.6;fill:none}
+.mbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.mbin{border:2px dashed var(--rule);border-radius:var(--r);background:var(--panel);padding:8px;min-height:110px;cursor:pointer;display:flex;flex-direction:column;gap:6px;text-align:left}
+.mbin h4{margin:0;font-size:14.5px;display:flex;align-items:center;gap:8px}
+.mbin h4 i{width:12px;height:12px;border-radius:3px}
+.mbin h4 small{font-weight:400;color:var(--ink-soft);font-family:var(--mono);font-size:12px}
+.mbin.over,.armed .mbin{border-color:var(--accent)}
+.mbin.over{box-shadow:0 0 0 3px var(--gold)}
+.mchip{display:flex;align-items:center;gap:6px;font-size:13.5px;background:var(--panel-2);border:1px solid var(--rule);border-radius:4px;padding:4px 7px;cursor:pointer;text-align:left;width:100%}
+.mchip.right{background:var(--good-wash);border-color:var(--good)}
+.mchip.wrong{background:var(--warn-wash);border-color:var(--warn)}
+.mchip .mk{font-family:var(--mono);font-weight:700;margin-left:auto}
+.mnote{font-size:13.5px;color:var(--warn);margin-top:2px}
+.vstudy{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.vstudy{grid-template-columns:1fr}}
+.vcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.vcard{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:8px}
+.vcard h4{margin:2px 4px 2px;font-size:15px;display:flex;align-items:center;gap:8px}
+.vcard h4 i{width:12px;height:12px;border-radius:3px}
+.vcard p{margin:4px 4px 2px;font-size:13.5px;line-height:1.4;color:var(--ink-soft)}
+/* chase */
+.cgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);grid-template-areas:"sk ctrl" "sk cq" "sk leg";grid-template-rows:auto auto 1fr;column-gap:18px;row-gap:10px;align-items:start}
+.cgrid>.skwrap{grid-area:sk}.cgrid>.ctrl{grid-area:ctrl}.cgrid>.cq{grid-area:cq}
+#cOpts{grid-template-columns:1fr 1fr}
+@media (max-width:900px){.cgrid{grid-template-columns:minmax(0,1fr);grid-template-areas:"ctrl" "cq" "sk" "leg"}.cq{box-shadow:0 6px 14px -8px rgba(0,0,0,.4)!important}.prompt{font-size:19px;margin:2px 0 6px}#cOpts .opt{padding:7px 9px;font-size:14px}}
+.skwrap{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px;position:relative}
+.skwrap svg{max-height:calc(100vh - 32px);width:auto;max-width:100%;margin:0 auto}
+.sk [data-bone]{cursor:pointer}
+.sk [data-bone]:hover .bn{fill:var(--hl-wash)}
+.sk [data-bone]:hover .rbF{stroke:var(--hl-wash)}
+.sk [data-bone].on .bn{fill:var(--hl)}
+.sk [data-bone].on .rbF{stroke:var(--hl)}
+.sk [data-bone].on .bn,.sk [data-bone].on .rbE{animation:blink 1s ease-in-out infinite}
+@keyframes blink{50%{stroke-width:3}}
+.sk [data-bone].ok .bn{fill:var(--good-wash);stroke:var(--good)}
+.sk [data-bone].ok .rbF{stroke:var(--good)}
+.sk [data-bone].bad .bn{fill:var(--warn-wash);stroke:var(--warn)}
+.sk [data-bone].bad .rbF{stroke:var(--warn)}
+.sk [data-bone].dim{opacity:.35}
+.sk .hit{fill:transparent}
+.rbE{fill:none;stroke:var(--be);stroke-linecap:round}
+.rbF{fill:none;stroke:var(--bf);stroke-linecap:round}
+.rbH{fill:none;stroke:transparent;stroke-width:9;stroke-linecap:round;pointer-events:stroke}
+.cart2{fill:none;stroke:var(--cart);stroke-linecap:round}
+.cart2E{fill:none;stroke:var(--cart-edge);stroke-linecap:round}
+.cq{position:sticky;top:0;z-index:5}
+.prompt{font-family:var(--serif);font-size:24px;line-height:1.25;margin:4px 0 10px;min-height:32px}
+.prompt b{color:var(--accent-ink)}
+.timer{font-family:var(--mono);font-size:30px;font-weight:600;color:var(--ink)}
+.timer.low{color:var(--warn)}
+.tag{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:1px 7px;border-radius:99px;border:1px solid currentColor;margin-left:6px;vertical-align:2px}
+.tag.ax{color:var(--ax)}.tag.ap{color:var(--ap)}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.seg button{border:0;background:var(--panel-2);padding:7px 12px;cursor:pointer;font-size:14px;border-right:1px solid var(--rule)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:600}
+.ctrl{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.ctrl .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:14px;color:var(--ink-soft)}
+.ctrl .row>span:first-child{min-width:62px}
+.bonus{margin-top:12px;padding:12px 14px;border:2px solid var(--gold);background:var(--gold-wash);border-radius:var(--r)}
+.bonus .opts{margin-top:8px}
+.summary{margin-top:12px}
+.miss{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.miss span{background:var(--warn-wash);border:1px solid var(--warn);color:var(--warn);border-radius:99px;padding:2px 10px;font-size:13.5px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-soft);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+@media (max-width:600px){h1{font-size:22px}.prompt{font-size:20px}.clue{font-size:18px}.card{padding:12px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+ <defs>
+  <linearGradient id="gShade" x1="0" y1="0" x2="1" y2="1">
+   <stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/>
+  </linearGradient>
+  <linearGradient id="gShaft" x1="0" y1="0" x2="1" y2="0">
+   <stop offset="0" stop-color="#000" stop-opacity=".2"/><stop offset=".32" stop-color="#fff" stop-opacity=".36"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".24"/>
+  </linearGradient>
+  <pattern id="pSpongy" width="9" height="9" patternUnits="userSpaceOnUse">
+   <circle cx="2.5" cy="2.5" r="1.5" fill="none" stroke="#000" stroke-opacity=".22" stroke-width=".8"/><circle cx="7" cy="6.5" r="1.2" fill="none" stroke="#000" stroke-opacity=".18" stroke-width=".8"/>
+  </pattern>
+ </defs>
+</svg>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Skeleton &middot; USC Upstate</div>
+    <h1>Skeleton Lab</h1>
+    <p class="sub">Chapter 7 (axial skeleton) and Chapter 8 (appendicular skeleton): label it, sort it, chase it.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="label" type="button">Game 1 &middot; Label it</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="vert" type="button">Game 2 &middot; Which vertebra is it?</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="chase" type="button">Game 3 &middot; Bone Chase</button>
+  </div>
+
+  <!-- ============ TAB 1 ============ -->
+  <section id="tab-label">
+    <div class="bigidea"><b>How to play:</b> drag a label from the word bank onto a numbered dot or onto its numbered line in the list. On a phone, <b>tap a label, then tap a number</b>. Tap a filled line to take a label back. Nothing here is graded, so guess freely and use <b>Hint</b> whenever you want.</div>
+    <details class="study" id="lStudy"><summary>Study it first <small>&middot; see every label on this diagram before you play</small></summary><div class="studyin" id="lStudyIn"></div></details>
+    <div class="card">
+      <div class="rounds" id="lRounds"></div>
+      <p class="instr" id="lInstr"></p>
+      <div class="bank" id="lBank" aria-label="Word bank"></div>
+      <div class="lgrid" id="lRoot">
+        <div class="diag" id="lDiag"></div>
+        <div>
+          <div class="scorebox" id="lScore"></div>
+          <ol class="slots" id="lSlots" aria-label="Numbered targets"></ol>
+        </div>
+      </div>
+      <div class="bar" style="margin-top:14px">
+        <button class="btn" id="lCheck" type="button">Check</button>
+        <button class="tbtn" id="lHint" type="button">Hint</button>
+        <button class="tbtn" id="lReveal" type="button">Show answers</button>
+        <button class="tbtn" id="lReset" type="button">Start over</button>
+      </div>
+      <div class="msg" id="lMsg" role="status"></div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 2 ============ -->
+  <section id="tab-vert" hidden>
+    <div class="bigidea"><b>The big idea:</b> every vertebra has the same basic plan (a <b>body</b> in front, a <b>vertebral arch</b> behind it, and processes sticking out), but each region has a <b>giveaway feature</b>. Find the giveaway and you know the region. The adult column has <b>7 cervical</b>, <b>12 thoracic</b> and <b>5 lumbar</b> vertebrae, then the <b>sacrum</b> (5 fused) and the <b>coccyx</b> (3 to 5 fused, usually 4).</div>
+    <details class="study" id="vStudy"><summary>Study it first <small>&middot; every vertebra with its giveaway features labeled</small></summary><div class="studyin" id="vStudyIn"></div></details>
+    <div class="card">
+      <div class="rounds" id="vRounds"></div>
+      <div id="vPlay">
+        <div class="meter"><span>Card <b id="vN">1</b> of <b id="vT"></b></span><span>First-try correct <b id="vOk">0</b></span><span>Streak <b id="vStreak">0</b></span></div>
+        <div class="pbar"><i id="vBar"></i></div>
+        <div class="vgrid" style="margin-top:12px">
+          <div>
+            <div class="pic" id="vPic"></div>
+          </div>
+          <div>
+            <p class="instr" id="vAsk" style="margin:0 0 4px"></p>
+            <div class="clue" id="vClue"></div>
+            <div class="bins" id="vBins"></div>
+            <div id="vQ2wrap" hidden><p class="qlab">Bonus: which cervical vertebra is it?</p><div class="opts" id="vQ2"></div></div>
+            <div class="why" id="vWhy" role="status"></div>
+            <div class="bar" style="margin-top:12px"><button class="btn" id="vNext" type="button" hidden>Next card &rarr;</button><button class="tbtn" id="vRestart" type="button">New deck</button></div>
+          </div>
+        </div>
+      </div>
+      <div id="vMatch" hidden>
+        <p class="instr">Match each feature to its region. Drag a feature into a bin, or tap a feature and then tap a bin. Tap a placed feature to send it back.</p>
+        <div class="bank" id="mBank" aria-label="Features to sort"></div>
+        <div class="mbins" id="mBins"></div>
+        <div class="bar" style="margin-top:14px">
+          <button class="btn" id="mCheck" type="button">Check</button>
+          <button class="tbtn" id="mHint" type="button">Hint</button>
+          <button class="tbtn" id="mReveal" type="button">Show answers</button>
+          <button class="tbtn" id="mNew" type="button">New set</button>
+        </div>
+        <div class="msg" id="mMsg" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 3 ============ -->
+  <section id="tab-chase" hidden>
+    <div class="bigidea"><b>The big idea:</b> the <b>axial skeleton</b> is the central axis: skull, hyoid, vertebral column (including the sacrum and coccyx) and the thoracic cage. The <b>appendicular skeleton</b> is everything that hangs off it: the pectoral and pelvic girdles plus the limbs. Click bones, learn names, and chase your best score.</div>
+    <details class="study" id="cStudy"><summary>Study it first <small>&middot; the whole skeleton with every bone labeled</small></summary><div class="studyin" id="cStudyIn"></div></details>
+    <div class="card">
+      <div class="cgrid">
+        <div class="skwrap" id="skWrap"></div>
+          <div class="ctrl">
+            <div class="row"><span>Mode</span><span class="seg" id="cMode"><button type="button" data-v="see" aria-pressed="true">See it, name it</button><button type="button" data-v="find" aria-pressed="false">Name it, find it</button></span></div>
+            <div class="row"><span>Bones</span><span class="seg" id="cFilter"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="ax" aria-pressed="false">Axial</button><button type="button" data-v="ap" aria-pressed="false">Appendicular</button></span></div>
+            <div class="row"><span>Pace</span><span class="seg" id="cPace"><button type="button" data-v="timed" aria-pressed="true">60-second round</button><button type="button" data-v="relaxed" aria-pressed="false">Relaxed (no timer)</button></span></div>
+          </div>
+          <div class="card cq" style="box-shadow:none;background:var(--panel-2)">
+            <div class="meter"><span>Score <b id="cScore">0</b></span><span>Streak <b id="cStreak">0</b></span><span>Best <b id="cBest">-</b></span><span id="cTimeWrap">Time <b class="timer" id="cTime">60</b></span></div>
+            <div class="prompt" id="cPrompt">Press <b>Start</b> when you are ready.</div>
+            <div class="opts" id="cOpts"></div>
+            <div class="bonus" id="cBonus" hidden><b>Bonus point:</b> is the <span id="cBonusName"></span> part of the axial or the appendicular skeleton?<div class="opts" id="cBonusOpts"></div></div>
+            <div class="why" id="cWhy" role="status"></div>
+            <div class="bar" style="margin:12px 0 0"><button class="btn" id="cStart" type="button">Start</button><button class="btn" id="cNext" type="button" hidden>Next bone &rarr;</button><button class="tbtn" id="cSkip" type="button" hidden>Show me</button><button class="tbtn" id="cStop" type="button" hidden>End round</button></div>
+            <div class="summary" id="cSum"></div>
+          </div>
+          <div class="legend" style="grid-area:leg"><span><i style="background:var(--hl)"></i>Highlighted bone</span><span><i style="background:var(--good-wash);border:1px solid var(--good)"></i>Correct (with a check mark in the text)</span><span><i style="background:var(--warn-wash);border:1px solid var(--warn)"></i>The bone you clicked by mistake</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>
+  <p>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Skeleton Lab for OpenStax Anatomy &amp; Physiology 2e, Chapters 7 and 8.</p>
+  <p>All drawings are original schematic diagrams. Diagrams are simplified and not to scale. Nothing here is graded.</p>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const f=n=>Math.round(n*10)/10;
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+/* ================= GEOMETRY HELPERS ================= */
+function ctrl(pts,closed,i){const N=pts.length;const P=k=>closed?pts[(k+N)%N]:pts[Math.max(0,Math.min(N-1,k))];
+  const p0=P(i-1),p1=P(i),p2=P(i+1),p3=P(i+2);
+  return [p1,[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6],p2]}
+function cr(pts,closed){const N=pts.length,segs=closed?N:N-1;let d=`M${f(pts[0][0])},${f(pts[0][1])}`;
+  for(let i=0;i<segs;i++){const c=ctrl(pts,closed,i);d+=`C${f(c[1][0])},${f(c[1][1])} ${f(c[2][0])},${f(c[2][1])} ${f(c[3][0])},${f(c[3][1])}`}
+  return d+(closed?"Z":"")}
+function sample(pts,closed,n){n=n||14;const N=pts.length,segs=closed?N:N-1,out=[];
+  for(let i=0;i<segs;i++){const c=ctrl(pts,closed,i);for(let k=0;k<n;k++){const t=k/n,u=1-t;
+    out.push([u*u*u*c[0][0]+3*u*u*t*c[1][0]+3*u*t*t*c[2][0]+t*t*t*c[3][0],u*u*u*c[0][1]+3*u*u*t*c[1][1]+3*u*t*t*c[2][1]+t*t*t*c[3][1]])}}
+  out.push(closed?pts[0]:pts[N-1]);return out}
+function zig(pts,amp,step){amp=amp||2.4;step=step||5;const s=sample(pts,false,16);let d=`M${f(s[0][0])},${f(s[0][1])}`,acc=0,sg=1;
+  for(let i=1;i<s.length;i++){const dx=s[i][0]-s[i-1][0],dy=s[i][1]-s[i-1][1],L=Math.hypot(dx,dy);acc+=L;
+    if(acc>=step&&L>0){acc=0;const nx=-dy/L,ny=dx/L;d+=`L${f(s[i][0]+nx*amp*sg)},${f(s[i][1]+ny*amp*sg)}`;sg=-sg}}
+  const e=s[s.length-1];return d+`L${f(e[0])},${f(e[1])}`}
+const mx=(pts,W)=>pts.map(p=>[W-p[0],p[1]]);
+function sym(pts,W){return pts.concat(pts.slice(1,-1).reverse().map(p=>[W-p[0],p[1]]))}
+const bone=(d,cls,lg)=>`<path class="bn ${cls||""}" d="${d}"/><path class="shd${lg?" lg":""}" d="${d}"/>`;
+const shape=(pts,cls,lg)=>bone(cr(pts,true),cls,lg);
+const hole=(pts)=>`<path class="hole" d="${cr(pts,true)}"/>`;
+const E=(cx,cy,rx,ry,cls,extra)=>`<ellipse class="${cls}" cx="${f(cx)}" cy="${f(cy)}" rx="${f(rx)}" ry="${f(ry)}" ${extra||""}/>`;
+const line=(pts,cls)=>`<path class="${cls||"dl"}" d="${cr(pts,false)}"/>`;
+/* union outline: draw edges first (wide stroke), then fills */
+function union(ds,cls){return `<g>${ds.map(d=>`<path d="${d}" fill="var(--be)" stroke="var(--be)" stroke-width="3.2" stroke-linejoin="round"/>`).join("")}${ds.map(d=>`<path class="bn ${cls||""}" style="stroke:none" d="${d}"/>`).join("")}${ds.map(d=>`<path class="shd" d="${d}"/>`).join("")}</g>`}
+const mirrorG=(W,inner)=>`<g transform="translate(${W} 0) scale(-1 1)">${inner}</g>`;
+
+/* ================= DIAGRAMS FOR LABEL IT ================= */
+/* ---- skull, lateral view (face to the left) ---- */
+function skullArt(){
+  const N=[188,212],B=[294,62],L=[414,80],A=[410,268],PT=[268,226],S0=[282,228],S1=[290,266];
+  const FOREHEAD=[N,[182,196],[178,170],[183,136],[198,106],[224,83],[256,68],B];
+  const CORONAL=[B,[290,100],[284,140],[278,180],[272,210],PT];
+  const TOP=[B,[340,56],[384,64],L];
+  const LAMBDOID=[L,[428,128],[430,178],[422,226],A];
+  const SQUAM=[S0,[296,216],[322,206],[352,202],[382,211],[402,236],A];
+  const OCCB=[L,[440,98],[466,126],[482,164],[488,204],[482,242],[470,268],[454,290],[434,306],[418,312]];
+  const OM=[[418,312],[414,292],A];
+  let s="";
+  s+=`<path class="deep" d="${cr(FOREHEAD.concat(TOP.slice(1),OCCB.slice(1),[[404,336],[360,330],[340,350],[300,345],[262,330],[230,334],[176,326],[164,292],[160,252]]),true)}"/>`;
+  s+=`<path class="hole" style="stroke:none" d="${cr([[166,252],[184,258],[188,276],[182,290],[166,292],[172,272]],true)}"/>`;
+  s+=shape(OCCB.concat(OM.slice(1),LAMBDOID.slice(1,-1).reverse()),"t2");
+  s+=shape(TOP.concat(LAMBDOID.slice(1),SQUAM.slice(0,-1).reverse(),[PT],CORONAL.slice(1,-1).reverse()),"");
+  s+=shape(SQUAM.concat([[414,292],[418,312],[413,326],[404,338],[394,332],[388,316],[380,302],[366,300],[356,295],[346,291],[338,292],[318,288],[294,286],[293,272],S1,[287,248]]),"t3");
+  s+=line([[392,318],[398,330],[404,334]],"dl");
+  s+=shape([[365,298],[374,300],[368,318],[358,348],[356,348],[360,318]],"t3");
+  s+=shape(FOREHEAD.concat(CORONAL.slice(1),[[246,234],[238,229],[230,216],[214,207],[198,207]]),"");
+  s+=line([[196,200],[214,196],[232,204]],"dl");
+  s+=shape([PT,S0,[287,248],S1,[272,269],[254,267],[249,250],[246,234]],"t2");
+  /* mandible */
+  s+=shape([[184,360],[180,382],[186,402],[200,414],[240,415],[290,405],[322,395],[334,384],[338,366],[342,340],[345,316],[348,304],[340,298],[338,290],[346,284],[358,285],[364,293],[358,302],[352,306],[350,314],[338,310],[326,312],[312,312],[300,300],[290,282],[284,288],[281,318],[278,340],[272,358],[240,362],[210,362]],"t2");
+  s+=line([[282,330],[266,360],[250,372]],"dl");
+  const teeth=(y0,y1,up)=>{let t="";const xs=[[176,184],[184,192],[192,200],[200,209],[209,219],[219,231],[231,245],[245,259]];
+    xs.forEach(([a,b])=>{const m=(a+b)/2;t+=up?`<path class="tooth" d="M${a+.5},${y0}L${b-.5},${y0}L${b-1},${y1-3}Q${m},${y1+1} ${a+1},${y1-3}Z"/>`:`<path class="tooth" d="M${a+1},${y1}L${b-1},${y1}L${b-1},${y0+3}Q${m},${y0-1} ${a+1},${y0+3}Z"/>`});return t};
+  s+=teeth(323,342,true)+teeth(343,361,false);
+  s+=shape([[194,214],[198,236],[204,262],[214,266],[218,288],[228,298],[242,300],[256,298],[264,308],[262,322],[250,326],[220,328],[188,326],[176,320],[170,306],[164,293],[176,290],[184,280],[186,266],[178,256],[186,236]],"t3");
+  s+=line([[226,302],[214,306],[200,304]],"dl");
+  /* recess above the arch, then the arch (zygomatic process of temporal) */
+  s+=`<path class="deep" opacity=".7" d="${cr([[294,264],[318,265],[336,272],[338,278],[318,272],[294,271]],true)}"/>`;
+  s+=shape([[292,270],[316,270],[332,274],[342,282],[340,292],[326,290],[306,289],[292,289]],"t3");
+  /* zygomatic incl. temporal process */
+  s+=shape([[222,236],[238,229],[246,234],[249,250],[254,266],[272,268],[296,270],[296,289],[272,289],[256,293],[242,300],[228,298],[218,288],[214,268],[216,250]],"");
+  s+=hole([[198,211],[214,208],[230,214],[238,226],[234,244],[224,260],[208,264],[198,254],[193,234]]);
+  s+=`<path d="${cr([[200,218],[214,214],[226,220],[222,238],[210,252],[202,244]],true)}" fill="#000" opacity=".25"/>`;
+  s+=shape([[188,212],[194,214],[187,236],[177,252],[164,252],[172,232],[182,214]],"t2");
+  s+=E(374,284,8.5,10,"hole");s+=E(375,286,4,5,"hole","style='stroke:none;fill:#000;opacity:.35'");
+  s+=E(214,388,4.2,3.2,"hole");
+  s+=`<path class="sut" d="${zig(CORONAL)}"/><path class="sut" d="${zig(LAMBDOID)}"/><path class="sut" d="${zig(SQUAM,1.8,6)}"/>`;
+  s+=`<path class="sut" d="${zig([PT,[258,230],[246,234]],1.6,4)}"/><path class="sut" d="${zig([S0,[287,248],S1],1.6,4)}"/>`;
+  s+=`<path class="sut" d="${zig([[295,271],[295,288]],1.4,3)}"/><path class="sut" d="${zig(OM,1.8,5)}"/>`;
+  s+=line([[238,229],[246,234]],"sut");
+  return s}
+
+/* ---- typical vertebra superior view ---- */
+function typVertArt(){
+  const W=640;let s="";
+  const half=[
+    cr([[262,268],[282,264],[284,226],[262,222]],true),
+    cr([[276,232],[250,222],[206,206],[176,198],[164,190],[168,178],[190,177],[232,186],[268,194],[284,206]],true),
+    cr([[262,216],[282,212],[318,170],[322,148],[300,148],[262,186]],true),
+    cr([[248,214],[244,198],[256,184],[276,184],[288,198],[284,214],[266,220]],true)];
+  const spin=cr([[304,172],[336,172],[332,120],[329,74],[320,56],[311,74],[308,120]],true);
+  const ds=half.concat([spin]);
+  s+=`<g>${ds.map(d=>`<path d="${d}" fill="var(--be)" stroke="var(--be)" stroke-width="3.2" stroke-linejoin="round"/>`).join("")}<g transform="translate(${W} 0) scale(-1 1)">${half.map(d=>`<path d="${d}" fill="var(--be)" stroke="var(--be)" stroke-width="3.2" stroke-linejoin="round"/>`).join("")}</g>`;
+  s+=ds.map(d=>`<path class="bn" style="stroke:none" d="${d}"/><path class="shd" d="${d}"/>`).join("")+`<g transform="translate(${W} 0) scale(-1 1)">${half.map(d=>`<path class="bn" style="stroke:none" d="${d}"/><path class="shd" d="${d}"/>`).join("")}</g></g>`;
+  const facets=E(266,198,15,10,"facet")+line([[262,224],[272,214]],"dl")+line([[284,212],[296,196]],"dl");
+  s+=facets+mirrorG(W,facets);
+  s+=line([[318,166],[320,120],[320,80]],"dl");
+  /* body */
+  const body=[[320,262],[270,258],[236,272],[222,306],[238,346],[280,368],[320,372],[360,368],[402,346],[418,306],[404,272],[370,258]];
+  s+=shape(body,"t3");
+  const inner=body.map(p=>[320+(p[0]-320)*.84,315+(p[1]-315)*.8]);
+  s+=`<path class="bn t2" style="stroke-width:.8" d="${cr(inner,true)}"/><path class="spg" d="${cr(inner,true)}"/>`;
+  s+=hole([[320,252],[292,248],[286,230],[293,207],[306,188],[320,180],[334,188],[347,207],[354,230],[348,248]]);
+  s+=`<text class="orient" x="320" y="402" text-anchor="middle">anterior</text><text class="orient" x="320" y="30" text-anchor="middle">posterior</text>`;
+  return s}
+
+/* ---- pelvis anterior view ---- */
+function pelvisArt(){
+  const W=640;
+  const coxa=[[292,132],[262,104],[222,84],[180,82],[146,98],[128,124],[124,150],[128,166],[136,182],[140,198],[150,214],[146,232],[142,256],[150,284],[162,310],[170,340],[178,368],[192,388],[212,390],[232,378],[260,364],[290,353],[310,348],[315,330],[313,312],[304,304],[284,296],[264,286],[252,272],[248,256],[262,232],[278,206],[286,178],[292,150]];
+  const obt=[[226,288],[248,292],[266,306],[272,326],[262,344],[244,350],[224,342],[212,322],[212,300]];
+  let h=`<clipPath id="cpCoxa"><path d="${cr(coxa,true)}"/></clipPath>`;
+  h+=shape(coxa,"");
+  h+=`<g clip-path="url(#cpCoxa)">`;
+  h+=`<path class="bn t2" style="stroke:none" d="${cr([[110,256],[174,256],[206,294],[212,322],[224,344],[244,352],[246,384],[200,392],[156,372],[124,300]],true)}"/>`;
+  h+=`<path class="bn t3" style="stroke:none" d="${cr([[174,256],[226,272],[262,286],[284,296],[310,300],[322,330],[318,354],[290,362],[250,374],[244,352],[262,344],[272,326],[266,306],[248,292],[226,288],[206,294]],true)}"/>`;
+  h+=`<path class="shd" d="${cr(coxa,true)}"/></g>`;
+  h+=line([[174,256],[156,296],[160,326]],"rough")+line([[174,256],[224,270],[248,282]],"rough")+line([[174,256],[150,222]],"rough");
+  h+=line([[290,152],[272,196],[260,236],[262,268],[284,294]],"dl");
+  h+=line([[244,354],[256,366]],"rough");
+  h+=hole(obt);
+  h+=E(174,256,32,32,"bn","style='fill:var(--bf2)'")+`<path class="facet" d="M146,256 A28 28 0 1 1 202,256 L189,263 A15 15 0 1 0 159,263 Z" transform="rotate(25 174 256)"/>`+E(174,256,14,14,"hole","style='opacity:.55'");
+  h+=line([[236,104],[196,128],[184,190]],"rough");
+  let s=h+mirrorG(W,h.replace('id="cpCoxa"','id="cpCoxaR"').replace(/url\(#cpCoxa\)/g,"url(#cpCoxaR)"));
+  s+=shape([[296,114],[344,114],[350,134],[290,134]],"t2");s+=line([[298,124],[342,124]],"dl");
+  const sac=[[284,146],[300,138],[320,136],[340,138],[356,146],[362,166],[358,196],[346,226],[334,250],[324,262],[320,264],[316,262],[306,250],[294,226],[282,196],[278,166]];
+  s+=shape(sac,"t3");
+  s+=line([[298,142],[320,150],[342,142]],"dl");
+  [[166,64],[192,56],[217,44],[240,30]].forEach(([y,w])=>s+=line([[320-w/2,y],[320,y+2],[320+w/2,y]],"dl"));
+  [[178,28,5.5],[204,24,5],[229,18,4.2],[250,12,3.2]].forEach(([y,dx,r])=>s+=E(320-dx,y,r,r*.9,"hole")+E(320+dx,y,r,r*.9,"hole"));
+  [[266,278,11],[280,290,8],[292,300,6],[302,309,4]].forEach(([y0,y1,w])=>s+=shape([[320-w,y0],[320+w,y0],[320+w-1.5,y1],[320,y1+2],[320-w+1.5,y1]],"t2"));
+  s+=`<rect class="facet" x="312" y="304" width="16" height="46" rx="5"/>`;
+  return s}
+
+/* ---- femur anterior (right) ---- */
+function femurArt(){
+  let s="";
+  const out=[[236,80],[252,88],[262,108],[286,100],[300,88],[306,122],[296,140],[284,160],[290,176],[302,186],[298,198],[286,198],[284,240],[286,320],[292,400],[312,430],[336,442],[348,462],[344,490],[328,508],[304,504],[290,494],[276,502],[250,506],[230,492],[222,466],[230,442],[244,424],[238,340],[226,240],[218,170],[214,130],[222,96]];
+  s+=shape(out,"",true);
+  s+=E(328,94,36,36,"bn")+E(328,94,36,36,"shd");
+  s+=E(342,98,5,4,"hole","style='opacity:.6'");
+  s+=line([[296,72],[292,96],[300,126]],"dl");
+  s+=line([[258,114],[268,140],[284,170],[292,182]],"rough");
+  s+=line([[240,96],[244,120],[248,140]],"dl");
+  s+=`<path class="facet" d="${cr([[256,452],[280,446],[304,452],[308,472],[296,490],[278,486],[262,490],[250,472]],true)}"/>`;
+  s+=line([[278,452],[278,484]],"dl");
+  s+=line([[236,450],[234,470],[244,494]],"dl")+line([[322,452],[330,472],[326,500]],"dl");
+  s+=line([[258,180],[262,300],[266,410]],"rough");
+  return s}
+
+/* ---- humerus anterior (right) ---- */
+function humerusArt(){
+  let s="";
+  const out=[[238,84],[256,72],[278,78],[300,92],[310,128],[300,160],[296,200],[296,260],[300,330],[318,400],[350,436],[362,446],[360,462],[338,480],[332,490],[318,500],[300,502],[284,496],[276,488],[262,492],[244,486],[230,470],[222,452],[236,430],[248,380],[240,300],[236,262],[232,236],[240,200],[240,170],[226,128],[226,98]];
+  s+=shape(out,"",true);
+  s+=E(322,94,36,37,"bn")+E(322,94,36,37,"shd");
+  s+=line([[296,64],[290,92],[296,124],[312,132]],"dl");
+  /* sulcus */
+  s+=`<path d="${cr([[264,92],[272,94],[275,130],[274,186],[270,188],[267,130]],true)}" fill="var(--deep)" opacity=".55"/>`;
+  s+=E(290,144,11,17,"bn t3")+E(290,144,11,17,"shd");
+  s+=line([[232,100],[252,96],[262,92]],"dl");
+  /* deltoid tuberosity */
+  s+=`<path class="bn t2" d="${cr([[234,234],[242,238],[244,268],[238,290],[232,272]],true)}"/>`+line([[237,244],[239,264],[236,280]],"rough");
+  s+=line([[240,176],[270,182],[298,176]],"rough");
+  /* distal */
+  s+=E(306,444,14,10,"hole","style='opacity:.45'")+E(258,446,8,7,"hole","style='opacity:.45'");
+  s+=E(256,476,19,16,"facet");
+  s+=`<path class="facet" d="${cr([[280,476],[296,466],[316,466],[332,474],[330,492],[318,500],[300,502],[284,496]],true)}"/>`;
+  s+=line([[306,468],[304,486],[306,500]],"dl");
+  return s}
+
+const DIAGRAMS=[
+ {id:"skull",name:"Skull, lateral view",vb:"-60 0 760 500",pvb:"110 6 440 480",L:140,R:520,T:36,B:452,maxw:900,draw:skullArt,
+  blurb:"The skull from the left side, face pointing left. Bones are the big plates; sutures are the wavy seams between them.",
+  t:[["frontal","frontal bone",[226,142],"l",112],["nasal","nasal bone",[180,232],"l",196],["sphen","sphenoid (greater wing)",[268,248],"l",240],["zyg","zygomatic bone",[232,274],"l",282],["max","maxilla",[224,310],"l",322],["mentf","mental foramen",[214,388],"l",364],["mand","mandible",[254,396],"l",410],
+     ["coronal","coronal suture",[282,150],"t",250],["parietal","parietal bone",[360,130],"t",400],
+     ["squam","squamous suture",[352,202],"r",110],["lambdoid","lambdoid suture",[429,172],"r",156],["occ","occipital bone",[460,200],"r",202],["temporal","temporal bone",[350,244],"r",246],["eam","external acoustic meatus",[374,284],"r",290],["mastoid","mastoid process",[404,330],"r",334],["styloid","styloid process",[362,336],"r",378],
+     ["condyle","mandibular condyle",[354,294],"b",470],["arch","zygomatic arch",[318,281],"b",330],["coronoid","coronoid process",[290,300],"b",190]]},
+ {id:"vert",name:"Typical vertebra, superior view",vb:"-80 10 770 410",pvb:"94 10 452 410",L:120,R:520,T:20,B:400,maxw:720,draw:typVertArt,
+  blurb:"A vertebra seen from above. The front (anterior) is at the bottom, so the spinous process points up toward the back.",
+  t:[["sap","superior articular process",[262,198],"l",150],["ped","pedicle",[272,244],"l",250],["body","body",[300,330],"l",330],
+     ["spin","spinous process",[320,96],"r",86],["lam","lamina",[346,182],"r",160],["trans","transverse process",[454,192],"r",214],["vf","vertebral foramen",[320,222],"r",268]]},
+ {id:"pelvis",name:"Pelvis, anterior view",vb:"-170 40 920 440",pvb:"36 36 568 440",L:60,R:580,T:50,B:448,maxw:860,draw:pelvisArt,
+  blurb:"The pelvis from the front. Each hip bone (os coxae) is three fused bones: ilium, ischium and pubis. The sacrum and coccyx sit in the back.",
+  t:[["crest","iliac crest",[200,84],"l",80],["ilium","ilium",[200,160],"l",140],["asis","anterior superior iliac spine",[128,166],"l",196],["acet","acetabulum",[174,256],"l",262],
+     ["sacrum","sacrum",[338,190],"r",130],["pubis","pubis",[364,300],"r",250],["obt","obturator foramen",[400,320],"r",320],["isch","ischium",[458,350],"r",390],
+     ["symph","pubic symphysis",[320,330],"b",400],["coccyx","coccyx",[320,284],"b",240]]},
+ {id:"femur",name:"Femur, anterior view",vb:"-90 30 730 530",pvb:"96 30 398 530",L:120,R:470,T:40,B:540,maxw:560,draw:femurArt,
+  blurb:"A right femur seen from the front. The head points medially (toward the body's midline), so here it points to the right.",
+  t:[["gt","greater trochanter",[232,104],"l",96],["neck","neck",[284,124],"l",170],["shaft","shaft",[260,300],"l",300],["lc","lateral condyle",[238,486],"l",470],
+     ["head","head",[336,82],"r",70],["lt","lesser trochanter",[298,188],"r",190],["mc","medial condyle",[332,494],"r",480],["pat","patellar surface",[282,468],"r",400]]},
+ {id:"humerus",name:"Humerus, anterior view",vb:"-90 30 730 500",pvb:"96 30 398 500",L:120,R:470,T:40,B:520,maxw:560,draw:humerusArt,
+  blurb:"A right humerus seen from the front. The head points medially, toward the shoulder blade, so here it points to the right.",
+  t:[["gtub","greater tubercle",[240,106],"l",90],["sulc","intertubercular sulcus",[271,160],"l",160],["sneck","surgical neck",[262,200],"l",220],["delt","deltoid tuberosity",[238,262],"l",280],["le","lateral epicondyle",[228,456],"l",420],["cap","capitulum",[252,478],"l",480],
+     ["hhead","head",[332,86],"r",70],["ltub","lesser tubercle",[292,146],"r",150],["me","medial epicondyle",[354,452],"r",420],["troch","trochlea",[312,486],"r",490]]}
+];
+/* number targets clockwise: top (x asc), right (y asc), bottom (x desc), left (y desc) */
+DIAGRAMS.forEach(D=>{const pos=t=>t[3]==="l"?[D.L,t[4]]:t[3]==="r"?[D.R,t[4]]:t[3]==="t"?[t[4],D.T]:[t[4],D.B];
+  const key=t=>t[3]==="t"?[0,t[4]]:t[3]==="r"?[1,t[4]]:t[3]==="b"?[2,-t[4]]:[3,-t[4]];
+  D.targets=D.t.map(t=>({id:t[0],name:t[1],a:t[2],side:t[3],d:pos(t)})).sort((a,b)=>{const ka=key([0,0,0,a.side,a.side==="t"||a.side==="b"?a.d[0]:a.d[1]]),kb=key([0,0,0,b.side,b.side==="t"||b.side==="b"?b.d[0]:b.d[1]]);return ka[0]-kb[0]||ka[1]-kb[1]});
+  D.targets.forEach((t,i)=>t.n=i+1)});
+
+function diagramSVG(D,mode){/* mode: "play" | "study" */
+  const VB=mode==="play"?D.pvb:D.vb,vb=VB.split(" ").map(Number);
+  let s=`<svg viewBox="${VB}" role="img" aria-label="${D.name}${mode==="study"?" with all labels":" with numbered targets"}"><rect class="bgp" x="${vb[0]}" y="${vb[1]}" width="${vb[2]}" height="${vb[3]}"/>`;
+  s+=D.draw();
+  s+=`<g>`+D.targets.map(t=>`<line class="lead" x1="${t.d[0]}" y1="${t.d[1]}" x2="${t.a[0]}" y2="${t.a[1]}"/><circle class="anc" cx="${t.a[0]}" cy="${t.a[1]}" r="2.8"/>`).join("")+`</g>`;
+  D.targets.forEach(t=>{
+    s+=`<g class="dot" data-drop="${t.id}" data-n="${t.n}" ${mode==="play"?`role="button" tabindex="0" aria-label="Target ${t.n}"`:""}><circle cx="${t.d[0]}" cy="${t.d[1]}" r="12"/><text x="${t.d[0]}" y="${t.d[1]+4.2}">${t.n}</text></g>`;
+    if(mode==="study"){const [x,y]=t.d;let tx=x,ty=y+4.5,an="middle";
+      if(t.side==="l"){tx=x-17;an="end"}else if(t.side==="r"){tx=x+17;an="start"}else if(t.side==="t"){ty=y-18}else{ty=y+30}
+      s+=`<text class="slab" x="${tx}" y="${ty}" text-anchor="${an}">${t.name}</text>`}});
+  return s+`</svg>`}
+
+/* ================= SHARED DRAG / TAP ================= */
+let SEL=null;
+function clearSel(){if(SEL){SEL.el.classList.remove("sel");SEL.el.setAttribute("aria-pressed","false");SEL.ctx.root.classList.remove("armed")}SEL=null}
+function select(ctx,cid,el,toggle){if(SEL&&SEL.el===el&&toggle){clearSel();ctx.onSelect&&ctx.onSelect(null);return}
+  clearSel();SEL={ctx,cid,el};el.classList.add("sel");el.setAttribute("aria-pressed","true");ctx.root.classList.add("armed");ctx.onSelect&&ctx.onSelect(cid)}
+let overEl=null;
+function setOver(el){if(overEl===el)return;if(overEl)overEl.classList.remove("over");overEl=el;if(el)el.classList.add("over")}
+function dropTarget(ctx,x,y){const el=document.elementFromPoint(x,y);if(!el)return null;const t=el.closest("[data-drop]");return t&&ctx.root.contains(t)?t:null}
+function makeChip(ctx,cid,text,cls){const b=document.createElement("button");b.type="button";b.className=cls||"chip";b.textContent=text;b.dataset.cid=cid;b.setAttribute("aria-pressed","false");
+  let st=null,drag=false,ghost=null,noclick=false;
+  b.addEventListener("pointerdown",e=>{if(e.button>0)return;st={x:e.clientX,y:e.clientY};drag=false;try{b.setPointerCapture(e.pointerId)}catch(_){}});
+  b.addEventListener("pointermove",e=>{if(!st)return;const dx=e.clientX-st.x,dy=e.clientY-st.y;
+    if(!drag&&dx*dx+dy*dy>49){drag=true;ghost=document.createElement("div");ghost.className="chip ghost";ghost.textContent=text;document.body.appendChild(ghost);select(ctx,cid,b,false)}
+    if(drag){ghost.style.left=e.clientX+"px";ghost.style.top=e.clientY+"px";setOver(dropTarget(ctx,e.clientX,e.clientY))}});
+  const end=e=>{if(!st)return;if(drag){const t=e.type==="pointerup"?dropTarget(ctx,e.clientX,e.clientY):null;if(ghost)ghost.remove();ghost=null;setOver(null);noclick=true;setTimeout(()=>noclick=false,60);
+      if(t){clearSel();ctx.drop(cid,t.dataset.drop)}}
+    st=null;drag=false};
+  b.addEventListener("pointerup",end);b.addEventListener("pointercancel",end);
+  b.addEventListener("click",()=>{if(noclick)return;select(ctx,cid,b,true)});
+  return b}
+function bindTarget(ctx,el){const go=()=>{if(SEL&&SEL.ctx===ctx){const c=SEL.cid;clearSel();ctx.drop(c,el.dataset.drop)}else ctx.tapTarget(el.dataset.drop)};
+  el.addEventListener("click",go);
+  if(el.tagName!=="BUTTON")el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}})}
+
+/* ================= GAME 1: LABEL IT ================= */
+const LG={d:0,placed:{},order:[],marks:{},checks:0,hints:0,done:false};
+const lctx={root:$("#lRoot"),drop:(cid,tid)=>lDrop(cid,tid),tapTarget:tid=>{if(LG.placed[tid]&&!LG.done){delete LG.placed[tid];LG.marks={};lRender();setLMsg("")}}};
+lctx.root=$("#tab-label");
+function lBest(){return store.get("skl-label-best")||{}}
+function lRounds(){const best=lBest();$("#lRounds").innerHTML="";DIAGRAMS.forEach((D,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===LG.d);
+  b.innerHTML=D.name+(best[D.id]!=null?`<span class="ok">${best[D.id]===D.targets.length?"&#10003; ":""}best ${best[D.id]}/${D.targets.length}</span>`:"");b.onclick=()=>{LG.d=i;lNew()};$("#lRounds").appendChild(b)})}
+function lNew(){const D=DIAGRAMS[LG.d];LG.placed={};LG.marks={};LG.checks=0;LG.hints=0;LG.done=false;LG.order=shuffle(D.targets.map(t=>t.id));clearSel();
+  $("#lInstr").innerHTML=`<b>${D.name}.</b> ${D.blurb}`;
+  $("#lDiag").style.maxWidth=Math.round(D.maxw*0.75)+"px";
+  $("#lDiag").innerHTML=diagramSVG(D,"play");
+  $$("#lDiag .dot").forEach(el=>bindTarget(lctx,el));
+  const ol=$("#lSlots");ol.innerHTML="";
+  D.targets.forEach(t=>{const li=document.createElement("li");const b=document.createElement("button");b.type="button";b.className="slot";b.dataset.drop=t.id;
+    b.innerHTML=`<span class="num">${t.n}</span><span class="val"></span><span class="mk" aria-hidden="true"></span>`;bindTarget(lctx,b);li.appendChild(b);ol.appendChild(li)});
+  lRounds();lRender();setLMsg("");lStudy()}
+function lStudy(){const D=DIAGRAMS[LG.d];$("#lStudyIn").innerHTML=`<p class="instr">${D.blurb}</p><div class="diag" style="max-width:${D.maxw}px">${diagramSVG(D,"study")}</div><ol class="keylist">${D.targets.map(t=>`<li>${t.name}</li>`).join("")}</ol>`}
+function lDrop(cid,tid){if(LG.done)return;for(const k in LG.placed)if(LG.placed[k]===cid)delete LG.placed[k];LG.placed[tid]=cid;LG.marks={};lRender();setLMsg("")}
+function lRender(){const D=DIAGRAMS[LG.d];const name=id=>D.targets.find(t=>t.id===id).name;
+  const bank=$("#lBank");bank.innerHTML="";const used=new Set(Object.values(LG.placed));
+  LG.order.filter(id=>!used.has(id)).forEach(id=>bank.appendChild(makeChip(lctx,id,name(id))));
+  D.targets.forEach(t=>{const sl=$(`#lSlots [data-drop="${t.id}"]`),dt=$(`#lDiag .dot[data-drop="${t.id}"]`);const p=LG.placed[t.id],m=LG.marks[t.id];
+    sl.className="slot"+(p?" filled":"")+(m?" "+m:"");sl.querySelector(".val").textContent=p?name(p):"drop a label here";
+    sl.querySelector(".mk").textContent=m==="right"?"✓":m==="wrong"?"✗":"";
+    sl.setAttribute("aria-label",`Target ${t.n}: ${p?name(p):"empty"}${m==="right"?", correct":m==="wrong"?", not correct":""}`);
+    dt.setAttribute("class","dot"+(p?" filled":"")+(m&&m!=="hinted"?" "+m:"")+(m==="hinted"?" hinted":""));
+    dt.setAttribute("aria-label",`Target ${t.n}: ${p?name(p):"empty"}`)});
+  const n=Object.keys(LG.placed).length;$("#lScore").innerHTML=`Placed <b>${n}</b> of <b>${D.targets.length}</b>`+(LG.checks?` &middot; checks <b>${LG.checks}</b>`:"")+(LG.hints?` &middot; hints <b>${LG.hints}</b>`:"")}
+function setLMsg(t,c){const m=$("#lMsg");m.className="msg"+(t?" show "+(c||"info"):"");m.innerHTML=t||""}
+$("#lCheck").onclick=()=>{if(LG.done)return;const D=DIAGRAMS[LG.d];LG.checks++;let ok=0;
+  D.targets.forEach(t=>{const p=LG.placed[t.id];if(!p){delete LG.marks[t.id];return}if(p===t.id){ok++;LG.marks[t.id]="right"}else LG.marks[t.id]="wrong"});
+  lRender();const total=D.targets.length,wrong=D.targets.filter(t=>LG.marks[t.id]==="wrong");
+  const best=lBest();if(best[D.id]==null||ok>best[D.id]){best[D.id]=ok;store.set("skl-label-best",best)}
+  if(ok===total){LG.done=true;const stars=LG.hints===0&&LG.checks<=2?3:LG.hints<=2?2:1;
+    setLMsg(`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>All ${total} correct!</b> Checks used: ${LG.checks}. Hints used: ${LG.hints}.`+(LG.d<DIAGRAMS.length-1?` <button class="tbtn" id="lNext" type="button" style="margin-left:6px">Next diagram &rarr;</button>`:" That was the last diagram. Try Game 2 next."),"good");
+    const nb=$("#lNext");if(nb)nb.onclick=()=>{LG.d++;lNew()}}
+  else{let t=`<b>${ok} of ${total} correct.</b> `;
+    if(wrong.length)t+=`Not quite on number${wrong.length>1?"s":""} ${wrong.map(w=>w.n).join(", ")}. `+lTip(wrong[0])+" Wrong labels stay put so you can move them.";
+    else t+="Everything you placed is right. Keep going with the rest.";
+    setLMsg(t,"warn")}
+  lRounds()};
+function lTip(t){const D=DIAGRAMS[LG.d];const placed=D.targets.find(x=>x.id===LG.placed[t.id]);return `On number ${t.n} you put <b>${placed.name}</b>. ${TIPS[placed.id]||""}`}
+const TIPS={frontal:"The frontal bone is the forehead, in front of the coronal suture.",parietal:"The parietal bone is the big roof plate between the coronal and lambdoid sutures.",temporal:"The temporal bone is at the side, below the squamous suture, around the ear canal.",occ:"The occipital bone is the back of the skull, behind the lambdoid suture.",sphen:"The greater wing of the sphenoid is the small patch at the temple, just behind the eye socket and in front of the temporal bone.",zyg:"The zygomatic bone is the cheekbone under the eye socket.",max:"The maxilla holds the upper teeth.",mand:"The mandible is the lower jaw, the only movable skull bone.",nasal:"The nasal bones form the bridge of the nose.",coronal:"The coronal suture runs across the top of the head from side to side, between frontal and parietal bones.",squam:"The squamous suture is the arched seam above the temporal bone.",lambdoid:"The lambdoid suture is at the back, shaped like the Greek letter lambda, between parietal and occipital bones.",eam:"The external acoustic meatus is the ear canal opening in the temporal bone.",mastoid:"The mastoid process is the rounded bump behind and below the ear canal.",styloid:"The styloid process is the thin spike pointing down in front of the mastoid.",arch:"The zygomatic arch is the bony bridge of the cheek, made by the zygomatic and temporal bones.",condyle:"The mandibular condyle is the knob at the back of the ramus that sits in front of the ear canal.",coronoid:"The coronoid process is the front, pointed tip of the ramus, tucked under the zygomatic arch.",mentf:"The mental foramen is the small hole on the front of the mandible below the premolars.",
+ body:"The body is the big, weight-bearing drum in front.",vf:"The vertebral foramen is the hole the spinal cord passes through.",ped:"Pedicles are the short stalks that connect the body to the arch.",lam:"Laminae are the flat plates that meet behind the spinal cord to form the back of the arch.",spin:"The spinous process sticks straight back in the midline.",trans:"Transverse processes stick out to each side.",sap:"Superior articular processes point upward with a smooth facet where the vertebra above sits.",
+ ilium:"The ilium is the large, fan-shaped upper part of the hip bone.",crest:"The iliac crest is the curved upper rim of the ilium, where you rest your hands on your hips.",asis:"The anterior superior iliac spine is the front end of the iliac crest.",ischium:"The ischium is the lower, back part of the hip bone that you sit on.",isch:"The ischium is the lower, back part of the hip bone that you sit on.",pubis:"The pubis is the front part of the hip bone, near the midline.",symph:"The pubic symphysis is the cartilage joint between the two pubic bones in the midline.",acet:"The acetabulum is the deep cup on the side of the hip bone for the head of the femur.",obt:"The obturator foramen is the large hole below the acetabulum, framed by the pubis and ischium.",sacrum:"The sacrum is the triangle of fused vertebrae in the back of the pelvis.",coccyx:"The coccyx is the small tailbone below the sacrum.",
+ head:"The head is the ball that fits into the acetabulum.",neck:"The neck is the narrow part between the head and the trochanters, a common fracture site in older adults.",gt:"The greater trochanter is the big lateral bump at the top of the femur.",lt:"The lesser trochanter is the smaller bump on the medial side, below the neck.",shaft:"The shaft is the long middle part.",mc:"The medial condyle is the rounded knuckle at the bottom on the medial side.",lc:"The lateral condyle is the rounded knuckle at the bottom on the lateral side.",pat:"The patellar surface is the smooth groove on the front where the kneecap glides.",
+ hhead:"The head is the smooth half-ball that meets the scapula.",gtub:"The greater tubercle is the large lateral bump at the top of the humerus.",ltub:"The lesser tubercle is the smaller bump on the front.",sulc:"The intertubercular sulcus is the groove between the two tubercles.",sneck:"The surgical neck is the narrowing just below the tubercles, a common fracture site.",delt:"The deltoid tuberosity is the rough patch halfway down the lateral shaft.",cap:"The capitulum is the round knob on the lateral side of the elbow end, for the radius.",troch:"The trochlea is the spool-shaped surface on the medial side, for the ulna.",me:"The medial epicondyle is the big bump on the medial side (your funny bone area).",le:"The lateral epicondyle is the smaller bump on the lateral side."};
+$("#lHint").onclick=()=>{if(LG.done)return;const D=DIAGRAMS[LG.d];
+  if(SEL&&SEL.ctx===lctx){const t=D.targets.find(x=>x.id===SEL.cid);LG.hints++;$$("#tab-label .hinted").forEach(e=>e.classList.remove("hinted"));
+    $(`#lSlots [data-drop="${t.id}"]`).classList.add("hinted");$(`#lDiag .dot[data-drop="${t.id}"]`).classList.add("hinted");
+    setLMsg(`Hint: <b>${t.name}</b> goes on number <b>${t.n}</b> (now glowing gold). ${TIPS[t.id]||""}`,"info");lRender2();return}
+  const t=D.targets.find(x=>LG.placed[x.id]!==x.id);if(!t)return;LG.hints++;
+  for(const k in LG.placed)if(LG.placed[k]===t.id)delete LG.placed[k];LG.placed[t.id]=t.id;LG.marks={};LG.marks[t.id]="hinted";lRender();
+  setLMsg(`Hint: number <b>${t.n}</b> is the <b>${t.name}</b>. ${TIPS[t.id]||""} Tip: select a label first, then press Hint to see where that label goes.`,"info")};
+function lRender2(){const n=Object.keys(LG.placed).length;$("#lScore").innerHTML=`Placed <b>${n}</b> of <b>${DIAGRAMS[LG.d].targets.length}</b> &middot; hints <b>${LG.hints}</b>`}
+$("#lReveal").onclick=()=>{const D=DIAGRAMS[LG.d];LG.placed={};LG.marks={};D.targets.forEach(t=>{LG.placed[t.id]=t.id;LG.marks[t.id]="right"});LG.done=true;clearSel();lRender();
+  setLMsg("Here are all the answers. Study them for a minute, then press <b>Start over</b> and try from memory.","info")};
+$("#lReset").onclick=lNew;
+
+/* ================= VERTEBRA DRAWINGS ================= */
+const REG={C:{name:"Cervical",col:"--rC",count:"7 vertebrae, C1 to C7"},T:{name:"Thoracic",col:"--rT",count:"12 vertebrae, T1 to T12"},L:{name:"Lumbar",col:"--rL",count:"5 vertebrae, L1 to L5"},S:{name:"Sacrum",col:"--rS",count:"5 fused vertebrae"},X:{name:"Coccyx",col:"--rX",count:"3 to 5 fused, usually 4"}};
+const H=(hl,k)=>hl&&hl.includes(k)?" hl":"";
+function call(x,y,tx,ty,text,an){return `<path class="callL" d="M${x},${y}L${tx},${ty}"/><text class="call" x="${tx+(an==="end"?-4:an==="start"?4:0)}" y="${ty+(ty<y?-4:12)}" text-anchor="${an||"middle"}">${text}</text>`}
+/* generic union of half shapes mirrored around cx */
+function archUnion(halfDs,midDs,cx){const W=2*cx;const edge=d=>`<path d="${d}" fill="var(--be)" stroke="var(--be)" stroke-width="3" stroke-linejoin="round"/>`,fill=d=>`<path class="bn" style="stroke:none" d="${d}"/><path class="shd" d="${d}"/>`;
+  return `<g>${halfDs.map(edge).join("")}${mirrorG(W,halfDs.map(edge).join(""))}${midDs.map(edge).join("")}${halfDs.map(fill).join("")}${mirrorG(W,halfDs.map(fill).join(""))}${midDs.map(fill).join("")}</g>`}
+const vlabel=(x,y,t)=>`<text class="orient" x="${x}" y="${y}" text-anchor="middle">${t}</text>`;
+function hlShape(pts,closed,hl,k){return hl&&hl.includes(k)?`<path class="callL hl" style="fill:none" d="${cr(pts,closed!==false)}"/>`:""}
+
+function cervSup(hl,lab){let s="";const cx=150;
+  const half=[cr([[112,174],[124,174],[124,148],[112,148]],true),cr([[116,170],[86,174],[68,166],[62,150],[74,138],[100,138],[118,146]],true),cr([[104,132],[122,130],[150,98],[150,86],[138,88],[106,116]],true),cr([[96,138],[100,126],[116,122],[128,128],[128,142],[114,146]],true)];
+  const sp=cr([[140,100],[160,100],[162,82],[172,64],[162,58],[154,74],[150,77],[146,74],[138,58],[128,64],[138,82]],true);
+  s+=archUnion(half,[sp],cx);
+  const fac=E(112,134,11,7,"facet");s+=fac+mirrorG(300,fac);
+  const tf=E(86,156,8,7,"hole"+H(hl,"tf"));s+=tf+mirrorG(300,tf);
+  const body=[[108,176],[150,172],[192,176],[202,180],[198,198],[186,212],[150,216],[114,212],[102,198],[98,180]];
+  s+=shape(body,"t3")+`<path class="spg" d="${cr(body.map(p=>[150+(p[0]-150)*.8,195+(p[1]-195)*.75]),true)}"/>`;
+  s+=line([[98,180],[102,170],[108,176]],"dl")+line([[202,180],[198,170],[192,176]],"dl");
+  s+=hlShape(body,true,hl,"body");
+  s+=hole([[150,168],[122,164],[118,150],[132,124],[150,108],[168,124],[182,150],[178,164]]).replace('class="hole"',`class="hole${H(hl,"foramen")}"`);
+  s+=hlShape([[140,100],[160,100],[162,82],[172,64],[162,58],[154,74],[150,77],[146,74],[138,58],[128,64],[138,82]],true,hl,"bifid");
+  if(lab){if(hl.includes("tf"))s+=call(80,160,14,200,"transverse foramen","start");if(hl.includes("bifid"))s+=call(166,62,196,34,"bifid spinous process","start");if(hl.includes("foramen"))s+=call(138,140,14,70,"large triangular foramen","start");if(hl.includes("body"))s+=call(190,206,196,236,"small oval body","start")}
+  return s}
+function cervLat(hl,lab){let s="";
+  s+=shape([[300,112],[338,110],[342,114],[342,142],[338,146],[300,146],[296,142],[296,116]],"t3");
+  s+=line([[296,116],[292,108],[302,112]],"dl");
+  s+=union([cr([[338,118],[356,118],[356,132],[338,132]],true),cr([[352,104],[374,98],[378,124],[376,150],[356,154],[352,128]],true),cr([[370,114],[406,120],[416,116],[420,122],[414,130],[418,138],[408,136],[374,138]],true)]);
+  s+=`<path class="facet" d="M352,104L374,98L376,103L354,109Z"/><path class="facet" d="M356,154L376,150L375,145L357,149Z"/>`;
+  s+=E(344,140,7,6,"bn t2");
+  s+=hlShape([[370,114],[406,120],[416,116],[420,122],[414,130],[418,138],[408,136],[374,138]],true,hl,"bifid");
+  if(lab&&hl.includes("bifid"))s+=call(416,122,452,84,"forked spine","end");
+  return s}
+function thorSup(hl,lab){let s="";const cx=150;
+  const half=[cr([[118,168],[132,168],[132,146],[118,146]],true),cr([[122,152],[96,138],[76,118],[68,106],[78,98],[94,106],[120,124],[136,134]],true),cr([[116,130],[134,128],[150,104],[150,92],[140,94],[116,118]],true),cr([[114,140],[116,126],[130,122],[142,128],[140,142],[128,146]],true)];
+  const sp=cr([[143,106],[157,106],[155,64],[152,30],[150,22],[148,30],[145,64]],true);
+  s+=archUnion(half,[sp],cx);
+  s+=`<path d="${cr([[145,64],[155,64],[152,30],[148,30]],true)}" fill="var(--panel-2)" opacity=".35"/>`;
+  const fac=E(128,134,9,6,"facet");s+=fac+mirrorG(300,fac);
+  const tcf=E(80,108,7,5,"facet"+H(hl,"tcf"),"transform='rotate(40 80 108)'");s+=tcf+mirrorG(300,tcf);
+  const body=[[150,214],[120,208],[104,190],[106,172],[124,162],[150,166],[176,162],[194,172],[196,190],[180,208]];
+  s+=shape(body,"t3")+`<path class="spg" d="${cr(body.map(p=>[150+(p[0]-150)*.8,188+(p[1]-188)*.75]),true)}"/>`;
+  s+=hlShape(body,true,hl,"body");
+  const cf=E(108,174,6,8,"facet"+H(hl,"costal"));s+=cf+mirrorG(300,cf);
+  s+=`<circle class="hole${H(hl,"foramen")}" cx="150" cy="148" r="15"/>`;
+  s+=hlShape([[143,106],[157,106],[155,64],[152,30],[150,22],[148,30],[145,64]],true,hl,"spine");
+  if(lab){if(hl.includes("costal"))s+=call(104,178,8,236,"costal facet (rib head)","start");if(hl.includes("tcf"))s+=call(74,104,8,70,"facet for rib tubercle","start");if(hl.includes("spine"))s+=call(152,40,170,16,"long spinous process","start");if(hl.includes("foramen"))s+=call(162,150,214,176,"small round foramen","start");if(hl.includes("body"))s+=call(190,200,206,236,"heart-shaped body","start")}
+  return s}
+function thorLat(hl,lab){let s="";
+  s+=shape([[298,110],[340,110],[344,114],[344,152],[340,156],[298,156],[294,152],[294,114]],"t3");
+  s+=union([cr([[342,118],[358,118],[358,134],[342,134]],true),cr([[354,100],[370,96],[372,120],[376,150],[360,152],[356,126]],true),cr([[366,116],[380,120],[416,190],[414,198],[404,198],[364,134]],true)]);
+  s+=E(372,118,10,9,"bn")+E(372,118,10,9,"shd");
+  s+=`<path class="facet" d="M354,100L370,96L371,101L355,105Z"/><path class="facet${H(hl,"tcf")}" d="${cr([[364,120],[370,114],[372,124]],true)}"/>`;
+  s+=`<path class="facet${H(hl,"costal")}" d="M344,114 A7 7 0 0 0 337,121 L344,121Z"/><path class="facet${H(hl,"costal")}" d="M344,152 A7 7 0 0 1 337,145 L344,145Z"/>`;
+  s+=hlShape([[366,116],[380,120],[416,190],[414,198],[404,198],[364,134]],true,hl,"spine");
+  if(lab){if(hl.includes("spine"))s+=call(412,190,452,214,"points sharply down","end");if(hl.includes("costal"))s+=call(340,118,322,90,"costal facets","middle")}
+  return s}
+function lumbSup(hl,lab){let s="";const cx=150;
+  const half=[cr([[116,164],[134,164],[134,138],[116,138]],true),cr([[118,148],[90,142],[62,138],[56,130],[62,122],[92,126],[120,132]],true),cr([[114,124],[134,122],[150,100],[150,88],[138,90],[114,114]],true),cr([[104,130],[106,112],[120,106],[134,112],[132,128],[118,134]],true)];
+  const sp=cr([[138,102],[162,102],[164,64],[160,54],[140,54],[136,64]],true);
+  s+=archUnion(half,[sp],cx);
+  const fac=`<path class="facet" d="${cr([[128,110],[134,116],[132,128],[124,124]],true)}"/>`;s+=fac+mirrorG(300,fac);
+  const body=[[150,226],[112,222],[86,204],[84,178],[100,160],[128,156],[150,162],[172,156],[200,160],[216,178],[214,204],[188,222]];
+  s+=shape(body,"t3")+`<path class="spg" d="${cr(body.map(p=>[150+(p[0]-150)*.84,192+(p[1]-192)*.8]),true)}"/>`;
+  s+=hlShape(body,true,hl,"body");
+  s+=hole([[150,158],[136,156],[134,144],[142,126],[150,114],[158,126],[166,144],[164,156]]).replace('class="hole"',`class="hole${H(hl,"foramen")}"`);
+  s+=hlShape([[138,102],[162,102],[164,64],[160,54],[140,54],[136,64]],true,hl,"spine");
+  if(lab){if(hl.includes("body"))s+=call(204,214,176,236,"huge, kidney-shaped body","start");if(hl.includes("spine"))s+=call(164,60,180,30,"short, thick spine","start");if(hl.includes("foramen"))s+=call(160,140,214,186,"triangular foramen","start")}
+  return s}
+function lumbLat(hl,lab){let s="";
+  s+=shape([[290,104],[344,102],[348,108],[348,156],[344,162],[290,162],[286,156],[286,108]],"t3");
+  s+=union([cr([[346,112],[362,112],[362,132],[346,132]],true),cr([[352,90],[370,86],[374,120],[378,154],[360,156],[356,124]],true),cr([[366,108],[410,102],[420,108],[420,142],[412,148],[366,140]],true)]);
+  s+=E(360,124,8,7,"bn t2");
+  s+=`<path class="facet" d="M352,90L370,86L371,91L353,95Z"/>`;
+  s+=hlShape([[366,108],[410,102],[420,108],[420,142],[412,148],[366,140]],true,hl,"spine");
+  s+=hlShape([[290,104],[344,102],[348,108],[348,156],[344,162],[290,162],[286,156],[286,108]],true,hl,"body");
+  if(lab){if(hl.includes("spine"))s+=call(416,110,452,70,"hatchet shape, straight back","end");if(hl.includes("body"))s+=call(300,160,300,210,"massive body","middle")}
+  return s}
+function atlasSup(hl,lab){let s="";const cx=230;
+  const half=[`M184,198 Q206,222 230,222`,`M178,124 C188,72 214,64 230,64`].map(d=>d);
+  const arcE=d=>`<path d="${d}" fill="none" stroke="var(--be)" stroke-width="19" stroke-linecap="round"/>`,arcF=d=>`<path d="${d}" fill="none" stroke="var(--bf)" stroke-width="15" stroke-linecap="round"/>`;
+  const lm=cr([[150,126],[184,120],[204,138],[206,178],[194,204],[166,208],[144,190],[140,156]],true);
+  const tp=cr([[150,142],[118,140],[100,150],[100,170],[118,180],[150,178]],true);
+  let side=`<path d="${lm}" fill="var(--be)" stroke="var(--be)" stroke-width="3"/><path d="${tp}" fill="var(--be)" stroke="var(--be)" stroke-width="3"/>`+arcE(half[0])+arcE(half[1]);
+  let sideF=`<path class="bn" style="stroke:none" d="${tp}"/><path class="shd" d="${tp}"/>`+arcF(half[0])+arcF(half[1])+`<path class="bn" style="stroke:none" d="${lm}"/><path class="shd" d="${lm}"/>`;
+  s+=side+mirrorG(460,side)+sideF+mirrorG(460,sideF);
+  s+=E(230,226,12,7,"bn")+E(230,60,13,8,"bn"+H(hl,"noSpine"));
+  const fac=`<path class="facet${H(hl,"facets")}" d="${cr([[160,134],[184,130],[196,146],[196,172],[186,196],[168,196],[162,180],[170,162],[156,150]],true)}"/>`;s+=fac+mirrorG(460,fac);
+  const tf=E(118,160,8,8,"hole");s+=tf+mirrorG(460,tf);
+  s+=E(230,206,10,5,"facet");
+  s+=`<path d="M200,190 L260,190" stroke="var(--ink-faint)" stroke-width="1.2" stroke-dasharray="4 3"/>`;
+  if(hl&&hl.includes("noBody"))s+=`<path class="callL hl" d="M184,198 Q206,222 230,224 Q254,222 276,198"/>`;
+  if(lab){if(hl.includes("noBody"))s+=call(240,228,300,258,"anterior arch, no body","start");if(hl.includes("noSpine"))s+=call(242,58,320,34,"posterior tubercle: no spinous process","middle");if(hl.includes("facets"))s+=call(166,150,12,104,"kidney-shaped facets","start");if(hl.includes("ring"))s+=call(230,130,330,110,"big ring-shaped opening","start")}
+  s+=vlabel(116,274,"superior view, front at bottom");
+  return s}
+function axisSup(hl,lab){let s="";const cx=150;
+  const half=[cr([[110,172],[128,172],[128,140],[110,140]],true),cr([[110,166],[88,170],[74,160],[76,146],[96,142],[112,150]],true),cr([[108,130],[128,128],[150,100],[150,90],[136,92],[106,118]],true)];
+  const sp=cr([[134,98],[166,98],[172,70],[182,48],[168,42],[156,60],[150,62],[144,60],[132,42],[118,48],[128,70]],true);
+  s+=archUnion(half,[sp],cx);
+  const tf=E(90,158,6,6,"hole");s+=tf+mirrorG(300,tf);
+  const body=[[150,218],[118,212],[110,192],[118,176],[150,172],[182,176],[190,192],[182,212]];
+  s+=shape(body,"t3");
+  const sf=`<path class="facet" d="${cr([[94,166],[110,154],[128,160],[128,186],[110,192],[94,182]],true)}"/>`;s+=sf+mirrorG(300,sf);
+  s+=hole([[150,170],[128,166],[124,150],[134,128],[150,118],[166,128],[176,150],[172,166]]);
+  s+=E(150,190,15,15,"bn")+E(150,190,15,15,"shd")+E(150,194,12,13,"bn t2","style='stroke:none'")+E(150,190,15,15,"bn"+H(hl,"dens"),"style='fill:none'");
+  if(lab&&hl.includes("dens"))s+=call(150,190,196,244,"dens (seen from above)","start");
+  return s}
+function axisLat(hl,lab){let s="";
+  s+=shape([[300,132],[338,130],[342,136],[342,176],[336,180],[300,180],[296,176],[296,136]],"t3");
+  s+=shape([[304,134],[304,96],[310,82],[318,78],[326,82],[332,96],[332,134]],"t2");
+  s+=hlShape([[304,134],[304,96],[310,82],[318,78],[326,82],[332,96],[332,134]],true,hl,"dens");
+  s+=`<path class="facet" d="M304,104L306,124L300,122L300,106Z"/>`;
+  s+=union([cr([[338,140],[356,140],[356,156],[338,156]],true),cr([[334,126],[360,126],[362,134],[360,170],[340,172]],true),cr([[356,138],[404,140],[418,132],[424,140],[416,150],[422,160],[408,162],[358,160]],true)]);
+  s+=`<path class="facet" d="M334,126L360,126L360,131L336,131Z"/>`;
+  if(lab&&hl.includes("dens"))s+=call(318,80,452,50,"dens points up","end");
+  return s}
+function sacrumAnt(hl,lab){let s="";const cx=130;
+  const out=[[70,46],[100,38],[130,42],[160,38],[190,46],[196,64],[188,96],[170,134],[150,170],[136,196],[130,200],[124,196],[110,170],[90,134],[72,96],[64,64]];
+  s+=shape(out,"t3");
+  s+=`<path class="dl${H(hl,"promontory")}" d="M106,44 Q130,56 154,44"/>`;
+  [[76,46],[108,38],[138,30],[164,22]].forEach(([y,w])=>s+=`<path class="dl${H(hl,"ridges")}" d="M${cx-w},${y} Q${cx},${y+5} ${cx+w},${y}"/>`);
+  [[92,22,6.5],[122,19,5.6],[150,15,4.8],[174,10,3.6]].forEach(([y,dx,r])=>s+=E(cx-dx,y,r,r*.9,"hole"+H(hl,"foramina"))+E(cx+dx,y,r,r*.9,"hole"+H(hl,"foramina")));
+  s+=vlabel(cx,232,"anterior view");
+  if(lab){if(hl.includes("foramina"))s+=call(108,92,58,120,"sacral foramina","end");if(hl.includes("ridges"))s+=call(100,140,58,170,"fused vertebrae (ridges)","end");if(hl.includes("promontory"))s+=call(130,50,130,16,"sacral promontory","middle")}
+  return s}
+function sacrumPost(hl,lab){let s="";const cx=340;
+  const out=[[280,46],[310,40],[340,44],[370,40],[400,46],[406,64],[398,96],[380,134],[360,170],[346,196],[340,200],[334,196],[320,170],[300,134],[282,96],[274,64]];
+  s+=shape(out,"t2");
+  s+=`<path d="M326,40 L340,58 L354,40 Z" fill="var(--hole)"/>`;
+  [64,92,120,148].forEach((y,i)=>s+=E(cx,y,6-i*.6,7,"bn"+H(hl,"crest")));
+  [[84,22,5.5],[112,19,5],[140,15,4.4],[164,10,3.4]].forEach(([y,dx,r])=>s+=E(cx-dx,y,r,r*.9,"hole")+E(cx+dx,y,r,r*.9,"hole"));
+  s+=`<path d="M332,196 Q340,170 348,196 Z" fill="var(--hole)"/>`;
+  const au=`<path class="facet${H(hl,"auricular")}" d="${cr([[278,56],[290,52],[296,70],[292,96],[286,110],[280,96],[276,72]],true)}"/>`;s+=au+mirrorG(680,au);
+  s+=vlabel(cx,232,"posterior view");
+  if(lab){if(hl.includes("crest"))s+=call(346,92,416,124,"median sacral crest","start");if(hl.includes("auricular"))s+=call(402,80,416,60,"auricular surface","start")}
+  return s}
+function coccyxArt(hl,lab){let s="";const cx=230;
+  s+=`<path d="${cr([[170,10],[290,10],[262,40],[238,58],[230,60],[222,58],[198,40]],true)}" fill="none" stroke="var(--ink-faint)" stroke-width="1.4" stroke-dasharray="5 4"/>`;
+  s+=vlabel(360,30,"sacrum above");
+  const segs=[[64,100,34],[104,132,24],[136,158,17],[162,178,11]];
+  segs.forEach(([y0,y1,w],i)=>{const pts=[[cx-w,y0],[cx-w*.6,y0-2],[cx+w*.6,y0-2],[cx+w,y0],[cx+w*.82,y1],[cx,y1+3],[cx-w*.82,y1]];
+    if(i===0){s+=shape([[cx-w-12,y0+2],[cx-w,y0-8],[cx-w+8,y0+6]],"t2")+shape([[cx+w+12,y0+2],[cx+w,y0-8],[cx+w-8,y0+6]],"t2")}
+    s+=shape(pts,i%2?"t2":"t3");s+=hlShape(pts,true,hl,"all")});
+  s+=vlabel(cx,232,"anterior view");
+  if(lab&&hl.includes("all"))s+=call(250,120,262,150,"usually 4 fused vertebrae","start");
+  return s}
+const VDRAW={
+ C:(view,hl,lab)=>(view!=="lat"?cervSup(hl,lab):"")+(view!=="sup"?cervLat(hl,lab):""),
+ T:(view,hl,lab)=>(view!=="lat"?thorSup(hl,lab):"")+(view!=="sup"?thorLat(hl,lab):""),
+ L:(view,hl,lab)=>(view!=="lat"?lumbSup(hl,lab):"")+(view!=="sup"?lumbLat(hl,lab):""),
+ A1:(view,hl,lab)=>atlasSup(hl,lab),
+ A2:(view,hl,lab)=>(view!=="lat"?axisSup(hl,lab):"")+(view!=="sup"?axisLat(hl,lab):""),
+ S:(view,hl,lab)=>sacrumAnt(hl,lab)+(view!=="ant"?sacrumPost(hl,lab):""),
+ X:(view,hl,lab)=>coccyxArt(hl,lab)};
+function vSVG(key,view,hl,lab,aria,calm){hl=hl||[];let vb="0 0 460 280",mw=0;const typ=!["A1","S","X"].includes(key);
+  if(key==="S")vb="-110 0 630 250";
+  if(view==="sup"&&typ){vb="0 0 360 280";mw=520}
+  if(view==="lat"){vb="260 0 200 280";mw=320}
+  let inner=VDRAW[key](view,hl,lab);
+  if(typ&&view!=="lat")inner+=vlabel(150,272,"superior \u00b7 front at bottom");
+  if(typ&&view!=="sup")inner+=vlabel(362,272,"lateral \u00b7 front at left");
+  const v=vb.split(" ");return `<svg viewBox="${vb}" ${calm?'class="calm"':""} style="${mw?`max-width:${mw}px;margin:0 auto`:""}" role="img" aria-label="${aria||"vertebra drawing"}"><rect class="bgp" x="${v[0]}" y="${v[1]}" width="${v[2]}" height="${v[3]}"/>${inner}</svg>`}
+
+/* column overview */
+function columnSVG(){const pts=[[150,22],[134,62],[134,104],[158,160],[176,220],[164,282],[140,332],[142,384],[168,428],[180,468],[164,500]];
+  const s0=sample(pts,false,24);const cum=[0];for(let i=1;i<s0.length;i++)cum.push(cum[i-1]+Math.hypot(s0[i][0]-s0[i-1][0],s0[i][1]-s0[i-1][1]));const TL=cum[cum.length-1];
+  const at=d=>{let i=cum.findIndex(c=>c>=d);if(i<1)i=1;const t=(d-cum[i-1])/(cum[i]-cum[i-1]||1);const x=s0[i-1][0]+(s0[i][0]-s0[i-1][0])*t,y=s0[i-1][1]+(s0[i][1]-s0[i-1][1])*t;const a=Math.atan2(s0[i][1]-s0[i-1][1],s0[i][0]-s0[i-1][0]);return [x,y,a]};
+  const regs=[["C",7,11,16],["T",12,14,22],["L",5,19,30]];let units=0;regs.forEach(r=>units+=r[1]*r[2]);const colLen=TL*.74,k=colLen/units;
+  let s=`<svg viewBox="0 0 410 520" role="img" aria-label="Lateral view of the vertebral column showing 7 cervical, 12 thoracic, 5 lumbar vertebrae, the sacrum and the coccyx, with the four curves"><rect class="bgp" width="410" height="520"/>`;
+  let d=0;const mids={};
+  regs.forEach(([r,n,h,w])=>{const startD=d;for(let i=0;i<n;i++){const [x,y,a]=at(d+h*k/2);const deg=a*180/Math.PI-90;const hh=h*k*.78;
+      s+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(deg)})"><rect x="${-w/2}" y="${-hh/2}" width="${w}" height="${f(hh)}" rx="2" class="bn" style="fill:var(--bf);stroke:var(${REG[r].col});stroke-width:1.6"/><rect x="${-w/2}" y="${-hh/2}" width="${w}" height="${f(hh)}" rx="2" fill="var(${REG[r].col})" opacity=".28"/>`+
+        `<path d="M${w/2},0 L${w/2+w*.5+6},${f(hh*.2+(r==="T"?hh*.9:0))}" stroke="var(--be)" stroke-width="${r==="L"?5:3}" stroke-linecap="round"/><path d="M${w/2},0 L${w/2+w*.5+6},${f(hh*.2+(r==="T"?hh*.9:0))}" stroke="var(--bf)" stroke-width="${r==="L"?3:1.6}" stroke-linecap="round"/></g>`;d+=h*k}
+    mids[r]=at((startD+d)/2)});
+  const sS=d,sE=d+TL*.15;const sp=[];for(let q=0;q<=8;q++){const [x,y]=at(sS+(sE-sS)*q/8);sp.push([x,y])}
+  const sw=q=>20-q*2;const left=sp.map((p,q)=>[p[0]-sw(q),p[1]]),right=sp.map((p,q)=>[p[0]+sw(q)*.6,p[1]]).reverse();
+  s+=`<path class="bn" d="${cr(left.concat(right),true)}" style="stroke:var(--rS);stroke-width:1.6"/><path d="${cr(left.concat(right),true)}" fill="var(--rS)" opacity=".28"/>`;
+  mids.S=at((sS+sE)/2);
+  const xp=[];for(let q=0;q<4;q++){const [x,y]=at(sE+6+q*9);xp.push([x,y]);s+=`<circle cx="${f(x)}" cy="${f(y)}" r="${4.4-q*.7}" class="bn" style="stroke:var(--rX);stroke-width:1.4"/>`}
+  mids.X=xp[1];
+  const labs={C:["Cervical","7 (C1-C7)"],T:["Thoracic","12 (T1-T12)"],L:["Lumbar","5 (L1-L5)"],S:["Sacrum","5 fused"],X:["Coccyx","3-5 fused (usually 4)"]};
+  const ly={C:70,T:200,L:330,S:420,X:478};
+  Object.keys(labs).forEach(r=>{const m=mids[r];s+=`<path d="M${f(m[0]+26)},${f(m[1])} L238,${ly[r]-4}" stroke="var(${REG[r].col})" stroke-width="1.3" fill="none"/><text x="244" y="${ly[r]}" style="font:700 14px var(--sans);fill:var(${REG[r].col})">${labs[r][0]}</text><text x="244" y="${ly[r]+16}" style="font:500 12.5px var(--mono);fill:var(--ink-soft)">${labs[r][1]}</text>`});
+  s+=vlabel(60,20,"anterior")+vlabel(60,34,"(front) at left");
+  s+=`<text x="16" y="110" style="font:12px var(--sans);fill:var(--ink-soft)">curves forward</text><text x="16" y="230" style="font:12px var(--sans);fill:var(--ink-soft)">curves back</text><text x="16" y="345" style="font:12px var(--sans);fill:var(--ink-soft)">curves forward</text><text x="16" y="440" style="font:12px var(--sans);fill:var(--ink-soft)">curves back</text>`;
+  return s+`</svg>`}
+
+/* ================= GAME 2: WHICH VERTEBRA ================= */
+const VINFO={
+ C:{name:"Typical cervical vertebra",reg:"C",give:["tf","bifid","foramen","body"],text:"Small oval body, a large triangular vertebral foramen, a <b>transverse foramen</b> in each transverse process (for the vertebral artery), and a short <b>bifid</b> (forked) spinous process. C7, the vertebra prominens, has a long spine that is not forked."},
+ A1:{name:"Atlas (C1)",reg:"C",give:["noBody","noSpine","facets"],text:"A ring with <b>no body and no spinous process</b>. Its kidney-shaped superior facets hold the occipital condyles of the skull. Nodding \"yes\" happens here."},
+ A2:{name:"Axis (C2)",reg:"C",give:["dens"],text:"The <b>dens</b> (odontoid process) sticks up from the body and acts as a pivot for the atlas. Shaking your head \"no\" happens here."},
+ T:{name:"Thoracic vertebra",reg:"T",give:["costal","tcf","spine","body","foramen"],text:"A heart-shaped body, a small round vertebral foramen, <b>costal facets</b> on the body and transverse processes for the ribs, and a <b>long spinous process that angles sharply downward</b>."},
+ L:{name:"Lumbar vertebra",reg:"L",give:["body","spine","foramen"],text:"The <b>largest, thickest body</b> (kidney shaped) because it carries the most weight, a triangular foramen, and a <b>short, thick, hatchet-shaped spinous process</b> that points straight back. No costal facets, no transverse foramina."},
+ S:{name:"Sacrum",reg:"S",give:["foramina","ridges","crest","auricular","promontory"],text:"<b>Five vertebrae fused</b> into one triangle. Four pairs of <b>sacral foramina</b>, a median sacral crest on the back, and <b>auricular surfaces</b> that form the sacroiliac joints with the ilium."},
+ X:{name:"Coccyx",reg:"X",give:["all"],text:"The tailbone: <b>3 to 5 tiny fused vertebrae, usually 4</b>, below the sacrum. Several pelvic floor muscles and ligaments attach here."}};
+const PICS=[["C","sup",["tf","bifid"]],["C","lat",["bifid"]],["A1","sup",["noBody","noSpine"]],["A2","both",["dens"]],["T","sup",["costal","tcf"]],["T","lat",["spine","costal"]],["L","sup",["body","spine"]],["L","lat",["spine","body"]],["S","both",["foramina","auricular"]],["X","sup",["all"]]];
+const CLUES=[
+ ["C","Holes in both transverse processes (transverse foramina) that carry the vertebral arteries.","C","sup",["tf"]],
+ ["C","A bifid (split, forked) spinous process.","C","sup",["bifid"]],
+ ["C","A small oval body with a large, triangular vertebral foramen.","C","sup",["foramen","body"]],
+ ["C","No body and no spinous process: it is basically a ring.","A1","sup",["noBody","noSpine"]],
+ ["C","A tooth-like dens sticks straight up from the body.","A2","both",["dens"]],
+ ["C","Kidney-shaped superior facets that cradle the occipital condyles of the skull.","A1","sup",["facets"]],
+ ["T","Costal facets on the body where the heads of the ribs attach.","T","both",["costal"]],
+ ["T","A long spinous process that angles sharply downward.","T","lat",["spine"]],
+ ["T","A heart-shaped body and a small, round vertebral foramen.","T","sup",["body","foramen"]],
+ ["T","Facets on the transverse processes for the tubercles of the ribs.","T","sup",["tcf"]],
+ ["L","The biggest, thickest body in the column, built to carry the most weight.","L","sup",["body"]],
+ ["L","A short, thick, hatchet-shaped spinous process that points straight back.","L","lat",["spine"]],
+ ["L","Massive body, but no costal facets and no transverse foramina.","L","sup",["body"]],
+ ["S","Five vertebrae fused into one triangular bone.","S","both",["ridges"]],
+ ["S","Four pairs of foramina for nerves and blood vessels, on a fused triangular bone.","S","both",["foramina"]],
+ ["S","Auricular surfaces that join the ilium at the sacroiliac joints.","S","both",["auricular"]],
+ ["S","A median crest down the back, made from fused spinous processes.","S","both",["crest"]],
+ ["X","Three to five tiny fused vertebrae, usually four, at the very bottom of the column.","X","sup",["all"]]];
+const WHYNOT={C:"Cervical vertebrae are the small neck vertebrae; their giveaway is the transverse foramina.",T:"Thoracic vertebrae carry the ribs, so look for costal facets and a long downward spine.",L:"Lumbar vertebrae have huge bodies and short, thick, hatchet-like spines.",S:"The sacrum is 5 fused vertebrae shaped like a triangle, with rows of foramina.",X:"The coccyx is only a few tiny fused bits at the very bottom."};
+let VR=0,vdeck=[],vi=0,vOk=0,vStreak=0,vFirst=true,vAnswered=false;
+function vRounds(){const names=["1 · Look at it","2 · Clue only (harder)","3 · Feature match"];$("#vRounds").innerHTML="";
+  names.forEach((n,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===VR);b.textContent=n;b.onclick=()=>{VR=i;vStart()};$("#vRounds").appendChild(b)})}
+function vStart(){vRounds();clearSel();$("#vPlay").hidden=VR===2;$("#vMatch").hidden=VR!==2;if(VR===2){mNew();return}
+  vdeck=VR===0?shuffle(PICS):shuffle(CLUES).slice(0,12);vi=0;vOk=0;vStreak=0;$("#vT").textContent=vdeck.length;vShow()}
+function vShow(){vFirst=true;vAnswered=false;const c=vdeck[vi];$("#vN").textContent=vi+1;$("#vOk").textContent=vOk;$("#vStreak").textContent=vStreak;$("#vBar").style.width=(vi/vdeck.length*100)+"%";
+  $("#vWhy").className="why";$("#vNext").hidden=true;$("#vQ2wrap").hidden=true;
+  if(VR===0){$("#vAsk").textContent="Which region of the column does this vertebra come from?";$("#vClue").innerHTML="";$("#vClue").style.minHeight="0";
+    $("#vPic").innerHTML=vSVG(c[0],c[1],[],false,"Unlabeled vertebra drawing to identify")}
+  else{$("#vAsk").textContent="Clue only. Which region has this feature?";$("#vClue").style.minHeight="";$("#vClue").textContent=c[1];
+    $("#vPic").innerHTML=`<div style="aspect-ratio:460/250;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:15px;text-align:center;padding:20px">The drawing appears after you answer.<br>Picture the vertebra in your head first.</div>`}
+  const bins=$("#vBins");bins.innerHTML="";
+  Object.keys(REG).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="bin";b.innerHTML=`<i style="background:var(${REG[k].col})"></i>${REG[k].name}<span class="mk"></span><small>${REG[k].count}</small>`;
+    b.onclick=()=>vAnswer(k,b);bins.appendChild(b)})}
+function vAnswer(k,b){if(vAnswered)return;const c=vdeck[vi];const key=VR===0?c[0]:c[2],reg=VR===0?VINFO[key].reg:c[0];const hl=VR===0?c[2]:c[4],view=VR===0?(c[1]==="sup"||c[1]==="lat"?c[1]:"both"):c[3];
+  if(k===reg){vAnswered=true;b.classList.add("right");b.querySelector(".mk").textContent="✓";if(vFirst){vOk++;vStreak++}else vStreak=0;$("#vOk").textContent=vOk;$("#vStreak").textContent=vStreak;
+    $("#vPic").innerHTML=vSVG(key,view==="sup"&&key==="T"&&VR===1?"both":view,hl,true,VINFO[key].name+" with the giveaway features highlighted");
+    const w=$("#vWhy");w.className="why show";w.innerHTML=`${vFirst?"<b>Yes!</b>":"<b>Got it.</b>"} The answer: <b>${VINFO[key].name}</b>. The giveaway is glowing gold on the drawing. ${VINFO[key].text}`;
+    if(VR===0&&reg==="C"){vQ2(key)}else{vShowNext()}}
+  else{b.classList.add("wrong");b.querySelector(".mk").textContent="✗";vFirst=false;vStreak=0;$("#vStreak").textContent=0;
+    const w=$("#vWhy");w.className="why show no";w.innerHTML=`<b>Not quite.</b> ${WHYNOT[k]} Look again${VR===0?" at the drawing":" at the clue"} and try another bin.`}}
+function vQ2(key){$("#vQ2wrap").hidden=false;const q=$("#vQ2");q.innerHTML="";let done=false;
+  [["C","Typical cervical (C3 to C7)"],["A1","Atlas (C1)"],["A2","Axis (C2)"]].forEach(([k,t])=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=t;
+    b.onclick=()=>{if(done)return;if(k===key){done=true;b.classList.add("right");b.textContent="✓ "+t;vShowNext()}else{b.classList.add("wrong");b.textContent="✗ "+t;
+      const extra={C:"A typical cervical vertebra has a body and a forked spinous process.",A1:"The atlas has no body at all, just a ring.",A2:"The axis has a dens sticking up from its body."}[k];$("#vWhy").innerHTML+=` <br><b>Not that one.</b> ${extra}`}};q.appendChild(b)})}
+function vShowNext(){$("#vNext").hidden=false;$("#vNext").textContent=vi===vdeck.length-1?"See results":"Next card →"}
+$("#vNext").onclick=()=>{if(vi<vdeck.length-1){vi++;vShow()}else{$("#vBar").style.width="100%";$("#vWhy").className="why show";$("#vWhy").innerHTML=`<b>Deck done: ${vOk} of ${vdeck.length} right on the first try.</b> ${vOk>=vdeck.length-2?"Excellent eye!":"Every miss is a feature you now know."} Press <b>New deck</b> to go again${VR===0?", or try Round 2 with clues only":""}.`;$("#vNext").hidden=true}};
+$("#vRestart").onclick=vStart;
+
+/* feature match */
+const FEATS=[["transverse foramina","C","Only cervical vertebrae have holes in the transverse processes."],["bifid spinous process","C","Forked spines belong to C2 to C6."],["dens","C","The dens is on the axis, C2."],["no body, no spinous process","C","That is the atlas, C1."],["7 of them","C","There are 7 cervical vertebrae."],
+ ["costal facets for ribs","T","Ribs attach only to thoracic vertebrae."],["long, downward-pointing spinous process","T","Thoracic spines overlap like roof shingles."],["heart-shaped body","T","Thoracic bodies are heart shaped."],["12 of them","T","There are 12 thoracic vertebrae, one per pair of ribs."],
+ ["hatchet-shaped spinous process","L","Lumbar spines are short, thick and square."],["largest, kidney-shaped body","L","Lumbar bodies carry the most weight."],["5 separate vertebrae","L","There are 5 lumbar vertebrae (the sacrum's 5 are fused)."],
+ ["median sacral crest","S","The crest is made of fused spinous processes on the sacrum."],["auricular surface","S","The sacrum's ear-shaped surface joins the ilium."],["5 fused vertebrae","S","The sacrum forms from 5 fused vertebrae."],["four pairs of foramina","S","The sacrum has 4 pairs of sacral foramina."],
+ ["tailbone","X","The coccyx is the tailbone."],["usually 4 tiny fused vertebrae","X","The coccyx has 3 to 5 (usually 4) fused vertebrae."]];
+const MG={set:[],placed:{},marks:{},hints:0,checks:0};
+const mctx={root:$("#vMatch"),drop:(cid,bin)=>{MG.placed[cid]=bin;MG.marks={};mRender();mMsg("")},tapTarget:()=>{}};
+function mNew(){const byR={};FEATS.forEach((x,i)=>(byR[x[1]]=byR[x[1]]||[]).push(i));
+  let pick=[];Object.keys(byR).forEach(r=>pick=pick.concat(shuffle(byR[r]).slice(0,2)));pick=pick.concat(shuffle(FEATS.map((_,i)=>i).filter(i=>!pick.includes(i))).slice(0,2));
+  MG.set=shuffle(pick);MG.placed={};MG.marks={};MG.hints=0;MG.checks=0;clearSel();
+  const mb=$("#mBins");mb.innerHTML="";Object.keys(REG).forEach(k=>{const d=document.createElement("div");d.className="mbin";d.dataset.drop=k;d.setAttribute("role","button");d.tabIndex=0;d.setAttribute("aria-label",REG[k].name+" bin");
+    d.innerHTML=`<h4><i style="background:var(${REG[k].col})"></i>${REG[k].name} <small>${REG[k].count.split(",")[0]}</small></h4><div class="mlist"></div>`;bindTarget(mctx,d);mb.appendChild(d)});
+  mRender();mMsg("")}
+function mRender(){const bank=$("#mBank");bank.innerHTML="";MG.set.filter(i=>!MG.placed[i]).forEach(i=>bank.appendChild(makeChip(mctx,i,FEATS[i][0])));
+  $$("#mBins .mbin").forEach(bin=>{const L=bin.querySelector(".mlist");L.innerHTML="";MG.set.filter(i=>MG.placed[i]===bin.dataset.drop).forEach(i=>{const b=document.createElement("button");b.type="button";const m=MG.marks[i];
+    b.className="mchip"+(m?" "+m:"");b.innerHTML=`<span>${FEATS[i][0]}</span><span class="mk">${m==="right"?"✓":m==="wrong"?"✗":""}</span>`;b.title="Tap to send back to the bank";
+    b.onclick=e=>{e.stopPropagation();if(SEL)return;delete MG.placed[i];MG.marks={};mRender()};L.appendChild(b);
+    if(m==="wrong"){const n=document.createElement("div");n.className="mnote";n.textContent="Not quite. "+FEATS[i][2];L.appendChild(n)}})})}
+function mMsg(t,c){const m=$("#mMsg");m.className="msg"+(t?" show "+(c||"info"):"");m.innerHTML=t||""}
+$("#mCheck").onclick=()=>{MG.checks++;let ok=0,placed=0;MG.set.forEach(i=>{if(!MG.placed[i])return;placed++;if(MG.placed[i]===FEATS[i][1]){ok++;MG.marks[i]="right"}else MG.marks[i]="wrong"});mRender();
+  if(ok===MG.set.length){const stars=MG.hints===0&&MG.checks<=2?3:MG.hints<=2?2:1;mMsg(`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>All ${ok} matched!</b> Press <b>New set</b> for different features.`,"good")}
+  else mMsg(`<b>${ok} of ${MG.set.length} right</b>${placed<MG.set.length?` (${MG.set.length-placed} still in the bank)`:""}. Wrong ones show a short reason under them.`,"warn")};
+$("#mHint").onclick=()=>{const i=MG.set.find(i=>MG.placed[i]!==FEATS[i][1]);if(i==null)return;MG.hints++;MG.placed[i]=FEATS[i][1];MG.marks={};MG.marks[i]="right";mRender();mMsg(`Hint: <b>${FEATS[i][0]}</b> goes with <b>${REG[FEATS[i][1]].name}</b>. ${FEATS[i][2]}`,"info")};
+$("#mReveal").onclick=()=>{MG.set.forEach(i=>{MG.placed[i]=FEATS[i][1];MG.marks[i]="right"});mRender();mMsg("All answers shown. Press <b>New set</b> to try again from memory.","info")};
+$("#mNew").onclick=mNew;
+function vStudy(){const cards=[["C","both","Typical cervical (C3 to C7)",VINFO.C],["A1","sup","Atlas (C1)",VINFO.A1],["A2","both","Axis (C2)",VINFO.A2],["T","both","Thoracic (T1 to T12)",VINFO.T],["L","both","Lumbar (L1 to L5)",VINFO.L],["S","both","Sacrum",VINFO.S],["X","sup","Coccyx",VINFO.X]];
+  $("#vStudyIn").innerHTML=`<div class="vstudy"><div class="vcard"><h4>The whole column, side view</h4>${columnSVG()}<p>Adults have 24 separate vertebrae plus the sacrum and the coccyx, 26 bones in all. The four curves help the column absorb shock.</p></div><div class="vcards">`+
+   cards.map(([k,v,t,info])=>`<div class="vcard"><h4><i style="background:var(${REG[info.reg].col})"></i>${t}</h4>${vSVG(k,v,info.give,true,t+" with giveaway features labeled",true)}<p>${info.text}</p></div>`).join("")+`</div></div>`}
+
+/* ================= SKELETON (BONE CHASE) ================= */
+const BONES={
+ skull:{name:"Skull (cranium and face)",ax:1,fact:"The skull has 22 bones: 8 cranial bones around the brain and 14 facial bones. All but the mandible are locked together by sutures."},
+ mandible:{name:"Mandible",ax:1,fact:"The mandible (lower jaw) is the only skull bone that moves, at the temporomandibular joint."},
+ hyoid:{name:"Hyoid bone",ax:1,fact:"The U-shaped hyoid in the neck does not touch any other bone. It anchors tongue and swallowing muscles."},
+ vertebrae:{name:"Vertebral column",ax:1,fact:"24 separate vertebrae: 7 cervical, 12 thoracic, 5 lumbar, sitting on the sacrum and coccyx."},
+ sternum:{name:"Sternum",ax:1,fact:"The breastbone has three parts: manubrium, body and xiphoid process."},
+ ribs:{name:"Ribs",ax:1,fact:"12 pairs. Ribs 1 to 7 are true ribs; 8 to 12 are false ribs, and 11 and 12 are floating ribs."},
+ sacrum:{name:"Sacrum",ax:1,fact:"Five fused vertebrae. It sits in the pelvis but belongs to the axial skeleton, since it is part of the vertebral column."},
+ coccyx:{name:"Coccyx",ax:1,fact:"The tailbone: 3 to 5 small fused vertebrae, usually 4. Axial, because it is the bottom of the vertebral column."},
+ clavicle:{name:"Clavicle",ax:0,fact:"The S-shaped collarbone is the only bony link between the upper limb and the axial skeleton. It is part of the pectoral girdle."},
+ scapula:{name:"Scapula",ax:0,fact:"The shoulder blade is part of the pectoral girdle. Its glenoid cavity forms the shoulder joint with the humerus."},
+ humerus:{name:"Humerus",ax:0,fact:"The only bone of the arm (brachium), from shoulder to elbow."},
+ radius:{name:"Radius",ax:0,fact:"The lateral forearm bone, on the thumb side."},
+ ulna:{name:"Ulna",ax:0,fact:"The medial forearm bone, on the little-finger side. Its olecranon is the point of the elbow."},
+ carpals:{name:"Carpals",ax:0,fact:"Eight small wrist bones in two rows of four."},
+ metacarpals:{name:"Metacarpals",ax:0,fact:"Five bones in the palm, numbered 1 (thumb) to 5."},
+ phalH:{name:"Phalanges of the hand",ax:0,fact:"14 finger bones: 2 in the thumb, 3 in each other finger."},
+ coxa:{name:"Hip bone (os coxae)",ax:0,fact:"Each hip bone is the fused ilium, ischium and pubis. The two hip bones form the pelvic girdle."},
+ femur:{name:"Femur",ax:0,fact:"The thigh bone: the longest, heaviest and strongest bone in the body."},
+ patella:{name:"Patella",ax:0,fact:"The kneecap is a sesamoid bone that sits inside the quadriceps tendon."},
+ tibia:{name:"Tibia",ax:0,fact:"The large, medial, weight-bearing shin bone. Its medial malleolus is the inner ankle bump."},
+ fibula:{name:"Fibula",ax:0,fact:"The thin lateral leg bone. It bears little weight; its lateral malleolus is the outer ankle bump."},
+ tarsals:{name:"Tarsals",ax:0,fact:"Seven ankle bones, including the talus and the calcaneus (heel bone)."},
+ metatarsals:{name:"Metatarsals",ax:0,fact:"Five long bones of the foot, numbered 1 (big toe) to 5."},
+ phalF:{name:"Phalanges of the foot",ax:0,fact:"14 toe bones: 2 in the big toe (hallux), 3 in each other toe."}};
+const CONFUSE={radius:["ulna"],ulna:["radius"],tibia:["fibula"],fibula:["tibia"],carpals:["tarsals"],tarsals:["carpals"],metacarpals:["metatarsals"],metatarsals:["metacarpals"],phalH:["phalF"],phalF:["phalH"],sacrum:["coccyx","coxa"],coccyx:["sacrum"],scapula:["clavicle"],clavicle:["scapula"],humerus:["femur"],femur:["humerus"],skull:["mandible"],mandible:["skull","hyoid"],hyoid:["mandible"],sternum:["ribs"],ribs:["sternum"]};
+
+function skHalf(b){let s="";switch(b){
+ case "scapula":s+=shape([[136,182],[150,182],[160,190],[170,194],[186,192],[194,198],[194,228],[188,270],[178,294],[170,290],[160,256],[148,222],[138,210],[132,198]],"bk");
+   s+=shape([[132,180],[146,176],[156,182],[150,188],[136,188]],"bk")+shape([[156,194],[166,192],[168,200],[160,202]],"bk");
+   s+=E(134,203,4,7,"facet");break;
+ case "clavicle":{const d=cr([[201,193],[188,195],[176,188],[162,186],[148,183],[140,184]],false);s+=`<path class="rbE" d="${d}" stroke-width="7.5"/><path class="rbF" d="${d}" stroke-width="5"/><path class="rbH" d="${d}"/>`;break}
+ case "ribs":{const R=[[190,34,198,20,204,200],[201,48,212,24,222,214],[213,58,226,26,238,228],[225,66,240,28,252,241],[237,72,254,30,266,253],[248,76,268,32,280,264],[259,79,281,36,293,274],[270,80,293,46,304,0],[281,78,303,56,313,0],[292,74,312,64,320,0],[303,66,320,0,0,0],[314,52,326,0,0,0]];
+   R.forEach(([yv,w,ly,c,jy,ys],i)=>{const lx=210-w;
+     const post=cr([[205,yv],[200-w*.35,yv-3],[lx+4,ly-8],[lx,ly]],false);
+     s+=`<path class="rbE" d="${post}" stroke-width="3.6" opacity=".55"/><path class="rbF" d="${post}" stroke-width="2.2" opacity=".55"/>`;
+     let ant;if(i<10)ant=`M${lx},${ly} C${lx-3},${ly+16} ${210-c-16},${jy+4} ${210-c},${jy}`;else ant=`M${lx},${ly} C${lx-2},${ly+8} ${lx+4},${ly+14} ${lx+10},${ly+15}`;
+     s+=`<path class="rbE" d="${ant}" stroke-width="5"/><path class="rbF" d="${ant}" stroke-width="3.2"/><path class="rbH" d="${post} ${ant}"/>`;
+     if(i<7){const cc=`M${210-c},${jy} Q${206-c*.4},${jy-1} 201,${ys}`;s+=`<path class="cart2E" d="${cc}" stroke-width="4.4"/><path class="cart2" d="${cc}" stroke-width="2.6"/>`}
+     else if(i<10){const t=[[190,288],[172,302],[160,312]][i-7];const cc=`M${210-c},${jy} Q${(210-c+t[0])/2},${jy+2} ${t[0]},${t[1]}`;s+=`<path class="cart2E" d="${cc}" stroke-width="4.4"/><path class="cart2" d="${cc}" stroke-width="2.6"/>`}});
+   break}
+ case "humerus":s+=shape([[118,206],[132,206],[134,222],[127,262],[122,300],[126,316],[125,326],[116,331],[104,329],[100,320],[106,300],[112,262],[116,222]],"",true);s+=E(127,202,10,10,"bn")+E(127,202,10,10,"shd");break;
+ case "radius":s+=shape([[101,333],[109,333],[108,342],[104,380],[96,420],[98,432],[85,441],[80,435],[86,420],[96,380],[100,344]],"t3",true);break;
+ case "ulna":s+=shape([[113,326],[124,329],[121,345],[114,390],[108,430],[110,440],[102,443],[100,432],[106,390],[110,345]],"",true);break;
+ case "carpals":[[82,446],[89,445],[96,444],[103,445],[81,454],[88,454],[95,453],[102,453]].forEach(([x,y],i)=>s+=`<rect class="bn ${i%2?"t2":""}" x="${x-3.2}" y="${y-3.4}" width="6.4" height="6.8" rx="2.4"/>`);break;
+ case "metacarpals":[[80,461,70,480],[86,460,84,488],[92,460,92,490],[98,460,100,489],[104,460,107,486]].forEach(([x1,y1,x2,y2])=>{const d=`M${x1},${y1}L${x2},${y2}`;s+=`<path class="rbE" d="${d}" stroke-width="4.6"/><path class="rbF" d="${d}" stroke-width="2.8"/>`;s=s.replace(/rbF/g,"rbF")});
+   s=s.replace(/class="rbF"/g,'class="rbF bnS"');break;
+ case "phalH":{const fing=[[[70,484],[64,496],[59,507]],[[84,492],[82,506],[81,516],[80,524]],[[92,494],[92,509],[92,520],[92,529]],[[100,493],[101,507],[102,517],[103,525]],[[107,490],[109,501],[111,509],[112,515]]];
+   fing.forEach(p=>{for(let i=0;i<p.length-1;i++){const d=`M${p[i][0]},${p[i][1]+1.6}L${p[i+1][0]},${p[i+1][1]-1.6}`;s+=`<path class="rbE" d="${d}" stroke-width="4"/><path class="rbF" d="${d}" stroke-width="2.4"/>`}});break}
+ case "coxa":{const out=[[192,404],[184,394],[166,386],[146,386],[132,394],[128,406],[132,418],[140,428],[142,444],[146,456],[152,468],[162,474],[174,470],[186,464],[198,461],[206,457],[206,444],[196,440],[180,436],[178,426],[186,414]];
+   s+=shape(out,"");s+=hole([[162,448],[174,448],[182,456],[176,464],[164,462],[158,456]]);s+=E(150,440,9,9,"hole","style='opacity:.5'");s+=line([[134,398],[160,392],[186,398]],"rough");break}
+ case "femur":s+=shape([[128,444],[138,441],[146,447],[150,452],[148,460],[151,468],[147,472],[152,520],[164,600],[176,624],[181,636],[175,647],[166,644],[160,647],[151,643],[148,630],[146,600],[136,520],[128,470],[125,452]],"",true);
+   s+=E(151,441,8,8,"bn")+E(151,441,8,8,"shd");break;
+ case "patella":s+=E(165,638,7.5,9.5,"bn t3")+E(165,638,7.5,9.5,"shd");break;
+ case "tibia":s+=shape([[151,655],[158,651],[176,651],[185,655],[183,665],[174,677],[172,760],[174,810],[180,826],[174,833],[162,831],[158,820],[160,760],[160,677],[153,665]],"",true);s+=line([[166,666],[166,690]],"rough");break;
+ case "fibula":s+=shape([[138,662],[146,660],[148,670],[146,682],[150,780],[154,816],[150,838],[142,836],[142,816],[140,780],[141,682],[136,670]],"t3",true);break;
+ case "tarsals":s+=shape([[150,838],[166,834],[178,836],[180,846],[172,852],[156,852],[148,846]],"t2");s+=shape([[146,848],[160,850],[160,858],[148,858]],"")+shape([[160,852],[184,850],[186,858],[162,860]],"");s+=line([[164,836],[166,850]],"dl")+line([[172,852],[173,860]],"dl");break;
+ case "metatarsals":[[150,859,140,878],[156,860,150,882],[163,861,160,884],[171,861,170,885],[180,860,181,884]].forEach(([x1,y1,x2,y2],i)=>{const d=`M${x1},${y1}L${x2},${y2}`;s+=`<path class="rbE" d="${d}" stroke-width="${i===4?6:4.6}"/><path class="rbF" d="${d}" stroke-width="${i===4?4:2.8}"/>`});break;
+ case "phalF":[[[140,880],[137,887],[135,893]],[[150,884],[148,891],[147,897]],[[160,886],[159,893],[158,899]],[[170,887],[170,894],[170,900]],[[181,886],[182,893],[183,900]]].forEach((p,j)=>{for(let i=0;i<p.length-1;i++){const d=`M${p[i][0]},${p[i][1]+1.2}L${p[i+1][0]},${p[i+1][1]-1.2}`;s+=`<path class="rbE" d="${d}" stroke-width="${j===4?5.4:4}"/><path class="rbF" d="${d}" stroke-width="${j===4?3.6:2.4}"/>`}});break;
+ }return s}
+function skMid(b){let s="";switch(b){
+ case "skull":{const cran=sym([[210,12],[238,16],[257,34],[263,58],[261,80],[254,94],[251,104],[245,112],[236,115],[231,119],[224,123],[210,124]],420);
+   s+=shape(cran,"");s+=line([[176,40],[210,32],[244,40]],"rough");
+   s+=hole([[180,66],[192,62],[204,66],[205,78],[198,84],[184,84],[179,76]])+hole([[240,66],[228,62],[216,66],[215,78],[222,84],[236,84],[241,76]]);
+   s+=hole([[210,86],[216,94],[216,103],[210,106],[204,103],[204,94]]);
+   s+=line([[176,92],[186,100],[196,98]],"dl")+line([[244,92],[234,100],[224,98]],"dl");
+   for(let i=0;i<8;i++){const x=197+i*3.3;s+=`<rect class="tooth" x="${f(x)}" y="116.5" width="3" height="6" rx="1"/>`}break}
+ case "mandible":{const m=sym([[210,130],[222,129],[234,125],[240,112],[242,98],[247,94],[251,104],[249,120],[241,132],[226,141],[210,143]],420);
+   s+=shape(m,"t2");for(let i=0;i<8;i++){const x=197+i*3.3;s+=`<rect class="tooth" x="${f(x)}" y="124" width="3" height="5.6" rx="1"/>`}break}
+ case "hyoid":{const d="M198,151 Q201,159 210,159 Q219,159 222,151";s+=`<path class="rbE" d="${d}" stroke-width="5.6"/><path class="rbF" d="${d}" stroke-width="3.6"/>`;break}
+ case "vertebrae":{for(let i=0;i<7;i++){const y=136+i*7.4;s+=`<rect class="bn t2" x="203.5" y="${f(y)}" width="13" height="5.6" rx="1.6"/>`}
+   for(let i=0;i<12;i++){const y=191+i*11.6,w=16+i*.6;s+=`<rect class="bn t2" x="${f(210-w/2)}" y="${f(y)}" width="${f(w)}" height="9" rx="2"/>`;s+=`<path class="dl" d="M${f(210-w/2-3)},${f(y+4.5)}h${f(w+6)}"/>`}
+   for(let i=0;i<5;i++){const y=332+i*14,w=26+i;s+=`<rect class="bn t2" x="${f(210-w/2)}" y="${y}" width="${w}" height="11.4" rx="2.5"/><path class="shd" d="M${f(210-w/2)},${y}h${w}v11.4h-${w}z"/>`;s+=`<path class="dl" d="M${f(210-w/2-6)},${y+6}h${w+12}"/>`}break}
+ case "sternum":{const st=sym([[210,188],[221,190],[223,203],[219,213],[221,218],[221,246],[220,270],[216,280],[213,284],[210,294]],420);s+=shape(st,"t3");s+=line([[200,214],[220,214]],"dl");s+=line([[203,280],[217,280]],"dl");break}
+ case "sacrum":{const sc=sym([[210,401],[226,402],[236,406],[232,420],[224,434],[216,445],[210,449]],420);s+=shape(sc,"t3");[[412,9],[422,7.5],[431,6],[439,4.5]].forEach(([y,dx])=>s+=E(210-dx,y,1.8,1.6,"hole")+E(210+dx,y,1.8,1.6,"hole"));break}
+ case "coccyx":[[451,5],[456.5,4],[461.5,3],[466,2.2]].forEach(([y,w])=>s+=`<rect class="bn t2" x="${210-w}" y="${y-2}" width="${w*2}" height="4.4" rx="1.6"/>`);break;
+ }return s}
+const ORDERZ=["vertebrae","scapula","ribs","sternum","clavicle","humerus","radius","ulna","carpals","metacarpals","phalH","coxa","sacrum","coccyx","femur","patella","tibia","fibula","tarsals","metatarsals","phalF","mandible","skull","hyoid"];
+const MID=new Set(["skull","mandible","hyoid","vertebrae","sternum","sacrum","coccyx"]);
+const NEEDHIT=new Set(["hyoid","carpals","metacarpals","phalH","tarsals","metatarsals","phalF","patella","coccyx","clavicle"]);
+function skeletonSVG(id,study){const pad=study?200:0;const vb=study?`-${pad} 0 ${420+2*pad} 910`:"20 0 380 910";
+  let s=`<svg viewBox="${vb}" class="sk" id="${id}" role="img" aria-label="Anterior view of the whole skeleton${study?" with labels":"; each bone can be clicked"}"><rect class="bgp" x="${-pad}" y="0" width="${420+2*pad}" height="910"/>`;
+  s+=`<path class="dl" d="M188,440 L232,440" style="opacity:.25"/>`;
+  ORDERZ.forEach(b=>{const lab=BONES[b].name;
+    if(MID.has(b))s+=`<g data-bone="${b}"${study?"":` role="button" aria-label="${lab}"`}><g class="half">${skMid(b)}</g></g>`;
+    else{const h=skHalf(b);s+=`<g data-bone="${b}"${study?"":` role="button" aria-label="${lab}"`}><g class="half">${h}</g><g class="half" transform="translate(420 0) scale(-1 1)">${h}</g></g>`}});
+  s+=`<rect x="203" y="444" width="14" height="14" rx="3" class="facet" style="pointer-events:none"/>`;
+  if(study)s+=studyLabels();
+  return s+`</svg>`}
+function addHits(svg){svg.querySelectorAll("[data-bone]").forEach(g=>{if(!NEEDHIT.has(g.dataset.bone))return;g.querySelectorAll(".half").forEach(h=>{const bb=h.getBBox();const p=g.dataset.bone==="clavicle"?2:2.5;
+  const r=document.createElementNS("http://www.w3.org/2000/svg","rect");r.setAttribute("class","hit");r.setAttribute("x",bb.x-p);r.setAttribute("y",bb.y-p);r.setAttribute("width",bb.width+2*p);r.setAttribute("height",bb.height+2*p);h.appendChild(r)})})}
+const SLAB=[["skull","l",182,40,40],["mandible","l",192,136,120],["clavicle","l",160,187,170],["scapula","l",144,222,215],["humerus","l",116,270,270],["radius","l",94,400,412],["carpals","l",84,452,450],["phalH","l",80,516,520],["coxa","l",140,396,380],["femur","l",140,540,560],["patella","l",160,640,640],["fibula","l",143,740,740],["tarsals","l",152,846,830],["phalF","l",140,890,890],
+  ["hyoid","r",218,157,150],["vertebrae","r",220,345,330],["sternum","r",216,240,236],["ribs","r",276,252,280],["ulna","r",310,400,400],["sacrum","r",218,420,430],["metacarpals","r",326,480,480],["coccyx","r",212,460,460],["tibia","r",254,740,740],["metatarsals","r",262,872,866]];
+function studyLabels(){let s="";SLAB.forEach(([b,side,ax,ay,ly])=>{const x=side==="l"?-10:430,an=side==="l"?"end":"start";const col=BONES[b].ax?"var(--ax)":"var(--ap)";
+  s+=`<path d="M${ax},${ay} L${side==="l"?-4:424},${ly}" stroke="${col}" stroke-width="1.1" fill="none"/><circle cx="${ax}" cy="${ay}" r="2.4" fill="${col}"/><text class="slab" style="font-size:15px;fill:${col}" x="${x}" y="${ly+5}" text-anchor="${an}">${BONES[b].name}</text>`});
+  return s}
+
+/* ================= GAME 3: BONE CHASE ================= */
+const CG={mode:"see",filter:"all",pace:"timed",running:false,score:0,streak:0,t:60,timer:null,cur:null,locked:false,misses:{},asked:0,first:true,bonusOn:false,last:null};
+$("#skWrap").innerHTML=skeletonSVG("sk",false);const SK=$("#sk");
+function pool(){return Object.keys(BONES).filter(b=>CG.filter==="all"||(CG.filter==="ax"?BONES[b].ax:!BONES[b].ax))}
+function bestKey(){return `skl-chase-${CG.mode}-${CG.filter}`}
+function showBest(){const b=store.get(bestKey());$("#cBest").textContent=b==null?"-":b}
+function segBind(id,key,after){$$(`#${id} button`).forEach(b=>b.onclick=()=>{if(CG.running&&!confirm("End the current round and change this setting?"))return;stopRound(true);$$(`#${id} button`).forEach(x=>x.setAttribute("aria-pressed",x===b));CG[key]=b.dataset.v;after&&after()})}
+segBind("cMode","mode",reset);segBind("cFilter","filter",reset);segBind("cPace","pace",reset);
+function clearMarks(){SK.querySelectorAll("[data-bone]").forEach(g=>g.classList.remove("on","ok","bad"))}
+function dimFilter(){const p=new Set(pool());SK.querySelectorAll("[data-bone]").forEach(g=>g.classList.toggle("dim",CG.filter!=="all"&&!p.has(g.dataset.bone)))}
+function reset(){clearMarks();dimFilter();CG.score=0;CG.streak=0;CG.t=60;$("#cScore").textContent=0;$("#cStreak").textContent=0;$("#cTime").textContent=60;$("#cTime").classList.remove("low");
+  $("#cTimeWrap").hidden=CG.pace!=="timed";$("#cOpts").innerHTML="";$("#cWhy").className="why";$("#cBonus").hidden=true;$("#cSum").innerHTML="";
+  $("#cPrompt").innerHTML=CG.mode==="see"?"A bone will light up. Pick its name. Press <b>Start</b>.":"A bone name will appear. Click that bone on the skeleton. Press <b>Start</b>.";
+  $("#cStart").hidden=false;$("#cNext").hidden=true;$("#cSkip").hidden=true;$("#cStop").hidden=true;showBest()}
+function startRound(){reset();CG.running=true;CG.misses={};CG.asked=0;CG.last=null;$("#cStart").hidden=true;$("#cStop").hidden=false;
+  if(CG.pace==="timed"){CG.t=60;clearInterval(CG.timer);CG.timer=setInterval(()=>{CG.t--;$("#cTime").textContent=CG.t;$("#cTime").classList.toggle("low",CG.t<=10);if(CG.t<=0)stopRound()},1000)}
+  nextQ()}
+function stopRound(silent){clearInterval(CG.timer);if(!CG.running)return;CG.running=false;CG.locked=true;$("#cStop").hidden=true;$("#cNext").hidden=true;$("#cSkip").hidden=true;$("#cStart").hidden=false;$("#cStart").textContent="Play again";
+  if(silent)return;clearMarks();$("#cOpts").innerHTML="";$("#cBonus").hidden=true;
+  let best=store.get(bestKey());let nb=false;if(CG.pace==="timed"&&(best==null||CG.score>best)){best=CG.score;store.set(bestKey(),best);nb=true}showBest();
+  const miss=Object.keys(CG.misses);
+  $("#cPrompt").innerHTML=CG.pace==="timed"?`Time! You scored <b>${CG.score}</b>.`:`Round over. You scored <b>${CG.score}</b>.`;
+  $("#cWhy").className="why";
+  $("#cSum").innerHTML=`<div class="msg show good"><b>${nb?"New best score! ":""}${CG.score} point${CG.score===1?"":"s"}</b> from ${CG.asked} bone${CG.asked===1?"":"s"}. ${CG.pace==="timed"?"Best for this mode and filter: "+best+".":""}</div>`+(miss.length?`<p class="instr" style="margin:10px 0 0">Bones to review (open <b>Study it first</b> above):</p><div class="miss">${miss.map(b=>`<span>${BONES[b].name}</span>`).join("")}</div>`:`<p class="instr" style="margin:10px 0 0">No misses. Try the other mode or the timed round.</p>`)}
+$("#cStart").onclick=startRound;$("#cStop").onclick=()=>stopRound();
+function pickBone(){const p=pool();let b;do{b=p[Math.floor(Math.random()*p.length)]}while(p.length>1&&b===CG.last);CG.last=b;return b}
+function nextQ(){if(!CG.running)return;clearMarks();CG.locked=false;CG.first=true;CG.asked++;$("#cWhy").className="why";$("#cBonus").hidden=true;$("#cNext").hidden=true;$("#cSkip").hidden=CG.pace==="timed";
+  const b=pickBone();CG.cur=b;
+  if(CG.mode==="see"){const hg=SK.querySelector(`[data-bone="${b}"]`);hg.classList.add("on");{const r=hg.getBoundingClientRect();if(r.bottom>innerHeight||r.top<0)hg.scrollIntoView({block:"nearest"})}$("#cPrompt").innerHTML="Which bone is <b>highlighted</b>?";
+    const p=pool().filter(x=>x!==b);let opts=[];(CONFUSE[b]||[]).forEach(c=>{if(p.includes(c)&&Math.random()<.75&&opts.length<2)opts.push(c)});
+    shuffle(p).forEach(x=>{if(opts.length<3&&!opts.includes(x))opts.push(x)});opts=shuffle(opts.concat([b]));
+    const o=$("#cOpts");o.innerHTML="";opts.forEach(x=>{const btn=document.createElement("button");btn.type="button";btn.className="opt";btn.textContent=BONES[x].name;btn.onclick=()=>seeAnswer(x,btn);o.appendChild(btn)})}
+  else{$("#cOpts").innerHTML="";$("#cPrompt").innerHTML=`Click the <b>${BONES[b].name.toLowerCase()}</b>.`}}
+function seeAnswer(x,btn){if(CG.locked||!CG.running)return;const b=CG.cur;
+  if(x===b){btn.classList.add("right");btn.textContent="✓ "+BONES[x].name;correct()}
+  else{btn.classList.add("wrong");btn.textContent="✗ "+BONES[x].name;wrong(`Not quite. That is not the ${BONES[x].name.toLowerCase()}. ${BONES[x].fact}`,null)}}
+SK.addEventListener("click",e=>{const g=e.target.closest("[data-bone]");if(!g||!CG.running||CG.locked||CG.mode!=="find")return;const x=g.dataset.bone,b=CG.cur;
+  if(x===b){g.classList.add("ok");correct()}
+  else{g.classList.add("bad");setTimeout(()=>g.classList.remove("bad"),1400);wrong(`Not quite. You clicked the <b>${BONES[x].name.toLowerCase()}</b>. ${BONES[x].fact}`,x)}});
+SK.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const g=e.target.closest("[data-bone]");if(g){e.preventDefault();g.dispatchEvent(new MouseEvent("click",{bubbles:true}))}});
+SK.querySelectorAll("[data-bone]").forEach(g=>g.setAttribute("tabindex","0"));
+function correct(){CG.locked=true;const b=CG.cur;if(CG.first){CG.score++;CG.streak++}else CG.streak=0;$("#cScore").textContent=CG.score;$("#cStreak").textContent=CG.streak;
+  if(CG.mode==="find"){SK.querySelectorAll("[data-bone].on").forEach(g=>g.classList.remove("on"));SK.querySelector(`[data-bone="${b}"]`).classList.add("ok")}
+  const tag=BONES[b].ax?`<span class="tag ax">axial</span>`:`<span class="tag ap">appendicular</span>`;
+  const w=$("#cWhy");w.className="why show";w.innerHTML=`${CG.first?"<b>Yes!</b>":"<b>Got it.</b>"} ${BONES[b].name}${CG.streak>=3?` &middot; streak ${CG.streak}`:""}. ${CG.pace==="relaxed"?BONES[b].fact:""}`;
+  $("#cSkip").hidden=true;
+  if(Math.random()<.4)askBonus(b);else afterAnswer()}
+function wrong(msg,clicked){CG.first=false;CG.streak=0;$("#cStreak").textContent=0;CG.misses[CG.cur]=1;const w=$("#cWhy");w.className="why show no";w.innerHTML=msg+(CG.pace==="relaxed"?" Try again, or press <b>Show me</b>.":" Try again.")}
+$("#cSkip").onclick=()=>{if(CG.locked)return;const b=CG.cur;CG.misses[b]=1;CG.streak=0;$("#cStreak").textContent=0;CG.locked=true;clearMarks();SK.querySelector(`[data-bone="${b}"]`).classList.add("on");
+  if(CG.mode==="see")$$("#cOpts .opt").forEach(o=>{if(o.textContent.replace(/^[✓✗] /,"")===BONES[b].name){o.classList.add("right");o.textContent="✓ "+BONES[b].name}});
+  $("#cWhy").className="why show";$("#cWhy").innerHTML=`Here it is: the <b>${BONES[b].name.toLowerCase()}</b> is glowing on the skeleton. ${BONES[b].fact}`;$("#cSkip").hidden=true;$("#cNext").hidden=false};
+function askBonus(b){const B=$("#cBonus");B.hidden=false;$("#cBonusName").textContent=BONES[b].name.toLowerCase();const o=$("#cBonusOpts");o.innerHTML="";let done=false;
+  [["ax","Axial"],["ap","Appendicular"]].forEach(([k,t])=>{const btn=document.createElement("button");btn.type="button";btn.className="opt";btn.textContent=t;btn.onclick=()=>{if(done)return;done=true;const right=(k==="ax")===!!BONES[b].ax;
+    btn.classList.add(right?"right":"wrong");btn.textContent=(right?"✓ ":"✗ ")+t;if(right){CG.score++;$("#cScore").textContent=CG.score}
+    $("#cWhy").innerHTML+=`<br>${right?"<b>Bonus point!</b>":"<b>Not quite.</b>"} The ${BONES[b].name.toLowerCase()} is <b>${BONES[b].ax?"axial":"appendicular"}</b>. ${BONES[b].ax?"It is part of the central axis: skull, hyoid, vertebral column or thoracic cage.":"It belongs to a limb or to a girdle that attaches a limb."}`;
+    afterAnswer(true)};o.appendChild(btn)})}
+function afterAnswer(fromBonus){if(!CG.running)return;if(CG.pace==="timed"){if(!$("#cBonus").hidden&&!fromBonus)return;setTimeout(()=>{if(CG.running)nextQ()},fromBonus?1300:750)}else{if(!$("#cBonus").hidden&&!fromBonus)return;$("#cNext").hidden=false;$("#cNext").focus()}}
+$("#cNext").onclick=nextQ;
+function cStudy(){$("#cStudyIn").innerHTML=`<p class="instr">Blue names are <b style="color:var(--ax)">axial</b>; orange names are <b style="color:var(--ap)">appendicular</b>. Paired bones are labeled on one side only.</p><div class="skwrap" style="max-width:640px;margin:0 auto">${skeletonSVG("skStudy",true)}</div>`}
+
+/* ================= tabs / theme / init ================= */
+$$(".tab").forEach(t=>t.onclick=()=>{$$(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));["label","vert","chase"].forEach(n=>$("#tab-"+n).hidden=t.dataset.tab!==n);clearSel();
+  if(t.dataset.tab==="chase"&&!SK.dataset.hits){addHits(SK);SK.dataset.hits=1}});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark")};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")clearSel()});
+lNew();vStudy();vStart();cStudy();reset();
+window.__skl={DIAGRAMS,BONES,lDrop,LG,CG,startRound,stopRound};
+})();
+</script>
+</body>
+</html>

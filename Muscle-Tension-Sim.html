@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muscle Tension Sim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;
+  /* topic palette */
+  --ecf:#EAF1F5;--fiber:#F3DDD7;--fiber-edge:#B5776A;--cyto:#F6E9E5;
+  --ca:#D98A1C;--atp:#2F8A57;
+  --actin:#C4644F;--actin-2:#D98872;--myosin:#4F6F94;--head:#6B8DB5;--zdisc:#10161A;
+  --glow:#F2B33B;
+  --trace:#1B6E88;--stim:#7B5CC9;--mu:#2F8A57;--mu-off:#C4CDD3;
+  --lat:#7B5CC9;--con:#C4644F;--rel:#1B6E88;
+  --so:#A8322E;--fo:#D9817A;--fg:#EFD9C9;--fg-edge:#B9998A;--cap:#C0392B;--mito:#5A3B2E;--glyc:#4F6F94;
+  --zone-short:#B4632A;--zone-opt:#2F6F4F;--zone-long:#7B5CC9;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;
+  --ecf:#14222A;--fiber:#3A2522;--fiber-edge:#C07F72;--cyto:#2A1D1B;
+  --ca:#F2A93B;--atp:#4FBF7F;
+  --actin:#D7745F;--actin-2:#B65E4B;--myosin:#6E93BE;--head:#8FB1D9;--zdisc:#E8EEF1;
+  --glow:#F2B33B;
+  --trace:#4FB3D1;--stim:#A98BEF;--mu:#4FBF7F;--mu-off:#33434C;
+  --lat:#A98BEF;--con:#E08A74;--rel:#4FB3D1;
+  --so:#C4473F;--fo:#D98C84;--fg:#D8C5B6;--fg-edge:#A08A7E;--cap:#E0675A;--mito:#6E3F2C;--glyc:#8FB1D9;
+  --zone-short:#E39A5B;--zone-opt:#6BC293;--zone-long:#A98BEF;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;
+  --ecf:#14222A;--fiber:#3A2522;--fiber-edge:#C07F72;--cyto:#2A1D1B;
+  --ca:#F2A93B;--atp:#4FBF7F;
+  --actin:#D7745F;--actin-2:#B65E4B;--myosin:#6E93BE;--head:#8FB1D9;--zdisc:#E8EEF1;
+  --glow:#F2B33B;
+  --trace:#4FB3D1;--stim:#A98BEF;--mu:#4FBF7F;--mu-off:#33434C;
+  --lat:#A98BEF;--con:#E08A74;--rel:#4FB3D1;
+  --so:#C4473F;--fo:#D98C84;--fg:#D8C5B6;--fg-edge:#A08A7E;--cap:#E0675A;--mito:#6E3F2C;--glyc:#8FB1D9;
+  --zone-short:#E39A5B;--zone-opt:#6BC293;--zone-long:#A98BEF;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn.on,.tbtn[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.tbtn.go{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.tbtn.stop{background:var(--warn);border-color:var(--warn);color:#fff;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab:hover{border-color:var(--accent)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
+.stage{padding:10px}
+.pad{padding:16px 18px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--panel)}
+canvas{display:block;width:100%}
+.ctrls{display:flex;flex-direction:column;gap:10px;padding:12px 4px 2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sl{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:10px;align-items:center;font-size:14.5px}
+.sl input[type=range]{accent-color:var(--accent);width:100%;min-width:0}
+.sl output{font-family:var(--mono);font-size:13px;color:var(--ink);min-width:72px;text-align:right}
+@media (max-width:560px){.sl{grid-template-columns:1fr auto}.sl input[type=range]{grid-column:1/-1;grid-row:2}}
+.ck{display:inline-flex;gap:8px;align-items:center;font-size:14.5px;color:var(--ink-soft)}
+.ck input{accent-color:var(--accent);width:18px;height:18px}
+.status{margin:4px 4px 0;font-size:14.5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-family:var(--mono);font-size:12.5px;border:1.5px solid currentColor}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.legend i.sq{border-radius:2px}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+h3.sec{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px;font-weight:600}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.look{background:var(--panel-2);border:1px dashed var(--rule);border-radius:var(--r);padding:9px 12px;margin:10px 0;font-size:14.5px}
+.look b.h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-right:6px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.zone{border-left:4px solid var(--accent);background:var(--panel-2);border-radius:4px;padding:10px 12px;margin:0 0 12px}
+.zone b.z{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:2px}
+.zone p{margin:0}
+.readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 0}
+.readout div{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px 8px;font-size:12.5px;color:var(--ink-soft)}
+.readout b{display:block;font-family:var(--mono);font-size:16px;color:var(--ink)}
+/* fiber table */
+.tablewrap{overflow-x:auto}
+table.cmp{width:100%;border-collapse:collapse;font-size:14.5px}
+table.cmp th,table.cmp td{border-bottom:1px solid var(--rule-soft);padding:7px 8px;text-align:left;vertical-align:top}
+table.cmp thead th{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;border-bottom:2px solid var(--rule)}
+table.cmp tbody th{font-weight:600;color:var(--ink-soft);width:24%}
+table.cmp .sw{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:1px solid var(--rule)}
+.lvl{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:1px;display:block}
+@media (max-width:560px){table.cmp{font-size:13px}table.cmp th,table.cmp td{padding:6px 4px}}
+/* sorting */
+.meter{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:14px;color:var(--ink-soft)}
+.meter b{color:var(--ink)}
+.pbar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.pbar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.instr{color:var(--ink-soft);font-size:14.5px;margin:10px 0}
+.stmt{font-family:var(--serif);font-size:21px;line-height:1.35;margin:6px 0 14px;min-height:58px;padding:12px 14px;border:1px solid var(--rule);border-left:6px solid var(--accent);border-radius:var(--r);background:var(--panel-2)}
+.buckets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.buckets{grid-template-columns:1fr}}
+.bucket{border:2px solid var(--rule);background:var(--panel);border-radius:var(--r);padding:12px;cursor:pointer;text-align:left;font-size:15px;display:flex;align-items:center;gap:10px;line-height:1.3}
+.bucket i{width:16px;height:16px;border-radius:50%;flex:0 0 auto;border:1px solid var(--rule)}
+.bucket b{display:block}
+.bucket small{color:var(--ink-soft);font-size:12.5px}
+.bucket:hover{border-color:var(--accent)}
+.bucket.right{border-color:var(--good);background:var(--good-wash)}
+.bucket.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.bucket.hinted{box-shadow:0 0 0 3px var(--glow)}
+.why{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.why.show{display:block}
+.hint{margin-top:10px;padding:8px 12px;background:var(--panel-2);border:1px dashed var(--rule);border-radius:var(--r);font-size:14.5px;display:none}
+.hint.show{display:block}
+.msg{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px}
+.msg.good{background:var(--good-wash);color:var(--good);border:1px solid var(--good)}
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:10px}
+.tally div{border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;font-size:14px;background:var(--panel-2)}
+.best{font-family:var(--mono);font-size:13px;color:var(--ink-soft)}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+sub,sup{line-height:0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Muscle Tension &middot; USC Upstate</div>
+    <h1>Muscle Tension Simulator</h1>
+    <p class="sub">How one muscle can pull gently or hard. Play with the stimulator, the sarcomere, and the fiber types. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="t-tw" aria-controls="tab-tw" aria-selected="true" data-tab="tw" type="button">1 &middot; Twitch to Tetanus</button>
+    <button class="tab" role="tab" id="t-lt" aria-controls="tab-lt" aria-selected="false" data-tab="lt" type="button">2 &middot; Length&ndash;Tension</button>
+    <button class="tab" role="tab" id="t-ft" aria-controls="tab-ft" aria-selected="false" data-tab="ft" type="button">3 &middot; Fiber Types</button>
+  </div>
+
+  <!-- ============ TAB 1 ============ -->
+  <section id="tab-tw" role="tabpanel" aria-labelledby="t-tw">
+    <div class="grid">
+      <div class="col">
+        <section class="card stage" aria-label="Myogram simulator">
+          <div class="canvas-holder"><canvas id="cvTw" role="img" aria-label="Myogram"></canvas></div>
+          <div class="ctrls">
+            <div class="row">
+              <button class="tbtn go" id="runBtn" type="button">Start stimulator</button>
+              <button class="tbtn" id="shockBtn" type="button">Single shock</button>
+              <button class="tbtn" id="toneBtn" type="button" aria-pressed="false">Muscle tone demo</button>
+              <button class="tbtn" id="pauseBtn" type="button">Pause sweep</button>
+              <button class="tbtn" id="clearBtn" type="button">Clear screen</button>
+            </div>
+            <label class="sl"><span>Stimulus frequency</span><input type="range" id="freq" min="0" max="14" step="1" value="0"><output id="freqOut">1 Hz</output></label>
+            <label class="sl"><span>Stimulus strength</span><input type="range" id="str" min="0" max="100" step="1" value="100"><output id="strOut">100%</output></label>
+            <label class="sl"><span>Slow motion</span><input type="range" id="spd" min="0.1" max="0.6" step="0.05" value="0.25"><output id="spdOut">0.25&times;</output></label>
+            <div class="row" style="gap:18px"><label class="ck"><input type="checkbox" id="phaseCk" checked> Label the phases of a single twitch</label>
+            <label class="ck"><input type="checkbox" id="burstCk" checked> At 5 Hz and up, deliver shocks in bursts (shows the start and end of each contraction)</label></div>
+          </div>
+          <p class="status" id="status" aria-live="polite"></p>
+          <div class="legend">
+            <span><i style="background:var(--trace)"></i>Tension trace</span>
+            <span><i class="sq" style="background:var(--stim)"></i>Stimulus (shock)</span>
+            <span><i style="background:var(--mu)"></i>Recruited motor unit</span>
+            <span><i style="background:var(--ca)"></i>Ca&sup2;&#8314;</span>
+            <span><i class="sq" style="background:var(--actin)"></i>Thin filament</span>
+            <span><i class="sq" style="background:var(--myosin)"></i>Thick filament</span>
+          </div>
+        </section>
+
+        <section class="card pad" aria-label="Treppe mini demo">
+          <h3 class="sec">Mini demo &middot; Treppe (the staircase effect)</h3>
+          <p style="margin:0 0 10px;font-size:15px">A muscle that has been <b>resting</b> gets the same stimulus over and over, slowly enough that it fully relaxes each time. The first few twitches get a little <b>stronger each time</b>, like a staircase. This is <b>treppe</b> (German for "staircase"). The usual explanation: Ca&sup2;&#8314; builds up in the sarcoplasm a bit more with each twitch, so more is available to bind troponin. Treppe is different from summation: here the muscle relaxes completely between twitches.</p>
+          <div class="canvas-holder"><canvas id="cvTr" role="img" aria-label="Treppe: ten separate twitches after rest, each a little taller than the last, then leveling off."></canvas></div>
+          <div class="row" style="margin-top:10px"><button class="tbtn go" id="trBtn" type="button">Play treppe demo</button><span style="font-size:13.5px;color:var(--ink-soft)">Same stimulus strength every time. Only the twitch height changes.</span></div>
+        </section>
+      </div>
+
+      <section class="card explain" aria-live="polite" aria-label="Guided steps">
+        <div class="dots" id="twDots" aria-label="Guided steps"></div>
+        <div class="stepno" id="twStepno"></div>
+        <h2 id="twTitle"></h2>
+        <div class="body" id="twBody"></div>
+        <div class="look" id="twLook"></div>
+        <div class="row" style="margin:4px 0 6px"><button class="tbtn" id="twSetup" type="button">Set up the simulator for this step again</button></div>
+        <div class="analogy" id="twAnalogy"><b>Think of it like this</b><p></p></div>
+        <dl class="terms" id="twTerms"></dl>
+        <div class="check" id="twCheck"></div>
+        <div class="nav">
+          <button class="navbtn sec" id="twPrev" type="button">&larr; Back</button>
+          <div class="prog"><i id="twProg"></i></div>
+          <button class="navbtn" id="twNext" type="button">Next &rarr;</button>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ============ TAB 2 ============ -->
+  <section id="tab-lt" role="tabpanel" aria-labelledby="t-lt" hidden>
+    <div class="grid">
+      <section class="card stage" aria-label="Length-tension simulator">
+        <div class="canvas-holder"><canvas id="cvLt" role="img" aria-label="Sarcomere and length-tension curve"></canvas></div>
+        <div class="ctrls">
+          <label class="sl"><span>Sarcomere length</span><input type="range" id="len" min="130" max="370" step="1" value="210"><output id="lenOut">2.10 &micro;m</output></label>
+          <div class="row">
+            <button class="tbtn" type="button" data-len="155">Too short</button>
+            <button class="tbtn" type="button" data-len="185">A bit short</button>
+            <button class="tbtn" type="button" data-len="212">Optimal</button>
+            <button class="tbtn" type="button" data-len="300">Stretched</button>
+            <button class="tbtn" type="button" data-len="365">Overstretched</button>
+            <button class="tbtn" id="sweepBtn" type="button" aria-pressed="false">Sweep slowly</button>
+          </div>
+        </div>
+        <div class="legend">
+          <span><i class="sq" style="background:var(--actin)"></i>Thin filament (actin)</span>
+          <span><i class="sq" style="background:var(--myosin)"></i>Thick filament (myosin)</span>
+          <span><i style="background:var(--good)"></i>Head forming a cross-bridge</span>
+          <span><i style="background:var(--ink-faint)"></i>Head with nothing to grab</span>
+          <span><i class="sq" style="background:var(--zdisc)"></i>Z disc</span>
+        </div>
+      </section>
+      <section class="card explain" aria-label="Length-tension explanation">
+        <div class="stepno"><span class="actchip" style="background:var(--accent)">Length&ndash;tension relationship</span></div>
+        <h2>Why there is a "just right" length</h2>
+        <div class="zone" id="ltZone" aria-live="polite"><b class="z"></b><p></p></div>
+        <div class="readout">
+          <div>Length<b id="roL">2.10 &micro;m</b></div>
+          <div>% of resting<b id="roP">100%</b></div>
+          <div>Tension<b id="roT">100%</b></div>
+        </div>
+        <div class="body" style="margin-top:12px">
+          <p>Tension comes from <b>cross-bridges</b>: myosin heads grabbing actin. A myosin head can only pull if a thin filament is lying right next to it. So the tension a sarcomere can make depends on <b>how much the thick and thin filaments overlap</b> before it starts to contract. This is the <b>length&ndash;tension relationship</b>.</p>
+          <ul>
+            <li><b>Too short:</b> thin filaments from both sides run into each other in the middle, and the thick filaments press against the Z discs. There is no room left to slide. Less tension.</li>
+            <li><b>Optimal:</b> about <b>80&ndash;120% of resting length</b>. The peak sits near <b>2.0&ndash;2.25 &micro;m</b>, where every myosin head has a thin filament to grab.</li>
+            <li><b>Overstretched:</b> the filaments barely overlap. Few heads can reach actin, so few cross-bridges form. Low tension. With no overlap at all, no tension.</li>
+          </ul>
+          <p>Your skeleton helps here: bones and joints keep most muscles near their best length.</p>
+        </div>
+        <div class="analogy"><b>Think of it like this</b><p>A tug-of-war team on a rope. If the team bunches up so close that they trip over each other, they pull badly. If the rope is so far away that only two people can grab it, they pull badly. The best pull is when every person has a good grip.</p></div>
+        <dl class="terms">
+          <div><dt>Length&ndash;tension relationship</dt><dd>Tension depends on how much thick and thin filaments overlap at the start of a contraction.</dd></div>
+          <div><dt>Optimal length</dt><dd>The sarcomere length that gives maximum tension (about 80&ndash;120% of resting).</dd></div>
+          <div><dt>Zone of overlap</dt><dd>The part of the sarcomere where thin filaments lie alongside thick filaments.</dd></div>
+        </dl>
+        <div id="ltChecks"></div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ============ TAB 3 ============ -->
+  <section id="tab-ft" role="tabpanel" aria-labelledby="t-ft" hidden>
+    <div class="grid">
+      <section class="card stage" aria-label="Fiber cross-sections">
+        <div class="canvas-holder"><canvas id="cvFt" role="img" aria-label="Cross-sections of slow oxidative, fast oxidative and fast glycolytic fibers, plus a fatigue test graph."></canvas></div>
+        <div class="row" style="padding:10px 4px 2px"><button class="tbtn go" id="fatBtn" type="button">Run the fatigue test</button><span style="font-size:13.5px;color:var(--ink-soft)">All three fibers contract over and over. Watch which ones keep going.</span></div>
+        <div class="legend">
+          <span><i style="background:var(--cap)"></i>Capillary</span>
+          <span><i style="background:var(--mito)"></i>Mitochondrion</span>
+          <span><i style="background:var(--glyc)"></i>Glycogen granule</span>
+          <span><i class="sq" style="background:var(--so)"></i>Deep red = lots of myoglobin</span>
+        </div>
+      </section>
+      <section class="card pad" aria-label="Fiber type comparison">
+        <h3 class="sec">Three types of skeletal muscle fibers</h3>
+        <p style="margin:0 0 10px;font-size:15px">Fibers differ in two ways: <b>how fast</b> they contract (set by how fast their <b>myosin ATPase</b> splits ATP) and <b>how they make ATP</b> (<b>oxidative</b> = aerobic, with oxygen, in mitochondria; <b>glycolytic</b> = anaerobic glycolysis). Most muscles contain all three types, in different proportions.</p>
+        <div class="tablewrap">
+        <table class="cmp">
+          <thead><tr><th scope="col"></th><th scope="col"><span class="sw" style="background:var(--so)"></span>SO</th><th scope="col"><span class="sw" style="background:var(--fo)"></span>FO</th><th scope="col"><span class="sw" style="background:var(--fg)"></span>FG</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Full name</th><td>Slow oxidative</td><td>Fast oxidative</td><td>Fast glycolytic</td></tr>
+            <tr><th scope="row">Contraction speed</th><td>Slow<span class="lvl">&#9632;&#9633;&#9633;</span></td><td>Fast<span class="lvl">&#9632;&#9632;&#9632;</span></td><td>Fast<span class="lvl">&#9632;&#9632;&#9632;</span></td></tr>
+            <tr><th scope="row">Myosin ATPase</th><td>Slow</td><td>Fast</td><td>Fast</td></tr>
+            <tr><th scope="row">Main ATP source</th><td>Aerobic respiration</td><td>Mostly aerobic, some glycolysis</td><td>Anaerobic glycolysis</td></tr>
+            <tr><th scope="row">Mitochondria</th><td>Many<span class="lvl">&#9632;&#9632;&#9632;</span></td><td>Many<span class="lvl">&#9632;&#9632;&#9633;</span></td><td>Few<span class="lvl">&#9632;&#9633;&#9633;</span></td></tr>
+            <tr><th scope="row">Capillaries</th><td>Many<span class="lvl">&#9632;&#9632;&#9632;</span></td><td>Many<span class="lvl">&#9632;&#9632;&#9633;</span></td><td>Few<span class="lvl">&#9632;&#9633;&#9633;</span></td></tr>
+            <tr><th scope="row">Myoglobin / color</th><td>High: <b>red</b></td><td>Lower than SO: lighter, pinkish</td><td>Little: <b>white</b> (pale)</td></tr>
+            <tr><th scope="row">Glycogen</th><td>Low</td><td>Medium</td><td>High</td></tr>
+            <tr><th scope="row">Fatigue</th><td>Very resistant</td><td>Fairly resistant</td><td>Tires quickly</td></tr>
+            <tr><th scope="row">Fiber diameter / tension</th><td>Small / low</td><td>Medium / medium</td><td>Large / high</td></tr>
+            <tr><th scope="row">Used for</th><td>Posture (neck, back), long endurance like a marathon</td><td>Leg muscles in walking; moderate activity</td><td>Short, powerful bursts: lifting heavy objects, sprinting (e.g., arm muscles)</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="analogy"><b>Think of it like this</b><p>SO fibers are diesel trucks: slow, steady, go all day. FG fibers are drag racers: huge power for a few seconds, then out of fuel. FO fibers are in between, like a sporty commuter car.</p></div>
+      </section>
+    </div>
+
+    <section class="card pad" style="margin-top:16px" aria-label="Fiber type sorting game">
+      <div class="row" style="justify-content:space-between">
+        <h3 class="sec" style="margin:0">Sorting game &middot; Which fiber type fits best?</h3>
+        <span class="best" id="sBest"></span>
+      </div>
+      <div class="meter" style="margin-top:8px"><span>Card <b id="sN">1</b> of <b id="sT">12</b></span><span>Right on first try <b id="sOk">0</b></span><span>Streak <b id="sStreak">0</b></span></div>
+      <div class="pbar"><i id="sBar"></i></div>
+      <p class="instr">Read the card. Which fiber type does it describe, or which type does that activity rely on most? Pick one.</p>
+      <div class="stmt" id="sStmt"></div>
+      <div class="buckets" id="sBuckets"></div>
+      <div class="hint" id="sHint"></div>
+      <div class="why" id="sWhy"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="navbtn" id="sNext" type="button" hidden>Next card &rarr;</button>
+        <button class="tbtn" id="sHintBtn" type="button">Hint</button>
+        <button class="tbtn" id="sShowBtn" type="button">Show answer</button>
+        <button class="tbtn" id="sRestart" type="button">Restart deck</button>
+      </div>
+      <div id="sDone"></div>
+    </section>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Pairs with the Contraction Walkthrough (Ch 10, Muscle Tissue). Graphs come from a simplified model and diagrams are not to scale: twitch timing is typical, not exact; the length&ndash;tension curve uses classic measured filament lengths with resting length set at 2.1 &micro;m for the % scale; fiber-type colors follow OpenStax A&amp;P 2e.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const TAU=Math.PI*2;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+
+/* ---------------- colours ---------------- */
+const C={};
+function readColors(){const s=getComputedStyle(document.documentElement);
+  ["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","good-wash","warn","warn-wash","bad","act1","act2","act3",
+   "ecf","fiber","fiber-edge","cyto","ca","atp","actin","actin-2","myosin","head","zdisc","glow","trace","stim","mu","mu-off","lat","con","rel",
+   "so","fo","fg","fg-edge","cap","mito","glyc","zone-short","zone-opt","zone-long"].forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+readColors();
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas helpers ---------------- */
+function mkCanvas(id,W,H){const cv=document.getElementById(id);const o={cv,ctx:cv.getContext("2d"),W,H,K:1};
+  o.fit=()=>{const w=cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);o.K=cv.width/W};
+  return o}
+let ctx;
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,r,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:a;g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=8;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function txt(x,y,s,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px ${o.mono?'"IBM Plex Mono",monospace':'"IBM Plex Sans",system-ui,sans-serif'}`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline=o.base||"middle";
+  if(o.pill){const w=ctx.measureText(s).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+    ctx.globalAlpha=.9;ctx.fillStyle=C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=1;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(s,x,y+.5)}
+function chip(x,y,s,col,align){ctx.font='600 11.5px "IBM Plex Mono",monospace';ctx.textBaseline="middle";const w=ctx.measureText(s).width;
+  let x0=align==="right"?x-w-12:(align==="center"?x-w/2-6:x);ctx.fillStyle=col;rr(x0,y-9,w+12,18,9);ctx.fill();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(s,x0+6,y+.5)}
+function zdisc(x,y1,y2,col,lw){ctx.beginPath();const n=Math.max(2,Math.round((y2-y1)/10));for(let i=0;i<=n;i++){const y=lerp(y1,y2,i/n);ctx.lineTo(x+(i%2?4:-4),y)}ctx.strokeStyle=col;ctx.lineWidth=lw||3;ctx.lineJoin="round";ctx.stroke()}
+
+/* generic quick-check renderer */
+function makeCheck(box,ck,onRight,title){
+  box.innerHTML=`<h3>${title||"Quick check"}</h3><p class="q"></p><div class="opts"></div><p class="fb"></p><p class="calm">Wrong answers are fine here. Read why, then try again.</p>`;
+  box.querySelector(".q").textContent=ck.q;
+  const opts=box.querySelector(".opts"),fb=box.querySelector(".fb");
+  ck.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+    b.onclick=()=>{opts.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+      if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];onRight&&onRight()}
+      else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+    opts.appendChild(b)});
+}
+
+/* =====================================================================
+   TAB 1: TWITCH TO TETANUS — model
+   Each stimulus adds a Ca2+ "activation" pulse (kernel). Pulses that
+   arrive before the last one has faded add up (wave summation).
+   Tension = saturating function of total activation, so the sum levels
+   off into a plateau (tetanus) instead of growing forever.
+   ===================================================================== */
+const LAT=2,TP=28,TD=38,HN=2.5,HK=1.6;
+function kern(u){u-=LAT;if(u<=0)return 0;if(u<TP)return(1-Math.cos(Math.PI*u/TP))/2;return Math.exp(-(u-TP)/TD)}
+const hill=S=>{const a=Math.pow(S,HN);return a/(a+Math.pow(HK,HN))};
+// single-twitch landmarks (ms after the shock)
+const TW=(()=>{let pk=0,tpk=0,ts=0,te=0;for(let t=0;t<400;t+=.25){const f=hill(kern(t));if(f>pk){pk=f;tpk=t}}
+  for(let t=0;t<tpk;t+=.25){if(hill(kern(t))>pk*.02){ts=t;break}}
+  for(let t=tpk;t<400;t+=.25){if(hill(kern(t))<pk*.02){te=t;break}}return{pk,tpk,ts,te}})();
+const FREQS=[1,2,3,5,8,10,15,20,25,30,40,50,60,80,100];
+// classify each frequency by simulating it once
+const SMAX=(()=>{let S=0;for(let s=0;s<=1200;s+=10)S+=kern(1200+20-s);return S*1.02})();
+const FCLASS=FREQS.map(f=>{const T=1000/f;let mn=9,mx=0;const t0=Math.max(1000,Math.ceil(1000/T)*T);
+  for(let t=t0;t<t0+T;t+=.25){let S=0;for(let s=0;s<=t;s+=T)S+=kern(t-s);const F=hill(S);mn=Math.min(mn,F);mx=Math.max(mx,F)}
+  const rip=(mx-mn)/mx;let c;
+  if(rip>.96&&mx<TW.pk*1.12)c=0;else if(rip>=.5)c=1;else if(rip>=.03)c=2;else c=3;
+  return{f,mx,mn,rip,c}});
+const CLASSES=[
+  {name:"Separate twitches",col:"rel",tip:"The muscle relaxes fully before the next shock."},
+  {name:"Wave summation",col:"act2",tip:"Each new twitch starts before the last one ends, so they add up."},
+  {name:"Unfused (incomplete) tetanus",col:"con",tip:"Tension stays high but still ripples: a little relaxation between shocks."},
+  {name:"Fused (complete) tetanus",col:"act1",tip:"Shocks come so fast there is no relaxation: a smooth plateau."}];
+
+const UNITS=[2,2,3,3,4,4,5,6,7,8].map((w,i)=>({w,thr:[8,16,24,32,41,50,60,70,80,90][i],stims:[],fired:-1e9,S:0,F:0,nextTone:0}));
+const WSUM=UNITS.reduce((a,u)=>a+u.w,0);
+const WIN=600,GAP=22,BON0=40,BON1=400;
+const buf=new Float32Array(WIN),bufSw=new Int32Array(WIN).fill(-1);
+const sim={t:0,running:false,burst:true,next:0,freqI:0,str:100,tone:false,paused:false,speed:.25,stimLog:[],lastRec:-1,caLvl:0,fAct:0,total:0};
+const period=()=>1000/FREQS[sim.freqI];
+function recruitedN(){return UNITS.filter(u=>sim.str>=u.thr).length}
+function fire(t){let n=0;UNITS.forEach(u=>{if(sim.str>=u.thr){u.stims.push(t);u.fired=t;n++}});sim.stimLog.push({t,n})}
+function compute(t){let tot=0,ca=0,fa=0;
+  UNITS.forEach(u=>{while(u.stims.length&&t-u.stims[0]>700)u.stims.shift();
+    let S=0;for(const s of u.stims)S+=kern(t-s);u.S=S;u.F=hill(S);tot+=u.w*u.F;if(S>ca)ca=S;if(u.F>fa)fa=u.F});
+  sim.total=tot/WSUM;sim.caLvl=clamp(ca/SMAX,0,1);sim.fAct=fa}
+function toneTick(){ // asynchronous rotation of the 6 smallest motor units
+  for(let i=0;i<6;i++){const u=UNITS[i];const ph=(sim.t+i*75)%450;
+    if(ph<225){if(sim.t>=u.nextTone){u.stims.push(sim.t);u.fired=sim.t;u.nextTone=sim.t+25}}else u.nextTone=0}}
+function advance(ms){const end=sim.t+ms;
+  while(sim.t<end){sim.t=Math.round((sim.t+.5)*2)/2;
+    if(sim.running&&!sim.tone){while(sim.next<=sim.t){
+        if(sim.burst&&FREQS[sim.freqI]>=5){const sw0=Math.floor(sim.next/WIN)*WIN,ph=sim.next-sw0;
+          if(ph<BON0){sim.next=sw0+BON0;continue}if(ph>=BON1){sim.next=sw0+WIN+BON0;continue}}
+        fire(sim.next);sim.next+=period()}}
+    if(sim.tone)toneTick();
+    const bin=Math.floor(sim.t);
+    if(bin!==sim.lastRec){sim.lastRec=bin;compute(sim.t);const i=bin%WIN;buf[i]=sim.total;bufSw[i]=Math.floor(bin/WIN)}}
+  while(sim.stimLog.length&&sim.t-sim.stimLog[0].t>WIN+400)sim.stimLog.shift()}
+function clearScreen(){bufSw.fill(-1)}
+
+/* ---------- controls ---------- */
+const runBtn=$("#runBtn");
+function setRun(on){sim.running=on;if(on){sim.tone=false;sim.next=sim.t+1;UNITS.forEach(u=>u.nextTone=0)}syncUI()}
+function syncUI(){runBtn.textContent=sim.running?"Stop stimulator":"Start stimulator";runBtn.className="tbtn "+(sim.running?"stop":"go");
+  $("#toneBtn").setAttribute("aria-pressed",sim.tone);$("#toneBtn").textContent=sim.tone?"Muscle tone demo: on":"Muscle tone demo";
+  $("#freq").value=sim.freqI;$("#freqOut").textContent=FREQS[sim.freqI]+" Hz";
+  $("#str").value=sim.str;const n=recruitedN();$("#strOut").textContent=sim.str+"% · "+n+"/10";
+  $("#pauseBtn").textContent=sim.paused?"Resume sweep":"Pause sweep";
+  $("#freq").disabled=sim.tone;$("#str").disabled=sim.tone;}
+runBtn.onclick=()=>setRun(!sim.running);
+$("#shockBtn").onclick=()=>{if(sim.tone){sim.tone=false}fire(sim.t+.5);sim.paused=false;syncUI()};
+$("#toneBtn").onclick=()=>{sim.tone=!sim.tone;if(sim.tone)sim.running=false;UNITS.forEach(u=>u.nextTone=0);sim.paused=false;syncUI()};
+$("#pauseBtn").onclick=()=>{sim.paused=!sim.paused;syncUI()};
+$("#clearBtn").onclick=clearScreen;
+$("#freq").oninput=e=>{const last=sim.stimLog.length?sim.stimLog[sim.stimLog.length-1].t:sim.t;sim.freqI=+e.target.value;if(sim.running)sim.next=Math.max(sim.t+.5,last+period());syncUI()};
+$("#str").oninput=e=>{sim.str=+e.target.value;syncUI()};
+$("#spd").oninput=e=>{sim.speed=+e.target.value;$("#spdOut").textContent=(+e.target.value).toFixed(2)+"×"};
+$("#burstCk").onchange=e=>{sim.burst=e.target.checked;if(sim.running)sim.next=sim.t+.5};let showPhases=true;$("#phaseCk").onchange=e=>showPhases=e.target.checked;
+
+/* ---------- myogram drawing ---------- */
+const TWC=mkCanvas("cvTw",800,540);
+const X0=66,X1=784,YT=46,YB=290,PXMS=(X1-X0)/WIN;
+const yOf=f=>YB-(YB-YT)*f;
+function drawTw(){const W=800,H=540;ctx=TWC.ctx;ctx.setTransform(TWC.K,0,0,TWC.K,0,0);ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const now=sim.t,curSw=Math.floor(now/WIN),cur=Math.floor(now)%WIN;
+  // header
+  txt(14,20,"Myogram: muscle tension over time",{weight:600,size:14});
+  let cls;
+  if(sim.tone)cls={name:"Muscle tone",col:"mu"};
+  else if(sim.running)cls=CLASSES[FCLASS[sim.freqI].c];
+  else cls=null;
+  if(cls)chip(W-14,20,(sim.running?FREQS[sim.freqI]+" Hz · ":"")+cls.name,C[cls.col],"right");
+  else chip(W-14,20,"Stimulator off",C["ink-faint"],"right");
+  // plot frame + grid
+  ctx.fillStyle=C["panel-2"];ctx.fillRect(X0,YT,X1-X0,YB-YT);
+  [0,.25,.5,.75,1].forEach(v=>{const y=yOf(v);line(X0,y,X1,y,C["rule-soft"],1);txt(X0-8,y,Math.round(v*100)+"%",{align:"right",size:11.5,mono:true,color:C["ink-soft"]})});
+  for(let ms=0;ms<=WIN;ms+=100){const x=X0+ms*PXMS;line(x,YT,x,YB,C["rule-soft"],1);txt(x,326,ms+"",{align:"center",size:11,mono:true,color:C["ink-soft"]})}
+  txt((X0+X1)/2,342,"time (ms, one sweep)",{align:"center",size:11.5,color:C["ink-soft"]});
+  ctx.save();ctx.translate(16,(YT+YB)/2);ctx.rotate(-Math.PI/2);txt(0,0,"Tension (% of maximum)",{align:"center",size:11.5,color:C["ink-soft"]});ctx.restore();
+  ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.strokeRect(X0,YT,X1-X0,YB-YT);
+  // stimulus row
+  line(X0,306,X1,306,C["rule"],1);txt(X0-8,306,"shocks",{align:"right",size:10.5,color:C["ink-soft"]});
+  // phase bands (isolated twitch)
+  if(showPhases&&!sim.tone)drawPhases(now,curSw);
+  if(!sim.tone&&recruitedN()>0){const wf=UNITS.reduce((a,u)=>a+(sim.str>=u.thr?u.w:0),0)/WSUM;const yr=yOf(TW.pk*wf);
+    line(X0,yr,X1,yr,C.act2,1.2,[6,4]);txt(X1-6,yr-10,"height of one single twitch",{align:"right",size:11,color:C.act2,pill:true})}
+  // trace: previous sweep faded, current solid
+  [[false,.3],[true,1]].forEach(([isCur,a])=>{ctx.globalAlpha=a;ctx.beginPath();let pen=false;
+    for(let i=0;i<WIN;i++){const sw=bufSw[i];const ok=isCur?(sw===curSw&&i<=cur):(sw===curSw-1&&i>cur);
+      const inGap=((i-cur+WIN)%WIN)>0&&((i-cur+WIN)%WIN)<GAP;
+      if(!ok||inGap){pen=false;continue}const x=X0+i*PXMS,y=yOf(buf[i]);if(!pen){ctx.moveTo(x,y);pen=true}else ctx.lineTo(x,y)}
+    ctx.strokeStyle=C.trace;ctx.lineWidth=isCur?2.6:2;ctx.lineJoin="round";ctx.stroke()});
+  ctx.globalAlpha=1;
+  // cursor
+  const cx=X0+(now%WIN)*PXMS;line(cx,YT,cx,YB,C.accent,1,[3,3]);
+  if(bufSw[cur]===curSw)circ(cx,yOf(buf[cur]),4.5,C.trace);
+  // stimulus ticks
+  sim.stimLog.forEach(s=>{const age=now-s.t;if(age<0||age>WIN-GAP)return;const x=X0+(s.t%WIN)*PXMS;
+    const sameSw=Math.floor(s.t/WIN)===curSw;ctx.globalAlpha=sameSw?1:.35;ctx.fillStyle=s.n?C.stim:C["ink-faint"];ctx.fillRect(x-1.2,297,2.4,18);ctx.globalAlpha=1});
+  if(sim.tone){UNITS.forEach(u=>{u.stims.forEach(t=>{const age=now-t;if(age<0||age>WIN-GAP)return;const x=X0+(t%WIN)*PXMS;ctx.globalAlpha=.5;ctx.fillStyle=C.mu;ctx.fillRect(x-.6,300,1.2,12);ctx.globalAlpha=1})})}
+  // subthreshold note
+  const recent=sim.stimLog.length?sim.stimLog[sim.stimLog.length-1]:null;
+  if(recent&&recent.n===0&&now-recent.t<400&&!sim.tone)txt((X0+X1)/2,YT+30,"Subthreshold: this shock is too weak to fire any motor unit. No twitch.",{align:"center",size:13,weight:600,pill:true,color:C.warn,border:C.warn});
+  // bottom panels
+  drawUnits(now);drawCa();drawSarc();
+}
+function drawPhases(now,curSw){
+  const L=sim.stimLog;let target=null;
+  for(let k=L.length-1;k>=0;k--){const s=L[k];if(!s.n)continue;const prev=k>0?L[k-1].t:-1e9;const next=k<L.length-1?L[k+1].t:1e12;
+    if(s.t+TW.te>now)continue; if(now-s.t>WIN-GAP-TW.te)break;
+    if(s.t-prev<TW.te+40||next-s.t<TW.te+10)continue;
+    if(Math.floor(s.t/WIN)!==Math.floor((s.t+TW.te)/WIN))continue;
+    target=s;break}
+  if(!target)return;
+  const xs=t=>X0+((target.t+t)%WIN)*PXMS;
+  const xa=xs(0),xb=xs(TW.ts),xc=xs(TW.tpk),xd=xs(TW.te);
+  const peakF=buf[Math.floor(target.t+TW.tpk)%WIN]||TW.pk*target.n/10;
+  const bands=[[xa,xb,"lat","Latent period"],[xb,xc,"con","Contraction phase"],[xc,xd,"rel","Relaxation phase"]];
+  bands.forEach(b=>{ctx.globalAlpha=.16;ctx.fillStyle=C[b[2]];ctx.fillRect(b[0],YT,b[1]-b[0],YB-YT);ctx.globalAlpha=1;line(b[0],YT,b[0],YB,C[b[2]],1,[2,3])});
+  line(xd,YT,xd,YB,C.rel,1,[2,3]);
+  // labels stacked to the side with leader lines
+  const right=xd+190<X1;const lx=right?xd+22:xa-22;const al=right?"left":"right";
+  const ys=[YT+22,YT+50,YT+78];
+  bands.forEach((b,i)=>{const mx=(b[0]+b[1])/2,yy=ys[i];const tx2=lx;line(mx,yy,tx2+(right?-4:4),yy,C[b[2]],1.4);circ(mx,yy,3,C[b[2]]);
+    const dur=i===0?TW.ts:(i===1?TW.tpk-TW.ts:TW.te-TW.tpk);
+    txt(tx2,yy,b[3]+" ≈ "+Math.round(dur)+" ms",{align:al,size:12.5,weight:600,pill:true,color:C[b[2]],border:C[b[2]]})});
+  // peak marker
+  const yp=yOf(peakF);line(xc-14,yp,xc+14,yp,C.ink,1.2);txt(xc,yp-12,"peak",{align:"center",size:11,color:C["ink-soft"]});
+  // stimulus label
+  txt(xa,YB+28,"",{});
+}
+function drawUnits(now){
+  const x0=10,y0=362,w=300,h=168;
+  ctx.fillStyle=C["panel-2"];rr(x0,y0,w,h,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  txt(x0+12,y0+16,"Motor units (small → large)",{weight:600,size:12.5});
+  const n=sim.tone?UNITS.filter(u=>now-u.fired<60).length:recruitedN();
+  UNITS.forEach((u,i)=>{const col=i%5,row=Math.floor(i/5);const cx=x0+34+col*58,cy=y0+46+row*54;
+    const on=sim.tone?(i<6):(sim.str>=u.thr);const flash=now-u.fired<25&&now>=u.fired;
+    // fibers fan
+    const nf=2+u.w;for(let f=0;f<nf;f++){const a=(-.9+1.8*f/(nf-1));const len=16+u.w*1.3;
+      line(cx,cy,cx+Math.sin(a)*len*.7,cy+18+Math.cos(a)*len*.2,on?C.actin:C["mu-off"],on?1.6:1.2)}
+    if(flash)glow(cx,cy,22,C.glow,.9);
+    circ(cx,cy,5+u.w*.9,on?C.mu:C.panel,on?C.mu:C["ink-faint"],1.5);
+    if(!on){ctx.setLineDash([2,2]);circ(cx,cy,5+u.w*.9,null,C["ink-faint"],1);ctx.setLineDash([])}
+    txt(cx,cy+27,on?"on":"off",{align:"center",size:10.5,mono:true,color:on?C.good:C["ink-faint"]})});
+  txt(x0+12,y0+h-11,sim.tone?`Taking turns: ${n} firing right now`:`Recruited: ${n} of 10`,{size:12.5,weight:600,color:n?C.good:C.warn});
+}
+function drawCa(){
+  const x0=320,y0=362,w=150,h=168;
+  ctx.fillStyle=C["panel-2"];rr(x0,y0,w,h,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  txt(x0+10,y0+16,"Ca²⁺ in sarcoplasm",{weight:600,size:12.5});
+  const lv=sim.caLvl;
+  // tank
+  const tx=x0+12,ty=y0+30,tw=86,th=100;ctx.fillStyle=C.cyto;rr(tx,ty,tw,th,6);ctx.fill();ctx.strokeStyle=C["fiber-edge"];ctx.lineWidth=1.2;ctx.stroke();
+  const nd=Math.round(lv*40);for(let i=0;i<nd;i++){const px=tx+6+rnd(i*3+1)*(tw-12),py=ty+6+rnd(i*7+2)*(th-12);
+    const jig=Math.sin(sim.t*.02+i)*1.5;circ(px+jig,py,3.2,C.ca,"rgba(0,0,0,.25)",.8)}
+  // bar
+  const bx=x0+108,by=ty,bh=th;ctx.fillStyle=C.sunk;rr(bx,by,14,bh,4);ctx.fill();ctx.fillStyle=C.ca;rr(bx,by+bh*(1-lv),14,bh*lv+.01,4);ctx.fill();
+  txt(bx+7,by+bh+10,Math.round(lv*100)+"%",{align:"center",size:11,mono:true,color:C["ink-soft"]});
+  const word=lv<.06?"resting (low)":lv<.3?"low":lv<.6?"medium":"high";
+  txt(x0+12,y0+h-10,"Level: "+word,{size:12,color:C["ink-soft"]});
+}
+function drawSarc(){
+  const x0=480,y0=362,w=310,h=168;
+  ctx.fillStyle=C["panel-2"];rr(x0,y0,w,h,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  txt(x0+10,y0+16,"Inside one active fiber",{weight:600,size:12.5});
+  const f=sim.fAct; // 0..~0.95
+  const cx=x0+w/2,cy=y0+86;const half=lerp(132,96,clamp(f/.95,0,1));
+  const zl=cx-half,zr=cx+half;
+  // filaments
+  const thinLen=88;
+  [cy-30,cy,cy+30].forEach(y=>{ctx.fillStyle=C.actin;rr(zl,y-3,thinLen,6,3);ctx.fill();rr(zr-thinLen,y-3,thinLen,6,3);ctx.fill()});
+  [cy-15,cy+15].forEach(y=>{ctx.fillStyle=C.myosin;rr(cx-72,y-5,144,10,5);ctx.fill();
+    // heads
+    const nH=8;const bound=Math.round(f/.95*nH);
+    for(let side=-1;side<=1;side+=2)for(let k=0;k<nH;k++){const hx=cx+side*(14+k*7.4);const isB=k<bound&&Math.abs(hx-cx)<half-6;
+      const dir=(k%2?-1:1);const yy=y+dir*5,ty2=y+dir*(isB?11:8);
+      line(hx,yy,hx-side*(isB?3:0),ty2,isB?C.good:C["ink-faint"],isB?2.4:1.4)}});
+  zdisc(zl,cy-44,cy+44,C.zdisc,3);zdisc(zr,cy-44,cy+44,C.zdisc,3);
+  line(cx,cy-42,cx,cy+42,C["ink-faint"],1,[3,3]);
+  if(f>.05){arrow(zl-20,cy+56,zl-2,cy+56,C.act3,2);arrow(zr+20,cy+56,zr+2,cy+56,C.act3,2)}
+  const pct=Math.round(f/.95*100);
+  txt(x0+10,y0+h-26,`Cross-bridges pulling: ${pct<4?"almost none":pct<35?"some":pct<75?"many":"nearly all"}`,{size:12,color:C["ink-soft"]});
+  txt(x0+10,y0+h-10,"More Ca²⁺ → more cross-bridges → more pull",{size:11.5,color:C["ink-soft"]});
+}
+
+/* ---------- treppe mini demo ---------- */
+const TRC=mkCanvas("cvTr",800,230);
+let trT=-1;const TR_N=10,TR_GAP=260; // ms between shocks (full relaxation)
+const trAmp=i=>.6+.4*(1-Math.exp(-i/2.6));
+function drawTr(dt){const W=800,H=230;ctx=TRC.ctx;ctx.setTransform(TRC.K,0,0,TRC.K,0,0);ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  if(trT>=0)trT+=dt*.5; const total=TR_N*TR_GAP+120;
+  const x0=56,x1=786,yt=36,yb=184,px=(x1-x0)/total;
+  txt(14,16,"Treppe after rest: same shock, slightly stronger twitches",{weight:600,size:13.5});
+  ctx.fillStyle=C["panel-2"];ctx.fillRect(x0,yt,x1-x0,yb-yt);ctx.strokeStyle=C.rule;ctx.strokeRect(x0,yt,x1-x0,yb-yt);
+  [0,.5,1].forEach(v=>{const y=yb-(yb-yt)*v*.95;line(x0,y,x1,y,C["rule-soft"],1);txt(x0-6,y,v===0?"0":v===1?"max":"",{align:"right",size:10.5,mono:true,color:C["ink-soft"]})});
+  const shown=trT<0?total:Math.min(trT,total);
+  ctx.beginPath();for(let t=0;t<=shown;t+=1){const i=Math.floor(t/TR_GAP);const u=t-i*TR_GAP;let f=0;if(i<TR_N)f=hill(kern(u))/TW.pk*trAmp(i);
+    const x=x0+t*px,y=yb-(yb-yt)*.95*f;t===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+  ctx.strokeStyle=C.trace;ctx.lineWidth=2.4;ctx.stroke();
+  for(let i=0;i<TR_N;i++){const t=i*TR_GAP;if(t>shown)break;const x=x0+t*px;ctx.fillStyle=C.stim;ctx.fillRect(x-1,yb+6,2.4,14);
+    const pk=yb-(yb-yt)*.95*trAmp(i);if(t+TW.tpk<=shown){ctx.setLineDash([2,3]);line(x+TW.tpk*px-6,pk,x+TW.tpk*px+30,pk,C["ink-faint"],1);ctx.setLineDash([])}}
+  // staircase guide
+  if(shown>=TR_GAP*4){ctx.beginPath();for(let i=0;i<Math.min(TR_N,Math.floor(shown/TR_GAP)+1);i++){const x=x0+(i*TR_GAP+TW.tpk)*px,y=yb-(yb-yt)*.95*trAmp(i)-8;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}
+    ctx.strokeStyle=C.act2;ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);
+    txt(x0+(2*TR_GAP)*px,yt+14,"staircase: each peak a bit higher",{size:12,weight:600,color:C.act2,pill:true})}
+  txt(x0,yb+30,"shocks (all the same strength, evenly spaced)",{size:11,color:C["ink-soft"]});
+  txt(x1,yb+30,"muscle relaxes fully between twitches",{size:11,color:C["ink-soft"],align:"right"});
+  if(trT>=total+600)trT=-1;
+}
+$("#trBtn").onclick=()=>{trT=0};
+
+/* ---------- guided steps (tab 1) ---------- */
+const FI=f=>FREQS.indexOf(f);
+const TSTEPS=[
+{title:"One shock, one twitch",chip:"Single twitch",
+ body:`<p>A <b>twitch</b> is one contraction and relaxation of a muscle fiber in response to <b>one</b> action potential. The graph of tension over time is a <b>myogram</b>. A twitch has three phases:</p>
+ <ol><li><b>Latent period.</b> The action potential spreads along the sarcolemma and down the T-tubules, and Ca²⁺ is released from the SR. No tension yet.</li>
+ <li><b>Contraction phase.</b> Ca²⁺ binds troponin, cross-bridges cycle, and tension rises to its peak.</li>
+ <li><b>Relaxation phase.</b> Ca²⁺ is pumped back into the SR, cross-bridges let go, and tension falls. This phase is <b>longer</b> than the contraction phase.</li></ol>`,
+ look:"The stimulator gives one shock per second. Each purple tick is a shock. Find the shaded bands on a twitch: purple = latent, red = contraction, blue = relaxation. Press Single shock to add your own.",
+ analogy:"Flicking a light switch on and back off. There is a tiny delay before the bulb glows (latent period), it brightens (contraction), then it fades more slowly than it lit up (relaxation).",
+ terms:[["Twitch","One contraction-relaxation cycle from one action potential."],["Myogram","A graph of muscle tension over time."],["Latent period","The short delay after the stimulus, before tension rises."]],
+ setup:{run:true,f:1,str:100},
+ check:{q:"During the latent period, the stimulus has arrived but tension has not risen yet. Why?",opts:[
+  ["The signal is still spreading and Ca²⁺ is just being released, so cross-bridges have not started pulling.",1,"Yes. Excitation-contraction coupling takes a few milliseconds before tension can rise."],
+  ["The muscle is out of ATP.",0,"A rested muscle has plenty of ATP. The delay is the time needed for the signal to release Ca²⁺."],
+  ["Ca²⁺ is being pumped back into the SR.",0,"That happens in the relaxation phase, at the end of the twitch."],
+  ["The stimulus was too weak.",0,"A too-weak (subthreshold) shock gives no twitch at all. Here a twitch does follow, just after a short delay."]]}},
+{title:"Two dials for more tension",chip:"Graded responses",
+ body:`<p>One action potential makes one fiber twitch with about the same strength every time. Yet you can lift a pencil or a backpack with the same biceps. The whole muscle makes <b>graded</b> (adjustable) tension in two ways:</p>
+ <ol><li><b>Frequency of stimulation.</b> Send action potentials faster, and twitches add up (summation, then tetanus).</li>
+ <li><b>Recruitment.</b> Activate <b>more motor units</b>, so more fibers pull at once.</li></ol>
+ <p>The next steps look at each dial.</p>`,
+ look:"Right now the stimulus is at 2 Hz and 40% strength. Try moving the frequency slider up, then try moving the strength slider up. Both make the trace taller, but in different ways.",
+ analogy:"Making a crowd louder. You can ask each person to clap faster (frequency), or invite more people to clap (recruitment).",
+ terms:[["Graded muscle response","Changing how much tension a whole muscle makes."],["Frequency","How many stimuli per second (Hz)."],["Recruitment","Turning on more motor units."]],
+ setup:{run:true,f:2,str:40},
+ check:{q:"Which two things can the nervous system change to make a muscle pull harder?",opts:[
+  ["How often it stimulates the fibers, and how many motor units it activates.",1,"Right. Frequency and recruitment are the two dials."],
+  ["The length of the actin filaments, and the number of nuclei.",0,"Those do not change from moment to moment. The nervous system controls frequency and recruitment."],
+  ["How big each action potential is, and how much ACh each vesicle holds.",0,"Action potentials are all-or-none, so they are always the same size. The nervous system changes how often they come and how many units fire."],
+  ["Only the number of muscle fibers in the muscle.",0,"You cannot add new fibers on demand. You can recruit more of the motor units you already have."]]}},
+{title:"Wave summation",chip:"Summation",
+ body:`<p>What if a second stimulus arrives <b>before the muscle has finished relaxing</b>? The second twitch starts from a higher point and climbs higher than the first. Twitches add together. This is <b>wave summation</b>.</p>
+ <p>Why? Ca²⁺ from the first stimulus has not all been pumped back into the SR. The next stimulus releases more on top of it, so <b>Ca²⁺ in the sarcoplasm climbs higher</b>, more binding sites stay open, and more cross-bridges pull.</p>`,
+ look:"At 15 Hz, each twitch starts before the last one has fully relaxed. Compare the peaks with the single twitch from step 1, and watch the Ca²⁺ meter climb.",
+ analogy:"Pushing a child on a swing again before the swing comes all the way back down. Each push adds to the last one, so the swing goes higher.",
+ terms:[["Wave summation","Twitches adding together because a new stimulus arrives before relaxation is finished."]],
+ setup:{run:true,f:15,str:100},
+ check:{q:"Why does the second twitch reach a higher peak during wave summation?",opts:[
+  ["Ca²⁺ from the first stimulus is still in the sarcoplasm, so Ca²⁺ builds up and more cross-bridges form.",1,"Yes. Leftover Ca²⁺ plus new Ca²⁺ means more open binding sites."],
+  ["The second action potential is bigger than the first.",0,"Action potentials are all-or-none. They are the same size. The extra tension comes from Ca²⁺ building up."],
+  ["More motor units are recruited by the second stimulus.",0,"The strength is the same, so the same motor units fire. This is the frequency dial, not recruitment."],
+  ["The filaments get longer.",0,"Filaments never change length. They slide."]]}},
+{title:"Unfused (incomplete) tetanus",chip:"Unfused tetanus",
+ body:`<p>Turn the frequency up more, to about 20 to 40 shocks per second. Tension climbs and then holds at a high level, but you can still see small <b>ripples</b>: the muscle relaxes a little between each stimulus.</p>
+ <p>This sustained but wavy contraction is <b>unfused tetanus</b>, also called <b>incomplete tetanus</b>.</p>`,
+ look:"At 30 Hz the trace rises to a high level with a wavy top. Each wiggle lines up with one shock tick. Try 25 and 40 Hz too.",
+ analogy:"A quick drumroll you can still hear as separate beats.",
+ terms:[["Tetanus (muscle)","A sustained contraction from rapid stimulation."],["Unfused / incomplete tetanus","Sustained tension that still dips a little between stimuli."]],
+ setup:{run:true,f:30,str:100},
+ check:{q:"In unfused tetanus, what causes the small dips (ripples) in the trace?",opts:[
+  ["The muscle partly relaxes between stimuli, because some Ca²⁺ is pumped back in before the next shock.",1,"Right. The gaps between shocks are short, but not short enough to stop all relaxation."],
+  ["Some motor units die between stimuli.",0,"No units are lost. The dips are brief partial relaxations between shocks."],
+  ["The stimulus strength keeps changing.",0,"The strength stays the same. The ripples come from timing."],
+  ["The muscle is fatigued.",0,"Fatigue makes the whole trace drop over time. Ripples happen even in a fresh muscle."]]}},
+{title:"Fused (complete) tetanus",chip:"Fused tetanus",
+ body:`<p>At very high frequency the stimuli come so fast that there is <b>no time to relax at all</b>. Ca²⁺ stays high, cross-bridges cycle nonstop, and the trace becomes a <b>smooth plateau</b>. This is <b>fused</b> (or <b>complete</b>) <b>tetanus</b>, the most tension the frequency dial can give.</p>
+ <p>Your everyday movements are mostly short tetanic contractions, not single twitches. Holding a contraction for a long time leads to <b>fatigue</b>.</p>
+ <p><i>Do not mix this up</i> with the disease called tetanus ("lockjaw"), caused by a bacterial toxin. Same word, different meaning.</p>`,
+ look:"At 100 Hz the trace is a smooth line near the top. Slide down to 60, 50, then 40 Hz and find where the ripples come back.",
+ analogy:"A drumroll so fast it sounds like one continuous roar.",
+ terms:[["Fused / complete tetanus","Smooth, maximal sustained tension with no relaxation between stimuli."],["Fatigue","Falling tension during long or repeated activity."]],
+ setup:{run:true,f:100,str:100},
+ check:{q:"What is true in fused tetanus compared to unfused tetanus?",opts:[
+  ["Stimuli come so fast that no relaxation happens, so tension is smooth and higher.",1,"Yes. No ripples, and Ca²⁺ stays high the whole time."],
+  ["Each stimulus is stronger.",0,"Strength is unchanged. Only frequency went up."],
+  ["The muscle relaxes fully between stimuli.",0,"That describes separate twitches at low frequency."],
+  ["Fewer cross-bridges are working.",0,"It is the opposite. Ca²⁺ stays high, so the most cross-bridges are cycling."]]}},
+{title:"Recruitment and motor units",chip:"Recruitment",
+ body:`<p>A <b>motor unit</b> is one motor neuron plus all the muscle fibers it controls. When that neuron fires, <b>all</b> of its fibers contract together.</p>
+ <ul><li><b>Small motor units</b> (few fibers each) give fine control, like the muscles that move your eyes or fingers.</li>
+ <li><b>Large motor units</b> (many fibers each) give power, like in the thigh.</li></ul>
+ <p><b>Recruitment</b> means activating more motor units to get more tension. The small units are usually recruited first, and the larger ones join as more tension is needed.</p>
+ <p>In the lab, the weakest shock that makes a visible twitch is the <b>threshold stimulus</b>. Stronger shocks recruit more motor units, up to a <b>maximal stimulus</b> where every unit is active.</p>`,
+ look:"Here the stimulator sends short 50 Hz bursts, and strength starts at 25%: only three small units fire, so tension is low. Drag the strength slider up slowly. Watch new units switch on in the panel and the plateau climb. Drag it below 8% to see a subthreshold shock (nothing fires).",
+ analogy:"Turning on the lights in a big room one switch at a time. Each switch controls a whole group of bulbs. The first switches control small groups, later ones control big groups.",
+ terms:[["Motor unit","One motor neuron and all the fibers it controls."],["Recruitment","Activating more motor units to increase tension."],["Threshold stimulus","The weakest stimulus that causes a contraction."]],
+ setup:{run:true,f:50,str:25},
+ check:{q:"In the lab, a stronger shock gives a taller twitch. What is the main reason?",opts:[
+  ["The stronger shock recruits more motor units, so more fibers contract.",1,"Right. Each fiber still twitches the same way. More of them are working."],
+  ["Each fiber contracts more strongly because the action potential is bigger.",0,"Action potentials are all-or-none. A fiber either fires or it does not."],
+  ["The stronger shock makes the twitch last longer.",0,"Twitch timing stays about the same. The height grows because more units join."],
+  ["The stronger shock causes summation.",0,"Summation comes from frequency (shocks arriving close together), not from strength."]]}},
+{title:"Muscle tone",chip:"Muscle tone",
+ body:`<p>Even when you are sitting still, your skeletal muscles are rarely completely relaxed. A few motor units are active at any moment, and they <b>take turns</b> so no single unit tires out. This gives a small, steady tension called <b>muscle tone</b>.</p>
+ <p>Tone keeps muscles firm and ready, helps <b>stabilize joints</b>, and helps you <b>keep your posture</b>. It does not move a body part.</p>
+ <p>Too little tone is <b>hypotonia</b> (muscles feel floppy). Too much is <b>hypertonia</b>, which can appear as <b>spasticity</b> or <b>rigidity</b>. Nurses check muscle tone in a neuro exam.</p>`,
+ look:"The muscle tone demo is on. Watch the motor-unit panel: different small units flash at different times. Together they give a low, fairly steady tension instead of separate twitches.",
+ analogy:"A relay team keeping a flag up. Runners take turns holding it, so the flag stays up and nobody gets exhausted.",
+ terms:[["Muscle tone","Constant low-level tension from small groups of motor units taking turns."],["Hypotonia / hypertonia","Abnormally low or high muscle tone."]],
+ setup:{tone:true},
+ check:{q:"How does muscle tone stay steady for hours without fatiguing the muscle?",opts:[
+  ["Different motor units take turns being active, so each one gets to rest.",1,"Yes. That rotation keeps a low, steady tension."],
+  ["All motor units stay in fused tetanus.",0,"That would be maximal tension and would tire the muscle quickly."],
+  ["Tone does not use any motor units.",0,"Tone does come from motor unit activity, just a small and rotating amount."],
+  ["The muscle locks in place like rigor mortis.",0,"Rigor mortis happens when ATP runs out. Tone is an active, living process."]]}}
+];
+let tcur=0;const tdone=new Set();
+function buildTwDots(){const d=$("#twDots");d.innerHTML="";TSTEPS.forEach((s,i)=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i+1;b.dataset.i=i;
+  b.setAttribute("aria-label","Step "+(i+1)+": "+s.title);b.onclick=()=>goTw(i);d.appendChild(b)})}
+function refreshTwDots(){document.querySelectorAll("#twDots .dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===tcur);b.classList.toggle("done",tdone.has(i))})}
+function applySetup(su){
+  if(su.tone){sim.tone=true;sim.running=false;UNITS.forEach(u=>u.nextTone=0)}
+  else{sim.tone=false;sim.freqI=FI(su.f);sim.str=su.str;sim.running=false;setRun(!!su.run)}
+  sim.paused=false;syncUI()}
+function renderTw(){const s=TSTEPS[tcur];
+  $("#twStepno").innerHTML=`<span class="actchip" style="background:var(--accent)">${s.chip}</span><span>Step ${tcur+1} of ${TSTEPS.length}</span>`;
+  $("#twTitle").textContent=s.title;$("#twBody").innerHTML=s.body;
+  $("#twLook").innerHTML=`<b class="h">Look for</b>${s.look}`;
+  $("#twAnalogy p").textContent=s.analogy;
+  $("#twTerms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  makeCheck($("#twCheck"),s.check,()=>{tdone.add(tcur);refreshTwDots()});
+  $("#twPrev").disabled=tcur===0;$("#twNext").textContent=tcur===TSTEPS.length-1?"Start over":"Next →";
+  $("#twProg").style.width=((tcur+1)/TSTEPS.length*100)+"%";refreshTwDots()}
+function goTw(i){tcur=clamp(i,0,TSTEPS.length-1);applySetup(TSTEPS[tcur].setup);renderTw()}
+$("#twPrev").onclick=()=>goTw(tcur-1);
+$("#twNext").onclick=()=>goTw(tcur===TSTEPS.length-1?0:tcur+1);
+$("#twSetup").onclick=()=>applySetup(TSTEPS[tcur].setup);
+document.addEventListener("keydown",e=>{if(activeTab!=="tw")return;const tg=e.target.tagName;if(tg==="INPUT"||tg==="SELECT"||tg==="TEXTAREA")return;
+  if(e.key==="ArrowRight")goTw(tcur+1);if(e.key==="ArrowLeft")goTw(tcur-1)});
+
+function statusText(){let h;
+  if(sim.tone)h=`<span class="pill" style="color:var(--mu)">Muscle tone</span> Small motor units take turns. Tension stays low and steady.`;
+  else if(sim.running){const fc=FCLASS[sim.freqI],c=CLASSES[fc.c];h=`<span class="pill" style="color:var(--${c.col})">${c.name}</span> ${FREQS[sim.freqI]} shocks per second. ${c.tip}`}
+  else h=`<span class="pill" style="color:var(--ink-faint)">Stimulator off</span> Press Start stimulator, or Single shock for one twitch.`;
+  const n=recruitedN();if(!sim.tone)h+=` <span style="color:var(--ink-soft)">Strength ${sim.str}%: ${n?n+" of 10 motor units recruited":"below threshold, no motor units fire"}.</span>`;
+  return h}
+let lastStatus="";
+function updStatus(){const h=statusText();if(h!==lastStatus){$("#status").innerHTML=h;lastStatus=h;
+  TWC.cv.setAttribute("aria-label","Myogram of muscle tension over time. "+$("#status").textContent)}}
+
+/* =====================================================================
+   TAB 2: LENGTH–TENSION
+   ===================================================================== */
+const LTC=mkCanvas("cvLt",800,500);
+const REST=2.1,THICK=1.6,THIN=1.0,BARE=.1;
+function tensionAt(L){ // classic piecewise curve (fraction of max)
+  if(L>=3.65||L<=1.27)return 0;
+  if(L>2.25)return 1-(L-2.25)/(3.65-2.25);
+  if(L>=2.0)return 1;
+  if(L>=1.67)return .84+.16*(L-1.67)/(2.0-1.67);
+  return .84*(L-1.27)/(1.67-1.27)}
+let Lcur=2.1,sweepOn=false,sweepPh=0,Ltarget=null;
+function zoneOf(L){
+  if(L<1.67)return{k:"Too short",col:"zone-short",txt:"The sarcomere is squeezed. Thick filaments push against the Z discs and thin filaments from both sides pile into each other. Cross-bridges get in each other's way and there is no room left to slide. Tension drops steeply."};
+  if(L<2.0)return{k:"A bit short",col:"zone-short",txt:"Thin filaments from the two sides overlap each other in the middle and interfere with binding. Tension is a little below the peak."};
+  if(L<=2.25)return{k:"Optimal (peak)",col:"zone-opt",txt:"Every myosin head on the thick filament has a thin filament next to it, and there is still room to slide. Maximum cross-bridges, maximum tension."};
+  if(L<=2.52)return{k:"Still in the optimal range",col:"zone-opt",txt:"Slightly stretched. A few heads near the middle have lost their thin filament, but overlap is still good. Tension is close to maximum."};
+  if(L<3.65)return{k:"Overstretched",col:"zone-long",txt:"The filaments overlap only a little. Only the heads at the ends of the thick filament can reach actin, so few cross-bridges form and tension is low."};
+  return{k:"No overlap",col:"zone-long",txt:"The thin filaments have been pulled completely past the thick filaments. No myosin head can reach actin, so no tension can be made."}}
+function updLt(){const L=Lcur;const z=zoneOf(L);const T=tensionAt(L);
+  $("#lenOut").textContent=L.toFixed(2)+" µm · "+Math.round(L/REST*100)+"%";
+  $("#len").value=Math.round(L*100);
+  const zb=$("#ltZone");zb.style.borderLeftColor=`var(--${z.col})`;zb.querySelector(".z").textContent=z.k;zb.querySelector(".z").style.color=`var(--${z.col})`;zb.querySelector("p").textContent=z.txt;
+  $("#roL").textContent=L.toFixed(2)+" µm";$("#roP").textContent=Math.round(L/REST*100)+"%";$("#roT").textContent=Math.round(T*100)+"%";
+  LTC.cv.setAttribute("aria-label",`Sarcomere at ${L.toFixed(2)} micrometres (${Math.round(L/REST*100)}% of resting). ${z.k}. Tension about ${Math.round(T*100)}% of maximum.`)}
+$("#len").oninput=e=>{Lcur=+e.target.value/100;sweepOn=false;$("#sweepBtn").setAttribute("aria-pressed","false");Ltarget=null;updLt()};
+document.querySelectorAll("[data-len]").forEach(b=>b.onclick=()=>{Ltarget=+b.dataset.len/100;sweepOn=false;$("#sweepBtn").setAttribute("aria-pressed","false")});
+$("#sweepBtn").onclick=()=>{sweepOn=!sweepOn;Ltarget=null;$("#sweepBtn").setAttribute("aria-pressed",sweepOn);if(sweepOn)sweepPh=Math.asin(clamp((Lcur-2.5)/1.2,-1,1))};
+function drawLt(dt){const W=800,H=500;ctx=LTC.ctx;ctx.setTransform(LTC.K,0,0,LTC.K,0,0);ctx.clearRect(0,0,W,H);
+  if(sweepOn){sweepPh+=dt*.35;Lcur=2.5+1.2*Math.sin(sweepPh);updLt()}
+  else if(Ltarget!=null){const d=Ltarget-Lcur;if(Math.abs(d)<.004){Lcur=Ltarget;Ltarget=null}else Lcur+=d*Math.min(1,dt*5);updLt()}
+  const L=Lcur;
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  // ---- sarcomere ----
+  ctx.fillStyle=C["panel-2"];rr(8,8,W-16,232,8);ctx.fill();
+  txt(20,26,"One sarcomere (side view)",{weight:600,size:13.5});
+  const s=200,cx=400,zl=cx-L/2*s,zr=cx+L/2*s;
+  const thinRows=[78,128,178],thickRows=[103,153];
+  const thinEndL=zl+THIN*s,thinStartR=zr-THIN*s;
+  const thkL=Math.max(cx-THICK/2*s,zl+3),thkR=Math.min(cx+THICK/2*s,zr-3);const crushed=THICK>L;
+  // zone of overlap shading
+  const ovL0=Math.max(zl,cx-THICK/2*s),ovL1=Math.min(thinEndL,cx+THICK/2*s);
+  const ovR0=Math.max(thinStartR,cx-THICK/2*s),ovR1=Math.min(zr,cx+THICK/2*s);
+  ctx.globalAlpha=.13;ctx.fillStyle=C.good;if(ovL1>ovL0)ctx.fillRect(ovL0,60,ovL1-ovL0,134);if(ovR1>ovR0)ctx.fillRect(ovR0,60,ovR1-ovR0,134);ctx.globalAlpha=1;
+  // thin filaments
+  thinRows.forEach(y=>{ctx.fillStyle=C.actin;rr(zl,y-4,THIN*s,8,4);ctx.fill();ctx.fillStyle=C["actin-2"];rr(thinStartR,y-4+(L<2.0?5:0),THIN*s,8,4);ctx.fill();
+    if(L<2.0){ctx.strokeStyle=C.panel;ctx.lineWidth=1;rr(thinStartR,y+1,THIN*s,8,4);ctx.stroke()}});
+  // thick filaments + heads
+  let bound=0,blocked=0,totalH=0;
+  thickRows.forEach(y=>{ctx.fillStyle=C.myosin;rr(thkL,y-6,thkR-thkL,12,6);ctx.fill();
+    for(let side=-1;side<=1;side+=2)for(let d=BARE+.025;d<=THICK/2-.02;d+=.05){const hx=cx+side*d*s;if(hx<zl+4||hx>zr-4)continue;
+      [-1,1].forEach(dir=>{totalH++;
+        // left-half heads (side -1) pull the left thin filament; right-half heads pull the right one
+        const own=side<0?(hx<=thinEndL):(hx>=thinStartR);
+        const foreign=side<0?(hx>=thinStartR):(hx<=thinEndL);
+        const st=own&&!foreign?"b":own?"x":"f";
+        if(st==="b")bound++;else if(st==="x")blocked++;
+        const y0=y+dir*6,y1=y+dir*(st==="b"?19:11);const lean=st==="b"?side*-5:0;
+        line(hx,y0,hx+lean,y1,st==="b"?C.good:C["ink-faint"],st==="b"?2.6:1.5);
+        if(st==="b")circ(hx+lean,y1,2.4,C.good)})}});
+  if(crushed){[zl+4,zr-4].forEach(x=>{for(let k=0;k<2;k++){const y=thickRows[k];ctx.beginPath();ctx.moveTo(x,y-12);ctx.lineTo(x+(x<cx?8:-8),y-5);ctx.lineTo(x,y);ctx.lineTo(x+(x<cx?8:-8),y+5);ctx.lineTo(x,y+12);ctx.strokeStyle=C.bad;ctx.lineWidth=2;ctx.stroke()}})}
+  zdisc(zl,58,198,C.zdisc,3.2);zdisc(zr,58,198,C.zdisc,3.2);
+  line(cx,58,cx,198,C["ink-faint"],1,[3,3]);
+  txt(zl,48,"Z disc",{align:"center",size:11.5,color:C["ink-soft"]});txt(zr,48,"Z disc",{align:"center",size:11.5,color:C["ink-soft"]});txt(cx,48,"M line",{align:"center",size:11.5,color:C["ink-soft"]});
+  // dimension bracket
+  line(zl,214,zr,214,C.ink,1.3);line(zl,208,zl,220,C.ink,1.3);line(zr,208,zr,220,C.ink,1.3);
+  txt(cx,214,`${L.toFixed(2)} µm  (${Math.round(L/REST*100)}% of resting)`,{align:"center",size:12.5,weight:600,pill:true});
+  // status notes
+  const ztag=zoneOf(L);
+  txt(W-20,26,`Heads that can grab actin: ${bound} of ${totalH}`,{align:"right",size:12.5,weight:600,color:bound?C.good:C.warn});
+  if(crushed)txt(cx,232,"Thick filaments jammed against the Z discs",{align:"center",size:12,weight:600,color:C.bad,pill:true});
+  else if(L<2.0)txt(cx,232,"Thin filaments overlap each other in the middle",{align:"center",size:12,weight:600,color:C["zone-short"],pill:true});
+  else if(L>=3.65)txt(cx,232,"No overlap: nothing for myosin to grab",{align:"center",size:12,weight:600,color:C["zone-long"],pill:true});
+  // ---- curve ----
+  const gx0=74,gx1=780,gy0=272,gy1=440,Lmin=1.2,Lmax=3.8;const gx=v=>gx0+(v-Lmin)/(Lmax-Lmin)*(gx1-gx0),gy=v=>gy1-(gy1-gy0)*v;
+  txt(20,258,"Length–tension curve",{weight:600,size:13.5});
+  ctx.fillStyle=C["panel-2"];ctx.fillRect(gx0,gy0,gx1-gx0,gy1-gy0);
+  // optimal band 80-120%
+  ctx.globalAlpha=.16;ctx.fillStyle=C["zone-opt"];ctx.fillRect(gx(.8*REST),gy0,gx(1.2*REST)-gx(.8*REST),gy1-gy0);ctx.globalAlpha=1;
+  txt((gx(.8*REST)+gx(1.2*REST))/2,gy1-12,"Optimal: 80–120% of resting",{align:"center",size:11.5,weight:600,color:C["zone-opt"]});
+  txt(gx(1.56),gy(.15),"Too short",{align:"center",size:12,weight:600,color:C["zone-short"]});
+  txt(gx(3.15),gy0+40,"Overstretched",{align:"center",size:12,weight:600,color:C["zone-long"]});
+  [0,.5,1].forEach(v=>{line(gx0,gy(v),gx1,gy(v),C["rule-soft"],1);txt(gx0-6,gy(v),Math.round(v*100)+"%",{align:"right",size:11,mono:true,color:C["ink-soft"]})});
+  for(let v=1.5;v<=3.5+1e-6;v+=.5){line(gx(v),gy1,gx(v),gy1+5,C.ink,1);txt(gx(v),gy1+14,v.toFixed(1),{align:"center",size:11,mono:true,color:C["ink-soft"]})}
+  [60,80,100,120,140,160,180].forEach(p=>{const v=p/100*REST;if(v<Lmin||v>Lmax)return;txt(gx(v),gy1+32,p+"%",{align:"center",size:11,mono:true,color:C["ink-faint"]})});
+  txt(gx0-6,gy1+14,"µm",{align:"right",size:11,mono:true,color:C["ink-soft"]});txt(gx0-6,gy1+32,"rest",{align:"right",size:11,mono:true,color:C["ink-faint"]});
+  txt(gx1,gy1+50,"sarcomere length",{align:"right",size:11.5,color:C["ink-soft"]});
+  ctx.save();ctx.translate(18,(gy0+gy1)/2);ctx.rotate(-Math.PI/2);txt(0,0,"Tension",{align:"center",size:11.5,color:C["ink-soft"]});ctx.restore();
+  ctx.strokeStyle=C.rule;ctx.lineWidth=1.2;ctx.strokeRect(gx0,gy0,gx1-gx0,gy1-gy0);
+  ctx.beginPath();for(let v=Lmin;v<=Lmax;v+=.01){const x=gx(v),y=gy(tensionAt(v));v===Lmin?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.strokeStyle=C.ink;ctx.lineWidth=2.4;ctx.stroke();
+  // plateau label
+  line(gx(2.0),gy(1)-6,gx(2.25),gy(1)-6,C["zone-opt"],2);txt(gx(2.125),gy(1)-16,"peak 2.0–2.25 µm",{align:"center",size:11,color:C["zone-opt"],weight:600});
+  // current point
+  const T=tensionAt(L),px=gx(L),py=gy(T);
+  line(px,gy1,px,py,C.accent,1.2,[4,3]);line(gx0,py,px,py,C.accent,1.2,[4,3]);
+  glow(px,py,18,C.accent,.35);circ(px,py,7,C.accent,C.panel,2);
+  txt(px+(px>gx1-120?-12:12),T>.9?py+20:py-14,Math.round(T*100)+"% tension",{align:px>gx1-120?"right":"left",size:12,weight:600,pill:true,color:C.accent});
+}
+const LTCHECKS=[
+ {q:"A sarcomere is stretched so far that the thin filaments barely overlap the thick filaments. What happens to tension, and why?",opts:[
+  ["Tension is low, because only a few myosin heads can reach actin.",1,"Right. Few heads in reach means few cross-bridges and little pull."],
+  ["Tension is highest, because the muscle has the most room to shorten.",0,"Room to shorten does not help if myosin cannot grab actin. Overlap is what counts."],
+  ["Tension is normal, because the number of myosin heads did not change.",0,"The heads are still there, but most have nothing to grab."],
+  ["Tension rises because the Z discs pull harder.",0,"Z discs anchor the thin filaments. They do not make force on their own."]]},
+ {q:"Why does a sarcomere that is already very short make less tension?",opts:[
+  ["Thick filaments press on the Z discs and thin filaments overlap and interfere, so there is no room to slide.",1,"Yes. Too much overlap is a problem too."],
+  ["It has no myosin heads left.",0,"The heads are still there. They are crowded and blocked, and the sarcomere cannot shorten more."],
+  ["The filaments have shrunk.",0,"Filaments never shrink. They slide and overlap."],
+  ["Short sarcomeres cannot release Ca²⁺.",0,"Ca²⁺ release is not the problem. The filament arrangement is."]]},
+ {q:"According to your textbook, about what range of sarcomere length gives the most tension?",opts:[
+  ["About 80 to 120% of resting length.",1,"Right. Near this range (peak around 2.0–2.25 µm), almost every head can form a cross-bridge."],
+  ["About 40 to 60% of resting length.",0,"That is far too short. The filaments would be jammed together."],
+  ["About 160 to 180% of resting length.",0,"That is overstretched. Very little overlap, very little tension."],
+  ["Any length works the same.",0,"Tension depends strongly on overlap, so length matters a lot."]]}];
+function buildLtChecks(){const box=$("#ltChecks");box.innerHTML="";LTCHECKS.forEach((c,i)=>{const d=document.createElement("div");d.className="check";box.appendChild(d);makeCheck(d,c,null,"Quick check "+(i+1)+" of 3")})}
+
+/* =====================================================================
+   TAB 3: FIBER TYPES
+   ===================================================================== */
+const FTC=mkCanvas("cvFt",800,560);
+let fatT=-1;
+const FT=[{k:"SO",name:"Slow oxidative",cx:140,r:62,fill:"so",mito:34,glyc:8,caps:9,note:["Small, red","Many mitochondria"]},
+          {k:"FO",name:"Fast oxidative",cx:400,r:80,fill:"fo",mito:30,glyc:26,caps:8,note:["Medium, pinkish","Many mitochondria"]},
+          {k:"FG",name:"Fast glycolytic",cx:660,r:100,fill:"fg",mito:7,glyc:70,caps:4,note:["Large, pale (white)","Lots of glycogen"]}];
+const FAT={SO:{a:.32,end:.30,tau:3},FO:{a:.62,end:.40,tau:.45},FG:{a:1,end:.12,tau:.13}};
+const fatLvl=(p,u)=>p.end+(p.a-p.end)*Math.exp(-u/p.tau);
+function drawFt(dt){const W=800,H=560;ctx=FTC.ctx;ctx.setTransform(FTC.K,0,0,FTC.K,0,0);ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  txt(16,20,"Cross-sections of single fibers (drawn to relative size)",{weight:600,size:13.5});
+  const cy=150;
+  FT.forEach((f,fi)=>{
+    // endomysium + capillaries
+    for(let i=0;i<f.caps;i++){const a=i/f.caps*TAU+fi;const x=f.cx+Math.cos(a)*(f.r+13),y=cy+Math.sin(a)*(f.r+13);circ(x,y,6.5,C.cap,C.panel,1.5);circ(x,y,2.4,C.panel)}
+    circ(f.cx,cy,f.r,C[f.fill],f.k==="FG"?C["fg-edge"]:C["fiber-edge"],2);
+    // myofibril texture
+    ctx.save();ctx.beginPath();ctx.arc(f.cx,cy,f.r-2,0,TAU);ctx.clip();ctx.globalAlpha=.12;
+    for(let x=f.cx-f.r;x<f.cx+f.r;x+=9)for(let y=cy-f.r;y<cy+f.r;y+=9)circ(x+((y/9)%2?4:0),y,2.6,C.ink);ctx.globalAlpha=1;
+    // glycogen
+    for(let i=0;i<f.glyc;i++){const a=rnd(i*5+fi*91)*TAU,rr2=Math.sqrt(rnd(i*11+fi*37))*(f.r-8);circ(f.cx+Math.cos(a)*rr2,cy+Math.sin(a)*rr2,1.9,C.glyc)}
+    // mitochondria (mostly near edge, like subsarcolemmal + between myofibrils)
+    for(let i=0;i<f.mito;i++){const a=rnd(i*3+fi*17)*TAU,rr2=(.35+.6*Math.sqrt(rnd(i*13+fi*7)))*(f.r-10);const x=f.cx+Math.cos(a)*rr2,y=cy+Math.sin(a)*rr2;
+      ctx.beginPath();ctx.ellipse(x,y,5.2,2.8,a,0,TAU);ctx.fillStyle=C.mito;ctx.fill();ctx.strokeStyle=C.panel;ctx.lineWidth=.8;ctx.stroke()}
+    ctx.restore();
+    // nuclei at periphery
+    [0.3,2.4,4.3].forEach((a,i)=>{const x=f.cx+Math.cos(a+fi)*(f.r-5),y=cy+Math.sin(a+fi)*(f.r-5);ctx.beginPath();ctx.ellipse(x,y,6,3,a+fi+Math.PI/2,0,TAU);ctx.fillStyle=C.myosin;ctx.fill()});
+    chip(f.cx,cy+f.r+32,f.k,C[f.fill==="fg"?"fg-edge":f.fill],"center");
+    txt(f.cx,cy+f.r+52,f.name,{align:"center",size:13,weight:600});
+    txt(f.cx,cy+f.r+70,f.note[0]+" · "+f.note[1],{align:"center",size:11.5,color:C["ink-soft"]});
+  });
+  // ---- fatigue test ----
+  const gx0=70,gx1=780,gy0=360,gy1=520;
+  txt(16,338,"Fatigue test: repeated contractions over about 2 minutes (simplified)",{weight:600,size:13.5});
+  ctx.fillStyle=C["panel-2"];ctx.fillRect(gx0,gy0,gx1-gx0,gy1-gy0);ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.strokeRect(gx0,gy0,gx1-gx0,gy1-gy0);
+  [0,.5,1].forEach(v=>{const y=gy1-(gy1-gy0)*v;line(gx0,y,gx1,y,C["rule-soft"],1);txt(gx0-22,y,v===0?"0":"",{align:"right",size:10.5,mono:true,color:C["ink-soft"]})});
+  ctx.save();ctx.translate(16,(gy0+gy1)/2);ctx.rotate(-Math.PI/2);txt(0,0,"Tension",{align:"center",size:11.5,color:C["ink-soft"]});ctx.restore();
+  txt(gx1,gy1+16,"time →",{align:"right",size:11.5,color:C["ink-soft"]});
+  if(fatT>=0)fatT=Math.min(1,fatT+dt/7);
+  const prog=fatT<0?1:fatT;const px1=640;
+  line(px1,gy0,px1,gy1,C.rule,1);
+  const ends=[];
+  ["SO","FO","FG"].forEach(k=>{const p=FAT[k];const col=k==="SO"?C.so:k==="FO"?C.fo:C["fg-edge"];const N=40;
+    const X=u=>gx0+12+u*(px1-gx0-24),Y=u=>gy1-(gy1-gy0)*fatLvl(p,u)*.9;
+    ctx.beginPath();const n=Math.floor(N*prog);for(let i=0;i<=n;i++){const u=i/N;i?ctx.lineTo(X(u),Y(u)):ctx.moveTo(X(u),Y(u))}
+    ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.stroke();
+    for(let i=0;i<=n;i++){const u=i/N;circ(X(u),Y(u),k==="FG"?3.2:2.8,col,C.panel,1)}
+    if(n===N)ends.push({k,col,y:Y(1),x:X(1)})});
+  ends.sort((a,b)=>a.y-b.y);for(let i=1;i<ends.length;i++)if(ends[i].y-ends[i-1].y<22)ends[i].y=ends[i-1].y+22;
+  ends.forEach(e=>{const lab=e.k+(e.k==="FG"?": tired out":e.k==="FO"?": drops slowly":": keeps going");
+    txt(px1+10,e.y,lab,{size:12,weight:600,pill:true,color:e.k==="FG"?C.ink:e.col,border:e.col})});
+  // start labels
+  if(prog>0){[["FG",1],["FO",.62],["SO",.32]].forEach(([k,v])=>txt(gx0+4,gy1-(gy1-gy0)*v*.9,k,{align:"right",size:10.5,mono:true,weight:600,color:C["ink-soft"]}))}
+  txt(gx0,gy1+16,"Each dot = tension of one contraction",{size:11.5,color:C["ink-soft"]});
+  if(fatT<0||prog>=1)txt(px1-10,gy0+12,"FG starts strongest but tires fast. SO is weakest but barely tires.",{align:"right",size:11.5,color:C["ink-soft"]});
+}
+$("#fatBtn").onclick=()=>{fatT=0};
+
+/* sorting game */
+const BK={SO:["Slow oxidative (SO)","so","Red, slow, tireless"],FO:["Fast oxidative (FO)","fo","Fast, mostly aerobic"],FG:["Fast glycolytic (FG)","fg","Pale, powerful, tires fast"]};
+const DECK=[
+ ["A marathon runner's leg muscles at mile 20.","SO","Hours of steady work need fibers that make ATP aerobically and resist fatigue: slow oxidative.","Think: hours long, steady pace."],
+ ["The muscles along your spine that hold you upright all day.","SO","Postural muscles of the back and neck work all day at low tension. That is a job for SO fibers.","Does this muscle ever get to stop?"],
+ ["Lifting a heavy box off the floor in one quick heave.","FG","A short, powerful burst is fast glycolytic territory: big fibers, fast myosin ATPase, ATP from anaerobic glycolysis.","Huge power, a few seconds."],
+ ["A 100-meter sprint (about 10 seconds).","FG","An all-out effort for seconds relies most on FG fibers. They are powerful but would tire fast if the race were longer.","Very short, all-out."],
+ ["Your leg muscles during a brisk walk across campus.","FO","OpenStax gives walking as a job for FO fibers: fairly fast and powerful, but mostly aerobic so they do not tire quickly.","Moderate effort that you can keep up for a while."],
+ ["A pale fiber with a large diameter and lots of stored glycogen.","FG","Pale (little myoglobin), large, and packed with glycogen for glycolysis: fast glycolytic.","Glycogen is fuel for which pathway?"],
+ ["A small, dark red fiber packed with mitochondria and myoglobin.","SO","Small, red from lots of myoglobin, many mitochondria: the classic slow oxidative fiber.","Red color comes from which protein?"],
+ ["Fast myosin ATPase, makes most of its ATP aerobically, and resists fatigue fairly well.","FO","Fast speed plus aerobic ATP: fast oxidative, the in-between fiber.","Fast, but oxidative."],
+ ["Tires within seconds and builds up lactic acid.","FG","Anaerobic glycolysis makes ATP fast but runs out quickly and produces lactic acid, so FG fibers fatigue fast.","Which pathway produces lactic acid?"],
+ ["The slowest contraction speed, and the most resistant to fatigue.","SO","Slow myosin ATPase gives slow contractions; aerobic ATP supply makes SO the most fatigue-resistant.","Slowest and most tireless go together."],
+ ["Called the intermediate fiber: fast-twitch, but with many mitochondria.","FO","OpenStax calls FO fibers intermediate: fast like FG, oxidative like SO.","In between the other two."],
+ ["A shot-put throw.","FG","One explosive throw lasting about a second needs maximum power: FG fibers, like the arm muscles that lift heavy loads.","One explosive moment."]];
+let deck=[],di=0,sOk=0,sStreak=0,answered=false,first=true,misses={};
+function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function getBest(){try{return +localStorage.getItem("mts-sort-best")||0}catch(e){return 0}}
+function setBest(v){try{localStorage.setItem("mts-sort-best",v)}catch(e){}}
+function showBest(){const b=getBest();$("#sBest").textContent=b?`Best: ${b} of ${DECK.length} on first try`:""}
+function sStart(){deck=shuffle(DECK);di=0;sOk=0;sStreak=0;misses={};$("#sDone").innerHTML="";$("#sT").textContent=deck.length;showBest();sShow()}
+function sShow(){answered=false;first=true;const d=deck[di];$("#sN").textContent=di+1;$("#sOk").textContent=sOk;$("#sStreak").textContent=sStreak;$("#sBar").style.width=(di/deck.length*100)+"%";
+  $("#sStmt").textContent=d[0];$("#sWhy").className="why";$("#sHint").className="hint";$("#sNext").hidden=true;$("#sHintBtn").disabled=false;$("#sShowBtn").disabled=false;
+  const b=$("#sBuckets");b.innerHTML="";
+  Object.keys(BK).forEach(k=>{const x=document.createElement("button");x.type="button";x.className="bucket";x.dataset.k=k;
+    x.innerHTML=`<i style="background:var(--${BK[k][1]})"></i><span><b>${BK[k][0]}</b><small>${BK[k][2]}</small></span>`;
+    x.onclick=()=>pick(k,x);b.appendChild(x)})}
+function reveal(d,good){answered=true;$("#sWhy").innerHTML=(good?"<b>Yes!</b> ":"<b>Answer: "+BK[d[1]][0]+".</b> ")+d[2];$("#sWhy").className="why show";
+  $("#sNext").hidden=false;$("#sNext").textContent=di===deck.length-1?"See results":"Next card →";$("#sOk").textContent=sOk;$("#sStreak").textContent=sStreak;
+  $("#sHintBtn").disabled=true;$("#sShowBtn").disabled=true;
+  document.querySelectorAll(".bucket").forEach(x=>{if(x.dataset.k===d[1])x.classList.add("right")});$("#sNext").focus()}
+function pick(k,x){if(answered)return;const d=deck[di];
+  if(k===d[1]){x.classList.add("right");if(first){sOk++;sStreak++}else sStreak=0;reveal(d,true)}
+  else{x.classList.add("wrong");if(first)misses[d[1]]=(misses[d[1]]||0)+1;first=false;sStreak=0;$("#sStreak").textContent=0;
+    $("#sWhy").innerHTML=`<b>Not quite.</b> ${wrongWhy(k,d[1])} Try another.`;$("#sWhy").className="why show"}}
+function wrongWhy(k,ans){const W={SO:"SO fibers are slow and built for endurance, with low tension.",FO:"FO fibers are fast but mostly aerobic, built for moderate, longer activity.",FG:"FG fibers are for short, powerful bursts and tire quickly."};return W[k]+" Does that match this card?"}
+$("#sHintBtn").onclick=()=>{if(answered)return;const d=deck[di];$("#sHint").textContent="Hint: "+d[3];$("#sHint").className="hint show";first=false};
+$("#sShowBtn").onclick=()=>{if(answered)return;const d=deck[di];if(first)misses[d[1]]=(misses[d[1]]||0)+1;first=false;sStreak=0;reveal(d,false)};
+$("#sNext").onclick=()=>{if(di<deck.length-1){di++;sShow()}else sEnd()};
+$("#sRestart").onclick=sStart;
+function sEnd(){$("#sBar").style.width="100%";if(sOk>getBest())setBest(sOk);showBest();const weak=Object.keys(misses).sort((a,b)=>misses[b]-misses[a]);
+  $("#sDone").innerHTML=`<div class="msg good"><b>Deck done: ${sOk} of ${deck.length} right on the first try.</b> ${sOk>=deck.length-2?"Excellent work.":"Every miss is something you now know."} Restart to get a new order.</div>`+
+   (weak.length?`<div class="tally">${weak.map(k=>`<div><b>${BK[k][0]}</b><br>${misses[k]} card${misses[k]>1?"s":""} to review. Check its column in the table above.</div>`).join("")}</div>`:"")}
+
+/* =====================================================================
+   tabs + loop
+   ===================================================================== */
+let activeTab="tw";
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{activeTab=t.dataset.tab;document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  ["tw","lt","ft"].forEach(k=>$("#tab-"+k).hidden=k!==activeTab);fitAll()});
+function fitAll(){[TWC,TRC,LTC,FTC].forEach(c=>c.fit())}
+window.addEventListener("resize",fitAll);
+let last=performance.now();
+function frame(now){const dtr=Math.min(50,now-last);last=now;const dt=dtr/1000;
+  try{
+    if(!sim.paused)advance(dtr*sim.speed);
+    if(activeTab==="tw"){drawTw();drawTr(dtr);updStatus()}
+    else if(activeTab==="lt")drawLt(dt);
+    else drawFt(dt);
+  }catch(e){console.error(e)}
+  requestAnimationFrame(frame)}
+// test hooks
+window.__advance=ms=>{advance(ms)};
+window.__sim=sim;window.__setL=v=>{Lcur=v;Ltarget=null;sweepOn=false;updLt()};
+window.__setT=v=>{if(activeTab==="ft")fatT=v;else trT=v};
+buildTwDots();buildLtChecks();fitAll();goTw(0);updLt();sStart();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

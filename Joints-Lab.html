@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Joints Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;
+  /* joints palette */
+  --stage:#EEF2F4;--bone-ink:#6B5530;--bone:#DCCBA4;--bone-dk:#8E7650;--cart:#9FCBE2;--cart-edge:#3F7FA3;
+  --fluid:#D3E9F5;--memb:#8A5FBF;--capsule:#6E7F88;--lig:#A86B2E;--tendon:#C9A57A;--bursa:#A9DCCF;
+  --wood:#DDBF92;--wood-dk:#B8976A;--wood-edge:#5E4526;--palm:#2A9D8F;--ghost:#7E8E98;
+  --ax1:#C0392B;--ax2:#2F8A57;--ax3:#7B5CC9;--trail:#1B6E88;
+  --sF:#B4632A;--sC:#1B6E88;--sS:#7B5CC9;--f0:#57666F;--f1:#B08A12;--f2:#2F8A57;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
+  --stage:#111B21;--bone-ink:#3A2C14;--bone:#CDB98E;--bone-dk:#E6D5AE;--cart:#4C87A6;--cart-edge:#9ED0EA;
+  --fluid:#1D3A4A;--memb:#B596EA;--capsule:#A3B2BA;--lig:#E0A066;--tendon:#B89567;--bursa:#2F6B5E;
+  --wood:#CFB085;--wood-dk:#A88B62;--wood-edge:#20160A;--palm:#3CC2B1;--ghost:#8A9AA4;
+  --ax1:#F07A6A;--ax2:#5FCB8C;--ax3:#A98BEF;--trail:#4FB3D1;
+  --sF:#E39A5B;--sC:#4FB3D1;--sS:#A98BEF;--f0:#A3B2BA;--f1:#E0BE48;--f2:#6BC293;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
+  --stage:#111B21;--bone-ink:#3A2C14;--bone:#CDB98E;--bone-dk:#E6D5AE;--cart:#4C87A6;--cart-edge:#9ED0EA;
+  --fluid:#1D3A4A;--memb:#B596EA;--capsule:#A3B2BA;--lig:#E0A066;--tendon:#B89567;--bursa:#2F6B5E;
+  --wood:#CFB085;--wood-dk:#A88B62;--wood-edge:#20160A;--palm:#3CC2B1;--ghost:#8A9AA4;
+  --ax1:#F07A6A;--ax2:#5FCB8C;--ax3:#A98BEF;--trail:#4FB3D1;
+  --sF:#E39A5B;--sC:#4FB3D1;--sS:#A98BEF;--f0:#A3B2BA;--f1:#E0BE48;--f2:#6BC293;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+.instr{color:var(--ink-soft);font-size:15px;margin:0 0 10px}
+.msg{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+[hidden]{display:none!important}
+h2.sec{font-family:var(--serif);font-size:21px;margin:0 0 4px}
+.lede{color:var(--ink-soft);margin:0 0 12px;font-size:15px}
+.bigidea{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 16px;font-size:15px}
+.mb{margin-bottom:16px}
+svg{display:block;max-width:100%;height:auto}
+canvas{display:block;width:100%}
+.holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--stage)}
+/* overview */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:900px){.two{grid-template-columns:minmax(0,1fr)}}
+.sgroup{border:1px solid var(--rule-soft);border-radius:var(--r);padding:10px;margin-bottom:10px;background:var(--panel-2)}
+.sgroup h3{margin:0 0 2px;font-size:16px;display:flex;align-items:center;gap:8px}
+.sgroup h3 i,.dotc{width:12px;height:12px;border-radius:3px;display:inline-block;flex:0 0 auto}
+.sgroup p{margin:0 0 8px;font-size:14px;color:var(--ink-soft)}
+.minis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.mini{background:var(--panel);border:1px solid var(--rule-soft);border-radius:4px;padding:6px}
+.mini b{display:block;font-size:13.5px;margin-top:4px}
+.mini svg{max-height:120px;margin:0 auto}
+.mini span{display:block;font-size:12.5px;color:var(--ink-soft);line-height:1.35}
+.fscale{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:6px}
+.fbox{border:1px solid var(--rule-soft);border-radius:4px;padding:8px;background:var(--panel)}
+.fbox b{display:block;font-size:14.5px}
+.fbox span{font-size:13px;color:var(--ink-soft);display:block;line-height:1.35}
+.fbox .tag{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+table.mx{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+table.mx th,table.mx td{border:1px solid var(--rule-soft);padding:6px 7px;text-align:left;vertical-align:top}
+table.mx th{background:var(--panel-2);font-weight:600}
+table.mx td.none{color:var(--ink-faint);font-style:italic}
+/* anatomy */
+.anat{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.anat{grid-template-columns:minmax(0,1fr)}}
+.parts{display:flex;flex-direction:column;gap:6px}
+.part{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--panel-2);border:1.5px solid var(--rule-soft);border-radius:var(--r);padding:7px 10px;cursor:pointer;font-size:14px;line-height:1.35}
+.part:hover{border-color:var(--accent)}
+.part[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash)}
+.part i{width:14px;height:14px;border-radius:3px;flex:0 0 auto;margin-top:2px;border:1px solid rgba(0,0,0,.25)}
+.part b{display:block;font-size:14.5px}
+#anatSvg .pt{transition:opacity .25s}
+#anatSvg.focus .pt{opacity:.18}
+#anatSvg.focus .pt.on{opacity:1}
+#anatSvg.nolabels .lbl{display:none}
+.alab{font:600 12.5px var(--sans);fill:var(--ink)}
+.alead{stroke:var(--ink-soft);stroke-width:1}
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:1000px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.gallery{grid-template-columns:1fr}}
+.gcard{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:10px;box-shadow:var(--shadow)}
+.gcard h3{margin:8px 0 2px;font-size:17px;font-family:var(--serif);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.axchip{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--accent-wash);color:var(--accent-ink);border:1px solid var(--accent)}
+.gcard p{margin:4px 0 0;font-size:14px;line-height:1.4}
+.gcard p.k{color:var(--ink-soft)}
+.gcard .now{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:6px;min-height:18px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 2px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:16px;height:4px;border-radius:2px;display:inline-block}
+.legend i.sq{width:11px;height:11px;border-radius:3px}
+/* sorter */
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 14px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.meter{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:14px;color:var(--ink-soft)}
+.meter b{color:var(--ink)}
+.pbar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.pbar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.sorter{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:18px;align-items:start;margin-top:12px}
+@media (max-width:820px){.sorter{grid-template-columns:minmax(0,1fr)}}
+.jname{font-family:var(--serif);font-size:23px;line-height:1.25;margin:0 0 4px}
+.jdesc{color:var(--ink-soft);margin:0 0 12px;font-size:15px}
+.qlab{font-weight:600;margin:10px 0 8px;display:flex;align-items:center;gap:8px}
+.qlab .n{font-family:var(--mono);font-size:12px;border:1px solid var(--rule);border-radius:99px;padding:1px 8px;color:var(--ink-soft);font-weight:500}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:6px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt small{display:block;color:var(--ink-soft);font-size:12.5px}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.right::before{content:"\2713  ";color:var(--good);font-weight:700}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.wrong::before{content:"\2717  ";color:var(--warn);font-weight:700}
+.opt:disabled{cursor:default}
+.fb{margin:6px 0 4px;padding:9px 12px;border-radius:4px;font-size:14.5px;display:none}
+.fb.show{display:block}
+.fb.no{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.fb.ok{background:var(--good-wash);border-left:4px solid var(--good)}
+.why{margin-top:12px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none;font-size:15px}
+.why.show{display:block}
+.mapbox{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:8px;display:grid;grid-template-columns:minmax(0,0.8fr) minmax(0,1fr);gap:8px;align-items:center}
+.mapbox .cap{font-size:13px;color:var(--ink-soft)}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+/* board */
+.board{display:grid;grid-template-columns:minmax(74px,.55fr) repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
+.bh{font-size:13px;font-weight:600;padding:6px;border-radius:4px;background:var(--panel-2);border:1px solid var(--rule-soft);display:flex;flex-direction:column;justify-content:center}
+.bh small{font-weight:400;color:var(--ink-soft);font-size:11.5px;line-height:1.25}
+.bh.row{border-left:5px solid var(--rule)}
+.cell{min-height:92px;border:1.5px dashed var(--rule);border-radius:4px;padding:4px;display:flex;flex-direction:column;gap:4px;background:var(--panel)}
+.cell.over{border-color:var(--accent);background:var(--accent-wash)}
+.cell .cellbtn{font-size:11px;font-family:var(--mono);color:var(--ink-faint);background:none;border:0;padding:0 2px;text-align:left;cursor:pointer}
+.cell.target{border-style:solid;border-color:var(--accent)}
+.tray{display:flex;flex-wrap:wrap;gap:6px;min-height:52px;border:1.5px dashed var(--rule);border-radius:var(--r);padding:8px;background:var(--panel-2);margin-top:8px}
+.jchip{background:var(--panel);border:1.5px solid var(--rule);border-radius:4px;padding:5px 8px;font-size:13px;line-height:1.25;cursor:grab;touch-action:none;user-select:none;text-align:left;position:relative}
+.jchip.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash);font-weight:600}
+.jchip.drag{z-index:20;box-shadow:0 10px 24px -8px rgba(0,0,0,.45);cursor:grabbing;border-color:var(--accent);opacity:.95}
+.jchip.ok{border-color:var(--good);background:var(--good-wash)}
+.jchip.ok::after{content:" \2713";color:var(--good);font-weight:700}
+.jchip.bad{border-color:var(--warn);background:var(--warn-wash)}
+.jchip.bad::after{content:" \2717";color:var(--warn);font-weight:700}
+.jchip.hinted{box-shadow:0 0 0 3px var(--gold)}
+@media (max-width:600px){.board{grid-template-columns:repeat(3,minmax(0,1fr))}.board .corner{display:none}.bh.row{grid-column:1 / -1;flex-direction:row;gap:6px;align-items:baseline}.jchip{font-size:12px;padding:4px 6px}}
+/* mimic */
+.mgrid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+.mgrid>section:first-child{position:sticky;top:8px}
+@media (max-width:900px){.mgrid>section:first-child{position:static}.mgrid{grid-template-columns:minmax(0,1fr)}}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 2px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:100px}
+.mopts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lib{display:flex;flex-direction:column;gap:10px}
+.libg b{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+.libg .row{display:flex;flex-wrap:wrap;gap:6px}
+.lterm{background:var(--panel-2);border:1.5px solid var(--rule);border-radius:99px;padding:5px 11px;font-size:13.5px;cursor:pointer}
+.lterm:hover{border-color:var(--accent)}
+.lterm[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.variants{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.variants .tbtn{padding:4px 10px;font-size:13px}
+.deftitle{font-family:var(--serif);font-size:24px;margin:4px 0 6px}
+.dl{margin:10px 0 0}
+.dl div{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.dl dt{font-weight:600}.dl dd{margin:0;color:var(--ink-soft)}
+.timer{height:6px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0}
+.timer i{display:block;height:100%;background:var(--warn);width:100%}
+.bonus{margin-top:12px;border:1px solid var(--rule);border-radius:var(--r);padding:12px;background:var(--panel-2)}
+.bonus h3{margin:0 0 4px;font-size:12.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.result{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px}
+.result div{border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;font-size:14px;background:var(--panel-2)}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+@media (max-width:600px){table.mx{font-size:12px}table.mx th,table.mx td{padding:4px}h1{font-size:22px}.mopts{grid-template-columns:1fr}.card{padding:12px}.fscale{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Joints &middot; USC Upstate</div>
+    <h1>Joints Lab</h1>
+    <p class="sub">How bones connect, how much they move, and the names for every movement. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="types" type="button">Joint types, animated</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="sort" type="button">Game 1 &middot; Joint Sorter</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="mimic" type="button">Game 2 &middot; Movement Mimic</button>
+  </div>
+
+  <!-- ============ TAB 1 ============ -->
+  <section id="tab-types">
+    <div class="bigidea"><b>The big idea:</b> every joint can be sorted two ways. <b>Structure</b> asks <i>what holds the bones together</i>: fibers, cartilage, or a fluid-filled cavity. <b>Function</b> asks <i>how much the joint can move</i>: not at all, a little, or freely. The freely movable joints are synovial joints, and their shape decides which way they can move.</div>
+
+    <div class="two mb">
+      <div class="card">
+        <h2 class="sec">Structure: what holds the bones together?</h2>
+        <p class="lede">Three structural classes. Look at what fills the space between the bones.</p>
+        <div id="structGroups"></div>
+      </div>
+      <div class="card">
+        <h2 class="sec">Function: how much can it move?</h2>
+        <p class="lede">Three functional classes, from locked to free.</p>
+        <div id="funcScale"></div>
+        <div style="overflow-x:auto;max-width:100%"><table class="mx" aria-label="Structure and function pairings">
+          <thead><tr><th>Structure</th><th>Synarthrosis<br><small>immovable</small></th><th>Amphiarthrosis<br><small>slightly movable</small></th><th>Diarthrosis<br><small>freely movable</small></th></tr></thead>
+          <tbody>
+            <tr><th>Fibrous</th><td>Sutures (skull), gomphoses (teeth)</td><td>Syndesmoses (distal tibiofibular joint, interosseous membranes)</td><td class="none">none</td></tr>
+            <tr><th>Cartilaginous</th><td>Synchondroses (epiphyseal plate, first sternocostal joint)</td><td>Symphyses (pubic symphysis, intervertebral discs)</td><td class="none">none</td></tr>
+            <tr><th>Synovial</th><td class="none">none</td><td class="none">none</td><td>All synovial joints (shoulder, hip, knee, elbow, wrist...)</td></tr>
+          </tbody>
+        </table></div>
+        <p class="calm">Notice the pattern: the less a joint moves, the more stable it is. The more it moves, the easier it is to injure.</p>
+      </div>
+    </div>
+
+    <div class="card mb">
+      <h2 class="sec">Inside a synovial joint</h2>
+      <p class="lede">Tap a part in the list to light it up in the diagram. Every synovial joint has the same basic parts.</p>
+      <div class="anat">
+        <div>
+          <div class="holder" style="background:var(--panel)"><div id="anatWrap"></div></div>
+          <div class="bar" style="margin:8px 0 0"><button class="tbtn" id="labelsBtn" type="button" aria-pressed="false">Hide labels (test yourself)</button><button class="tbtn" id="clearPart" type="button">Show all parts</button></div>
+        </div>
+        <div class="parts" id="parts"></div>
+      </div>
+    </div>
+
+    <div class="card mb">
+      <h2 class="sec">The six synovial joint types, animated</h2>
+      <p class="lede">Each model shows the shape of the joint surfaces, the axes it can turn around (dashed lines), and the motion it allows (arrows). Blue caps are articular cartilage.</p>
+      <div class="bar"><button class="tbtn" id="galPause" type="button">Pause all</button><label class="mode">Speed <input type="range" id="galSpeed" min="0.25" max="1.75" step="0.25" value="1"></label></div>
+      <div class="legend" style="margin-bottom:8px"><span><i style="background:var(--ax1)"></i>axis 1</span><span><i style="background:var(--ax2)"></i>axis 2</span><span><i style="background:var(--ax3)"></i>axis 3</span><span><i class="sq" style="background:var(--cart)"></i>articular cartilage</span><span><i class="sq" style="background:var(--bone)"></i>bone</span><span><i class="sq" style="background:var(--lig)"></i>ligament</span></div>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 2 ============ -->
+  <section id="tab-sort" hidden>
+    <div class="card">
+      <div class="rounds" role="group" aria-label="Sorter mode">
+        <button class="round" id="modeCards" type="button" aria-pressed="true">Card by card (structure, subtype, function)</button>
+        <button class="round" id="modeBoard" type="button" aria-pressed="false">Two-axis board</button>
+      </div>
+
+      <div id="cardMode">
+        <div class="meter"><span>Joint <b id="sN">1</b> of <b id="sT"></b></span><span>Right on first try <b id="sOk">0</b> / <b id="sMax">0</b></span><span>Streak <b id="sStreak">0</b></span><span>Hints <b id="sHints">0</b></span></div>
+        <div class="pbar"><i id="sBar"></i></div>
+        <div class="sorter">
+          <div>
+            <div class="mapbox"><div id="bodyMap"></div><div><div class="cap">Where it is</div><div id="mapNote" style="font-size:14px;font-weight:600"></div><div id="structPic" style="margin-top:6px"></div></div></div>
+          </div>
+          <div>
+            <h2 class="jname" id="jName"></h2>
+            <p class="jdesc" id="jDesc"></p>
+            <div id="q1"><p class="qlab"><span class="n">1</span>Structure: what holds these bones together?</p><div class="opts" id="o1"></div><div class="fb" id="fb1" role="status"></div></div>
+            <div id="q2" hidden><p class="qlab"><span class="n">2</span><span id="q2lab">Which kind?</span></p><div class="opts" id="o2"></div><div class="fb" id="fb2" role="status"></div></div>
+            <div id="q3" hidden><p class="qlab"><span class="n">3</span>Function: how much can it move?</p><div class="opts" id="o3"></div><div class="fb" id="fb3" role="status"></div></div>
+            <div class="why" id="sWhy"></div>
+            <div class="bar" style="margin-top:12px"><button class="btn" id="sNext" type="button" hidden>Next joint &rarr;</button><button class="tbtn" id="sHint" type="button">Hint</button><button class="tbtn" id="sShow" type="button">Show answer</button><button class="tbtn" id="sRestart" type="button">Restart deck</button></div>
+            <div id="sDone"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="boardMode" hidden>
+        <p class="instr">Drag each joint card into the right box: <b>rows</b> are structure, <b>columns</b> are function. No dragging? Tap a card, then tap a box. Some boxes stay empty in real life, and that is part of the lesson.</p>
+        <div class="board" id="board"></div>
+        <p class="instr" style="margin:10px 0 0"><b>Cards to place</b> (tap a placed card and then this tray to send it back)</p>
+        <div class="tray" id="tray" aria-label="Unplaced joint cards"></div>
+        <div class="bar" style="margin-top:12px"><button class="btn" id="bCheck" type="button">Check board</button><button class="tbtn" id="bHint" type="button">Hint</button><button class="tbtn" id="bShow" type="button">Show answer</button><button class="tbtn" id="bReset" type="button">Start over</button></div>
+        <div class="msg" id="bMsg" role="status"></div>
+        <div class="why" id="bWhy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 3 ============ -->
+  <section id="tab-mimic" hidden>
+    <div class="rounds" role="group" aria-label="Movement Mimic mode">
+      <button class="round" id="mmGame" type="button" aria-pressed="true">Name that movement (game)</button>
+      <button class="round" id="mmLib" type="button" aria-pressed="false">Show me (library)</button>
+    </div>
+    <div class="mgrid">
+      <section class="card" style="padding:10px" aria-label="Animation">
+        <div class="holder"><canvas id="mimic" role="img" aria-label="Animated figure"></canvas></div>
+        <div class="stagebar">
+          <button class="tbtn" id="mPause" type="button">Pause</button>
+          <button class="tbtn" id="mReplay" type="button">Replay</button>
+          <label>Speed <input type="range" id="mSpeed" min="0.25" max="1.5" step="0.25" value="1"></label>
+          <label class="mode"><input type="checkbox" id="mGhost" checked> Show anatomical position</label>
+          <label class="mode"><input type="checkbox" id="mTrail" checked> Show path</label>
+        </div>
+        <div class="legend"><span><i style="background:var(--ghost);opacity:.5;height:10px"></i>faint figure = anatomical position</span><span><i class="sq" style="background:var(--palm)"></i>teal = palm or sole</span><span><i style="background:var(--trail)"></i>dashed path + arrowhead = direction of movement</span><span><i style="background:var(--ax3)"></i>purple line on forearm = radius</span></div>
+      </section>
+
+      <section class="card" id="gamePanel" aria-live="polite">
+        <div class="meter"><span>Movement <b id="mN">1</b> of <b id="mT">12</b></span><span>Score <b id="mScore">0</b></span><span>Bonus <b id="mBonus">0</b></span><span>Streak <b id="mStreak">0</b></span></div>
+        <div class="pbar"><i id="mBar"></i></div>
+        <div class="bar" style="margin:6px 0"><label class="mode"><input type="checkbox" id="mRelaxed" checked> Relaxed mode (no timer)</label><label class="mode"><input type="checkbox" id="mBonusOn" checked> Bonus questions</label></div>
+        <div class="timer" id="mTimer" hidden><i id="mTimerBar"></i></div>
+        <p class="qlab" style="margin-top:4px">What movement is this? <span id="mWhere" style="font-weight:400;color:var(--ink-soft)"></span></p>
+        <div class="mopts opts" id="mOpts"></div>
+        <div class="fb" id="mFb" role="status"></div>
+        <div class="why" id="mWhy"></div>
+        <div class="bonus" id="mBonusBox" hidden>
+          <h3>Bonus: which joint and which plane?</h3>
+          <p class="qlab" style="margin:4px 0 6px">Which joint is doing the moving?</p>
+          <div class="opts" id="bJ"></div><div class="fb" id="bJfb"></div>
+          <div id="bPwrap" hidden><p class="qlab" style="margin:8px 0 6px">Which plane is the movement in?</p><div class="opts" id="bP"></div><div class="fb" id="bPfb"></div></div>
+        </div>
+        <div class="bar" style="margin-top:12px"><button class="btn" id="mNext" type="button" hidden>Next movement &rarr;</button><button class="tbtn" id="mHint" type="button">Hint</button><button class="tbtn" id="mShow" type="button">Show answer</button><button class="tbtn" id="mNew" type="button">New round</button></div>
+        <div id="mDone"></div>
+        <p class="calm">Every movement is shown from anatomical position (standing, palms forward). Wrong answers just show you what to watch for.</p>
+      </section>
+
+      <section class="card" id="libPanel" hidden>
+        <div class="lib" id="libTerms"></div>
+        <div style="margin-top:14px;border-top:1px solid var(--rule);padding-top:10px">
+          <h2 class="deftitle" id="lTitle"></h2>
+          <div class="variants" id="lVars"></div>
+          <p id="lDef" style="margin:6px 0"></p>
+          <dl class="dl" id="lDl"></dl>
+          <div class="bar" style="margin-top:10px"><button class="tbtn" id="lPlane" type="button" aria-pressed="false">Show the plane</button></div>
+        </div>
+      </section>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Joints (OpenStax Anatomy &amp; Physiology 2e, Chapter 9) &middot; Diagrams and models are simplified and not to scale.</footer>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const C={};
+const TOK=["ground","panel","panel-2","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","warn","gold","stage","bone","bone-dk","cart","cart-edge","fluid","memb","capsule","lig","tendon","bursa","wood","wood-dk","wood-edge","palm","ghost","ax1","ax2","ax3","trail","sF","sC","sS"];
+function readColors(){const s=getComputedStyle(document.documentElement);TOK.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim());RGB={}}
+let RGB={};
+function rgb(h){if(RGB[h])return RGB[h];let x=h.replace("#","");if(x.length===3)x=x.split("").map(c=>c+c).join("");const n=parseInt(x,16);return RGB[h]=[(n>>16)&255,(n>>8)&255,n&255]}
+function shade(h,k){const c=rgb(h);return `rgb(${Math.min(255,c[0]*k)|0},${Math.min(255,c[1]*k)|0},${Math.min(255,c[2]*k)|0})`}
+function rgba(h,a){const c=rgb(h);return `rgba(${c[0]},${c[1]},${c[2]},${a})`}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2,D=Math.PI/180;
+function isDark(){return getComputedStyle(document.documentElement).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519"}
+
+/* ================= 3D mini engine ================= */
+function mm(A,B){const R=new Array(9);for(let i=0;i<3;i++)for(let j=0;j<3;j++)R[i*3+j]=A[i*3]*B[j]+A[i*3+1]*B[3+j]+A[i*3+2]*B[6+j];return R}
+function mv(A,v){return [A[0]*v[0]+A[1]*v[1]+A[2]*v[2],A[3]*v[0]+A[4]*v[1]+A[5]*v[2],A[6]*v[0]+A[7]*v[1]+A[8]*v[2]]}
+function RX(a){const c=Math.cos(a),s=Math.sin(a);return [1,0,0,0,c,-s,0,s,c]}
+function RY(a){const c=Math.cos(a),s=Math.sin(a);return [c,0,s,0,1,0,-s,0,c]}
+function RZ(a){const c=Math.cos(a),s=Math.sin(a);return [c,-s,0,s,c,0,0,0,1]}
+const I3=[1,0,0,0,1,0,0,0,1];
+const va=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],vs=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],vk=(a,k)=>[a[0]*k,a[1]*k,a[2]*k];
+const vdot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+const vcross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const vlen=a=>Math.hypot(a[0],a[1],a[2]);const vnorm=a=>{const l=vlen(a)||1;return [a[0]/l,a[1]/l,a[2]/l]};
+const vlerp=(a,b,t)=>[lerp(a[0],b[0],t),lerp(a[1],b[1],t),lerp(a[2],b[2],t)];
+function Cam(yaw,pitch,scale,cx,cy,t){const R=mm(RX(pitch*D),RY(yaw*D));const T=t||[0,0,0];
+  return {R,scale,cx,cy,t:T,P(p){const q=mv(R,vs(p,T));return [cx+q[0]*scale,cy-q[1]*scale,q[2]]},dir(v){return mv(R,v)}}}
+const LIGHT=vnorm([-.45,.7,.6]);
+let g=null;            // current 2D context
+let Q=[];              // painter queue
+function qpush(z,f){Q.push({z,f})}
+function flush(){Q.sort((a,b)=>a.z-b.z);for(const it of Q)it.f();Q=[]}
+// polygon face with flat shading. ctr = mesh centre for outward normal; cull for closed meshes
+function face(cam,pts,col,o){o=o||{};const P=pts.map(p=>cam.P(p));
+  let n=vnorm(vcross(vs(pts[1],pts[0]),vs(pts[pts.length-1],pts[0])));
+  if(o.ctr){const c=pts.reduce((s,p)=>va(s,p),[0,0,0]).map(v=>v/pts.length);if(vdot(n,vs(c,o.ctr))<0)n=vk(n,-1)}
+  const nc=cam.dir(n);if(o.cull&&nc[2]<=0.0001)return;
+  let col2=col;if(o.inner&&nc[2]<0)col2=o.inner;
+  const lit=.62+.38*Math.max(0,vdot(nc[2]<0?vk(nc,-1):nc,LIGHT))-(nc[2]<0&&!o.inner?.18:0);
+  const fill=shade(col2,lit);let z=0;P.forEach(p=>z+=p[2]);z/=P.length;z+=(o.zb||0);
+  qpush(z,()=>{g.beginPath();g.moveTo(P[0][0],P[0][1]);for(let i=1;i<P.length;i++)g.lineTo(P[i][0],P[i][1]);g.closePath();g.fillStyle=fill;g.fill();g.strokeStyle=fill;g.lineWidth=.7;g.stroke();
+    if(o.edge){g.strokeStyle=o.edge;g.lineWidth=o.ew||.6;g.stroke()}})}
+function basis(ax){const a=vnorm(ax);const h=Math.abs(a[1])<.9?[0,1,0]:[1,0,0];const u=vnorm(vcross(a,h));const v=vcross(a,u);return [a,u,v]}
+// cylinder between a and b (already in world space)
+function cyl(cam,a,b,r,col,n,o){o=o||{};n=n||12;const [ax,u,v]=basis(vs(b,a));const ring=(c)=>{const R=[];for(let i=0;i<n;i++){const t=i/n*TAU;R.push(va(c,va(vk(u,Math.cos(t)*r),vk(v,Math.sin(t)*r))))}return R};
+  const A=ring(a),B=ring(b);const ctr=vk(va(a,b),.5);
+  for(let i=0;i<n;i++){const j=(i+1)%n;face(cam,[A[i],A[j],B[j],B[i]],col,{ctr,cull:true,edge:o.edge})}
+  if(o.capA!==false)face(cam,A.slice().reverse(),o.capCol||col,{ctr,cull:true});if(o.capB!==false)face(cam,B,o.capCol||col,{ctr,cull:true})}
+// ellipsoid (or part) with transform fn T(local)->world
+function ellip(cam,T,c,rx,ry,rz,col,o){o=o||{};const nl=o.nl||10,nm=o.nm||16,t0=o.t0||0,t1=o.t1==null?Math.PI:o.t1;const P=[];
+  for(let i=0;i<=nl;i++){const th=lerp(t0,t1,i/nl);const row=[];for(let j=0;j<nm;j++){const ph=j/nm*TAU;row.push(T([c[0]+rx*Math.sin(th)*Math.cos(ph),c[1]+ry*Math.cos(th),c[2]+rz*Math.sin(th)*Math.sin(ph)]))}P.push(row)}
+  const ctr=T(c);for(let i=0;i<nl;i++)for(let j=0;j<nm;j++){const k=(j+1)%nm;const pts=[P[i][j],P[i][k],P[i+1][k],P[i+1][j]];
+    if(o.open)face(cam,pts,col,{ctr,inner:o.inner,zb:o.zb});else face(cam,pts,col,{ctr,cull:true,zb:o.zb})}}
+function box(cam,T,c,sz,col,o){o=o||{};const [x,y,z]=c,[a,b,d]=[sz[0]/2,sz[1]/2,sz[2]/2];
+  const V=[[-a,-b,-d],[a,-b,-d],[a,b,-d],[-a,b,-d],[-a,-b,d],[a,-b,d],[a,b,d],[-a,b,d]].map(p=>T([p[0]+x,p[1]+y,p[2]+z]));
+  const F=[[0,1,2,3],[4,5,6,7],[0,1,5,4],[3,2,6,7],[0,3,7,4],[1,2,6,5]];const ctr=T(c);
+  const cols=o.cols||{};F.forEach((f,i)=>face(cam,f.map(k=>V[k]),cols[i]||col,{ctr,cull:true}))}
+function dline(a,b,col,w,dash){g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.strokeStyle=col;g.lineWidth=w||1.5;g.setLineDash(dash||[]);g.stroke();g.setLineDash([])}
+function arrowHead(p,q,col,s){const a=Math.atan2(q[1]-p[1],q[0]-p[0]);s=s||9;g.beginPath();g.moveTo(q[0],q[1]);g.lineTo(q[0]-s*Math.cos(a-.45),q[1]-s*Math.sin(a-.45));g.lineTo(q[0]-s*Math.cos(a+.45),q[1]-s*Math.sin(a+.45));g.closePath();g.fillStyle=col;g.fill()}
+function rr(x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function label(x,y,txt,o){o=o||{};const size=o.size||12;g.font=`${o.weight||600} ${size}px "IBM Plex Sans",system-ui,sans-serif`;g.textAlign=o.align||"left";g.textBaseline="middle";
+  const w=g.measureText(txt).width;let x0=x;if(g.textAlign==="center")x0=x-w/2;if(g.textAlign==="right")x0=x-w;
+  if(o.pill!==false){g.globalAlpha=.9;g.fillStyle=C.panel;rr(x0-5,y-size*.78,w+10,size*1.56,4);g.fill();g.globalAlpha=1;if(o.border){g.strokeStyle=o.border;g.lineWidth=1.4;g.stroke()}}
+  g.fillStyle=o.color||C.ink;g.fillText(txt,x,y+.5)}
+// projected axis with label
+function axisLine(cam,a,b,col,txt,active){const A=cam.P(a),B=cam.P(b);g.globalAlpha=active===false?.35:1;dline(A,B,col,active?3:2,[7,5]);
+  [A,B].forEach(P=>{g.beginPath();g.arc(P[0],P[1],3,0,TAU);g.fillStyle=col;g.fill()});if(txt)label(B[0]+(B[0]>=A[0]?6:-6),B[1],txt,{size:11,color:col,align:B[0]>=A[0]?"left":"right"});g.globalAlpha=1}
+// arc arrow: points function u->world
+function arcArrow(cam,fn,col,both,n){n=n||24;const P=[];for(let i=0;i<=n;i++)P.push(cam.P(fn(i/n)));g.beginPath();g.moveTo(P[0][0],P[0][1]);for(const p of P)g.lineTo(p[0],p[1]);g.strokeStyle=col;g.lineWidth=2.2;g.stroke();
+  arrowHead(P[n-1],P[n],col);if(both)arrowHead(P[1],P[0],col)}
+function makeCanvas(cv,W,H){const o={cv,ctx:cv.getContext("2d"),W,H,K:1};o.fit=()=>{const w=cv.parentElement.clientWidth||W;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);o.K=cv.width/W};return o}
+
+/* ================= TAB 1: structure / function overview ================= */
+const svgW=(inner,aria,vb)=>`<svg viewBox="${vb||"0 0 160 100"}" role="img" aria-label="${aria}">${inner}</svg>`;
+const BONE=`fill="var(--bone)" stroke="var(--bone-dk)" stroke-width="1.4"`;
+const CART=`fill="var(--cart)" stroke="var(--cart-edge)" stroke-width="1.2"`;
+const MINI={
+ suture:()=>svgW(`<rect x="60" y="18" width="40" height="64" fill="var(--sF)" opacity=".85"/>
+  <path ${BONE} d="M0 18 L74 18 L82 28 L72 38 L84 50 L72 62 L82 72 L74 82 L0 82Z"/>
+  <path ${BONE} d="M160 18 L80 18 L88 28 L78 38 L90 50 L78 62 L88 72 L80 82 L160 82Z"/>
+  <text x="30" y="96" font-size="9" fill="var(--ink-soft)">skull bone</text><text x="104" y="96" font-size="9" fill="var(--ink-soft)">skull bone</text>`,"Suture: interlocking skull bone edges joined by short dense connective tissue fibers"),
+ syndesmosis:()=>{let f="";for(let y=14;y<88;y+=7)f+=`<line x1="56" y1="${y}" x2="104" y2="${y+9}" stroke="var(--sF)" stroke-width="1.4"/>`;
+  return svgW(`<rect x="30" y="4" width="26" height="92" rx="12" ${BONE}/><rect x="104" y="4" width="24" height="92" rx="11" ${BONE}/>${f}<text x="80" y="8" font-size="8.5" text-anchor="middle" fill="var(--ink-soft)">membrane</text>`,"Syndesmosis: two bones joined by a ligament or interosseous membrane")},
+ gomphosis:()=>svgW(`<path ${BONE} d="M10 46 L58 46 C60 70 68 92 80 92 C92 92 100 70 102 46 L150 46 L150 100 L10 100Z"/>
+  <path d="M62 46 C64 68 70 86 80 86 C90 86 96 68 98 46" fill="none" stroke="var(--sF)" stroke-width="5"/>
+  <path d="M58 50 C56 30 60 6 80 6 C100 6 104 30 102 50 C100 52 98 46 98 46 C96 66 90 82 80 82 C70 82 64 66 62 46 C62 46 60 52 58 50Z" fill="var(--panel)" stroke="var(--ink-soft)" stroke-width="1.4"/>
+  <text x="112" y="40" font-size="9" fill="var(--ink-soft)">tooth</text><text x="112" y="62" font-size="9" fill="var(--ink-soft)">jaw bone</text>`,"Gomphosis: a tooth root held in its bony socket by periodontal ligament"),
+ synchondrosis:()=>{let c="";for(let x=12;x<150;x+=14)c+=`<ellipse cx="${x}" cy="${49+(x%28?3:-3)}" rx="3" ry="2" fill="var(--cart-edge)" opacity=".7"/>`;
+  return svgW(`<rect x="0" y="4" width="160" height="36" ${BONE}/><rect x="0" y="40" width="160" height="20" ${CART}/>${c}<rect x="0" y="60" width="160" height="36" ${BONE}/><text x="80" y="25" font-size="9" text-anchor="middle" fill="var(--bone-ink)">bone</text><text x="80" y="81" font-size="9" text-anchor="middle" fill="var(--bone-ink)">bone</text>`,"Synchondrosis: bones joined by a plate of hyaline cartilage")},
+ symphysis:()=>{let s="";for(let x=34;x<128;x+=9)s+=`<path d="M${x} 40 q 4 10 0 20" fill="none" stroke="var(--cart-edge)" stroke-width="1.2"/>`;
+  return svgW(`<rect x="28" y="4" width="104" height="34" rx="6" ${BONE}/><rect x="26" y="40" width="108" height="20" rx="8" ${CART}/>${s}<rect x="28" y="62" width="104" height="34" rx="6" ${BONE}/><text x="80" y="24" font-size="9" text-anchor="middle" fill="var(--bone-ink)">vertebral body</text>`,"Symphysis: bones joined by a pad of fibrocartilage")},
+ synovial:()=>svgW(`<path d="M40 36 C30 50 30 52 40 66 L120 66 C130 52 130 50 120 36Z" fill="var(--fluid)"/>
+  <path ${BONE} d="M58 0 L58 20 C46 24 44 40 54 46 C70 52 90 52 106 46 C116 40 114 24 102 20 L102 0Z"/>
+  <path ${CART} d="M48 38 C56 50 104 50 112 38 C110 44 104 48 80 49 C56 48 50 44 48 38Z"/>
+  <path ${BONE} d="M46 58 C62 54 98 54 114 58 L106 76 L102 100 L58 100 L54 76Z"/><path ${CART} d="M46 58 C62 54 98 54 114 58 L113 62 C98 58 62 58 47 62Z"/>
+  <path d="M54 22 C26 34 26 66 56 80 M106 22 C134 34 134 66 104 80" fill="none" stroke="var(--capsule)" stroke-width="4"/>
+  <path d="M55 26 C32 36 32 64 57 76 M105 26 C128 36 128 64 103 76" fill="none" stroke="var(--memb)" stroke-width="1.6"/>`,"Synovial joint: a fluid-filled cavity inside a capsule separates the bones")
+};
+const STRUCT=[
+ {k:"F",name:"Fibrous joints",col:"--sF",txt:"Bones are joined by <b>dense connective tissue</b> (collagen fibers). No cavity.",items:[["suture","Suture","Skull bones. Short fibers knit interlocking edges."],["syndesmosis","Syndesmosis","A ligament or interosseous membrane links two bones."],["gomphosis","Gomphosis","A tooth anchored in its socket by periodontal ligament."]]},
+ {k:"C",name:"Cartilaginous joints",col:"--sC",txt:"Bones are joined by <b>cartilage</b>. No cavity.",items:[["synchondrosis","Synchondrosis","Hyaline cartilage. Example: epiphyseal plate."],["symphysis","Symphysis","Fibrocartilage pad. Example: pubic symphysis."]]},
+ {k:"S",name:"Synovial joints",col:"--sS",txt:"Bones are <b>not directly joined</b>. A fluid-filled <b>joint cavity</b> inside a capsule lets them move freely.",items:[["synovial","Synovial","Six types by shape (see below)."]]}
+];
+function buildOverview(){
+  $("#structGroups").innerHTML=STRUCT.map(s=>`<div class="sgroup" style="border-left:5px solid var(${s.col})"><h3><i style="background:var(${s.col})"></i>${s.name}</h3><p>${s.txt}</p><div class="minis">${s.items.map(it=>`<div class="mini">${MINI[it[0]]()}<b>${it[1]}</b><span>${it[2]}</span></div>`).join("")}</div></div>`).join("");
+  const F=[["Synarthrosis","immovable","--f0","Locked in place. Strong and protective.","M10 30 h40 M30 18 v24",`<rect x="16" y="20" width="12" height="20" rx="2"/><rect x="32" y="20" width="12" height="20" rx="2"/>`],
+           ["Amphiarthrosis","slightly movable","--f1","A little give. Absorbs shock, adds flexibility.","",""],
+           ["Diarthrosis","freely movable","--f2","Moves freely. All synovial joints.","",""]];
+  const icon=i=>{const c=["var(--f0)","var(--f1)","var(--f2)"][i];
+    if(i===0)return `<svg viewBox="0 0 80 46" aria-hidden="true"><rect x="8" y="12" width="30" height="22" rx="3" fill="var(--bone)" stroke="var(--bone-dk)"/><rect x="42" y="12" width="30" height="22" rx="3" fill="var(--bone)" stroke="var(--bone-dk)"/><path d="M38 12 l4 4 -4 4 4 4 -4 4 4 4" stroke="${c}" stroke-width="2.4" fill="none"/><text x="40" y="44" font-size="8" text-anchor="middle" fill="${c}">no motion</text></svg>`;
+    if(i===1)return `<svg viewBox="0 0 80 46" aria-hidden="true"><rect x="8" y="12" width="28" height="22" rx="3" fill="var(--bone)" stroke="var(--bone-dk)"/><rect x="36" y="14" width="8" height="18" rx="3" fill="var(--cart)" stroke="var(--cart-edge)"/><g transform="rotate(8 44 23)"><rect x="44" y="12" width="28" height="22" rx="3" fill="var(--bone)" stroke="var(--bone-dk)"/></g><path d="M66 4 q6 4 4 10" stroke="${c}" stroke-width="2" fill="none"/><text x="40" y="44" font-size="8" text-anchor="middle" fill="${c}">a little</text></svg>`;
+    return `<svg viewBox="0 0 80 46" aria-hidden="true"><circle cx="30" cy="22" r="7" fill="var(--cart)" stroke="var(--cart-edge)"/><rect x="4" y="17" width="24" height="10" rx="4" fill="var(--bone)" stroke="var(--bone-dk)"/><g transform="rotate(-35 30 22)"><rect x="34" y="17" width="34" height="10" rx="4" fill="var(--bone)" stroke="var(--bone-dk)"/></g><path d="M58 2 a30 30 0 0 1 12 26" stroke="${c}" stroke-width="2" fill="none"/><text x="40" y="44" font-size="8" text-anchor="middle" fill="${c}">a lot</text></svg>`};
+  $("#funcScale").innerHTML=`<div class="fscale">${F.map((f,i)=>`<div class="fbox" style="border-top:4px solid var(${f[2]})"><span class="tag" style="color:var(${f[2]})">${["syn- = together","amphi- = on both sides","dia- = through"][i]}</span>${icon(i)}<b>${f[0]}</b><span><b style="display:inline;font-size:13px">${f[1]}</b>. ${f[3]}</span></div>`).join("")}</div>`;
+}
+
+/* ================= TAB 1: synovial anatomy ================= */
+const PARTS=[
+ ["cart","Articular cartilage","--cart","Smooth hyaline cartilage covering the bone ends. Reduces friction and absorbs shock."],
+ ["cavity","Joint cavity","--fluid","The space between the bones. It is what makes a joint synovial."],
+ ["fluid","Synovial fluid","--fluid","Thick, slippery fluid in the cavity. Lubricates, nourishes the cartilage, and cushions."],
+ ["memb","Synovial membrane","--memb","The inner lining of the capsule. It makes the synovial fluid."],
+ ["caps","Fibrous capsule","--capsule","The tough outer layer of the articular capsule, made of dense connective tissue. Holds the bones together."],
+ ["lig","Ligaments","--lig","Strong bands of dense connective tissue from bone to bone. They limit and guide movement."],
+ ["bursa","Bursa","--bursa","A small fluid-filled sac outside the joint. It cushions where a tendon or skin rubs over bone."],
+ ["tendon","Tendon","--tendon","Connects muscle to bone. Shown for context: it passes over the bursa."]
+];
+function buildAnatomy(){
+  const s=`<svg id="anatSvg" viewBox="-30 0 590 390" role="img" aria-label="Labeled diagram of a synovial joint">
+  <g class="pt" data-p="fluid cavity"><path d="M186 140 C150 160 146 230 190 248 L370 248 C414 230 410 160 374 140Z" fill="var(--fluid)"/></g>
+  <g class="pt" data-p="lig"><path d="M218 96 C150 150 150 240 222 300" fill="none" stroke="var(--lig)" stroke-width="12" stroke-linecap="round"/><path d="M342 96 C410 150 410 240 338 300" fill="none" stroke="var(--lig)" stroke-width="12" stroke-linecap="round"/>
+   <path d="M218 96 C150 150 150 240 222 300 M342 96 C410 150 410 240 338 300" fill="none" stroke="var(--panel)" stroke-width="1" stroke-dasharray="6 5" opacity=".6"/></g>
+  <g class="pt" data-p="caps"><path d="M212 122 C168 150 166 236 214 264 M348 122 C392 150 394 236 346 264" fill="none" stroke="var(--capsule)" stroke-width="9" stroke-linecap="round"/></g>
+  <g class="pt" data-p="memb"><path d="M214 132 C178 156 176 232 216 254 M346 132 C382 156 384 232 344 254" fill="none" stroke="var(--memb)" stroke-width="3.2" stroke-linecap="round"/></g>
+  <g class="pt" data-p="bone"><path d="M250 0 L250 96 C250 120 214 132 212 166 C210 192 248 198 280 198 C312 198 350 192 348 166 C346 132 310 120 310 96 L310 0Z" fill="var(--bone)" stroke="var(--bone-dk)" stroke-width="1.6"/>
+   <path d="M212 238 C246 228 314 228 348 238 L340 262 C322 282 312 292 312 318 L312 390 L248 390 L248 318 C248 292 238 282 220 262Z" fill="var(--bone)" stroke="var(--bone-dk)" stroke-width="1.6"/>
+   <text x="280" y="50" font-size="12" text-anchor="middle" fill="var(--bone-ink)">bone</text><text x="280" y="350" font-size="12" text-anchor="middle" fill="var(--bone-ink)">bone</text></g>
+  <g class="pt" data-p="cart"><path d="M214 160 C216 188 248 198 280 198 C312 198 344 188 346 160 C336 176 314 184 280 185 C246 184 224 176 214 160Z" fill="var(--cart)" stroke="var(--cart-edge)" stroke-width="1.2"/>
+   <path d="M212 238 C246 228 314 228 348 238 L346 250 C314 241 246 241 214 250Z" fill="var(--cart)" stroke="var(--cart-edge)" stroke-width="1.2"/></g>
+  <g class="pt" data-p="tendon"><path d="M470 0 C452 110 458 230 440 390" fill="none" stroke="var(--tendon)" stroke-width="14" stroke-linecap="round"/></g>
+  <g class="pt" data-p="bursa"><ellipse cx="428" cy="170" rx="13" ry="30" fill="var(--bursa)" stroke="var(--memb)" stroke-width="1.6"/></g>
+  <g class="lbl">
+   <line class="alead" x1="120" y1="72" x2="196" y2="126"/><text class="alab" x="116" y="70" text-anchor="end">Ligament</text>
+   <line class="alead" x1="120" y1="126" x2="180" y2="164"/><text class="alab" x="116" y="124" text-anchor="end">Synovial membrane</text>
+   <line class="alead" x1="120" y1="290" x2="182" y2="240"/><text class="alab" x="116" y="292" text-anchor="end">Fibrous capsule</text>
+   <line class="alead" x1="120" y1="222" x2="280" y2="216"/><text class="alab" x="116" y="224" text-anchor="end">Joint cavity</text>
+   <line class="alead" x1="120" y1="186" x2="236" y2="186"/><text class="alab" x="116" y="186" text-anchor="end">Articular cartilage</text>
+   <line class="alead" x1="430" y1="300" x2="372" y2="232"/><text class="alab" x="400" y="316">Synovial fluid</text>
+   <line class="alead" x1="490" y1="126" x2="438" y2="150"/><text class="alab" x="494" y="124">Bursa</text>
+   <line class="alead" x1="490" y1="52" x2="466" y2="56"/><text class="alab" x="494" y="50">Tendon</text>
+  </g></svg>`;
+  $("#anatWrap").innerHTML=s;
+  $("#parts").innerHTML=PARTS.map(p=>`<button class="part" type="button" data-k="${p[0]}" aria-pressed="false"><i style="background:var(${p[2]})"></i><span><b>${p[1]}</b>${p[3]}</span></button>`).join("");
+  const svg=$("#anatSvg");
+  $$("#parts .part").forEach(b=>b.onclick=()=>{const k=b.dataset.k,on=b.getAttribute("aria-pressed")!=="true";$$("#parts .part").forEach(x=>x.setAttribute("aria-pressed","false"));
+    svg.classList.toggle("focus",on);svg.querySelectorAll(".pt").forEach(p=>p.classList.toggle("on",on&&p.dataset.p.split(" ").includes(k)));if(on)b.setAttribute("aria-pressed","true")});
+  $("#clearPart").onclick=()=>{svg.classList.remove("focus");$$("#parts .part").forEach(x=>x.setAttribute("aria-pressed","false"))};
+  $("#labelsBtn").onclick=()=>{const on=svg.classList.toggle("nolabels");$("#labelsBtn").setAttribute("aria-pressed",on);$("#labelsBtn").textContent=on?"Show labels":"Hide labels (test yourself)"};
+}
+
+/* ================= TAB 1: animated synovial models ================= */
+const GAL=[
+ {k:"plane",name:"Plane (gliding)",ax:"Multiaxial by shape; gliding",shape:"Flat or slightly curved surfaces of about the same size.",
+  mv:"The bones <b>slide</b> past each other. By shape alone they could move many ways, so OpenStax calls plane joints <b>multiaxial</b>, but ligaments keep the gliding small. Many lab manuals call this <b>nonaxial</b> gliding.",ex:"Intercarpal and intertarsal joints, acromioclavicular joint."},
+ {k:"hinge",name:"Hinge",ax:"Uniaxial",shape:"A rounded, spool-like end sits in a curved trough.",
+  mv:"Bends and straightens around <b>one axis</b>, like a door: flexion and extension only.",ex:"Elbow (humeroulnar joint), interphalangeal joints of fingers and toes. The knee is a <b>modified hinge</b>."},
+ {k:"pivot",name:"Pivot",ax:"Uniaxial",shape:"A rounded or peg-like bone turns inside a ring of bone plus ligament.",
+  mv:"<b>Rotation</b> around the bone's own long axis, one axis only.",ex:"Atlantoaxial joint (dens of C2 inside the atlas ring: shaking your head \"no\"), proximal radioulnar joint."},
+ {k:"condyloid",name:"Condyloid (ellipsoid)",ax:"Biaxial",shape:"An oval, convex surface fits into an oval, concave cup.",
+  mv:"Moves around <b>two axes</b>: flexion/extension and abduction/adduction, which together allow circumduction. The oval cannot spin in its oval cup.",ex:"Radiocarpal joint of the wrist, metacarpophalangeal (knuckle) joints of fingers 2 to 5."},
+ {k:"saddle",name:"Saddle",ax:"Biaxial",shape:"Each surface is saddle shaped: concave one way, convex the other. They nest at right angles.",
+  mv:"Moves around <b>two axes</b>, plus circumduction. This is what lets the thumb do <b>opposition</b>.",ex:"First carpometacarpal joint (base of the thumb). The sternoclavicular joint is also a saddle joint."},
+ {k:"ball",name:"Ball-and-socket",ax:"Multiaxial",shape:"A ball-shaped head fits into a cup-shaped socket.",
+  mv:"Moves around <b>three axes</b>: flexion/extension, abduction/adduction, and rotation, plus circumduction. The most mobile joint type.",ex:"Shoulder (glenohumeral) joint and hip (coxal) joint."}
+];
+const GW=320,GH=240;let galCanv=[],galT=0,galPaused=false,galSpeed=1;
+function buildGallery(){
+  $("#gallery").innerHTML=GAL.map((m,i)=>`<div class="gcard"><div class="holder"><canvas id="gc${i}" role="img" aria-label="Animated model of a ${m.name} joint. ${m.shape}"></canvas></div>
+   <h3>${m.name} <span class="axchip">${m.ax}</span></h3><div class="now" id="gnow${i}"></div><p><b>Shape:</b> ${m.shape}</p><p><b>Movement:</b> ${m.mv}</p><p class="k"><b>Examples:</b> ${m.ex}</p></div>`).join("");
+  galCanv=GAL.map((m,i)=>makeCanvas($("#gc"+i),GW,GH));galCanv.forEach(c=>c.fit());
+  $("#galPause").onclick=()=>{galPaused=!galPaused;$("#galPause").textContent=galPaused?"Play all":"Pause all"};
+  $("#galSpeed").oninput=e=>galSpeed=+e.target.value;
+}
+const rotAbout=(M,piv)=>p=>va(piv,mv(M,vs(p,piv)));
+function phase3(t,len){const L=len||3.2;const k=Math.floor(t/L)%3;return {k,u:(t%L)/L}}
+const MODEL={
+ plane(t,cam){const ox=11*Math.sin(t*1.5),oz=8*Math.sin(t*1.05+1);const Tf=p=>p,Tm=p=>[p[0]+ox,p[1],p[2]+oz];
+   box(cam,Tf,[0,-22,0],[100,40,64],C.bone);box(cam,Tf,[0,-1.5,0],[100,3,64],C.cart);
+   box(cam,Tm,[0,20,0],[78,34,46],C.bone);box(cam,Tm,[0,1.6,0],[78,3.2,46],C.cart);flush();
+   const c=[ox,40,oz];arcArrow(cam,u=>[c[0]-28+56*u,40,c[2]],C.ax1,true,2);arcArrow(cam,u=>[c[0],40,c[2]-24+48*u],C.ax2,true,2);
+   return "Gliding: flat surfaces slide; no fixed axis"},
+ hinge(t,cam){const a=(Math.sin(t*1.3)*.5+.5)*118*D;const Mr=RZ(a);const Tm=p=>mv(Mr,p),Tf=p=>p;
+   cyl(cam,[0,12,0],[0,105,0],11,C.bone,10);cyl(cam,[0,0,-30],[0,0,30],17,C.cart,18);
+   // trough shell around the spool (moves with forearm bone)
+   const n=14,R=20.5;for(let i=0;i<n;i++){const t0=lerp(-150,150,i/n)*D-Math.PI/2,t1=lerp(-150,150,(i+1)/n)*D-Math.PI/2;
+     const P=(th,z)=>Tm([R*Math.cos(th),R*Math.sin(th),z]);face(cam,[P(t0,-24),P(t1,-24),P(t1,24),P(t0,24)],C.bone,{inner:C.cart,ctr:[0,0,0]})}
+   cyl(cam,Tm([0,-20,0]),Tm([0,-108,0]),10,C.bone,10);flush();
+   axisLine(cam,[0,0,-62],[0,0,62],C.ax1,"axis",true);
+   arcArrow(cam,u=>{const th=lerp(8,112,u)*D;return [Math.sin(th)*92,-Math.cos(th)*92,0]},C.ax1,true);
+   return "Flexion and extension around one axis"},
+ pivot(t,cam){const a=Math.sin(t*1.25)*62*D;const Mr=RY(a);const Tm=p=>mv(Mr,p);
+   cyl(cam,[0,-100,0],[0,-16,0],17,C.bone,12);cyl(cam,[0,-16,0],[0,30,0],8,C.cart,12);
+   // ring = torus: half bone, half ligament
+   const n1=20,n2=8,R=16,r=5,cy=8;const P=(i,j)=>{const u=i/n1*TAU,v=j/n2*TAU;return Tm([(R+r*Math.cos(v))*Math.cos(u),cy+r*Math.sin(v),(R+r*Math.cos(v))*Math.sin(u)])};
+   for(let i=0;i<n1;i++)for(let j=0;j<n2;j++){const col=(i<n1/2)?C.bone:C.lig;const ctr=Tm([R*Math.cos((i+.5)/n1*TAU),cy,R*Math.sin((i+.5)/n1*TAU)]);
+     face(cam,[P(i,j),P(i+1,j),P(i+1,j+1),P(i,j+1)],col,{ctr,cull:true})}
+   box(cam,Tm,[38,cy,0],[30,12,16],C.bone);box(cam,Tm,[-38,cy,0],[30,12,16],C.bone);flush();
+   axisLine(cam,[0,-118,0],[0,62,0],C.ax1,"axis",true);
+   arcArrow(cam,u=>{const th=lerp(-62,62,u)*D;return [Math.cos(th)*66,cy,-Math.sin(th)*66]},C.ax1,true);
+   return "Rotation around the bone's long axis"},
+ condyloid(t,cam){const {k,u}=phase3(t);const s=Math.sin(u*TAU);let M=I3,txt;
+   if(k===0){M=RX(s*26*D);txt="Axis 1: flexion and extension"}else if(k===1){M=RZ(s*24*D);txt="Axis 2: abduction and adduction"}else{M=mm(RX(Math.sin(u*TAU)*22*D),RZ(Math.cos(u*TAU)*22*D));txt="Both axes together: circumduction"}
+   const Tm=p=>mv(M,p),Tf=p=>p;
+   cyl(cam,[0,-14,0],[0,-100,0],15,C.bone,12);ellip(cam,Tf,[0,0,0],42,18,27,C.bone,{t0:Math.PI/2,t1:Math.PI,open:true,inner:C.cart,nl:5,nm:20});
+   ellip(cam,Tm,[0,3,0],35,13,21,C.cart,{nl:8,nm:18,zb:-2});cyl(cam,Tm([0,10,0]),Tm([0,100,0]),12,C.bone,12);flush();
+   axisLine(cam,[-70,0,0],[70,0,0],C.ax2,"axis 2",k!==0);axisLine(cam,[0,0,-60],[0,0,60],C.ax1,"axis 1",k!==1);
+   if(k===2){arcArrow(cam,v=>{const MM=mm(RX(Math.sin(v*TAU)*22*D),RZ(Math.cos(v*TAU)*22*D));return mv(MM,[0,100,0])},C.ax3,false,30)}
+   else if(k===0)arcArrow(cam,v=>mv(RX(lerp(-26,26,v)*D),[0,100,0]),C.ax1,true);else arcArrow(cam,v=>mv(RZ(lerp(-24,24,v)*D),[0,100,0]),C.ax2,true);
+   return txt},
+ saddle(t,cam){const {k,u}=phase3(t);const s=Math.sin(u*TAU);let a=0,b=0,txt;
+   if(k===0){a=s*16;txt="Axis 1: rock one way"}else if(k===1){b=s*16;txt="Axis 2: rock the other way"}else{a=Math.sin(u*TAU)*13;b=Math.cos(u*TAU)*13;txt="Both axes: circumduction"}
+   const Tm=p=>{let q=va([0,45,0],mv(RZ(a*D),vs(p,[0,45,0])));q=va([0,-45,0],mv(RX(b*D),vs(q,[0,-45,0])));return q};const Tf=p=>p;
+   const S=(x,z)=>(x*x-z*z)/62,N=8,L=30,GAP=13;
+   const grid=(T,dy,col,top)=>{for(let i=0;i<N;i++)for(let j=0;j<N;j++){const x0=lerp(-L,L,i/N),x1=lerp(-L,L,(i+1)/N),z0=lerp(-L,L,j/N),z1=lerp(-L,L,(j+1)/N);
+       face(cam,[T([x0,S(x0,z0)+dy,z0]),T([x1,S(x1,z0)+dy,z0]),T([x1,S(x1,z1)+dy,z1]),T([x0,S(x0,z1)+dy,z1])],col,{inner:col,edge:C["cart-edge"],ew:.5})}};
+   const skirt=(T,y0f,y1,col)=>{const side=(pa)=>{for(let i=0;i<N;i++){const A=pa(lerp(-L,L,i/N)),B=pa(lerp(-L,L,(i+1)/N));face(cam,[T([A[0],y0f(A),A[2]]),T([B[0],y0f(B),B[2]]),T([B[0],y1,B[2]]),T([A[0],y1,A[2]])],col,{ctr:T([0,(y1+0)/2,0])})}};
+     side(v=>[v,0,-L]);side(v=>[v,0,L]);side(v=>[-L,0,v]);side(v=>[L,0,v])};
+   skirt(Tf,p=>S(p[0],p[2]),-46,C.bone);grid(Tf,0,C.cart,false);
+   skirt(Tm,p=>S(p[0],p[2])+GAP,40,C.bone);grid(Tm,GAP,C.cart,true);
+   cyl(cam,Tm([0,38,0]),Tm([0,108,0]),11,C.bone,10);flush();label(GW-10,GH-14,"surfaces pulled apart to show the shapes",{size:10,align:"right",color:C["ink-soft"]});
+   axisLine(cam,[0,0,-62],[0,0,62],C.ax1,"axis 1",k!==1);axisLine(cam,[-66,0,0],[66,0,0],C.ax2,"axis 2",k!==0);
+   return txt},
+ ball(t,cam){const L=3.2,k=Math.floor(t/L)%4,u=(t%L)/L,s=Math.sin(u*TAU);let M=I3,txt,rot=0;
+   if(k===0){M=RX(s*34*D);txt="Axis 1: flexion and extension"}else if(k===1){M=RZ(s*34*D);txt="Axis 2: abduction and adduction"}
+   else if(k===2){M=mm(RX(Math.sin(u*TAU)*30*D),RZ(Math.cos(u*TAU)*30*D));txt="Circumduction: the shaft traces a cone"}else{rot=s*70*D;M=RY(rot);txt="Axis 3: rotation around the long axis"}
+   const Tm=p=>mv(M,p),Tf=p=>p;
+   box(cam,Tf,[0,46,0],[96,30,60],C.bone);ellip(cam,Tf,[0,0,0],27,27,27,C.bone,{t0:0,t1:72*D,open:true,inner:C.cart,nl:5,nm:20,zb:0});
+   ellip(cam,Tm,[0,0,0],22,22,22,C.cart,{nl:10,nm:16});cyl(cam,Tm([0,-14,0]),Tm([0,-108,0]),10,C.bone,12);flush();
+   // stripe on shaft to show long-axis rotation
+   const A=cam.P(Tm([0,-30,10.4])),B=cam.P(Tm([0,-104,10.4]));const front=cam.dir(mv(M,[0,0,1]))[2]>-.2;if(front){g.globalAlpha=.9;dline(A,B,C.ax3,3);g.globalAlpha=1}
+   axisLine(cam,[0,0,-62],[0,0,62],C.ax1,"axis 1",k===0||k===2);axisLine(cam,[-70,0,0],[70,0,0],C.ax2,"axis 2",k===1||k===2);axisLine(cam,[0,-128,0],[0,30,0],C.ax3,"axis 3",k===3);
+   if(k===2)arcArrow(cam,v=>mv(mm(RX(Math.sin(v*TAU)*30*D),RZ(Math.cos(v*TAU)*30*D)),[0,-108,0]),C.ax3,false,30);
+   if(k===3)arcArrow(cam,v=>{const th=lerp(-70,70,v)*D;return [Math.sin(th)*24,-70,Math.cos(th)*24]},C.ax3,true);
+   if(k===0)arcArrow(cam,v=>mv(RX(lerp(-34,34,v)*D),[0,-108,0]),C.ax1,true);if(k===1)arcArrow(cam,v=>mv(RZ(lerp(-34,34,v)*D),[0,-108,0]),C.ax2,true);
+   return txt}
+};
+const GCAM={plane:[-32,24,1.25,0,0,0],hinge:[-28,14,1.02,0,-4,0],pivot:[-26,20,1.3,0,-20,0],condyloid:[-30,20,1.06,0,0,0],saddle:[-35,24,1.1,0,26,0],ball:[-30,16,1.0,0,-20,0]};
+function drawGallery(){GAL.forEach((m,i)=>{const c=galCanv[i];if(!c)return;g=c.ctx;g.setTransform(c.K,0,0,c.K,0,0);g.clearRect(0,0,GW,GH);
+  const p=GCAM[m.k];const cam=Cam(p[0],p[1],p[2],GW/2,GH/2,[p[3],p[4],p[5]]);let txt="";try{txt=MODEL[m.k](galT,cam)}catch(e){console.error(e)}
+  const el=$("#gnow"+i);if(el&&el.textContent!=="Now showing: "+txt)el.textContent="Now showing: "+txt})}
+
+/* ================= TAB 2: JOINT SORTER ================= */
+const SK={F:{name:"Fibrous",col:"--sF",means:"fibrous joints are held together by dense connective tissue (collagen fibers), with no cavity",subs:["suture","syndesmosis","gomphosis"]},
+          C:{name:"Cartilaginous",col:"--sC",means:"cartilaginous joints are held together by cartilage (hyaline cartilage or fibrocartilage), with no cavity",subs:["synchondrosis","symphysis"]},
+          S:{name:"Synovial",col:"--sS",means:"synovial joints have a fluid-filled joint cavity between the bones, enclosed by an articular capsule",subs:["plane","hinge","pivot","condyloid","saddle","ball"]}};
+const SUB={suture:["Suture","short dense connective tissue fibers between interlocking skull bones"],syndesmosis:["Syndesmosis","bones held by a ligament or an interosseous membrane, often with a gap between them"],gomphosis:["Gomphosis","a tooth anchored in its bony socket by the periodontal ligament"],
+  synchondrosis:["Synchondrosis","bones joined by hyaline cartilage, or bone joined to hyaline cartilage"],symphysis:["Symphysis","bones joined by a pad of fibrocartilage"],
+  plane:["Plane","flat surfaces that glide"],hinge:["Hinge","a spool in a trough: one axis, flexion and extension"],pivot:["Pivot","a bone rotating inside a ring of bone and ligament: one axis, rotation"],
+  condyloid:["Condyloid","an oval surface in an oval cup: two axes"],saddle:["Saddle","two saddle-shaped surfaces: two axes, allows thumb opposition"],ball:["Ball-and-socket","a ball in a cup: three axes, the most movement"]};
+const FN=[["Synarthrosis","immovable","no movement at all"],["Amphiarthrosis","slightly movable","a small amount of movement"],["Diarthrosis","freely movable","free movement"]];
+const JC=[
+ {n:"Skull suture (coronal suture)",d:"Where the frontal bone meets the parietal bones across the top of the skull.",st:"F",sub:"suture",fn:0,pos:[60,10],bind:"Short, dense connective tissue fibers fill the narrow seam between interlocking bone edges",move:"In an adult the skull bones do not move at a suture. That protects the brain."},
+ {n:"Tooth in its socket",d:"The root of a tooth sitting in the alveolar socket of the mandible or maxilla.",st:"F",sub:"gomphosis",fn:0,pos:[60,31],bind:"The periodontal ligament (dense connective tissue) anchors the root to the bony socket",move:"A healthy tooth does not move in its socket. It is a synarthrosis."},
+ {n:"Distal tibiofibular joint",d:"Where the lower ends of the tibia and fibula meet just above the ankle.",st:"F",sub:"syndesmosis",fn:1,pos:[45,226],bind:"A ligament (dense connective tissue) holds the tibia and fibula together",move:"It gives a little as the ankle moves, so it is slightly movable: an amphiarthrosis."},
+ {n:"Interosseous membrane of the forearm",d:"The broad sheet of connective tissue that links the shafts of the radius and ulna.",st:"F",sub:"syndesmosis",fn:1,pos:[27,108],bind:"A wide sheet of dense connective tissue (the interosseous membrane) spans the gap between the two bones",move:"It allows a little movement as the radius turns around the ulna: an amphiarthrosis."},
+ {n:"Epiphyseal plate (growth plate)",d:"The plate between the epiphysis and diaphysis of a growing long bone, like the distal femur.",st:"C",sub:"synchondrosis",fn:0,pos:[50,166],bind:"A plate of hyaline cartilage joins the epiphysis to the diaphysis",move:"It does not move. It is a temporary synarthrosis that becomes bone after growth ends."},
+ {n:"First sternocostal joint",d:"Where the first rib attaches to the manubrium of the sternum.",st:"C",sub:"synchondrosis",fn:0,pos:[54,60],bind:"Hyaline costal cartilage joins the first rib to the sternum",move:"It does not move, which keeps the top of the rib cage stable: a synarthrosis."},
+ {n:"Pubic symphysis",d:"Where the right and left pubic bones meet at the front of the pelvis.",st:"C",sub:"symphysis",fn:1,pos:[60,116],bind:"A pad of fibrocartilage joins the two pubic bones",move:"It gives slightly, for example during childbirth: an amphiarthrosis."},
+ {n:"Intervertebral disc joint",d:"Between the bodies of two neighboring vertebrae.",st:"C",sub:"symphysis",fn:1,pos:[60,92],bind:"An intervertebral disc of fibrocartilage joins the vertebral bodies",move:"Each one moves only a little, but together they let the spine bend: an amphiarthrosis."},
+ {n:"Shoulder (glenohumeral joint)",d:"The head of the humerus in the glenoid cavity of the scapula.",st:"S",sub:"ball",fn:2,pos:[37,55],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It moves freely in every direction: a diarthrosis."},
+ {n:"Hip (coxal joint)",d:"The head of the femur in the acetabulum of the hip bone.",st:"S",sub:"ball",fn:2,pos:[48,113],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It moves freely in all three axes: a diarthrosis."},
+ {n:"Knee (tibiofemoral joint)",d:"The condyles of the femur resting on the top of the tibia.",st:"S",sub:"hinge",fn:2,pos:[50,174],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It moves freely, mainly flexion and extension: a diarthrosis. It is called a modified hinge because it also allows a little rotation when bent."},
+ {n:"Elbow (humeroulnar joint)",d:"The trochlea of the humerus in the trochlear notch of the ulna.",st:"S",sub:"hinge",fn:2,pos:[29,93],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It moves freely around one axis: a diarthrosis."},
+ {n:"Wrist (radiocarpal joint)",d:"The distal radius meeting the first row of carpal bones.",st:"S",sub:"condyloid",fn:2,pos:[23,129],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It moves freely around two axes: a diarthrosis."},
+ {n:"Knuckle (metacarpophalangeal joint)",d:"Where a finger's first phalanx meets its metacarpal.",st:"S",sub:"condyloid",fn:2,pos:[20,143],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It moves freely around two axes: a diarthrosis."},
+ {n:"Thumb carpometacarpal joint",d:"The first metacarpal meeting the trapezium at the base of the thumb.",st:"S",sub:"saddle",fn:2,pos:[16,135],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It moves freely around two axes and allows opposition: a diarthrosis."},
+ {n:"Atlantoaxial joint",d:"The dens of the axis (C2) inside the ring of the atlas (C1).",st:"S",sub:"pivot",fn:2,pos:[60,40],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It rotates freely when you shake your head \"no\": a diarthrosis."},
+ {n:"Proximal radioulnar joint",d:"The head of the radius turning inside the annular ligament next to the ulna, at the elbow.",st:"S",sub:"pivot",fn:2,pos:[31,98],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"It rotates freely during supination and pronation: a diarthrosis."},
+ {n:"Intercarpal joints",d:"Between neighboring carpal bones of the wrist.",st:"S",sub:"plane",fn:2,pos:[21,134],bind:"A fluid-filled joint cavity inside an articular capsule separates the bones",move:"Structurally they are diarthroses, even though ligaments keep the gliding small."}
+];
+function bodyMap(pos,label){const [x,y]=pos;
+  const limb=`stroke="var(--rule)" stroke-width="11" stroke-linecap="round" fill="none"`;
+  return `<svg viewBox="0 0 120 246" role="img" aria-label="Body map showing the location: ${label}">
+   <circle cx="60" cy="20" r="14" fill="var(--sunk)" stroke="var(--rule)"/>
+   <path d="M60 34 L60 46" ${limb}/>
+   <path d="M38 50 Q60 46 82 50 L78 92 Q76 104 80 116 L40 116 Q44 104 42 92Z" fill="var(--sunk)" stroke="var(--rule)"/>
+   <path d="M37 54 L29 94 L22 130 L18 148" ${limb}/><path d="M83 54 L91 94 L98 130 L102 148" ${limb}/>
+   <path d="M49 116 L50 174 L50 228 L44 240" ${limb}/><path d="M71 116 L70 174 L70 228 L76 240" ${limb}/>
+   <circle cx="${x}" cy="${y}" r="9" fill="none" stroke="var(--warn)" stroke-width="2"><animate attributeName="r" values="6;11;6" dur="1.6s" repeatCount="indefinite"/></circle>
+   <circle cx="${x}" cy="${y}" r="3.6" fill="var(--warn)"/>
+   <text x="60" y="244" font-size="8" text-anchor="middle" fill="var(--ink-faint)">front view</text></svg>`}
+let sDeck=[],si=0,sOk=0,sStreak=0,sHints=0,sStep=1,sFirst=[true,true,true],sMax=0;
+function sStart(){sDeck=shuffle(JC);si=0;sOk=0;sStreak=0;sHints=0;sMax=sDeck.length*3;$("#sT").textContent=sDeck.length;$("#sMax").textContent=sMax;$("#sDone").innerHTML="";sShow()}
+function sMeters(){$("#sN").textContent=Math.min(si+1,sDeck.length);$("#sOk").textContent=sOk;$("#sStreak").textContent=sStreak;$("#sHints").textContent=sHints;$("#sBar").style.width=(si/sDeck.length*100)+"%"}
+function sShow(){const c=sDeck[si];sStep=1;sFirst=[true,true,true];sMeters();
+  $("#jName").textContent=c.n;$("#jDesc").textContent=c.d;$("#bodyMap").innerHTML=bodyMap(c.pos,c.n);$("#mapNote").textContent=c.n.split(" (")[0];$("#structPic").innerHTML="";
+  ["#q2","#q3"].forEach(s=>$(s).hidden=true);["#fb1","#fb2","#fb3"].forEach(s=>{$(s).className="fb";$(s).innerHTML=""});$("#sWhy").className="why";$("#sNext").hidden=true;
+  buildOpts("#o1",Object.keys(SK).map(k=>({k,t:SK[k].name+" joint",s:{F:"dense connective tissue",C:"cartilage",S:"fluid-filled cavity"}[k]})),1)}
+function buildOpts(sel,list,step){const box=$(sel);box.innerHTML="";delete box.dataset.done;
+  list.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.innerHTML=o.t+(o.s?`<small>${o.s}</small>`:"");b.onclick=()=>sAnswer(step,o.k,b,box);box.appendChild(b)})}
+function sAnswer(step,k,b,box){if(box.dataset.done)return;const c=sDeck[si];const fb=$("#fb"+step);
+  let right,msg;
+  if(step===1){right=k===c.st;msg=right?`<b>Yes.</b> ${c.bind}, so it is <b>${SK[c.st].name.toLowerCase()}</b>.`:`<b>Not quite.</b> ${cap(SK[k].means)}. Here, ${lc(c.bind)}. That makes it <b>${SK[c.st].name.toLowerCase()}</b>.`}
+  else if(step===2){right=k===c.sub;msg=right?`<b>Right: ${SUB[c.sub][0].toLowerCase()}</b>, ${SUB[c.sub][1]}.`:`<b>Not quite.</b> A ${SUB[k][0].toLowerCase()} is ${SUB[k][1]}. This joint is a <b>${SUB[c.sub][0].toLowerCase()}</b>: ${SUB[c.sub][1]}.`}
+  else{right=+k===c.fn;msg=right?`<b>Yes: ${FN[c.fn][0].toLowerCase()}</b> (${FN[c.fn][1]}). ${c.move}`:`<b>Not quite.</b> ${FN[+k][0]} means ${FN[+k][2]} (${FN[+k][1]}). ${c.move}`}
+  if(right){b.classList.add("right");box.dataset.done=1;if(sFirst[step-1])sOk++;fb.className="fb ok show";fb.innerHTML=msg;
+    if(step===1){$("#structPic").innerHTML=MINI[c.st==="S"?"synovial":c.sub]();$("#q2").hidden=false;$("#q2lab").textContent=c.st==="S"?"Which synovial type? (Think about its shape and movement.)":`Which kind of ${SK[c.st].name.toLowerCase()} joint?`;
+      buildOpts("#o2",SK[c.st].subs.map(s=>({k:s,t:SUB[s][0]})),2);sStep=2}
+    else if(step===2){if(c.st!=="S")$("#structPic").innerHTML=MINI[c.sub]();$("#q3").hidden=false;buildOpts("#o3",FN.map((f,i)=>({k:String(i),t:f[0],s:f[1]})),3);sStep=3}
+    else{const all=sFirst.every(x=>x);if(all)sStreak++;else sStreak=0;sStep=4;
+      $("#sWhy").innerHTML=`<b>${c.n}:</b> ${SK[c.st].name.toLowerCase()} (${SUB[c.sub][0].toLowerCase()}), ${FN[c.fn][0].toLowerCase()}.<br><span style="color:var(--ink-soft)">Structure = what binds the bones. Function = how much they move.</span>`;$("#sWhy").className="why show";
+      $("#sNext").hidden=false;$("#sNext").textContent=si===sDeck.length-1?"See results":"Next joint →";$("#sNext").focus()}
+    sMeters()}
+  else{b.classList.add("wrong");sFirst[step-1]=false;fb.className="fb no show";fb.innerHTML=msg+" Try the other choices.";sStreak=0;sMeters()}}
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+$("#sNext").onclick=()=>{if(si<sDeck.length-1){si++;sShow()}else sEnd()};
+$("#sRestart").onclick=sStart;
+$("#sHint").onclick=()=>{if(sStep>3)return;const c=sDeck[si];sHints++;sFirst[sStep-1]=false;const fb=$("#fb"+sStep);fb.className="fb no show";
+  fb.innerHTML="<b>Hint:</b> "+(sStep===1?`Ask what fills the space between the bones. ${c.bind}.`:sStep===2?(c.st==="S"?`Picture the movement it allows. ${c.move}`:`Think about the tissue: is it fibers, hyaline cartilage, or fibrocartilage, and where is it?`):`Think about what the joint does in daily life. Does it move at all?`);sMeters()};
+$("#sShow").onclick=()=>{if(sStep>3)return;sFirst[sStep-1]=false;const c=sDeck[si];const key=sStep===1?c.st:sStep===2?c.sub:String(c.fn);
+  const want=sStep===1?SK[key].name:sStep===2?SUB[key][0]:FN[+key][0];const box=$("#o"+sStep);const hit=[...box.children].find(b=>b.textContent.startsWith(want));if(hit)hit.click()};
+function sEnd(){$("#sBar").style.width="100%";const pct=sOk/sMax;const stars=pct>=.9&&sHints<=2?3:pct>=.7?2:1;
+  const best=store.get("joints-sort-best")||0;if(sOk>best)store.set("joints-sort-best",sOk);
+  $("#sDone").innerHTML=`<div class="msg show good" style="margin-top:14px"><span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Deck done: ${sOk} of ${sMax} answers right on the first try.</b> Hints used: ${sHints}. Best so far: ${Math.max(best,sOk)}. ${stars===3?"Excellent sorting.":"Every miss is something you now know. Press Restart deck to go again."}</div>`;$("#sNext").hidden=true}
+
+/* ---------- board mode ---------- */
+let bSel=null,bChecks=0,bHints=0,bSolved=false,dragInfo=null,suppressClick=false;
+function buildBoard(){const b=$("#board");bSel=null;bChecks=0;bHints=0;bSolved=false;
+  let h=`<div class="bh corner">Structure &darr; / Function &rarr;</div>`+FN.map(f=>`<div class="bh">${f[0]}<small>${f[1]}</small></div>`).join("");
+  ["F","C","S"].forEach(r=>{h+=`<div class="bh row" style="border-left-color:var(${SK[r].col})">${SK[r].name}<small>${{F:"fibers",C:"cartilage",S:"fluid cavity"}[r]}</small></div>`;
+    FN.forEach((f,i)=>{h+=`<div class="cell" data-r="${r}" data-c="${i}"><button class="cellbtn" type="button" aria-label="Place selected card in ${SK[r].name} and ${f[0]}">${SK[r].name.slice(0,4)}. &times; ${f[0].slice(0,5)}.</button></div>`})});
+  b.innerHTML=h;const tray=$("#tray");tray.innerHTML="";shuffle(JC).forEach(c=>tray.appendChild(makeChip(c)));
+  $$("#board .cell").forEach(cell=>{cell.addEventListener("click",e=>{if(e.target.closest(".jchip"))return;if(bSel)place(bSel,cell)})});
+  tray.addEventListener("click",e=>{if(e.target.closest(".jchip"))return;if(bSel)place(bSel,tray)});
+  bMsg("","");$("#bWhy").className="why"}
+function makeChip(c){const el=document.createElement("button");el.type="button";el.className="jchip";el.textContent=c.n.replace(" (glenohumeral joint)","").replace(" (coxal joint)","").replace(" (tibiofemoral joint)","").replace(" (humeroulnar joint)","").replace(" (radiocarpal joint)","").replace(" (coronal suture)","").replace(" (growth plate)","").replace(" (metacarpophalangeal joint)"," (MCP)");
+  el.dataset.i=JC.indexOf(c);
+  el.addEventListener("pointerdown",e=>{if(bSolved)return;dragInfo={el,x:e.clientX,y:e.clientY,moved:false,id:e.pointerId};try{el.setPointerCapture(e.pointerId)}catch(_){}});
+  el.addEventListener("pointermove",e=>{const d=dragInfo;if(!d||d.el!==el)return;const dx=e.clientX-d.x,dy=e.clientY-d.y;if(!d.moved&&Math.hypot(dx,dy)<7)return;
+    d.moved=true;el.classList.add("drag");el.style.transform=`translate(${dx}px,${dy}px)`;const t=dropTarget(e.clientX,e.clientY);$$(".cell.over,.tray.over").forEach(x=>x.classList.remove("over"));if(t)t.classList.add("over")});
+  const end=e=>{const d=dragInfo;if(!d||d.el!==el)return;dragInfo=null;el.classList.remove("drag");el.style.transform="";$$(".over").forEach(x=>x.classList.remove("over"));
+    if(d.moved){suppressClick=true;setTimeout(()=>suppressClick=false,50);const t=dropTarget(e.clientX,e.clientY);if(t)place(el,t)}};
+  el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
+  el.addEventListener("click",()=>{if(suppressClick||bSolved&&!el.closest(".cell"))return;
+    if(bChecks>0||bSolved)explain(el);if(bSolved)return;
+    if(bSel===el){el.classList.remove("sel");bSel=null;return}if(bSel)bSel.classList.remove("sel");bSel=el;el.classList.add("sel");$$(".cell").forEach(x=>x.classList.add("target"))});
+  return el}
+function dropTarget(x,y){const els=document.elementsFromPoint(x,y);for(const e of els){if(e.classList&&(e.classList.contains("cell")||e.classList.contains("tray")))return e}return null}
+function place(el,t){t.appendChild(el);el.classList.remove("sel","ok","bad","hinted");bSel=null;$$(".cell").forEach(x=>x.classList.remove("target"))}
+$$("#board").forEach(()=>{});
+document.addEventListener("click",e=>{const btn=e.target.closest(".cellbtn");if(btn&&bSel){place(bSel,btn.parentElement)}});
+function bMsg(t,c){const m=$("#bMsg");m.className="msg"+(t?" show "+c:"");m.innerHTML=t}
+function explain(el){const c=JC[+el.dataset.i];$("#bWhy").innerHTML=`<b>${c.n}</b> &rarr; <b>${SK[c.st].name}</b> (${SUB[c.sub][0].toLowerCase()}) and <b>${FN[c.fn][0]}</b>. ${c.bind}. ${c.move}`;$("#bWhy").className="why show"}
+$("#bCheck").onclick=()=>{if(bSolved)return;bChecks++;let ok=0,placed=0;const wrong=[];
+  $$("#board .jchip").forEach(el=>{const c=JC[+el.dataset.i],cell=el.parentElement;placed++;const r=cell.dataset.r===c.st&&+cell.dataset.c===c.fn;el.classList.toggle("ok",r);el.classList.toggle("bad",!r);if(r)ok++;else wrong.push(c.n.split(" (")[0])});
+  const left=$("#tray").children.length;
+  if(ok===JC.length){bSolved=true;const stars=bHints===0&&bChecks<=2?3:bHints<=2?2:1;const best=store.get("joints-board-best")||0;if(!best||stars>best)store.set("joints-board-best",stars);
+    bMsg(`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Board complete!</b> Checks: ${bChecks}. Hints: ${bHints}. Look at the empty boxes: no fibrous or cartilaginous joint is freely movable, and every synovial joint is a diarthrosis. Tap any card to read why it belongs there.`,"good")}
+  else bMsg(`<b>${ok} of ${JC.length}</b> in the right box${left?`, ${left} still in the tray`:""}. ${wrong.length?`Cards marked ✗ need a new home: ${wrong.join(", ")}. Tap a card to read about it.`:""} Remember: rows ask what binds the bones, columns ask how much they move.`,"warn")};
+$("#bHint").onclick=()=>{if(bSolved)return;const all=[...$$("#board .jchip"),...$$("#tray .jchip")];
+  const bad=all.find(el=>{const c=JC[+el.dataset.i],cell=el.parentElement;return !(cell.dataset&&cell.dataset.r===c.st&&+cell.dataset.c===c.fn)});if(!bad)return;bHints++;
+  const c=JC[+bad.dataset.i];const cell=$(`#board .cell[data-r="${c.st}"][data-c="${c.fn}"]`);place(bad,cell);bad.classList.add("hinted");
+  bMsg(`Hint: <b>${c.n.split(" (")[0]}</b> goes in <b>${SK[c.st].name} &times; ${FN[c.fn][0]}</b>. ${c.bind}.`,"warn")};
+$("#bShow").onclick=()=>{[...$$("#board .jchip"),...$$("#tray .jchip")].forEach(el=>{const c=JC[+el.dataset.i];place(el,$(`#board .cell[data-r="${c.st}"][data-c="${c.fn}"]`));el.classList.add("ok")});bSolved=true;
+  bMsg("Here is the finished board. Read it once, then press <b>Start over</b> and try it yourself. Tap any card to see why.","warn")};
+$("#bReset").onclick=buildBoard;
+$("#modeCards").onclick=()=>{$("#modeCards").setAttribute("aria-pressed","true");$("#modeBoard").setAttribute("aria-pressed","false");$("#cardMode").hidden=false;$("#boardMode").hidden=true};
+$("#modeBoard").onclick=()=>{$("#modeBoard").setAttribute("aria-pressed","true");$("#modeCards").setAttribute("aria-pressed","false");$("#cardMode").hidden=true;$("#boardMode").hidden=false};
+
+/* ================= TAB 3: MOVEMENT MIMIC ================= */
+/* ---- figure kinematics (units ~cm, y up, +z anterior, +x = subject's left) ---- */
+const gp=(p,k)=>p[k]||0;
+function solve(p){const J={};
+  const piv=[0,101,0];const Mtr=mm(RX(gp(p,"trF")*D),RZ(gp(p,"trL")*D));const T=v=>va(piv,mv(Mtr,vs(v,piv)));J.Mtr=Mtr;J.T=T;J.piv=piv;
+  J.neck=T([0,145,0]);
+  const Mh=mm(Mtr,mm(RX(gp(p,"neckF")*D),mm(RY(gp(p,"neckR")*D),RZ(gp(p,"neckL")*D))));J.Mh=Mh;J.head=va(J.neck,mv(Mh,[0,15,1]));J.atlas=va(J.neck,mv(Mh,[0,5,0]));
+  J.jaw=gp(p,"jaw");J.jawP=gp(p,"jawP");
+  for(const S of ["R","L"]){const s=S==="L"?1:-1;const el=gp(p,"scE_"+S),pr=gp(p,"scP_"+S);
+    J["s"+S]=s;J["sc"+S]=[el,pr];
+    J["sh"+S]=T([s*(17.5+Math.max(0,pr)*1.5),141+el*6,pr*8]);
+    J["clav"+S]=[T([s*2,143,4]),J["sh"+S]];
+    // scapula outline (posterior), slides with elevation/protraction
+    J["scap"+S]=[[s*(5+pr*4),143+el*6,-9+pr*2],[s*(15+pr*2),143+el*6,-6+pr*3],[s*(9+pr*5),119+el*6,-9.5+pr*2.5]].map(T);
+    const Ma=mm(Mtr,mm(RZ(s*gp(p,"shA_"+S)*D),mm(RX(-gp(p,"shF_"+S)*D),RY(-s*gp(p,"shR_"+S)*D))));J["Ma"+S]=Ma;
+    J["elb"+S]=va(J["sh"+S],mv(Ma,[0,-29,0]));
+    const Mf0=mm(Ma,RX(-gp(p,"el_"+S)*D));const Mf=mm(Mf0,RY(-s*gp(p,"pr_"+S)*D));J["Mf0"+S]=Mf0;J["Mf"+S]=Mf;
+    J["wr"+S]=va(J["elb"+S],mv(Mf,[0,-25,0]));
+    J["Mhand"+S]=mm(Mf,RX(-gp(p,"wr_"+S)*D));J["fs"+S]=gp(p,"fs_"+S);
+    J["hand"+S]=va(J["wr"+S],mv(J["Mhand"+S],[0,-17.5,0]));J["thumb"+S]=va(J["wr"+S],mv(J["Mhand"+S],[s*7.6,-9.4,2.6]));
+    const hip=[s*9,92,0];J["hip"+S]=hip;
+    const Mt=mm(RZ(s*gp(p,"hipA_"+S)*D),mm(RX(-gp(p,"hipF_"+S)*D),RY(-s*gp(p,"hipR_"+S)*D)));
+    J["knee"+S]=va(hip,mv(Mt,[0,-43,0]));const Ml=mm(Mt,RX(gp(p,"kn_"+S)*D));J["ank"+S]=va(J["knee"+S],mv(Ml,[0,-43,0]));
+    const Mft=mm(Ml,mm(RX(-gp(p,"df_"+S)*D),RZ(-s*gp(p,"inv_"+S)*D)));J["Mfoot"+S]=Mft;J["toe"+S]=va(J["ank"+S],mv(Mft,[0,-5,17]));
+  }
+  J.nose=va(J.head,mv(Mh,[0,-1.5,11.2]));
+  const tmj=[0,-.4,-1.6],chinL=[0,-10.2,8.6];const Mj=RX(J.jaw*D);J.Mj=Mj;const jl=v=>va(J.head,mv(Mh,va(va(tmj,[0,0,J.jawP*3.4]),mv(Mj,vs(v,tmj)))));J.jl=jl;
+  J.chin=jl(chinL);J.lowTooth=jl([0,-6.2,8.5]);
+  return J}
+/* ---- figure drawing ---- */
+let GHOST=false;
+const FC=()=>GHOST?{wood:C.ghost,edge:C.ghost,dk:C.ghost,palm:C.ghost}:{wood:C.wood,edge:C["wood-edge"],dk:C["wood-dk"],palm:C.palm};
+function capsule(cam,a,b,r,o){o=o||{};const A=cam.P(a),B=cam.P(b);const w=2*r*cam.scale;const fc=FC();const far=(A[2]+B[2])/2<-6&&!GHOST;
+  qpush((A[2]+B[2])/2+(o.zb||0),()=>{g.lineCap="round";if(!GHOST){g.strokeStyle=fc.edge;g.lineWidth=w+2.2;g.beginPath();g.moveTo(A[0],A[1]);g.lineTo(B[0],B[1]);g.stroke()}
+    g.strokeStyle=o.col||(far?shade(fc.wood,.84):fc.wood);g.lineWidth=w;g.beginPath();g.moveTo(A[0],A[1]);g.lineTo(B[0],B[1]);g.stroke();
+    if(!GHOST&&w>5){g.strokeStyle="rgba(255,255,255,.22)";g.lineWidth=w*.28;const nx=-(B[1]-A[1]),ny=B[0]-A[0],l=Math.hypot(nx,ny)||1;const ox=nx/l*w*.2,oy=ny/l*w*.2;g.beginPath();g.moveTo(A[0]+ox,A[1]+oy);g.lineTo(B[0]+ox,B[1]+oy);g.stroke()}
+    if(o.after)o.after()})}
+function ball(cam,c,r,zb){const P=cam.P(c);const fc=FC();qpush(P[2]+(zb||.5),()=>{g.beginPath();g.arc(P[0],P[1],r*cam.scale,0,TAU);g.fillStyle=GHOST?fc.wood:fc.dk;g.fill();if(!GHOST){g.strokeStyle=fc.edge;g.lineWidth=1.1;g.stroke()}})}
+function hull(pts){pts=pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);const lo=[],up=[];
+  for(const p of pts){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p)}for(let i=pts.length-1;i>=0;i--){const p=pts[i];while(up.length>=2&&cr(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p)}
+  up.pop();lo.pop();return lo.concat(up)}
+function ring(y,rx,rz,n,T){const R=[];for(let i=0;i<n;i++){const a=i/n*TAU;R.push(T([rx*Math.cos(a),y,rz*Math.sin(a)]))}return R}
+function blob(cam,pts3,zb){const P=pts3.map(p=>cam.P(p));const H=hull(P);let z=0;P.forEach(p=>z+=p[2]);z/=P.length;const fc=FC();
+  qpush(z+(zb||0),()=>{g.beginPath();H.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=fc.wood;g.fill();if(!GHOST){g.strokeStyle=fc.edge;g.lineWidth=1.6;g.stroke()}})}
+function drawHand(cam,J,S){const s=J["s"+S],M=J["Mhand"+S],w=J["wr"+S];const L=v=>va(w,mv(M,v));const fc=FC();
+  const n=cam.dir(mv(M,[0,0,1]));const palmFacing=n[2]>0;
+  const palm=[[s*4.3,-.6,0],[-s*3.8,-.6,0],[-s*4.1,-9.6,0],[s*4.4,-9.2,0]].map(L);const PP=palm.map(p=>cam.P(p));let z=0;PP.forEach(p=>z+=p[2]);z/=4;
+  const sp=J["fs"+S]||0;const kx=[3.2,1.05,-1.1,-3.2],len=[7.6,8.4,7.8,6.2],spr=[1,0,-.85,-1.7];
+  const tips=[];kx.forEach((x,i)=>{const a=spr[i]*sp*D*14;const base=[s*x,-9.4,0];const tip=va(base,[s*Math.sin(a)*len[i],-Math.cos(a)*len[i],0]);tips.push(tip);capsule(cam,L(base),L(tip),.95,{zb:.2})});
+  const tb=[s*4.1,-2,.6],tm=[s*6.6,-6,1.8],tt=[s*7.6,-9.4,2.6];capsule(cam,L(tb),L(tm),1.25,{zb:.3});capsule(cam,L(tm),L(tt),1.05,{zb:.35});
+  qpush(z+.25,()=>{g.beginPath();PP.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=palmFacing&&!GHOST?fc.palm:fc.wood;g.fill();if(!GHOST){g.strokeStyle=fc.edge;g.lineWidth=1.2;g.stroke()}});
+  if(!GHOST&&!palmFacing){tips.concat([tt]).forEach(t=>{const q=cam.P(L(va(t,[0,.9,-.95])));qpush(q[2]+2,()=>{g.beginPath();g.ellipse(q[0],q[1],Math.max(1.2,cam.scale*.55),Math.max(1.4,cam.scale*.7),0,0,TAU);g.fillStyle="#F4EBDD";g.fill();g.strokeStyle=C["wood-edge"];g.lineWidth=.6;g.stroke()})})}
+}
+function drawForearmBones(cam,J,S){if(GHOST)return;const s=J["s"+S];const M0=J["Mf0"+S],Mf=J["Mf"+S],e=J["elb"+S];
+  const U0=cam.P(va(e,mv(M0,[-s*1.6,-2,-.4]))),U1=cam.P(va(e,mv(M0,[-s*1.7,-23.5,-.4])));const R0=cam.P(va(e,mv(M0,[s*1.6,-2,.4]))),R1=cam.P(va(e,mv(Mf,[s*1.9,-23.5,.4])));
+  const z=(U0[2]+U1[2])/2+.4;qpush(z,()=>{g.lineCap="round";dline(U0,U1,"rgba(60,40,20,.55)",Math.max(1.6,cam.scale*.7));dline(R0,R1,C.ax3,Math.max(2,cam.scale*.8))})}
+function drawFoot(cam,J,S){const M=J["Mfoot"+S],a=J["ank"+S];const L=v=>va(a,mv(M,v));const fc=FC();
+  const V=[[-4,-6,-5],[4,-6,-5],[4.6,-6,17],[-4.6,-6,17],[-3.4,0,-3],[3.4,0,-3],[4,-3.4,17],[-4,-3.4,17]].map(L);const ctr=L([0,-3.5,6]);
+  const F=[[0,1,2,3],[4,5,6,7],[0,1,5,4],[3,2,6,7],[0,3,7,4],[1,2,6,5]];
+  F.forEach((f,i)=>{const pts=f.map(k=>V[k]);const P=pts.map(p=>cam.P(p));let n=vnorm(vcross(vs(pts[1],pts[0]),vs(pts[3],pts[0])));const c=pts.reduce((s,p)=>va(s,p),[0,0,0]).map(v=>v/4);if(vdot(n,vs(c,ctr))<0)n=vk(n,-1);
+    const nc=cam.dir(n);if(nc[2]<=0)return;let z=0;P.forEach(p=>z+=p[2]);z/=4;const base=i===0?fc.palm:fc.wood;const col=GHOST?base:shade(base,.7+.3*Math.max(0,vdot(nc,LIGHT)));
+    qpush(z+.6,()=>{g.beginPath();P.forEach((p,k)=>k?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=col;g.fill();if(!GHOST){g.strokeStyle=fc.edge;g.lineWidth=1;g.stroke()}})})}
+function drawHead(cam,J){const fc=FC();const H=J.head,Mh=J.Mh;const L=v=>va(H,mv(Mh,v));const P=cam.P(H);
+  const fwd=cam.dir(mv(Mh,[0,0,1]));const side=Math.abs(fwd[0])>.6;const jl=J.jl;
+  const poly=(pts,fill,lw)=>{g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=fill;g.fill();if(!GHOST&&lw){g.strokeStyle=fc.edge;g.lineWidth=lw;g.stroke()}};
+  qpush(P[2],()=>{
+    if(side){const sx=fwd[0]>0?1:-1;// profile drawn in the head's own sagittal plane
+      const cr=cam.P(L([0,3.5,-1.8]));
+      // mouth cavity (visible when the jaw drops)
+      if(!GHOST&&J.jaw>2)poly([L([0,-5.4,9]),L([0,-4.6,4]),jl([0,-5.8,4.6]),jl([0,-6.2,9.1])].map(v=>cam.P(v)),"#3B2A20",0);
+      // mandible: TMJ, ramus, angle, body, chin
+      poly([[0,-.4,-1.6],[0,-3.4,-3],[0,-7.8,-2.2],[0,-10.4,4.6],[0,-10.6,8.2],[0,-9.2,9.6],[0,-6.2,9.3],[0,-5.6,5.4],[0,-2.6,1.4]].map(v=>cam.P(jl(v))),fc.wood,1.5);
+      g.beginPath();g.arc(cr[0],cr[1],8.8*cam.scale,0,TAU);g.fillStyle=fc.wood;g.fill();if(!GHOST){g.strokeStyle=fc.edge;g.lineWidth=1.6;g.stroke()}
+      // face: forehead, nose, upper lip (maxilla stays with the skull)
+      poly([[0,9,4.6],[0,6,7.4],[0,3.6,8.3],[0,2.4,8.1],[0,-.4,11.1],[0,-2,9.2],[0,-4.4,9.5],[0,-5.4,9.1],[0,-5,4],[0,-1,1],[0,6,1]].map(v=>cam.P(L(v))),fc.wood,0);
+      if(!GHOST){const prof=[[0,9,4.6],[0,6,7.4],[0,3.6,8.3],[0,2.4,8.1],[0,-.4,11.1],[0,-2,9.2],[0,-4.4,9.5],[0,-5.4,9.1]].map(v=>cam.P(L(v)));g.beginPath();prof.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.strokeStyle=fc.edge;g.lineWidth=1.5;g.stroke();
+        const tooth=(a,b)=>{const A=cam.P(a),B=cam.P(b);g.lineCap="butt";dline(A,B,"#FBF7EE",cam.scale*1.25);g.lineCap="round"};
+        tooth(L([0,-5.2,8.7]),L([0,-6.3,8.7]));tooth(jl([0,-6.1,8.5]),jl([0,-7.2,8.5]));
+        const e=cam.P(L([0,3.4,6.6]));g.beginPath();g.ellipse(e[0],e[1],cam.scale*.9,cam.scale*.6,0,0,TAU);g.fillStyle=fc.edge;g.fill();
+        const ear=cam.P(L([0,1.2,-3.4]));g.beginPath();g.ellipse(ear[0],ear[1],cam.scale*1.5,cam.scale*2.6,0,0,TAU);g.strokeStyle=fc.edge;g.lineWidth=1.3;g.stroke();
+        const tm=cam.P(jl([0,-.4,-1.6]));g.beginPath();g.arc(tm[0],tm[1],cam.scale*.7,0,TAU);g.fillStyle=C.ax3;g.fill();
+        if(cam.scale>6&&libMode)label(tm[0]-sx*cam.scale*4,tm[1]+cam.scale*2.2,"TMJ",{size:10,align:"center",color:C.ax3})}
+      return}
+    const r=9.6*cam.scale;
+    const jawPts=[[7.6,-.5,-1.8],[7.4,-6.6,-1],[4.6,-9.2,5.6],[0,-10,8.4],[-4.6,-9.2,5.6],[-7.4,-6.6,-1],[-7.6,-.5,-1.8]].map(v=>cam.P(jl(v)));
+    poly(hull(jawPts),fc.wood,1.4);
+    const lt=cam.P(J.lowTooth),ut=cam.P(L([0,-5.6,9.2]));
+    if(!GHOST&&J.jaw>4&&fwd[2]>0){g.beginPath();g.ellipse((lt[0]+ut[0])/2,(lt[1]+ut[1])/2,cam.scale*3,Math.max(1,Math.abs(lt[1]-ut[1])/2),0,0,TAU);g.fillStyle="#3B2A20";g.fill()}
+    const cc=cam.P(L([0,2.5,-1]));g.beginPath();g.arc(cc[0],cc[1],r,0,TAU);g.fillStyle=fc.wood;g.fill();if(!GHOST){g.strokeStyle=fc.edge;g.lineWidth=1.6;g.stroke()}
+    if(!GHOST&&fwd[2]>0){[[-3.4,2.2,9.3],[3.4,2.2,9.3]].forEach(v=>{const q=cam.P(L(v));const nv=cam.dir(mv(Mh,vnorm(v)));if(nv[2]>0){g.beginPath();g.arc(q[0],q[1],cam.scale*1,0,TAU);g.fillStyle=fc.edge;g.fill()}});
+      const n0=cam.P(L([0,1,10.2])),n1=cam.P(L([0,-1.6,11.6])),n2=cam.P(L([0,-2.4,10.4]));g.beginPath();g.moveTo(n0[0],n0[1]);g.lineTo(n1[0],n1[1]);g.lineTo(n2[0],n2[1]);g.strokeStyle=fc.edge;g.lineWidth=1.4;g.stroke();
+      const m0=cam.P(L([-2.4,-5.4,9.2])),m1=cam.P(L([2.4,-5.4,9.2]));if(J.jaw<=4)dline(m0,m1,fc.edge,1.3);
+      [[9.4,0,-1],[-9.4,0,-1]].forEach(v=>{const nv=cam.dir(mv(Mh,vnorm(v)));if(nv[2]>-.1&&Math.abs(nv[0])>.3){const q=cam.P(L(v));g.beginPath();g.ellipse(q[0],q[1],cam.scale*1.1,cam.scale*2.3,0,0,TAU);g.strokeStyle=fc.edge;g.lineWidth=1.2;g.stroke()}})}
+    else if(!GHOST){const k=cam.P(L([0,3,-10.2]));g.beginPath();g.arc(k[0],k[1],cam.scale*2,0,TAU);g.strokeStyle=fc.edge;g.globalAlpha=.4;g.lineWidth=1;g.stroke();g.globalAlpha=1}
+  })}
+function drawFigure(cam,J,opts){opts=opts||{};
+  // torso: chest and pelvis hulls
+  const T=J.T;const up=[J.shR,J.shL,...ring(141,16.5,7.5,12,T),...ring(128,15,11,12,T),...ring(108,12.5,9,12,T)];
+  const lo=[...ring(106,12.5,8.5,12,T),...ring(98,14.5,9,12,v=>v),...ring(88,15,9,12,v=>v)];
+  blob(cam,lo,-4);blob(cam,up,-3);
+  // shoulders girdle balls + clavicles
+  ["R","L"].forEach(S=>{const cl=J["clav"+S];const a=cam.P(cl[0]),b=cam.P(cl[1]);qpush(Math.max(a[2],b[2])+1,()=>{if(GHOST)return;g.lineCap="round";dline(a,b,C["wood-edge"],cam.scale*.7)})});
+  capsule(cam,J.neck,J.atlas,4.6,{zb:-4});
+  ["R","L"].forEach(S=>{
+    capsule(cam,J["sh"+S],J["elb"+S],3.6);capsule(cam,J["elb"+S],J["wr"+S],3.0,{});drawForearmBones(cam,J,S);drawHand(cam,J,S);
+    ball(cam,J["sh"+S],4.2,.2);ball(cam,J["elb"+S],2.6,.6);ball(cam,J["wr"+S],2.0,.6);
+    capsule(cam,J["hip"+S],J["knee"+S],5.4,{zb:-.5});capsule(cam,J["knee"+S],J["ank"+S],4.2,{zb:-.5});ball(cam,J["hip"+S],4.6,-7);ball(cam,J["knee"+S],3.4,.2);ball(cam,J["ank"+S],2.4,.4);drawFoot(cam,J,S)});
+  drawHead(cam,J);
+  // scapulae overlay (x-ray) when asked
+  if(opts.scap&&!GHOST)["R","L"].forEach(S=>{const P=J["scap"+S].map(p=>cam.P(p));qpush(999,()=>{g.beginPath();P.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=rgba(C.ax3,.28);g.fill();g.setLineDash([4,3]);g.strokeStyle=C.ax3;g.lineWidth=1.6;g.stroke();g.setLineDash([])})});
+}
+/* ---- zoomed 2D hand (right hand, palm toward viewer, fingers up) ---- */
+function drawBigHand(p,ghost){const ink=ghost?C.ghost:C["wood-edge"],wood=ghost?C.ghost:C.wood,palm=ghost?C.ghost:C.palm;const out={};
+  const sp=(p.fs||0)*11*D,op=p.opp||0;const cx=400,cy=300;
+  // palm
+  g.beginPath();g.moveTo(cx-72,cy-40);g.quadraticCurveTo(cx-80,cy+80,cx-50,cy+120);g.lineTo(cx+52,cy+120);g.quadraticCurveTo(cx+82,cy+70,cx+74,cy-44);g.quadraticCurveTo(cx,cy-60,cx-72,cy-40);g.closePath();
+  g.fillStyle=palm;g.fill();if(!ghost){g.strokeStyle=ink;g.lineWidth=2;g.stroke();g.strokeStyle=rgba(C["wood-edge"],.35);g.lineWidth=1.4;g.beginPath();g.moveTo(cx-60,cy+10);g.quadraticCurveTo(cx,cy-10,cx+66,cy-6);g.moveTo(cx-40,cy+40);g.quadraticCurveTo(cx+10,cy+20,cx+60,cy+28);g.moveTo(cx-34,cy+18);g.quadraticCurveTo(cx-56,cy+70,cx-20,cy+112);g.stroke()}
+  // fingers: index (left) to little (right)
+  const kx=[-52,-18,18,52],ky=[-48,-54,-52,-40],len=[112,124,116,92],spr=[-1,0,.9,1.8];
+  for(let i=0;i<4;i++){let a=spr[i]*sp;let L=len[i],fold=0;if(i===3){fold=op*.55;L=len[i]*(1-fold*.55);a+=op*-.18}
+    if(i===2){fold=op*.15;L=len[i]*(1-fold*.4)}
+    const bx=cx+kx[i],by=cy+ky[i];const tx=bx+Math.sin(a)*L,ty=by-Math.cos(a)*L;
+    g.lineCap="round";if(!ghost){g.strokeStyle=ink;g.lineWidth=30;g.beginPath();g.moveTo(bx,by);g.lineTo(tx,ty);g.stroke()}
+    g.strokeStyle=fold>0.2&&!ghost?shade(C.wood,.88):wood;g.lineWidth=27;g.beginPath();g.moveTo(bx,by);g.lineTo(tx,ty);g.stroke();
+    if(!ghost){g.strokeStyle=palm;g.lineWidth=14;g.globalAlpha=.55;g.beginPath();g.moveTo(bx,by);g.lineTo(lerp(bx,tx,.9),lerp(by,ty,.9));g.stroke();g.globalAlpha=1;
+      for(const f of [.38,.68]){const x=lerp(bx,tx,f),y=lerp(by,ty,f);const nx=Math.cos(a)*11,ny=Math.sin(a)*11;dline([x-nx,y-ny],[x+nx,y+ny],ink,1.3)}}
+    out["f"+i]=[tx,ty]}
+  // thumb: CMC near wrist on viewer's left
+  const cmc=[cx-62,cy+92];const rest=[[cx-104,cy+30],[cx-128,cy-16],[cx-138,cy-50]];const lt=out.f3;
+  const opp=[[cx-30,cy+38],[lt[0]-46,lt[1]+38],[lt[0]-14,lt[1]+12]];
+  const J=rest.map((r,i)=>[lerp(r[0],opp[i][0],ease(op)),lerp(r[1],opp[i][1],ease(op))]);
+  const pts=[cmc,...J];g.lineCap="round";
+  if(!ghost){g.strokeStyle=ink;g.lineWidth=33;g.beginPath();pts.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.stroke()}
+  g.strokeStyle=wood;g.lineWidth=30;g.beginPath();pts.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.stroke();
+  if(!ghost){// thumb nail: edge-on at rest, faces viewer as thumb rotates
+    const t=J[2],pv=J[1];const ang=Math.atan2(t[1]-pv[1],t[0]-pv[0]);g.save();g.translate(t[0]-Math.cos(ang)*6,t[1]-Math.sin(ang)*6);g.rotate(ang);g.beginPath();g.ellipse(0,0,8,lerp(2.5,8,op),0,0,TAU);g.fillStyle="#F4EBDD";g.fill();g.strokeStyle=ink;g.lineWidth=1;g.stroke();g.restore();
+    g.beginPath();g.arc(cmc[0],cmc[1],7,0,TAU);g.fillStyle=C.ax3;g.fill()}
+  out.thumb=J[2];out.cmc=cmc;
+  return out}
+/* ---- movement data ---- */
+const TERMS={
+ "Flexion":{d:"Bending that decreases the angle between bones, or moves a body part forward (anterior), in the sagittal plane.",h:"Is the angle at the joint getting smaller, or is the part moving forward?"},
+ "Extension":{d:"Straightening that increases the angle between bones, or moves a body part back toward anatomical position, in the sagittal plane.",h:"Look at where it starts and where it ends. Does it come back to match the faint figure?"},
+ "Hyperextension":{d:"Extension carried past anatomical position (or past the normal range). OpenStax uses the word for extension beyond the normal range, which can injure the joint.",h:"Compare with the faint figure. Does the movement stop at anatomical position, or keep going past it?"},
+ "Abduction":{d:"Moving a limb away from the midline of the body, or spreading the fingers away from the middle finger, in the frontal plane.",h:"Is the part moving away from the midline, or toward it?"},
+ "Adduction":{d:"Moving a limb toward the midline of the body, or bringing the fingers back toward the middle finger, in the frontal plane.",h:"Is the part moving away from the midline, or toward it?"},
+ "Circumduction":{d:"Moving a limb so its far end traces a circle while the near end stays put. It strings together flexion, abduction, extension and adduction.",h:"Follow the dashed path. What shape does the hand trace?"},
+ "Rotation":{d:"Turning a bone or body part around its own long axis, like turning your head to look left or right.",h:"Is the part swinging to a new place, or turning in place around its own axis?"},
+ "Medial rotation":{d:"Rotation of the arm or thigh that turns its anterior surface toward the midline.",h:"With the elbow bent, the forearm is a pointer. Does it swing in toward the belly or out to the side?"},
+ "Lateral rotation":{d:"Rotation of the arm or thigh that turns its anterior surface away from the midline.",h:"With the elbow bent, the forearm is a pointer. Does it swing in toward the belly or out to the side?"},
+ "Supination":{d:"Turning the forearm so the palm faces forward (or up, when the elbow is bent). The radius and ulna lie parallel.",h:"Watch the teal palm and the purple radius line. Which way does the palm face at the end?"},
+ "Pronation":{d:"Turning the forearm so the palm faces backward (or down, when the elbow is bent). The radius crosses over the ulna.",h:"Watch the teal palm and the purple radius line. Which way does the palm face at the end?"},
+ "Dorsiflexion":{d:"Bending at the ankle that lifts the top of the foot and the toes up toward the shin.",h:"Do the toes rise toward the shin, or point down to the floor?"},
+ "Plantar flexion":{d:"Bending at the ankle that points the foot and toes down and lifts the heel.",h:"Do the toes rise toward the shin, or point down to the floor?"},
+ "Inversion":{d:"Turning the foot so the sole faces medially, toward the other foot.",h:"Watch the teal soles. Do they turn to face each other, or turn away from each other?"},
+ "Eversion":{d:"Turning the foot so the sole faces laterally, away from the other foot.",h:"Watch the teal soles. Do they turn to face each other, or turn away from each other?"},
+ "Elevation":{d:"Moving a body part upward (superiorly), like shrugging the shoulders or closing the mouth.",h:"Is the part moving up or down?"},
+ "Depression":{d:"Moving a body part downward (inferiorly), like dropping the shoulders or opening the mouth.",h:"Is the part moving up or down?"},
+ "Protraction":{d:"Moving a body part forward (anteriorly) in a horizontal line, like jutting the jaw or reaching the shoulders forward.",h:"Forward or backward, in a straight horizontal line?"},
+ "Retraction":{d:"Moving a body part backward (posteriorly) in a horizontal line, the opposite of protraction.",h:"Forward or backward, in a straight horizontal line?"},
+ "Opposition":{d:"Moving the thumb across the palm so its tip touches the tip of a finger. It happens at the first carpometacarpal (saddle) joint.",h:"Watch where the thumb tip ends up."},
+ "Lateral flexion":{d:"Bending the neck or trunk sideways, to the right or left, in the frontal plane.",h:"Which way does the trunk bend: forward, backward, or to the side?"}
+};
+const CONF={"Flexion":["Extension","Hyperextension","Abduction","Elevation"],"Extension":["Flexion","Hyperextension","Adduction"],"Hyperextension":["Extension","Flexion","Retraction"],
+ "Abduction":["Adduction","Flexion","Elevation","Lateral rotation"],"Adduction":["Abduction","Extension","Depression"],"Circumduction":["Rotation","Abduction","Flexion"],
+ "Rotation":["Lateral flexion","Circumduction","Pronation"],"Medial rotation":["Lateral rotation","Adduction","Pronation","Flexion"],"Lateral rotation":["Medial rotation","Abduction","Supination"],
+ "Supination":["Pronation","Lateral rotation","Rotation"],"Pronation":["Supination","Medial rotation","Rotation"],"Dorsiflexion":["Plantar flexion","Inversion","Extension"],
+ "Plantar flexion":["Dorsiflexion","Eversion","Flexion"],"Inversion":["Eversion","Adduction","Plantar flexion"],"Eversion":["Inversion","Abduction","Dorsiflexion"],
+ "Elevation":["Depression","Abduction","Protraction"],"Depression":["Elevation","Adduction","Retraction"],"Protraction":["Retraction","Elevation","Flexion"],"Retraction":["Protraction","Depression","Extension"],
+ "Opposition":["Adduction","Flexion","Abduction","Circumduction"],"Lateral flexion":["Flexion","Rotation","Abduction"]};
+const JT={"Elbow (humeroulnar joint)":"a synovial hinge joint","Shoulder (glenohumeral joint)":"a synovial ball-and-socket joint","Hip (coxal joint)":"a synovial ball-and-socket joint","Knee (tibiofemoral joint)":"a synovial modified hinge joint",
+ "Atlantoaxial joint":"a synovial pivot joint (C1 turning around the dens of C2)","Joints of the cervical vertebral column":"many small joints: symphyses between vertebral bodies plus plane facet joints","Joints of the vertebral column":"many small joints: symphyses between vertebral bodies plus plane facet joints",
+ "Radioulnar joints (proximal and distal)":"pivot-type joints where the radius turns around the ulna","Ankle (talocrural joint)":"a synovial hinge joint","Intertarsal joints of the foot":"synovial plane joints between the tarsal bones",
+ "Temporomandibular joint (TMJ)":"a synovial joint with an articular disc","Sternoclavicular and acromioclavicular joints (scapula moving on the rib cage)":"the joints that let the scapula slide on the thoracic wall",
+ "Metacarpophalangeal (knuckle) joints":"synovial condyloid joints","First carpometacarpal joint (thumb)":"a synovial saddle joint","Wrist (radiocarpal joint)":"a synovial condyloid joint"};
+const PLANES={sagittal:["Sagittal plane","divides the body into right and left. Movement in it goes forward and back."],frontal:["Frontal (coronal) plane","divides the body into front and back. Movement in it goes side to side."],transverse:["Transverse (horizontal) plane","divides the body into upper and lower. Movement in it turns or slides horizontally."]};
+const Jn={elb:"Elbow (humeroulnar joint)",sh:"Shoulder (glenohumeral joint)",hip:"Hip (coxal joint)",knee:"Knee (tibiofemoral joint)",atl:"Atlantoaxial joint",cerv:"Joints of the cervical vertebral column",vert:"Joints of the vertebral column",ru:"Radioulnar joints (proximal and distal)",ank:"Ankle (talocrural joint)",tars:"Intertarsal joints of the foot",tmj:"Temporomandibular joint (TMJ)",scap:"Sternoclavicular and acromioclavicular joints (scapula moving on the rib cage)",mcp:"Metacarpophalangeal (knuckle) joints",cmc:"First carpometacarpal joint (thumb)"};
+// cam: [yaw,pitch,scale,tx,ty,tz,label]
+const CF=[0,3,1.95,0,104,0,"Front view"],CS=[90,3,1.95,0,104,0,"Side view, facing right"];
+const CSU=[90,3,3.5,0,118,0,"Side view, upper body"],CHD=[90,2,8.2,0,155,4,"Side view, close-up of the head"],CFT=[90,4,6,0,10,5,"Side view, close-up of the right foot"];
+const CNK=[90,2,4.4,0,150,2,"Side view, head and neck"];
+const CFF=[0,-16,6.4,0,10,6,"Front view from low down, close-up of both feet"],CFA=[0,3,5.4,0,96,0,"Front view, both forearms"],CFU=[0,3,3.6,0,128,0,"Front view, shoulders"],CFH=[0,3,5.2,0,146,0,"Front view, head and neck"];
+const CTOP=[0,38,3.4,0,112,8,"Front view from slightly above"],CQ=[32,10,2.3,0,90,0,"Three-quarter view"],CSC=[140,22,4.0,0,126,0,"View from behind and to the right (scapulae in purple)"];
+const CHAND=[0,0,1,0,0,0,"Close-up: right hand, palm toward you"];
+const MOVES=[
+ {id:"flex-elb",t:"Flexion",v:"elbow",cam:CSU,to:{el_R:135},tr:["handR"],j:"elb",jp:"elbR",pl:"sagittal",ex:"Bringing a fork up to your mouth.",saw:"the elbow bends and the angle between the upper arm and forearm gets smaller"},
+ {id:"flex-sh",t:"Flexion",v:"shoulder",cam:CS,to:{shF_R:165},tr:["handR"],j:"sh",jp:"shR",pl:"sagittal",ex:"Raising your hand straight up in front of you to ask a question.",saw:"the whole arm swings forward and up at the shoulder"},
+ {id:"flex-hip",t:"Flexion",v:"hip",cam:CS,to:{hipF_R:80},tr:["toeR"],j:"hip",jp:"hipR",pl:"sagittal",ex:"Lifting your leg forward to kick a ball.",saw:"the thigh swings forward at the hip"},
+ {id:"flex-knee",t:"Flexion",v:"knee",cam:CS,to:{kn_R:110},tr:["toeR"],j:"knee",jp:"kneeR",pl:"sagittal",ex:"Bending your knee to bring your heel toward your buttock.",saw:"the knee bends and the leg folds back toward the thigh"},
+ {id:"flex-neck",t:"Flexion",v:"neck",cam:CNK,to:{neckF:42},tr:["nose"],j:"cerv",jp:"neck",pl:"sagittal",ex:"Nodding forward to look down at your phone.",saw:"the head and neck bend forward, chin toward the chest"},
+ {id:"flex-trunk",t:"Flexion",v:"trunk",cam:CS,to:{trF:60},tr:["head"],j:"vert",jp:"piv",pl:"sagittal",ex:"Bending forward to touch your toes.",saw:"the trunk bends forward at the vertebral column"},
+ {id:"ext-elb",t:"Extension",v:"elbow",cam:CSU,from:{el_R:135},to:{},tr:["handR"],j:"elb",jp:"elbR",pl:"sagittal",ex:"Straightening your arm to push a door open.",saw:"the bent elbow straightens back to anatomical position"},
+ {id:"ext-knee",t:"Extension",v:"knee",cam:CS,from:{kn_R:105},to:{},tr:["toeR"],j:"knee",jp:"kneeR",pl:"sagittal",ex:"Straightening your knee as you kick a ball.",saw:"the bent knee straightens back to anatomical position"},
+ {id:"ext-sh",t:"Extension",v:"shoulder",cam:CS,from:{shF_R:160},to:{},tr:["handR"],j:"sh",jp:"shR",pl:"sagittal",ex:"Lowering your raised hand back to your side.",saw:"the raised arm swings back down to anatomical position"},
+ {id:"ext-neck",t:"Extension",v:"neck",cam:CNK,from:{neckF:42},to:{},tr:["nose"],j:"cerv",jp:"neck",pl:"sagittal",ex:"Lifting your head back up after looking down.",saw:"the bowed head comes back up to anatomical position"},
+ {id:"ext-trunk",t:"Extension",v:"trunk",cam:CS,from:{trF:60},to:{},tr:["head"],j:"vert",jp:"piv",pl:"sagittal",ex:"Standing back up after picking something up.",saw:"the bent trunk straightens back to anatomical position"},
+ {id:"hyp-neck",t:"Hyperextension",v:"neck",cam:CNK,to:{neckF:-45},tr:["nose"],j:"cerv",jp:"neck",pl:"sagittal",ex:"Tilting your head back to look straight up at the sky.",saw:"the head tips back past anatomical position"},
+ {id:"hyp-trunk",t:"Hyperextension",v:"trunk",cam:CS,to:{trF:-25},tr:["head"],j:"vert",jp:"piv",pl:"sagittal",ex:"Arching your back to look up at the ceiling.",saw:"the trunk bends backward past anatomical position"},
+ {id:"hyp-sh",t:"Hyperextension",v:"shoulder",cam:CS,to:{shF_R:-50},tr:["handR"],j:"sh",jp:"shR",pl:"sagittal",ex:"Swinging your arm behind you as you walk.",saw:"the arm swings backward past anatomical position"},
+ {id:"hyp-hip",t:"Hyperextension",v:"hip",cam:CS,to:{hipF_R:-25},tr:["toeR"],j:"hip",jp:"hipR",pl:"sagittal",ex:"Swinging your leg back behind you as you walk.",saw:"the thigh swings backward past anatomical position"},
+ {id:"hyp-elb",t:"Hyperextension",v:"elbow",cam:[90,3,3.6,0,126,22,"Side view, arm held out in front"],from:{shF_R:90},to:{shF_R:90,el_R:-18},tr:["handR"],j:"elb",jp:"elbR",pl:"sagittal",ex:"An elbow forced past straight, for example when catching a fall (an injury).",saw:"the straight elbow bends backward past straight"},
+ {id:"hyp-knee",t:"Hyperextension",v:"knee",cam:[90,3,3.8,0,52,0,"Side view, close-up of the right leg"],to:{kn_R:-18},tr:["ankR"],j:"knee",jp:"kneeR",pl:"sagittal",ex:"A knee snapped backward past straight in a sports injury.",saw:"the straight knee bows backward past straight"},
+ {id:"abd-arm",t:"Abduction",v:"arms",cam:CF,to:{shA_B:95},tr:["handR","handL"],j:"sh",jp:"shR",pl:"frontal",ex:"The arm part of a jumping jack.",saw:"the arms lift out to the sides, away from the midline"},
+ {id:"add-arm",t:"Adduction",v:"arms",cam:CF,from:{shA_B:95},to:{},tr:["handR","handL"],j:"sh",jp:"shR",pl:"frontal",ex:"Bringing your arms back down to your sides after a jumping jack.",saw:"the raised arms come back in toward the midline"},
+ {id:"abd-leg",t:"Abduction",v:"leg",cam:CF,to:{hipA_R:40},tr:["toeR"],j:"hip",jp:"hipR",pl:"frontal",ex:"Stepping out to the side.",saw:"the leg swings out to the side, away from the midline"},
+ {id:"add-leg",t:"Adduction",v:"leg",cam:CF,from:{hipA_R:40},to:{},tr:["toeR"],j:"hip",jp:"hipR",pl:"frontal",ex:"Squeezing your legs back together.",saw:"the leg swings back in toward the midline"},
+ {id:"abd-fing",t:"Abduction",v:"fingers",hand:true,cam:CHAND,from:{fs:0},to:{fs:1},tr:["f0","f3"],j:"mcp",pl:"frontal",ex:"Spreading your fingers wide apart.",saw:"the fingers spread away from the middle finger"},
+ {id:"add-fing",t:"Adduction",v:"fingers",hand:true,cam:CHAND,from:{fs:1},to:{fs:0},tr:["f0","f3"],j:"mcp",pl:"frontal",ex:"Squeezing your fingers back together.",saw:"the spread fingers come back toward the middle finger"},
+ {id:"circ-arm",t:"Circumduction",v:"arm",cam:CQ,dur:2.8,lin:true,fn:u=>({shF_R:45+38*Math.sin(u*TAU),shA_R:40-34*Math.cos(u*TAU)}),tr:["handR"],j:"sh",jp:"shR",pl:null,ex:"Drawing a big circle in the air with a straight arm.",saw:"the hand traces a circle while the shoulder stays put"},
+ {id:"rot-head",t:"Rotation",v:"head",cam:CFH,to:{neckR:-65},tr:["nose"],j:"atl",jp:"atlas",pl:"transverse",ex:"Shaking your head \"no\".",saw:"the head turns around the long axis of the neck"},
+ {id:"mrot-arm",t:"Medial rotation",v:"arm",cam:CTOP,from:{el_R:90},to:{el_R:90,shR_R:55},tr:["handR"],j:"sh",jp:"shR",pl:"transverse",ex:"Bringing your hand in to rest on your stomach with the elbow at your side.",saw:"the humerus turns so the bent forearm swings in toward the belly"},
+ {id:"lrot-arm",t:"Lateral rotation",v:"arm",cam:CTOP,from:{el_R:90},to:{el_R:90,shR_R:-60},tr:["handR"],j:"sh",jp:"shR",pl:"transverse",ex:"Winding up to throw a ball: the arm turns outward.",saw:"the humerus turns so the bent forearm swings out to the side"},
+ {id:"sup",t:"Supination",v:"forearms",cam:CFA,from:{pr_B:165},to:{},tr:["thumbR","thumbL"],j:"ru",jp:"elbR",pl:"transverse",ex:"Turning your palm up to hold a bowl of soup.",saw:"the forearm turns so the palm ends up facing forward and the radius uncrosses"},
+ {id:"pro",t:"Pronation",v:"forearms",cam:CFA,to:{pr_B:165},tr:["thumbR","thumbL"],j:"ru",jp:"elbR",pl:"transverse",ex:"Turning your palm down to dribble a basketball.",saw:"the forearm turns so the palm ends up facing backward and the radius crosses the ulna"},
+ {id:"dors",t:"Dorsiflexion",v:"ankle",cam:CFT,to:{df_R:22},tr:["toeR"],j:"ank",jp:"ankR",pl:"sagittal",ex:"Walking on your heels with your toes lifted.",saw:"the toes lift up toward the shin"},
+ {id:"plan",t:"Plantar flexion",v:"ankle",cam:CFT,to:{df_R:-40},tr:["toeR"],j:"ank",jp:"ankR",pl:"sagittal",ex:"Standing on tiptoe, or pressing a gas pedal.",saw:"the foot points down and the heel lifts"},
+ {id:"inv",t:"Inversion",v:"feet",cam:CFF,to:{inv_B:30},tr:["toeR","toeL"],j:"tars",jp:"ankR",pl:"frontal",ex:"Turning your soles in to look at them (ankle sprains often happen this way).",saw:"the soles turn inward to face each other"},
+ {id:"ev",t:"Eversion",v:"feet",cam:CFF,to:{inv_B:-20},tr:["toeR","toeL"],j:"tars",jp:"ankR",pl:"frontal",ex:"Turning your soles out, away from each other.",saw:"the soles turn outward, away from each other"},
+ {id:"elev-sc",t:"Elevation",v:"scapulae",cam:CFU,to:{scE_B:1},tr:["shR","shL"],j:"scap",jp:"shR",pl:"frontal",ex:"Shrugging your shoulders.",saw:"the shoulders and scapulae move straight up"},
+ {id:"dep-sc",t:"Depression",v:"scapulae",cam:CFU,from:{scE_B:1},to:{scE_B:-.35},tr:["shR","shL"],j:"scap",jp:"shR",pl:"frontal",ex:"Dropping your shoulders after a shrug, or pushing down on chair arms to stand.",saw:"the raised shoulders move down"},
+ {id:"elev-man",t:"Elevation",v:"mandible",cam:CHD,from:{jaw:26},to:{},tr:["chin"],j:"tmj",jp:"tmj",pl:"sagittal",ex:"Closing your mouth to bite into an apple.",saw:"the open jaw moves up to close the mouth"},
+ {id:"dep-man",t:"Depression",v:"mandible",cam:CHD,to:{jaw:26},tr:["chin"],j:"tmj",jp:"tmj",pl:"sagittal",ex:"Opening your mouth wide to yawn.",saw:"the jaw drops down to open the mouth"},
+ {id:"pro-man",t:"Protraction",v:"mandible",cam:CHD,to:{jawP:1},tr:["chin"],j:"tmj",jp:"tmj",pl:null,ex:"Jutting your jaw forward so your lower teeth sit in front of your upper teeth.",saw:"the jaw slides straight forward and the lower teeth move in front of the upper teeth"},
+ {id:"ret-man",t:"Retraction",v:"mandible",cam:CHD,from:{jawP:1},to:{jawP:-.35},tr:["chin"],j:"tmj",jp:"tmj",pl:null,ex:"Pulling your jaw back after jutting it forward.",saw:"the jaw slides straight back"},
+ {id:"pro-sc",t:"Protraction",v:"scapulae",cam:CSC,scap:true,to:{scP_B:1},tr:["shR","shL"],j:"scap",jp:"shR",pl:"transverse",ex:"Reaching forward to push a heavy door, or rounding your shoulders for a hug.",saw:"the scapulae slide forward around the rib cage and the shoulders move forward"},
+ {id:"ret-sc",t:"Retraction",v:"scapulae",cam:CSC,scap:true,to:{scP_B:-1},tr:["shR","shL"],j:"scap",jp:"shR",pl:"transverse",ex:"Squeezing your shoulder blades together when you sit up straight or row a boat.",saw:"the scapulae slide back toward the spine and the shoulders pull back"},
+ {id:"opp",t:"Opposition",v:"thumb",hand:true,cam:CHAND,from:{opp:0},to:{opp:1},tr:["thumb"],j:"cmc",pl:null,ex:"Touching your thumb to your little finger, or pinching a pen.",saw:"the thumb swings across the palm and its tip meets the tip of the little finger"},
+ {id:"latf",t:"Lateral flexion",v:"trunk",cam:CF,to:{trL:30},tr:["head"],j:"vert",jp:"piv",pl:"frontal",ex:"Bending sideways to pick up a heavy suitcase.",saw:"the trunk bends to the side"}
+];
+MOVES.forEach(m=>{const ex=o=>{const p={};for(const k in o){if(k.endsWith("_B")){p[k.slice(0,-2)+"_R"]=o[k];p[k.slice(0,-2)+"_L"]=o[k]}else p[k]=o[k]}return p};m.from=ex(m.from||{});m.to=ex(m.to||{})});
+function poseAt(m,u){if(m.fn)return m.fn(u);const p={};const keys=new Set([...Object.keys(m.from),...Object.keys(m.to)]);keys.forEach(k=>p[k]=lerp(m.from[k]||0,m.to[k]||0,u));return p}
+function jpoint(J,k){if(k==="tmj")return J.jl([0,-.4,-1.6]);if(k==="piv")return J.T([0,101,0]);return J[k]}
+function track(J,k){if(k==="chin")return J.chin;return J[k]}
+/* ---- canvas + loop ---- */
+const MW=800,MH=460;const mc=makeCanvas($("#mimic"),MW,MH);let ghostCv=document.createElement("canvas"),gctx=ghostCv.getContext("2d");
+let mT=0,mPaused=false,mSpeed=1,curMove=MOVES[0],showPlane=false,showJoint=false,libMode=false,mLast=performance.now();
+function timing(m){const mt=m.dur||1.6;const T0=.7,T1=T0+mt,T2=T1+1.0,T3=T2+.35,TT=T3+.35;const tt=mT%TT;let u,alpha=1,ph,raw;
+  if(tt<T0){u=0;ph="Start";raw=0}else if(tt<T1){raw=(tt-T0)/mt;u=m.lin?raw:ease(raw);ph="Moving"}else if(tt<T2){u=1;raw=1;ph="End"}else if(tt<T3){u=1;raw=1;alpha=1-(tt-T2)/.35;ph="End"}else{u=0;raw=0;alpha=(tt-T3)/.35;ph="Start"}
+  return {u,alpha,ph,raw}}
+function camOf(m){const c=m.cam;return Cam(c[0],c[1],c[2],MW/2+(c===CQ?-10:0),MH/2+(m.cz?0:0),[c[3],c[4],c[5]])}
+function renderMimic(){const m=curMove;g=mc.ctx;g.setTransform(mc.K,0,0,mc.K,0,0);g.clearRect(0,0,MW,MH);
+  const tm=timing(m);const cam=camOf(m);
+  // ground line for full-body views
+  if(!m.hand&&m.cam[2]<2.6){const a=cam.P([-60,0,-40]),b=cam.P([60,0,40]);const y=cam.P([0,0,0])[1];g.strokeStyle=C.rule;g.lineWidth=1;g.beginPath();g.moveTo(30,y+6);g.lineTo(MW-30,y+6);g.stroke()}
+  // ghost (anatomical position)
+  if($("#mGhost").checked){ghostCv.width=mc.cv.width;ghostCv.height=mc.cv.height;const keep=g;g=gctx;g.setTransform(mc.K,0,0,mc.K,0,0);g.clearRect(0,0,MW,MH);GHOST=true;
+    if(m.hand)drawBigHand({},true);else{drawFigure(cam,solve({}));flush()}GHOST=false;g=keep;g.save();g.setTransform(1,0,0,1,0,0);g.globalAlpha=isDark()?.22:.2;g.drawImage(ghostCv,0,0);g.restore();g.globalAlpha=1}
+  // trail
+  const trailOn=$("#mTrail").checked;let trails=[];
+  if(trailOn){const N=36;m.tr.forEach(k=>{const P=[];for(let i=0;i<=N;i++){const u=m.lin?i/N:ease(i/N);if(m.hand){const sv=g;P.push(handTrack(poseAt(m,u),k))}else{const J=solve(poseAt(m,u));P.push(cam.P(track(J,k)))}}trails.push(P)})}
+  // figure
+  g.globalAlpha=tm.alpha;const p=poseAt(m,tm.u);let J=null,hand=null;
+  if(m.hand){hand=drawBigHand(p,false)}else{J=solve(p);drawFigure(cam,J,{scap:m.scap});flush()}
+  g.globalAlpha=1;
+  trails.forEach(P=>{g.save();g.globalAlpha=.85;g.setLineDash([6,5]);g.strokeStyle=C.trail;g.lineWidth=2.4;g.beginPath();P.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.stroke();g.setLineDash([]);
+    const n=P.length-1;let k=n-1;while(k>0&&Math.hypot(P[n][0]-P[k][0],P[n][1]-P[k][1])<6)k--;arrowHead(P[k],P[n],C.trail,12);
+    g.beginPath();g.arc(P[0][0],P[0][1],4,0,TAU);g.fillStyle=C.trail;g.fill();g.restore()});
+  // plane overlay + joint ring
+  if((showPlane||showJoint)&&!m.hand&&J){const jp=jpoint(J,m.jp);if(showPlane&&m.pl)drawPlane(cam,jp,m.pl);if(showJoint){const q=cam.P(jp);g.setLineDash([4,3]);g.strokeStyle=C.gold;g.lineWidth=2.5;g.beginPath();g.arc(q[0],q[1],16,0,TAU);g.stroke();g.setLineDash([])}}
+  if(m.hand&&showJoint&&hand){const q=m.j==="cmc"?hand.cmc:[400,250];g.setLineDash([4,3]);g.strokeStyle=C.gold;g.lineWidth=2.5;if(m.j==="cmc"){g.beginPath();g.arc(q[0],q[1],18,0,TAU);g.stroke()}else{g.strokeRect(330,232,140,36)}g.setLineDash([])}
+  if(m.hand&&m.id.includes("fing")&&libMode){g.setLineDash([5,4]);dline([418,370],[418,110],C.ax2,1.6);g.setLineDash([]);label(424,104,"midline of the hand (middle finger)",{size:11,color:C.ax2})}
+  if(m.hand&&showPlane&&m.pl)label(MW-16,MH-18,"Plane: "+PLANES[m.pl][0]+" (the plane of your screen)",{size:12,align:"right",color:C.accent});
+  // overlays
+  const LK=clamp(800/(mc.cv.clientWidth||800)*.8,1,1.9);label(10,12*LK,m.cam[6],{size:12*LK,color:C["ink-soft"]});
+  const phCol=tm.ph==="Moving"?C.accent:C["ink-soft"];label(MW-10,12*LK,tm.ph==="Start"?"start position":tm.ph==="Moving"?"moving...":"end position",{size:12*LK,align:"right",color:phCol,border:tm.ph==="Moving"?C.accent:null});
+  if(libMode)label(10,MH-12*LK,curMove.t+(curMove.v?" ("+curMove.v+")":""),{size:14*LK,weight:700,color:C.accent});
+}
+function handTrack(p,k){const keep=g;g=gctx;g.save();g.setTransform(1,0,0,1,-99999,-99999);const o=drawBigHand(p,true);g.restore();g=keep;return k==="thumb"?o.thumb:o[k]}
+function drawPlane(cam,c,type){const s=clamp(70/cam.scale,10,34);let pts;if(type==="sagittal")pts=[[0,-s,-s],[0,s,-s],[0,s,s],[0,-s,s]];else if(type==="frontal")pts=[[-s,-s,0],[s,-s,0],[s,s,0],[-s,s,0]];else pts=[[-s,0,-s],[s,0,-s],[s,0,s],[-s,0,s]];
+  const P=pts.map(v=>cam.P(va(c,v)));g.beginPath();P.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=rgba(C.accent,.16);g.fill();g.strokeStyle=C.accent;g.lineWidth=1.5;g.setLineDash([5,4]);g.stroke();g.setLineDash([]);
+  const top=P.reduce((a,b)=>a[1]<b[1]?a:b);label(top[0],top[1]-12,PLANES[type][0],{size:12,align:"center",color:C.accent,border:C.accent})}
+window.__setT=v=>{mT=v;mPaused=true;$("#mPause").textContent="Play"};
+window.__setGalT=v=>{galT=v;galPaused=true};
+window.__showMove=(id,o)=>{const m=MOVES.find(x=>x.id===id);if(m){curMove=m;if(o){showPlane=!!o.plane;showJoint=!!o.joint}}};
+
+/* ---- game ---- */
+const ROUND=12,TIME=20;let gset=[],gi=0,gScore=0,gBonus=0,gStreak=0,gHints=0,gFirst=true,gDone=false,gTimer=0,gTimeLeft=TIME,bonusStage=0;
+function pickRound(){// favour variety of terms
+  const byT={};shuffle(MOVES).forEach(m=>{(byT[m.t]=byT[m.t]||[]).push(m)});const terms=shuffle(Object.keys(byT));const out=[];let k=0;
+  while(out.length<ROUND){const t=terms[k%terms.length];const m=byT[t].shift();if(m)out.push(m);k++;if(k>200)break}return shuffle(out)}
+function gStart(){gset=pickRound();gi=0;gScore=0;gBonus=0;gStreak=0;gHints=0;$("#mT").textContent=gset.length;$("#mDone").innerHTML="";gShow()}
+function gMeters(){$("#mN").textContent=Math.min(gi+1,gset.length);$("#mScore").textContent=gScore;$("#mBonus").textContent=gBonus;$("#mStreak").textContent=gStreak;$("#mBar").style.width=(gi/gset.length*100)+"%"}
+function gShow(){const m=gset[gi];curMove=m;mT=0;gFirst=true;gDone=false;showPlane=false;showJoint=false;bonusStage=0;gMeters();
+  $("#mimic").setAttribute("aria-label","Animated mannequin figure performing a movement from anatomical position. Camera: "+m.cam[6]+". Name the movement.");
+  $("#mWhere").textContent="("+m.cam[6].toLowerCase()+")";
+  const opts=shuffle([m.t,...shuffle(CONF[m.t]).slice(0,3)]);const box=$("#mOpts");box.innerHTML="";
+  opts.forEach(t=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=t;b.onclick=()=>gAnswer(t,b);box.appendChild(b)});
+  $("#mFb").className="fb";$("#mWhy").className="why";$("#mBonusBox").hidden=true;$("#mNext").hidden=true;
+  gTimeLeft=TIME;$("#mTimer").hidden=$("#mRelaxed").checked;$("#mTimerBar").style.width="100%"}
+function special(ch,m){if(ch==="Extension"&&m.t==="Hyperextension")return "<b>Close.</b> It is extending, but look at the faint figure: the movement goes <b>past</b> anatomical position. That extra part is hyperextension.";
+  if(ch==="Hyperextension"&&m.t==="Extension")return "<b>Not quite.</b> The movement stops right at anatomical position (the faint figure). Coming back to straight is plain extension. Hyperextension would keep going past it.";
+  if(ch==="Rotation"&&(m.t==="Supination"||m.t==="Pronation"))return `<b>Close in spirit.</b> The forearm does rotate, but this special forearm rotation has its own name. Here ${m.saw}.`;
+  if(ch==="Flexion"&&(m.t==="Dorsiflexion"||m.t==="Plantar flexion"))return `<b>Not quite.</b> At the ankle we use special names instead of plain flexion. Here ${m.saw}.`;
+  return null}
+function gAnswer(t,b){if(gDone)return;const m=gset[gi];const fb=$("#mFb");
+  if(t===m.t){b.classList.add("right");gDone=true;if(gFirst){gScore++;gStreak++}else gStreak=0;
+    fb.className="fb ok show";fb.innerHTML=`<b>${gFirst?"Yes!":"Got it."} ${m.t}</b>${m.v?" of the "+m.v:""}: ${m.saw}.`;
+    $("#mWhy").innerHTML=`<b>${m.t}:</b> ${TERMS[m.t].d}<br><b>Everyday example:</b> ${m.ex}`;$("#mWhy").className="why show";showJoint=true;finishItem(m)}
+  else{b.classList.add("wrong");gFirst=false;gStreak=0;fb.className="fb no show";fb.innerHTML=special(t,m)||`<b>Not quite.</b> ${t} means: ${lc(TERMS[t].d)} Here, ${m.saw}.`}
+  gMeters()}
+function finishItem(m){$$("#mOpts .opt").forEach(x=>x.disabled=true);
+  if($("#mBonusOn").checked){bonusStage=1;$("#mBonusBox").hidden=false;$("#bPwrap").hidden=true;["#bJfb","#bPfb"].forEach(s=>{$(s).className="fb";$(s).innerHTML=""});
+    const right=Jn[m.j];const pool=shuffle(Object.values(Jn).filter(x=>x!==right)).slice(0,2);const box=$("#bJ");box.innerHTML="";delete box.dataset.done;
+    shuffle([right,...pool]).forEach(t=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=t;b.onclick=()=>bonusJ(t,b,m);box.appendChild(b)})}
+  showNext()}
+let bjFirst=true,bpFirst=true;
+function bonusJ(t,b,m){const box=$("#bJ");if(box.dataset.done)return;const right=Jn[m.j];const fb=$("#bJfb");
+  if(t===right){if(!box.dataset.miss)gBonus++;box.dataset.done=1;b.classList.add("right");fb.className="fb ok show";fb.innerHTML=`<b>Yes.</b> ${right}: ${JT[right]}. The gold ring marks it.`;
+    if(m.pl){$("#bPwrap").hidden=false;const pb=$("#bP");pb.innerHTML="";delete pb.dataset.done;delete pb.dataset.miss;["sagittal","frontal","transverse"].forEach(k=>{const x=document.createElement("button");x.type="button";x.className="opt";x.textContent=PLANES[k][0];x.onclick=()=>bonusP(k,x,m);pb.appendChild(x)})}
+    else{fb.innerHTML+=` <br><span style="color:var(--ink-soft)">${m.t==="Circumduction"?"No single plane for this one: circumduction sweeps through several planes in a row.":m.t==="Opposition"?"No single plane: opposition combines several thumb movements at once.":"No single textbook plane here, so there is no plane question."}</span>`}
+    gMeters()}
+  else{b.classList.add("wrong");box.dataset.miss=1;fb.className="fb no show";fb.innerHTML=`<b>Not quite.</b> Look for the joint where the bending or turning actually happens. ${t} (${JT[t]||"a different joint"}) is not the one moving here.`}}
+function bonusP(k,b,m){const pb=$("#bP");if(pb.dataset.done)return;const fb=$("#bPfb");
+  if(k===m.pl){if(!pb.dataset.miss)gBonus++;pb.dataset.done=1;b.classList.add("right");showPlane=true;fb.className="fb ok show";fb.innerHTML=`<b>Yes.</b> The ${PLANES[k][0].toLowerCase()} ${PLANES[k][1]} It is now drawn on the figure.`;gMeters()}
+  else{b.classList.add("wrong");pb.dataset.miss=1;fb.className="fb no show";fb.innerHTML=`<b>Not quite.</b> The ${PLANES[k][0].toLowerCase()} ${PLANES[k][1]} Ask yourself: is this movement forward-back, side to side, or turning?`}}
+function showNext(){$("#mNext").hidden=false;$("#mNext").textContent=gi===gset.length-1?"See results":"Next movement →"}
+$("#mNext").onclick=()=>{if(gi<gset.length-1){gi++;gShow()}else gEnd()};
+$("#mNew").onclick=gStart;
+$("#mHint").onclick=()=>{if(gDone)return;const m=gset[gi];gHints++;gFirst=false;const fb=$("#mFb");fb.className="fb no show";fb.innerHTML=`<b>Hint:</b> ${TERMS[m.t].h}`};
+$("#mShow").onclick=()=>{if(gDone)return;gFirst=false;const m=gset[gi];[...$$("#mOpts .opt")].forEach(b=>{if(b.textContent===m.t)b.click()})};
+$("#mRelaxed").onchange=()=>{$("#mTimer").hidden=$("#mRelaxed").checked;gTimeLeft=TIME};
+function gEnd(){$("#mBar").style.width="100%";const pct=gScore/gset.length;const stars=pct>=.9&&gHints<=1?3:pct>=.65?2:1;const best=store.get("joints-mimic-best")||0;if(gScore>best)store.set("joints-mimic-best",gScore);
+  const missed=[];$("#mDone").innerHTML=`<div class="msg show good" style="margin-top:14px"><span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Round done: ${gScore} of ${gset.length} named on the first try</b>, plus ${gBonus} bonus point${gBonus===1?"":"s"}. Hints: ${gHints}. Best so far: ${Math.max(best,gScore)} of ${ROUND}. ${stars===3?"You can read a body like a textbook.":"Try the Show me library for any term that tripped you up, then press New round."}</div>`;$("#mNext").hidden=true}
+/* ---- library ---- */
+const LIBG=[["Angular (change the angle)",["Flexion","Extension","Hyperextension","Abduction","Adduction","Lateral flexion","Circumduction"]],["Rotation",["Rotation","Medial rotation","Lateral rotation","Supination","Pronation"]],["Special movements",["Dorsiflexion","Plantar flexion","Inversion","Eversion","Elevation","Depression","Protraction","Retraction","Opposition"]]];
+let libTerm="Flexion";
+function buildLib(){$("#libTerms").innerHTML=LIBG.map(gr=>`<div class="libg"><b>${gr[0]}</b><div class="row">${gr[1].map(t=>`<button class="lterm" type="button" data-t="${t}" aria-pressed="false">${t}</button>`).join("")}</div></div>`).join("");
+  $$("#libTerms .lterm").forEach(b=>b.onclick=()=>libPick(b.dataset.t))}
+function libPick(t,id){libTerm=t;$$("#libTerms .lterm").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));const list=MOVES.filter(m=>m.t===t);const m=id?list.find(x=>x.id===id):list[0];
+  curMove=m;mT=0;showJoint=true;$("#lTitle").textContent=t;$("#lDef").innerHTML=TERMS[t].d;
+  $("#lVars").innerHTML=list.length>1?list.map(x=>`<button class="tbtn" type="button" data-id="${x.id}" aria-pressed="${x===m}">at the ${x.v}</button>`).join(""):"";
+  $$("#lVars .tbtn").forEach(b=>b.onclick=()=>libPick(t,b.dataset.id));
+  $("#lDl").innerHTML=`<div><dt>Example</dt><dd>${m.ex}</dd></div><div><dt>Watch for</dt><dd>${cap(m.saw)}.</dd></div><div><dt>Joint</dt><dd>${Jn[m.j]}: ${JT[Jn[m.j]]}.</dd></div><div><dt>Plane</dt><dd>${m.pl?PLANES[m.pl][0]+": "+PLANES[m.pl][1]:m.t==="Circumduction"?"Several planes in a row.":"No single plane."}</dd></div>`;
+  $("#lPlane").disabled=!m.pl;$("#lPlane").style.opacity=m.pl?1:.45;
+  $("#mimic").setAttribute("aria-label",`Animated mannequin showing ${t}${m.v?" of the "+m.v:""}: ${m.saw}. ${m.cam[6]}.`)}
+$("#lPlane").onclick=()=>{showPlane=!showPlane;$("#lPlane").setAttribute("aria-pressed",showPlane);$("#lPlane").textContent=showPlane?"Hide the plane":"Show the plane"};
+$("#mmGame").onclick=()=>{libMode=false;$("#mmGame").setAttribute("aria-pressed","true");$("#mmLib").setAttribute("aria-pressed","false");$("#gamePanel").hidden=false;$("#libPanel").hidden=true;gShowKeep()};
+$("#mmLib").onclick=()=>{libMode=true;$("#mmLib").setAttribute("aria-pressed","true");$("#mmGame").setAttribute("aria-pressed","false");$("#gamePanel").hidden=true;$("#libPanel").hidden=false;showPlane=$("#lPlane").getAttribute("aria-pressed")==="true";libPick(libTerm,curMove&&curMove.t===libTerm?curMove.id:null)};
+function gShowKeep(){const m=gset[gi];if(!m)return;curMove=m;mT=0;showJoint=gDone;showPlane=gDone&&$("#bP").dataset.done==="1"}
+/* ---- controls ---- */
+$("#mPause").onclick=()=>{mPaused=!mPaused;$("#mPause").textContent=mPaused?"Play":"Pause"};
+$("#mReplay").onclick=()=>{mT=0};
+$("#mSpeed").oninput=e=>mSpeed=+e.target.value;
+/* ---- tabs / theme ---- */
+let curTab="types";
+$$(".tab").forEach(t=>t.onclick=()=>{$$(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));curTab=t.dataset.tab;["types","sort","mimic"].forEach(n=>$("#tab-"+n).hidden=curTab!==n);setTimeout(fitAll,0)});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;r.setAttribute("data-theme",isDark()?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+function fitAll(){galCanv.forEach(c=>c.fit());mc.fit()}
+window.addEventListener("resize",fitAll);
+/* ---- main loop ---- */
+function frame(now){const dt=Math.min(.05,(now-mLast)/1000);mLast=now;
+  try{if(curTab==="types"){if(!galPaused)galT+=dt*galSpeed;drawGallery()}
+    else if(curTab==="mimic"){if(!mPaused)mT+=dt*mSpeed;
+      if(!libMode&&!gDone&&!$("#mRelaxed").checked&&!mPaused){gTimeLeft-=dt;$("#mTimerBar").style.width=Math.max(0,gTimeLeft/TIME*100)+"%";if(gTimeLeft<=0){gTimeLeft=TIME;gFirst=false;$("#mFb").className="fb no show";$("#mShow").click();$("#mFb").innerHTML="<b>Time is up.</b> Here is the answer. Turn on relaxed mode any time to take it slower.<br>"+$("#mFb").innerHTML}}
+      renderMimic()}}catch(e){console.error(e)}
+  requestAnimationFrame(frame)}
+readColors();buildOverview();buildAnatomy();buildGallery();sStart();buildBoard();buildLib();gStart();fitAll();requestAnimationFrame(frame);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{}).catch(()=>{});
+})();
+</script>
+</body>
+</html>

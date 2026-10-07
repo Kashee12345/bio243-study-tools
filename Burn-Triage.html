@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Burn Triage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--actR:#1B6E88;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  /* topic colours: skin layers and burns */
+  --air:#EAF0F3;--epi:#E8C7A4;--corn:#CFA57D;--basal:#B07F58;--derm:#F1D2CC;--coll:#D6A79E;
+  --hypo:#F5E6B0;--hypo-dk:#D7BF6E;--musc:#C9696C;--musc-dk:#9B474B;--bonec:#EEE7D6;--bone-dk:#B6A784;
+  --art:#C0392B;--vein:#3D6DB0;--nerve:#C99A12;--gland:#6FA9C1;--hair:#4A3B32;--sebum:#E9D27A;
+  --b1:#E2574A;--b2:#C7432F;--b3w:#F1EDE4;--b3:#8C6A50;--b4:#3A302B;--fluid:#F4E8A6;--dead:#7A7470;
+  --body:#D9E1E6;--body-edge:#7D8E98;--tbsa:#D2602A;--tbsa-ink:#FFFFFF;--tbsa-wash:#F8E2D5;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--actR:#4FB3D1;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+  --air:#1A252C;--epi:#9C7A5C;--corn:#7D5E43;--basal:#C59A72;--derm:#6E4C49;--coll:#97716B;
+  --hypo:#6E6236;--hypo-dk:#A99550;--musc:#8E4448;--musc-dk:#C46E72;--bonec:#9C9480;--bone-dk:#D2C6A6;
+  --art:#E0645A;--vein:#6E9BE0;--nerve:#E8BF3C;--gland:#7FBCD4;--hair:#D8C8BA;--sebum:#B9A452;
+  --b1:#F06F62;--b2:#E25A45;--b3w:#CFC8BC;--b3:#A0805F;--b4:#151110;--fluid:#BFB26E;--dead:#8D8781;
+  --body:#2C3B44;--body-edge:#7D939F;--tbsa:#E8783F;--tbsa-ink:#1A0D05;--tbsa-wash:#3A2417;
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--actR:#4FB3D1;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+  --air:#1A252C;--epi:#9C7A5C;--corn:#7D5E43;--basal:#C59A72;--derm:#6E4C49;--coll:#97716B;
+  --hypo:#6E6236;--hypo-dk:#A99550;--musc:#8E4448;--musc-dk:#C46E72;--bonec:#9C9480;--bone-dk:#D2C6A6;
+  --art:#E0645A;--vein:#6E9BE0;--nerve:#E8BF3C;--gland:#7FBCD4;--hair:#D8C8BA;--sebum:#B9A452;
+  --b1:#F06F62;--b2:#E25A45;--b3w:#CFC8BC;--b3:#A0805F;--b4:#151110;--fluid:#BFB26E;--dead:#8D8781;
+  --body:#2C3B44;--body-edge:#7D939F;--tbsa:#E8783F;--tbsa-ink:#1A0D05;--tbsa-wash:#3A2417;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+h2{font-family:var(--serif);font-weight:600;font-size:21px;margin:0 0 6px;line-height:1.25}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab .opt-tag{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;opacity:.8;margin-left:4px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.45;cursor:default}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.bigidea{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 14px;font-size:15px}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 14px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--good);margin-left:4px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+.timer{font-family:var(--mono);font-size:20px;font-weight:600;min-width:72px}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.instr{color:var(--ink-soft);font-size:14.5px;margin:0 0 10px}
+.msg{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--good);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--warn);border:1px solid var(--warn)}
+.msg ul{margin:6px 0 0;padding-left:20px}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.best{font-family:var(--mono);font-size:13px;color:var(--ink-soft)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt:disabled{cursor:default}
+.fb{margin-top:10px;font-size:14.5px;padding:8px 12px;border-radius:4px;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--good-wash);border-left:4px solid var(--good)}
+.fb.warn{background:var(--warn-wash);border-left:4px solid var(--warn)}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.score{font-family:var(--mono);font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:0 0 6px}
+footer{max-width:1100px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+[hidden]{display:none!important}
+b.term{color:var(--accent-ink)}
+/* ---------- svg shared ---------- */
+svg{display:block;width:100%;height:auto}
+.s-air{fill:var(--air)}.s-epi{fill:var(--epi)}.s-corn{fill:var(--corn)}.s-basal{fill:var(--basal)}
+.s-derm{fill:var(--derm)}.s-coll{fill:none;stroke:var(--coll);stroke-width:1.6;stroke-linecap:round}
+.s-hypo{fill:var(--hypo)}.s-adip{fill:var(--hypo);stroke:var(--hypo-dk);stroke-width:1.4}
+.s-musc{fill:var(--musc)}.s-mfib{stroke:var(--musc-dk);stroke-width:1;opacity:.7}
+.s-bone{fill:var(--bonec)}.s-ost{fill:none;stroke:var(--bone-dk);stroke-width:1.2}
+.s-fascia{stroke:var(--ink-soft);stroke-width:1.2;stroke-dasharray:5 3}
+.s-art{fill:none;stroke:var(--art);stroke-linecap:round}.s-vein{fill:none;stroke:var(--vein);stroke-linecap:round}
+.s-nerve{fill:none;stroke:var(--nerve);stroke-width:2.2;stroke-linecap:round}
+.s-gland{fill:none;stroke:var(--gland);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.s-duct{fill:none;stroke:var(--gland);stroke-width:2.2}
+.s-foll{fill:var(--corn);stroke:var(--basal);stroke-width:1.2}
+.s-hair{fill:none;stroke:var(--hair);stroke-width:3.4;stroke-linecap:round}
+.s-seb{fill:var(--sebum);stroke:var(--basal);stroke-width:1}
+.s-apm{fill:none;stroke:var(--musc-dk);stroke-width:3;stroke-linecap:round}
+.s-corp{fill:var(--panel);stroke:var(--nerve);stroke-width:1.3}
+.s-lab{font:600 13px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:3.5px;stroke-linejoin:round}
+.s-lab2{font:500 11.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:3px;stroke-linejoin:round}
+.s-lead{stroke:var(--ink-soft);stroke-width:1}
+.s-bkt{fill:none;stroke:var(--ink-soft);stroke-width:1.4}
+.s-lay{font:600 15px var(--sans);fill:var(--ink)}
+.s-laysub{font:400 12px var(--sans);fill:var(--ink-soft)}
+.z1{fill:var(--b1);opacity:.42}.z2{fill:var(--b2);opacity:.42}.z3{fill:var(--b2);opacity:.5}.z4{fill:var(--b3);opacity:.62}.z5{fill:var(--b4);opacity:.5}
+.s-hatch{stroke:var(--ink);stroke-width:1.3;opacity:.35}
+.s-zedge{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:6 4}
+.s-fluid{fill:var(--fluid);stroke:var(--epi);stroke-width:6}
+.s-fluid2{fill:var(--fluid);stroke:var(--corn);stroke-width:2}
+.s-red{fill:var(--b1)}.s-eschar{fill:var(--b3w);stroke:var(--b3);stroke-width:1.2}.s-char{fill:var(--b4)}
+.s-crack{fill:none;stroke:var(--b3);stroke-width:1.3}
+.s-crack2{fill:none;stroke:var(--dead);stroke-width:1.3}
+.s-x{stroke:var(--ink);stroke-width:2.4;stroke-linecap:round}
+.s-dead{fill:none;stroke:var(--dead);stroke-width:2.2;stroke-linecap:round}
+.s-spark{fill:none;stroke:var(--b2);stroke-width:2;stroke-linecap:round}
+.s-drop{fill:var(--gland);opacity:.85}
+.s-surv{fill:none;stroke:var(--good);stroke-width:2.4;stroke-dasharray:4 3}
+.s-depth{stroke:var(--ink);stroke-width:1.6}
+.s-layc{font:700 21px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:5px;stroke-linejoin:round}
+.s-depthC{font:700 19px var(--mono);fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:5px}
+.s-depthT{font:700 12.5px var(--mono);fill:var(--ink);paint-order:stroke;stroke:var(--air);stroke-width:3px}
+@keyframes spark{0%,100%{opacity:.15}50%{opacity:1}}
+@keyframes drip{0%{transform:translateY(8px);opacity:0}30%{opacity:.9}100%{transform:translateY(-22px);opacity:0}}
+.anim .s-spark{animation:spark 1.1s ease-in-out infinite}
+.anim .s-drop{animation:drip 2.6s ease-in infinite;transform-box:fill-box}
+@media (prefers-reduced-motion:reduce){.anim .s-spark,.anim .s-drop{animation:none}}
+/* ---------- learn tab ---------- */
+.skinbox{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px}
+.depthpick{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:12px 0 6px}
+@media (max-width:700px){.depthpick{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.dp{border:1.5px solid var(--rule);background:var(--panel);border-radius:var(--r);padding:7px 6px;cursor:pointer;font-size:13.5px;line-height:1.25;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.dp i{display:block;width:100%;height:6px;border-radius:3px}
+.dp small{color:var(--ink-soft);font-size:12px}
+.dp[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.slider{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-soft)}
+.slider input{flex:1;accent-color:var(--accent);min-width:0}
+.dcard .chip2{display:inline-block;font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--accent-wash);color:var(--accent-ink);margin-bottom:6px}
+.dcard dl{margin:8px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:14.5px}
+.dcard dt{font-weight:600;color:var(--ink-soft)}
+.dcard dd{margin:0}
+.laylist{list-style:none;padding:0;margin:10px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:6px}
+.laylist li{border:1px solid var(--rule);border-radius:var(--r);padding:6px 9px;font-size:13.5px;background:var(--panel-2);display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+.st{font-family:var(--mono);font-size:12px;padding:1px 6px;border-radius:4px;white-space:nowrap}
+.st.ok{background:var(--good-wash);color:var(--good)}.st.hurt{background:var(--warn-wash);color:var(--warn)}.st.gone{background:var(--bad-wash);color:var(--bad)}
+.funcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px}
+.func{border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;background:var(--panel);display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:start}
+.func svg{width:44px;height:44px}
+.func h4{margin:0 0 2px;font-size:15px}
+.func p{margin:2px 0 0;font-size:14px}
+.why2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:16px}
+.analogy{background:var(--gold-wash);border-left:4px solid var(--gold);border-radius:4px;padding:8px 12px;font-size:14.5px;margin-top:8px}
+/* ---------- classify ---------- */
+.meter{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:14px;color:var(--ink-soft)}
+.meter b{color:var(--ink)}
+.pbar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.pbar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.case{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start;margin-top:12px}
+@media (max-width:820px){.case{grid-template-columns:minmax(0,1fr)}}
+.pic{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px}
+.pic .cap{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin:4px 4px 2px;text-transform:uppercase;letter-spacing:.05em}
+.lookchips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.lookchips span{font-size:13px;border:1px solid var(--rule);border-radius:99px;padding:2px 9px;background:var(--panel)}
+/* ---------- rule of nines ---------- */
+.modes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.bodybox{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px}
+.reg{cursor:pointer;outline:none}
+.reg path{fill:var(--body);stroke:var(--body-edge);stroke-width:1.3;transition:fill .15s}
+.reg:hover path,.reg:focus-visible path{stroke:var(--accent);stroke-width:2.6}
+.reg.on path{fill:var(--tbsa)}
+.reg path.hz{fill:url(#rh);stroke:none;display:none;pointer-events:none}.reg.on path.hz{display:inline}
+.reg .rl{font:700 12px var(--mono);fill:var(--ink);pointer-events:none}
+.reg.on .rl{fill:var(--tbsa-ink)}
+.reg.x-extra path{stroke:var(--bad);stroke-width:3;stroke-dasharray:5 3}
+.reg.x-miss path{stroke:var(--gold);stroke-width:3.2;stroke-dasharray:5 3}
+@media (max-width:560px){.reg .rl{font-size:17px}.b-title{font-size:17px!important}.b-side{font-size:14px!important}}
+.b-title{font:600 13px var(--mono);fill:var(--ink-soft);letter-spacing:.06em}
+.b-side{font:600 11px var(--sans);fill:var(--ink-soft)}
+.b-det{fill:none;stroke:var(--body-edge);stroke-width:1;opacity:.7;pointer-events:none}
+.total{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
+.total .big{font-family:var(--mono);font-size:34px;font-weight:600;color:var(--tbsa)}
+.total .lbl{color:var(--ink-soft);font-size:14px}
+.regbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media (max-width:560px){.regbtns{grid-template-columns:1fr}}
+.regbtns h4{margin:0 0 6px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.regbtns .rb{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;border:1.5px solid var(--rule);background:var(--panel);border-radius:var(--r);padding:5px 9px;margin:0 0 5px;cursor:pointer;font-size:13.5px}
+.regbtns .rb[aria-pressed="true"]{border-color:var(--tbsa);background:var(--tbsa-wash);font-weight:600}
+.regbtns .rb .pc{font-family:var(--mono);color:var(--ink-soft)}
+.casebox{border:1px solid var(--rule);border-radius:var(--r);padding:12px 14px;background:var(--panel-2);margin-bottom:10px}
+.casebox ul{margin:6px 0 0;padding-left:20px}
+.casebox li{margin:3px 0}
+.dtag{font-family:var(--mono);font-size:11.5px;padding:1px 6px;border-radius:4px;margin-left:4px;white-space:nowrap}
+.dtag.sup{background:var(--gold-wash);color:var(--ink)}.dtag.par{background:var(--warn-wash);color:var(--warn)}.dtag.full{background:var(--bad-wash);color:var(--bad)}
+.mode input.numin,.numin{width:110px;height:auto;padding:8px 10px;border:1.5px solid var(--rule);border-radius:var(--r);background:var(--panel);font-family:var(--mono);font-size:16px}
+.tip{border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;background:var(--panel-2);margin-top:12px;display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center}
+.tip svg{width:70px;height:auto}
+.tip p{margin:0;font-size:14px}
+.breakdown{font-family:var(--mono);font-size:13px;color:var(--ink-soft);margin:6px 0 0;padding:0;list-style:none;max-height:220px;overflow:auto}
+/* ---------- nursing ---------- */
+.optbanner{border:2px dashed var(--act1);border-radius:var(--r);padding:10px 14px;margin-bottom:14px;background:var(--panel)}
+.optbanner b{color:var(--act1)}
+.formula{font-family:var(--mono);font-size:17px;background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:12px 14px;margin:8px 0;overflow-wrap:anywhere}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
+.calc label{font-size:13.5px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px}
+.calc input{padding:8px 10px;border:1.5px solid var(--rule);border-radius:var(--r);background:var(--panel);font-family:var(--mono);font-size:16px;width:100%}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.res div{border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;background:var(--panel-2)}
+.res small{display:block;color:var(--ink-soft);font-size:12.5px}
+.res b{font-family:var(--mono);font-size:18px}
+.prob{border:1px solid var(--rule);border-radius:var(--r);padding:12px 14px;margin-top:12px;background:var(--panel)}
+.prob h4{margin:0 0 4px;font-size:16px}
+.prob .ins{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:8px 0}
+.prob label{font-size:13.5px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px}
+.work{font-family:var(--mono);font-size:14px;background:var(--panel-2);border-left:4px solid var(--accent);padding:10px 12px;margin-top:8px;border-radius:4px;white-space:pre-wrap;overflow-wrap:anywhere}
+.tl-lab{font:500 12px var(--sans);fill:var(--ink)}
+.tl-mono{font:600 12px var(--mono);fill:var(--ink)}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Burns and the Integumentary System &middot; USC Upstate</div>
+    <h1>Burn Triage</h1>
+    <p class="sub">See how deep a burn goes, classify burns by how they look, and estimate how much skin is involved.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="learn" type="button">Learn the depths</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="class" type="button">Game 1 &middot; Classify the burn</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="nines" type="button">Game 2 &middot; Rule of Nines</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="nurse" type="button">Nursing preview<span class="opt-tag">optional</span></button>
+  </div>
+
+  <!-- ================= LEARN ================= -->
+  <section id="tab-learn">
+    <div class="bigidea"><b>The big idea:</b> a burn is named by <b>how deep</b> it goes, not by what caused it. The deeper the burn, the more of the skin's jobs are lost. Nothing here is graded, so explore freely.</div>
+    <div class="grid">
+      <div class="card">
+        <div class="skinbox anim" id="skin"></div>
+        <div class="depthpick" id="depthpick" role="group" aria-label="Choose a burn depth"></div>
+        <div class="slider"><span>Shallow</span><input type="range" id="depthRange" min="0" max="5" step="1" value="0" aria-label="Burn depth"><span>Deep</span></div>
+        <div class="bar" style="margin:10px 0 0">
+          <label class="mode"><input type="checkbox" id="skinLabels" checked> Show labels</label>
+          <span class="instr" style="margin:0">Tip: use the slider or the left and right arrow keys.</span>
+        </div>
+        <ul class="laylist" id="laylist" aria-label="Layer status"></ul>
+      </div>
+      <aside class="card dcard" id="dcard" aria-live="polite"></aside>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>What the skin stops doing</h2>
+      <p class="instr" style="margin:0">These cards change with the depth you pick above.</p>
+      <div class="funcs" id="funcs"></div>
+    </div>
+
+    <div class="why2">
+      <div class="card">
+        <h2>Why can a deeper burn hurt <i>less</i>?</h2>
+        <p>Pain is a message sent by <b class="term">nerve endings</b> (free nerve endings and other sensory receptors) in the <b class="term">dermis</b>. In first- and second-degree burns these endings are irritated but still alive, so they fire hard. That is why a blistered burn hurts so much.</p>
+        <p>A <b class="term">full-thickness</b> (third-degree) burn destroys the whole dermis, nerve endings included. With no receptors left, the centre goes numb. The edges are shallower, so they still hurt.</p>
+        <div class="analogy"><b>Think of it like this:</b> a smoke alarm screams while there is smoke. If the fire burns the alarm itself, the house goes quiet. Quiet does not mean safe.</div>
+      </div>
+      <div class="card">
+        <h2>Why is losing skin so dangerous?</h2>
+        <p><b class="term">Fluid balance.</b> Intact skin keeps water in. Burned capillaries leak plasma, and the open wound lets water evaporate. A large burn can cause <b>dehydration</b>, electrolyte imbalance and even shock or kidney failure.</p>
+        <p><b class="term">Temperature control.</b> Burned skin cannot sweat or adjust blood flow normally, and wet wounds lose heat by evaporation. Patients can get dangerously cold.</p>
+        <p><b class="term">Infection defence.</b> The epidermis is a physical barrier. Once it is gone, bacteria can get in, and dead burned tissue (<b class="term">eschar</b>) has no blood supply to bring immune cells.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLASSIFY ================= -->
+  <section id="tab-class" hidden>
+    <div class="card">
+      <div class="sc-top">
+        <div class="chips" id="cChips"></div>
+        <div class="bar" style="margin:0">
+          <span class="timer" id="cTimer">0:00</span>
+          <label class="mode"><input type="checkbox" id="relaxed" checked> Relaxed mode (timer hidden)</label>
+        </div>
+      </div>
+      <div class="meter"><span>Case <b id="cN">1</b> of <b id="cT">12</b></span><span>Solved <b id="cDoneN">0</b></span><span>First try <b id="cFirst">0</b></span></div>
+      <div class="pbar"><i id="cBar"></i></div>
+      <div class="case">
+        <div>
+          <div class="pic" id="cPic"></div>
+          <div class="pic" id="cSec" style="margin-top:10px" hidden></div>
+        </div>
+        <div>
+          <div class="sc-n" id="cWho"></div>
+          <h2 class="sc-title" id="cTitle"></h2>
+          <p id="cDesc" style="margin:0 0 6px"></p>
+          <p class="qlab">1. What degree is this burn?</p>
+          <div class="opts" id="cQ1"></div>
+          <div class="fb" id="cFb1" role="status"></div>
+          <div id="cQ2wrap" hidden>
+            <p class="qlab" id="cQ2lab"></p>
+            <div class="opts" id="cQ2"></div>
+            <div class="fb" id="cFb2" role="status"></div>
+          </div>
+          <div class="explain" id="cExp"></div>
+          <div class="bar" style="margin-top:14px">
+            <button class="tbtn" id="cHint" type="button">Hint</button>
+            <button class="tbtn" id="cShow" type="button">Show answer</button>
+            <button class="tbtn" id="cPrev" type="button">&larr; Previous</button>
+            <button class="btn" id="cNext" type="button">Next case &rarr;</button>
+          </div>
+          <div class="msg" id="cMsg" role="status"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RULE OF NINES ================= -->
+  <section id="tab-nines" hidden>
+    <div class="modes" role="group" aria-label="Mode">
+      <button class="round" id="mFree" type="button" aria-pressed="true">Free explore</button>
+      <button class="round" id="mCase" type="button" aria-pressed="false">Case rounds</button>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div id="caseArea" hidden>
+          <div class="rounds" id="nRounds"></div>
+          <div class="casebox" id="nCase"></div>
+        </div>
+        <p class="instr" id="nInstr">Tap any region to shade it. Each figure is split into front and back halves, so you can pick just the front of an arm (4.5%).</p>
+        <div class="bodybox" id="bodyFig"></div>
+        <div class="total" id="totalRow"><span class="big" id="nTotal">0%</span><span class="lbl">of total body surface area (TBSA) shaded</span></div>
+        <div class="bar" id="freeBar">
+          <button class="tbtn" id="nAll" type="button">Select every region</button>
+          <button class="tbtn" id="nClear" type="button">Clear</button>
+        </div>
+        <div id="caseBar" hidden>
+          <div class="bar">
+            <label class="mode" style="color:var(--ink)">Your %TBSA: <input class="numin" id="nAns" type="number" step="0.5" min="0" max="100" inputmode="decimal" aria-label="Your percent TBSA"></label>
+            <label class="mode"><input type="checkbox" id="nShowTotal"> Show running total (easier)</label>
+          </div>
+          <div class="bar">
+            <button class="btn" id="nCheck" type="button">Check</button>
+            <button class="tbtn" id="nHint" type="button">Hint</button>
+            <button class="tbtn" id="nShow" type="button">Show answer</button>
+            <button class="tbtn" id="nReset" type="button">Clear shading</button>
+          </div>
+        </div>
+        <div class="msg" id="nMsg" role="status"></div>
+        <div class="regbtns" id="regBtns"></div>
+      </div>
+      <aside class="card side">
+        <h3>The Rule of Nines (adult)</h3>
+        <ul>
+          <li>Head and neck: <b>9%</b> (4.5 front, 4.5 back)</li>
+          <li>Each upper limb: <b>9%</b> (4.5 front, 4.5 back)</li>
+          <li>Anterior trunk: <b>18%</b> (chest 9, abdomen 9)</li>
+          <li>Posterior trunk: <b>18%</b> (upper back 9, lower back and buttocks 9)</li>
+          <li>Each lower limb: <b>18%</b> (9 front, 9 back)</li>
+          <li>Perineum and genitalia: <b>1%</b></li>
+        </ul>
+        <p>Eleven areas of 9% plus 1% gives 100%.</p>
+        <h3 style="margin-top:14px">What counts</h3>
+        <p><b>Count only partial-thickness (second-degree) and full-thickness (third- and fourth-degree) burns.</b> First-degree (superficial) burns are <b>not</b> counted in %TBSA, because the skin barrier is still intact.</p>
+        <div class="tip">
+          <svg viewBox="0 0 70 80" role="img" aria-label="Drawing of an open hand, palm facing out, with the palm and fingers shaded"><path d="M18 72 L16 44 Q14 34 20 33 Q25 33 25 42 L25 18 Q25 12 30 12 Q35 12 35 18 L35 9 Q35 4 40 4 Q45 4 45 9 L45 15 Q45 10 50 10 Q55 10 55 16 L55 24 Q55 19 60 19 Q65 19 64 26 L61 52 Q58 66 50 72 Z" fill="var(--tbsa-wash)" stroke="var(--tbsa)" stroke-width="2"/><text x="40" y="52" text-anchor="middle" class="tl-mono">~1%</text></svg>
+          <p><b>Palm method:</b> the patient's own palm, including the fingers, is about <b>1%</b> of their TBSA. It is handy for small or scattered burns.</p>
+        </div>
+        <div class="tip">
+          <svg viewBox="0 0 70 80" role="img" aria-label="An adult figure and an infant figure side by side; the infant's head is much larger compared with its body"><circle cx="20" cy="14" r="7" fill="var(--body)" stroke="var(--body-edge)"/><rect x="13" y="22" width="14" height="26" rx="4" fill="var(--body)" stroke="var(--body-edge)"/><rect x="14" y="48" width="5" height="26" fill="var(--body)" stroke="var(--body-edge)"/><rect x="21" y="48" width="5" height="26" fill="var(--body)" stroke="var(--body-edge)"/><circle cx="52" cy="40" r="10" fill="var(--tbsa-wash)" stroke="var(--tbsa)"/><rect x="44" y="50" width="16" height="15" rx="4" fill="var(--body)" stroke="var(--body-edge)"/><rect x="45" y="65" width="6" height="10" fill="var(--body)" stroke="var(--body-edge)"/><rect x="53" y="65" width="6" height="10" fill="var(--body)" stroke="var(--body-edge)"/></svg>
+          <p><b>Children are different.</b> An infant's head is much bigger for its body (about 18 to 19% instead of 9%), and the legs are smaller. Clinicians use age-based charts such as the <b>Lund-Browder chart</b> for children.</p>
+        </div>
+        <h3 style="margin-top:14px">Your results</h3>
+        <div class="best" id="nBest"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= NURSING ================= -->
+  <section id="tab-nurse" hidden>
+    <div class="optbanner"><b>Optional &middot; beyond the A&amp;P exam.</b> This is a preview of how nurses use %TBSA later in your program. You will not be tested on the formula in BIOL 243. It is here so you can see why the Rule of Nines matters.</div>
+    <div class="grid">
+      <div class="card">
+        <h2>The Parkland formula</h2>
+        <p>After a big burn, fluid pours out of leaky capillaries. Replacing it fast prevents shock. The <b class="term">Parkland formula</b> estimates how much IV fluid (<b>lactated Ringer's</b>) to give in the first 24 hours.</p>
+        <div class="formula">4 mL &times; body weight (kg) &times; %TBSA = mL of lactated Ringer's in the first 24 h</div>
+        <ul>
+          <li><b>Half</b> goes in the <b>first 8 hours</b>, counted from the <b>time of the burn</b> (not from arrival at the hospital).</li>
+          <li>The other half goes in over the <b>next 16 hours</b>.</li>
+        </ul>
+        <div id="tline"></div>
+        <h2 style="margin-top:14px">Try the calculator</h2>
+        <div class="calc">
+          <label>Weight (kg)<input id="pW" type="number" min="1" max="300" value="70" inputmode="decimal"></label>
+          <label>%TBSA (partial + full)<input id="pT" type="number" min="0" max="100" step="0.5" value="20" inputmode="decimal"></label>
+          <label>Hours since the burn<input id="pH" type="number" min="0" max="7.5" step="0.5" value="0" inputmode="decimal"></label>
+        </div>
+        <div class="res" id="pRes"></div>
+        <p class="instr" style="margin-top:10px">It is only an estimate: the actual rate is adjusted hour by hour based on the patient's urine output, and local protocols vary.</p>
+      </div>
+      <aside class="card side">
+        <h3>Why it connects to A&amp;P</h3>
+        <ul>
+          <li>Skin keeps water in. Lose skin, lose water.</li>
+          <li>Heat makes capillaries leaky, so plasma moves out of the blood.</li>
+          <li>Less blood volume means lower blood pressure and less blood to organs such as the kidneys.</li>
+          <li>Urine output tells the team whether the kidneys are getting enough blood.</li>
+        </ul>
+        <h3 style="margin-top:14px">Common mistakes</h3>
+        <ul>
+          <li>Counting first-degree burns in %TBSA.</li>
+          <li>Starting the 8-hour clock at arrival instead of the time of the burn.</li>
+          <li>Using pounds instead of kilograms (1 kg = 2.2 lb).</li>
+        </ul>
+      </aside>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h2>Practice calculations</h2>
+      <p class="instr">Enter your answers, then check. Each has a worked answer.</p>
+      <div id="probs"></div>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Content follows OpenStax Anatomy &amp; Physiology 2e, Chapter 5 (Integumentary System). Diagrams are simplified and not to scale. Nothing here is graded.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const f=n=>(+n).toFixed(1);
+let SD=1;function seed(n){SD=(n*9973+7)%2147483647||1}function RND(){SD=(SD*16807)%2147483647;return(SD-1)/2147483646}
+const fmtT=s=>{s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
+const nf=n=>(Math.round(n*10)/10).toLocaleString("en-US");
+
+/* =====================================================================
+   SKIN CROSS-SECTION (inline SVG)
+   level: 0 healthy, 1 first, 2 superficial partial, 3 deep partial, 4 full, 5 fourth
+   ===================================================================== */
+const SURF=50, DERB=200, HYPB=276, MUSB=338, HH=372;
+const jy=x=>79+5*Math.sin(x*0.105);          // dermal-epidermal junction (papillae)
+const DEPTH=[0,73,108,172,236,358];         // bottom of burn zone for each level
+const ZC=300, ZR=150;                       // zone centre and half-width
+function inZone(L,x,y){if(!L)return false;const D=DEPTH[L];return y>SURF-30&&((x-ZC)/ZR)**2+((y-SURF)/(D-SURF))**2<1}
+const FOLL=[110,300,470], SWEAT=[205,430];
+const NERVES=[52,168,252,352,410,532];
+function skinSVG(L,o){
+  o=o||{};const lab=o.labels!==false&&!o.mini&&!o.compact;const W=(o.mini||o.compact)?560:720;const u=o.uid||"s";
+  let s=`<svg viewBox="0 0 ${W} ${HH}" role="img" aria-label="${o.aria||""}">`;
+  s+=`<defs><pattern id="${u}h" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="s-hatch" x1="0" y1="0" x2="0" y2="9"/></pattern></defs>`;
+  s+=`<rect class="s-air" x="0" y="0" width="${W}" height="${HH}"/>`;
+  // bone
+  s+=`<rect class="s-bone" x="0" y="${MUSB}" width="560" height="${HH-MUSB}"/>`;
+  seed(3);for(let x=24;x<560;x+=46){const cx=x+RND()*14,cy=MUSB+17+RND()*6;s+=`<circle class="s-ost" cx="${f(cx)}" cy="${f(cy)}" r="10"/><circle class="s-ost" cx="${f(cx)}" cy="${f(cy)}" r="5"/><circle cx="${f(cx)}" cy="${f(cy)}" r="1.8" fill="var(--bone-dk)"/>`}
+  // muscle
+  s+=`<rect class="s-musc" x="0" y="${HYPB}" width="560" height="${MUSB-HYPB}"/>`;
+  for(let y=HYPB+6;y<MUSB-2;y+=7)s+=`<line class="s-mfib" x1="0" y1="${y}" x2="560" y2="${y}"/>`;
+  for(let x=70;x<560;x+=95)s+=`<line class="s-mfib" x1="${x}" y1="${HYPB}" x2="${x+8}" y2="${MUSB}" style="opacity:.9;stroke-width:2"/>`;
+  s+=`<line class="s-fascia" x1="0" y1="${HYPB}" x2="560" y2="${HYPB}"/>`;
+  // hypodermis + adipocytes
+  s+=`<rect class="s-hypo" x="0" y="${DERB}" width="560" height="${HYPB-DERB}"/>`;
+  seed(7);for(let y=DERB+12;y<HYPB-6;y+=19)for(let x=8+(y%2?9:0);x<560;x+=21){s+=`<circle class="s-adip" cx="${f(x+RND()*5)}" cy="${f(y+RND()*4)}" r="${f(8.5+RND()*2.5)}"/>`}
+  // dermis
+  s+=`<rect class="s-derm" x="0" y="70" width="560" height="${DERB-70}"/>`;
+  seed(11);for(let k=0;k<70;k++){const x=RND()*540+10,y=122+RND()*70;s+=`<path class="s-coll" d="M${f(x)} ${f(y)} q6 -5 12 0 t12 0"/>`}
+  s+=`<line x1="0" y1="${DERB}" x2="560" y2="${DERB}" stroke="var(--coll)" stroke-width="1.2"/>`;
+  // vessels: deep plexus, subpapillary plexus, capillary loops, hypodermal vessels
+  s+=`<path class="s-art" stroke-width="5" d="M0 252 C 140 244 280 260 420 250 S 540 246 560 250"/><path class="s-vein" stroke-width="6" d="M0 262 C 140 256 280 270 420 262 S 540 258 560 262"/>`;
+  s+=`<path class="s-art" stroke-width="3" d="M0 196 C 120 190 240 200 360 194 S 520 190 560 195"/><path class="s-vein" stroke-width="3" d="M0 204 C 120 199 240 208 360 202 S 520 199 560 203"/>`;
+  s+=`<path class="s-art" stroke-width="2" d="M0 116 C 140 112 280 120 420 114 S 540 112 560 116"/><path class="s-vein" stroke-width="2" d="M0 122 C 140 118 280 126 420 120 S 540 118 560 122"/>`;
+  for(let k=0;k<20;k++){const px=(-Math.PI/2+2*Math.PI*k)/0.105; if(px<8||px>552)continue; // papilla tips at minimum of jy
+    s+=`<path class="s-art" stroke-width="1.4" d="M${f(px-4)} 116 L${f(px-3)} 90 Q${f(px)} 84 ${f(px+3)} 90"/><path class="s-vein" stroke-width="1.4" d="M${f(px+3)} 90 L${f(px+4)} 121"/>`}
+  // sweat glands (coil + duct to a pore)
+  SWEAT.forEach((x,i)=>{s+=`<path class="s-duct" d="M${x} 190 C ${x-8} 160 ${x+8} 130 ${x-4} 100 S ${x+6} 64 ${x} ${SURF}"/>`;
+    s+=`<path class="s-gland" d="M${x-14} 192 q7 -10 14 0 t14 0 q-4 10 -14 8 t-14 -2 q2 8 14 10 t14 -3"/>`});
+  // nerves: trunk in hypodermis, branches up to free nerve endings
+  s+=`<path class="s-nerve" stroke-width="3.2" d="M0 236 C 150 228 300 242 450 232 S 540 230 560 234"/>`;
+  NERVES.forEach((x,i)=>{s+=`<path class="s-nerve" d="M${x} 234 C ${x-10} 190 ${x+10} 150 ${x} 100"/><path class="s-nerve" stroke-width="1.6" d="M${x} 100 l-7 -12 M${x} 100 l0 -15 M${x} 100 l7 -12"/>`});
+  // lamellated corpuscles deep in dermis
+  [[352,186],[532,188]].forEach(p=>{for(let r=4;r<=12;r+=4)s+=`<ellipse class="s-corp" cx="${p[0]}" cy="${p[1]}" rx="${r*0.75}" ry="${r}" style="fill:${r===12?"var(--panel)":"none"}"/>`});
+  // hair follicles, hair, sebaceous gland, arrector pili
+  FOLL.forEach(t=>{const b=t+22;
+    s+=`<path class="s-foll" d="M${t-8} ${SURF} L${b-10} 176 Q${b-14} 192 ${b} 194 Q${b+14} 192 ${b+10} 176 L${t+8} ${SURF} Z"/>`;
+    s+=`<ellipse cx="${b}" cy="${189}" rx="5" ry="4" fill="var(--derm)" stroke="var(--basal)"/>`;
+    s+=`<path class="s-hair" d="M${b} 185 L${t-1} ${SURF} L${t-14} 6"/>`;
+    s+=`<path class="s-seb" d="M${t+11} 104 q12 -6 16 4 q8 6 0 14 q-6 8 -14 2 q-6 -10 -2 -20 Z"/>`;
+    s+=`<path class="s-apm" d="M${t+16} 146 L${t+52} ${f(jy(t+52)+4)}"/>`});
+  // epidermis with papillae
+  let ep=`M0 ${SURF} L560 ${SURF} L560 ${f(jy(560))}`;for(let x=560;x>=0;x-=8)ep+=` L${x} ${f(jy(x))}`;ep+=" Z";
+  s+=`<path class="s-epi" d="${ep}"/><rect class="s-corn" x="0" y="${SURF}" width="560" height="5"/>`;
+  for(let x=4;x<560;x+=7)s+=`<circle class="s-basal" cx="${x}" cy="${f(jy(x)-2.5)}" r="2.3"/>`;
+  // redraw follicle openings and hair over epidermis
+  FOLL.forEach(t=>{s+=`<path class="s-foll" d="M${t-8} ${SURF} L${t-6} ${f(jy(t)+2)} L${t+10} ${f(jy(t)+2)} L${t+8} ${SURF} Z"/><path class="s-hair" d="M${t+3} ${f(jy(t)+2)} L${t-1} ${SURF} L${t-14} 6"/>`});
+  SWEAT.forEach(x=>{s+=`<path class="s-duct" d="M${x-3} 82 C ${x+4} 70 ${x-4} 60 ${x} ${SURF}"/>`});
+
+  // ---------- burn ----------
+  if(L>0){const D=DEPTH[L];const zp=`M${ZC-ZR} ${SURF} A${ZR} ${D-SURF} 0 0 0 ${ZC+ZR} ${SURF} Z`;
+    s+=`<path class="z${L}" d="${zp}"/><path d="${zp}" fill="url(#${u}h)"/><path class="s-zedge" d="M${ZC-ZR} ${SURF} A${ZR} ${D-SURF} 0 0 0 ${ZC+ZR} ${SURF}"/>`;
+    // structures destroyed inside the zone
+    NERVES.forEach(x=>{const tip=[x,95];const inZ=inZone(L,x,95);
+      if(inZ&&L>=3){s+=`<path class="s-dead" d="M${x} ${Math.min(DEPTH[L],230)} C ${x-6} 150 ${x+6} 120 ${x} 100"/><path class="s-x" d="M${x-7} 88 l14 14 M${x+7} 88 l-14 14"/>`}
+      else if(inZ||Math.abs(x-ZC)<ZR+60){ // irritated, still working: fires
+        s+=`<path class="s-spark" d="M${x-14} 84 l-8 -6 M${x} 80 l0 -10 M${x+14} 84 l8 -6"/>`}});
+    if(L>=4){[[352,186]].forEach(p=>{s+=`<path class="s-x" d="M${p[0]-8} ${p[1]-8} l16 16 M${p[0]+8} ${p[1]-8} l-16 16"/>`})}
+    FOLL.forEach(t=>{const b=t+22;if(inZone(L,b,190)&&L>=4)s+=`<path class="s-x" d="M${b-8} 182 l16 16 M${b+8} 182 l-16 16"/>`;
+      else if(L===3&&inZone(L,t+8,150))s+=`<circle class="s-surv" cx="${b}" cy="190" r="16"/>`});
+    SWEAT.forEach(x=>{if(inZone(L,x,194)&&L>=4)s+=`<path class="s-x" d="M${x-8} 186 l16 16 M${x+8} 186 l-16 16"/>`;else if(L===3&&Math.abs(x-ZC)<ZR)s+=`<circle class="s-surv" cx="${x}" cy="195" r="18"/>`});
+    // leaking fluid (blister fluid / fluid loss)
+    if(L>=2){const xs=L>=4?[ZC-ZR-8,ZC+ZR+8,ZC-ZR+30,ZC+ZR-30]:[ZC-70,ZC-20,ZC+30,ZC+80];
+      xs.forEach((x,i)=>{const y=L>=4?96:Math.min(DEPTH[L]-8,100);s+=`<path class="s-drop" style="animation-delay:${i*0.6}s" d="M${x} ${y-7} q5 7 0 10 q-5 -3 0 -10 Z"/>`})}
+    // surface appearance
+    if(L===1){s+=`<rect class="s-red" x="${ZC-ZR+6}" y="${SURF}" width="${2*ZR-12}" height="7" rx="3" opacity=".85"/>`}
+    if(L===2){s+=`<path class="s-fluid" d="M190 ${SURF+4} C 205 12 395 12 410 ${SURF+4} Z"/><path d="M190 ${SURF+4} C 205 12 395 12 410 ${SURF+4}" fill="none" stroke="var(--corn)" stroke-width="1.5"/>`}
+    if(L===3){s+=`<path class="s-fluid2" d="M200 ${SURF+2} C 210 30 268 30 278 ${SURF+2} Z"/>`;
+      seed(19);for(let k=0;k<9;k++){const x=290+k*16;s+=`<ellipse cx="${x}" cy="${SURF+3}" rx="${f(5+RND()*4)}" ry="3.5" fill="${k%2?"var(--b3w)":"var(--b1)"}"/>`}}
+    if(L>=4){const cls=L===4?"s-eschar":"s-char";s+=`<path class="${cls}" d="M${ZC-ZR+4} ${SURF+1} Q${ZC} ${SURF-10} ${ZC+ZR-4} ${SURF+1} L${ZC+ZR-10} ${SURF+12} L${ZC-ZR+10} ${SURF+12} Z"/>`;
+      if(L===4){s+=`<ellipse cx="${ZC+50}" cy="${SURF+2}" rx="30" ry="5" fill="var(--b3)" opacity=".75"/>`}
+      seed(23);for(let k=0;k<8;k++){const x=ZC-ZR+30+k*34;s+=`<path class="${L===4?"s-crack":"s-crack2"}" d="M${x} ${SURF-4} l${f(RND()*8-4)} 6 l${f(RND()*8-4)} 7"/>`}}
+    // depth marker on the left
+    if(!o.mini){const ty=Math.min(D-5,HH-8);s+=`<line class="s-depth" x1="4" y1="${D}" x2="${ZC-ZR+40}" y2="${D}" stroke-dasharray="3 3"/><text class="${o.compact?"s-depthC":"s-depthT"}" x="6" y="${o.compact?Math.max(ty,SURF+18):ty}">burn reaches here</text>`}
+  }
+  if(o.compact&&o.labels!==false){[["Epidermis",SURF+20],["Dermis",150],["Hypodermis",246],["Muscle",316],["Bone",HH-6]].forEach(a=>{s+=`<text class="s-layc" x="554" y="${a[1]}" text-anchor="end">${a[0]}</text>`})}
+  // ---------- labels ----------
+  if(lab){
+    const lay=[["Epidermis",SURF,79,""],["Dermis",82,DERB,"papillary + reticular"],["Hypodermis",DERB+2,HYPB,"subcutaneous fat"],["Muscle",HYPB+2,MUSB,"skeletal muscle"],["Bone",MUSB+2,HH-2,""]];
+    lay.forEach(a=>{const m=(a[1]+a[2])/2;s+=`<path class="s-bkt" d="M566 ${a[1]+1} h6 V${a[2]-1} h-6"/><text class="s-lay" x="580" y="${a[3]?m-1:m+5}">${a[0]}</text>`+(a[3]?`<text class="s-laysub" x="580" y="${m+14}">${a[3]}</text>`:"")});
+    const lb=(x,y,t,lx,ly,anc)=>(lx!=null?`<line class="s-lead" x1="${lx}" y1="${ly}" x2="${x}" y2="${y-4}"/>`:"")+`<text class="s-lab2" x="${x}" y="${y}" text-anchor="${anc||"middle"}">${t}</text>`;
+    s+=lb(96,22,"hair",null,null,"end");
+    s+=lb(76,186,"hair follicle",124,170,"end");
+    s+=lb(530,140,"arrector pili",500,104);
+    s+=lb(536,124,"sebaceous gland",null,null,"end");
+    s+=lb(430,170,"sweat gland",430,186);
+    s+=lb(8,140,"nerve ending",52,104,"start");
+    s+=lb(352,222,"lamellated corpuscle",352,198);
+    s+=lb(150,286,"blood vessels",150,258);
+  }
+  return s+"</svg>";
+}
+
+/* ---------- depth data ---------- */
+const DEP=[
+ {short:"Healthy",sub:"no burn",name:"Healthy skin",term:"No burn",layers:"None",look:"Normal colour, dry, intact.",pain:"Normal touch and pain sensation.",heal:"-",ex:"-",
+  body:"Start here. The <b class='term'>epidermis</b> is the thin outer layer of cells. The <b class='term'>dermis</b> holds blood vessels, nerve endings, hair follicles and glands. The <b class='term'>hypodermis</b> (subcutaneous layer) is mostly fat. Pick a burn depth to see what gets damaged.",
+  st:["ok","ok","ok","ok","ok"],tbsa:"-"},
+ {short:"1st",sub:"superficial",name:"First-degree burn",term:"Superficial burn",layers:"Epidermis only",look:"Red, dry, a little swollen. <b>No blisters.</b> Turns white when pressed, then pinks up again.",pain:"Painful and tender. Nerve endings just under the epidermis are irritated.",heal:"On its own in a few days, often by peeling. No scar.",ex:"Mild sunburn; a quick touch on a hot pan.",
+  body:"Only the <b class='term'>epidermis</b> is hurt. Blood vessels in the dermis widen, so the skin is red and warm. The dermis is fine, so no fluid leaks out to form blisters.",
+  st:["hurt","ok","ok","ok","ok"],tbsa:"Not counted in %TBSA"},
+ {short:"2nd",sub:"superficial partial",name:"Second-degree burn",term:"Superficial partial-thickness",layers:"Epidermis + upper (papillary) dermis",look:"<b>Blisters.</b> Red, moist and shiny underneath. Blanches when pressed.",pain:"Very painful. Nerve endings in the dermis are exposed and irritated, but still alive.",heal:"About 2 to 3 weeks if kept clean. Little or no scarring.",ex:"Hot coffee or scalding water spill; a sunburn that blisters.",
+  body:"Heat reaches the top of the <b class='term'>dermis</b>. Damaged capillaries leak plasma, which collects between epidermis and dermis and lifts the epidermis into a <b class='term'>blister</b>.",
+  st:["gone","hurt","ok","ok","ok"],tbsa:"Counted in %TBSA"},
+ {short:"2nd",sub:"deep partial",name:"Second-degree burn",term:"Deep partial-thickness",layers:"Epidermis + most of the dermis (into the reticular layer)",look:"Blisters may be broken. Blotchy red and white, drier. Colour comes back slowly when pressed.",pain:"Often less painful than a superficial partial burn. Many nerve endings are damaged; the patient may feel pressure more than sharp pain.",heal:"Several weeks. Often scars and may need a skin graft.",ex:"Longer contact with hot liquid, especially in older adults with thin skin.",
+  body:"Most of the dermis is damaged. The <b>green dashed circles</b> mark hair follicles and sweat glands that survive deep in the dermis. Their cells can grow new epidermis, which is why this burn can still heal, slowly.",
+  st:["gone","hurt","ok","ok","ok"],tbsa:"Counted in %TBSA"},
+ {short:"3rd",sub:"full-thickness",name:"Third-degree burn",term:"Full-thickness burn",layers:"All of the epidermis and dermis; may reach the hypodermis",look:"White, brown or black (charred). Dry and <b>leathery</b>. Usually no blisters.",pain:"Little or no pain in the centre, because the nerve endings are destroyed. The shallower edges still hurt.",heal:"Cannot heal well on its own. Dead tissue (eschar) is removed (debridement) and a <b>skin graft</b> is needed.",ex:"Flame burns; clothing on fire; long contact with a hot object.",
+  body:"The whole thickness of the skin is destroyed, including nerve endings, hair follicles, glands and blood vessels. With no surviving skin cells in the middle, the body cannot regrow skin there.",
+  st:["gone","gone","hurt","ok","ok"],tbsa:"Counted in %TBSA"},
+ {short:"4th",sub:"muscle / bone",name:"Fourth-degree burn",term:"Extends past the skin",layers:"Through the skin and hypodermis into muscle and/or bone",look:"Charred and dry. Deeper tissue such as muscle, tendon or bone may be involved.",pain:"No pain at the site; nerves are destroyed.",heal:"Needs surgery: debridement, grafts or flaps, sometimes amputation.",ex:"High-voltage electrical injury; being trapped in a fire.",
+  body:"The burn goes all the way through the skin and subcutaneous tissue into <b class='term'>muscle</b> and even <b class='term'>bone</b>. This is the most severe type of burn.",
+  st:["gone","gone","gone","gone","hurt"],tbsa:"Counted in %TBSA"}
+];
+const DCOL=["var(--good)","var(--b1)","var(--b2)","var(--b2)","var(--b3)","var(--b4)"];
+const LAYN=["Epidermis","Dermis","Hypodermis","Muscle","Bone"];
+const STT={ok:["ok","&#10003; intact"],hurt:["hurt","~ damaged"],gone:["gone","&#10005; destroyed"]};
+// fix layer statuses for nuance
+DEP[3].st=["gone","hurt","ok","ok","ok"];DEP[4].st=["gone","gone","hurt","ok","ok"];DEP[5].st=["gone","gone","gone","gone","hurt"];
+const ICON={
+ fluid:`<svg viewBox="0 0 44 44" aria-hidden="true"><path d="M22 5 C 14 17 10 23 10 29 a12 12 0 0 0 24 0 c0 -6 -4 -12 -12 -24 Z" fill="var(--gland)" opacity=".85"/><path d="M16 30 a6 6 0 0 0 6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>`,
+ temp:`<svg viewBox="0 0 44 44" aria-hidden="true"><rect x="18" y="4" width="8" height="26" rx="4" fill="none" stroke="var(--ink-soft)" stroke-width="2"/><circle cx="22" cy="33" r="7" fill="var(--b1)"/><rect x="20.5" y="14" width="3" height="16" fill="var(--b1)"/><path d="M30 10h6M30 16h4M30 22h6" stroke="var(--ink-soft)" stroke-width="1.6"/></svg>`,
+ shield:`<svg viewBox="0 0 44 44" aria-hidden="true"><path d="M22 4 L37 10 V21 C37 31 30 37 22 40 C14 37 7 31 7 21 V10 Z" fill="var(--accent-wash)" stroke="var(--accent)" stroke-width="2"/><path d="M15 22 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/></svg>`,
+ pain:`<svg viewBox="0 0 44 44" aria-hidden="true"><path d="M22 40 V18 M22 18 l-9 -11 M22 18 V5 M22 18 l9 -11" fill="none" stroke="var(--nerve)" stroke-width="3" stroke-linecap="round"/><path d="M8 26 l-5 -3 M36 26 l5 -3 M10 33 h-6 M34 33 h6" stroke="var(--b2)" stroke-width="2" stroke-linecap="round"/></svg>`
+};
+const FUNCS=[
+ {k:"fluid",t:"Holding water in",v:[["ok","Intact. Skin is a waterproof barrier."],["ok","Mostly intact. No blisters, so little fluid is lost."],["hurt","Leaking. Plasma leaks from capillaries into blisters and out of open blisters."],["hurt","Leaking more. Bigger area of damaged capillaries, more fluid lost."],["gone","Lost. Fluid pours out of leaky vessels around the burn. Large burns can cause shock."],["gone","Lost. Same as third-degree, with even more tissue damage."]]},
+ {k:"temp",t:"Temperature control",v:[["ok","Normal sweating and blood-flow control."],["ok","Works. The area feels warm because vessels are widened."],["hurt","Reduced. Moist wounds lose heat by evaporation."],["hurt","Reduced. Fewer working sweat glands in the area."],["gone","Lost in the area. Sweat glands destroyed; evaporation from the wound chills the body."],["gone","Lost in the area."]]},
+ {k:"shield",t:"Keeping germs out",v:[["ok","Intact epidermis blocks bacteria."],["ok","Barrier still unbroken."],["hurt","Weakened. Broken blisters are open doors for bacteria. Keep them clean."],["hurt","Weakened. Bigger open area for bacteria."],["gone","Lost. Dead eschar has no blood supply, so immune cells cannot reach it. High infection risk."],["gone","Lost. Infection can reach muscle and bone."]]},
+ {k:"pain",t:"Sensation (pain)",v:[["ok","Normal."],["hurt","Painful. Nerve endings are irritated."],["hurt","Very painful. Nerve endings are exposed but alive."],["hurt","Duller. Many nerve endings are damaged."],["gone","Numb in the centre. Nerve endings destroyed. Edges hurt."],["gone","Numb at the site."]]}
+];
+let LV=0;
+function renderLearn(){
+  const d=DEP[LV];
+  $("#skin").innerHTML=skinSVG(LV,{labels:$("#skinLabels").checked,compact:$("#skin").clientWidth<560,uid:"L",aria:`Skin cross-section. ${d.name}${LV?" ("+d.term+")":""}: damage reaches ${d.layers.toLowerCase()}.`});
+  document.querySelectorAll(".dp").forEach((b,i)=>b.setAttribute("aria-pressed",i===LV));
+  $("#depthRange").value=LV;
+  $("#dcard").innerHTML=`<span class="chip2">${LV?"Depth "+LV+" of 5":"Start here"}</span><h2>${d.name}</h2>${LV?`<div style="color:var(--ink-soft);font-weight:600;margin:-2px 0 6px">${d.term}</div>`:""}<p style="margin:0">${d.body}</p>
+   <dl><dt>Layers</dt><dd>${d.layers}</dd><dt>Looks</dt><dd>${d.look}</dd><dt>Pain</dt><dd>${d.pain}</dd><dt>Healing</dt><dd>${d.heal}</dd><dt>Example</dt><dd>${d.ex}</dd><dt>%TBSA</dt><dd>${d.tbsa}</dd></dl>`;
+  $("#laylist").innerHTML=d.st.map((x,i)=>`<li><b>${LAYN[i]}</b><span class="st ${STT[x][0]}">${STT[x][1]}</span></li>`).join("");
+  $("#funcs").innerHTML=FUNCS.map(F=>{const v=F.v[LV];return `<div class="func">${ICON[F.k]}<div><h4>${F.t}</h4><span class="st ${STT[v[0]][0]}">${STT[v[0]][1].replace("damaged","reduced").replace("destroyed","lost")}</span><p>${v[1]}</p></div></div>`}).join("");
+}
+$("#depthpick").innerHTML=DEP.map((d,i)=>`<button type="button" class="dp" data-l="${i}" aria-pressed="false"><i style="background:${DCOL[i]}"></i>${d.short}<small>${d.sub}</small></button>`).join("");
+document.querySelectorAll(".dp").forEach(b=>b.onclick=()=>{LV=+b.dataset.l;renderLearn()});
+$("#depthRange").oninput=e=>{LV=+e.target.value;renderLearn()};
+$("#skinLabels").onchange=renderLearn;
+let rzT;window.addEventListener("resize",()=>{clearTimeout(rzT);rzT=setTimeout(()=>{if(!$("#tab-learn").hidden)renderLearn()},150)});
+document.addEventListener("keydown",e=>{if($("#tab-learn").hidden)return;const t=e.target.tagName;if(t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="ArrowRight"&&LV<5){LV++;renderLearn();e.preventDefault()}else if(e.key==="ArrowLeft"&&LV>0){LV--;renderLearn();e.preventDefault()}});
+
+/* =====================================================================
+   SURFACE VIEW drawings for the case cards (clinical, flat, non-graphic)
+   ===================================================================== */
+function blob(cx,cy,rx,ry,sd,j){seed(sd);const P=[];const n=16;for(let i=0;i<n;i++){const a=i/n*6.283,r=1+(RND()-.5)*(j||.18);P.push([cx+rx*r*Math.cos(a),cy+ry*r*Math.sin(a)])}
+  const mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];let m=mid(P[n-1],P[0]);let p=`M${f(m[0])} ${f(m[1])}`;
+  for(let i=0;i<n;i++){const q=mid(P[i],P[(i+1)%n]);p+=` Q${f(P[i][0])} ${f(P[i][1])} ${f(q[0])} ${f(q[1])}`}return p+" Z"}
+function surfSVG(look,sd,aria){
+  let s=`<svg viewBox="0 0 240 150" role="img" aria-label="${aria}"><rect x="0" y="0" width="240" height="150" fill="var(--epi)"/>`;
+  seed(sd+1);for(let k=0;k<40;k++){const x=RND()*240,y=RND()*150;s+=`<circle cx="${f(x)}" cy="${f(y)}" r=".9" fill="var(--basal)" opacity=".6"/>`}
+  for(let k=0;k<14;k++){const x=RND()*240,y=RND()*150;s+=`<path d="M${f(x)} ${f(y)} l4 -5" stroke="var(--hair)" stroke-width=".8" opacity=".45"/>`}
+  const rim=(rx,ry)=>`<path d="${blob(120,75,rx,ry,sd+2)}" fill="var(--b1)" opacity=".55"/>`;
+  const dome=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="var(--fluid)" stroke="var(--corn)" stroke-width="1.5"/><path d="M${x-r*.5} ${y-r*.35} a${r*.6} ${r*.6} 0 0 1 ${r*.6} -${r*.35}" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".9"/>`;
+  const cracks=(n,col,rx)=>{seed(sd+5);let c="";for(let k=0;k<n;k++){const x=120+(RND()-.5)*rx*1.4,y=75+(RND()-.5)*60;c+=`<path d="M${f(x)} ${f(y)} l${f(RND()*14-7)} ${f(RND()*10)} l${f(RND()*14-7)} ${f(RND()*10)}" stroke="${col}" stroke-width="1.4" fill="none"/>`}return c};
+  switch(look){
+   case "red":s+=`<path d="${blob(120,75,95,55,sd+2,.12)}" fill="var(--b1)" opacity=".45"/><path d="${blob(120,75,75,42,sd+3,.12)}" fill="var(--b1)" opacity=".5"/>`;break;
+   case "redline":s+=`<path d="M40 82 Q120 64 200 78" stroke="var(--b1)" stroke-width="14" stroke-linecap="round" fill="none" opacity=".75"/><path d="M40 82 Q120 64 200 78" stroke="var(--b1)" stroke-width="26" stroke-linecap="round" fill="none" opacity=".25"/>`;break;
+   case "redblister":s+=rim(95,55)+`<path d="${blob(120,75,72,40,sd+3)}" fill="var(--b2)" opacity=".55"/>`+dome(95,68,16)+dome(135,82,12)+dome(150,58,9)+dome(108,96,8)+dome(170,84,7);break;
+   case "smallblister":s+=`<path d="${blob(120,75,48,34,sd+2)}" fill="var(--b1)" opacity=".55"/>`+dome(120,75,13);break;
+   case "moist":s+=rim(95,55)+`<path d="${blob(120,75,70,40,sd+3)}" fill="var(--b1)" opacity=".7"/>`;
+     s+=`<path d="M80 60 q20 -8 40 0 M110 90 q20 -6 40 2 M130 66 q12 -5 24 0" stroke="#fff" stroke-width="2.2" fill="none" opacity=".8" stroke-linecap="round"/>`;
+     s+=`<path d="M62 70 l8 -10 l6 8 l7 -9 l5 7" stroke="var(--b3w)" stroke-width="3" fill="none"/><path d="M168 92 l6 -8 l5 6 l6 -7" stroke="var(--b3w)" stroke-width="3" fill="none"/>`;break;
+   case "mottled":s+=rim(98,58)+`<path d="${blob(120,75,76,44,sd+3)}" fill="var(--b1)" opacity=".55"/>`;seed(sd+9);for(let k=0;k<14;k++){s+=`<path d="${blob(70+RND()*100,45+RND()*60,6+RND()*12,5+RND()*9,sd+20+k,.3)}" fill="var(--b3w)" opacity=".9"/>`}
+     s+=`<path d="M70 60 l7 -9 l6 7 l6 -8" stroke="var(--b3w)" stroke-width="3" fill="none"/>`+dome(165,92,7);break;
+   case "white":s+=rim(98,60)+`<path d="${blob(120,75,72,42,sd+3,.14)}" fill="var(--b3w)" stroke="var(--b3)" stroke-width="1.2"/>`+cracks(7,"var(--b3)",100);break;
+   case "brown":s+=rim(98,60)+`<path d="${blob(120,75,74,44,sd+3,.14)}" fill="var(--b3)"/>`+cracks(9,"var(--b4)",100);
+     s+=`<path d="M78 70 q20 -10 40 4 t44 -4 M90 92 q24 -8 50 2" stroke="var(--b4)" stroke-width="2" fill="none" opacity=".7"/>`;break;
+   case "charred":s+=rim(100,62)+dome(42,58,6)+dome(200,96,6)+`<path d="${blob(120,75,62,38,sd+3,.16)}" fill="var(--b4)"/>`+cracks(9,"var(--b3)",80);break;
+   case "deep":s+=rim(100,62)+`<path d="${blob(120,75,72,44,sd+3,.12)}" fill="var(--b4)"/><path d="${blob(122,76,30,18,sd+4,.15)}" fill="var(--musc)"/>`;
+     for(let k=0;k<5;k++)s+=`<path d="M${96+k*12} 66 l6 20" stroke="var(--musc-dk)" stroke-width="1.6"/>`;s+=cracks(6,"var(--b3)",120);break;
+  }
+  return s+"</svg>";
+}
+
+/* =====================================================================
+   GAME 1: CLASSIFY THE BURN
+   ===================================================================== */
+const DEGN=["","First-degree (superficial)","Second-degree (partial-thickness)","Third-degree (full-thickness)","Fourth-degree (into muscle or bone)"];
+const DEGFB=["",
+ "A first-degree (superficial) burn stays in the epidermis: red, dry, painful, and no blisters.",
+ "A second-degree (partial-thickness) burn reaches into the dermis. The giveaway is blisters, or a red, moist, painful wound.",
+ "A third-degree (full-thickness) burn destroys all of the epidermis and dermis: white, brown or charred, dry and leathery, with little pain in the centre.",
+ "A fourth-degree burn goes past the skin and fat into muscle or bone."];
+const CASES=[
+ {t:"Beach day",who:"19-year-old",look:"red",deg:1,lv:1,
+  d:"She spent the afternoon at the beach without sunscreen. That evening her shoulders are red, dry and sore to touch. When pressed, the skin turns white and then pinks up again. There are no blisters.",
+  chips:["red","dry","painful","no blisters"],clue:"red, dry, sore, and no blisters.",
+  q2:"Which layer is damaged?",o2:[["Epidermis only",1,"Right. A superficial burn stays in the epidermis. The dermis underneath is fine, which is why there are no blisters."],["Epidermis and part of the dermis",0,"Not quite. If the dermis were involved, plasma would leak from its capillaries and form blisters. There are none here."],["All of the epidermis and dermis",0,"Not quite. A full-thickness burn would look white, brown or charred, feel leathery, and hurt very little. This skin is red and sore."],["Skin, fat and muscle",0,"Not quite. That would be a fourth-degree burn. This is a mild sunburn."]],
+  exp:"A classic first-degree (superficial) burn. Only the epidermis is hurt. Blood vessels in the dermis widen, so the skin looks red and feels warm and tender. It heals in a few days, often by peeling."},
+ {t:"Coffee spill",who:"35-year-old",look:"redblister",deg:2,lv:2,
+  d:"He spilled a full cup of very hot coffee on his thigh. Within an hour, fluid-filled blisters formed. Under a broken blister, the skin is bright red, moist and shiny. He says it is very painful, even when air blows across it.",
+  chips:["blisters","red","moist","very painful"],clue:"blisters, and a red, moist, very painful base.",
+  q2:"Which layers are damaged?",o2:[["Epidermis only",0,"Not quite. Blisters tell you the burn reached the dermis. A burn limited to the epidermis does not blister."],["Epidermis and the upper part of the dermis",1,"Right. This is a superficial partial-thickness burn. The upper (papillary) dermis is hurt, so its capillaries leak plasma that lifts the epidermis into a blister."],["All of the epidermis and dermis",0,"Not quite. If the whole dermis were destroyed, its nerve endings would be gone too, and it would not hurt this much."],["Down into the hypodermis and muscle",0,"Not quite. That would be third- or fourth-degree: dry, leathery or charred, and not very painful."]],
+  exp:"Blisters are the hallmark of a second-degree (partial-thickness) burn. Nerve endings in the dermis are exposed and irritated, which is why it hurts so much. Kept clean, it usually heals in about 2 to 3 weeks."},
+ {t:"Grease fire",who:"52-year-old",look:"white",deg:3,lv:4,
+  d:"His sleeve caught fire while cooking. On his forearm there is a patch that is white and waxy. It feels dry and stiff, like leather. There are no blisters on it. When the nurse touches the centre lightly he can barely feel it, but the edges of the burn hurt a lot.",
+  chips:["white","waxy","dry","leathery","numb centre"],clue:"white, dry, leathery, and little feeling in the centre.",
+  q2:"Why does the centre hurt less than the edges?",o2:[["The nerve endings in the dermis at the centre are destroyed",1,"Right. Pain needs working nerve endings. A full-thickness burn destroys the dermis and the nerve endings in it. At the edges the burn is shallower, so nerve endings there are irritated and send pain signals."],["The burn is less serious in the centre",0,"Not quite. The centre is the deepest, most serious part. Less pain here is a warning sign, not a good sign."],["The epidermis already grew back over the centre",0,"Not quite. A full-thickness burn has no living epidermis left in the centre to grow back."],["Fat in the hypodermis blocks the pain",0,"Not quite. Fat does not block pain. Pain is missing because the sensory receptors themselves are gone."]],
+  exp:"A third-degree (full-thickness) burn. The whole epidermis and dermis are destroyed, nerve endings included, so the centre feels numb. It cannot heal well on its own and usually needs a skin graft."},
+ {t:"Furnace accident",who:"45-year-old factory worker",look:"deep",deg:4,lv:5,
+  d:"His lower leg was trapped against a furnace. The burn goes through the skin and the fat beneath it, and the muscle underneath is burned too. The area is dry and charred, and he has no feeling there.",
+  chips:["charred","dry","muscle involved","no feeling"],clue:"the damage goes past the skin and fat into muscle.",
+  q2:"Which tissues are damaged?",o2:[["Epidermis, dermis, hypodermis and muscle",1,"Right. A fourth-degree burn goes all the way through the skin and subcutaneous tissue into muscle, and sometimes bone."],["Epidermis and dermis only",0,"Not quite. That would be third-degree. Here the muscle is burned too."],["Epidermis and part of the dermis",0,"Not quite. That would be second-degree, with blisters and a lot of pain. This burn is charred and numb."],["Only the epidermis",0,"Not quite. This is the deepest type of burn, not the shallowest."]],
+  exp:"Fourth-degree burns extend into muscle and/or bone. Nerve endings are destroyed, so there is no pain at the site. Treatment needs surgery."},
+ {t:"Oven rack",who:"27-year-old",look:"redline",deg:1,lv:1,
+  d:"She touched a hot oven rack for a split second. There is a thin red line on the back of her hand. It stings and is tender. The next day it is still red, but no blisters ever form.",
+  chips:["red line","tender","no blisters"],clue:"red, tender, and no blisters even the next day.",
+  q2:"Is this burn counted when estimating %TBSA (percent of total body surface area burned)?",o2:[["No. Superficial burns are not counted",1,"Right. Only partial-thickness and full-thickness burns are counted in %TBSA. A superficial burn leaves the skin barrier intact, so it does not cause big fluid losses."],["Yes. Every burned area counts",0,"Not quite. First-degree (superficial) burns are left out of %TBSA because the barrier is still intact."],["Only because it is on the hand",0,"Not quite. Location does not change the rule. Depth decides: superficial burns are not counted anywhere on the body."]],
+  exp:"A brief touch caused a first-degree burn: epidermis only. Red, painful, no blisters. It will heal in a few days without a scar."},
+ {t:"Steam from a pot",who:"41-year-old",look:"moist",deg:2,lv:2,
+  d:"Steam burned the palm side of his hand. Several blisters have broken, leaving a pink, wet surface with loose flaps of skin at the edges. It is very painful. Pressed, the skin turns white and then quickly pinks up again.",
+  chips:["broken blisters","pink","wet","very painful"],clue:"broken blisters, pink and wet, very painful.",
+  q2:"Is this burn counted in %TBSA?",o2:[["Yes. Partial-thickness burns are counted",1,"Right. Second-degree (partial-thickness) and deeper burns are counted. The barrier is broken, so fluid leaks out."],["No. Only third-degree burns count",0,"Not quite. Both partial-thickness and full-thickness burns count. Only superficial burns are left out."],["No. Burns on the hands are never counted",0,"Not quite. Hands count like any other area (a palm is about 1% of TBSA). Depth decides, not location."]],
+  exp:"Blisters, a wet pink base and lots of pain point to a second-degree (superficial partial-thickness) burn. The epidermis and upper dermis are damaged, and nerve endings are irritated but working."},
+ {t:"Car fire",who:"30-year-old",look:"brown",deg:3,lv:4,
+  d:"He was pulled from a burning car. On his back there is an area that is brown, dry and stiff like leather. Small dark lines (clotted blood vessels) show under the surface. A pin-prick in the centre causes no pain.",
+  chips:["brown","dry","leathery","no pain to pin-prick"],clue:"brown, dry, leathery, clotted vessels, and no pain to a pin-prick.",
+  q2:"How will this area most likely heal?",o2:[["The dead tissue is removed and a skin graft is placed",1,"Right. All the epidermis and dermis are destroyed, including the hair follicles and glands that could regrow skin. Surgeons remove the dead tissue (debridement) and place a graft."],["It will peel and heal in a few days",0,"Not quite. That is how a first-degree burn heals. Here there is no living epidermis left to replace the peeled layer."],["New skin grows up from hair follicles in 2 to 3 weeks",0,"Not quite. That is how partial-thickness burns heal. In a full-thickness burn, the hair follicles are destroyed too."],["Blisters will form and protect it",0,"Not quite. Full-thickness burns usually do not blister. The dermis and its capillaries are destroyed, so there is no fluid to lift the epidermis."]],
+  exp:"Brown, leathery, painless, with clotted vessels: a third-degree (full-thickness) burn. The burned tissue (eschar) is dead and has no blood flow."},
+ {t:"Bath water",who:"78-year-old",look:"mottled",deg:2,lv:3,
+  d:"She sat in bath water that was much too hot. On her buttocks the skin is blotchy red and white, and some blisters have broken. The surface is fairly dry. She feels pressure when touched but says it does not hurt as much as you would expect. When pressed, the colour comes back slowly.",
+  chips:["broken blisters","blotchy red/white","drier","dull pain"],clue:"there are blisters, so the dermis is involved, but the surface is drier and blotchy and the pain is dull. That is a deep partial-thickness burn.",
+  q2:"Why will this burn take longer to heal than a superficial partial-thickness burn?",o2:[["More of the dermis is damaged, so fewer cells are left to regrow skin",1,"Right. New epidermis grows from cells that survive in hair follicles and sweat glands deep in the dermis, and from the wound edges. A deeper burn leaves fewer of these, so healing takes weeks, often scars, and may need grafting."],["Older adults have no stem cells in their skin",0,"Not quite. Older skin is thinner and heals more slowly, but it still has stem cells. The main issue is how much dermis was lost."],["Burns from bath water cannot heal",0,"Not quite. The cause does not decide healing; depth does. This deep partial-thickness burn can heal, just slowly."],["Because the hypodermis is destroyed",0,"Not quite. If the burn went all the way through the dermis into the hypodermis, it would be full-thickness and look white or leathery."]],
+  exp:"Blisters tell you the dermis is involved: second-degree. The blotchy colour, drier surface, slow colour return and duller pain show it is a deep partial-thickness burn. Older adults have thinner skin, so hot water burns them more deeply and more quickly."},
+ {t:"Curling iron",who:"16-year-old",look:"smallblister",deg:2,lv:2,
+  d:"She touched her neck with a curling iron. There is one pea-sized, bubble-like blister surrounded by red skin. It stings badly.",
+  chips:["one blister","red around it","stings"],clue:"a blister, even a small one, means the dermis is involved.",
+  q2:"Where does the fluid inside a blister come from?",o2:[["Plasma leaking from damaged capillaries in the dermis",1,"Right. Heat damages small blood vessels in the dermis. Plasma leaks out and collects between the epidermis and dermis, lifting the epidermis into a bubble."],["Sweat trapped under the skin",0,"Not quite. Sweat glands empty onto the surface through ducts. Blister fluid is leaked plasma from dermal capillaries."],["Melted fat from the hypodermis",0,"Not quite. A blister sits between the epidermis and dermis, far above the hypodermis. The fluid is leaked plasma."],["Sebum from sebaceous glands",0,"Not quite. Sebum is the oily secretion of sebaceous glands. Blister fluid is watery plasma."]],
+  exp:"Even a small burn is second-degree if it blisters. The epidermis and upper dermis are damaged. Keeping it clean helps prevent infection."},
+ {t:"Gasoline flare",who:"38-year-old",look:"charred",deg:3,lv:4,
+  d:"Gasoline flared up as she lit a grill. On her thigh there is a black, charred patch with a dry, cracked surface. The muscle beneath is not involved. Around it is a ring of red skin with blisters. She says the black centre does not hurt, but the blistered ring hurts a lot.",
+  chips:["black centre","dry","cracked","blistered ring"],clue:"a black, dry, painless centre that stays within the skin (muscle not involved).",
+  q2:"Where will she feel the most pain?",o2:[["In the blistered ring around the charred area",1,"Right. The ring is a partial-thickness burn. Its nerve endings are irritated but still working, so it hurts. Real burns often mix depths like this."],["In the charred centre",0,"Not quite. In the charred centre the nerve endings are destroyed, so it feels numb."],["Nowhere. Burns this bad never hurt",0,"Not quite. The centre is numb, but the shallower edges are very painful. Pain control still matters."]],
+  exp:"The charred centre is a third-degree (full-thickness) burn. Burns are rarely just one depth: here a deep centre is surrounded by a partial-thickness ring."},
+ {t:"Long day on the lake",who:"22-year-old",look:"redblister",deg:2,lv:2,
+  d:"He fell asleep on a boat for several hours without sunscreen. The next morning his upper back is deep red and swollen, with many small fluid-filled blisters. It is very painful.",
+  chips:["sunburn","many blisters","swollen","very painful"],clue:"blisters, even though the cause is the sun.",
+  q2:"Which statement is true?",o2:[["A sunburn that blisters is second-degree",1,"Right. Mild sunburn is first-degree, but a sunburn that blisters has reached the dermis, so it is second-degree."],["All sunburns are first-degree",0,"Not quite. Mild sunburns are first-degree. Depth decides the degree, not the cause, and blisters mean the dermis is involved."],["The sun cannot damage the dermis",0,"Not quite. UV radiation can reach the dermis. That is one reason long-term sun exposure causes wrinkles and skin cancer."]],
+  exp:"This sunburn has blisters, so it is second-degree (superficial partial-thickness), not first-degree. Classify burns by depth, not by cause."},
+ {t:"Radiator fall",who:"60-year-old with diabetes",look:"deep",deg:4,lv:5,
+  d:"He fell and lay against a hot radiator for hours. On his calf the burn went through the skin, the fat and the muscle. Imaging shows the damage reaches the bone. He feels nothing in the area.",
+  chips:["charred","through muscle","reaches bone","no feeling"],clue:"the damage reaches muscle and bone.",
+  q2:"Does this burn count toward %TBSA?",o2:[["Yes. Partial- and full-thickness burns count, including fourth-degree",1,"Right. Anything deeper than superficial counts. A fourth-degree burn is full-thickness and more."],["No. It is too deep to count",0,"Not quite. Deep burns definitely count. Only superficial (first-degree) burns are left out."],["Only the muscle part counts",0,"Not quite. %TBSA measures how much body surface is burned, not how deep. The whole burned surface counts."]],
+  exp:"The burn reaches bone: fourth-degree. People with diabetic nerve damage may not feel heat well, so they can be burned more deeply before they notice."}
+];
+let ci=0,cTimerStart=performance.now(),cElapsed=0,cRunning=true;
+const cState=CASES.map(()=>({q1:null,q2:null,first:null,wrong1:[],wrong2:[],fb1:"",fb2:"",hinted:false}));
+function cRender(){
+  const c=CASES[ci],st=cState[ci];
+  $("#cChips").innerHTML="";CASES.forEach((x,i)=>{const b=document.createElement("button");b.type="button";b.className="chip"+(i===ci?" cur":"")+(cState[i].q2===true?" done":"");b.textContent=i+1;b.setAttribute("aria-label","Case "+(i+1)+(cState[i].q2===true?", solved":""));b.onclick=()=>{ci=i;cRender()};$("#cChips").appendChild(b)});
+  const done=cState.filter(x=>x.q2===true).length,first=cState.filter(x=>x.first===true&&x.q2===true).length;
+  $("#cN").textContent=ci+1;$("#cDoneN").textContent=done;$("#cFirst").textContent=first;$("#cBar").style.width=(done/CASES.length*100)+"%";
+  $("#cWho").textContent="Case "+(ci+1)+" · "+c.who;$("#cTitle").textContent=c.t;$("#cDesc").textContent=c.d;
+  $("#cPic").innerHTML=`<div class="cap">Surface view (simplified drawing)</div>`+surfSVG(c.look,ci*17+3,"Surface drawing of the burn: "+c.chips.join(", "))+`<div class="lookchips">${c.chips.map(x=>`<span>${x}</span>`).join("")}</div>`;
+  const solved=st.q2===true;
+  const sec=$("#cSec");sec.hidden=st.q1!==true;
+  if(st.q1===true)sec.innerHTML=`<div class="cap">Cross-section: how deep it goes</div>`+skinSVG(c.lv,{mini:true,uid:"c"+ci,aria:"Cross-section showing the burn reaching "+DEP[c.lv].layers.toLowerCase()})+`<div class="cap" style="text-transform:none">${DEP[c.lv].term}: ${DEP[c.lv].layers.toLowerCase()}</div>`;
+  const q1=$("#cQ1");q1.innerHTML="";
+  [1,2,3,4].forEach(d=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=DEGN[d];
+    if(st.q1===true&&d===c.deg)b.classList.add("right");if(st.wrong1.includes(d))b.classList.add("wrong");
+    b.onclick=()=>{if(st.q1===true)return;
+      if(d===c.deg){st.q1=true;if(st.first===null)st.first=true;st.fb1=`<b>Yes.</b> ${DEGN[d]}.`+(c.lv===3?" More precisely, a <b>deep partial-thickness</b> burn.":c.lv===2?" More precisely, a <b>superficial partial-thickness</b> burn.":"")}
+      else{st.first=false;if(!st.wrong1.includes(d))st.wrong1.push(d);st.fb1=`Not quite. ${DEGFB[d]} Look again at the clues: ${c.clue}`}
+      cRender()};
+    q1.appendChild(b)});
+  const fb1=$("#cFb1");fb1.className="fb"+(st.fb1?" show "+(st.q1===true?"good":"warn"):"");fb1.innerHTML=st.fb1;
+  $("#cQ2wrap").hidden=st.q1!==true;$("#cQ2lab").textContent="2. "+c.q2;
+  const q2=$("#cQ2");q2.innerHTML="";
+  c.o2.forEach((o,k)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+    if(solved&&o[1])b.classList.add("right");if(st.wrong2.includes(k))b.classList.add("wrong");
+    b.onclick=()=>{if(st.q2===true)return;
+      if(o[1]){st.q2=true;st.fb2=o[2]}else{st.first=false;if(!st.wrong2.includes(k))st.wrong2.push(k);st.fb2=o[2]}
+      cRender()};
+    q2.appendChild(b)});
+  const fb2=$("#cFb2");fb2.className="fb"+(st.fb2?" show "+(solved?"good":"warn"):"");fb2.innerHTML=st.fb2;
+  const e=$("#cExp");e.classList.toggle("show",solved);e.innerHTML=solved?"<b>Why:</b> "+c.exp:"";
+  $("#cPrev").disabled=ci===0;$("#cNext").textContent=ci===CASES.length-1?"Back to case 1":"Next case →";
+  $("#cHint").disabled=solved;$("#cShow").disabled=solved;
+  cSummary();
+}
+function cSummary(){
+  const done=cState.filter(x=>x.q2===true).length;const m=$("#cMsg");
+  if(done<CASES.length){if(!m.dataset.keep){m.className="msg";m.innerHTML=""}return}
+  cRunning=false;const first=cState.filter(x=>x.first===true).length;
+  const stars=first>=10?3:first>=7?2:1;
+  const best=store.get("bt-class")||{};if(best.first==null||first>best.first)best.first=first;if(!$("#relaxed").checked&&(best.time==null||cElapsed<best.time))best.time=cElapsed;store.set("bt-class",best);
+  m.className="msg show good";m.innerHTML=`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>All 12 cases solved.</b> First-try correct: ${first} of 12.${$("#relaxed").checked?"":" Time "+fmtT(cElapsed)+"."} Best first-try score so far: ${best.first}.<br><button class="tbtn" id="cAgain" type="button" style="margin-top:8px">Play the deck again</button>`;
+  $("#cAgain").onclick=()=>{cState.forEach(s=>Object.assign(s,{q1:null,q2:null,first:null,wrong1:[],wrong2:[],fb1:"",fb2:"",hinted:false}));ci=0;cTimerStart=performance.now();cElapsed=0;cRunning=true;cRender()};
+}
+$("#cHint").onclick=()=>{const c=CASES[ci],st=cState[ci];st.hinted=true;st.first=false;
+  if(st.q1!==true){st.fb1=`Hint: focus on these clues: <b>${c.clue}</b> Ask yourself: are there blisters? Is it dry and leathery? Does the centre hurt?`;}
+  else{const k=c.o2.findIndex((o,i)=>!o[1]&&!st.wrong2.includes(i));if(k>=0){st.wrong2.push(k);st.fb2="Hint: one wrong option is crossed off. "+c.o2[k][2]}}
+  cRender()};
+$("#cShow").onclick=()=>{const c=CASES[ci],st=cState[ci];st.first=false;st.q1=true;st.q2=true;st.fb1=`The answer is <b>${DEGN[c.deg]}</b>. Key clues: ${c.clue}`;st.fb2=c.o2.find(o=>o[1])[2];cRender()};
+$("#cPrev").onclick=()=>{ci=Math.max(0,ci-1);cRender()};
+$("#cNext").onclick=()=>{ci=(ci+1)%CASES.length;cRender()};
+$("#relaxed").onchange=e=>{$("#cTimer").style.visibility=e.target.checked?"hidden":"visible";store.set("bt-relaxed",e.target.checked)};
+setInterval(()=>{if(cRunning){cElapsed=(performance.now()-cTimerStart)/1000;$("#cTimer").textContent=fmtT(cElapsed)}},250);
+
+/* =====================================================================
+   GAME 2: RULE OF NINES
+   ===================================================================== */
+const REG=[
+ {id:"headF",name:"Head & neck, front",pct:4.5,v:"F"},
+ {id:"chest",name:"Chest (anterior trunk, upper)",pct:9,v:"F"},
+ {id:"abd",name:"Abdomen (anterior trunk, lower)",pct:9,v:"F"},
+ {id:"rArmF",name:"Right arm, front",pct:4.5,v:"F"},
+ {id:"lArmF",name:"Left arm, front",pct:4.5,v:"F"},
+ {id:"rLegF",name:"Right leg, front",pct:9,v:"F"},
+ {id:"lLegF",name:"Left leg, front",pct:9,v:"F"},
+ {id:"peri",name:"Perineum / genitalia",pct:1,v:"F"},
+ {id:"headB",name:"Head & neck, back",pct:4.5,v:"B"},
+ {id:"ubk",name:"Upper back (posterior trunk, upper)",pct:9,v:"B"},
+ {id:"lbk",name:"Lower back & buttocks (posterior trunk, lower)",pct:9,v:"B"},
+ {id:"lArmB",name:"Left arm, back",pct:4.5,v:"B"},
+ {id:"rArmB",name:"Right arm, back",pct:4.5,v:"B"},
+ {id:"lLegB",name:"Left leg, back",pct:9,v:"B"},
+ {id:"rLegB",name:"Right leg, back",pct:9,v:"B"}
+];
+const RG={};REG.forEach(r=>RG[r.id]=r);
+const mir=d=>d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g,(m,x,y)=>f(200-x)+" "+y);
+const SH={
+ head:"M100 10 C 121 10 126 27 125 40 C 124 54 117 62 110 65 L110 80 L90 80 L90 65 C 83 62 76 54 75 40 C 74 27 79 10 100 10 Z",
+ chest:"M90 80 L110 80 Q124 83 138 88 L136 150 L64 150 L62 88 Q76 83 90 80 Z",
+ abd:"M64 150 L136 150 L140 214 L108 214 L100 222 L92 214 L60 214 Z",
+ lbk:"M64 150 L136 150 L140 214 L60 214 Z",
+ peri:"M92 214 L108 214 L100 222 Z",
+ armL:"M62 88 Q46 88 42 106 L33 178 L25 236 Q23 252 32 256 Q41 254 41 240 L51 182 L60 118 Z",
+ legL:"M60 214 L92 214 L100 222 L99 236 L96 300 L92 384 L95 398 L70 398 L72 384 L66 300 Q60 260 60 214 Z",
+ legLB:"M60 214 L100 214 L99 236 L96 300 L92 384 L95 398 L70 398 L72 384 L66 300 Q60 260 60 214 Z"
+};
+// perineum needs to be bigger to click: draw as a diamond spanning the groin gap
+SH.peri="M90 210 L110 210 L104 230 L100 236 L96 230 Z";
+SH.abd="M64 150 L136 150 L140 214 L110 214 L110 210 L90 210 L90 214 L60 214 Z";
+SH.legL="M60 214 L90 214 L96 230 L100 236 L99 240 L96 300 L92 384 L95 398 L70 398 L72 384 L66 300 Q60 260 60 214 Z";
+const LBL={head:[100,44],chest:[100,122],abd:[100,194],lbk:[100,190],armL:[43,168],legL:[80,310],peri:[100,224]};
+function regEl(id,shape,mirror,lblKey,mx){const r=RG[id];const d=mirror?mir(SH[shape]):SH[shape];let [lx,ly]=LBL[lblKey];if(mirror)lx=200-lx;
+  const rot=lblKey==="armL"?` transform="rotate(${mirror?82:-82} ${lx} ${ly})"`:"";
+  return `<g class="reg" data-id="${id}" tabindex="0" role="button" aria-pressed="false" aria-label="${r.name}, ${r.pct} percent"><path d="${d}"/><path class="hz" d="${d}"/><text class="rl" x="${lx}" y="${ly+4}" text-anchor="middle"${rot}>${r.pct}</text></g>`}
+function bodySVG(){
+  let s=`<svg viewBox="0 0 440 458" role="img" aria-label="Adult body outline, front view on the left and back view on the right, divided into Rule of Nines regions"><defs><pattern id="rh" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="var(--tbsa-ink)" stroke-width="1.4" opacity=".35"/></pattern></defs>`;
+  s+=`<text class="b-title" x="110" y="16" text-anchor="middle">FRONT (anterior)</text><text class="b-title" x="330" y="16" text-anchor="middle">BACK (posterior)</text>`;
+  // front: viewer's left = patient's right
+  s+=`<g transform="translate(10 26)">`;
+  s+=regEl("headF","head",0,"head")+regEl("chest","chest",0,"chest")+regEl("abd","abd",0,"abd")+regEl("rArmF","armL",0,"armL")+regEl("lArmF","armL",1,"armL")+regEl("rLegF","legL",0,"legL")+regEl("lLegF","legL",1,"legL")+regEl("peri","peri",0,"peri");
+  s+=`<path class="b-det" d="M88 30 q3 -3 6 0 M106 30 q3 -3 6 0 M93 50 q7 5 14 0"/><circle class="b-det" cx="100" cy="174" r="1.6"/><path class="b-det" d="M80 106 q8 8 16 4 M120 106 q-8 8 -16 4"/>`;
+  s+=`<text class="b-side" x="16" y="404" text-anchor="middle">R</text><text class="b-side" x="184" y="404" text-anchor="middle">L</text></g>`;
+  // back: viewer's left = patient's left
+  s+=`<g transform="translate(230 26)">`;
+  s+=regEl("headB","head",0,"head")+regEl("ubk","chest",0,"chest")+regEl("lbk","lbk",0,"lbk")+regEl("lArmB","armL",0,"armL")+regEl("rArmB","armL",1,"armL")+regEl("lLegB","legLB",0,"legL")+regEl("rLegB","legLB",1,"legL");
+  s+=`<path class="b-det" d="M100 156 V206 M100 214 Q86 208 76 212 M100 214 Q114 208 124 212 M84 100 q6 10 2 22 M116 100 q-6 10 -2 22"/><path class="b-det" d="M80 20 q20 -10 40 0"/>`;
+  s+=`<text class="b-side" x="16" y="404" text-anchor="middle">L</text><text class="b-side" x="184" y="404" text-anchor="middle">R</text></g>`;
+  s+=`<text class="b-side" x="220" y="453" text-anchor="middle" style="font-weight:400">R and L are the patient's right and left</text>`;
+  return s+"</svg>";
+}
+const NCASES=[
+ {t:"Kitchen scald",who:"An adult spilled a pot of hot soup down the front of the body.",areas:[[["chest","abd"],"par","Chest and abdomen (front of trunk): blistered, red and moist"]]},
+ {t:"Campfire and sunburn",who:"A camper got a bad sunburn on the back, then a campfire flare burned one leg.",areas:[[["ubk","lbk"],"sup","Whole back: red, painful, no blisters"],[["rLegF","rLegB"],"par","Entire right leg, front and back: blisters, moist"]]},
+ {t:"House fire",who:"An adult escaped a house fire.",areas:[[["headF","headB"],"par","Whole head and neck, front and back: blistered"],[["rArmF","lArmF"],"par","Front of both arms: blistered"],[["chest"],"full","Chest: white and leathery"]]},
+ {t:"Grease flare",who:"A cook was hit by a grease flare.",areas:[[["rArmF","lArmF"],"par","Front of both arms: blisters, very painful"],[["headF"],"sup","Face and front of neck: red, painful, no blisters"]]},
+ {t:"Steam leak",who:"A worker was caught in an industrial steam leak while facing away.",areas:[[["ubk","lbk"],"full","Upper and lower back: white, leathery, painless"],[["rLegB","lLegB"],"par","Back of both legs: blisters"]]},
+ {t:"Scalding bath",who:"An adult sat down in scalding bath water. Decide each depth from the description.",areas:[[["lbk"],"par","Buttocks and lower back: broken blisters, blotchy red and white",1],[["peri"],"par","Perineum: blistered",1],[["rLegB","lLegB"],"par","Back of both legs: blisters, moist and painful",1]]},
+ {t:"Flash fire",who:"A flash fire in a garage. Decide each depth from the description.",areas:[[["lArmF","lArmB"],"full","Entire left arm: white, leathery, numb in the centre",1],[["ubk"],"par","Upper back: blisters",1],[["rArmF"],"sup","Front of right arm: red and sore, no blisters",1]]},
+ {t:"Large burn",who:"A patient was standing close to a large fire. Decide each depth from the description.",areas:[[["chest","abd"],"par","Front of trunk: blisters, some areas leathery",1],[["rLegF","lLegF"],"par","Front of both legs: blistered",1],[["rArmF","lArmF"],"par","Front of both arms: blistered",1],[["headF"],"par","Face and front of neck: blistered",1],[["ubk","lbk","rLegB","lLegB"],"sup","Back of trunk and back of legs: pink, sore, no blisters",1]]}
+];
+const DT={sup:["sup","superficial · 1st"],par:["par","partial-thickness · 2nd"],full:["full","full-thickness · 3rd"]};
+let nMode="free",nci=0;const sel=new Set();
+const nState=NCASES.map(()=>({checks:0,hints:0,solved:false,shown:false,hinted:[]}));
+function corr(c){const s=new Set();c.areas.forEach(a=>{if(a[1]!=="sup")a[0].forEach(id=>s.add(id))});return s}
+const sumSet=s=>[...s].reduce((a,id)=>a+RG[id].pct,0);
+$("#bodyFig").innerHTML=bodySVG();
+$("#regBtns").innerHTML=["F","B"].map(v=>`<div><h4>${v==="F"?"Front":"Back"}</h4>${REG.filter(r=>r.v===v).map(r=>`<button type="button" class="rb" data-id="${r.id}" aria-pressed="false"><span>${r.name}</span><span class="pc">${r.pct}%</span></button>`).join("")}</div>`).join("");
+function toggleReg(id){if(nMode==="case"&&nState[nci].solved)return;sel.has(id)?sel.delete(id):sel.add(id);clearMarks();nRender()}
+document.querySelectorAll(".reg").forEach(g=>{g.addEventListener("click",()=>toggleReg(g.dataset.id));g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleReg(g.dataset.id)}})});
+document.querySelectorAll(".rb").forEach(b=>b.onclick=()=>toggleReg(b.dataset.id));
+function clearMarks(){document.querySelectorAll(".reg").forEach(g=>g.classList.remove("x-extra","x-miss"))}
+function nRender(){
+  document.querySelectorAll(".reg").forEach(g=>{const on=sel.has(g.dataset.id);g.classList.toggle("on",on);g.setAttribute("aria-pressed",on);const r=RG[g.dataset.id];g.querySelector(".rl").textContent=(on?"✓":"")+r.pct});
+  document.querySelectorAll(".rb").forEach(b=>b.setAttribute("aria-pressed",sel.has(b.dataset.id)));
+  const tot=sumSet(sel);$("#nTotal").textContent=nf(tot)+"%";
+  $("#totalRow").hidden=nMode==="case"&&!$("#nShowTotal").checked&&!nState[nci].solved;
+  if(nMode==="free"){const m=$("#nMsg");
+    if(sel.size===REG.length){m.className="msg show good";m.innerHTML=`All ${REG.length} regions shaded: <b>${nf(tot)}%</b>. The whole adult body adds up to 100%.`}
+    else if(sel.size){m.className="msg show warn";m.style.color="var(--ink)";m.innerHTML="<b>Shaded:</b> "+[...sel].map(id=>RG[id].name+" "+RG[id].pct).join(" + ")+" = <b>"+nf(tot)+"%</b>"}
+    else{m.className="msg";m.innerHTML=""}}
+  nBest();
+}
+function nBest(){const r=store.get("bt-nines")||{};$("#nBest").innerHTML=NCASES.map((c,i)=>`Case ${i+1}: ${r[i]?"★".repeat(r[i])+"☆".repeat(3-r[i]):"not yet"}`).join("<br>")}
+function nRounds(){const r=store.get("bt-nines")||{};$("#nRounds").innerHTML="";NCASES.forEach((c,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===nci);b.innerHTML="Case "+(i+1)+(nState[i].solved||r[i]?'<span class="ok">✓</span>':"");b.onclick=()=>{nci=i;loadCase()};$("#nRounds").appendChild(b)})}
+function loadCase(){
+  const c=NCASES[nci],st=nState[nci];sel.clear();clearMarks();
+  if(st.solved)corr(c).forEach(id=>sel.add(id));
+  $("#nCase").innerHTML=`<div class="sc-n">Case ${nci+1} of ${NCASES.length}</div><h2 style="margin:2px 0 4px">${c.t}</h2><p style="margin:0">${c.who}</p><ul>${c.areas.map(a=>`<li>${a[2]}${a[3]?"":`<span class="dtag ${DT[a[1]][0]}">${DT[a[1]][1]}</span>`}</li>`).join("")}</ul>`;
+  $("#nAns").value=st.solved?nf(sumSet(corr(c))):"";
+  const m=$("#nMsg");m.className="msg";m.style.color="";m.innerHTML="";
+  if(st.solved){m.className="msg show good";m.innerHTML="Already solved. Pick another case, or try this one again later."}
+  nRounds();nRender();
+}
+function setMode(m){nMode=m;$("#mFree").setAttribute("aria-pressed",m==="free");$("#mCase").setAttribute("aria-pressed",m==="case");
+  $("#caseArea").hidden=m!=="case";$("#caseBar").hidden=m!=="case";$("#freeBar").hidden=m!=="free";
+  $("#nInstr").innerHTML=m==="free"?"Tap any region to shade it. Each figure is split into front and back halves, so you can pick just the front of an arm (4.5%).":"Shade <b>only</b> the regions with partial- or full-thickness burns, then type the %TBSA. Superficial (first-degree) areas are not counted.";
+  $("#nMsg").style.color="";
+  if(m==="case")loadCase();else{sel.clear();clearMarks();$("#nMsg").className="msg";nRender()}}
+$("#mFree").onclick=()=>setMode("free");$("#mCase").onclick=()=>setMode("case");
+$("#nAll").onclick=()=>{REG.forEach(r=>sel.add(r.id));nRender()};
+$("#nClear").onclick=()=>{sel.clear();nRender()};
+$("#nReset").onclick=()=>{if(nState[nci].solved)return;sel.clear();clearMarks();nRender()};
+$("#nShowTotal").onchange=nRender;
+function supIds(c){const s=new Set();c.areas.forEach(a=>{if(a[1]==="sup")a[0].forEach(id=>s.add(id))});return s}
+$("#nCheck").onclick=()=>{
+  const c=NCASES[nci],st=nState[nci];if(st.solved)return;st.checks++;
+  const C=corr(c),S=supIds(c),ans=sumSet(C);clearMarks();
+  const extra=[...sel].filter(id=>!C.has(id)),miss=[...C].filter(id=>!sel.has(id));
+  const v=parseFloat($("#nAns").value);const numOK=!isNaN(v)&&Math.abs(v-ans)<0.05;
+  extra.forEach(id=>document.querySelector(`.reg[data-id="${id}"]`).classList.add("x-extra"));
+  const m=$("#nMsg");m.style.color="";
+  if(!extra.length&&!miss.length&&numOK){
+    st.solved=true;const stars=st.checks===1&&st.hints===0?3:(st.checks<=3&&st.hints<=1?2:1);
+    const r=store.get("bt-nines")||{};r[nci]=Math.max(r[nci]||0,stars);store.set("bt-nines",r);
+    const sup=[...S];
+    m.className="msg show good";m.innerHTML=`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Correct: ${nf(ans)}% TBSA.</b> ${[...C].map(id=>RG[id].pct).join(" + ")} = ${nf(ans)}.${sup.length?" The superficial areas ("+sup.map(id=>RG[id].name.replace(/ \(.*\)/,"").toLowerCase()).join(", ")+") were rightly left out.":""}${nci<NCASES.length-1?' <button class="tbtn" id="nNext" type="button" style="margin-left:6px">Next case →</button>':""}`;
+    const nb=$("#nNext");if(nb)nb.onclick=()=>{nci++;loadCase()};
+    nRounds();nRender();return}
+  const items=[];
+  extra.forEach(id=>items.push(S.has(id)?`<b>${RG[id].name}</b> is only a superficial (first-degree) burn here. Superficial burns are not counted in %TBSA.`:`<b>${RG[id].name}</b> is not burned in this case.`));
+  if(miss.length)items.push(`You are missing ${miss.length} region${miss.length>1?"s":""} with a partial- or full-thickness burn. Reread the list.`);
+  if(isNaN(v))items.push("Type your %TBSA in the box.");
+  else if(!numOK){const mine=sumSet(sel);items.push(!extra.length&&!miss.length?`Your regions are right, but ${v}% is not their total. Add them again.`:Math.abs(v-mine)<0.05?`Your number matches your shading. Fix the shading first, then add again.`:`Your number does not match the shaded regions. Add up the percentages of the correct regions.`)}
+  m.className="msg show warn";m.innerHTML=`Not quite. ${items.length>1?"A few things to look at:":""}<ul>${items.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  nRender();
+};
+$("#nHint").onclick=()=>{const c=NCASES[nci],st=nState[nci];if(st.solved)return;st.hints++;const C=corr(c),S=supIds(c);clearMarks();
+  const extra=[...sel].filter(id=>!C.has(id)),miss=[...C].filter(id=>!sel.has(id));const m=$("#nMsg");m.style.color="";
+  let t;if(extra.length){const id=extra[0];document.querySelector(`.reg[data-id="${id}"]`).classList.add("x-extra");t=`Hint: <b>${RG[id].name}</b> should not be shaded`+(S.has(id)?" because it is superficial.":".")}
+  else if(miss.length){const id=miss[0];document.querySelector(`.reg[data-id="${id}"]`).classList.add("x-miss");t=`Hint: <b>${RG[id].name}</b> (${RG[id].pct}%) needs shading. It is outlined in gold.`}
+  else t=`Hint: your shading is right. Now add them up: ${[...C].map(id=>RG[id].pct).join(" + ")} = ?`;
+  m.className="msg show warn";m.innerHTML=t;nRender()};
+$("#nShow").onclick=()=>{const c=NCASES[nci],st=nState[nci];if(st.solved)return;st.hints+=3;sel.clear();clearMarks();const C=corr(c);C.forEach(id=>sel.add(id));
+  const ans=sumSet(C);$("#nAns").value=nf(ans);const m=$("#nMsg");m.style.color="";
+  m.className="msg show warn";m.innerHTML=`Here is the answer: ${[...C].map(id=>RG[id].name+" "+RG[id].pct).join(" + ")} = <b>${nf(ans)}% TBSA</b>. Superficial areas are left out. Press <b>Check</b> to finish, or clear and try again.`;
+  $("#totalRow").hidden=false;nRender();$("#totalRow").hidden=false};
+
+/* =====================================================================
+   NURSING PREVIEW: PARKLAND
+   ===================================================================== */
+function timeline(total,h){h=h||0;const W=560;const x0=20,x8=x0+(W-40)*8/24,x24=W-20;const hx=x0+(W-40)*h/24;
+  const half=total/2,r1=8-h>0?half/(8-h):0,r2=half/16;const mx=Math.max(r1,r2)||1;const H1=70*r1/mx,H2=70*r2/mx;
+  return `<svg viewBox="0 0 ${W} 150" role="img" aria-label="Timeline of the first 24 hours after the burn: half the fluid in the first 8 hours, half over the next 16 hours">
+   <rect x="${hx}" y="${100-H1}" width="${x8-hx}" height="${H1}" fill="var(--accent)" opacity=".75"/><rect x="${x8}" y="${100-H2}" width="${x24-x8}" height="${H2}" fill="var(--accent)" opacity=".4"/>
+   ${h>0?`<rect x="${x0}" y="30" width="${hx-x0}" height="70" fill="none" stroke="var(--warn)" stroke-dasharray="4 3" fill-opacity="0"/><text class="tl-lab" x="${(x0+hx)/2}" y="70" text-anchor="middle" style="fill:var(--warn)">delay</text><text class="tl-lab" x="${(x0+hx)/2}" y="85" text-anchor="middle" style="fill:var(--warn)">${h} h</text>`:""}
+   <line x1="${x0}" y1="100" x2="${x24}" y2="100" stroke="var(--ink-soft)" stroke-width="1.5"/>
+   ${[0,8,24].map(t=>{const x=x0+(W-40)*t/24;return `<line x1="${x}" y1="100" x2="${x}" y2="108" stroke="var(--ink-soft)"/><text class="tl-mono" x="${x}" y="122" text-anchor="${t===0?"start":t===24?"end":"middle"}">${t} h</text>`}).join("")}
+   <text class="tl-lab" x="${(hx+x8)/2}" y="${96-H1}" text-anchor="middle">${nf(half)} mL</text><text class="tl-lab" x="${(x8+x24)/2}" y="${96-H2}" text-anchor="middle">${nf(half)} mL</text>
+   <text class="tl-lab" x="${(hx+x8)/2}" y="140" text-anchor="middle">first half: ${nf(r1)} mL/h</text><text class="tl-lab" x="${(x8+x24)/2}" y="140" text-anchor="middle">second half: ${nf(r2)} mL/h over 16 h</text>
+   <text class="tl-mono" x="${x0}" y="12" style="fill:var(--ink-soft)">time from the burn</text></svg>`}
+function pCalc(){const w=parseFloat($("#pW").value),t=parseFloat($("#pT").value);let h=parseFloat($("#pH").value);if(isNaN(h)||h<0)h=0;if(h>7.5)h=7.5;
+  if(!(w>0)||!(t>=0)){$("#pRes").innerHTML=`<div>Enter a weight and a %TBSA.</div>`;return}
+  const tot=4*w*t,half=tot/2;
+  $("#pRes").innerHTML=`<div><small>Total in 24 h</small><b>${nf(tot)} mL</b></div><div><small>First half (by hour 8)</small><b>${nf(half)} mL</b></div><div><small>Rate, first half${h?" (over "+(8-h)+" h left)":" (over 8 h)"}</small><b>${nf(half/(8-h))} mL/h</b></div><div><small>Rate, next 16 h</small><b>${nf(half/16)} mL/h</b></div>`;
+  $("#tline").innerHTML=timeline(tot,h)}
+["#pW","#pT","#pH"].forEach(id=>$(id).oninput=pCalc);
+const PROBS=[
+ {t:"Problem 1",q:"A 70 kg adult has partial-thickness burns covering 20% TBSA. Fluids start right after the burn.",w:70,p:20,h:0,
+  work:"Total = 4 × 70 kg × 20 = 5,600 mL in 24 h\nFirst 8 h: 5,600 ÷ 2 = 2,800 mL  → 2,800 ÷ 8 = 350 mL/h\nNext 16 h: 2,800 mL → 2,800 ÷ 16 = 175 mL/h"},
+ {t:"Problem 2",q:"An 80 kg adult has burns on the front of the trunk (18%) and the front and back of the right leg (18%), all partial- or full-thickness. A sunburn on the face is superficial.",w:80,p:36,h:0,
+  work:"%TBSA = 18 + 18 = 36 (the superficial sunburn is not counted)\nTotal = 4 × 80 × 36 = 11,520 mL in 24 h\nFirst 8 h: 5,760 mL → 720 mL/h\nNext 16 h: 5,760 mL → 360 mL/h"},
+ {t:"Problem 3",q:"A 60 kg adult with 27% TBSA burns arrives 2 hours after the burn. No fluids have been given yet.",w:60,p:27,h:2,
+  work:"Total = 4 × 60 × 27 = 6,480 mL in 24 h\nFirst half = 3,240 mL, due by hour 8 after the BURN.\n2 h have passed, so 8 − 2 = 6 h are left: 3,240 ÷ 6 = 540 mL/h\nNext 16 h: 3,240 ÷ 16 = 202.5 mL/h"}
+];
+$("#probs").innerHTML=PROBS.map((p,i)=>`<div class="prob" id="pr${i}"><h4>${p.t}</h4><p style="margin:0">${p.q}</p>
+ <div class="ins"><label>Total in 24 h (mL)<input class="numin" type="number" inputmode="decimal" data-k="tot" style="width:140px"></label><label>First-half rate (mL/h)<input class="numin" type="number" step="0.5" inputmode="decimal" data-k="r1" style="width:140px"></label>
+ <button class="btn" type="button" data-a="chk">Check</button><button class="tbtn" type="button" data-a="show">Show worked answer</button></div>
+ <div class="fb" role="status"></div><div class="work" hidden>${p.work}</div></div>`).join("");
+PROBS.forEach((p,i)=>{const el=$("#pr"+i);const tot=4*p.w*p.p,r1=tot/2/(8-p.h);const fb=el.querySelector(".fb");
+  el.querySelector('[data-a="chk"]').onclick=()=>{const a=parseFloat(el.querySelector('[data-k="tot"]').value),b=parseFloat(el.querySelector('[data-k="r1"]').value);
+    const okA=Math.abs(a-tot)<1,okB=Math.abs(b-r1)<1;
+    if(okA&&okB){fb.className="fb show good";fb.innerHTML=`<b>Both right.</b> ${nf(tot)} mL total, ${nf(r1)} mL/h for the first half.`;el.querySelector(".work").hidden=false}
+    else{fb.className="fb show warn";const t=[];
+      if(isNaN(a))t.push("Enter the 24-hour total.");else if(!okA)t.push(Math.abs(a-tot/2)<1?"That is half the total. The formula gives the whole 24-hour amount first.":Math.abs(a-tot*2.2)<5||Math.abs(a*2.2-tot)<5?"Check the units: weight must be in kilograms.":"Total is off. Multiply 4 × weight (kg) × %TBSA.");
+      else t.push("Total is right.");
+      if(isNaN(b))t.push("Enter the first-half rate.");else if(!okB)t.push(p.h&&Math.abs(b-tot/2/8)<1?"Not quite. The 8 hours count from the time of the burn, and "+p.h+" h have already passed.":"Rate is off. Take half the total and divide by the hours left in the first 8.");
+      fb.innerHTML="Not quite. "+t.join(" ")}};
+  el.querySelector('[data-a="show"]').onclick=()=>{el.querySelector(".work").hidden=false}});
+
+/* =====================================================================
+   TABS / THEME / INIT
+   ===================================================================== */
+const TABS=["learn","class","nines","nurse"];
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  TABS.forEach(k=>$("#tab-"+k).hidden=t.dataset.tab!==k);if(t.dataset.tab==="learn")renderLearn()});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark")};
+const rx=store.get("bt-relaxed");if(rx===false)$("#relaxed").checked=false;
+$("#cTimer").style.visibility=$("#relaxed").checked?"hidden":"visible";
+renderLearn();cRender();setMode("free");pCalc();
+window.__bt={setLevel:v=>{LV=v;renderLearn()},REG,sumSet};
+})();
+</script>
+</body>
+</html>

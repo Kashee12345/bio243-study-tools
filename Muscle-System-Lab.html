@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muscle System Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;
+  /* muscle palette */
+  --muscle:#B8473F;--muscle-dk:#7E2A24;--muscle-wash:#F4DEDB;
+  --tendon:#EFE8D6;--tendon-dk:#A8996F;--bone:#EADDBE;--bone-dk:#9A8152;
+  --skin:#E8D5C2;--skin-dk:#A98B71;--shirt:#3F6FB5;
+  --fF:#1B6E88;--fL:#7B5CC9;--fE:#C2410C;
+  --wood:#C49A6C;--wood-dk:#8A6239;--metal:#A9B4BB;--metal-dk:#5E6B73;--dirt:#8B6A4A;--water:#CFE3EC;--glass:#6FA88A;
+  --kLoc:#1B6E88;--kShape:#7B5CC9;--kSize:#B4632A;--kHeads:#2F8A57;--kAct:#B4462F;--kAtt:#8A5A2B;--kDir:#3F6FB5;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
+  --muscle:#D7695F;--muscle-dk:#F2A79F;--muscle-wash:#3A1E1C;
+  --tendon:#575040;--tendon-dk:#C8B98F;--bone:#4B4434;--bone-dk:#D6C292;
+  --skin:#3B322B;--skin-dk:#9C8470;--shirt:#6C9BE0;
+  --fF:#4FB3D1;--fL:#A98BEF;--fE:#F08A4B;
+  --wood:#8E6D4B;--wood-dk:#D2A878;--metal:#55636B;--metal-dk:#B3C0C7;--dirt:#7A5D42;--water:#1D3B48;--glass:#3F7A5E;
+  --kLoc:#4FB3D1;--kShape:#A98BEF;--kSize:#E39A5B;--kHeads:#4FBF7F;--kAct:#E07A62;--kAtt:#C9965E;--kDir:#7FA6E8;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
+  --muscle:#D7695F;--muscle-dk:#F2A79F;--muscle-wash:#3A1E1C;
+  --tendon:#575040;--tendon-dk:#C8B98F;--bone:#4B4434;--bone-dk:#D6C292;
+  --skin:#3B322B;--skin-dk:#9C8470;--shirt:#6C9BE0;
+  --fF:#4FB3D1;--fL:#A98BEF;--fE:#F08A4B;
+  --wood:#8E6D4B;--wood-dk:#D2A878;--metal:#55636B;--metal-dk:#B3C0C7;--dirt:#7A5D42;--water:#1D3B48;--glass:#3F7A5E;
+  --kLoc:#4FB3D1;--kShape:#A98BEF;--kSize:#E39A5B;--kHeads:#4FBF7F;--kAct:#E07A62;--kAtt:#C9965E;--kDir:#7FA6E8;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1220px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1220px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.shelf{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-soft);margin:0 0 14px;align-items:center}
+.shelf b{color:var(--ink);font-weight:600}
+.shelf .st{color:var(--gold);letter-spacing:1px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.tbtn:disabled{opacity:.5;cursor:default}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+:root[data-theme="dark"] .btn,:root[data-theme="dark"] .tab[aria-selected="true"]{color:#0E1519}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn,:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#0E1519}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+.instr{color:var(--ink-soft);font-size:15px;margin:0 0 10px}
+.msg{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--ink);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--ink);border:1px solid var(--warn)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+[hidden]{display:none!important}
+svg{display:block;width:100%;height:auto}
+.bigidea{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 14px;font-size:15px}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 14px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.timer{font-family:var(--mono);font-size:18px;font-weight:600;min-width:60px}
+.meter{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:14px;color:var(--ink-soft);align-items:center}
+.meter b{color:var(--ink)}
+.pbar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.pbar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.qlab{font-weight:600;margin:10px 0 8px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
+.opts.one{grid-template-columns:1fr}
+@media (max-width:600px){.opts{grid-template-columns:1fr}}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt.out{opacity:.45;text-decoration:line-through;cursor:default}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);box-shadow:0 0 0 2px var(--accent) inset}
+.opt .mk{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin-left:6px;white-space:nowrap}
+.opt.right .mk{color:var(--good)}.opt.wrong .mk{color:var(--warn)}
+.opt i.k{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px}
+.why{margin-top:10px;padding:10px 12px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none;font-size:15px}
+.why.show{display:block}
+.why.no{background:var(--warn-wash);border-left-color:var(--warn)}
+.calm{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.g2{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.g2{grid-template-columns:1fr}}
+h2{font-family:var(--serif);font-weight:600;font-size:22px;line-height:1.25;margin:2px 0 8px}
+h3{font-family:var(--serif);font-weight:600;font-size:18px;margin:0 0 6px}
+/* clue cards */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.ccard{background:var(--panel);border:1px solid var(--rule);border-top:5px solid var(--k);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow)}
+.ccard .hd{display:flex;gap:10px;align-items:center}
+.ccard .hd svg{width:84px;flex:0 0 auto}
+.ccard .num{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+.ccard h3{margin:0;font-size:17px}
+.ccard p{margin:6px 0;font-size:14.5px}
+.roots{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.root{font-size:13px;background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:99px;padding:2px 9px}
+.root b{font-family:var(--serif);font-style:italic;font-weight:600}
+/* detective */
+.mname{font-family:var(--serif);font-size:30px;font-weight:600;margin:4px 0 10px;line-height:1.15;overflow-wrap:anywhere}
+.tiles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.tile{border:2px dashed var(--rule);border-radius:var(--r);padding:8px 12px;min-width:104px;background:var(--panel-2);display:flex;flex-direction:column;gap:2px}
+.tile .w{font-family:var(--serif);font-size:21px;font-style:italic;font-weight:600}
+.tile .tl{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.tile .mn{font-size:13px;color:var(--ink);max-width:190px;line-height:1.3}
+.tile.cur{border-style:solid;border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+.tile.done{border-style:solid;border-color:var(--k);background:var(--panel)}
+.tile.done .tl{color:var(--k);font-weight:600}
+.bodymap{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px}
+.bcap{font-size:14.5px;margin:8px 2px 0}
+.hl{fill:var(--muscle);fill-opacity:.75;stroke:var(--muscle-dk);stroke-width:1.4}
+.hl.deep{fill-opacity:.35;stroke-dasharray:3 2}
+.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+.sk1{stroke:var(--skin-dk);fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sk2{stroke:var(--skin);fill:none;stroke-linecap:round;stroke-linejoin:round}
+.skP{fill:var(--skin);stroke:var(--skin-dk);stroke-width:1.6}
+.skF{fill:var(--skin)}
+.vlab{font:600 11px var(--sans);fill:var(--ink-soft)}
+.summary{margin-top:10px;padding:10px 12px;background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);font-size:14.5px}
+/* lever */
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--panel-2);position:relative}
+canvas{display:block;width:100%;touch-action:manipulation}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar select{font:inherit;font-size:14px;background:var(--panel-2);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:4px}
+.caption{flex:1 1 220px;font-size:14.5px;color:var(--ink)}
+.mnemo{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;margin:8px 0 12px}
+.mnemo div{flex:1 1 90px;border:1.5px solid var(--rule);border-radius:var(--r);padding:8px;text-align:center;background:var(--panel-2)}
+.mnemo div b{display:block;font-family:var(--mono);font-size:22px}
+.mnemo div span{font-size:13px;color:var(--ink-soft)}
+.mnemo div.on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset;background:var(--panel)}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0;font-size:15px}
+.analogy b.t{display:block;font-size:12.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.tray{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 6px}
+.mchip{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--c);background:var(--panel);border-radius:99px;padding:5px 12px 5px 5px;cursor:grab;font-size:14px;touch-action:none;user-select:none}
+.mchip .L{width:28px;height:28px;border-radius:50%;background:var(--c);color:var(--panel);display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:15px}
+.mchip[aria-pressed="true"]{box-shadow:0 0 0 3px var(--gold)}
+.mchip .where{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+.ghost{position:fixed;left:0;top:0;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:18px;color:var(--panel);pointer-events:none;z-index:50;box-shadow:0 6px 18px rgba(0,0,0,.35);transform:translate(-50%,-50%)}
+.spots{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px}
+.spots .tbtn{font-family:var(--mono);font-size:13.5px}
+.clsrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:480px){.clsrow{grid-template-columns:1fr}}
+/* OIA */
+.concepts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:10px}
+.concept{border:1px solid var(--rule);border-radius:var(--r);background:var(--panel-2);padding:10px 12px;font-size:14.5px}
+.concept b.t{display:block;font-family:var(--serif);font-size:16.5px;margin-bottom:2px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.rcard{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:12px 14px;min-width:0}
+.rcard h3{margin:0 0 4px}
+.rcard .rg{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
+.rcard .dg{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:4px;margin:6px 0}
+.rcard dl{margin:0;font-size:14px;display:grid;grid-template-columns:auto 1fr;gap:4px 8px}
+.rcard dt{font-family:var(--mono);font-weight:600;font-size:12.5px;padding-top:1px}
+.rcard dd{margin:0}
+.rv{background:var(--panel-2);border:1px dashed var(--rule);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:13.5px;color:var(--ink-soft);text-align:left}
+.oi-diag{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px}
+.qblock{border-top:1px solid var(--rule-soft);padding-top:4px;margin-top:8px}
+.qblock:first-child{border-top:0;margin-top:0}
+.prompt{font-family:var(--serif);font-size:20px;line-height:1.35;margin:4px 0 6px}
+/* diagram svg classes */
+.bo{stroke:var(--bone-dk);fill:none;stroke-linecap:round;stroke-linejoin:round}
+.bf{stroke:var(--bone);fill:none;stroke-linecap:round;stroke-linejoin:round}
+.bPo{fill:var(--bone-dk);stroke:var(--bone-dk);stroke-width:3;stroke-linejoin:round}
+.bPf{fill:var(--bone)}
+.bCo{fill:var(--bone-dk)}.bCf{fill:var(--bone)}
+.bR{stroke:var(--bone-dk);stroke-width:1.6;fill:none;stroke-dasharray:3 2}
+.bV{fill:var(--bone);stroke:var(--bone-dk);stroke-width:1.3}
+.mo{stroke:var(--muscle-dk);fill:none;stroke-linecap:round}
+.mf{stroke:var(--muscle);fill:none;stroke-linecap:round}
+.ms{stroke:var(--panel);stroke-opacity:.35;stroke-width:.8;fill:none;stroke-dasharray:6 4}
+.to{stroke:var(--tendon-dk);fill:none;stroke-linecap:round}
+.tf{stroke:var(--tendon);fill:none;stroke-linecap:round}
+.tE{fill:var(--tendon);stroke:var(--tendon-dk);stroke-width:1.2}
+.pull{stroke:var(--ink);stroke-width:2.2;fill:none}
+.pullh{fill:var(--ink)}
+.mvp{stroke:var(--accent);stroke-width:1.8;fill:none;stroke-dasharray:4 3}
+.mvh{fill:var(--accent)}
+.lab{font:600 8.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--panel-2);stroke-width:2.8px;stroke-linejoin:round}
+.lab.act{fill:var(--accent-ink);font-style:italic}
+.bl{font:italic 8.5px var(--serif);fill:var(--ink-soft);paint-order:stroke;stroke:var(--panel-2);stroke-width:2.6px;stroke-linejoin:round}
+.lead{stroke:var(--ink-soft);stroke-width:.7}
+.pO{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}
+.pI{fill:var(--ink)}
+.pt{font:700 6.5px var(--mono);text-anchor:middle;dominant-baseline:central}
+.pt.o{fill:var(--ink)}.pt.i{fill:var(--panel)}
+.dk{fill:none;stroke:var(--accent);stroke-width:1.6;stroke-dasharray:4 3}
+footer{max-width:1220px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Muscular System &middot; USC Upstate</div>
+    <h1>Muscle System Lab</h1>
+    <p class="sub">Decode muscle names, find the levers in your body, and learn where muscles attach and what they do.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="det" type="button">1 &middot; Muscle Detective</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="lev" type="button">2 &middot; Lever Lab</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="oia" type="button">3 &middot; Origin, Insertion, Action</button>
+  </div>
+  <div class="shelf" id="shelf"></div>
+
+  <!-- ============ TAB 1 ============ -->
+  <section id="tab-det">
+    <div class="rounds" id="detSub">
+      <button class="round" type="button" aria-pressed="true" data-v="learn">Learn the 7 clues</button>
+      <button class="round" type="button" aria-pressed="false" data-v="play">Play: crack the case</button>
+    </div>
+    <div id="detLearn">
+      <div class="bigidea"><b>The big idea:</b> most muscle names are not random. They are made of Latin or Greek word parts, and each part is a <b>clue</b>. Read the clues and you can often say where a muscle is and what it does before you ever memorize it. There are seven kinds of clues.</div>
+      <div class="cgrid" id="clueGrid"></div>
+      <div class="card" style="margin-top:14px">
+        <h3>Worked example: <i>flexor carpi radialis</i></h3>
+        <div class="tiles" id="workedTiles"></div>
+        <p style="margin:6px 0 0;font-size:15px">Put it together: a muscle on the <b>radius (thumb) side</b> of the forearm that <b>flexes the wrist</b>. That's exactly where and what it is. Ready? Press <b>Play: crack the case</b>.</p>
+      </div>
+    </div>
+    <div id="detPlay" hidden>
+      <div class="g2">
+        <div class="card">
+          <div class="rounds" id="detSize">
+            <button class="round" type="button" aria-pressed="true" data-n="8">Quick case (8 muscles)</button>
+            <button class="round" type="button" aria-pressed="false" data-n="22">Full case file (22 muscles)</button>
+          </div>
+          <div class="meter"><span>Muscle <b id="dN">1</b> of <b id="dT">8</b></span><span>Score <b id="dScore">0</b>/<b id="dTot">0</b></span><span>Streak <b id="dStreak">0</b></span><span class="timer" id="dTimer">0:00</span></div>
+          <div class="pbar"><i id="dBar"></i></div>
+          <label class="mode"><input type="checkbox" id="dRelax" checked> Relaxed mode (timer hidden)</label>
+          <div class="mname" id="dName"></div>
+          <div class="tiles" id="dTiles"></div>
+          <div id="dQ"></div>
+          <div class="bar" style="margin-top:12px">
+            <button class="btn" id="dNext" type="button" hidden>Next</button>
+            <button class="tbtn" id="dHint" type="button">Hint</button>
+            <button class="tbtn" id="dShow" type="button">Show answer</button>
+            <button class="tbtn" id="dRestart" type="button">New case</button>
+          </div>
+          <div class="msg" id="dEnd" role="status"></div>
+          <p class="calm">Nothing here is graded. Wrong answers just show you the reasoning.</p>
+        </div>
+        <div class="card">
+          <h3>Body map</h3>
+          <div class="bodymap" id="dBody"></div>
+          <p class="bcap" id="dBodyCap">Decode the name, then predict where the muscle is. It will light up here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 2 ============ -->
+  <section id="tab-lev" hidden>
+    <div class="rounds" id="levSub">
+      <button class="round" type="button" aria-pressed="true" data-v="learn">Learn the 3 classes</button>
+      <button class="round" type="button" aria-pressed="false" data-v="play">Play: lever sort (12)</button>
+    </div>
+    <div id="levLearn">
+      <div class="g2">
+        <section class="card" style="padding:10px" aria-label="Lever animation">
+          <div class="canvas-holder"><canvas id="lvLearn" role="img" aria-label=""></canvas></div>
+          <div class="stagebar">
+            <button class="tbtn" id="lvPause" type="button">Pause</button>
+            <label>Speed <select id="lvSpeed"><option value=".5">0.5&times;</option><option value="1" selected>1&times;</option><option value="1.6">1.6&times;</option></select></label>
+            <span class="caption" id="lvCap"></span>
+          </div>
+        </section>
+        <section class="card" aria-live="polite">
+          <div class="rounds" id="lvCls">
+            <button class="round" type="button" aria-pressed="true" data-c="0">1st class</button>
+            <button class="round" type="button" aria-pressed="false" data-c="1">2nd class</button>
+            <button class="round" type="button" aria-pressed="false" data-c="2">3rd class</button>
+          </div>
+          <h2 id="lvTitle"></h2>
+          <div class="mnemo" id="lvMnemo"></div>
+          <p style="margin:0 0 8px;font-size:15px" id="lvEvery"></p>
+          <p style="margin:0 0 8px;font-size:15px" id="lvBody"></p>
+          <div class="analogy"><b class="t">Mechanical advantage, simply</b><span id="lvMA"></span></div>
+        </section>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>The parts of every lever</h3>
+        <div class="concepts">
+          <div class="concept"><b class="t" style="color:var(--fF)">F &middot; Fulcrum</b>The pivot point that stays still. In the body, it is a <b>joint</b>.</div>
+          <div class="concept"><b class="t" style="color:var(--fL)">L &middot; Load</b>The weight or resistance being moved: a body part, plus anything you are holding.</div>
+          <div class="concept"><b class="t" style="color:var(--fE)">E &middot; Effort</b>The push or pull that does the work. In the body, it is a <b>muscle</b> pulling on its insertion.</div>
+          <div class="concept"><b class="t">The lever arm</b>The rigid bar. In the body, it is a <b>bone</b>.</div>
+        </div>
+        <p style="margin:12px 0 0;font-size:15px"><b>Memory trick: "1-2-3, F-L-E."</b> Ask what is in the <b>middle</b>. 1st class has F in the middle, 2nd class has L in the middle, 3rd class has E in the middle.</p>
+      </div>
+    </div>
+    <div id="levPlay" hidden>
+      <div class="g2">
+        <section class="card" style="padding:10px">
+          <div class="meter" style="padding:2px 4px"><span>Lever <b id="lN">1</b> of <b id="lT">12</b></span><span>Score <b id="lScore">0</b></span><span>Streak <b id="lStreak">0</b></span><span class="timer" id="lTimer">0:00</span></div>
+          <div class="pbar" style="margin:6px 4px"><i id="lBar"></i></div>
+          <div class="canvas-holder"><canvas id="lvPlay" role="img" aria-label=""></canvas></div>
+          <p class="caption" id="lCap" style="margin:8px 4px 0"></p>
+        </section>
+        <section class="card">
+          <h2 id="lName"></h2>
+          <p class="instr"><b>Step 1.</b> Drag each marker onto a numbered spot on the drawing. Or tap a marker, then tap a spot (or use the spot buttons).</p>
+          <div class="tray" id="lTray"></div>
+          <div class="spots" id="lSpots"></div>
+          <p class="instr"><b>Step 2.</b> Which class of lever is it?</p>
+          <div class="clsrow" id="lCls"></div>
+          <div class="bar" style="margin-top:12px">
+            <button class="btn" id="lCheck" type="button">Check</button>
+            <button class="tbtn" id="lHint" type="button">Hint</button>
+            <button class="tbtn" id="lShow" type="button">Show answer</button>
+            <button class="btn" id="lNext" type="button" hidden>Next lever</button>
+          </div>
+          <div class="msg" id="lMsg" role="status"></div>
+          <div class="bar"><label class="mode"><input type="checkbox" id="lRelax" checked> Relaxed mode (timer hidden)</label><button class="tbtn" id="lRestart" type="button">Start over</button></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 3 ============ -->
+  <section id="tab-oia" hidden>
+    <div class="rounds" id="oiaSub">
+      <button class="round" type="button" aria-pressed="true" data-v="learn">Learn: O, I, A + roles</button>
+      <button class="round" type="button" aria-pressed="false" data-v="ref">Reference cards (15)</button>
+      <button class="round" type="button" aria-pressed="false" data-v="play">Play: matching game</button>
+    </div>
+    <div id="oiaLearn">
+      <div class="g2">
+        <section class="card">
+          <div class="oi-diag" id="elbowDiag"></div>
+          <div class="stagebar"><button class="tbtn" id="elbowPause" type="button">Pause</button><span class="caption">The forearm flexes and relaxes. Watch the biceps shorten and the triceps lengthen.</span></div>
+        </section>
+        <section class="card">
+          <h2>Three words for every muscle</h2>
+          <div class="concepts" style="margin-top:4px">
+            <div class="concept"><b class="t">Origin (O)</b>The attachment that usually <b>stays still</b>. It is often the more <b>proximal</b> one, closer to the trunk.</div>
+            <div class="concept"><b class="t">Insertion (I)</b>The attachment on the <b>bone that moves</b>. It is usually more distal.</div>
+            <div class="concept"><b class="t">Action (A)</b>When a muscle contracts, it <b>pulls the insertion toward the origin</b>. Muscles only pull. They never push.</div>
+          </div>
+          <div class="analogy"><b class="t">Think of it like this</b>A muscle is a rope tied between two bones. The origin is tied to a post. The insertion is tied to a door. Pull the rope, and the door swings toward the post.</div>
+        </section>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>Muscles work in teams</h3>
+        <div class="concepts">
+          <div class="concept"><b class="t">Prime mover (agonist)</b>The main muscle that makes a movement. Elbow flexion: the <b>biceps brachii</b>.</div>
+          <div class="concept"><b class="t">Antagonist</b>Does the <b>opposite</b> movement. It relaxes and lengthens while the prime mover works, and helps control the motion. Elbow flexion: the <b>triceps brachii</b>.</div>
+          <div class="concept"><b class="t">Synergist</b><b>Helps</b> the prime mover, adding force or steadying the motion. Elbow flexion: the <b>brachialis</b>.</div>
+          <div class="concept"><b class="t">Fixator</b>A synergist that <b>holds the prime mover's origin still</b>. Muscles that steady the scapula while the arm moves are fixators.</div>
+        </div>
+        <p style="margin:12px 0 0;font-size:15px">Prime movers and antagonists usually sit on <b>opposite sides of a joint</b>: biceps and triceps, quadriceps and hamstrings, tibialis anterior and gastrocnemius.</p>
+      </div>
+    </div>
+    <div id="oiaRef" hidden>
+      <div class="bar" style="margin-top:0">
+        <div class="rounds" id="refFilter" style="margin:0"></div>
+        <label class="mode"><input type="checkbox" id="refCover"> Cover the answers (flashcard mode)</label>
+      </div>
+      <p class="instr">Each drawing shows schematic bones. <b>O</b> marks the origin, <b>I</b> marks the insertion, and the solid arrow shows the pull: from the insertion toward the origin. The dashed blue arrow shows the movement that results.</p>
+      <div class="rgrid" id="refGrid"></div>
+    </div>
+    <div id="oiaPlay" hidden>
+      <div class="rounds" id="oMode">
+        <button class="round" type="button" aria-pressed="true" data-m="oia">Muscle &rarr; O, I, A</button>
+        <button class="round" type="button" aria-pressed="false" data-m="rev">Action &rarr; muscle</button>
+        <button class="round" type="button" aria-pressed="false" data-m="pair">Agonist &amp; antagonist</button>
+      </div>
+      <div class="g2">
+        <section class="card">
+          <div class="meter"><span>Item <b id="oN">1</b> of <b id="oT"></b></span><span>Score <b id="oScore">0</b>/<b id="oTot">0</b></span><span>Streak <b id="oStreak">0</b></span><span class="timer" id="oTimer">0:00</span></div>
+          <div class="pbar"><i id="oBar"></i></div>
+          <label class="mode"><input type="checkbox" id="oRelax" checked> Relaxed mode (timer hidden)</label>
+          <div id="oQ" style="margin-top:8px"></div>
+          <div class="bar" style="margin-top:12px">
+            <button class="btn" id="oNext" type="button" hidden>Next</button>
+            <button class="tbtn" id="oHint" type="button">Hint</button>
+            <button class="tbtn" id="oShow" type="button">Show answer</button>
+            <button class="tbtn" id="oRestart" type="button">New set</button>
+          </div>
+          <div class="msg" id="oEnd" role="status"></div>
+          <p class="calm">Nothing here is graded. Use Hint as often as you like.</p>
+        </section>
+        <section class="card">
+          <div class="oi-diag" id="oDiag"></div>
+          <p class="bcap" id="oDiagCap"></p>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Chapter 11, The Muscular System (OpenStax Anatomy &amp; Physiology 2e). Diagrams are simplified and not to scale. Nothing here is graded.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const fmt=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");
+const TAU=Math.PI*2;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+
+/* ---------- shared: stars, timers, multiple choice ---------- */
+function starCount(ok,tot){const p=tot?ok/tot:0;return p>=.85?3:p>=.6?2:1}
+function starStr(n){return "★".repeat(n)+"☆".repeat(3-n)}
+const BEST_KEY="msl-best";
+function saveBest(k,n){const b=store.get(BEST_KEY)||{};if(!b[k]||n>b[k]){b[k]=n;store.set(BEST_KEY,b)}shelf()}
+function shelf(){const b=store.get(BEST_KEY)||{};const L=[["det","Muscle Detective"],["lev","Lever Lab"],["oia","O-I-A"],["rev","Action to muscle"],["pair","Agonist pairs"]];
+  $("#shelf").innerHTML="<span>Your best stars:</span>"+L.map(([k,n])=>`<span>${n} <span class="st" aria-label="${b[k]||0} of 3 stars">${starStr(b[k]||0)}</span></span>`).join("")}
+function makeTimer(el,chk,key){let t0=0,run=false,el2=0;
+  setInterval(()=>{if(run){el2=(performance.now()-t0)/1000;el.textContent=fmt(el2)}},250);
+  const r=store.get(key);if(r===false)chk.checked=false;
+  const apply=()=>{el.style.display=chk.checked?"none":""};chk.onchange=()=>{apply();store.set(key,chk.checked)};apply();
+  return{start(){t0=performance.now();el2=0;run=true;el.textContent="0:00"},stop(){run=false;return el2},relaxed(){return chk.checked}}}
+/* opts: [{h, ok, why}] ; cb(firstTry, revealed) */
+function MCQ(box,whyBox,opts,cb,one){
+  box.className="opts"+(one?" one":"");box.innerHTML="";whyBox.className="why";whyBox.innerHTML="";
+  const st={first:true,done:false,hinted:false,btns:[]};
+  opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.innerHTML=o.h;
+    b.onclick=()=>{if(st.done||b.classList.contains("out")||b.classList.contains("wrong"))return;
+      if(o.ok){b.classList.add("right");b.insertAdjacentHTML("beforeend",'<span class="mk">✓ correct</span>');st.done=true;
+        whyBox.innerHTML=(st.first&&!st.hinted?"<b>Yes!</b> ":"<b>Got it.</b> ")+o.why;whyBox.className="why show";cb(st.first&&!st.hinted,false)}
+      else{b.classList.add("wrong");b.insertAdjacentHTML("beforeend",'<span class="mk">✗ not this one</span>');st.first=false;
+        whyBox.innerHTML="<b>Not quite.</b> "+o.why;whyBox.className="why show no"}};
+    st.btns.push(b);box.appendChild(b)});
+  st.hint=(n,tip)=>{if(st.done)return false;const wrong=st.btns.filter((b,i)=>!opts[i].ok&&!b.classList.contains("wrong")&&!b.classList.contains("out"));
+    shuffle(wrong).slice(0,n).forEach(b=>{b.classList.add("out");b.disabled=true;b.insertAdjacentHTML("beforeend",'<span class="mk">ruled out</span>')});
+    st.hinted=true;if(tip){whyBox.innerHTML="<b>Hint:</b> "+tip;whyBox.className="why show"}return true};
+  st.reveal=()=>{if(st.done)return;st.done=true;const i=opts.findIndex(o=>o.ok);const b=st.btns[i];b.classList.add("right");b.insertAdjacentHTML("beforeend",'<span class="mk">✓ answer</span>');
+    whyBox.innerHTML="<b>Here's the answer.</b> "+opts[i].why;whyBox.className="why show";cb(false,true)};
+  return st}
+
+/* =====================================================================
+   TAB 1: MUSCLE DETECTIVE
+   ===================================================================== */
+const CLUES={
+ loc:{n:"Location",col:"--kLoc",d:"names a body region or a nearby bone",ask:"Does it name a body part, a region, or a bone it sits on?"},
+ shape:{n:"Shape",col:"--kShape",d:"describes what the muscle looks like",ask:"Does it describe a geometric shape?"},
+ size:{n:"Size",col:"--kSize",d:"compares how big or long it is",ask:"Does it say big, small, long, or short?"},
+ heads:{n:"Number of heads",col:"--kHeads",d:"counts how many origins (heads) it has",ask:"Does it contain a number?"},
+ act:{n:"Action",col:"--kAct",d:"names the movement it makes",ask:"Does it describe a movement?"},
+ att:{n:"Attachments",col:"--kAtt",d:"names the bones of its origin and insertion",ask:"Does it name the bones it is tied to?"},
+ dir:{n:"Fiber direction",col:"--kDir",d:"tells which way the fibers run compared with the midline",ask:"Does it describe straight, slanted, or across?"}
+};
+const CK=["loc","shape","size","heads","act","att","dir"];
+const ROOTS={
+ flexor:{c:"act",m:"bends a joint (decreases the angle)",tip:"Flex your elbow and the angle closes."},
+ extensor:{c:"act",m:"straightens a joint (increases the angle)",tip:"Extend means to stretch out straight."},
+ abductor:{c:"act",m:"moves a part away from the midline",tip:"Abduct means to take away."},
+ adductor:{c:"act",m:"moves a part toward the midline",tip:"Adduct: you 'add' the limb back to the body."},
+ levator:{c:"act",m:"lifts (elevates)",tip:"Levator sounds like elevator. It lifts."},
+ depressor:{c:"act",m:"lowers (depresses)",tip:"Depress means press down."},
+ pronator:{c:"act",m:"turns the palm down (posterior)",tip:"Pronate: palm down, like pouring out a bowl of soup."},
+ supinator:{c:"act",m:"turns the palm up (anterior)",tip:"Supinate: palm up, holding a bowl of soup."},
+ carpi:{c:"loc",alt:["att"],m:"wrist",tip:"Carpal tunnel syndrome happens in the wrist."},
+ radialis:{c:"loc",alt:["att"],m:"radius side of the forearm (thumb side)",tip:"The radius is the forearm bone on the thumb side."},
+ ulnaris:{c:"loc",alt:["att"],m:"ulna side of the forearm (pinky side)",tip:"The ulna is on the pinky side."},
+ digitorum:{c:"loc",alt:["att"],m:"fingers or toes (digits)",tip:"Digits are fingers and toes."},
+ brachii:{c:"loc",m:"arm (shoulder to elbow)",tip:"The brachial artery is the one in your arm used for blood pressure."},
+ abdominis:{c:"loc",m:"abdomen",tip:"Abdominis sounds like abdomen."},
+ pectoralis:{c:"loc",m:"chest",tip:"'Pecs' are chest muscles."},
+ gluteus:{c:"loc",m:"buttock",tip:"'Glutes' are the buttock muscles."},
+ oris:{c:"loc",m:"mouth",tip:"Oral means mouth."},
+ tibialis:{c:"loc",alt:["att"],m:"tibia (shin bone)",tip:"Tibialis sounds like tibia."},
+ temporalis:{c:"loc",alt:["att"],m:"temporal bone (side of the head)",tip:"Your temples are on the sides of your head."},
+ femoris:{c:"loc",m:"femur (thigh)",tip:"Femoris sounds like femur."},
+ scapulae:{c:"att",alt:["loc"],m:"scapula (shoulder blade)",tip:"Scapulae means 'of the scapula': the bone it pulls on."},
+ anterior:{c:"loc",m:"front",tip:"Anterior means in front."},
+ posterior:{c:"loc",m:"back",tip:"Posterior means behind."},
+ lateralis:{c:"loc",m:"lateral side (away from the midline)",tip:"Lateral means toward the side, away from the midline."},
+ medialis:{c:"loc",m:"medial side (toward the midline)",tip:"Medial means toward the middle."},
+ external:{c:"loc",m:"outer, more superficial layer",tip:"External means on the outside."},
+ deltoid:{c:"shape",m:"triangle (like the Greek letter delta, Δ)",tip:"The Greek letter delta is a triangle."},
+ trapezius:{c:"shape",m:"trapezoid (four-sided)",tip:"A trapezoid is a four-sided shape."},
+ serratus:{c:"shape",m:"saw-toothed (serrated)",tip:"A serrated knife has a saw-tooth edge."},
+ orbicularis:{c:"shape",alt:["dir"],m:"circular, ring-shaped",tip:"An orbit is a circle."},
+ teres:{c:"shape",m:"round and cylinder-shaped, like a cord",tip:"Teres means round, like a cord or a rod."},
+ rhomboid:{c:"shape",m:"diamond (rhombus) shaped",tip:"A rhombus is a diamond shape."},
+ maximus:{c:"size",m:"largest",tip:"Maximum means the most."},
+ minimus:{c:"size",m:"smallest",tip:"Minimum means the least."},
+ medius:{c:"size",m:"medium (middle-sized)",tip:"Medium sized."},
+ longus:{c:"size",m:"long",tip:"Longus means long."},
+ brevis:{c:"size",m:"short",tip:"Brief means short."},
+ major:{c:"size",m:"larger (of two)",tip:"Major means the bigger one."},
+ minor:{c:"size",m:"smaller (of two)",tip:"Minor means the smaller one."},
+ vastus:{c:"size",m:"huge, very large",tip:"Vast means huge."},
+ biceps:{c:"heads",m:"two heads (two origins)",tip:"Bi means two, as in bicycle."},
+ triceps:{c:"heads",m:"three heads (three origins)",tip:"Tri means three, as in tricycle."},
+ quadriceps:{c:"heads",m:"four heads (four origins)",tip:"Quad means four."},
+ rectus:{c:"dir",m:"straight (fibers parallel to the midline)",tip:"Rectus means straight, as in a rectangle's straight sides."},
+ oblique:{c:"dir",m:"slanted (fibers at an angle)",tip:"Oblique means slanted, like a slash /."},
+ transversus:{c:"dir",m:"across (fibers horizontal, at a right angle to the midline)",tip:"Transverse means across."},
+ sterno:{c:"att",m:"sternum (breastbone)",tip:"Sterno- means the sternum."},
+ cleido:{c:"att",m:"clavicle (collarbone)",tip:"Cleido- refers to the clavicle."},
+ mastoid:{c:"att",m:"mastoid process (bump on the temporal bone behind the ear)",tip:"Feel the bump behind your ear: the mastoid process."}
+};
+const CLUE_ROOTS={loc:["brachii","carpi","digitorum","abdominis","pectoralis","gluteus","oris","tibialis","radialis","lateralis","anterior"],
+ shape:["deltoid","trapezius","serratus","orbicularis","teres","rhomboid"],size:["maximus","minimus","medius","longus","brevis","major","minor","vastus"],
+ heads:["biceps","triceps","quadriceps"],act:["flexor","extensor","abductor","adductor","levator","depressor","pronator","supinator"],
+ att:["sterno","cleido","mastoid","scapulae"],dir:["rectus","oblique","transversus"]};
+const DM=[
+ ["Flexor carpi radialis",["flexor","carpi","radialis"],"Anterior forearm, on the thumb (radius) side","Flexes the wrist","fcr"],
+ ["Extensor digitorum longus",["extensor","digitorum","longus"],"Front of the leg, lateral to the tibia","Extends the toes and dorsiflexes the foot","edl"],
+ ["Rectus abdominis",["rectus","abdominis"],"Front of the abdomen, running straight up and down beside the midline","Flexes the trunk and compresses the abdomen","ra"],
+ ["External oblique",["external","oblique"],"Side and front of the abdomen, outermost layer, fibers slanting","Compresses the abdomen; flexes and rotates the trunk","eo"],
+ ["Transversus abdominis",["transversus","abdominis"],"Deepest layer of the abdominal wall, fibers running across","Compresses the abdomen","tra"],
+ ["Sternocleidomastoid",["sterno","cleido","mastoid"],"Side of the neck, from the sternum and clavicle up to behind the ear","Flexes the neck; one side turns the head to the opposite side","scm"],
+ ["Deltoid",["deltoid"],"Triangle-shaped cap over the shoulder","Abducts the arm","del"],
+ ["Trapezius",["trapezius"],"Upper back and back of the neck","Elevates, retracts, and depresses the scapula; extends the head","trap"],
+ ["Biceps brachii",["biceps","brachii"],"Front (anterior) of the arm","Flexes the elbow and supinates the forearm","bb"],
+ ["Triceps brachii",["triceps","brachii"],"Back (posterior) of the arm","Extends the elbow","tb"],
+ ["Gluteus maximus",["gluteus","maximus"],"Buttock; the largest, most superficial gluteal muscle","Extends and laterally rotates the thigh","gmax"],
+ ["Gluteus minimus",["gluteus","minimus"],"Buttock; the smallest, deepest gluteal muscle","Abducts and medially rotates the thigh","gmin"],
+ ["Adductor longus",["adductor","longus"],"Medial (inner) thigh","Adducts the thigh (pulls it toward the midline)","al"],
+ ["Pectoralis major",["pectoralis","major"],"Chest; the larger of the two pectoral muscles","Flexes, adducts, and medially rotates the arm","pm"],
+ ["Serratus anterior",["serratus","anterior"],"Side of the rib cage, with saw-tooth slips on the ribs","Protracts the scapula (pulls it forward, as in a punch)","sa"],
+ ["Orbicularis oris",["orbicularis","oris"],"Ring of muscle around the mouth","Closes and puckers the lips","oo"],
+ ["Levator scapulae",["levator","scapulae"],"Back and side of the neck, down to the scapula","Elevates the scapula","ls"],
+ ["Tibialis anterior",["tibialis","anterior"],"Front of the leg, along the tibia","Dorsiflexes and inverts the foot","tia"],
+ ["Vastus lateralis",["vastus","lateralis"],"Lateral (outer) side of the thigh; a large quadriceps muscle","Extends the knee","vl"],
+ ["Pronator teres",["pronator","teres"],"Anterior forearm just below the elbow; round and cord-like","Pronates the forearm (turns the palm down)","pt"],
+ ["Supinator",["supinator"],"Posterior forearm just below the elbow, wrapped around the radius","Supinates the forearm (turns the palm up)","sup"],
+ ["Temporalis",["temporalis"],"Side of the head, over the temporal bone","Elevates and retracts the mandible (closes the jaw)","tem"]
+];
+const TILE_LABEL={sterno:"Sterno-",cleido:"cleido-",mastoid:"mastoid"};
+
+/* ---- clue icons ---- */
+const ICON={
+ loc:`<svg viewBox="0 0 84 56" aria-hidden="true"><circle cx="42" cy="9" r="6" class="skF" stroke="var(--skin-dk)"/><path d="M33 17 h18 l2 20 h-22 z" class="skP"/><path class="sk1" stroke-width="7" d="M33 19 L24 40 M51 19 L60 40 M37 37 L35 54 M47 37 L49 54"/><path class="sk2" stroke-width="4.5" d="M33 19 L24 40 M51 19 L60 40 M37 37 L35 54 M47 37 L49 54"/><circle cx="25" cy="37" r="5" fill="var(--kLoc)"/><path d="M25 37 L25 26" stroke="var(--kLoc)" stroke-width="2"/><circle cx="25" cy="25" r="3.5" fill="var(--kLoc)"/></svg>`,
+ shape:`<svg viewBox="0 0 84 56" aria-hidden="true"><path d="M6 46 L20 14 L34 46 Z" fill="var(--muscle)" stroke="var(--muscle-dk)" stroke-width="1.5"/><path d="M42 46 L48 16 L66 16 L78 46 Z" fill="var(--muscle)" opacity=".75" stroke="var(--muscle-dk)" stroke-width="1.5"/><path d="M8 52 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4" fill="none" stroke="var(--kShape)" stroke-width="2"/><circle cx="62" cy="50" r="0"/></svg>`,
+ size:`<svg viewBox="0 0 84 56" aria-hidden="true"><ellipse cx="42" cy="12" rx="34" ry="7" fill="var(--muscle)"/><ellipse cx="34" cy="29" rx="24" ry="5.5" fill="var(--muscle)" opacity=".8"/><ellipse cx="26" cy="45" rx="14" ry="4.5" fill="var(--muscle)" opacity=".6"/></svg>`,
+ heads:`<svg viewBox="0 0 84 56" aria-hidden="true"><path d="M14 4 L22 20 M30 4 L22 20" stroke="var(--tendon-dk)" stroke-width="2.5"/><ellipse cx="22" cy="34" rx="8" ry="15" fill="var(--muscle)"/><path d="M22 49 L22 54" stroke="var(--tendon-dk)" stroke-width="2.5"/><path d="M50 4 L60 20 M60 4 L60 20 M70 4 L60 20" stroke="var(--tendon-dk)" stroke-width="2.5"/><ellipse cx="60" cy="34" rx="10" ry="15" fill="var(--muscle)"/><path d="M60 49 L60 54" stroke="var(--tendon-dk)" stroke-width="2.5"/><text x="36" y="40" text-anchor="middle" style="font:700 10px var(--mono);fill:var(--kHeads)">2</text><text x="78" y="40" text-anchor="middle" style="font:700 10px var(--mono);fill:var(--kHeads)">3</text></svg>`,
+ act:`<svg viewBox="0 0 84 56" aria-hidden="true"><path d="M14 48 L40 40" stroke="var(--bone-dk)" stroke-width="9" stroke-linecap="round"/><path d="M14 48 L40 40" stroke="var(--bone)" stroke-width="6" stroke-linecap="round"/><path d="M40 40 L62 14" stroke="var(--bone-dk)" stroke-width="9" stroke-linecap="round"/><path d="M40 40 L62 14" stroke="var(--bone)" stroke-width="6" stroke-linecap="round"/><path d="M70 38 Q74 22 64 10" fill="none" stroke="var(--kAct)" stroke-width="2.2"/><path d="M60 8 L68 8 L65 15 Z" fill="var(--kAct)"/></svg>`,
+ att:`<svg viewBox="0 0 84 56" aria-hidden="true"><path d="M8 10 L30 10" stroke="var(--bone-dk)" stroke-width="9" stroke-linecap="round"/><path d="M8 10 L30 10" stroke="var(--bone)" stroke-width="6" stroke-linecap="round"/><path d="M54 46 L76 46" stroke="var(--bone-dk)" stroke-width="9" stroke-linecap="round"/><path d="M54 46 L76 46" stroke="var(--bone)" stroke-width="6" stroke-linecap="round"/><path d="M24 12 Q46 18 60 44" stroke="var(--muscle)" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12" r="4" fill="var(--panel)" stroke="var(--kAtt)" stroke-width="2"/><circle cx="60" cy="44" r="4" fill="var(--kAtt)"/></svg>`,
+ dir:`<svg viewBox="0 0 84 56" aria-hidden="true"><rect x="4" y="8" width="22" height="40" rx="3" fill="var(--muscle-wash)" stroke="var(--muscle)"/><path d="M10 12 V44 M15 12 V44 M20 12 V44" stroke="var(--muscle)" stroke-width="2"/><rect x="31" y="8" width="22" height="40" rx="3" fill="var(--muscle-wash)" stroke="var(--muscle)"/><path d="M33 22 L45 10 M33 34 L51 16 M33 46 L51 28 M39 46 L51 40" stroke="var(--muscle)" stroke-width="2"/><rect x="58" y="8" width="22" height="40" rx="3" fill="var(--muscle-wash)" stroke="var(--muscle)"/><path d="M60 16 H78 M60 24 H78 M60 32 H78 M60 40 H78" stroke="var(--muscle)" stroke-width="2"/></svg>`
+};
+const CLUE_TEXT={
+ loc:"Where the muscle sits. Many names borrow the bone underneath or the body region.",
+ shape:"What the muscle looks like from the outside.",
+ size:"How big or long it is compared with nearby muscles that share the same first name.",
+ heads:"How many heads (separate origins) join into one muscle. '-ceps' means head.",
+ act:"The movement the muscle makes. Many come in opposite pairs.",
+ att:"The bones it is tied to. The first part is usually the origin, the last part the insertion.",
+ dir:"Which way the fibers run compared with the midline of the body."
+};
+const CLUE_LIST={
+ loc:[["brachii","arm"],["carpi","wrist"],["digitorum","fingers or toes"],["abdominis","abdomen"],["pectoralis","chest"],["gluteus","buttock"],["oris","mouth"],["tibialis","tibia"],["radialis","radius side"],["anterior / posterior","front / back"],["lateralis / medialis","outer / inner"]],
+ shape:[["deltoid","triangle"],["trapezius","trapezoid"],["serratus","saw-toothed"],["orbicularis","circular"],["teres","round, cord-like"],["rhomboid","diamond"]],
+ size:[["maximus","largest"],["minimus","smallest"],["longus","long"],["brevis","short"],["major","larger"],["minor","smaller"],["vastus","huge"]],
+ heads:[["biceps","2 heads"],["triceps","3 heads"],["quadriceps","4 heads"]],
+ act:[["flexor / extensor","bend / straighten"],["abductor / adductor","away from / toward midline"],["levator / depressor","lift / lower"],["pronator / supinator","palm down / palm up"]],
+ att:[["sterno-","sternum"],["cleido-","clavicle"],["-mastoid","mastoid process"],["sterno-cleido-mastoid","from sternum and clavicle to mastoid"]],
+ dir:[["rectus","straight, parallel to midline"],["oblique","slanted"],["transversus","across, at a right angle"]]
+};
+function buildClueGrid(){
+  $("#clueGrid").innerHTML=CK.map((k,i)=>`<div class="ccard" style="--k:var(${CLUES[k].col})"><div class="hd">${ICON[k]}<div><div class="num">Clue ${i+1}</div><h3>${CLUES[k].n}</h3></div></div>
+   <p>${CLUE_TEXT[k]}</p><div class="roots">${CLUE_LIST[k].map(r=>`<span class="root"><b>${r[0]}</b> = ${r[1]}</span>`).join("")}</div></div>`).join("");
+  $("#workedTiles").innerHTML=["flexor","carpi","radialis"].map(w=>tileHTML(w,ROOTS[w].c,true,ROOTS[w].m)).join("");
+}
+function tileHTML(w,c,done,m,cur){const lab=TILE_LABEL[w]||w;return `<div class="tile${done?" done":""}${cur?" cur":""}" style="--k:var(${c?CLUES[c].col:"--rule"})"><span class="w">${lab}</span><span class="tl">${done?CLUES[c].n:"? clue"}</span>${done?`<span class="mn">${m}</span>`:""}</div>`}
+
+/* ---- body map (front + back silhouettes) ---- */
+const REG={
+ fcr:{v:"f",s:[[49,192,5,22,8]],m:1},edl:{v:"f",s:[[75,340,4,26,0]],m:1},ra:{v:"f",s:[[100,152,11,40,0]]},
+ eo:{v:"f",s:[[77,160,8,25,-12]],m:1},tra:{v:"f",s:[[100,176,30,14,0]],deep:1},scm:{v:"f",s:[[95,68,3.5,13,-25]],m:1},
+ del:{v:"fb",s:[[66,99,10,14,10]],m:1},trap:{v:"b",p:"M100 50 L138 88 L120 96 L100 176 L80 96 L62 88 Z"},
+ bb:{v:"f",s:[[61,123,7,23,8]],m:1},tb:{v:"b",s:[[61,123,7,23,8]],m:1},gmax:{v:"b",s:[[86,214,14,15,0]],m:1},
+ gmin:{v:"b",s:[[83,204,8,7,0]],m:1,deep:1},al:{v:"f",s:[[92,240,5,18,-12]],m:1},pm:{v:"f",s:[[82,103,16,11,8]],m:1},
+ sa:{v:"f",s:[[71,128,5,14,0]],m:1},oo:{v:"f",s:[[100,47,6,3.5,0]]},ls:{v:"b",s:[[93,71,3.5,12,25]],m:1},
+ tia:{v:"f",s:[[84,338,4,28,0]],m:1},vl:{v:"f",s:[[73,262,7,30,3]],m:1},pt:{v:"f",s:[[55,171,3.5,12,35]],m:1},
+ sup:{v:"b",s:[[53,172,5,9,0]],m:1,deep:1},tem:{v:"f",s:[[84,27,6,11,0]],m:1}
+};
+function silhouette(ox,back){const g=[];
+  const limbs=[[66,90,56,160,18],[56,160,46,232,14],[134,90,144,160,18],[144,160,154,232,14],[84,222,80,305,28],[80,305,80,375,20],[116,222,120,305,28],[120,305,120,375,20],[100,55,100,82,18]];
+  const L=(cls,extra)=>limbs.map(l=>`<line class="${cls}" x1="${l[0]+ox}" y1="${l[1]}" x2="${l[2]+ox}" y2="${l[3]}" stroke-width="${l[4]+extra}"/>`).join("");
+  const torso=`M${64+ox} 84 Q${100+ox} 76 ${136+ox} 84 L${134+ox} 150 Q${128+ox} 180 ${132+ox} 228 L${68+ox} 228 Q${72+ox} 180 ${66+ox} 150 Z`;
+  g.push(L("sk1",3.2));
+  g.push(`<path d="${torso}" class="skP"/>`);
+  g.push(`<ellipse cx="${100+ox}" cy="36" rx="19" ry="24" class="skP"/>`);
+  [[44,246],[156,246]].forEach(h=>g.push(`<ellipse cx="${h[0]+ox}" cy="${h[1]}" rx="8" ry="13" class="skP"/>`));
+  [[78,384],[122,384]].forEach(f=>g.push(`<ellipse cx="${f[0]+ox}" cy="${f[1]}" rx="11" ry="6" class="skP"/>`));
+  g.push(L("sk2",0));
+  g.push(`<path d="M${68+ox} 150 Q${100+ox} 146 ${132+ox} 150 L${132+ox} 226 L${68+ox} 226 Z" class="skF" opacity="0"/>`);
+  const c=(d)=>g.push(`<path d="${d}" transform="translate(${ox} 0)" fill="none" stroke="var(--skin-dk)" stroke-width=".9" opacity=".55"/>`);
+  if(back){c("M74 96 L90 102 L86 140 L72 128");c("M126 96 L110 102 L114 140 L128 128");c("M80 230 Q100 236 120 230");c("M82 212 Q90 226 98 216");c("M118 212 Q110 226 102 216");c("M80 330 Q76 312 80 300");c("M120 330 Q124 312 120 300")}
+  else{c("M70 98 Q86 116 100 104 Q114 116 130 98");c("M92 132 H108 M92 150 H108 M92 168 H108");c("M100 118 V200");c("M80 300 a5 5 0 1 0 0.1 0");c("M120 300 a5 5 0 1 0 0.1 0");c("M88 214 L100 230 L112 214")}
+  if(back){g.push(`<path d="M${100+ox} 84 V200" stroke="var(--skin-dk)" stroke-width="1.2" stroke-dasharray="3 3"/>`);
+    g.push(`<path d="M${100+ox} 205 V226" stroke="var(--skin-dk)" stroke-width="1.2"/>`)}
+  else{g.push(`<circle cx="${100+ox}" cy="178" r="1.8" fill="var(--skin-dk)"/><path d="M${92+ox} 40 h4 M${104+ox} 40 h4 M${96+ox} 49 q4 2 8 0" stroke="var(--skin-dk)" stroke-width="1.2" fill="none"/>`)}
+  g.push(`<text class="vlab" x="${100+ox}" y="410" text-anchor="middle">${back?"Back (posterior)":"Front (anterior)"}</text>`);
+  return g.join("")}
+function bodySVG(key){const OX=[0,220];let s=`<svg viewBox="0 0 420 416" role="img" aria-label="${key?"Body map with the muscle region highlighted":"Front and back body outlines"}">`;
+  s+=silhouette(OX[0],false)+silhouette(OX[1],true);
+  if(key){const r=REG[key];const views=[];if(r.v.includes("f"))views.push(0);if(r.v.includes("b"))views.push(1);
+    views.forEach(vi=>{const ox=OX[vi];const cls=`hl pulse${r.deep?" deep":""}`;
+      if(r.p){s+=`<path class="${cls}" transform="translate(${ox} 0)" d="${r.p}"/>`}
+      (r.s||[]).forEach(e=>{s+=`<ellipse class="${cls}" cx="${e[0]+ox}" cy="${e[1]}" rx="${e[2]}" ry="${e[3]}" transform="rotate(${e[4]} ${e[0]+ox} ${e[1]})"/>`;
+        if(r.m)s+=`<ellipse class="${cls}" cx="${200-e[0]+ox}" cy="${e[1]}" rx="${e[2]}" ry="${e[3]}" transform="rotate(${-e[4]} ${200-e[0]+ox} ${e[1]})"/>`})})}
+  return s+"</svg>"}
+
+/* ---- detective game ---- */
+const det={set:[],i:0,ti:0,phase:"",ok:0,tot:0,streak:0,hints:0,size:8,q:[],done:false};
+const dTimer=makeTimer($("#dTimer"),$("#dRelax"),"msl-relax-d");
+function detNew(){det.set=shuffle(DM).slice(0,det.size);det.i=0;det.ok=0;det.tot=0;det.streak=0;det.hints=0;det.done=false;$("#dEnd").className="msg";$("#dT").textContent=det.set.length;dTimer.start();detMuscle()}
+function detMeter(){$("#dN").textContent=Math.min(det.i+1,det.set.length);$("#dScore").textContent=det.ok;$("#dTot").textContent=det.tot;$("#dStreak").textContent=det.streak;$("#dBar").style.width=(det.i/det.set.length*100)+"%"}
+function rec(o,first){o.tot++;if(first){o.ok++;o.streak++}else o.streak=0}
+function detMuscle(){const m=det.set[det.i];det.ti=0;det.dec=[];$("#dName").textContent=m[0];$("#dBody").innerHTML=bodySVG(null);
+  $("#dBodyCap").textContent="Decode the name, then predict where the muscle is. It will light up here.";detMeter();detTiles();detTileQ()}
+function detTiles(){const m=det.set[det.i];$("#dTiles").innerHTML=m[1].map((w,i)=>{const d=det.dec[i];return tileHTML(w,d?ROOTS[w].c:null,!!d,ROOTS[w].m,i===det.ti&&det.phase!=="predict"&&!d)}).join("")}
+function qBlock(id,label){return `<div class="qblock" id="${id}"><p class="qlab">${label}</p><div class="opts"></div><div class="why" role="status"></div></div>`}
+function detTileQ(){const m=det.set[det.i];const w=m[1][det.ti],R=ROOTS[w];det.phase="clue";detTiles();
+  const word=TILE_LABEL[w]||w;
+  $("#dQ").innerHTML=qBlock("dB1",`Tile ${det.ti+1} of ${m[1].length}: <i>${word}</i>. What kind of clue is it?`)+qBlock("dB2","");
+  $("#dB2").hidden=true;$("#dNext").hidden=true;
+  const ok=[R.c].concat(R.alt||[]);
+  const opts=CK.map(k=>({h:`<i class="k" style="background:var(${CLUES[k].col})"></i>${CLUES[k].n}`,ok:ok.includes(k),
+    why:ok.includes(k)?`"${word}" ${CLUES[k].d}: it means <b>${R.m}</b>.`+(R.alt&&k!==R.c?` (You could also call it a ${CLUES[R.c].n.toLowerCase()} clue.)`:R.alt?` (You could also call it ${R.alt.map(a=>"an "+CLUES[a].n.toLowerCase()).join(" or ")} clue.)`:""):
+      `A ${CLUES[k].n.toLowerCase()} clue ${CLUES[k].d}. "${word}" does not do that. ${CLUES[R.c].ask}`}));
+  // one option per clue; a tile with alt clues has two right answers, so mark only the first click
+  const b1=$("#dB1");
+  det.q=[MCQ(b1.querySelector(".opts"),b1.querySelector(".why"),opts,(first)=>{rec(det,first);detMeter();
+    b1.querySelectorAll(".opt").forEach(b=>b.disabled=true);detMeanQ()})];
+}
+function detMeanQ(){const m=det.set[det.i];const w=m[1][det.ti],R=ROOTS[w];det.phase="mean";const word=TILE_LABEL[w]||w;
+  const b2=$("#dB2");b2.hidden=false;b2.querySelector(".qlab").innerHTML=`What does <i>${word}</i> mean?`;
+  let pool=CLUE_ROOTS[R.c].filter(x=>x!==w&&ROOTS[x].m!==R.m);if(pool.length<3)pool=pool.concat(shuffle(Object.keys(ROOTS).filter(x=>x!==w&&ROOTS[x].c!==R.c)));
+  const ds=shuffle(pool.slice(0,Math.max(3,pool.length))).filter((x,i,a)=>a.findIndex(y=>ROOTS[y].m===ROOTS[x].m)===i).slice(0,3);
+  const opts=shuffle([{h:R.m,ok:true,why:`<i>${word}</i> = ${R.m}. ${R.tip||""}`}].concat(ds.map(d=>({h:ROOTS[d].m,ok:false,why:`"${ROOTS[d].m}" is what <i>${d}</i> means. ${R.tip?"Clue: "+R.tip:""}`}))));
+  det.q.push(MCQ(b2.querySelector(".opts"),b2.querySelector(".why"),opts,(first)=>{rec(det,first);det.dec[det.ti]=true;detTiles();detMeter();
+    const last=det.ti===m[1].length-1;$("#dNext").hidden=false;$("#dNext").textContent=last?"Put the clues together →":"Next tile →";$("#dNext").focus()}));
+}
+function detPredict(){const m=det.set[det.i];det.phase="predict";detTiles();$("#dNext").hidden=true;
+  $("#dQ").innerHTML=qBlock("dB1","Put the clues together. Where is this muscle, and what does it do?");
+  const others=shuffle(DM.filter(x=>x!==m)).slice(0,3);
+  const summary=m[1].map(w=>`<i>${TILE_LABEL[w]||w}</i> = ${ROOTS[w].m}`).join("; ");
+  const opts=shuffle([{h:`<b>Where:</b> ${m[2]}<br><b>Does:</b> ${m[3]}`,ok:true,why:`Your clues: ${summary}.`}].concat(others.map(o=>({h:`<b>Where:</b> ${o[2]}<br><b>Does:</b> ${o[3]}`,ok:false,why:`That describes the <b>${o[0]}</b>. Your clues say: ${summary}.`}))));
+  const b1=$("#dB1");b1.querySelector(".opts").classList.add("one");
+  det.q=[MCQ(b1.querySelector(".opts"),b1.querySelector(".why"),opts,(first)=>{rec(det,first);detMeter();
+    $("#dBody").innerHTML=bodySVG(m[4]);const r=REG[m[4]];
+    $("#dBodyCap").innerHTML=`<b>${m[0]}</b>: ${m[2].charAt(0).toLowerCase()+m[2].slice(1)}. Highlighted on the ${r.v==="fb"?"front and back":r.v==="f"?"front":"back"} view${r.deep?" (dashed outline = a deep muscle, under others)":""}.`;
+    b1.insertAdjacentHTML("beforeend",`<div class="summary"><b>Case closed:</b> ${m[1].map(w=>`<i>${TILE_LABEL[w]||w}</i> (${CLUES[ROOTS[w].c].n.toLowerCase()}: ${ROOTS[w].m})`).join(" + ")} &rarr; ${m[3].charAt(0).toLowerCase()+m[3].slice(1)}.</div>`);
+    $("#dNext").hidden=false;$("#dNext").textContent=det.i===det.set.length-1?"See my score":"Next muscle →";$("#dNext").focus()},true)];
+}
+$("#dNext").onclick=()=>{const m=det.set[det.i];
+  if(det.phase==="mean"){if(det.ti<m[1].length-1){det.ti++;detTileQ()}else detPredict()}
+  else if(det.phase==="predict"){if(det.i<det.set.length-1){det.i++;detMuscle()}else detEnd()}};
+function detEnd(){det.done=true;$("#dBar").style.width="100%";$("#dNext").hidden=true;const t=dTimer.stop();const n=starCount(det.ok,det.tot);saveBest("det",n);
+  $("#dEnd").innerHTML=`<span class="stars">${starStr(n)}</span><br><b>Case file complete: ${det.ok} of ${det.tot} answers right on the first try.</b> ${dTimer.relaxed()?"":"Time "+fmt(t)+". "}Hints used: ${det.hints}. ${n===3?"Detective-level work.":"Every miss is a clue you now know. Press New case to try a fresh set."}`;$("#dEnd").className="msg show good"}
+function curQ(){return (det.q||[]).filter(q=>!q.done).pop()}
+$("#dHint").onclick=()=>{if(det.done)return;const q=curQ();if(!q)return;const m=det.set[det.i];let tip="";
+  if(det.phase==="clue"){const w=m[1][det.ti];tip=CLUES[ROOTS[w].c].ask+(ROOTS[w].tip?" "+ROOTS[w].tip:"");if(q.hint(3,tip))det.hints++}
+  else if(det.phase==="mean"){const w=m[1][det.ti];tip=ROOTS[w].tip||"Think of an English word that sounds like it.";if(q.hint(1,tip))det.hints++}
+  else{tip="Read your decoded tiles above and match both the place and the movement.";if(q.hint(2,tip))det.hints++}};
+$("#dShow").onclick=()=>{if(det.done)return;const q=curQ();if(q)q.reveal()};
+$("#dRestart").onclick=detNew;
+$$("#detSize .round").forEach(b=>b.onclick=()=>{$$("#detSize .round").forEach(x=>x.setAttribute("aria-pressed",x===b));det.size=+b.dataset.n;detNew()});
+
+/* =====================================================================
+   CANVAS SETUP (Lever Lab)
+   ===================================================================== */
+const W=800,H=460;
+const C={};
+function readColors(){const s=getComputedStyle(document.documentElement);
+  ["ground","panel","panel-2","ink","ink-soft","ink-faint","rule","rule-soft","accent","good","warn","gold","muscle","muscle-dk","tendon","tendon-dk","bone","bone-dk","skin","skin-dk","shirt","fF","fL","fE","wood","wood-dk","metal","metal-dk","dirt","water","glass","accent-wash"]
+  .forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+function mkCanvas(id){const cv=document.getElementById(id);return{cv,ctx:cv.getContext("2d"),K:1}}
+const LV=mkCanvas("lvLearn"),PV=mkCanvas("lvPlay");
+function fit(o){const w=o.cv.parentElement.clientWidth;if(!w)return;const dpr=window.devicePixelRatio||1;o.cv.style.height=(w*H/W)+"px";o.cv.width=Math.round(w*dpr);o.cv.height=Math.round(w*H/W*dpr);o.K=o.cv.width/W}
+window.addEventListener("resize",()=>{fit(LV);fit(PV)});
+let ctx=LV.ctx;
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function fillStroke(f,s,lw){if(f){ctx.fillStyle=f;ctx.fill()}if(s){ctx.strokeStyle=s;ctx.lineWidth=lw||2;ctx.stroke()}}
+function circ(x,y,r,f,s,lw){ctx.beginPath();ctx.arc(x,y,r,0,TAU);fillStroke(f,s,lw)}
+function poly(pts,f,s,lw){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();fillStroke(f,s,lw)}
+function seg(x1,y1,x2,y2,col,lw,cap){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||2;ctx.lineCap=cap||"round";ctx.stroke()}
+function boneSeg(x1,y1,x2,y2,w){seg(x1,y1,x2,y2,C["bone-dk"],w+4);seg(x1,y1,x2,y2,C.bone,w)}
+function arrow(x1,y1,x2,y2,col,lw){const a=Math.atan2(y2-y1,x2-x1),h=12+lw;seg(x1,y1,x2-Math.cos(a)*h*.6,y2-Math.sin(a)*h*.6,col,lw,"butt");
+  poly([[x2,y2],[x2-Math.cos(a-.42)*h,y2-Math.sin(a-.42)*h],[x2-Math.cos(a+.42)*h,y2-Math.sin(a+.42)*h]],col)}
+function label(x,y,txt,o){o=o||{};const size=o.size||14;ctx.font=`${o.weight||600} ${size}px "IBM Plex Sans",system-ui,sans-serif`;ctx.textAlign=o.align||"center";ctx.textBaseline="middle";
+  if(o.pill!==false){const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+    ctx.globalAlpha=.92;ctx.fillStyle=C.panel;rr(x0-6,y-size*.78,w+12,size*1.56,5);ctx.fill();ctx.globalAlpha=1;if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.6;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5)}
+function R(px,py,th,x,y){const c=Math.cos(th),s=Math.sin(th);return[px+x*c-y*s,py+x*s+y*c]}
+function inRot(px,py,th,fn){ctx.save();ctx.translate(px,py);ctx.rotate(th);fn();ctx.restore()}
+function groundLine(y,x0,x1){seg(x0||30,y,x1||770,y,C["ink-faint"],2);for(let x=(x0||30)+8;x<(x1||770);x+=18)seg(x,y+2,x-9,y+11,C["ink-faint"],1.2)}
+function hand(x,y,r){circ(x,y,r||15,C.skin,C["skin-dk"],2)}
+
+/* ---- the 12 lever examples ---- */
+const EX={
+ seesaw:{name:"Seesaw",cls:1,cap:"A child sits on the left end and pushes down. The heavy box on the right end goes up.",
+  why:"The pivot under the middle of the plank is the fulcrum, with the effort (child) on one side and the load (box) on the other.",
+  draw(a){const px=400,py=330,th=.12-.24*a;groundLine(402);poly([[px,py],[px-48,402],[px+48,402]],C.metal,C["metal-dk"],2);
+   inRot(px,py,th,()=>{rr(-290,-14,580,14,4);fillStroke(C.wood,C["wood-dk"],2);
+    rr(165,-86,110,72,4);fillStroke(C.wood,C["wood-dk"],2.5);seg(165,-86,275,-14,C["wood-dk"],2);seg(275,-86,165,-14,C["wood-dk"],2);
+    rr(-238,-78,36,50,8);fillStroke(C.shirt,null);seg(-232,-30,-262,-22,C.shirt,12);seg(-262,-22,-262,-2,C.skin,9);circ(-220,-96,17,C.skin,C["skin-dk"],2);
+    seg(-214,-66,-196,-26,C.skin,8);});
+   circ(px,py,6,C["metal-dk"]);
+   return{F:[px,py],E:R(px,py,th,-220,-10),L:R(px,py,th,220,-10),eV:[0,1],ePush:1,lV:[0,1]}}},
+ scissors:{name:"Scissors",cls:1,cap:"Fingers squeeze the handles. The blades close on the paper being cut.",
+  why:"The screw in the middle is the fulcrum. The effort is at the handles on one side and the load (the paper being cut) is on the other.",
+  draw(a){const px=380,py=230,ph=lerp(.3,.07,a);
+   rr(530,150,230,160,4);fillStroke(C.panel,C.rule,2);ctx.setLineDash([6,5]);seg(530,230,530+40+60*a,230,C["ink-faint"],2);ctx.setLineDash([]);
+   [1,-1].forEach(sg=>inRot(px,py,sg*ph,()=>{ctx.beginPath();ctx.arc(-240,0,34,0,TAU);ctx.strokeStyle=C.accent;ctx.lineWidth=12;ctx.stroke();
+     seg(-206,0,0,0,C["metal-dk"],12);poly([[-4,-9],[260,-1],[260,3],[-4,10]],C.metal,C["metal-dk"],2)}));
+   circ(px,py,9,C["metal-dk"],C.panel,2);
+   return{F:[px,py],E:[px-240,py],L:[px+170,py],eV:[0,1],ePush:1,lV:[0,-1]}}},
+ hammer:{name:"Claw hammer pulling a nail",cls:1,cap:"A hand pulls the handle to the right. The claw pries a stuck nail up out of the board.",
+  why:"The head rocks on the board: that contact point is the fulcrum. The nail (load) is on one side of it and the hand (effort) is on the other, at the end of the handle.",
+  draw(a){const px=420,py=330,th=lerp(-.12,.42,a);const nh=R(px,py,th,-94,-12);
+   seg(nh[0],nh[1],nh[0],nh[1]+120,C["metal-dk"],6,"butt");rr(nh[0]-10,nh[1]-4,20,7,2);fillStroke(C["metal-dk"]);
+   rr(80,330,640,58,4);fillStroke(C.wood,C["wood-dk"],2);for(let x=110;x<700;x+=70)seg(x,346,x+40,346,C["wood-dk"],1.2);
+   inRot(px,py,th,()=>{rr(-11,-280,22,240,8);fillStroke(C.wood,C["wood-dk"],2);
+    ctx.beginPath();ctx.moveTo(-26,-58);ctx.quadraticCurveTo(-70,-60,-96,-14);ctx.strokeStyle=C["metal-dk"];ctx.lineWidth=15;ctx.lineCap="round";ctx.stroke();
+    rr(-30,-76,66,40,6);fillStroke(C.metal,C["metal-dk"],2);ctx.beginPath();ctx.ellipse(2,-20,26,20,0,0,TAU);fillStroke(C.metal,C["metal-dk"],2);rr(36,-70,12,28,3);fillStroke(C["metal-dk"])});
+   const e=R(px,py,th,0,-262);hand(e[0],e[1],18);
+   return{F:[px,py],L:nh,E:e,eV:[1,0],lV:[0,1]}}},
+ wheel:{name:"Wheelbarrow",cls:2,cap:"The wheel's axle stays in place. Hands lift the handles to raise a tub full of soil.",
+  why:"The axle is the fulcrum at one end, the soil (load) is in the middle, and the hands (effort) lift at the far end.",
+  draw(a){const px=200,py=352,th=lerp(.1,-.08,a);groundLine(398);
+   inRot(px,py,th,()=>{seg(0,-8,440,-16,C["wood-dk"],10);seg(300,-14,300,16,C["wood-dk"],8);
+    poly([[40,-22],[330,-22],[362,-118],[14,-118]],C.metal,C["metal-dk"],2.5);
+    ctx.beginPath();ctx.moveTo(26,-116);ctx.quadraticCurveTo(110,-176,190,-150);ctx.quadraticCurveTo(290,-170,350,-116);ctx.closePath();fillStroke(C.dirt,C["wood-dk"],1.5)});
+   circ(px,py,44,C["ink-soft"],C.ink,2);circ(px,py,30,C.panel);for(let k=0;k<6;k++){const an=k/6*TAU+a*2;seg(px,py,px+Math.cos(an)*30,py+Math.sin(an)*30,C["ink-soft"],3)}circ(px,py,7,C["metal-dk"]);
+   const e=R(px,py,th,430,-16);hand(e[0],e[1]);
+   return{F:[px,py],L:R(px,py,th,180,-22),E:e,eV:[0,-1],lV:[0,1]}}},
+ nut:{name:"Nutcracker",cls:2,cap:"The two arms are hinged at the left end. Hands squeeze the far ends to crack the nut.",
+  why:"The hinge is the fulcrum, the nut (load) sits in the middle, and the hands (effort) squeeze at the far end.",
+  draw(a){const px=170,py=240,ph=lerp(.15,.055,a);const gap=170*Math.sin(ph)-7;
+   ctx.beginPath();ctx.ellipse(px+170,py,Math.max(gap+4,14),Math.max(gap,9),0,0,TAU);fillStroke(C.wood,C["wood-dk"],2.5);
+   if(a>.62){seg(px+160,py-gap,px+176,py,C["wood-dk"],2);seg(px+176,py,px+166,py+gap,C["wood-dk"],2)}
+   [-1,1].forEach(sg=>inRot(px,py,sg*ph,()=>{rr(0,-8,520,16,8);fillStroke(C.metal,C["metal-dk"],2)}));
+   circ(px,py,15,C["metal-dk"],C.panel,2);
+   const h1=R(px,py,-ph,470,0),h2=R(px,py,ph,470,0);hand(h1[0],h1[1]-14);hand(h2[0],h2[1]+14);
+   return{F:[px,py],L:[px+170,py],E:[px+470,py],eV:[0,1],ePush:1,lV:[0,-1]}}},
+ opener:{name:"Bottle opener",cls:2,cap:"The tip of the opener rests on top of the cap. A hand lifts the handle, and the hook pries up the edge of the cap.",
+  why:"The tip resting on top of the cap is the fulcrum, the cap edge caught by the hook (load) is in the middle, and the hand (effort) lifts at the end of the handle.",
+  draw(a){const px=180,py=200,th=lerp(.03,-.15,a);
+   rr(140,330,180,130,16);fillStroke(C.glass,C["ink-soft"],2);poly([[186,332],[274,332],[262,244],[198,244]],C.glass,C["ink-soft"],2);
+   inRot(px,py,th-.03,()=>{rr(-8,4,118,40,5);fillStroke(C["metal-dk"],C.ink,1.5);for(let x=-4;x<108;x+=12)seg(x,44,x+6,50,C.ink,2.5)});
+   inRot(px,py,th,()=>{rr(-10,-18,520,22,10);fillStroke(C.metal,C["metal-dk"],2);ctx.beginPath();ctx.moveTo(92,0);ctx.lineTo(112,52);ctx.lineTo(128,46);ctx.strokeStyle=C["metal-dk"];ctx.lineWidth=10;ctx.lineJoin="round";ctx.stroke();
+    ctx.beginPath();ctx.arc(470,-7,9,0,TAU);fillStroke(C.panel,C["metal-dk"],2)});
+   const e=R(px,py,th,470,-7);hand(e[0],e[1]+18,18);
+   return{F:[px,py],L:R(px,py,th,114,48),E:e,eV:[0,-1],lV:[0,1]}}},
+ tweez:{name:"Tweezers",cls:3,cap:"The tweezers are joined at the left end. Fingers press in the middle, and the tips pinch a tiny splinter.",
+  why:"The joined end is the fulcrum, the fingers (effort) press in the middle, and the splinter at the tips is the load.",
+  draw(a){const px=170,py=230,ph=lerp(.11,.02,a);
+   rr(640,226,36,7,3);fillStroke(C.wood,C["wood-dk"],1.5);
+   [-1,1].forEach(sg=>inRot(px,py,sg*ph,()=>{poly([[0,-7],[470,-2],[480,0],[470,3],[0,7]],C.metal,C["metal-dk"],2)}));
+   rr(px-22,py-12,26,24,6);fillStroke(C["metal-dk"]);
+   const e1=R(px,py,-ph,230,-6),e2=R(px,py,ph,230,6);hand(e1[0],e1[1]-15);hand(e2[0],e2[1]+15);
+   return{F:[px,py],E:[px+230,py],L:[px+472,py],eV:[0,1],ePush:1,lV:[0,-1]}}},
+ rod:{name:"Fishing rod",cls:3,cap:"The back hand holds the end of the rod still. The front hand pulls up, and the tip lifts the fish.",
+  why:"The back hand at the butt of the rod is the fulcrum, the front hand (effort) is in the middle, and the fish pulling on the tip is the load.",
+  draw(a){const px=150,py=390,th=lerp(-.45,-.68,a);rr(380,410,420,50,0);fillStroke(C.water);
+   const tip=R(px,py,th,520,0);seg(tip[0],tip[1],tip[0],tip[1]+118,C["ink-soft"],1.5);
+   const fx=tip[0],fy=tip[1]+140;ctx.beginPath();ctx.ellipse(fx,fy,14,26,0,0,TAU);fillStroke(C.accent,C["ink"],1.5);poly([[fx,fy+20],[fx-14,fy+44],[fx+14,fy+44]],C.accent,C.ink,1.5);circ(fx-4,fy-12,2.5,C.panel);
+   inRot(px,py,th,()=>{poly([[-10,-8],[520,-2],[520,2],[-10,8]],C["wood-dk"]);circ(70,14,13,C["metal-dk"])});
+   hand(px,py,17);const e=R(px,py,th,170,0);hand(e[0],e[1],17);
+   return{F:[px,py],E:e,L:R(px,py,th,505,0),eV:[0,-1],lV:[0,1]}}},
+ shovel:{name:"Shovel",cls:3,cap:"The top hand stays put at the end of the handle. The lower hand lifts, and the blade raises a scoop of dirt.",
+  why:"The top hand is the fulcrum, the lower hand (effort) is in the middle, and the dirt on the blade is the load.",
+  draw(a){const px=150,py=150,th=lerp(.55,.36,a);
+   ctx.beginPath();ctx.moveTo(470,460);ctx.quadraticCurveTo(620,360,790,460);fillStroke(C.dirt);
+   inRot(px,py,th,()=>{rr(-24,-12,26,24,8);fillStroke(C["wood-dk"]);seg(0,0,402,0,C.wood,13);
+    poly([[398,-30],[500,-24],[510,0],[500,24],[398,30]],C.metal,C["metal-dk"],2);
+    ctx.beginPath();ctx.ellipse(450,-34,50,15,0,Math.PI,TAU);fillStroke(C.dirt)});
+   hand(px,py,17);const e=R(px,py,th,180,0);hand(e[0],e[1],17);
+   return{F:[px,py],E:e,L:R(px,py,th,450,0),eV:[0,-1],lV:[0,1]}}},
+ head:{name:"Nodding your head back",cls:1,body:1,cap:"The skull balances on top of the vertebral column. Neck muscles pull down on the back of the skull, and the face tips up.",
+  why:"The atlanto-occipital joint is the fulcrum, with the neck muscles' pull (effort) behind it and the weight of the face (load) in front of it.",
+  draw(a){const px=400,py=252,th=lerp(.1,-.17,a);
+   for(let k=0;k<6;k++){const cx=400-k*6,cy=282+k*30;rr(cx-62,cy-5,44,11,4);fillStroke(C.bone,C["bone-dk"],1.5);rr(cx-26,cy-12,54,24,5);fillStroke(C.bone,C["bone-dk"],2)}
+   const e=R(px,py,th,-96,-30),anc=[330,436];
+   ctx.beginPath();ctx.moveTo(e[0],e[1]);ctx.quadraticCurveTo(300,320,anc[0],anc[1]);ctx.strokeStyle=C["muscle-dk"];ctx.lineWidth=24+8*a;ctx.lineCap="round";ctx.stroke();ctx.strokeStyle=C.muscle;ctx.lineWidth=20+8*a;ctx.stroke();
+   inRot(px,py,th,()=>{ctx.beginPath();ctx.moveTo(-92,-58);ctx.bezierCurveTo(-122,-150,-20,-232,62,-216);ctx.bezierCurveTo(150,-200,178,-126,168,-72);
+     ctx.lineTo(176,-36);ctx.lineTo(156,-16);ctx.lineTo(164,22);ctx.bezierCurveTo(152,54,112,60,72,50);ctx.lineTo(62,8);ctx.lineTo(22,-8);ctx.lineTo(-44,-18);ctx.bezierCurveTo(-82,-24,-96,-40,-92,-58);ctx.closePath();
+     fillStroke(C.bone,C["bone-dk"],2.5);ctx.beginPath();ctx.ellipse(112,-96,22,17,0,0,TAU);fillStroke(C["panel-2"],C["bone-dk"],2);
+     seg(72,48,40,4,C["bone-dk"],2);ctx.beginPath();ctx.ellipse(0,-4,14,8,0,0,TAU);fillStroke(C["bone-dk"])});
+   return{F:[px,py],E:e,L:R(px,py,th,92,-50),eV:[anc[0]-e[0],anc[1]-e[1]],lV:[0,1]}}},
+ toe:{name:"Standing on tiptoes",cls:2,body:1,cap:"The ball of the foot stays on the floor. The calf muscles pull up on the heel and lift the body's weight, which rests on the ankle.",
+  why:"The ball of the foot is the fulcrum, the body weight on the ankle (load) is in the middle, and the calf muscles' pull on the heel (effort) is at the far end.",
+  draw(a){const px=540,py=402,th=lerp(0,.34,a);groundLine(412);
+   seg(px,py-6,px+74,py+2,C["bone-dk"],14);seg(px,py-6,px+74,py+2,C.bone,10);
+   const A=R(px,py,th,-150,-58);
+   boneSeg(A[0]-26,A[1]-8,A[0]-26,A[1]-220,8);boneSeg(A[0],A[1]-12,A[0],A[1]-232,20);
+   inRot(px,py,th,()=>{seg(-140,-46,-6,-8,C["bone-dk"],18);seg(-140,-46,-6,-8,C.bone,14);poly([[-168,-62],[-238,-44],[-242,-8],[-160,-14]],C.bone,C["bone-dk"],2.5);circ(-150,-58,18,C.bone,C["bone-dk"],2.5)});
+   const E=R(px,py,th,-238,-28);
+   ctx.beginPath();ctx.moveTo(A[0]-12,A[1]-226);ctx.bezierCurveTo(A[0]-84,A[1]-205,A[0]-80,A[1]-122,A[0]-42,A[1]-88);ctx.bezierCurveTo(A[0]-26,A[1]-122,A[0]-16,A[1]-180,A[0]-12,A[1]-226);ctx.closePath();fillStroke(C.muscle,C["muscle-dk"],2);
+   seg(A[0]-42,A[1]-92,E[0],E[1],C["tendon-dk"],10);seg(A[0]-42,A[1]-92,E[0],E[1],C.tendon,7);
+   return{F:[px,py],L:A,E:E,eV:[0,-1],lV:[0,1]}}},
+ bic:{name:"Biceps flexing the elbow",cls:3,body:1,cap:"The elbow is the hinge. The biceps pulls on the forearm just below the elbow to lift a weight in the hand.",
+  why:"The elbow joint is the fulcrum, the biceps insertion (effort) is in the middle, and the weight in the hand (load) is at the far end.",
+  draw(a){const px=250,py=334,th=lerp(.12,-.95,a);
+   ctx.beginPath();ctx.moveTo(150,40);ctx.lineTo(236,48);ctx.lineTo(214,140);ctx.closePath();fillStroke(C.bone,C["bone-dk"],2);
+   boneSeg(250,72,250,322,24);circ(250,64,20,C.bone,C["bone-dk"],2.5);
+   inRot(px,py,th,()=>{seg(-14,10,300,8,C["bone-dk"],16);seg(-14,10,300,8,C.bone,12);seg(0,-6,300,-6,C["bone-dk"],18);seg(0,-6,300,-6,C.bone,14);
+    rr(296,-18,48,36,14);fillStroke(C.skin,C["skin-dk"],2);rr(320,-62,22,124,4);fillStroke(C["metal-dk"]);rr(306,-74,50,22,5);fillStroke(C["ink-soft"]);rr(306,52,50,22,5);fillStroke(C["ink-soft"])});
+   circ(px,py,13,C.bone,C["bone-dk"],2.5);
+   const I=R(px,py,th,62,-16),O=[266,84],f=a;
+   const mid=[(O[0]+I[0])/2+30+30*f,(O[1]+I[1])/2];
+   ctx.beginPath();ctx.moveTo(O[0],O[1]+24);ctx.quadraticCurveTo(mid[0]+26,mid[1],I[0]+6,I[1]-26);ctx.strokeStyle=C["muscle-dk"];ctx.lineWidth=34+14*f;ctx.lineCap="round";ctx.stroke();ctx.strokeStyle=C.muscle;ctx.lineWidth=30+14*f;ctx.stroke();
+   seg(O[0],O[1],O[0],O[1]+24,C["tendon-dk"],7);seg(O[0],O[1],O[0],O[1]+24,C.tendon,4);seg(I[0]+6,I[1]-26,I[0],I[1],C["tendon-dk"],7);seg(I[0]+6,I[1]-26,I[0],I[1],C.tendon,4);
+   return{F:[px,py],E:I,L:R(px,py,th,330,0),eV:[O[0]-I[0],O[1]-I[1]],lV:[0,1]}}}
+};
+const EX_ORDER=["seesaw","scissors","hammer","wheel","nut","opener","tweez","rod","shovel","head","toe","bic"];
+const VB={seesaw:[90,170,710,410],head:[230,20,620,445],wheel:[140,120,690,405],toe:[230,60,640,420],tweez:[130,150,700,310],bic:[130,30,620,420]};
+const KCOL={F:"fF",L:"fL",E:"fE"},KNAME={F:"Fulcrum",L:"Load",E:"Effort"};
+const phase=t=>.5-.5*Math.cos(t*1.35);
+function norm(v){const l=Math.hypot(v[0],v[1])||1;return[v[0]/l,v[1]/l]}
+function marker(x,y,k,r,ring){r=r||19;if(ring){circ(x,y,r+5,null,ring,3)}circ(x,y,r,C[KCOL[k]],C.panel,2.5);ctx.font=`700 ${Math.round(r*1.05)}px "IBM Plex Mono",monospace`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.panel;ctx.fillText(k,x,y+1)}
+function forceArrows(sp,sc){sc=sc||1;const e=norm(sp.eV),l=norm(sp.lV);const r=20*sc,len=78*sc;
+  if(sp.ePush)arrow(sp.E[0]-e[0]*(len+r),sp.E[1]-e[1]*(len+r),sp.E[0]-e[0]*r,sp.E[1]-e[1]*r,C.fE,5*sc);
+  else arrow(sp.E[0]+e[0]*r,sp.E[1]+e[1]*r,sp.E[0]+e[0]*(len+r),sp.E[1]+e[1]*(len+r),C.fE,5*sc);
+  arrow(sp.L[0]+l[0]*r,sp.L[1]+l[1]*r,sp.L[0]+l[0]*(len+r),sp.L[1]+l[1]*(len+r),C.fL,5*sc)}
+
+/* ---- learn canvas ---- */
+const LCLS=[
+ {t:"First class lever",mid:"F",ev:"seesaw",bd:"head",every:"<b>Everyday examples:</b> seesaw, scissors, a claw hammer pulling a nail, pliers.",
+  body:"<b>In your body: nodding your head back (extension).</b> The <b>atlanto-occipital joint</b>, where the occipital bone rests on the atlas (C1), is the fulcrum. The weight of the face, in front of the joint, is the load. Muscles at the back of the neck pull down on the occipital bone: that is the effort, and the chin lifts.",
+  ma:"First-class levers can go either way. If the fulcrum is closer to the load, you gain force. If it is closer to the effort, you gain speed and range of motion. In the head, the two arms are about the same length, so the job is mostly balance."},
+ {t:"Second class lever",mid:"L",ev:"wheel",bd:"toe",every:"<b>Everyday examples:</b> wheelbarrow, nutcracker, bottle opener.",
+  body:"<b>In your body: standing on your tiptoes (plantar flexion).</b> The <b>ball of the foot</b> stays on the floor as the fulcrum. Your body weight presses down through the tibia onto the ankle: that is the load, in the middle. The calf muscles (gastrocnemius and soleus) pull up on the calcaneus through the <b>calcaneal (Achilles) tendon</b>: that is the effort.",
+  ma:"The load sits between the fulcrum and the effort, so the effort arm is always <b>longer</b> than the load arm. That gives a <b>force advantage</b>: a smaller effort can move a bigger load, but the load moves only a short distance. Second-class levers are uncommon in the body."},
+ {t:"Third class lever",mid:"E",ev:"tweez",bd:"bic",every:"<b>Everyday examples:</b> tweezers, a fishing rod, a shovel, a broom.",
+  body:"<b>In your body: flexing your elbow with the biceps brachii.</b> The <b>elbow joint</b> is the fulcrum. The biceps pulls on the <b>radial tuberosity</b>, just below the elbow: that is the effort, in the middle. The forearm, hand, and anything you hold are the load. This is the <b>most common lever in the body</b>.",
+  ma:"The effort sits between the fulcrum and the load, so the effort arm is always <b>shorter</b> than the load arm. The muscle must pull harder than the load weighs. In exchange, a short pull near the joint swings the hand a long way, fast. Third-class levers <b>trade force for speed and range of motion</b>."}
+];
+let lcls=0;
+function setLcls(i){lcls=i;const c=LCLS[i];$$("#lvCls .round").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.c===i));
+  $("#lvTitle").textContent=c.t+": "+c.mid+" in the middle";
+  $("#lvMnemo").innerHTML=[["1","F","1st class"],["2","L","2nd class"],["3","E","3rd class"]].map((m,k)=>`<div class="${k===i?"on":""}"><b>${m[0]} &middot; ${m[1]}</b><span>${m[2]}: ${m[1]} in the middle${k===i?" (this one)":""}</span></div>`).join("");
+  $("#lvEvery").innerHTML=c.every;$("#lvBody").innerHTML=c.body;$("#lvMA").innerHTML=c.ma;
+  $("#lvCap").textContent=`Left: ${EX[c.ev].name.toLowerCase()}. Right: ${EX[c.bd].name.toLowerCase()}. Both are ${c.t.toLowerCase()}s.`;
+  LV.cv.setAttribute("aria-label",`Animated ${c.t}. Left: ${EX[c.ev].name}. ${EX[c.ev].cap} Right: ${EX[c.bd].name}. ${EX[c.bd].cap} Fulcrum, load and effort are marked F, L and E, with the ${c.mid} in the middle.`)}
+$$("#lvCls .round").forEach(b=>b.onclick=()=>setLcls(+b.dataset.c));
+function drawPane(ox,key,a,title){const ex=EX[key],v=VB[key];const S=Math.min(376/(v[2]-v[0]),228/(v[3]-v[1]));
+  const tx=ox+200-(v[0]+v[2])/2*S,ty=40+114-(v[1]+v[3])/2*S;
+  ctx.save();ctx.beginPath();ctx.rect(ox,0,400,H);ctx.clip();
+  ctx.save();ctx.beginPath();ctx.rect(ox+4,36,392,236);ctx.clip();ctx.translate(tx,ty);ctx.scale(S,S);const sp=ex.draw(a);ctx.restore();
+  const T=p=>[tx+p[0]*S,ty+p[1]*S];const s2={F:T(sp.F),L:T(sp.L),E:T(sp.E),eV:sp.eV,lV:sp.lV,ePush:sp.ePush};
+  forceArrows(s2,.75);
+  ["F","L","E"].forEach(k=>marker(s2[k][0],s2[k][1],k,15));
+  label(ox+200,22,title,{size:15});
+  // order strip
+  const ord=["F","L","E"].sort((p,q)=>s2[p][0]-s2[q][0]);const y0=300;
+  ord.forEach((k,i)=>{const x=ox+200+(i-1)*84;rr(x-34,y0-24,68,48,8);fillStroke(C.panel,i===1?C.gold:C.rule,i===1?3.5:1.5);
+    ctx.font='700 22px "IBM Plex Mono",monospace';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C[KCOL[k]];ctx.fillText(k,x,y0+1);
+    if(i<2)seg(x+38,y0,x+46,y0,C["ink-faint"],2)});
+  label(ox+200,y0+40,`${ord[1]} (${KNAME[ord[1]].toLowerCase()}) is in the middle`,{size:13,color:C["ink-soft"],pill:false});
+  // arm bars
+  const ea=Math.hypot(s2.E[0]-s2.F[0],s2.E[1]-s2.F[1]),la=Math.hypot(s2.L[0]-s2.F[0],s2.L[1]-s2.F[1]);const mx=Math.max(ea,la),bw=210;
+  [["Effort arm",ea,C.fE,384],["Load arm",la,C.fL,414]].forEach(r=>{label(ox+96,r[3],r[0],{size:13,align:"right",pill:false});rr(ox+104,r[3]-7,bw,14,7);fillStroke(C["rule-soft"]);rr(ox+104,r[3]-7,Math.max(14,bw*r[1]/mx),14,7);fillStroke(r[2])});
+  const ratio=ea/la;label(ox+200,442,ratio>1.25?"Longer effort arm: force advantage":ratio<.8?"Shorter effort arm: speed and range advantage":"Arms about equal: balance",{size:12.5,color:C.ink,pill:false});
+  ctx.restore()}
+function drawLearn(){ctx=LV.ctx;ctx.setTransform(LV.K,0,0,LV.K,0,0);ctx.clearRect(0,0,W,H);const a=phase(T);const c=LCLS[lcls];
+  drawPane(0,c.ev,a,"Everyday: "+EX[c.ev].name.toLowerCase());seg(400,14,400,H-14,C.rule,1.5);drawPane(400,c.bd,a,"In your body: "+EX[c.bd].name.toLowerCase())}
+
+/* ---- play canvas: lever sort ---- */
+const lev={set:[],i:0,placed:{},cls:null,sel:null,first:true,solved:false,ok:0,streak:0,hints:0,shown:false,spotOrder:[],marks:null,done:false};
+const lTimer=makeTimer($("#lTimer"),$("#lRelax"),"msl-relax-l");
+let lastSpots=[];
+function levNew(){lev.set=shuffle(EX_ORDER);lev.i=0;lev.ok=0;lev.streak=0;lev.hints=0;lev.done=false;$("#lT").textContent=lev.set.length;lTimer.start();levItem()}
+function levItem(){const ex=EX[lev.set[lev.i]];lev.placed={F:null,L:null,E:null};lev.cls=null;lev.sel=null;lev.first=true;lev.solved=false;lev.shown=false;lev.marks=null;
+  ctx=PV.ctx;ctx.save();ctx.setTransform(.0001,0,0,.0001,0,0);const sp=ex.draw(0);ctx.restore();
+  lev.spotOrder=["F","L","E"].sort((p,q)=>(sp[p][0]-sp[q][0])||(sp[p][1]-sp[q][1]));
+  $("#lName").textContent=ex.name;$("#lCap").textContent=ex.cap;$("#lMsg").className="msg";$("#lNext").hidden=true;
+  $("#lN").textContent=lev.i+1;$("#lScore").textContent=lev.ok;$("#lStreak").textContent=lev.streak;$("#lBar").style.width=(lev.i/lev.set.length*100)+"%";
+  PV.cv.setAttribute("aria-label",`Lever drawing: ${ex.name}. ${ex.cap} Three numbered spots to label as fulcrum, load and effort.`);
+  levUI()}
+function spotOf(k){return lev.placed[k]}
+function levUI(){
+  $("#lTray").innerHTML=["F","L","E"].map(k=>`<button type="button" class="mchip" data-k="${k}" style="--c:var(--${KCOL[k]})" aria-pressed="${lev.sel===k}"><span class="L">${k}</span>${KNAME[k]}<span class="where">${spotOf(k)!=null?"on spot "+(spotOf(k)+1):"not placed"}</span></button>`).join("");
+  $("#lSpots").innerHTML=[0,1,2].map(i=>{const k=["F","L","E"].find(q=>lev.placed[q]===i);return `<button type="button" class="tbtn" data-s="${i}">Spot ${i+1}: ${k?k+" ("+KNAME[k]+")":"empty"}</button>`}).join("");
+  $("#lCls").innerHTML=["First class","Second class","Third class"].map((n,i)=>`<button type="button" class="opt" data-c="${i+1}" aria-pressed="${lev.cls===i+1}">${n}<br><span style="font-size:12.5px;color:var(--ink-soft)">${["F","L","E"][i]} in the middle</span></button>`).join("");
+  $$("#lTray .mchip").forEach(bindChip);
+  $$("#lSpots .tbtn").forEach(b=>b.onclick=()=>tapSpot(+b.dataset.s));
+  $$("#lCls .opt").forEach(b=>b.onclick=()=>{if(lev.solved)return;lev.cls=+b.dataset.c;lev.marks=null;levUI()});
+}
+function assign(k,idx){if(lev.solved)return;["F","L","E"].forEach(q=>{if(lev.placed[q]===idx)lev.placed[q]=null});lev.placed[k]=idx;lev.sel=null;lev.marks=null;levUI()}
+function tapSpot(idx){if(lev.solved)return;if(lev.sel){assign(lev.sel,idx);return}
+  const k=["F","L","E"].find(q=>lev.placed[q]===idx);if(k){lev.placed[k]=null;lev.marks=null;levUI()}}
+let drag=null,justDragged=false;
+function bindChip(ch){const k=ch.dataset.k;
+  ch.addEventListener("pointerdown",e=>{if(lev.solved)return;drag={k,x0:e.clientX,y0:e.clientY,moved:false,g:null};try{ch.setPointerCapture(e.pointerId)}catch(_){}});
+  ch.addEventListener("pointermove",e=>{if(!drag)return;if(!drag.moved&&Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)>6){drag.moved=true;const g=document.createElement("div");g.className="ghost";g.textContent=k;g.style.background=`var(--${KCOL[k]})`;document.body.appendChild(g);drag.g=g}
+    if(drag.g){drag.g.style.left=e.clientX+"px";drag.g.style.top=e.clientY+"px"}});
+  const end=e=>{if(!drag)return;if(drag.moved){justDragged=true;dropAt(drag.k,e.clientX,e.clientY);if(drag.g)drag.g.remove()}drag=null};
+  ch.addEventListener("pointerup",end);ch.addEventListener("pointercancel",()=>{if(drag&&drag.g)drag.g.remove();drag=null});
+  ch.addEventListener("click",()=>{if(justDragged){justDragged=false;return}if(lev.solved)return;lev.sel=lev.sel===k?null:k;levUI();const nb=$(`#lTray .mchip[data-k="${k}"]`);if(nb)nb.focus()})}
+function toLogical(cx,cy){const r=PV.cv.getBoundingClientRect();return[(cx-r.left)/r.width*W,(cy-r.top)/r.height*H,r]}
+function nearestSpot(x,y,maxd){let best=-1,bd=maxd;lastSpots.forEach((p,i)=>{const d=Math.hypot(p[0]-x,p[1]-y);if(d<bd){bd=d;best=i}});return best}
+function dropAt(k,cx,cy){const[x,y,r]=toLogical(cx,cy);if(cx<r.left||cx>r.right||cy<r.top||cy>r.bottom)return;const i=nearestSpot(x,y,80);if(i>=0)assign(k,i)}
+PV.cv.addEventListener("click",e=>{const[x,y]=toLogical(e.clientX,e.clientY);const i=nearestSpot(x,y,lev.sel?90:45);if(i>=0)tapSpot(i)});
+function drawPlay(){ctx=PV.ctx;ctx.setTransform(PV.K,0,0,PV.K,0,0);ctx.clearRect(0,0,W,H);const ex=EX[lev.set[lev.i]];if(!ex)return;const a=phase(T);
+  const sp=ex.draw(a);lastSpots=lev.spotOrder.map(k=>sp[k]);const z=clamp(560/(PV.cv.clientWidth||800),1,1.9);
+  if(lev.solved)forceArrows(sp,1);
+  lastSpots.forEach((p,i)=>{const k=["F","L","E"].find(q=>lev.placed[q]===i);
+    if(k){const mk=lev.marks?lev.marks[k]:null;marker(p[0],p[1],k,20*z,mk===true?C.good:mk===false?C.warn:null);
+      if(mk!=null)label(p[0]+30*z,p[1]-28*z,mk?"✓":"✗",{size:15*z,color:mk?C.good:C.warn,border:mk?C.good:C.warn});
+      if(lev.solved)label(p[0],p[1]+38*z,KNAME[k],{size:14*z,border:C[KCOL[k]]})}
+    else{ctx.setLineDash([5,4]);circ(p[0],p[1],20*z,C.panel,C.ink,2.2);ctx.setLineDash([]);ctx.font=`700 ${Math.round(16*z)}px "IBM Plex Mono",monospace`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=C.ink;ctx.fillText(String(i+1),p[0],p[1]+1)}});
+  if(lev.sel){label(400,20,`Tap a numbered spot to place ${lev.sel} (${KNAME[lev.sel]})`,{size:14*z,border:C.gold})}
+  if(lev.solved){const ord=lev.spotOrder.slice().sort((p,q)=>sp[p][0]-sp[q][0]);label(400,20,`${ord.join(" · ")}   →   ${["First","Second","Third"][ex.cls-1]} class: ${["F","L","E"][ex.cls-1]} in the middle`,{size:Math.min(15*z,22),border:C.good})}}
+function levSetMsg(h,c){$("#lMsg").innerHTML=h;$("#lMsg").className="msg show "+c}
+const KHINT={F:"The fulcrum is the pivot point that stays still.",L:"The load is the thing being moved, or what resists the movement.",E:"The effort is where the push or pull is applied."};
+$("#lCheck").onclick=()=>{if(lev.solved||lev.done)return;const ex=EX[lev.set[lev.i]];
+  if(["F","L","E"].some(k=>lev.placed[k]==null)||!lev.cls){levSetMsg("Place all three markers and pick a class first.","warn");return}
+  const right={};lev.spotOrder.forEach((k,i)=>right[k]=i);
+  const marks={};["F","L","E"].forEach(k=>marks[k]=lev.placed[k]===right[k]);lev.marks=marks;
+  const allM=marks.F&&marks.L&&marks.E,clsOk=lev.cls===ex.cls;
+  if(allM&&clsOk){levWin(false);return}
+  lev.first=false;let h="<b>Not quite.</b> ";
+  if(!allM){const bad=["F","L","E"].filter(k=>!marks[k]);h+=`${bad.join(" and ")} ${bad.length>1?"need":"needs"} another look. ${bad.map(k=>KHINT[k]).join(" ")} `}
+  else h+="All three markers are in the right place. ";
+  if(!clsOk){const mid=["F","L","E"][lev.cls-1];h+=allM?`You picked ${["first","second","third"][lev.cls-1]} class, which needs ${mid} in the middle. Look at your markers: which letter sits between the other two? Remember 1-2-3, F-L-E.`:`(Fix the markers first, then the class will follow: 1-2-3, F-L-E.)`}
+  levSetMsg(h,"warn")};
+$("#lHint").onclick=()=>{if(lev.solved||lev.done)return;const right={};lev.spotOrder.forEach((k,i)=>right[k]=i);lev.hints++;lev.first=false;
+  const k=["F","L","E"].find(q=>lev.placed[q]!==right[q]);
+  if(k){assign(k,right[k]);levSetMsg(`<b>Hint:</b> I put ${k} (${KNAME[k].toLowerCase()}) on spot ${right[k]+1}. ${KHINT[k]}`,"warn")}
+  else levSetMsg("<b>Hint:</b> your markers are all correct. Now ask: which letter is in the middle? 1-2-3, F-L-E.","warn")};
+$("#lShow").onclick=()=>{if(lev.solved||lev.done)return;const ex=EX[lev.set[lev.i]];lev.spotOrder.forEach((k,i)=>lev.placed[k]=i);lev.cls=ex.cls;lev.first=false;lev.shown=true;levWin(true)};
+function levWin(shown){const ex=EX[lev.set[lev.i]];lev.solved=true;lev.marks=null;lev.sel=null;
+  const first=lev.first&&!shown;if(first){lev.ok++;lev.streak++}else lev.streak=0;$("#lScore").textContent=lev.ok;$("#lStreak").textContent=lev.streak;
+  levUI();$$("#lCls .opt").forEach(b=>{if(+b.dataset.c===ex.cls)b.classList.add("right")});
+  const mid=["F","L","E"][ex.cls-1];
+  levSetMsg(`${shown?"<b>Here's the answer.</b>":first?"<b>Yes! First try.</b>":"<b>Got it.</b>"} ${ex.why} So it is a <b>${["first","second","third"][ex.cls-1]}-class lever</b> (${mid} in the middle).${ex.body?" This one is in your body.":""} Watch it move.`,"good");
+  $("#lNext").hidden=false;$("#lNext").textContent=lev.i===lev.set.length-1?"See my score":"Next lever →";$("#lNext").focus()}
+$("#lNext").onclick=()=>{if(lev.i<lev.set.length-1){lev.i++;levItem()}else levEnd()};
+function levEnd(){lev.done=true;$("#lBar").style.width="100%";$("#lNext").hidden=true;const t=lTimer.stop();const n=starCount(lev.ok,lev.set.length);saveBest("lev",n);
+  levSetMsg(`<span class="stars">${starStr(n)}</span><br><b>Lever sort complete: ${lev.ok} of ${lev.set.length} right on the first try.</b> ${lTimer.relaxed()?"":"Time "+fmt(t)+". "}Hints used: ${lev.hints}. Press <b>Start over</b> for a new order.`,"good")}
+$("#lRestart").onclick=levNew;
+
+/* =====================================================================
+   TAB 3: ORIGIN, INSERTION, ACTION
+   ===================================================================== */
+const OIA=[
+ {id:"bb",n:"Biceps brachii",g:"arm",O:"Short head: coracoid process; long head: supraglenoid tubercle",I:"Radial tuberosity",A:"Flexes the elbow; supinates the forearm",
+  tip:"Both heads start on the scapula. Because the tendon grabs the radius, the biceps can also twist the forearm palm-up (supinate)."},
+ {id:"tb",n:"Triceps brachii",g:"arm",O:"Long head: infraglenoid tubercle of scapula; lateral and medial heads: posterior humerus",I:"Olecranon of ulna",A:"Extends the elbow",
+  tip:"Three heads join one tendon on the olecranon, the point of your elbow. Pulling on the olecranon straightens the elbow."},
+ {id:"dl",n:"Deltoid",g:"arm",O:"Lateral clavicle, acromion, and spine of scapula",I:"Deltoid tuberosity of humerus",A:"Abducts the arm (anterior fibers flex, posterior fibers extend)",
+  tip:"Its fibers start around the top of the shoulder and converge halfway down the humerus. Pulling the humerus up and out abducts the arm."},
+ {id:"pm",n:"Pectoralis major",g:"arm",O:"Clavicle, sternum, and costal cartilages of upper ribs",I:"Greater tubercle / lateral lip of intertubercular sulcus of humerus",A:"Flexes, adducts, and medially rotates the arm",
+  tip:"A fan from the clavicle and sternum that converges on the front of the humerus, so it pulls the arm forward and across the chest."},
+ {id:"ld",n:"Latissimus dorsi",g:"arm",O:"Spinous processes of lower thoracic and lumbar vertebrae, thoracolumbar fascia, iliac crest, lower ribs",I:"Intertubercular sulcus of humerus",A:"Extends, adducts, and medially rotates the arm",
+  tip:"A huge sheet from the lower back that wraps under the armpit to the humerus. Think of pulling yourself up in a pull-up."},
+ {id:"tz",n:"Trapezius",g:"arm",O:"Occipital bone, ligamentum nuchae, spinous processes C7–T12",I:"Clavicle, acromion, and spine of scapula",A:"Elevates, retracts, and depresses the scapula (by region); extends the head",
+  tip:"It starts along the midline from the skull to T12 and ends on the shoulder girdle. Upper fibers shrug, middle fibers pull the scapulae together, lower fibers pull them down."},
+ {id:"scm",n:"Sternocleidomastoid",g:"axial",O:"Manubrium and medial clavicle",I:"Mastoid process",A:"Both sides: flex the neck; one side: rotates the head to the opposite side",
+  tip:"Its name is its attachments: sterno (sternum) + cleido (clavicle) + mastoid. One side turns your face toward the opposite shoulder."},
+ {id:"ra",n:"Rectus abdominis",g:"axial",O:"Pubic crest and pubic symphysis",I:"Xiphoid process and costal cartilages 5–7",A:"Flexes the trunk; compresses the abdomen",
+  tip:"It runs straight from the pubis up to the xiphoid process and ribs. Pulling the rib cage toward the pelvis flexes the trunk, as in a crunch."},
+ {id:"dp",n:"Diaphragm",g:"axial",O:"Xiphoid process, lower ribs and costal cartilages, lumbar vertebrae",I:"Central tendon",A:"Flattens to increase thoracic volume (inspiration)",
+  tip:"Its fibers start around the edge of the lower rib cage and spine and all insert on its own central tendon. Contracting flattens the dome."},
+ {id:"gm",n:"Gluteus maximus",g:"leg",O:"Ilium, sacrum, coccyx",I:"Gluteal tuberosity of femur and iliotibial tract",A:"Extends and laterally rotates the thigh",
+  tip:"The largest muscle of the buttock. It pulls the femur back (extension), as when you stand up from a squat or climb stairs."},
+ {id:"rf",n:"Rectus femoris",g:"leg",O:"Anterior inferior iliac spine",I:"Tibial tuberosity (via patellar ligament)",A:"Extends the knee; flexes the hip",
+  tip:"The only quadriceps muscle that crosses the hip. Starting on the pelvis lets it flex the hip as well as extend the knee."},
+ {id:"bf",n:"Biceps femoris",g:"leg",O:"Long head: ischial tuberosity; short head: linea aspera",I:"Head of fibula",A:"Flexes the knee; extends the hip",
+  tip:"A hamstring. It crosses the back of the knee to the fibula, so it flexes the knee. Its long head also crosses the hip and extends it."},
+ {id:"gc",n:"Gastrocnemius",g:"leg",O:"Medial and lateral condyles of femur",I:"Calcaneus via calcaneal (Achilles) tendon",A:"Plantar flexes the foot; flexes the knee",
+  tip:"It starts above the knee and ends on the heel, so it acts on both joints: it points the foot and helps bend the knee."},
+ {id:"ta",n:"Tibialis anterior",g:"leg",O:"Lateral condyle and upper shaft of tibia",I:"Medial cuneiform and first metatarsal",A:"Dorsiflexes and inverts the foot",
+  tip:"It runs down the front of the tibia, then its tendon crosses to the medial side of the foot. It lifts the toes and turns the sole inward."},
+ {id:"ms",n:"Masseter",g:"axial",O:"Zygomatic arch",I:"Angle and ramus of mandible",A:"Elevates the mandible (closes the jaw)",
+  tip:"Clench your teeth and feel it bulge at the angle of your jaw. It pulls the mandible up toward the zygomatic arch."}
+];
+const OBY={};OIA.forEach(m=>OBY[m.id]=m);
+const GNAME={arm:"Shoulder, arm & back",axial:"Head, neck & trunk",leg:"Hip & leg"};
+
+/* ---- schematic diagrams ---- */
+const ARMB=[["P","M14 30 L74 20 L82 34 L68 54 L30 86 Z"],["S","M76 28 Q94 12 100 26",5],["C",80,40,11],["L",80,42,80,150,12],["C",80,156,9],["L",88,154,226,154,9],["L",70,168,226,170,8]];
+const ARMBL=[[30,70,"scapula"],[66,110,"humerus","end"],[206,146,"radius"],[206,184,"ulna"]];
+const DG={
+ bb:{b:ARMB,bl:ARMBL,m:[[74,24,92,90,104,150,8],[98,28,114,90,104,150,10]],
+  o:[[74,24,"long head: supraglenoid tubercle",8,9,"start"],[99,27,"short head: coracoid process",112,44,"start"]],i:[[104,151,"radial tuberosity",112,190,"start"]],
+  p:[[128,140,120,102]],mv:[212,146,226,112,204,82]},
+ tb:{b:ARMB,bl:[[30,70,"scapula"],[96,128,"humerus","start"],[206,146,"radius"],[206,184,"ulna"]],m:[[70,50,44,108,68,166,9],[74,72,58,118,68,164,9],[78,104,66,138,70,162,7]],
+  o:[[70,50,"long head: infraglenoid tubercle",104,58,"start"],[75,76,"lateral & medial heads:\nposterior humerus",104,86,"start"]],i:[[68,167,"olecranon of ulna",8,194,"start"]],
+  p:[[50,178,42,140]],mv:[212,172,224,184,206,198]},
+ dl:{b:[["L",16,46,118,38,8],["P","M112 30 L152 32 L150 46 L114 46 Z"],["S","M152 44 L226 74",6,1],["C",140,64,13],["L",140,66,144,190,13]],
+  bl:[[30,62,"clavicle"],[238,118,"scapula (behind)","end"],[130,184,"humerus","end"]],
+  m:[[96,42,102,96,145,124,11],[132,40,168,72,148,124,13],[172,54,188,96,151,124,11]],
+  o:[[96,42,"lateral clavicle",60,22,"middle"],[132,37,"acromion",132,16,"middle"],[172,54,"spine of scapula",238,32,"end"]],i:[[148,126,"deltoid tuberosity",160,156,"start"]],
+  p:[[128,138,120,104]],mv:[146,190,176,194,200,174]},
+ pm:{b:[["P","M34 34 L50 34 L52 150 L36 150 Z"],["L",50,32,170,28,8],["S","M52 64 Q110 52 160 80",5],["S","M52 90 Q110 80 156 106",5],["S","M52 116 Q100 108 150 132",5],["C",188,46,13],["L",190,48,196,190,13]],
+  bl:[[208,150,"humerus","start"]],
+  m:[[106,32,150,44,178,74,10],[52,60,118,64,178,76,14],[52,100,120,92,178,78,14],[70,126,130,112,178,80,10]],
+  o:[[106,32,"clavicle",96,14,"middle"],[44,78,"sternum",8,62,"start"],[70,126,"costal cartilages",62,184,"middle"]],i:[[178,76,"greater tubercle /\nlateral lip of\nintertubercular sulcus",236,96,"end"]],
+  p:[[166,96,144,104]],mv:[196,186,172,198,150,186]},
+ ld:{b:[["V",40,8,150,10],["S","M48 70 Q100 64 140 86",5],["S","M48 92 Q96 88 132 108",5],["S","M44 172 Q100 142 152 168",10],["C",204,36,12],["L",206,38,212,186,12]],
+  bl:[[100,196,"iliac crest","middle"],[226,140,"humerus","end"]],
+  m:[[48,76,130,50,196,56,12],[48,116,140,86,196,58,16],[100,152,160,118,198,60,14],[130,100,170,84,198,60,8]],
+  o:[[46,96,"lower thoracic & lumbar\nspinous processes,\nthoracolumbar fascia",54,18,"start"],[100,153,"iliac crest",0,0,""],[130,100,"lower ribs",146,128,"start"]],i:[[198,58,"intertubercular\nsulcus",236,16,"end"]],
+  p:[[184,74,162,92]],mv:[212,184,192,198,172,188]},
+ tz:{b:[["P","M60 4 Q120 -8 180 4 L176 20 Q120 12 64 20 Z"],["V",120,24,190,12],["P","M156 66 L222 58 L190 150 Z"],["S","M158 76 L226 60",6],["C",228,60,6],["L",206,42,232,54,6]],
+  bl:[[196,170,"scapula","middle"],[132,196,"vertebrae","start"]],
+  m:[[124,16,176,22,214,46,10],[120,40,176,44,222,58,10],[120,74,158,70,192,72,16],[120,160,150,124,172,80,16]],
+  o:[[124,15,"occipital bone",100,12,"end"],[120,40,"ligamentum nuchae",100,44,"end"],[120,92,"spinous processes\nC7–T12",100,96,"end"]],
+  i:[[214,46],[227,59],[182,73,"clavicle, acromion,\nspine of scapula",238,112,"end"]],
+  p:[[200,40,180,24],[176,86,148,86],[166,96,152,126]],al:[[176,14,"elevates"],[144,80,"retracts","end"],[140,138,"depresses","end"]]},
+ scm:{b:[["P","M150 70 C160 20 100 0 60 10 C24 20 8 50 14 76 L22 96 L18 116 L30 132 L70 132 L84 112 L118 100 L128 108 L136 98 Z"],["P","M124 100 L132 116 L140 102 Z"],["V",152,100,190,6],["P","M60 170 L84 168 L86 198 L60 199 Z"],["L",84,172,200,166,7]],
+  bl:[[70,56,"skull","middle"],[224,180,"clavicle","end"],[164,124,"cervical\nvertebrae","start"]],
+  m:[[74,170,96,140,130,110,11],[100,170,122,140,134,112,9]],
+  o:[[72,174,"manubrium",54,188,"end"],[104,170,"medial clavicle",116,192,"start"]],i:[[132,110,"mastoid process",170,92,"start"]],
+  p:[[142,124,128,152]],mv:[18,58,4,88,18,118]},
+ ra:{b:[["P","M112 0 L128 0 L128 22 L120 34 L112 22 Z"],["S","M114 22 Q80 34 40 76",6],["S","M126 22 Q160 34 200 76",6],["P","M50 170 Q120 150 190 170 L186 186 Q120 168 54 186 Z"]],
+  bl:[[36,94,"rib cage","middle"],[196,196,"pelvis","end"]],
+  m:[[110,160,100,100,104,40,18],[130,160,140,100,136,40,18]],t:[[90,72,150,72,3],[90,98,150,98,3],[92,126,148,126,3],[120,40,120,160,3]],
+  o:[[120,162,"pubic crest & symphysis",120,196,"middle"]],i:[[120,35,"xiphoid process",150,10,"start"],[100,40],[140,40,"costal cartilages 5–7",236,52,"end"]],
+  p:[[172,62,172,100]],mv:[30,40,20,70,34,98]},
+ dp:{b:[["S","M36 180 Q14 70 120 18 Q226 70 204 180",7],["V",120,150,198,4],["P","M114 26 L126 26 L120 44 Z"]],
+  bl:[[22,104,"rib cage","middle"]],
+  m:[[40,150,48,70,96,66,12],[200,150,192,70,144,66,12],[116,158,104,120,110,76,8],[124,158,136,120,130,76,8],[120,44,120,52,120,60,8]],tE:[[120,66,28,8]],
+  o:[[120,42,"xiphoid process",150,40,"start"],[40,150,"lower ribs &\ncostal cartilages",8,176,"start"],[120,160,"lumbar vertebrae",150,186,"start"]],i:[[120,66,"central tendon",120,96,"middle"]],
+  p:[[120,108,120,140]],dash:"M44 140 Q120 104 196 140",al:[[188,124,"dome flattens","end"]]},
+ gm:{b:[["P","M50 20 Q100 -4 150 26 L144 74 Q110 62 78 76 Z"],["P","M66 64 L100 68 L94 116 L80 120 Z"],["C",84,128,5],["C",150,90,11],["C",172,90,9],["L",168,96,174,196,13]],
+  bl:[[190,196,"femur","end"],[100,20,"ilium","middle"]],t:[[182,106,186,196,6]],
+  m:[[100,40,156,56,176,106,14],[88,86,128,92,170,112,18],[86,124,124,130,166,118,12]],
+  o:[[100,42,"ilium",0,0,""],[88,86,"sacrum",40,92,"end"],[86,126,"coccyx",60,150,"end"]],i:[[166,116,"gluteal tuberosity",120,176,"end"],[182,108,"iliotibial tract",236,150,"end"]],
+  p:[[150,134,118,140]]},
+ rf:{b:[["P","M20 16 Q80 -6 130 18 L118 58 Q84 46 40 60 Z"],["C",116,50,5],["C",114,70,11],["L",116,72,122,152,13],["E",124,160,8,10],["L",124,176,126,198,14],["L",148,180,148,198,6]],
+  bl:[[100,112,"femur","end"],[140,160,"patella","start"],[100,196,"tibia","end"]],
+  m:[[116,52,140,100,124,150,16]],t:[[124,150,126,182,6]],
+  o:[[116,50,"anterior inferior\niliac spine (AIIS)",140,26,"start"]],i:[[126,183,"tibial tuberosity\n(via patellar ligament)",100,174,"end"]],
+  p:[[150,134,148,96]],mv:[196,190,214,170,210,146]},
+ bf:{b:[["P","M40 8 Q100 -4 150 14 L138 52 L104 66 L84 44 Z"],["C",96,62,6],["C",136,38,10],["L",134,40,124,150,13],["R","M130 74 L126 130"],["C",116,156,9],["C",136,156,9],["L",116,168,112,198,13],["C",148,170,6],["L",148,172,150,198,6]],
+  bl:[[100,126,"femur","end"],[100,194,"tibia","end"],[40,30,"pelvis","middle"]],
+  m:[[96,64,116,116,146,166,13],[128,98,146,130,146,164,8]],
+  o:[[96,64,"long head:\nischial tuberosity",88,84,"end"],[128,100,"short head:\nlinea aspera",158,92,"start"]],i:[[148,170,"head of fibula",160,190,"start"]],
+  p:[[166,160,164,124]],mv:[200,176,216,160,212,138]},
+ gc:{b:[["L",120,0,120,36,16],["C",104,42,10],["C",136,42,10],["L",118,56,116,170,13],["L",142,60,140,168,6],["C",118,176,8],["P","M96 178 L136 174 L144 194 L92 196 Z"]],
+  bl:[[100,16,"femur","end"],[100,124,"tibia","end"],[150,140,"fibula","start"]],
+  m:[[104,46,84,90,120,140,18],[136,46,156,90,124,140,18]],t:[[122,138,120,184,6]],
+  o:[[104,44,"medial condyle",86,28,"end"],[136,44,"lateral condyle",154,28,"start"]],i:[[120,186,"calcaneus via calcaneal\n(Achilles) tendon",236,174,"end"]],
+  p:[[176,160,176,124]],mv:[90,196,74,184,70,164]},
+ ta:{b:[["L",110,12,108,150,14],["C",126,16,9],["C",96,16,9],["L",146,24,140,150,6],["P","M70 156 L150 154 L156 170 L130 176 L60 190 L50 182 Z"]],
+  bl:[[96,96,"tibia","end"],[154,96,"fibula","start"],[150,190,"foot","start"]],
+  m:[[126,22,140,70,124,120,14]],tp:["M124 118 Q120 150 86 172"],
+  o:[[126,20,"lateral condyle &\nupper shaft of tibia",236,12,"end"]],i:[[86,172,"medial cuneiform &\nfirst metatarsal",8,140,"start"]],
+  p:[[70,162,90,128]],mv:[40,186,24,170,30,150]},
+ ms:{b:[["P","M30 82 C10 36 60 4 130 8 C200 12 236 50 226 88 L210 108 L176 92 L60 92 Z"],["E",60,52,14,10],["L",70,102,172,100,8],["S","M30 160 L150 172 L166 116",12],["C",168,108,7]],
+  bl:[[130,50,"skull","middle"],[60,186,"mandible","middle"]],
+  m:[[100,108,116,140,146,164,20],[140,106,152,126,158,150,12]],
+  o:[[112,104,"zygomatic arch",72,88,"end"]],i:[[152,166,"angle & ramus of mandible",236,194,"end"]],
+  p:[[188,156,186,118]],mv:[24,176,14,154,26,138]}
+};
+const f1=n=>(+n).toFixed(1);
+function headPts(x1,y1,x2,y2,s){const a=Math.atan2(y2-y1,x2-x1);s=s||7;return `${f1(x2)},${f1(y2)} ${f1(x2-Math.cos(a-.45)*s)},${f1(y2-Math.sin(a-.45)*s)} ${f1(x2-Math.cos(a+.45)*s)},${f1(y2-Math.sin(a+.45)*s)}`}
+function txt(x,y,s,anchor,cls){const lines=String(s).split("\n");return `<text class="${cls||"lab"}" x="${x}" y="${y}" text-anchor="${anchor||"middle"}">${lines.map((l,i)=>`<tspan x="${x}" dy="${i?9.5:0}">${l}</tspan>`).join("")}</text>`}
+function diagram(id,full){const d=DG[id],m=OBY[id];let o=[],f=[];
+  d.b.forEach(b=>{const t=b[0];
+    if(t==="L"){o.push(`<line class="bo" x1="${b[1]}" y1="${b[2]}" x2="${b[3]}" y2="${b[4]}" stroke-width="${b[5]+3}"/>`);f.push(`<line class="bf" x1="${b[1]}" y1="${b[2]}" x2="${b[3]}" y2="${b[4]}" stroke-width="${b[5]}"/>`)}
+    else if(t==="S"){const da=b[3]?' stroke-dasharray="6 4"':"";o.push(`<path class="bo" d="${b[1]}" stroke-width="${b[2]+3}"${da}/>`);f.push(`<path class="bf" d="${b[1]}" stroke-width="${b[2]}"${da}/>`)}
+    else if(t==="C"){o.push(`<circle class="bCo" cx="${b[1]}" cy="${b[2]}" r="${b[3]+1.6}"/>`);f.push(`<circle class="bCf" cx="${b[1]}" cy="${b[2]}" r="${b[3]}"/>`)}
+    else if(t==="E"){o.push(`<ellipse class="bCo" cx="${b[1]}" cy="${b[2]}" rx="${b[3]+1.6}" ry="${b[4]+1.6}"/>`);f.push(`<ellipse class="bCf" cx="${b[1]}" cy="${b[2]}" rx="${b[3]}" ry="${b[4]}"/>`)}
+    else if(t==="P"){o.push(`<path class="bPo" d="${b[1]}"/>`);f.push(`<path class="bPf" d="${b[1]}"/>`)}
+    else if(t==="V"){const n=b[4],h=(b[3]-b[2])/n;for(let k=0;k<n;k++)f.push(`<rect class="bV" x="${b[1]-7}" y="${f1(b[2]+k*h+1)}" width="14" height="${f1(h-2.5)}" rx="2.5"/>`)}
+    else if(t==="R"){f.push(`<path class="bR" d="${b[1]}"/>`)}});
+  let s=`<svg viewBox="0 0 240 200" role="img" aria-label="Schematic of the ${m.n}: bones, origin, insertion and direction of pull${full?". Origin: "+m.O+". Insertion: "+m.I+".":""}">`;
+  s+=o.join("")+f.join("");
+  (d.bl||[]).forEach(l=>s+=txt(l[0],l[1],l[2],l[3],"bl"));
+  d.m.forEach(q=>{const p=`M${q[0]} ${q[1]} Q${q[2]} ${q[3]} ${q[4]} ${q[5]}`;s+=`<path class="mo" d="${p}" stroke-width="${q[6]+2.2}"/>`});
+  d.m.forEach(q=>{const p=`M${q[0]} ${q[1]} Q${q[2]} ${q[3]} ${q[4]} ${q[5]}`;s+=`<path class="mf" d="${p}" stroke-width="${q[6]}"/><path class="ms" d="${p}"/>`});
+  (d.t||[]).forEach(t=>{s+=`<line class="to" x1="${t[0]}" y1="${t[1]}" x2="${t[2]}" y2="${t[3]}" stroke-width="${t[4]+1.6}"/><line class="tf" x1="${t[0]}" y1="${t[1]}" x2="${t[2]}" y2="${t[3]}" stroke-width="${t[4]}"/>`});
+  (d.tp||[]).forEach(t=>{s+=`<path class="to" d="${t}" stroke-width="5.6"/><path class="tf" d="${t}" stroke-width="4"/>`});
+  (d.tE||[]).forEach(t=>{s+=`<ellipse class="tE" cx="${t[0]}" cy="${t[1]}" rx="${t[2]}" ry="${t[3]}"/>`});
+  if(d.dash)s+=`<path class="dk" d="${d.dash}"/>`;
+  if(d.mv){const v=d.mv;s+=`<path class="mvp" d="M${v[0]} ${v[1]} Q${v[2]} ${v[3]} ${v[4]} ${v[5]}"/><polygon class="mvh" points="${headPts(v[2],v[3],v[4],v[5],7)}"/>`}
+  (d.p||[]).forEach(p=>{const a=Math.atan2(p[3]-p[1],p[2]-p[0]);s+=`<line class="pull" x1="${p[0]}" y1="${p[1]}" x2="${f1(p[2]-Math.cos(a)*4)}" y2="${f1(p[3]-Math.sin(a)*4)}"/><polygon class="pullh" points="${headPts(p[0],p[1],p[2],p[3],8)}"/>`});
+  const pts=(arr,isO)=>arr.forEach(q=>{if(full&&q[2]&&q[5]!==""){s+=`<line class="lead" x1="${q[0]}" y1="${q[1]}" x2="${q[3]}" y2="${q[4]-3}"/>`}});
+  pts(d.o,1);pts(d.i,0);
+  d.o.forEach(q=>s+=`<circle class="pO" cx="${q[0]}" cy="${q[1]}" r="5"/><text class="pt o" x="${q[0]}" y="${q[1]+.3}">O</text>`);
+  d.i.forEach(q=>s+=`<circle class="pI" cx="${q[0]}" cy="${q[1]}" r="5"/><text class="pt i" x="${q[0]}" y="${q[1]+.3}">I</text>`);
+  if(full){d.o.concat(d.i).forEach(q=>{if(q[2]&&q[5]!=="")s+=txt(q[3],q[4],q[2],q[5])});(d.al||[]).forEach(a=>s+=txt(a[0],a[1],a[2],a[3],"lab act"))}
+  return s+"</svg>"}
+
+/* ---- elbow team diagram (animated) ---- */
+let elbowPaused=false;
+function elbowSVG(th){const ex=60,ey=176;const c=Math.cos(th),s=Math.sin(th);const P=(x,y)=>[f1(ex+x*c-y*s),f1(ey+x*s+y*c)];
+  const ins=P(30,-9),brI=P(18,4),ole=P(-16,6),hand=P(200,0);const flex=(-th-0.0)/1.2;
+  const bulge=18+16*flex;
+  let g=`<svg viewBox="0 0 360 260" role="img" aria-label="Elbow flexion team: biceps brachii prime mover, brachialis synergist, triceps brachii antagonist, and fixators steadying the scapula">`;
+  g+=`<path d="M8 22 L70 12 L76 30 L60 52 L22 84 Z" class="bPo"/><path d="M8 22 L70 12 L76 30 L60 52 L22 84 Z" class="bPf"/>`;
+  g+=`<line class="bo" x1="60" y1="34" x2="60" y2="168" stroke-width="15"/><line class="bf" x1="60" y1="34" x2="60" y2="168" stroke-width="12"/><circle class="bCf" cx="60" cy="30" r="10"/>`;
+  g+=`<g transform="translate(${ex} ${ey}) rotate(${f1(th*180/Math.PI)})"><line class="bo" x1="-18" y1="6" x2="200" y2="6" stroke-width="11"/><line class="bf" x1="-18" y1="6" x2="200" y2="6" stroke-width="8"/><line class="bo" x1="0" y1="-6" x2="200" y2="-6" stroke-width="12"/><line class="bf" x1="0" y1="-6" x2="200" y2="-6" stroke-width="9"/><rect x="196" y="-12" width="28" height="24" rx="10" class="skP"/></g>`;
+  g+=`<circle class="bCo" cx="${ex}" cy="${ey}" r="10"/><circle class="bCf" cx="${ex}" cy="${ey}" r="8.5"/>`;
+  // triceps (antagonist)
+  g+=`<path class="mo" d="M50 46 Q${f1(28-6*flex)} 110 ${ole[0]} ${ole[1]}" stroke-width="${f1(14-4*flex)}"/><path class="mf" d="M50 46 Q${f1(28-6*flex)} 110 ${ole[0]} ${ole[1]}" stroke-width="${f1(11-4*flex)}" style="opacity:.55"/>`;
+  // brachialis (synergist)
+  g+=`<path class="mo" d="M66 100 Q${f1(80+6*flex)} 150 ${brI[0]} ${brI[1]}" stroke-width="12"/><path class="mf" d="M66 100 Q${f1(80+6*flex)} 150 ${brI[0]} ${brI[1]}" stroke-width="9.5" style="opacity:.75"/>`;
+  // biceps (prime mover)
+  const mx=(70+ +ins[0])/2+bulge,my=(30+ +ins[1])/2;
+  g+=`<path class="mo" d="M72 26 Q${f1(mx)} ${f1(my)} ${ins[0]} ${ins[1]}" stroke-width="${f1(14+8*flex)}"/><path class="mf" d="M72 26 Q${f1(mx)} ${f1(my)} ${ins[0]} ${ins[1]}" stroke-width="${f1(11+8*flex)}"/>`;
+  g+=`<circle class="pO" cx="72" cy="26" r="5.5"/><text class="pt o" x="72" y="26.3">O</text><circle class="pI" cx="${ins[0]}" cy="${ins[1]}" r="5.5"/><text class="pt i" x="${ins[0]}" y="${+ins[1]+.3}">I</text>`;
+  const a=Math.atan2(26-ins[1],72-ins[0]);const ax=+ins[0]+28,ay=+ins[1]-4;g+=`<line class="pull" x1="${f1(ax)}" y1="${f1(ay)}" x2="${f1(ax+Math.cos(a)*30)}" y2="${f1(ay+Math.sin(a)*30)}"/><polygon class="pullh" points="${headPts(ax,ay,ax+Math.cos(a)*34,ay+Math.sin(a)*34,8)}"/>`;
+  const L11='class="lab" style="font-size:11px"';
+  g+=txt(178,206,"Biceps brachii: prime mover","start").replace('class="lab"',L11)+`<line class="lead" x1="176" y1="203" x2="${f1(mx-bulge*.5)}" y2="${f1(my)}"/>`;
+  g+=txt(178,226,"Brachialis: synergist","start").replace('class="lab"',L11)+`<line class="lead" x1="176" y1="223" x2="80" y2="140"/>`;
+  g+=txt(4,224,"Triceps brachii: antagonist","start").replace('class="lab"',L11)+`<line class="lead" x1="30" y1="214" x2="34" y2="150"/>`;
+  g+=txt(4,250,"Fixators (not drawn) hold the scapula steady","start").replace('class="lab"','class="lab act" style="font-size:10.5px"');
+  return g+"</svg>"}
+function animElbow(){if(elbowPaused)return;const th=-0.15-1.05*phase(T*.8);$("#elbowDiag").innerHTML=elbowSVG(th)}
+$("#elbowPause").onclick=()=>{elbowPaused=!elbowPaused;$("#elbowPause").textContent=elbowPaused?"Play":"Pause"};
+
+/* ---- reference cards ---- */
+let refG="all";
+function buildRef(){const cover=$("#refCover").checked;
+  $("#refFilter").innerHTML=[["all","All 15"],["arm","Shoulder, arm & back"],["axial","Head, neck & trunk"],["leg","Hip & leg"]].map(r=>`<button type="button" class="round" data-g="${r[0]}" aria-pressed="${refG===r[0]}">${r[1]}</button>`).join("");
+  $$("#refFilter .round").forEach(b=>b.onclick=()=>{refG=b.dataset.g;buildRef()});
+  $("#refGrid").innerHTML=OIA.filter(m=>refG==="all"||m.g===refG).map(m=>{const row=(k,v)=>`<dt>${k}</dt><dd>${cover?`<button type="button" class="rv" data-v="${v.replace(/"/g,"&quot;")}">Tap to reveal</button>`:v}</dd>`;
+    return `<article class="rcard"><div class="rg">${GNAME[m.g]}</div><h3>${m.n}</h3><div class="dg">${diagram(m.id,!cover)}</div><dl>${row("O",m.O)}${row("I",m.I)}${row("A",m.A)}</dl></article>`}).join("");
+  $$("#refGrid .rv").forEach(b=>b.onclick=()=>{const dd=b.parentElement;dd.textContent=b.dataset.v;const card=dd.closest(".rcard");if(!card.querySelector(".rv")){const id=OIA.find(m=>m.n===card.querySelector("h3").textContent).id;card.querySelector(".dg").innerHTML=diagram(id,true)}})}
+$("#refCover").onchange=buildRef;
+
+/* ---- matching game ---- */
+const REV=[["Flexes the elbow and supinates the forearm (turning a doorknob, palm up).","bb"],["Extends the elbow (straightening your arm in a push-up).","tb"],["Abducts the arm (raising it out to the side).","dl"],
+ ["Flexes, adducts, and medially rotates the arm (a bear hug).","pm"],["Extends, adducts, and medially rotates the arm (pulling yourself up in a pull-up).","ld"],["Elevates the scapula (shrugging) and extends the head.","tz"],
+ ["One side contracts and turns your head to look over the opposite shoulder.","scm"],["Flexes the trunk, as in a crunch, and compresses the abdomen.","ra"],["Flattens during inspiration so the thoracic cavity gets bigger.","dp"],
+ ["Extends the thigh as you stand up from a squat.","gm"],["Extends the knee and flexes the hip (kicking a ball).","rf"],["Flexes the knee and extends the hip.","bf"],
+ ["Plantar flexes the foot so you can rise onto your toes.","gc"],["Dorsiflexes the foot so your toes clear the ground as you walk.","ta"],["Elevates the mandible to close the jaw when you chew.","ms"]];
+const PAIRS=[
+ {q:"The <b>biceps brachii</b> flexes the elbow. Which muscle is its <b>antagonist</b>?",d:["bb","tb"],o:[["Triceps brachii",1,"The triceps sits on the opposite (posterior) side of the elbow and extends it. This is the classic agonist and antagonist pair."],["Deltoid",0,"The deltoid moves the shoulder (abducts the arm). It does not cross the elbow."],["Pectoralis major",0,"The pectoralis major moves the arm at the shoulder. It does not extend the elbow."],["Brachialis",0,"The brachialis also flexes the elbow, so it helps the biceps (a synergist). It does not oppose it."]]},
+ {q:"The <b>quadriceps</b> (for example, rectus femoris) extend the knee. Which group is the <b>antagonist</b>?",d:["rf","bf"],o:[["Hamstrings (for example, biceps femoris)",1,"The hamstrings on the back of the thigh flex the knee, the opposite of the quadriceps."],["Gluteus maximus",0,"The gluteus maximus works at the hip, not the knee."],["Tibialis anterior",0,"The tibialis anterior acts at the ankle (dorsiflexion), not the knee."],["Adductor longus",0,"The adductor longus pulls the thigh toward the midline. It does not flex the knee."]]},
+ {q:"The <b>tibialis anterior</b> dorsiflexes the foot. Which muscle is its <b>antagonist</b>?",d:["ta","gc"],o:[["Gastrocnemius",1,"The gastrocnemius on the back of the leg plantar flexes the foot, the opposite movement."],["Extensor digitorum longus",0,"The extensor digitorum longus also dorsiflexes the foot, so it is a synergist of the tibialis anterior."],["Rectus femoris",0,"The rectus femoris acts at the knee and hip, not the ankle."],["Biceps femoris",0,"The biceps femoris acts at the knee and hip, not the ankle."]]},
+ {q:"The <b>deltoid</b> abducts the arm. Which muscle <b>adducts</b> the arm, acting as its antagonist?",d:["dl","ld"],o:[["Latissimus dorsi",1,"The latissimus dorsi pulls the arm down and in toward the body (adduction). The pectoralis major also adducts."],["Trapezius",0,"The trapezius moves the scapula and head. It does not attach to the humerus, so it cannot adduct the arm."],["Biceps brachii",0,"The biceps mainly flexes the elbow and supinates the forearm."],["Serratus anterior",0,"The serratus anterior pulls the scapula forward (protraction). It does not attach to the humerus."]]},
+ {q:"The <b>pectoralis major</b> flexes the arm (raises it forward). Which muscle <b>extends</b> the arm, opposing it?",d:["pm","ld"],o:[["Latissimus dorsi",1,"Extension pulls the arm down and back, as in a rowing stroke. That is the latissimus dorsi's job."],["Biceps brachii",0,"The biceps is mainly an elbow flexor, not an arm extensor."],["Trapezius",0,"The trapezius moves the scapula and extends the head, not the arm."],["Rectus abdominis",0,"The rectus abdominis flexes the trunk. It does not attach to the arm."]]},
+ {q:"The <b>gluteus maximus</b> extends the hip. Which muscle from the reference set <b>flexes</b> the hip?",d:["gm","rf"],o:[["Rectus femoris",1,"Starting on the anterior inferior iliac spine lets the rectus femoris flex the hip."],["Biceps femoris",0,"The biceps femoris extends the hip, so it works with the gluteus maximus as a synergist."],["Gastrocnemius",0,"The gastrocnemius crosses the knee and ankle, not the hip."],["Gluteus minimus",0,"The gluteus minimus abducts and medially rotates the thigh."]]},
+ {q:"The <b>rectus abdominis</b> flexes the trunk. Which muscle group is its <b>antagonist</b>?",d:["ra"],o:[["Erector spinae (back muscles along the spine)",1,"The erector spinae extend the vertebral column, the opposite of trunk flexion."],["Transversus abdominis",0,"The transversus abdominis compresses the abdomen. It works alongside the rectus abdominis."],["External oblique",0,"The external oblique also helps flex the trunk, so it is a synergist."],["Diaphragm",0,"The diaphragm is a breathing muscle. It does not move the vertebral column."]]},
+ {q:"You flex your elbow to lift a cup. The <b>biceps brachii</b> does most of the work. What is its role?",d:["bb"],o:[["Prime mover (agonist)",1,"The prime mover is the main muscle producing a movement."],["Antagonist",0,"The antagonist does the opposite movement. Here that is the triceps brachii."],["Synergist",0,"A synergist helps. The biceps is doing most of the work, so it is the prime mover."],["Fixator",0,"A fixator holds a bone still. The biceps is moving the forearm."]]},
+ {q:"While you flex your elbow, the <b>triceps brachii</b> relaxes and lengthens. What is its role?",d:["tb"],o:[["Antagonist",1,"It opposes the movement and must relax for flexion to happen. It also helps control the speed of the movement."],["Prime mover (agonist)",0,"The prime mover for elbow flexion is the biceps brachii."],["Synergist",0,"A synergist helps the movement. The triceps does the opposite movement."],["Fixator",0,"A fixator steadies the prime mover's origin. The triceps is lengthening across the elbow."]]},
+ {q:"In this example the biceps is the prime mover. The <b>brachialis</b> helps it flex the elbow. What is the brachialis's role?",d:["bb"],o:[["Synergist",1,"A synergist assists the prime mover by adding force to the same movement."],["Antagonist",0,"An antagonist does the opposite movement. The brachialis flexes the elbow too."],["Fixator",0,"A fixator holds the prime mover's origin steady. The brachialis crosses the elbow and helps move it."],["Prime mover (agonist)",0,"In this example the biceps is named the prime mover; the brachialis assists it."]]},
+ {q:"As the <b>deltoid</b> lifts the arm, other muscles hold the <b>scapula</b> steady so the deltoid's origin does not slide. What is their role?",d:["dl"],o:[["Fixator",1,"A fixator is a synergist that stabilizes the bone where the prime mover has its origin."],["Antagonist",0,"An antagonist would pull the arm back down. These muscles are holding the scapula still."],["Prime mover (agonist)",0,"The prime mover here is the deltoid."],["Insertion",0,"Insertion is an attachment site, not a muscle role."]]}
+];
+const oia={mode:"oia",set:[],i:0,ok:0,tot:0,streak:0,hints:0,q:[],done:false,stage:0};
+const oTimer=makeTimer($("#oTimer"),$("#oRelax"),"msl-relax-o");
+const FNAME={O:"origin",I:"insertion",A:"action"};
+function distractors(m,field,n){const same=shuffle(OIA.filter(x=>x!==m&&x.g===m.g)),other=shuffle(OIA.filter(x=>x!==m&&x.g!==m.g));
+  const out=[];same.slice(0,2).concat(other,same.slice(2)).forEach(x=>{if(out.length<n&&!out.some(y=>y[field]===x[field])&&x[field]!==m[field])out.push(x)});return out}
+function oNew(){oia.done=false;oia.i=0;oia.ok=0;oia.tot=0;oia.streak=0;oia.hints=0;$("#oEnd").className="msg";
+  oia.set=oia.mode==="oia"?shuffle(OIA).slice(0,8):oia.mode==="rev"?shuffle(REV).slice(0,10):shuffle(PAIRS);
+  $("#oT").textContent=oia.set.length;oTimer.start();oItem()}
+function oMeter(){$("#oN").textContent=Math.min(oia.i+1,oia.set.length);$("#oScore").textContent=oia.ok;$("#oTot").textContent=oia.tot;$("#oStreak").textContent=oia.streak;$("#oBar").style.width=(oia.i/oia.set.length*100)+"%"}
+function oItem(){oMeter();$("#oNext").hidden=true;oia.q=[];oia.stage=0;const it=oia.set[oia.i];
+  if(oia.mode==="oia"){const m=it;$("#oQ").innerHTML=`<p class="prompt">${m.n}</p>`+["O","I","A"].map((k,j)=>qBlock("oB"+j,`${j+1}. What is its <b>${FNAME[k]}</b>?`)).join("");
+    $("#oB1").hidden=true;$("#oB2").hidden=true;$("#oDiag").innerHTML=diagram(m.id,false);$("#oDiagCap").innerHTML=`<b>${m.n}</b>. O = origin, I = insertion. The solid arrow shows the pull. Labels appear when you finish.`;oStage()}
+  else if(oia.mode==="rev"){const m=OBY[it[1]];$("#oQ").innerHTML=`<p class="prompt">${it[0]}</p>`+qBlock("oB0","Which muscle does this?");
+    const ds=distractors(m,"n",3);const opts=shuffle([{h:m.n,ok:true,why:m.tip}].concat(ds.map(x=>({h:x.n,ok:false,why:`The ${x.n} ${x.A.charAt(0).toLowerCase()+x.A.slice(1)}.`}))));
+    $("#oDiag").innerHTML=bodyless();$("#oDiagCap").textContent="The diagram of the answer appears here when you get it.";
+    const b=$("#oB0");oia.q=[MCQ(b.querySelector(".opts"),b.querySelector(".why"),opts,(f)=>{oRec(f);$("#oDiag").innerHTML=diagram(m.id,true);$("#oDiagCap").innerHTML=`<b>${m.n}</b>. O: ${m.O}. I: ${m.I}.`;oDone()})]}
+  else{const p=it;$("#oQ").innerHTML=`<p class="prompt" style="font-size:18px">${p.q}</p>`+qBlock("oB0","Pick one.");
+    const opts=shuffle(p.o.map(o=>({h:o[0],ok:!!o[1],why:o[2]})));const b=$("#oB0");
+    $("#oDiag").innerHTML=p.d.length>1?pairSVG(p.d[0],p.d[1],false):diagram(p.d[0],true);$("#oDiagCap").innerHTML=p.d.length>1?"Opposite sides of the same joint: one muscle on each side.":`Reference: <b>${OBY[p.d[0]].n}</b>.`;
+    oia.q=[MCQ(b.querySelector(".opts"),b.querySelector(".why"),opts,(f)=>{oRec(f);if(p.d.length>1){$("#oDiag").innerHTML=pairSVG(p.d[0],p.d[1],true)}oDone()})]}}
+function bodyless(){return `<svg viewBox="0 0 240 200" role="img" aria-label="Waiting for your answer"><rect x="0" y="0" width="240" height="200" fill="none"/><text class="bl" x="120" y="96" text-anchor="middle" style="font-size:12px">Which muscle could it be?</text><text x="120" y="130" text-anchor="middle" style="font:600 40px var(--serif);fill:var(--rule)">?</text></svg>`}
+function pairSVG(a,b,show){const A=OBY[a],B=OBY[b];return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${[A,B].map((m,i)=>`<div><div style="font-size:13px;font-weight:600;text-align:center">${i===0||show?m.n:"?"}</div>${i===0||show?diagram(m.id,false):bodyless()}</div>`).join("")}</div>`}
+function oStage(){const m=oia.set[oia.i],k=["O","I","A"][oia.stage];const b=$("#oB"+oia.stage);b.hidden=false;
+  const ds=distractors(m,k,3);const opts=shuffle([{h:m[k],ok:true,why:oia.stage===2?m.tip:`That is the ${FNAME[k]} of the ${m.n}.`}].concat(ds.map(x=>({h:x[k],ok:false,why:`That is the ${FNAME[k]} of the <b>${x.n}</b>.`+(k==="A"?" Look at the solid arrow: which way does the insertion get pulled?":"")}))));
+  oia.q.push(MCQ(b.querySelector(".opts"),b.querySelector(".why"),opts,(f)=>{oRec(f);if(oia.stage<2){oia.stage++;oStage()}else{$("#oDiag").innerHTML=diagram(m.id,true);$("#oDiagCap").innerHTML=`<b>${m.n}</b>. ${m.tip}`;oDone()}},true))}
+function oRec(f){rec(oia,f);oMeter()}
+function oDone(){$("#oNext").hidden=false;$("#oNext").textContent=oia.i===oia.set.length-1?"See my score":"Next →";$("#oNext").focus()}
+$("#oNext").onclick=()=>{if(oia.i<oia.set.length-1){oia.i++;oItem()}else oEnd()};
+function oEnd(){oia.done=true;$("#oBar").style.width="100%";$("#oNext").hidden=true;const t=oTimer.stop();const n=starCount(oia.ok,oia.tot);saveBest(oia.mode,n);
+  $("#oEnd").innerHTML=`<span class="stars">${starStr(n)}</span><br><b>Set complete: ${oia.ok} of ${oia.tot} right on the first try.</b> ${oTimer.relaxed()?"":"Time "+fmt(t)+". "}Hints used: ${oia.hints}. ${n===3?"Excellent.":"Check the Reference cards for the ones that tripped you up, then try a New set."}`;$("#oEnd").className="msg show good"}
+$("#oHint").onclick=()=>{if(oia.done)return;const q=oia.q.filter(x=>!x.done).pop();if(!q)return;const it=oia.set[oia.i];let tip;
+  if(oia.mode==="oia"){const k=["O","I","A"][oia.stage];tip=k==="O"?"The origin is usually the more stationary, proximal attachment. Look for the O on the drawing.":k==="I"?"The insertion is on the bone that moves. Look for the I on the drawing.":"Follow the solid arrow: the insertion is pulled toward the origin."}
+  else if(oia.mode==="rev")tip="Picture the movement, then ask which bone has to move and which muscle inserts on it.";
+  else tip="Antagonists sit on the opposite side of the same joint. Synergists help. Fixators hold the origin still.";
+  if(q.hint(1,tip))oia.hints++};
+$("#oShow").onclick=()=>{if(oia.done)return;const q=oia.q.filter(x=>!x.done).pop();if(q)q.reveal()};
+$("#oRestart").onclick=oNew;
+$$("#oMode .round").forEach(b=>b.onclick=()=>{$$("#oMode .round").forEach(x=>x.setAttribute("aria-pressed",x===b));oia.mode=b.dataset.m;oNew()});
+
+/* =====================================================================
+   NAV, THEME, LOOP
+   ===================================================================== */
+function subNav(sel,map,after){$$(sel+" .round").forEach(b=>b.onclick=()=>{$$(sel+" .round").forEach(x=>x.setAttribute("aria-pressed",x===b));Object.keys(map).forEach(k=>$(map[k]).hidden=k!==b.dataset.v);if(after)after(b.dataset.v)})}
+subNav("#detSub",{learn:"#detLearn",play:"#detPlay"});
+subNav("#levSub",{learn:"#levLearn",play:"#levPlay"},()=>{fit(LV);fit(PV)});
+subNav("#oiaSub",{learn:"#oiaLearn",ref:"#oiaRef",play:"#oiaPlay"});
+$$(".tab").forEach(t=>t.onclick=()=>{$$(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));["det","lev","oia"].forEach(n=>$("#tab-"+n).hidden=t.dataset.tab!==n);fit(LV);fit(PV)});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+let T=0,paused=false,speed=1,last=performance.now();
+if(matchMedia("(prefers-reduced-motion: reduce)").matches){speed=.5}
+$("#lvPause").onclick=()=>{paused=!paused;$("#lvPause").textContent=paused?"Play":"Pause"};
+$("#lvSpeed").onchange=e=>speed=+e.target.value;
+window.__setT=v=>{T=v;paused=true;drawAll()};
+const vis=el=>el.offsetParent!==null;
+function drawAll(){try{if(vis(LV.cv)){if(LV.cv.width<2)fit(LV);drawLearn()}if(vis(PV.cv)){if(PV.cv.width<2)fit(PV);drawPlay()}if(vis($("#elbowDiag")))animElbow()}catch(err){console.error(err)}}
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;drawAll();requestAnimationFrame(frame)}
+readColors();buildClueGrid();shelf();setLcls(0);buildRef();detNew();levNew();oNew();$("#elbowDiag").innerHTML=elbowSVG(-.4);
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

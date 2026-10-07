@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skin Layers Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#C4644F;--act3:#8A5A3B;--act4:#B7790F;
+  /* skin palette */
+  --ecf:#EAF1F5;--glow:#F2B33B;
+  --kera:#F3DCCB;--kera-edge:#B98468;--nuc:#5B4A8A;--kgran:#2E2340;--lamellar:#E0A91F;
+  --corn:#E9D7AE;--corn-edge:#A88E57;--lucid:#FBF8F1;
+  --dermis:#EFD2CB;--papillary:#F7E4DF;--collagen:#D08F8A;--elastin:#4F3B57;
+  --blood:#C0392B;--vein:#3F5FA8;--adipo:#FBF1D2;--adipo-edge:#C9B270;
+  --melano:#7A4A2C;--eumel:#2E1A10;--pheo:#C8642A;--mel-ring:rgba(0,0,0,0);
+  --uv:#7A3FD1;--vitd:#C98A00;--dhc:#3F79A8;--nerve:#C9971A;--langer:#2F7F8F;--merkel:#2F8A57;
+  --muscle:#B4554A;--liver:#8E3B2E;--kidney:#A65A4A;--gut:#E3A49A;--bone:#E6DCC4;--bone-edge:#9C8B66;
+  --ca:#D98A1C;--sweat:#4C86B8;--hair:#3A2A20;--carotene:#E58A00;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#E08A74;--act3:#C99470;--act4:#F2B33B;
+  --ecf:#14222A;--glow:#F2B33B;
+  --kera:#4E3A30;--kera-edge:#C99A7E;--nuc:#A996DA;--kgran:#E4D6FF;--lamellar:#F2C14E;
+  --corn:#5E5238;--corn-edge:#C8B07A;--lucid:#3A3A36;
+  --dermis:#34242A;--papillary:#3D2C31;--collagen:#B5706B;--elastin:#C6A7D8;
+  --blood:#E0675A;--vein:#7C9BE0;--adipo:#3F3826;--adipo-edge:#A8955E;
+  --melano:#C08A62;--eumel:#1A0D06;--pheo:#E58C4E;--mel-ring:rgba(255,236,220,.6);
+  --uv:#B794FF;--vitd:#F2C14E;--dhc:#7FB2DE;--nerve:#F0C445;--langer:#5FC0D0;--merkel:#4FBF7F;
+  --muscle:#9C4A40;--liver:#C0614F;--kidney:#CC7B6A;--gut:#B9776D;--bone:#CFC4AA;--bone-edge:#8C7C5A;
+  --ca:#F2A93B;--sweat:#7FB2DE;--hair:#A0806A;--carotene:#F2A33B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#E08A74;--act3:#C99470;--act4:#F2B33B;
+  --ecf:#14222A;--glow:#F2B33B;
+  --kera:#4E3A30;--kera-edge:#C99A7E;--nuc:#A996DA;--kgran:#E4D6FF;--lamellar:#F2C14E;
+  --corn:#5E5238;--corn-edge:#C8B07A;--lucid:#3A3A36;
+  --dermis:#34242A;--papillary:#3D2C31;--collagen:#B5706B;--elastin:#C6A7D8;
+  --blood:#E0675A;--vein:#7C9BE0;--adipo:#3F3826;--adipo-edge:#A8955E;
+  --melano:#C08A62;--eumel:#1A0D06;--pheo:#E58C4E;--mel-ring:rgba(255,236,220,.6);
+  --uv:#B794FF;--vitd:#F2C14E;--dhc:#7FB2DE;--nerve:#F0C445;--langer:#5FC0D0;--merkel:#4FBF7F;
+  --muscle:#9C4A40;--liver:#C0614F;--kidney:#CC7B6A;--gut:#B9776D;--bone:#CFC4AA;--bone-edge:#8C7C5A;
+  --ca:#F2A93B;--sweat:#7FB2DE;--hair:#A0806A;--carotene:#F2A33B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 180px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid var(--rule)}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; The Integumentary System &middot; USC Upstate</div>
+    <h1>Skin Layers Walkthrough</h1>
+    <p class="sub">Follow one skin cell from birth to shedding, then see how skin makes color and vitamin D. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Use the left and right arrow keys to move between steps. Content follows OpenStax Anatomy &amp; Physiology 2e, Chapter 5. Diagrams are simplified and not to scale: fewer cell layers are drawn than real skin has, and the vitamin D chemistry is shown in a simplified form.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Part 1 · The journey up",col:"act1"},
+            2:{name:"Part 2 · Dermis and hypodermis",col:"act2"},
+            3:{name:"Part 3 · Melanin",col:"act3"},
+            4:{name:"Part 4 · Vitamin D",col:"act4"}};
+const STEPS=[
+{act:0,scene:"dermis",id:"map",title:"The big picture: three layers",
+ body:`<p>Your skin and the layer under it stack up like this, from the outside in:</p>
+ <ol><li><b>Epidermis</b>: the thin outer layer. It is <b>keratinized stratified squamous epithelium</b>. That means many layers of cells (stratified), flat cells on top (squamous), filled with a tough protein called <b>keratin</b>.</li>
+ <li><b>Dermis</b>: the thick layer of connective tissue below. It holds the blood vessels, nerves, hair follicles and glands.</li>
+ <li><b>Hypodermis</b>: fat and loose connective tissue that anchors the skin to the muscle underneath. It is <b>not</b> part of the skin itself.</li></ol>
+ <p>One key fact: the epidermis is <b>avascular</b>. It has no blood vessels. Its living cells get oxygen and nutrients by <b>diffusion</b> from capillaries in the dermis.</p>`,
+ analogy:"A house. The epidermis is the roof shingles. The dermis is the walls, with all the plumbing (blood vessels) and wiring (nerves). The hypodermis is the insulation and padding under it all. The roof has no pipes running through it.",
+ terms:[["Epidermis","The outer layer of skin. Keratinized stratified squamous epithelium."],["Dermis","The connective tissue layer under the epidermis. Has vessels, nerves, glands."],["Hypodermis","Fat and areolar tissue under the dermis. Not part of the skin."],["Avascular","Has no blood vessels of its own."]],
+ check:{q:"How do the living cells of the epidermis get oxygen and nutrients?",opts:[
+  ["By diffusion from capillaries in the dermis.",1,"Yes. The epidermis has no vessels, so supplies seep up from the dermis."],
+  ["From capillaries that run through every layer of the epidermis.",0,"The epidermis is avascular. It has no blood vessels at all."],
+  ["Straight from the fat in the hypodermis.",0,"The hypodermis is below the dermis, too far away. The dermis capillaries do the job."],
+  ["From the air, through the surface.",0,"The surface is a layer of dead keratin. The living cells rely on the dermis below."]]},
+ caption:"Epidermis on top, dermis in the middle, hypodermis below. Supplies diffuse up from dermal capillaries.",
+ legend:[["kera","Epidermis"],["dermis","Dermis"],["adipo","Hypodermis (fat)"],["blood","Capillaries"],["good","Oxygen and nutrients"]]},
+
+{act:1,scene:"journey",id:"basale",title:"Meet Kerry: born in the stratum basale",
+ body:`<p>The deepest layer of the epidermis is the <b>stratum basale</b>. It is a <b>single layer</b> of cuboidal to columnar cells. They sit on the <b>basement membrane</b>, which attaches the epidermis to the dermis.</p>
+ <p>Many of these cells are <b>stem cells</b>. They divide by mitosis to make new <b>keratinocytes</b>, the cells that will make keratin. Let's follow one new keratinocyte. We will call her <b>Kerry</b>.</p>
+ <p>Two other cell types live here. <b>Melanocytes</b> make the pigment melanin. <b>Merkel cells</b> sense light touch, working with a nerve ending right under them.</p>
+ <p>Bumps of dermis called <b>dermal papillae</b> push up into the epidermis. The two layers interlock like puzzle pieces, which makes the bond stronger.</p>`,
+ analogy:"The ground floor of a building with an escalator that only goes up. New cells are made on the ground floor and step onto the escalator. They never come back down.",
+ terms:[["Stratum basale","The deepest epidermal layer. One layer of dividing stem cells."],["Keratinocyte","The main cell of the epidermis. It makes keratin."],["Melanocyte","A cell in the stratum basale that makes melanin."],["Merkel cell","A touch-sensing cell paired with a nerve ending."]],
+ check:{q:"Which cells in the stratum basale divide to make new keratinocytes?",opts:[
+  ["The stem cells (basal cells).",1,"Right. Their divisions keep sending new keratinocytes upward."],
+  ["The Merkel cells.",0,"Merkel cells sense light touch. They do not make new skin cells."],
+  ["The melanocytes.",0,"Melanocytes make the pigment melanin, not new keratinocytes."],
+  ["The Langerhans cells.",0,"Langerhans cells are immune cells, and you meet them in the next layer up."]]},
+ caption:"A stem cell divides. One daughter stays on the basement membrane; the other, Kerry, starts moving up.",
+ legend:[["accent","Kerry"],["nuc","Nucleus"],["melano","Melanocyte"],["merkel","Merkel cell"],["nerve","Nerve ending"],["blood","Capillary"]]},
+
+{act:1,scene:"journey",id:"spinosum",title:"Stratum spinosum: the spiny layer",
+ body:`<p>New cells keep forming below, so Kerry gets pushed up into the <b>stratum spinosum</b>. This layer is about <b>8 to 10 cell layers</b> thick.</p>
+ <p>The cells here are tied to their neighbors by <b>desmosomes</b>, strong cell-to-cell anchors. When skin is prepared for the microscope, the cells shrink a little but stay attached at the desmosomes. The stretched connections look like spines. That is where the name comes from (<i>spinosum</i> means spiny).</p>
+ <p>Kerry also <b>begins making keratin</b>. And watch for <b>Langerhans cells</b> (dendritic cells). They are immune cells that engulf bacteria, foreign particles and damaged cells.</p>`,
+ analogy:"People holding hands in a tight crowd. If everyone leans back a little, their joined arms show up like spokes between them. The hands are the desmosomes.",
+ terms:[["Stratum spinosum","8 to 10 layers of keratinocytes joined by desmosomes."],["Desmosome","A strong anchor that holds two neighboring cells together."],["Keratin","A tough, fibrous protein that makes skin, hair and nails strong."],["Langerhans cell","A dendritic immune cell in the epidermis."]],
+ check:{q:"Why do cells of the stratum spinosum look spiny on a prepared slide?",opts:[
+  ["They shrink during preparation but stay joined at their desmosomes.",1,"Yes. The stretched desmosome connections look like spines."],
+  ["They grow sharp keratin spikes to stab germs.",0,"The spines are connections between cells, not weapons."],
+  ["They are dead and falling apart.",0,"These cells are alive and still have a nucleus."],
+  ["Melanin crystals stick out of them.",0,"Melanin sits inside the cells, over the nucleus. It does not make spines."]]},
+ caption:"Kerry rises into the spinosum. Desmosomes hold cells together and look like spines when cells shrink on a slide.",
+ legend:[["accent","Kerry"],["kera-edge","Desmosome 'spines'"],["langer","Langerhans cell"],["nuc","Nucleus"]]},
+
+{act:1,scene:"journey",id:"granulosum",title:"Stratum granulosum: flattening and granules",
+ body:`<p>Next Kerry reaches the <b>stratum granulosum</b>, about <b>3 to 5 cell layers</b> thick. The name means "grainy layer."</p>
+ <p>The cells here flatten and fill with two kinds of granules:</p>
+ <ol><li><b>Keratohyalin granules</b> help bundle keratin into tough fibers.</li>
+ <li><b>Lamellar granules</b> release <b>lipids</b> (fats) into the spaces between cells. These lipids form a <b>water barrier</b> that keeps water in and out.</li></ol>
+ <p>At the same time, the <b>nucleus and organelles break down</b>. Kerry is beginning to die. That is normal. The goal is to become a tough, dead, keratin-filled shell.</p>`,
+ analogy:"A brick wall. The flattened cells are the bricks. The lipids from the lamellar granules are the mortar that seals the cracks so water can't leak through.",
+ terms:[["Stratum granulosum","3 to 5 layers of flattening, dying cells with granules."],["Keratohyalin granules","Dark granules that help bundle keratin."],["Lamellar granules","Granules that release lipids to form a water barrier."]],
+ check:{q:"What do lamellar granules release, and why does it matter?",opts:[
+  ["Lipids that form a water barrier between the cells.",1,"Yes. That lipid 'mortar' helps keep the body from drying out."],
+  ["Melanin that blocks UV light.",0,"Melanin comes from melanocytes, packed in melanosomes."],
+  ["Keratin into the blood.",0,"Keratin stays inside the cells. The epidermis has no blood vessels anyway."],
+  ["Sweat to cool the skin.",0,"Sweat comes from sweat glands in the dermis."]]},
+ caption:"Kerry flattens, fills with dark keratohyalin granules, releases lipids, and her nucleus starts to break down.",
+ legend:[["accent","Kerry"],["kgran","Keratohyalin granules"],["lamellar","Lipids from lamellar granules"],["nuc","Nucleus (shrinking)"]]},
+
+{act:1,scene:"journey",id:"lucidum",title:"Stratum lucidum: the clear layer (thick skin only)",
+ body:`<p>In <b>thick skin</b> only (the palms, the soles of the feet and the fingertips), Kerry passes through a thin, clear band: the <b>stratum lucidum</b>.</p>
+ <p>The cells here are <b>dead and flattened</b>, with no nucleus. They are packed with <b>eleidin</b>, a clear protein that comes from keratohyalin. Eleidin gives the layer its glassy, light look under the microscope. (<i>Lucidum</i> means clear or bright.)</p>
+ <p>Most of your body is covered in <b>thin skin</b>, which does not have this layer.</p>`,
+ analogy:"The extra padding sewn into the palm of a work glove. It is only added where the wear is heaviest.",
+ terms:[["Stratum lucidum","A thin, clear layer of dead cells. Only in thick skin."],["Eleidin","A clear protein, made from keratohyalin, that fills these cells."],["Thick skin","Skin of the palms, soles and fingertips. Has five strata."]],
+ check:{q:"Where would you find a stratum lucidum?",opts:[
+  ["In the skin on the palm of your hand.",1,"Right. Palms, soles and fingertips have thick skin, with five strata."],
+  ["In the skin on the back of your arm.",0,"That is thin skin. It has four strata and no lucidum."],
+  ["In the skin of your eyelid.",0,"Eyelid skin is some of the thinnest on the body. No lucidum there."],
+  ["In every patch of skin on the body.",0,"Only thick skin has a stratum lucidum."]]},
+ caption:"In thick skin, Kerry passes through the clear stratum lucidum. No nucleus now; the cell is filled with eleidin.",
+ legend:[["accent","Kerry"],["lucid","Clear cells with eleidin"],["lamellar","Lipids"]]},
+
+{act:1,scene:"journey",id:"corneum",title:"Stratum corneum: dead, flat, and shed",
+ body:`<p>Kerry's last stop is the <b>stratum corneum</b>, the surface layer. It is <b>15 to 30 layers</b> of dead, flat cells packed with keratin. Kerry is now just a thin, tough shell of keratin.</p>
+ <p>This dry, dead layer keeps out germs, keeps the tissues below from drying out, and protects against rubbing and scrapes.</p>
+ <p>These dead cells are <b>shed constantly</b> from the surface and replaced by cells from below. Finally Kerry reaches the top and flakes off.</p>
+ <p>The whole trip, from birth in the stratum basale to shedding, takes <b>roughly four weeks</b>.</p>`,
+ analogy:"Roof shingles. They are not alive, but they keep out rain and wear. As old shingles blow off, new ones slide up from underneath to take their place.",
+ terms:[["Stratum corneum","15 to 30 layers of dead, flat, keratin-filled cells."],["Keratinized","Filled with keratin, which makes the cells tough and water-resistant."],["Shedding","Dead surface cells flaking off. Also called desquamation."]],
+ check:{q:"About how long does it take a keratinocyte to go from the stratum basale to being shed?",opts:[
+  ["Roughly four weeks.",1,"Yes. So the outer epidermis is replaced about once a month."],
+  ["About one day.",0,"Much too fast. The climb through all the layers takes weeks."],
+  ["About one year.",0,"Much too slow. Skin replaces its outer layer about once a month."],
+  ["It never leaves. Corneum cells stay forever.",0,"Corneum cells are shed constantly and replaced from below."]]},
+ caption:"Kerry, now a flat keratin shell, moves up through the stratum corneum and flakes off. The trip takes roughly four weeks.",
+ legend:[["accent","Kerry"],["corn","Dead keratin-filled cells"],["lamellar","Lipid 'mortar'"]]},
+
+{act:1,scene:"thickthin",id:"thickthin",title:"Thick skin vs. thin skin",
+ body:`<p><b>Thick skin</b> has <b>five</b> strata. It covers the palms, soles and fingertips, where rubbing is greatest. Its stratum corneum is much thicker. It has no hair.</p>
+ <p><b>Thin skin</b> has <b>four</b> strata. It covers most of the body. It has <b>no stratum lucidum</b>.</p>
+ <p>To remember the order from the surface down, say <b>"Come, Let's Get Sun Burned."</b></p>
+ <ol><li><b>C</b>ome: stratum <b>C</b>orneum</li><li><b>L</b>et's: stratum <b>L</b>ucidum (thick skin only)</li><li><b>G</b>et: stratum <b>G</b>ranulosum</li><li><b>S</b>un: stratum <b>S</b>pinosum</li><li><b>B</b>urned: stratum <b>B</b>asale</li></ol>`,
+ analogy:"Two paint jobs on the same car. The parts that get scraped the most get an extra clear coat (the lucidum) and a much heavier top coat (the corneum).",
+ terms:[["Thick skin","Five strata. Palms, soles, fingertips."],["Thin skin","Four strata, no lucidum. Most of the body."],["Come, Let's Get Sun Burned","Corneum, Lucidum, Granulosum, Spinosum, Basale (top to bottom)."]],
+ check:{q:"A sample of epidermis has a corneum, granulosum, spinosum and basale, but no lucidum. Where did it most likely come from?",opts:[
+  ["Thin skin, such as the forearm.",1,"Yes. Four strata with no lucidum means thin skin."],
+  ["The sole of the foot.",0,"The sole has thick skin, which includes a stratum lucidum."],
+  ["The palm of the hand.",0,"The palm has thick skin, with five strata."],
+  ["A fingertip.",0,"Fingertips have thick skin, with a stratum lucidum."]]},
+ caption:"Thick skin has five strata, including the clear lucidum. Thin skin has four. Read the mnemonic from top to bottom.",
+ legend:[["corn","Corneum"],["lucid","Lucidum"],["kgran","Granulosum"],["kera","Spinosum"],["nuc","Basale"]]},
+
+{act:2,scene:"dermis",id:"papillary",title:"The papillary layer of the dermis",
+ body:`<p>Below the epidermis is the <b>dermis</b>. It has two layers. The top one is the <b>papillary layer</b>.</p>
+ <p>It is made of <b>areolar (loose) connective tissue</b>, a loose mesh of thin fibers. It holds:</p>
+ <ol><li><b>Capillaries</b> that feed the epidermis by diffusion.</li><li><b>Tactile (Meissner) corpuscles</b>, touch receptors that sense light touch.</li><li>Nerve endings and immune cells.</li></ol>
+ <p>Its <b>dermal papillae</b> push up into the epidermis. On the fingertips, palms and soles they form <b>friction ridges</b>. These make your <b>fingerprints</b> and help you grip.</p>`,
+ analogy:"Velcro. The bumps of the dermis and the ridges of the epidermis hook into each other so the layers don't slide apart. On your fingertips the pattern even shows on the surface as fingerprints.",
+ terms:[["Papillary layer","The thin top layer of the dermis. Areolar connective tissue."],["Dermal papillae","Bumps of dermis that push up into the epidermis."],["Tactile (Meissner) corpuscle","A touch receptor in the dermal papillae."],["Friction ridges","Surface ridges over the papillae. They form fingerprints."]],
+ check:{q:"What causes your fingerprints?",opts:[
+  ["Dermal papillae push up the epidermis into friction ridges.",1,"Yes. The pattern of papillae shows up on the surface as ridges."],
+  ["Patterns of melanin in the epidermis.",0,"Melanin affects color, not the ridges."],
+  ["Lines of sweat pores.",0,"Sweat pores open along the ridges, but they do not create them."],
+  ["Folds in the hypodermis fat.",0,"The hypodermis is far too deep to shape the surface pattern."]]},
+ caption:"Papillary layer: loose tissue, capillary loops, and touch receptors in the dermal papillae.",
+ legend:[["papillary","Papillary layer"],["blood","Capillary loop"],["nerve","Tactile corpuscle and nerve"]]},
+
+{act:2,scene:"dermis",id:"reticular",title:"The reticular layer: strength and stretch",
+ body:`<p>The deeper and much thicker layer of the dermis is the <b>reticular layer</b>. It is <b>dense irregular connective tissue</b>: thick bundles of fibers running in many directions.</p>
+ <ol><li><b>Collagen fibers</b> give strength and resist tearing. Collagen also binds water, which keeps skin hydrated.</li>
+ <li><b>Elastin fibers</b> let skin stretch and then snap back (recoil).</li></ol>
+ <p>Because the fibers point every which way, skin can resist pulling from any direction. This layer also holds <b>hair follicles</b>, <b>sweat glands</b>, <b>sebaceous (oil) glands</b> and larger <b>blood vessels</b>.</p>`,
+ analogy:"A woven mat of rope and rubber bands. The rope (collagen) keeps it from tearing. The rubber bands (elastin) pull it back into shape after you stretch it.",
+ terms:[["Reticular layer","The thick, deep layer of the dermis."],["Dense irregular CT","Thick fiber bundles running in many directions."],["Collagen","Strong fibers that resist tearing and hold water."],["Elastin","Stretchy fibers that let skin recoil."]],
+ check:{q:"Elastin fibers decrease with age. What would you expect to see?",opts:[
+  ["Skin that snaps back more slowly and wrinkles more.",1,"Yes. Less elastin means less recoil."],
+  ["Skin that tears at the slightest touch.",0,"Tear strength comes mostly from collagen. Losing elastin mainly affects recoil."],
+  ["An epidermis that gains blood vessels.",0,"The epidermis stays avascular at every age."],
+  ["Fingerprints that disappear.",0,"Fingerprints come from the papillae and ridges, not elastin."]]},
+ caption:"Reticular layer: dense irregular tissue. Collagen for strength, elastin for stretch and recoil.",
+ legend:[["dermis","Reticular layer"],["collagen","Collagen"],["elastin","Elastin"],["hair","Hair follicle"],["sweat","Sweat gland"],["lamellar","Sebaceous gland"]]},
+
+{act:2,scene:"dermis",id:"hypo",title:"The hypodermis: anchor, fuel tank, insulation",
+ body:`<p>Under the dermis is the <b>hypodermis</b>, also called the <b>subcutaneous layer</b>. It is made of <b>areolar</b> and <b>adipose (fat) tissue</b>.</p>
+ <p>It has three main jobs:</p>
+ <ol><li><b>Anchors</b> the skin to the muscle underneath, while still letting it slide a little.</li><li><b>Stores fat</b> as an energy reserve.</li><li><b>Insulates</b> the body and cushions it from bumps.</li></ol>
+ <p>The hypodermis is <b>not part of the skin</b>. It is studied with the integumentary system because it is so closely tied to it. It is also where subcutaneous ("sub-Q") injections go.</p>`,
+ analogy:"The pad under a carpet. It is not the carpet itself, but it holds the carpet in place, cushions every step, and keeps the floor warm.",
+ terms:[["Hypodermis","The subcutaneous layer under the dermis. Not part of the skin."],["Adipose tissue","Fat tissue. Stores energy and insulates."],["Areolar tissue","Loose connective tissue that binds layers together."]],
+ check:{q:"Which statement about the hypodermis is true?",opts:[
+  ["It is mostly areolar and adipose tissue, and it anchors skin to muscle.",1,"Yes. Anchor, fuel tank and insulation."],
+  ["It is the outermost layer of the skin.",0,"The outermost layer is the epidermis. The hypodermis is the deepest of the three."],
+  ["It is dense irregular connective tissue.",0,"That describes the reticular layer of the dermis."],
+  ["It is part of the epidermis and has no blood supply.",0,"It sits below the dermis and has a good blood supply."]]},
+ caption:"Hypodermis: fat cells and loose tissue that anchor, store energy and insulate.",
+ legend:[["adipo","Adipocytes (fat cells)"],["muscle","Skeletal muscle below"],["warn","Body heat"]]},
+
+{act:3,scene:"mel",id:"mel",title:"Melanin: a sun umbrella over the nucleus",
+ body:`<p><b>Melanocytes</b> sit in the stratum basale. They make the pigment <b>melanin</b> and pack it into small sacs called <b>melanosomes</b>.</p>
+ <p>Melanocytes have long arms that reach between nearby keratinocytes. They pass melanosomes into those keratinocytes.</p>
+ <p>Inside each keratinocyte, the melanin gathers into a <b>cap over the nucleus</b>, on the side that faces the skin surface. There it absorbs <b>UV light</b> and shields the cell's <b>DNA</b> from damage.</p>`,
+ analogy:"A sun umbrella. The melanocyte hands out umbrellas, and each keratinocyte holds one over its most precious item: the nucleus, with its DNA.",
+ terms:[["Melanocyte","A pigment cell in the stratum basale."],["Melanin","A pigment that absorbs UV light."],["Melanosome","A small sac that carries melanin from a melanocyte to keratinocytes."],["Melanin cap","Melanin gathered over the nucleus, shielding the DNA."]],
+ check:{q:"Where does melanin do most of its protective work?",opts:[
+  ["Inside keratinocytes, as a cap over the nucleus.",1,"Yes. That cap shades the DNA from UV."],
+  ["Only inside the melanocytes that make it.",0,"Melanocytes hand most of it off to keratinocytes."],
+  ["In the blood vessels of the dermis.",0,"Melanin stays in the epidermis cells, not the blood."],
+  ["In the fat of the hypodermis.",0,"The hypodermis is far below where melanin works."]]},
+ caption:"UV hits unprotected nuclei. Melanocytes pass melanosomes to keratinocytes, and melanin caps shade the DNA.",
+ legend:[["melano","Melanocyte"],["eumel","Melanin (in melanosomes)"],["uv","UV light"],["nuc","Nucleus (DNA)"]]},
+
+{act:3,scene:"colour",id:"colour",title:"Why skin colors differ, and how tanning works",
+ body:`<p>Here is a surprise: people with very different skin colors have <b>about the same number of melanocytes</b>. The difference is <b>how much</b> melanin they make and <b>which type</b>:</p>
+ <ol><li><b>Eumelanin</b>: brown to black.</li><li><b>Pheomelanin</b>: red to yellow.</li></ol>
+ <p>Two other pigments add to skin color: <b>carotene</b> (yellow-orange, from foods like carrots) and <b>hemoglobin</b> (the red of blood in the dermis, which shows through lighter skin as pink).</p>
+ <p>UV exposure makes melanocytes make <b>more melanin</b>. The extra melanin builds up over about <b>10 days</b>. That is a <b>tan</b>, and it is a sign the skin is defending itself against UV damage.</p>`,
+ analogy:"Every house on the street has the same number of paint factories. Some run them harder or use a darker paint. A sunny season tells every factory to work overtime.",
+ terms:[["Eumelanin","Brown-black melanin."],["Pheomelanin","Red-yellow melanin."],["Carotene","A yellow-orange pigment from food."],["Hemoglobin","The red, oxygen-carrying protein in blood."]],
+ check:{q:"Two people have very different skin colors. What is most likely different between them?",opts:[
+  ["The amount and type of melanin their melanocytes make.",1,"Yes. The melanocyte count is about the same."],
+  ["The number of melanocytes.",0,"Surprisingly, the number of melanocytes is about the same in everyone."],
+  ["The thickness of their hypodermis.",0,"Fat thickness doesn't set skin color."],
+  ["The number of epidermal strata.",0,"Everyone has the same strata pattern: five in thick skin, four in thin skin."]]},
+ caption:"Same number of melanocytes, different amount and type of melanin. UV boosts melanin over about 10 days.",
+ legend:[["melano","Melanocyte"],["eumel","Eumelanin"],["pheo","Pheomelanin"],["uv","UV light"]]},
+
+{act:4,scene:"uvb",id:"uvb",title:"Vitamin D starts in the skin",
+ body:`<p>Skin does more than protect. It also starts making <b>vitamin D</b>.</p>
+ <p>Cells in the deeper epidermis, the <b>strata basale and spinosum</b>, contain a cholesterol-like molecule called <b>7-dehydrocholesterol</b>. When <b>UVB</b> light reaches it, the light changes it into <b>cholecalciferol</b>, also called <b>vitamin D<sub>3</sub></b>.</p>
+ <p>Vitamin D<sub>3</sub> then moves into the blood in the dermis. It is <b>not active yet</b>. It still has two more stops to make.</p>`,
+ analogy:"Sunlight is the key that starts a machine. The raw material (7-dehydrocholesterol) is already waiting in the skin cells. UVB flips the switch.",
+ terms:[["7-dehydrocholesterol","A cholesterol-like molecule in deep epidermal cells."],["UVB","The part of ultraviolet light that drives vitamin D synthesis."],["Cholecalciferol (vitamin D₃)","The form of vitamin D made in skin. Not active yet."]],
+ check:{q:"What does UVB light do in the epidermis?",opts:[
+  ["Converts 7-dehydrocholesterol into cholecalciferol (vitamin D₃).",1,"Right. That is the first step of the vitamin D pathway."],
+  ["Converts vitamin D₃ into calcitriol.",0,"That happens later, in the kidneys."],
+  ["Pulls calcium out of food.",0,"Calcium absorption happens in the small intestine, at the end of the relay."],
+  ["Makes the stem cells divide faster.",0,"This step is about vitamin D. UVB changes 7-dehydrocholesterol into vitamin D₃."]]},
+ caption:"UVB converts 7-dehydrocholesterol into cholecalciferol (vitamin D₃), which enters the blood.",
+ legend:[["uv","UVB light"],["dhc","7-dehydrocholesterol"],["vitd","Vitamin D₃"],["blood","Capillary"]]},
+
+{act:4,scene:"relay",id:"relay",title:"The vitamin D relay: skin, liver, kidney, gut, bone",
+ body:`<ol><li><b>Skin:</b> UVB makes cholecalciferol (vitamin D<sub>3</sub>).</li>
+ <li><b>Liver:</b> converts it to <b>calcidiol</b>.</li>
+ <li><b>Kidneys:</b> convert calcidiol to <b>calcitriol</b>, the <b>active form</b> of vitamin D.</li>
+ <li><b>Small intestine:</b> calcitriol increases <b>calcium absorption</b> from food into the blood.</li>
+ <li><b>Bones:</b> that calcium is used to build and keep strong bones.</li></ol>
+ <p>Vitamin D from food and supplements joins the same relay at the liver.</p>
+ <p>Without enough vitamin D, the body absorbs too little calcium, and bones become soft and weak. In children this is <b>rickets</b> (often with bowed legs). In adults it is <b>osteomalacia</b>.</p>`,
+ analogy:"A relay race. The skin starts with the baton. The liver and kidneys each pass it on and power it up. The intestine crosses the finish line by pulling calcium into the blood for the bones.",
+ terms:[["Calcidiol","The form made by the liver."],["Calcitriol","The active form, made by the kidneys."],["Rickets / osteomalacia","Soft, weak bones from too little vitamin D (children / adults)."]],
+ check:{q:"Which organ makes calcitriol, the active form of vitamin D?",opts:[
+  ["The kidneys.",1,"Yes. The kidneys make the final, active form."],
+  ["The liver.",0,"The liver makes calcidiol, the middle step."],
+  ["The skin.",0,"The skin makes vitamin D₃, the starting form."],
+  ["The small intestine.",0,"The intestine is where calcitriol acts, not where it is made."]]},
+ caption:"Skin makes D₃ → liver makes calcidiol → kidneys make calcitriol → intestine absorbs Ca²⁺ → bones.",
+ legend:[["vitd","Vitamin D forms"],["ca","Calcium (Ca²⁺)"],["liver","Liver"],["kidney","Kidney"],["bone","Bone"]]},
+
+{act:4,scene:"trade",id:"trade",title:"The trade-off: shade versus vitamin D",
+ body:`<p>Melanin and vitamin D both depend on UV light. That creates a trade-off.</p>
+ <p><b>More melanin</b> absorbs more UV before it reaches the deeper cells. That protects DNA well. But less UVB reaches the 7-dehydrocholesterol, so <b>less vitamin D is made</b> in the same time in the sun.</p>
+ <p><b>Less melanin</b> lets more UVB through. More vitamin D is made, but DNA is less protected, so sunburn and UV damage happen more easily.</p>
+ <p>Anyone can also get vitamin D from food and supplements, which skip the skin step.</p>`,
+ analogy:"Window blinds. Closing them protects the furniture from fading, but it also lets in less light for the plant on the windowsill.",
+ terms:[["Trade-off","Melanin protects DNA but also reduces vitamin D made in the skin."],["Other vitamin D sources","Foods and supplements. They enter the relay at the liver."]],
+ check:{q:"Why might a person with a lot of melanin need more time in the sun to make the same amount of vitamin D?",opts:[
+  ["Melanin absorbs UVB before it reaches the 7-dehydrocholesterol.",1,"Yes. Great DNA protection, but less UVB for vitamin D."],
+  ["They have fewer melanocytes.",0,"Melanocyte numbers are about the same in everyone."],
+  ["Their liver cannot make calcidiol.",0,"The liver step works the same. The difference is how much UVB reaches the skin cells."],
+  ["Their skin has no stratum basale.",0,"Everyone's epidermis has a stratum basale."]]},
+ caption:"Same sun, different result: more melanin means more DNA protection but less vitamin D made.",
+ legend:[["uv","UVB light"],["eumel","Melanin cap"],["vitd","Vitamin D₃ made"],["bad","DNA hit by UV"]]},
+
+{act:0,scene:"journey",id:"recap",title:"You made it. Here is the whole story.",
+ body:`<ol class="recap">
+ <li class="h">The big picture</li>
+ <li>Epidermis (avascular, fed by diffusion), dermis, hypodermis (not skin).</li>
+ <li class="h">Part 1 · Kerry's trip up (roughly four weeks)</li>
+ <li><b>Basale:</b> a stem cell divides; Kerry is born. Melanocytes and Merkel cells live here.</li>
+ <li><b>Spinosum:</b> desmosomes ("spines"), keratin begins, Langerhans cells.</li>
+ <li><b>Granulosum:</b> cells flatten, granules form, lipids seal the gaps, the nucleus breaks down.</li>
+ <li><b>Lucidum:</b> clear, dead cells with eleidin (thick skin only).</li>
+ <li><b>Corneum:</b> 15 to 30 layers of dead keratin shells, shed constantly.</li>
+ <li>Top to bottom: <b>Come, Let's Get Sun Burned.</b></li>
+ <li class="h">Part 2 · Dermis and hypodermis</li>
+ <li>Papillary: areolar tissue, capillaries, touch receptors, fingerprints.</li><li>Reticular: dense irregular tissue, collagen and elastin, follicles and glands.</li><li>Hypodermis: anchor, fat storage, insulation.</li>
+ <li class="h">Part 3 · Melanin</li>
+ <li>Melanocytes pass melanosomes to keratinocytes; melanin caps the nucleus.</li><li>Color depends on the amount and type of melanin, not melanocyte number. Tans build over about 10 days.</li>
+ <li class="h">Part 4 · Vitamin D</li>
+ <li>UVB: 7-dehydrocholesterol → D₃ → liver (calcidiol) → kidneys (calcitriol) → intestine absorbs Ca²⁺ → bones.</li><li>More melanin: more protection, less vitamin D.</li></ol>`,
+ analogy:"An escalator that only goes up. Kerry is born on the ground floor, gets tougher on every floor, and steps off the top as a dead keratin shell about a month later.",
+ terms:[],check:null,caption:"Kerry's whole trip, on repeat: born in the basale, shed from the corneum.",
+ legend:[["accent","Kerry"],["kera","Living keratinocytes"],["corn","Dead keratin-filled cells"]]}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]],[1,ACTS[1].name,"act1",[]],[2,ACTS[2].name,"act2",[]],[3,ACTS[3].name,"act3",[]],[4,ACTS[4].name,"act4",[]],[5,"Finish","accent",[STEPS.length-1]]];
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===5)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(l=>`<span><i style="background:var(--${l[0]})"></i>${l[1]}</span>`).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=460;
+const cv=document.getElementById("stage");const ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+const TOK=["ground","panel","panel-2","sunk","ink","ink-soft","ink-faint","rule","rule-soft","accent","accent-wash","good","good-wash","warn","bad","act1","act2","act3","act4","ecf","glow",
+  "kera","kera-edge","nuc","kgran","lamellar","corn","corn-edge","lucid","dermis","papillary","collagen","elastin","blood","vein","adipo","adipo-edge",
+  "melano","eumel","pheo","mel-ring","uv","vitd","dhc","nerve","langer","merkel","muscle","liver","kidney","gut","bone","bone-edge","ca","sweat","hair","carotene"];
+function readColors(){const s=getComputedStyle(document.documentElement);TOK.forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){ctx.save();ctx.globalAlpha*=(a==null?1:a);const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.restore()}
+function ion(x,y,col,r,a){ctx.save();ctx.globalAlpha*=(a==null?1:a);circ(x,y,r||5,col,"rgba(0,0,0,.25)",1);ctx.restore()}
+function mdot(x,y,r,col,a){ctx.save();ctx.globalAlpha*=(a==null?1:a);circ(x,y,r,col,C["mel-ring"],1);ctx.restore()}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px "IBM Plex Sans",system-ui,sans-serif`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  if(o.pill!==false){const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+    ctx.save();ctx.globalAlpha*=.9;ctx.fillStyle=C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.restore();
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=9;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,txt,col,fg){ctx.font='600 11.5px "IBM Plex Mono",monospace';ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-6,y-9,w+12,18,9);ctx.fill();ctx.fillStyle=fg||"#fff";ctx.fillText(txt,x,y+.5)}
+function txt(x,y,s,size,col,weight,align){ctx.font=`${weight||500} ${size}px "IBM Plex Sans",system-ui,sans-serif`;ctx.fillStyle=col;ctx.textAlign=align||"left";ctx.textBaseline="middle";ctx.fillText(s,x,y)}
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+function mix(c1,c2,t){const h=c=>{c=c.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');return [0,2,4].map(i=>parseInt(c.substr(i,2),16))};try{const A=h(c1),B=h(c2);if(A.some(isNaN)||B.some(isNaN))return t<.5?c1:c2;return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(',')+')'}catch(e){return c2}}
+// UV zigzag ray from (x,y0) toward (x2,y1); progress q 0..1
+function ray(x,y0,x2,y1,q,col,lw){if(q<=0)return;const L=Math.hypot(x2-x,y1-y0);const ang=Math.atan2(y1-y0,x2-x);const n=Math.max(2,Math.floor(L*q/7));
+  ctx.save();ctx.translate(x,y0);ctx.rotate(ang);ctx.beginPath();ctx.moveTo(0,0);for(let i=1;i<=n;i++){const d=i*7;ctx.lineTo(Math.min(d,L*q),(i%2?5:-5)*(i<n?1:0))}
+  ctx.strokeStyle=col||C.uv;ctx.lineWidth=lw||2.2;ctx.lineJoin="round";ctx.stroke();
+  const e=L*q;ctx.beginPath();ctx.moveTo(e+2,0);ctx.lineTo(e-7,-5);ctx.lineTo(e-7,5);ctx.closePath();ctx.fillStyle=col||C.uv;ctx.fill();ctx.restore()}
+function hexMol(x,y,r,col,fill){ctx.beginPath();for(let k=0;k<6;k++){const a=k/6*TAU+Math.PI/6;const px=x+r*Math.cos(a),py=y+r*Math.sin(a);k?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();
+  if(fill){ctx.fillStyle=fill;ctx.fill()}ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.stroke();line(x+r*.87,y-r*.5,x+r*1.9,y-r*1.1,col,1.8)}
+
+/* ---------------- cell drawing ---------------- */
+const LOOK=[
+ {w:18,h:30,nuc:1,gran:0,ker:0,clear:0,dead:0},
+ {w:28,h:24,nuc:.95,gran:0,ker:.5,clear:0,dead:0},
+ {w:42,h:12,nuc:.55,gran:1,ker:.8,clear:0,dead:.15},
+ {w:52,h:7,nuc:0,gran:0,ker:1,clear:1,dead:.5},
+ {w:62,h:6,nuc:0,gran:0,ker:1,clear:0,dead:1}];
+function lookAt(v){v=clamp(v,0,4);const a=Math.floor(v),b=Math.min(4,a+1),f=v-a;const A=LOOK[a],B=LOOK[b];const o={};for(const k in A)o[k]=lerp(A[k],B[k],f);return o}
+function drawCell(x,y,L,o){o=o||{};const s=o.scale||1;const w=L.w*s,h=L.h*s;
+  ctx.save();ctx.translate(x,y);if(o.rot)ctx.rotate(o.rot);if(o.alpha!=null)ctx.globalAlpha*=o.alpha;
+  let fill=mix(C.kera,C.corn,L.dead);if(L.clear>0)fill=mix(fill,C.lucid,L.clear*.85);
+  if(o.fill)fill=o.fill;
+  const edge=mix(C["kera-edge"],C["corn-edge"],L.dead);
+  if(o.hi)glow(0,0,Math.max(w,h)*.7+12,C.glow,.6*o.hi);
+  const sp=o.spine||0;
+  if(sp>0){ctx.strokeStyle=edge;ctx.lineWidth=1.3;const n=w>40?16:12;for(let k=0;k<n;k++){const a=k/n*TAU+.13;const cx=Math.cos(a),cy=Math.sin(a);
+    const ex=w/2*cx,ey=h/2*cy;const len=6*sp;ctx.beginPath();ctx.moveTo(ex*.92,ey*.92);ctx.lineTo(ex+cx*len,ey+cy*len);ctx.stroke();
+    circ(ex+cx*len,ey+cy*len,1.4*sp,edge)}}
+  rr(-w/2,-h/2,w,h,Math.min(w,h)*.38);ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=edge;ctx.lineWidth=o.lw||1;ctx.stroke();
+  if(L.clear>.3&&h>4){ctx.save();ctx.globalAlpha*=.5*L.clear;line(-w/2+4,-h/2+2,w/2-6,-h/2+2,"#ffffff",1);ctx.restore()}
+  const kk=Math.max(L.ker,o.ker||0);
+  if(kk>.05&&L.dead<.8&&h>9&&w>14){ctx.save();ctx.globalAlpha*=kk*.55;ctx.strokeStyle=edge;ctx.lineWidth=.9;
+    for(let j=0;j<3;j++){const yy=-h/2+h*(j+1)/4;ctx.beginPath();for(let xx=-w/2+3;xx<=w/2-3;xx+=2){const py=yy+Math.sin(xx*.5+j*2)*1.2;xx===-w/2+3?ctx.moveTo(xx,py):ctx.lineTo(xx,py)}ctx.stroke()}ctx.restore()}
+  if(L.nuc>.02){const nr=o.nr||7;const rx=Math.min(w*.3,nr)*(.55+.45*L.nuc),ry=Math.min(h*.32,nr)*(.55+.45*L.nuc);
+    const nc=mix(C.kgran,C.nuc,clamp((L.nuc-.4)/.6,0,1));
+    ctx.save();ctx.globalAlpha*=clamp(L.nuc*1.6,0,1);
+    if(o.split){const d=o.split*h*.22;[-1,1].forEach(sg=>{ctx.beginPath();ctx.ellipse(0,sg*d,rx*(1-o.split*.2),ry*(1-o.split*.35),0,0,TAU);ctx.fillStyle=nc;ctx.fill()})}
+    else{ctx.beginPath();ctx.ellipse(o.nx||0,o.ny||0,rx,ry,0,0,TAU);ctx.fillStyle=nc;ctx.fill();if(o.dna){ctx.strokeStyle=C.bad;ctx.lineWidth=3*o.dna;ctx.stroke()}}
+    ctx.restore();
+    if(o.cap>0){const n=Math.round((o.capN||14)*o.cap);const rr2=Math.max(rx,ry)+3;
+      for(let k=0;k<n;k++){const a=Math.PI*(1.12+.76*(k+.5)/(o.capN||14));const ring=(k%2)*2.2;
+        mdot((o.nx||0)+Math.cos(a)*(rr2+ring)*(rx/Math.max(rx,ry)),(o.ny||0)+Math.sin(a)*(rr2+ring)*(ry/Math.max(rx,ry))-1,o.capR||2.2,(o.pheo&&rnd(k*7+o.pheoSeed)<o.pheo)?C.pheo:C.eumel)}}}
+  if(L.gran>.02){const n=Math.round(7*L.gran);for(let k=0;k<n;k++){const gx=-w/2+(k+.5)*w/n+(rnd(k)-.5)*3;if(Math.abs(gx)<5)continue;circ(gx,Math.sin(k*2.3)*h*.18,1.8,C.kgran)}}
+  if(o.lam>0){for(let k=0;k<5;k++){const lx=-w/2+(k+.5)*w/5;ctx.beginPath();ctx.ellipse(lx,-h/2+2.2,2.4,1.5,0,0,TAU);ctx.fillStyle=C.lamellar;ctx.globalAlpha*=1;ctx.fill()}}
+  if(o.hi){ctx.strokeStyle=C.accent;ctx.lineWidth=2.4;rr(-w/2-1,-h/2-1,w+2,h+2,Math.min(w,h)*.4);ctx.stroke()}
+  ctx.restore()}
+
+/* ===== brackets (right-hand layer labels) ===== */
+function brackets(list,x,active,colAct,kdot){
+  list.forEach((b,i)=>{const on=i===active;const col=on?colAct:C["ink-faint"];const y0=b[2]+2,y1=b[3]-2;
+    ctx.strokeStyle=col;ctx.lineWidth=on?3:1.5;ctx.beginPath();ctx.moveTo(x+5,y0);ctx.lineTo(x,y0);ctx.lineTo(x,y1);ctx.lineTo(x+5,y1);ctx.stroke();
+    const ym=(y0+y1)/2;const short=(y1-y0)<34||!b[1];
+    if(short){const s=b[1]?b[0]+" · "+b[1]:b[0];txt(x+10,ym,s,b[1]?11.5:13,on?colAct:C["ink-soft"],on?600:500)}
+    else{txt(x+10,ym-8,b[0],13,on?colAct:C.ink,on?700:600);txt(x+10,ym+9,b[1],11.5,C["ink-soft"],500)}});
+  if(kdot!=null){circ(x,kdot,6,C.accent,C.panel,2)}}
+
+/* ===== Scene: journey (one keratinocyte) ===== */
+const SKW=560,KX=290;
+const bm=x=>392-18*Math.cos(TAU*x/140);
+const spY=(x,k)=>(340-k*30)-18*Math.cos(TAU*x/140)*(1-(k+1)/7);
+const GR=[176,162,148],LU=[132,124],CO=[];for(let i=0;i<10;i++)CO.push(112-i*8);
+const CELLS=[];
+for(let x=10;x<SKW+10;x+=20)CELLS.push({x,y:bm(x)-16,lv:0});
+for(let k=0;k<6;k++)for(let x=8+(k%2)*16;x<SKW+16;x+=32)CELLS.push({x,y:spY(x,k),lv:1});
+GR.forEach((y,k)=>{for(let x=4+(k%2)*23;x<SKW+24;x+=46)CELLS.push({x,y,lv:2})});
+LU.forEach((y,k)=>{for(let x=10+(k%2)*28;x<SKW+28;x+=56)CELLS.push({x,y,lv:3})});
+CO.forEach((y,k)=>{for(let x=((k*29)%66)-10;x<SKW+33;x+=66)CELLS.push({x,y,lv:4,top:k===CO.length-1})});
+const MX=[110,450],MK=370,LG=[170,spY(170,3)];
+const KY=[bm(KX)-16,spY(KX,2),162,128,112];
+function kerryY(v){if(v<=4){const i=Math.min(3,Math.floor(v));return lerp(KY[i],KY[i+1],v-i)}return lerp(112,40,Math.min(1,v-4))}
+const STRB=[["Stratum corneum","15–30 layers · dead, flat",34,117],["Stratum lucidum","thick skin only",118,138],["Stratum granulosum","3–5 layers · flattening",138,183],["Stratum spinosum","8–10 layers · spiny, keratin",184,336],["Stratum basale","1 layer · stem cells",340,390],["Dermis","papillae + capillaries",394,458]];
+function stratIdx(v){return v<.5?4:v<1.5?3:v<2.5?2:v<3.5?1:0}
+function kStatus(v,shed){if(shed>0)return "shed from the surface";if(v<.25)return "alive · just born";if(v<1.5)return "alive · desmosomes, making keratin";if(v<2.5)return "dying · flattening, nucleus breaking down";if(v<3.5)return "dead · clear, filled with eleidin";return "dead · flat keratin shell"}
+function capPath(x){const top=bm(x)+14;return [[x-9,H+10],[x-9,top+9],[x,top],[x+9,top+9],[x+9,H+10]]}
+function journeyBase(o,t){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,SKW,H);ctx.clip();
+  // dermis
+  ctx.fillStyle=C.dermis;ctx.beginPath();ctx.moveTo(0,H);for(let x=0;x<=SKW;x+=4)ctx.lineTo(x,bm(x));ctx.lineTo(SKW,H);ctx.closePath();ctx.fill();
+  ctx.save();ctx.globalAlpha*=.45;ctx.strokeStyle=C.collagen;ctx.lineWidth=1.2;for(let i=0;i<40;i++){const x=rnd(i+50)*SKW,y=bm(x)+12+rnd(i+70)*50;const a=rnd(i+90)*3;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+8*Math.cos(a)+4,y+8*Math.sin(a)-4,x+16*Math.cos(a),y+16*Math.sin(a));ctx.stroke()}ctx.restore();
+  // epidermis ground
+  ctx.fillStyle=mix(C.kera,C["kera-edge"],.22);ctx.beginPath();ctx.moveTo(0,34);ctx.lineTo(SKW,34);for(let x=SKW;x>=0;x-=4)ctx.lineTo(x,bm(x));ctx.closePath();ctx.fill();
+  // capillary loops in papillae
+  [0,140,280,420,560].forEach((x,i)=>{const P=capPath(x);ctx.strokeStyle=C.blood;ctx.lineWidth=4;ctx.lineJoin="round";ctx.beginPath();P.forEach((p,j)=>j?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
+    for(let k=0;k<4;k++){const q=((t*.35+k/4+i*.13)%1);const tot=P.length-1;const f=q*tot;const j=Math.floor(f),r=f-j;const a=P[j],b=P[Math.min(tot,j+1)];circ(lerp(a[0],b[0],r),lerp(a[1],b[1],r),2.6,C.panel)}});
+  // diffusion
+  if(o.diff){[140,280,420].forEach((x,i)=>{for(let k=0;k<5;k++){const q=(t*.3+k/5+i*.21)%1;ion(x+Math.sin(k*2.1+i)*16*q,bm(x)+6-q*90,C.good,3,(1-q)*.9)}})}
+  // nerve to Merkel
+  {const mx=MK,my=bm(MK);ctx.strokeStyle=C.nerve;ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(mx+40,H+5);ctx.bezierCurveTo(mx+30,my+40,mx-4,my+30,mx,my+2);ctx.stroke();
+    ctx.beginPath();ctx.ellipse(mx,my-1,10,3,0,0,TAU);ctx.fillStyle=C.nerve;ctx.globalAlpha=o.mkA;ctx.fill();ctx.globalAlpha=1;
+    if(o.nervePulse!=null){const q=o.nervePulse;if(q>0&&q<1)glow(lerp(mx+40,mx,q),lerp(H,my,q),12,C.glow,.9)}}
+  // basement membrane
+  ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=2;ctx.beginPath();for(let x=0;x<=SKW;x+=4)x?ctx.lineTo(x,bm(x)):ctx.moveTo(x,bm(x));ctx.stroke();
+  // cells
+  const kr=o.kr;
+  for(const c of CELLS){
+    if(c.lv===0&&(MX.includes(c.x)||c.x===MK))continue;
+    if(c.lv===0&&o.skipMother&&c.x===KX)continue;
+    const L=LOOK[c.lv];
+    if(kr&&Math.abs(c.x-kr.x)<(L.w/2+kr.w/2)*.82&&Math.abs(c.y-kr.y)<(L.h/2+kr.h/2)*.85)continue;
+    const op={};
+    if(c.lv===1&&o.shrink>0){op.scale=1-.2*o.shrink;op.spine=o.shrink}
+    if(c.lv===1||c.lv===2)op.ker=c.lv===1?.35:.7;
+    let cx=c.x,cy=c.y;
+    if(c.top){const ph=(t*.16+rnd(c.x+3))%1;if(ph>.72){const q=(ph-.72)/.28;cy-=q*12;cx+=q*14;op.rot=-q*.35;op.alpha=1-q}}
+    drawCell(cx,cy,L,op);
+  }
+  // lipid mortar
+  if(o.lip>0){ctx.save();ctx.globalAlpha*=o.lip*.85;ctx.strokeStyle=C.lamellar;ctx.lineWidth=1.6;
+    [...CO.slice(0,9).map(y=>y-4),116,128,137].forEach(y=>{ctx.beginPath();ctx.moveTo(0,y);for(let x=0;x<=SKW;x+=10)ctx.lineTo(x,y+Math.sin(x*.2+y)*.6);ctx.stroke()});ctx.restore()}
+  // melanocytes
+  MX.forEach(x=>{const y=bm(x)-13;ctx.save();ctx.globalAlpha*=o.melA;ctx.strokeStyle=C.melano;ctx.lineWidth=2.4;ctx.lineCap="round";
+    [[-22,-62],[4,-78],[24,-56]].forEach(([dx,dy])=>{ctx.beginPath();ctx.moveTo(x,y-4);ctx.quadraticCurveTo(x+dx*.3,y+dy*.6,x+dx,y+dy);ctx.stroke();mdot(x+dx,y+dy,2.3,C.eumel);mdot(x+dx*.6,y+dy*.6,2,C.eumel)});
+    ctx.beginPath();ctx.ellipse(x,y,9,13,0,0,TAU);ctx.fillStyle=C.melano;ctx.fill();circ(x,y,4,C.nuc);ctx.restore()});
+  // merkel
+  {const y=bm(MK)-11;ctx.save();ctx.globalAlpha*=o.mkA;rr(MK-9,y-8,18,15,6);ctx.fillStyle=C.merkel;ctx.fill();circ(MK,y,3.6,C.nuc);ctx.restore()}
+  // langerhans
+  {const [x,y]=LG;ctx.save();ctx.globalAlpha*=o.lgA;const pul=o.lgPulse?1+.12*Math.sin(t*4):1;ctx.strokeStyle=C.langer;ctx.lineWidth=2.6;ctx.lineCap="round";
+    for(let k=0;k<6;k++){const a=k/6*TAU+.4;const L=(18+5*Math.sin(k*3))*pul;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+Math.cos(a+.4)*L*.6,y+Math.sin(a+.4)*L*.6,x+Math.cos(a)*L,y+Math.sin(a)*L);ctx.stroke()}
+    circ(x,y,7,C.langer);circ(x,y,3,C.panel);ctx.restore()}
+  if(o.inClip)o.inClip();
+  ctx.restore();
+  // right panel
+  ctx.fillStyle=C.panel;ctx.fillRect(SKW,0,W-SKW,H);line(SKW,0,SKW,H,C.rule,1);
+  // air strip
+  txt(10,17,"Kerry:",13,C.accent,700);txt(58,17,o.status||"",13,C.ink,500);
+}
+function journeyTop(v,shed){const f=clamp((v+(shed||0)*.3)/5.3,0,1);txt(SKW+14,17,"Trip",12,C["ink-soft"],600);
+  ctx.fillStyle=C.sunk;rr(SKW+48,12,150,10,5);ctx.fill();ctx.fillStyle=C.accent;rr(SKW+48,12,Math.max(10,150*f),10,5);ctx.fill();txt(W-8,17,"≈4 wk",11.5,C["ink-soft"],500,"right")}
+function sceneJourney(t,id){
+  let v=0,shed=0,p=0;const o={shrink:0,lip:.35,mkA:.5,melA:.5,lgA:.5,diff:false};
+  let lam=0,elei=0,kerHi=1,special=null,labels=null,kspine=0,kker=0;
+  if(id==="basale"){p=(t%6)/6;o.mkA=1;o.melA=1;o.diff=true;o.skipMother=true;o.nervePulse=(t%2.4)/1.6;
+    const y0=KY[0];let topY=null,hi=0;
+    if(p>=.42){const q=ease(seg(p,.42,.8));topY=lerp(y0-22,y0-36,q);hi=seg(p,.5,.7)}
+    o.kr=topY!=null?{x:KX,y:topY,w:18,h:30}:null;
+    special=()=>{
+      if(p<.12)drawCell(KX,y0,LOOK[0],{hi:seg(p,0,.08)*.5});
+      else if(p<.42){const q=ease(seg(p,.12,.42));const h=30+22*q;drawCell(KX,y0-(h-30)/2,Object.assign({},LOOK[0],{h}),{split:q,hi:.5})}
+      else{drawCell(KX,y0,LOOK[0]);drawCell(KX,topY,LOOK[0],{hi:hi,alpha:seg(p,.42,.5)})}};
+    labels=()=>{
+      if(p>.12&&p<.5)label(KX+20,y0-60,"A stem cell divides (mitosis)",{weight:600,size:12.5});
+      if(p>=.55){label(KX+22,topY,"Kerry is born",{color:C.accent,weight:700,size:12.5,border:C.accent});label(KX+16,y0+4,"stem cell stays",{size:11.5})}
+      label(MX[0],438,"Melanocyte",{align:"center",size:12,color:C.melano,weight:600});line(MX[0],428,MX[0],bm(MX[0])+2,C.melano,1.2);
+      label(MK+52,442,"Merkel cell + nerve ending",{align:"center",size:12,weight:600});
+      label(200,438,"Dermal papilla",{align:"center",size:12});line(178,428,150,bm(150)+12,C["ink-soft"],1.2);
+      label(495,370,"Basement membrane",{align:"center",size:11.5});
+    };
+  }
+  else if(id==="spinosum"){p=(t%6.5)/6.5;v=lerp(.4,1,ease(seg(p,0,.28)));o.shrink=ease(seg(p,.35,.5))*(1-ease(seg(p,.86,.98)));o.lgA=1;o.lgPulse=true;kspine=Math.max(o.shrink,.15);kker=seg(p,.2,.5);
+    labels=()=>{if(o.shrink>.5)label(280,52,"On a prepared slide, cells shrink and desmosomes look like spines",{align:"center",weight:600,size:12.5});
+      if(o.shrink>.5){label(400,214,"Desmosomes",{size:12,weight:600});line(372,218,KX+20,KY[1]-6,C["ink-soft"],1.2)}
+      label(LG[0]-10,LG[1]+34,"Langerhans cell (immune)",{align:"center",size:12,weight:600,color:C.langer});
+      if(p>.25)label(KX-120,KY[1]+38,"keratin starts to form",{size:11.5});
+    };
+  }
+  else if(id==="granulosum"){p=(t%6.5)/6.5;v=lerp(1,2,ease(seg(p,0,.3)));lam=seg(p,.45,.8);o.lip=.35+.65*seg(p,.6,.9);
+    labels=()=>{if(p>.3){label(KX-130,200,"Keratohyalin granules",{size:12,weight:600});line(KX-70,192,KX-12,KY[2]+2,C["ink-soft"],1.2)}
+      if(lam>0)label(420,96,"Lamellar granules release lipids → water barrier",{align:"center",size:12,weight:600,color:C.warn});
+      if(p>.35)label(KX+40,198,"nucleus shrinking",{size:11.5});};
+  }
+  else if(id==="lucidum"){p=(t%6)/6;v=lerp(2,3,ease(seg(p,0,.3)));elei=seg(p,.35,.85);
+    labels=()=>{label(280,52,"Only in thick skin: palms, soles, fingertips",{align:"center",weight:600,size:12.5});
+      if(p>.3){label(KX+50,150,"no nucleus · eleidin makes it clear",{size:12});}};
+  }
+  else if(id==="corneum"){p=(t%8)/8;o.lip=1;
+    if(p<.2)v=lerp(3,4,ease(seg(p,0,.2)));else if(p<.7)v=lerp(4,5,seg(p,.2,.7));else{v=5;shed=seg(p,.72,1)}
+    labels=()=>{label(110,98,"lipid 'mortar'",{size:12,color:C.warn,weight:600});
+      if(shed>0)label(KX-30,30,"Shed!",{weight:700,color:C.accent,align:"right"});
+      label(150,52,"roughly 4 weeks from basale to here",{align:"center",size:12,weight:600})};
+  }
+  else { // recap
+    p=(t%14)/14;o.lip=.6;o.mkA=.7;o.melA=.7;o.lgA=.7;
+    if(p<.86)v=p/.86*5;else{v=5;shed=seg(p,.86,1)}
+    kspine=v>.6&&v<1.4?.5:0;
+  }
+  const L=lookAt(v);const ky=kerryY(v);
+  let kx=KX,kyy=ky,rot=0,ka=1;
+  if(shed>0){kx=KX+shed*70;kyy=40-shed*42;rot=-shed*.5;ka=1-shed}
+  const KS=1.25;if(id!=="basale")o.kr=shed>0?null:{x:KX,y:ky,w:L.w*KS,h:L.h*KS};
+  o.status=kStatus(id==="basale"?0:v,shed);
+  o.inClip=()=>{
+    if(special)special();
+    else{
+      drawCell(kx,kyy,L,{scale:KS,hi:kerHi,rot,alpha:ka,spine:kspine,ker:kker,lam:lam>0&&lam<.3?1:0});
+      if(lam>0){for(let k=0;k<10;k++){const q=ease(lam);const a=k/10;const sx=kx-18+a*36;const tx=kx+(a-.5)*220;const ty=137-(k%3)*12;ion(lerp(sx,tx,q),lerp(kyy-5,ty,q),C.lamellar,2.6,1-seg(lam,.85,1)*.6)}}
+      if(elei>0){const xx=lerp(-80,SKW+80,elei);const g=ctx.createLinearGradient(xx-60,0,xx+60,0);g.addColorStop(0,"rgba(255,255,255,0)");g.addColorStop(.5,"rgba(255,255,255,.75)");g.addColorStop(1,"rgba(255,255,255,0)");ctx.fillStyle=g;ctx.fillRect(xx-60,118,120,20)}
+    }
+  };
+  journeyBase(o,t);
+  // kerry name tag
+  if(id!=="basale"&&shed===0){label(kx+L.w*KS/2+12,kyy,"Kerry",{color:C.accent,weight:700,size:12,border:C.accent})}
+  if(labels)labels();
+  journeyTop(id==="basale"?0:v,shed);
+  const kyMark=id==="basale"?(p>=.42?lerp(KY[0]-22,KY[0]-36,ease(seg(p,.42,.8))):KY[0]):(shed>0?null:ky);
+  brackets(STRB,SKW+14,id==="basale"?4:stratIdx(v),C.act1,kyMark);
+  txt(SKW+14,446-0,"",12,C.ink);
+}
+
+/* ===== Scene: thick vs thin ===== */
+function fillBand(x0,x1,y0,y1,lv,s){ctx.save();ctx.beginPath();ctx.rect(x0,y0,x1-x0,y1-y0);ctx.clip();
+  ctx.fillStyle=mix(C.kera,C["kera-edge"],.2);if(lv>=3)ctx.fillStyle=lv===3?C.lucid:mix(C.corn,C["corn-edge"],.25);ctx.fillRect(x0,y0,x1-x0,y1-y0);
+  const L=LOOK[lv];const cw=L.w*s+3,ch=L.h*s+(lv>=3?1.5:3);let r=0;
+  for(let y=y1-ch/2;y>y0-ch;y-=ch,r++){for(let x=x0-cw+((r%2)*cw/2);x<x1+cw;x+=cw)drawCell(x,y,L,{scale:s})}
+  ctx.restore()}
+function sceneThick(t){ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const BMY=372;const cols=[{x0:40,x1:280,name:"Thick skin · 5 strata",sub:"Palms, soles, fingertips",bands:[[60,196,4],[196,216,3],[216,250,2],[250,342,1],[342,BMY,0]]},
+    {x0:330,x1:570,name:"Thin skin · 4 strata",sub:"Most of the body",bands:[[206,242,4],null,[242,266,2],[266,342,1],[342,BMY,0]]}];
+  const idx=Math.floor(t/1.6)%5;const ph=(t%1.6)/1.6;
+  const names=["Corneum","Lucidum","Granulosum","Spinosum","Basale"];
+  cols.forEach((c,ci)=>{
+    ctx.fillStyle=C.ecf;ctx.fillRect(c.x0,30,c.x1-c.x0,(c.bands[0][0])-30);
+    // dermis
+    ctx.fillStyle=C.dermis;ctx.beginPath();ctx.moveTo(c.x0,430);for(let x=c.x0;x<=c.x1;x+=4)ctx.lineTo(x,BMY+6-8*Math.cos(TAU*(x-c.x0)/60));ctx.lineTo(c.x1,430);ctx.closePath();ctx.fill();
+    [0,60,120,180,240].forEach(dx=>{const x=c.x0+dx;if(x>c.x1)return;ctx.strokeStyle=C.blood;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x-6,430);ctx.lineTo(x-6,BMY+8);ctx.arc(x,BMY+8,6,Math.PI,0);ctx.lineTo(x+6,430);ctx.stroke()});
+    c.bands.forEach((b,bi)=>{if(!b)return;fillBand(c.x0,c.x1,b[0],b[1],b[2],b[2]===0?.8:.75)});
+    if(ci===1){ctx.strokeStyle=C.hair;ctx.lineWidth=4;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(c.x0+70,425);ctx.quadraticCurveTo(c.x0+60,300,c.x0+85,150);ctx.stroke();ctx.lineCap="butt";
+      label(c.x0+90,140,"hair",{size:11.5})}
+    ctx.strokeStyle=C.rule;ctx.lineWidth=1.5;ctx.strokeRect(c.x0,30,c.x1-c.x0,400);
+    // highlight
+    const b=c.bands[idx];
+    if(b){ctx.strokeStyle=C.act1;ctx.lineWidth=3.5;ctx.strokeRect(c.x0+1,b[0]+1,c.x1-c.x0-2,b[1]-b[0]-2);}
+    else{const y=c.bands[2][0];ctx.setLineDash([5,4]);ctx.strokeStyle=C.bad;ctx.lineWidth=2.5;line(c.x0,y,c.x1,y,C.bad,2.5,[6,4]);ctx.setLineDash([]);
+      label((c.x0+c.x1)/2,y-14,"no stratum lucidum here",{align:"center",size:12,weight:700,color:C.bad,border:C.bad})}
+    c.bands.forEach((bb,bi)=>{if(!bb)return;const ym=(bb[0]+bb[1])/2;label(c.x1-8,ym,names[bi],{align:"right",size:bb[1]-bb[0]<22?11:12,weight:bi===idx?700:500,color:bi===idx?C.act1:C.ink})});
+    txt((c.x0+c.x1)/2,16,c.name,14,C.ink,700,"center");txt((c.x0+c.x1)/2,446,c.sub,12.5,C["ink-soft"],500,"center");
+  });
+  // dashed links between columns
+  [[60,206],[216,242],[250,266],[342,342]].forEach(([a,b])=>line(280,a,330,b,C["ink-faint"],1,[3,4]));
+  // mnemonic panel
+  ctx.fillStyle=C["panel-2"];rr(596,30,192,400,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  txt(692,52,"Top to bottom:",12.5,C["ink-soft"],600,"center");
+  const M=[["C","Come","Corneum"],["L","Let's","Lucidum*"],["G","Get","Granulosum"],["S","Sun","Spinosum"],["B","Burned","Basale"]];
+  M.forEach((m,i)=>{const y=96+i*66;const on=i===idx;
+    if(on){ctx.fillStyle=C["accent-wash"];rr(604,y-27,176,54,8);ctx.fill()}
+    circ(630,y,18,on?C.act1:C.panel,on?C.act1:C.rule,1.5);txt(630,y+1,m[0],17,on?"#fff":C.ink,700,"center");
+    txt(658,y-9,m[1]+",",15,C.ink,on?700:500);txt(658,y+11,"stratum "+m[2],12,on?C.act1:C["ink-soft"],on?600:500);
+    if(i<4)arrow(630,y+21,630,y+43,C["ink-faint"],1.5)});
+  txt(692,418,"* thick skin only",11.5,C["ink-soft"],500,"center");
+}
+
+/* ===== Scene: dermis cross-section (map / papillary / reticular / hypodermis) ===== */
+const DW=470;
+const epB=x=>74-14*Math.cos(TAU*x/78);
+const papB=x=>140+4*Math.sin(x/37);
+const RET=318,HYP=422;
+const COLL=[],ELAS=[],PFIB=[],ADI=[];
+for(let i=0;i<80;i++)COLL.push({x:rnd(i)*DW,y:152+rnd(i+100)*156,a:rnd(i+200)*Math.PI,l:24+rnd(i+300)*28});
+for(let i=0;i<36;i++)ELAS.push({x:rnd(i+400)*DW,y:152+rnd(i+500)*156,a:rnd(i+600)*Math.PI,l:30+rnd(i+700)*26});
+for(let i=0;i<46;i++)PFIB.push({x:rnd(i+800)*DW,f:rnd(i+900),a:rnd(i+1000)*Math.PI,l:9+rnd(i+1100)*10});
+for(let r=0,y=334;y<418;y+=25,r++)for(let x=(r%2)*15;x<DW+20;x+=30)ADI.push({x:x+(rnd(x+y)-.5)*6,y:y+(rnd(x*3+y)-.5)*5,r:13+rnd(x+y*2)*3});
+function regionPath(k){ctx.beginPath();
+  const top=k==="epi"?null:k==="pap"||k==="dermis"?epB:k==="ret"?papB:null;
+  if(k==="epi"){ctx.moveTo(0,14);ctx.lineTo(DW,14);for(let x=DW;x>=0;x-=4)ctx.lineTo(x,epB(x))}
+  else if(k==="pap"||k==="dermis"){for(let x=0;x<=DW;x+=4)x?ctx.lineTo(x,epB(x)):ctx.moveTo(x,epB(x));if(k==="pap")for(let x=DW;x>=0;x-=4)ctx.lineTo(x,papB(x));else{ctx.lineTo(DW,RET);ctx.lineTo(0,RET)}}
+  else if(k==="ret"){for(let x=0;x<=DW;x+=4)x?ctx.lineTo(x,papB(x)):ctx.moveTo(x,papB(x));ctx.lineTo(DW,RET);ctx.lineTo(0,RET)}
+  else if(k==="hypo"){ctx.rect(0,RET,DW,HYP-RET)}
+  else if(k==="mus"){ctx.rect(0,HYP,DW,H-HYP)}
+  ctx.closePath()}
+function wavyLine(x,y,a,l,amp,per,ph){ctx.beginPath();for(let s=0;s<=l;s+=2){const px=x+Math.cos(a)*s-Math.sin(a)*amp*Math.sin(s/per+ph),py=y+Math.sin(a)*s+Math.cos(a)*amp*Math.sin(s/per+ph);s?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.stroke()}
+const HF=[[100,14],[160,300]];const hfX=y=>lerp(HF[0][0],HF[1][0],(y-14)/(286));
+function dermisSection(t,o){
+  ctx.save();ctx.beginPath();ctx.rect(0,0,DW,H);ctx.clip();
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,DW,14);
+  // layers fill
+  ctx.fillStyle=C.muscle;ctx.fillRect(0,HYP,DW,H-HYP);
+  ctx.save();ctx.globalAlpha*=.35;for(let x=0;x<DW;x+=9)line(x,HYP+2,x,H,C.panel,2);ctx.restore();
+  ctx.fillStyle=mix(C.adipo,C["adipo-edge"],.35);ctx.fillRect(0,RET,DW,HYP-RET);
+  ctx.fillStyle=C.dermis;regionPath("ret");ctx.fill();
+  ctx.fillStyle=C.papillary;regionPath("pap");ctx.fill();
+  ctx.fillStyle=C.kera;regionPath("epi");ctx.fill();
+  // epidermis detail
+  ctx.fillStyle=C.corn;ctx.fillRect(0,14,DW,10);line(0,24,DW,24,C["corn-edge"],1);
+  for(let y=30;y<92;y+=8)for(let x=4+((y/8)%2)*6;x<DW;x+=12){if(y>epB(x)-5)continue;circ(x,y,1.8,C.nuc)}
+  ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.beginPath();for(let x=0;x<=DW;x+=4)x?ctx.lineTo(x,epB(x)):ctx.moveTo(x,epB(x));ctx.stroke();
+  // papillary loose fibers
+  ctx.strokeStyle=C.collagen;ctx.lineWidth=1;PFIB.forEach(f=>{const y0=epB(f.x)+6,y1=papB(f.x)-4;const y=lerp(y0,y1,f.f);ctx.beginPath();ctx.moveTo(f.x,y);ctx.lineTo(f.x+Math.cos(f.a)*f.l,y+Math.sin(f.a)*f.l*.5);ctx.stroke()});
+  // reticular bundles
+  const st=o.stretch||0;
+  ctx.lineCap="round";ctx.strokeStyle=C.collagen;ctx.lineWidth=5;COLL.forEach(c=>wavyLine(c.x,c.y,c.a,c.l,2.2*(1-st*.7),5,0));
+  ctx.strokeStyle=C.elastin;ctx.lineWidth=1.3;ELAS.forEach(c=>wavyLine(c.x,c.y,c.a,c.l,3*(1-st*.6),3.5,1));ctx.lineCap="butt";
+  // adipocytes
+  ADI.forEach((a,i)=>{const r=a.r*(o.fat?1+.07*Math.sin(t*1.6+i):1);circ(a.x,a.y,r,C.adipo,C["adipo-edge"],1.4);circ(a.x+r*.6,a.y+r*.45,2.2,C.nuc)});
+  // vessels
+  line(0,312,DW,312,C.blood,6);line(0,326,DW,326,C.vein,7);
+  [78,234,390].forEach(x=>line(x,312,x+4,150,C.blood,3));
+  line(0,148,DW,148,C.blood,2.5);
+  const loops=[];for(let k=0;k<=6;k++){const x=k*78;loops.push(x);const top=epB(x)+9;ctx.strokeStyle=C.blood;ctx.lineWidth=2.8;ctx.beginPath();ctx.moveTo(x-5,148);ctx.lineTo(x-5,top+5);ctx.arc(x,top+5,5,Math.PI,0);ctx.lineTo(x+5,148);ctx.stroke()}
+  loops.forEach((x,i)=>{for(let k=0;k<2;k++){const q=(t*.45+k/2+i*.17)%1;const top=epB(x)+14;let px,py;if(q<.45){px=x-5;py=lerp(148,top,q/.45)}else if(q<.55){const a=Math.PI+(q-.45)/.1*Math.PI;px=x+5*Math.cos(a);py=top+5*Math.sin(a)}else{px=x+5;py=lerp(top,148,(q-.55)/.45)}circ(px,py,2,C.panel)}});
+  for(let k=0;k<6;k++){const q=(t*.12+k/6)%1;circ(q*DW,312,2.4,C.panel);circ(DW-q*DW,326,2.6,C.panel)}
+  // diffusion into epidermis
+  if(o.diff)loops.forEach((x,i)=>{for(let k=0;k<4;k++){const q=(t*.32+k/4+i*.23)%1;ion(x+Math.sin(k*2+i)*14*q,epB(x)+4-q*52,C.good,2.8,(1-q)*.95)}});
+  // hair follicle
+  ctx.lineCap="round";ctx.strokeStyle=C["kera-edge"];ctx.lineWidth=18;line(HF[0][0],HF[0][1],HF[1][0],HF[1][1],C["kera-edge"],18);
+  line(HF[0][0],HF[0][1],HF[1][0],HF[1][1],C.kera,11);
+  ctx.beginPath();ctx.ellipse(HF[1][0],HF[1][1]+4,15,13,0,0,TAU);ctx.fillStyle=C["kera-edge"];ctx.fill();ctx.beginPath();ctx.ellipse(HF[1][0],HF[1][1]+9,6,6,0,0,TAU);ctx.fillStyle=C.dermis;ctx.fill();
+  line(HF[1][0]-2,HF[1][1]-2,86,-12,C.hair,4.5);ctx.lineCap="butt";
+  // sebaceous
+  [[-2,0],[10,-9],[9,10],[20,1]].forEach(([dx,dy])=>{circ(hfX(118)+18+dx,118+dy,8,mix(C.lamellar,C.panel,.45),C["adipo-edge"],1.2)});
+  // arrector pili
+  line(hfX(215)+6,215,212,epB(212)+12,C.muscle,4);
+  // sweat gland
+  ctx.strokeStyle=C.sweat;ctx.lineWidth=3;ctx.beginPath();for(let y=14;y<=296;y+=2){const x=382+(y<epB(382)?6*Math.sin(y/3):3*Math.sin(y/14));y===14?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke();
+  for(let k=0;k<5;k++){ctx.beginPath();ctx.ellipse(388+Math.sin(k*1.7)*10,304+Math.cos(k*1.3)*7,13,8,k*.6,0,TAU);ctx.stroke()}
+  // Meissner corpuscle + nerve
+  const mx=234,my=epB(234)+17;
+  ctx.strokeStyle=C.nerve;ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(262,RET+4);ctx.bezierCurveTo(258,240,236,180,mx,my+12);ctx.stroke();
+  ctx.beginPath();ctx.ellipse(mx,my,7,12,0,0,TAU);ctx.fillStyle=mix(C.nerve,C.panel,.55);ctx.fill();ctx.strokeStyle=C.nerve;ctx.lineWidth=1.5;ctx.stroke();
+  for(let k=-2;k<=2;k++)line(mx-5,my+k*4,mx+5,my+k*4,C.nerve,1);
+  if(o.touch!=null){const q=o.touch;const press=Math.sin(Math.PI*seg(q,0,.4));
+    ctx.fillStyle=mix(C.kera,C["kera-edge"],.5);rr(mx-20,-40,40,40+4+press*8,16);ctx.fill();ctx.strokeStyle=C["kera-edge"];ctx.lineWidth=1.5;ctx.stroke();label(mx+26,8,"light touch",{size:11.5,weight:600});
+    if(press>.4)glow(mx,my,24,C.glow,press);
+    const s=seg(q,.35,.95);if(s>0&&s<1){const bx=lerp(mx,262,s),by=lerp(my+12,RET,s);glow(bx,by,12,C.glow,1);circ(bx,by,3.5,C.glow)}}
+  // dim non-highlighted
+  if(o.hl){["epi","pap","ret","hypo","mus"].forEach(k=>{if(o.hl.includes(k))return;ctx.save();ctx.globalAlpha*=.5;ctx.fillStyle=C.panel;regionPath(k);ctx.fill();ctx.restore()})}
+  ctx.restore();
+  line(DW,0,DW,H,C.rule,1);
+}
+function insetCard(title){ctx.fillStyle=C["panel-2"];rr(590,10,200,440,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();txt(690,30,title,13,C.ink,700,"center")}
+function sceneDermis(t,id){
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  let hl,br,act,o={};
+  if(id==="map"){const k=Math.floor(t/2.6)%3;hl=[["epi"],["pap","ret"],["hypo"]][k];act=k;o.diff=true;
+    br=[["Epidermis","",14,76],["Dermis","",78,RET],["Hypodermis","",RET,HYP],["Muscle","",HYP,458]]}
+  else{br=[["Epidermis","",14,76],["Papillary","",78,142],["Reticular","",144,RET],["Hypodermis","",RET,HYP],["Muscle","",HYP,458]];
+    if(id==="papillary"){hl=["pap"];act=1;o.touch=(t%3)/3;o.diff=true}
+    if(id==="reticular"){hl=["ret"];act=2;const p=(t%4)/4;o.stretch=ease(seg(p,.1,.4))*(1-ease(seg(p,.6,.85)))}
+    if(id==="hypo"){hl=["hypo"];act=3;o.fat=true}}
+  o.hl=hl;dermisSection(t,o);
+  const colA=id==="map"?C.accent:C.act2;
+  brackets(br,DW+8,act,colA);
+  if(id==="map"){
+    label(150,98,"Hair follicle",{size:11.5});label(392,200,"Sweat gland",{size:11.5});
+    if(act===0)label(235,40,"No blood vessels in the epidermis",{align:"center",weight:600,size:12.5});
+    insetCard("Fed by diffusion");
+    // zoom: cells above, capillary below
+    ctx.save();rr(600,46,180,300,6);ctx.clip();ctx.fillStyle=mix(C.kera,C["kera-edge"],.22);ctx.fillRect(600,46,180,200);
+    const zb=x=>236-14*Math.cos(TAU*(x-690)/180);
+    ctx.fillStyle=C.papillary;ctx.beginPath();ctx.moveTo(600,346);for(let x=600;x<=780;x+=4)ctx.lineTo(x,zb(x));ctx.lineTo(780,346);ctx.closePath();ctx.fill();
+    for(let r=0;r<4;r++)for(let x=612+(r%2)*18;x<790;x+=36){const y=zb(x)-22-r*40;drawCell(x,y,LOOK[r?1:0],{scale:r?1.15:1.1})}
+    ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1.5;ctx.beginPath();for(let x=600;x<=780;x+=4)x>600?ctx.lineTo(x,zb(x)):ctx.moveTo(x,zb(x));ctx.stroke();
+    ctx.strokeStyle=C.blood;ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(672,350);ctx.lineTo(672,268);ctx.arc(690,268,18,Math.PI,0);ctx.lineTo(708,350);ctx.stroke();
+    for(let k=0;k<12;k++){const q=(t*.28+k/12)%1;const ang=-Math.PI/2+(rnd(k)-.5)*1.6;const d=q*150;ion(690+Math.cos(ang)*d*.8,262+Math.sin(ang)*d,C.good,3.5,1-q)}
+    ctx.restore();
+    label(690,372,"Capillary in a dermal papilla",{align:"center",size:12});
+    txt(690,402,"O₂ and nutrients diffuse",12.5,C.good,600,"center");txt(690,420,"up into the epidermis",12.5,C.good,600,"center");
+  }
+  if(id==="papillary"){
+    label(234,108,"Tactile (Meissner) corpuscle",{align:"center",size:11.5,weight:600});
+    label(60,128,"capillary loops",{size:11.5});
+    insetCard("Friction ridges");
+    // fingertip with whorl
+    const cx=690,cy=150;ctx.save();ctx.beginPath();ctx.ellipse(cx,cy,62,82,0,0,TAU);ctx.fillStyle=mix(C.kera,C.panel,.2);ctx.fill();ctx.strokeStyle=C["kera-edge"];ctx.lineWidth=2;ctx.stroke();ctx.clip();
+    const q=(t%5)/5;ctx.strokeStyle=C["kera-edge"];ctx.lineWidth=2.2;
+    for(let k=1;k<14;k++){const r=k*7;ctx.beginPath();const sweep=TAU*clamp(q*1.6-k*.04,0,1);ctx.ellipse(cx+3,cy+14,r*.82,r,0,-Math.PI/2,-Math.PI/2+sweep);ctx.stroke()}
+    ctx.restore();
+    txt(690,248,"Fingertip: ridges trace the",12,C["ink-soft"],500,"center");txt(690,264,"pattern of the papillae",12,C["ink-soft"],500,"center");
+    // ridge cross-section
+    const rb=x=>350-9*Math.cos(TAU*(x-600)/36),rs=x=>312-6*Math.cos(TAU*(x-600)/36);
+    ctx.save();rr(600,290,180,110,6);ctx.clip();ctx.fillStyle=C.ecf;ctx.fillRect(600,290,180,110);
+    ctx.fillStyle=C.kera;ctx.beginPath();for(let x=600;x<=780;x+=3)x>600?ctx.lineTo(x,rs(x)):ctx.moveTo(x,rs(x));for(let x=780;x>=600;x-=3)ctx.lineTo(x,rb(x));ctx.closePath();ctx.fill();
+    ctx.fillStyle=C.papillary;ctx.beginPath();ctx.moveTo(600,400);for(let x=600;x<=780;x+=3)ctx.lineTo(x,rb(x));ctx.lineTo(780,400);ctx.closePath();ctx.fill();
+    ctx.strokeStyle=C["kera-edge"];ctx.lineWidth=1.5;ctx.beginPath();for(let x=600;x<=780;x+=3)x>600?ctx.lineTo(x,rs(x)):ctx.moveTo(x,rs(x));ctx.stroke();
+    for(let x=618;x<780;x+=36){ctx.strokeStyle=C.blood;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-3,400);ctx.lineTo(x-3,rb(x)+10);ctx.arc(x,rb(x)+10,3,Math.PI,0);ctx.lineTo(x+3,400);ctx.stroke()}
+    ctx.restore();
+    label(640,300,"ridge",{size:11,align:"center"});label(744,384,"papilla",{size:11,align:"center"});
+    txt(690,422,"Ridges help you grip",12,C.ink,600,"center");
+  }
+  if(id==="reticular"){
+    label(100,170,"Hair follicle",{size:11.5});label(190,112,"Sebaceous (oil) gland",{size:11.5});label(392,232,"Sweat gland",{size:11.5});
+    label(300,296,"Blood vessels",{size:11.5,color:C.blood,weight:600});
+    insetCard("Stretch and recoil");
+    const p=(t%4)/4;const s=ease(seg(p,.1,.4))*(1-ease(seg(p,.6,.85)));const w=120+50*s;const x0=690-w/2;
+    ctx.fillStyle=C.dermis;rr(x0,70,w,150,6);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+    ctx.strokeStyle=C.collagen;ctx.lineWidth=6;ctx.lineCap="round";[95,135,175].forEach(y=>{ctx.beginPath();for(let x=0;x<=w-16;x+=2){const yy=y+(1-s)*7*Math.sin(x/(w-16)*TAU*2.5);x?ctx.lineTo(x0+8+x,yy):ctx.moveTo(x0+8,yy)}ctx.stroke()});
+    ctx.strokeStyle=C.elastin;ctx.lineWidth=1.8;[115,155,200].forEach(y=>{ctx.beginPath();const n=10;for(let i=0;i<=n*2;i++){const xx=x0+8+(w-16)*i/(n*2);const yy=y+(i%2?-5:5)*(i>0&&i<n*2?1:0);i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.stroke()});ctx.lineCap="butt";
+    if(p<.45&&s>.02&&s<.98){arrow(x0-4,145,x0-30,145,C.warn,2.5);arrow(x0+w+4,145,x0+w+30,145,C.warn,2.5)}
+    if(p>.6&&p<.85){arrow(x0-30,145,x0-6,145,C.good,2.5);arrow(x0+w+30,145,x0+w+6,145,C.good,2.5)}
+    txt(690,240,s>.5?"Stretched":p>.6&&p<.85?"Recoiling":"At rest",13,C.ink,700,"center");
+    ctx.lineCap="round";ctx.strokeStyle=C.collagen;ctx.lineWidth=6;line(606,280,636,280,C.collagen,6);ctx.lineCap="butt";
+    txt(646,274,"Collagen",13,C.ink,700);txt(646,292,"strength, resists tearing",11.5,C["ink-soft"]);
+    ctx.strokeStyle=C.elastin;ctx.lineWidth=1.8;ctx.beginPath();for(let i=0;i<=8;i++){const xx=606+30*i/8;const yy=338+(i%2?-5:5)*(i&&i<8?1:0);i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.stroke();
+    txt(646,332,"Elastin",13,C.ink,700);txt(646,350,"stretch and recoil",11.5,C["ink-soft"]);
+    txt(690,392,"Fibers run every which way:",12,C["ink-soft"],500,"center");txt(690,410,"dense irregular CT",12,C["ink-soft"],600,"center");
+  }
+  if(id==="hypo"){
+    label(235,370,"Adipocytes (fat cells)",{align:"center",size:12,weight:600});label(235,442,"Skeletal muscle",{align:"center",size:12,color:"#fff",pill:false,weight:600});
+    insetCard("Three jobs");
+    // 1 anchor
+    const sh=Math.sin(t*1.5)*8;
+    ctx.fillStyle=C.kera;rr(620+sh,56,140,18,4);ctx.fill();ctx.fillStyle=C.muscle;rr(620,104,140,18,4);ctx.fill();
+    ctx.strokeStyle=C.collagen;ctx.lineWidth=1.6;for(let k=0;k<6;k++){const x=632+k*24;line(x+sh,74,x,104,C.collagen,1.6)}
+    txt(690,140,"1. Anchors skin to muscle",12.5,C.ink,600,"center");txt(690,156,"(and lets it slide a little)",11.5,C["ink-soft"],500,"center");
+    // 2 fat storage
+    const g=.5+.5*Math.sin(t*1.2);circ(690,220,34,C.adipo,C["adipo-edge"],2);circ(690,220,22+8*g,mix(C.lamellar,C.panel,.4),null);ctx.beginPath();ctx.ellipse(690+30,220,4,8,0,0,TAU);ctx.fillStyle=C.nuc;ctx.fill();
+    txt(690,272,"2. Stores fat (energy)",12.5,C.ink,600,"center");
+    // 3 insulation
+    ctx.fillStyle=mix(C.adipo,C["adipo-edge"],.35);rr(616,312,148,22,4);ctx.fill();ctx.fillStyle=C.muscle;rr(616,370,148,22,4);ctx.fill();
+    txt(690,323,"fat layer",11,C.ink,600,"center");txt(690,381,"warm body",11,"#fff",600,"center");
+    for(let k=0;k<3;k++){const q=(t*.6+k/3)%1;const x=640+k*50;if(q<.5){arrow(x,368,x,lerp(366,338,q*2),C.warn,2.2)}else{arrow(x+6,338,x+6,lerp(340,366,(q-.5)*2),C.warn,2.2)}}
+    txt(690,412,"3. Insulates and cushions",12.5,C.ink,600,"center");txt(690,428,"heat is held in",11.5,C["ink-soft"],500,"center");
+  }
+}
+
+/* ===== Scene: melanin ===== */
+const UP=[90,250,410,570,730],LOWX=[90,250,570,730];
+const MEL_T=[];UP.forEach((x,i)=>MEL_T.push({cx:x,cy:165,nr:20,tip:[x+(410-x)*.32,i===2?205:198]}));LOWX.forEach(x=>MEL_T.push({cx:x,cy:305,nr:16,tip:[x+(x<410?40:-40),300]}));
+function sceneMel(t){
+  const p=(t%9)/9;const fadeOut=1-seg(p,.95,1);
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle=C.dermis;ctx.fillRect(0,356,W,H-356);line(0,356,W,356,C["ink-soft"],2);
+  ctx.strokeStyle=C.blood;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,420);ctx.bezierCurveTo(200,400,600,440,W,415);ctx.stroke();
+  ctx.fillStyle=mix(C.kera,C["kera-edge"],.22);ctx.fillRect(0,100,W,256);
+  ctx.fillStyle=C.corn;ctx.fillRect(0,60,W,40);for(let x=0;x<W;x+=70)drawCell(x+((x/70)%2)*20,72,LOOK[4]);for(let x=30;x<W;x+=70)drawCell(x,88,LOOK[4]);
+  // cells
+  const capOf=i=>{let n=0;for(let k=0;k<3;k++){const e=.27+i*.022+k*.016;if(p>e+.2)n++}return n/3*fadeOut};
+  MEL_T.forEach((m,i)=>{const L=i<5?{w:150,h:100,nuc:1,gran:0,ker:.3,clear:0,dead:0}:{w:138,h:84,nuc:1,gran:0,ker:.1,clear:0,dead:0};
+    const hitA=i<5?seg(p,.14,.18)*(1-seg(p,.24,.3)):0;
+    drawCell(m.cx,m.cy,L,{nr:m.nr,cap:capOf(i),capN:15,capR:2.6,dna:hitA})});
+  // melanocyte
+  const mx=410,my=305;
+  ctx.strokeStyle=C.melano;ctx.lineWidth=5;ctx.lineCap="round";
+  MEL_T.forEach(m=>{ctx.beginPath();ctx.moveTo(mx,my-6);ctx.quadraticCurveTo(lerp(mx,m.tip[0],.5),my-30+(m.tip[1]-my)*.2,m.tip[0],m.tip[1]);ctx.stroke()});ctx.lineCap="butt";
+  ctx.beginPath();ctx.ellipse(mx,my,30,40,0,0,TAU);ctx.fillStyle=C.melano;ctx.fill();circ(mx,my+8,11,C.nuc);
+  // melanosomes being made in body
+  const mk=seg(p,.2,.3);for(let k=0;k<8;k++)if(mk>k/8&&p<.6)mdot(mx-14+(k%4)*9,my-20+Math.floor(k/4)*9,2.8,C.eumel);
+  // travelling melanosomes
+  MEL_T.forEach((m,i)=>{for(let k=0;k<3;k++){const e=.27+i*.022+k*.016;const q=seg(p,e,e+.13),r=seg(p,e+.13,e+.2);if(q<=0||r>=1)continue;
+    let x,y;if(q<1){const c1x=lerp(mx,m.tip[0],.5),c1y=my-30+(m.tip[1]-my)*.2;const u=q;x=(1-u)*(1-u)*mx+2*(1-u)*u*c1x+u*u*m.tip[0];y=(1-u)*(1-u)*(my-6)+2*(1-u)*u*c1y+u*u*m.tip[1]}
+    else{x=lerp(m.tip[0],m.cx,r);y=lerp(m.tip[1],m.cy-m.nr-4,r)}mdot(x,y,3.2,C.eumel)}});
+  // UV rays
+  const rays=(a,b,toCap)=>{UP.forEach((x,i)=>{const q=seg(p,a+i*.008,b+i*.008);if(q<=0)return;const yEnd=toCap?165-20-12:165-8;const al=1-seg(p,b+.05,b+.09);ctx.save();ctx.globalAlpha*=al;ray(x-30,0,x-6,yEnd,q,C.uv,2.6);
+    if(q>=1&&toCap){glow(x-6,yEnd,16,C.uv,.7)}ctx.restore()})};
+  rays(.02,.15,false);rays(.72,.84,true);
+  // labels
+  if(p<.3)label(400,40,p>.15?"UV reaches unprotected nuclei: DNA at risk":"UV light",{align:"center",weight:600,color:p>.15?C.bad:C.uv,size:13});
+  else if(p<.7)label(400,40,"Melanocyte passes melanosomes to keratinocytes",{align:"center",weight:600,size:13});
+  else label(400,40,p>.84?"Melanin caps absorb the UV: DNA shielded":"UV light again",{align:"center",weight:600,color:p>.84?C.good:C.uv,size:13});
+  label(mx,my+56,"Melanocyte",{align:"center",size:12,weight:600,color:C.melano});
+  label(90,232,"Keratinocyte",{align:"center",size:12});
+  if(p>.55&&p<.95){label(250+86,128,"Melanin cap",{size:12,weight:600});line(250+82,128,250+16,165-26,C["ink-soft"],1.2)}
+  label(570,232,"Nucleus (DNA)",{align:"center",size:12});
+  label(60,375,"Stratum basale",{size:11.5});label(60,438,"Dermis",{size:11.5});
+}
+
+/* ===== Scene: colour & tanning ===== */
+function miniSkin(x0,y0,w,amount,pheo,seedOff){
+  // upper row keratinocytes + basale with 3 melanocytes
+  ctx.save();ctx.beginPath();ctx.rect(x0,y0,w,130);ctx.clip();
+  ctx.fillStyle=mix(C.kera,C["kera-edge"],.2);ctx.fillRect(x0,y0,w,130);
+  ctx.fillStyle=C.corn;ctx.fillRect(x0,y0,w,14);
+  const L1={w:52,h:36,nuc:1,gran:0,ker:.2,clear:0,dead:0};
+  for(let k=0;k<4;k++)drawCell(x0+30+k*60,y0+40,L1,{nr:8,cap:amount,capN:12,capR:2.2,pheo,pheoSeed:k+seedOff});
+  const L0={w:26,h:38,nuc:1,gran:0,ker:0,clear:0,dead:0};
+  for(let k=0;k<8;k++){const x=x0+15+k*30;if(k%3===1)continue;drawCell(x,y0+90,L0,{nr:6,cap:amount*.8,capN:8,capR:1.8,pheo,pheoSeed:k+9+seedOff})}
+  for(let k=0;k<3;k++){const x=x0+45+k*90;const y=y0+92;ctx.strokeStyle=C.melano;ctx.lineWidth=2.2;line(x,y,x-14,y-30,C.melano,2.2);line(x,y,x+14,y-32,C.melano,2.2);
+    ctx.beginPath();ctx.ellipse(x,y,8,13,0,0,TAU);ctx.fillStyle=C.melano;ctx.fill();circ(x,y,3.2,C.nuc)}
+  ctx.fillStyle=C.dermis;ctx.fillRect(x0,y0+112,w,18);line(x0,y0+112,x0+w,y0+112,C["ink-soft"],1.5);
+  ctx.restore();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.strokeRect(x0,y0,w,130)}
+function sceneColour(t){ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  txt(400,16,"Same number of melanocytes (3 shown in each)",13.5,C.ink,700,"center");
+  const P=[[.25,.7,"#F1D3C0","Less melanin","more pheomelanin"],[.6,.25,"#C08A64","More melanin","mostly eumelanin"],[1,0,"#6E4128","Most melanin","eumelanin"]];
+  P.forEach((pp,i)=>{const x0=24+i*258;ctx.fillStyle=pp[2];rr(x0,30,236,16,4);ctx.fill();
+    miniSkin(x0,50,236,pp[0],pp[1],i*20);
+    const pulse=(Math.floor(t/1.2)%1===0)?.5+.5*Math.sin(t*3):1;
+    for(let k=0;k<3;k++){const x=x0+45+k*90;circ(x,50+92-24,0,null);label(x,50+128+12,String(k+1),{align:"center",size:11,weight:700,color:C.melano})}
+    txt(x0+118,206,pp[3],13,C.ink,700,"center");txt(x0+118,222,pp[4],12,C["ink-soft"],500,"center")});
+  // tanning
+  line(20,240,780,240,C.rule,1);
+  txt(20,258,"Tanning: UV tells melanocytes to make more melanin",13.5,C.ink,700);
+  const p=(t%8)/8;const day=10*ease(seg(p,.08,.82));const am=lerp(.2,.85,day/10)*(1-seg(p,.94,1))+.2*seg(p,.94,1);
+  // sun
+  const sx=62,sy=340;circ(sx,sy,22,C.glow,null);for(let k=0;k<10;k++){const a=k/10*TAU+t*.3;line(sx+Math.cos(a)*28,sy+Math.sin(a)*28,sx+Math.cos(a)*36,sy+Math.sin(a)*36,C.glow,3)}
+  for(let k=0;k<3;k++){const q=(t*.7+k/3)%1;ctx.save();ctx.globalAlpha*=1-seg(q,.8,1);ray(96,330+k*14-14,170,300+k*30,q,C.uv,2);ctx.restore()}
+  miniSkin(170,280,240,am,.15,60);
+  txt(290,424,"Same skin, more melanin as the days pass",12,C["ink-soft"],500,"center");
+  // timeline
+  const tx0=460,tx1=760,ty=350;line(tx0,ty,tx1,ty,C["ink-soft"],2);
+  for(let d=0;d<=10;d++){const x=lerp(tx0,tx1,d/10);line(x,ty-5,x,ty+5,C["ink-soft"],1.5);if(d%2===0)txt(x,ty+18,String(d),11.5,C["ink-soft"],500,"center")}
+  txt((tx0+tx1)/2,ty+38,"days of regular sun exposure",12,C["ink-soft"],500,"center");
+  const mxp=lerp(tx0,tx1,day/10);circ(mxp,ty,9,C.act3,C.panel,2);
+  txt(mxp,ty-28,"Day "+Math.round(day),15,C.act3,700,"center");
+  ctx.fillStyle=C.sunk;rr(tx0,290,tx1-tx0,10,5);ctx.fill();ctx.fillStyle=C.act3;rr(tx0,290,Math.max(10,(tx1-tx0)*day/10),10,5);ctx.fill();
+  txt(tx0,280,"melanin made",11.5,C["ink-soft"],600);
+  txt((tx0+tx1)/2,420,"Melanin builds up over about 10 days",12.5,C.ink,600,"center");
+}
+
+/* ===== Scene: UVB → vitamin D3 ===== */
+const DHC=[];[[60,150],[150,190],[240,150],[330,190],[420,150],[100,230],[200,230],[300,230],[400,230],[50,290],[170,290],[290,290],[410,290]].forEach((p,i)=>DHC.push({x:p[0],y:p[1],ct:.1+((i*5)%13)*.042}));
+function steroid(ox,oy,s,open,col,colBreak){
+  const r3=Math.sqrt(3);
+  const hex=(cx,cy)=>[...Array(6)].map((_,k)=>{const a=(-90+60*k)*Math.PI/180;return [cx+s*Math.cos(a),cy+s*Math.sin(a)]});
+  const A=hex(0,0),B=hex(r3*s,0),Cc=hex(1.5*r3*s,-1.5*s);
+  const R=s/(2*Math.sin(Math.PI/5));const dc=[2*r3*s+.688*s,-1.5*s];
+  const D=[144,216,288,0,72].map(a=>[dc[0]+R*Math.cos(a*Math.PI/180),dc[1]+R*Math.sin(a*Math.PI/180)]);
+  const T=([x,y])=>[ox+x,oy+y];
+  const pivot=B[4];// C5 (bottom-left of B, 150deg)
+  const ang=-.55*open;
+  const rotA=([x,y])=>{const dx=x-pivot[0],dy=y-pivot[1];return [pivot[0]+dx*Math.cos(ang)-dy*Math.sin(ang),pivot[1]+dx*Math.sin(ang)+dy*Math.cos(ang)]};
+  const poly=(pts,close)=>{ctx.beginPath();pts.forEach((p,i)=>{const q=T(p);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});if(close)ctx.closePath();ctx.stroke()};
+  ctx.strokeStyle=col;ctx.lineWidth=3;ctx.lineJoin="round";
+  poly(A.map(rotA),true);
+  // ring B edges except C10–C9 (B[5]–B[0]) and shared A edge
+  poly([B[0],B[1],B[2],B[3],B[4]],false);
+  poly(Cc,true);poly(D,true);
+  // breaking bond
+  const c10=rotA(B[5]);ctx.save();ctx.globalAlpha*=1-open;ctx.strokeStyle=colBreak;poly([c10,B[0]],false);ctx.restore();
+  if(open>.2){const a=T(c10),b=T(B[0]);ctx.save();ctx.globalAlpha*=open;ctx.setLineDash([3,3]);ctx.strokeStyle=colBreak;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();ctx.restore()}
+  // side chain
+  const st=D[2];const chain=[st,[st[0]+12,st[1]-14],[st[0]+28,st[1]-6],[st[0]+40,st[1]-20],[st[0]+56,st[1]-12],[st[0]+66,st[1]-26]];poly(chain,false);
+  // HO
+  const ho=T(rotA(A[4]));txt(ho[0]-8,ho[1]+2,"HO",13,col,600,"right");
+}
+function sceneUVB(t){
+  const p=(t%9)/9;
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,520,H);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,520,H);ctx.clip();
+  ctx.fillStyle=C.dermis;ctx.fillRect(0,318,520,H-318);
+  ctx.fillStyle=mix(C.kera,C["kera-edge"],.22);ctx.fillRect(0,46,520,272);
+  for(let r=0;r<3;r++)for(let x=-20+(r%2)*33;x<540;x+=66)drawCell(x,52+r*7,LOOK[4]);
+  for(let x=-10+0;x<540;x+=46)drawCell(x,84,LOOK[2]);for(let x=13;x<540;x+=46)drawCell(x,98,LOOK[2]);
+  [150,190,230].forEach((y,r)=>{for(let x=10+(r%2)*45;x<540;x+=90)drawCell(x+(r===1?0:0),y,{w:84,h:36,nuc:.95,gran:0,ker:.4,clear:0,dead:0},{nr:9,nx:(r%2?18:-18)})});
+  for(let x=10;x<540;x+=40)drawCell(x,290,{w:34,h:48,nuc:1,gran:0,ker:0,clear:0,dead:0},{nr:7,ny:8});
+  line(0,318,520,318,C["ink-soft"],2);
+  // capillary
+  ctx.strokeStyle=C.blood;ctx.lineWidth=12;ctx.beginPath();ctx.moveTo(-10,400);ctx.bezierCurveTo(150,380,330,420,530,395);ctx.stroke();
+  for(let k=0;k<8;k++){const q=(t*.15+k/8)%1;const x=q*540;circ(x,400+Math.sin(q*6)*6,3,C.panel)}
+  // molecules
+  DHC.forEach((m,i)=>{const ct=m.ct;const rq=seg(p,ct-.08,ct);const conv=p>=ct;const dq=seg(p,ct+.06,ct+.2);const fq=seg(p,ct+.2,.98);
+    if(rq>0&&!conv){ray(m.x-8,0,m.x,m.y-9,rq,C.uv,2.2)}
+    if(p>ct-.005&&p<ct+.05)glow(m.x,m.y,22,C.uv,.8);
+    let x=m.x,y=m.y;if(dq>0){y=lerp(m.y,398,ease(dq));x=m.x+Math.sin(dq*5)*6}if(fq>0){x=m.x+fq*300;y=398+Math.sin(fq*8)*5}
+    const a=1-seg(p,.9,.98);if(x>530)return;
+    ctx.save();ctx.globalAlpha*=a;if(conv){circ(x,y,8,C.vitd,C.panel,1.5);txt(x,y+.5,"D",9.5,"#000",700,"center")}else hexMol(x,y,7,C.dhc,C.panel);ctx.restore()});
+  ctx.restore();
+  label(12,30,"UVB",{color:C.uv,weight:700,size:13});
+  label(505,190,"Stratum spinosum",{align:"right",size:11.5});label(505,262,"Stratum basale",{align:"right",size:11.5});
+  label(260,350,"Vitamin D₃ enters the blood",{align:"center",size:12,weight:600});
+  label(505,440,"Dermis capillary",{align:"right",size:11.5,color:C.blood});
+  // chemistry panel
+  ctx.fillStyle=C.panel;ctx.fillRect(520,0,W-520,H);line(520,0,520,H,C.rule,1);
+  txt(660,24,"What UVB does (simplified)",13,C.ink,700,"center");
+  const q=(t%5)/5;const open=ease(seg(q,.35,.6))*(1-seg(q,.93,1));
+  ray(640,50,640,138,seg(q,.1,.32),C.uv,2.4);if(q>.3&&q<.42)glow(612,212,40,C.uv,.6);
+  steroid(585,232,20,open,C.ink,C.bad);
+  txt(660,330,open<.5?"7-dehydrocholesterol":"Cholecalciferol (vitamin D₃)",13.5,open<.5?C.dhc:C.vitd,700,"center");
+  txt(660,352,open<.5?"in cells of basale and spinosum":"UVB broke one ring open",12,C["ink-soft"],500,"center");
+  hexMol(560,398,7,C.dhc,C.panel);txt(578,398,"7-DHC",12,C.ink,500);
+  circ(668,398,8,C.vitd,C.panel,1.5);txt(668,398.5,"D",9.5,"#000",700,"center");txt(682,398,"Vitamin D₃",12,C.ink,500);
+  txt(660,430,"Not active yet: two more stops",12,C["ink-soft"],600,"center");
+}
+
+/* ===== Scene: relay ===== */
+const RX=[85,245,405,565,725];
+function organ(i,cx,cy,act,t){
+  if(i===0){ctx.fillStyle=C.corn;ctx.fillRect(cx-40,cy-10,80,8);ctx.fillStyle=C.kera;ctx.fillRect(cx-40,cy-2,80,20);ctx.fillStyle=C.dermis;ctx.fillRect(cx-40,cy+18,80,22);
+    for(let k=0;k<3;k++){ray(cx-30+k*25,cy-48,cx-24+k*25,cy-12,1,C.uv,1.8)}circ(cx,cy+10,5,C.vitd)}
+  if(i===1){ctx.beginPath();ctx.moveTo(cx-48,cy-8);ctx.quadraticCurveTo(cx-10,cy-36,cx+46,cy-22);ctx.quadraticCurveTo(cx+52,cy-6,cx+28,cy+8);ctx.quadraticCurveTo(cx-2,cy+30,cx-32,cy+16);ctx.quadraticCurveTo(cx-54,cy+6,cx-48,cy-8);ctx.fillStyle=C.liver;ctx.fill();
+    line(cx+4,cy-24,cx-6,cy+18,mix(C.liver,"#000000",.3),1.5)}
+  if(i===2){ctx.beginPath();ctx.ellipse(cx-4,cy,26,36,0,0,TAU);ctx.fillStyle=C.kidney;ctx.fill();ctx.beginPath();ctx.ellipse(cx+20,cy,10,13,0,0,TAU);ctx.fillStyle=act?C["accent-wash"]:C["panel-2"];ctx.fill();
+    line(cx+16,cy+6,cx+22,cy+44,C.kidney,3)}
+  if(i===3){ctx.lineCap="round";ctx.lineJoin="round";const path=()=>{ctx.beginPath();ctx.moveTo(cx-40,cy-26);ctx.lineTo(cx+30,cy-26);ctx.arc(cx+30,cy-13,13,-Math.PI/2,Math.PI/2);ctx.lineTo(cx-30,cy);ctx.arc(cx-30,cy+13,13,-Math.PI/2,Math.PI/2,true);ctx.lineTo(cx+40,cy+26)};
+    ctx.strokeStyle=mix(C.gut,"#000000",.3);ctx.lineWidth=16;path();ctx.stroke();ctx.strokeStyle=C.gut;ctx.lineWidth=11;path();ctx.stroke();ctx.lineCap="butt";
+    line(cx-46,cy+44,cx+46,cy+44,C.blood,4);
+    if(act)for(let k=0;k<5;k++){const q=(t*.8+k/5)%1;ion(cx-30+k*15,lerp(cy+26,cy+44,q),C.ca,4,1-seg(q,.85,1))}}
+  if(i===4){ctx.fillStyle=C.bone;ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=2;rr(cx-34,cy-8,68,16,4);ctx.fill();ctx.stroke();
+    [[-38,-8],[-38,8],[38,-8],[38,8]].forEach(([dx,dy])=>circ(cx+dx,cy+dy,10,C.bone,C["bone-edge"],2));ctx.fillStyle=C.bone;ctx.fillRect(cx-36,cy-6,72,12);
+    if(act)for(let k=0;k<6;k++){const q=(t*.6+k/6)%1;ion(cx-28+k*11,lerp(cy-40,cy,q),C.ca,3.5,1-seg(q,.8,1))}}
+}
+function sceneRelay(t){ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const p=(t%11)/11;const legs=[[.08,.2],[.3,.42],[.52,.64],[.74,.86]];
+  let pos=0;legs.forEach((l,j)=>{if(p>=l[0])pos=j+seg(p,l[0],l[1])});
+  const at=Math.round(pos);const moving=pos%1>0&&pos%1<1;
+  const names=["Skin","Liver","Kidneys","Small intestine","Bone"];const roles=["UVB makes D₃","D₃ → calcidiol","→ calcitriol (active)","absorbs Ca²⁺","Ca²⁺ builds bone"];
+  txt(400,22,"Food and supplement vitamin D joins the relay at the liver",12,C["ink-soft"],500,"center");arrow(RX[1]+30,30,RX[1]+6,82,C["ink-faint"],1.5);
+  RX.forEach((cx,i)=>{const act=!moving&&i===at||(moving&&Math.floor(pos)===i&&false);const on=i===at;
+    ctx.fillStyle=on?C["accent-wash"]:C["panel-2"];rr(cx-68,88,136,172,10);ctx.fill();ctx.strokeStyle=on?C.act4:C.rule;ctx.lineWidth=on?3:1.2;ctx.stroke();
+    chipText(cx,104,String(i+1),on?C.act4:C["ink-faint"]);
+    organ(i,cx,165,on,t);
+    txt(cx,226,names[i],13.5,C.ink,700,"center");txt(cx,244,roles[i],11.5,on?C.ink:C["ink-soft"],on?600:500,"center")});
+  // track
+  line(RX[0],292,RX[4],292,C.rule,3);RX.forEach(x=>circ(x,292,5,C.panel,C["ink-faint"],2));
+  const segName=["Vitamin D₃","Calcidiol","Calcitriol","Ca²⁺"];
+  segName.forEach((s,j)=>txt((RX[j]+RX[j+1])/2,312,s,11.5,C["ink-soft"],500,"center"));
+  const bx=lerp(RX[Math.floor(Math.min(pos,3.999))],RX[Math.min(4,Math.floor(Math.min(pos,3.999))+1)],pos-Math.floor(Math.min(pos,3.999)));
+  const bName=pos<1?"Vitamin D₃":pos<2?"Calcidiol":pos<3?"Calcitriol":"Ca²⁺";
+  chipText(bx,292,bName,pos>=3?C.ca:C.act4);
+  // deficiency box
+  ctx.fillStyle=C["panel-2"];rr(20,336,760,108,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+  txt(36,358,"If vitamin D is too low:",13.5,C.bad,700);
+  txt(36,380,"less Ca²⁺ is absorbed → bones become soft and weak",13,C.ink,500);
+  txt(36,402,"Children: rickets (often bowed legs)",13,C.ink,600);txt(36,424,"Adults: osteomalacia",13,C.ink,600);
+  // legs
+  const leg=(x,bow,lab)=>{ctx.strokeStyle=C["bone-edge"];ctx.lineWidth=9;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(x,352);ctx.quadraticCurveTo(x+bow,388,x,424);ctx.stroke();ctx.strokeStyle=C.bone;ctx.lineWidth=5;ctx.stroke();ctx.lineCap="butt";txt(x+(bow>0?30:20),390,lab,11.5,C["ink-soft"],500)};
+  leg(560,0,"normal");leg(670,26,"bowed");
+}
+
+/* ===== Scene: trade-off ===== */
+function sceneTrade(t){ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const p=(t%6)/6;
+  [[15,"Less melanin",.08,[1,1,0,1,1,0]],[410,"More melanin",1,[0,0,1,0,0,0]]].forEach(([x0,name,cap,deep],pi)=>{
+    const w=375;ctx.fillStyle=C["panel-2"];rr(x0,10,w,440,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+    txt(x0+w/2,30,name,14,C.ink,700,"center");
+    ctx.save();ctx.beginPath();ctx.rect(x0+10,46,w-20,240);ctx.clip();
+    ctx.fillStyle=C.ecf;ctx.fillRect(x0+10,46,w-20,30);
+    ctx.fillStyle=mix(C.kera,C["kera-edge"],.2);ctx.fillRect(x0+10,76,w-20,170);ctx.fillStyle=C.corn;ctx.fillRect(x0+10,76,w-20,14);
+    for(let k=0;k<5;k++)drawCell(x0+44+k*72,124,{w:64,h:42,nuc:1,gran:0,ker:.2,clear:0,dead:0},{nr:10,cap,capN:12,capR:2.3,dna:0});
+    for(let k=0;k<5;k++)drawCell(x0+44+k*72,182,{w:64,h:42,nuc:1,gran:0,ker:.1,clear:0,dead:0},{nr:9,cap:cap*.8,capN:10,capR:2.1});
+    ctx.fillStyle=C.dermis;ctx.fillRect(x0+10,246,w-20,40);line(x0+10,246,x0+w-10,246,C["ink-soft"],1.5);
+    ctx.strokeStyle=C.blood;ctx.lineWidth=6;line(x0+10,272,x0+w-10,268,C.blood,6);
+    // molecules in deep cells
+    const made=[];
+    for(let k=0;k<6;k++){const x=x0+40+k*60;const y=k%2?206:220;const ph=(p*1.0+k*.13)%1;const deepR=deep[k];
+      const cxN=x0+44+clamp(Math.round((x-x0-44)/72),0,4)*72;const rx=deepR?x:cxN;
+      const yEnd=deepR?y-8:(pi===0?118:106);const q=seg(ph,0,.35);
+      ray(rx-6,46,rx,yEnd,q,C.uv,2.2);
+      if(q>=1&&ph<.5){if(deepR){glow(x,y,18,C.vitd,.8)}else glow(rx,yEnd+(pi===0?6:0),16,pi===0?C.bad:C.uv,.85)}
+      const converted=deepR&&ph>.35;
+      if(converted){circ(x,y,7,C.vitd,C.panel,1.4);txt(x,y+.5,"D",9,"#000",700,"center")}else hexMol(x,y,6,C.dhc,C.panel);
+    }
+    ctx.restore();
+    if(pi===0)label(x0+w/2,96,"Some UVB hits DNA",{align:"center",size:11.5,weight:700,color:C.bad});
+    else label(x0+w/2,96,"Caps absorb most UVB",{align:"center",size:11.5,weight:700,color:C.act3});
+    // meters
+    const g=ease(seg(p,.15,.6));
+    const vals=pi===0?[.3,.85]:[.88,.3];
+    [["DNA protection",vals[0],C.good],["Vitamin D made in the skin",vals[1],C.vitd]].forEach(([n,v,c],j)=>{const y=318+j*58;txt(x0+18,y,n,13,C.ink,600);
+      ctx.fillStyle=C.sunk;rr(x0+18,y+12,w-36,14,7);ctx.fill();ctx.fillStyle=c;rr(x0+18,y+12,Math.max(14,(w-36)*v*g),14,7);ctx.fill();
+      txt(x0+w-18,y,v>.5?"higher":"lower",12,C["ink-soft"],600,"right")});
+    txt(x0+w/2,436,pi===0?"More vitamin D, but burns more easily":"Better DNA protection, less vitamin D",12,C["ink-soft"],500,"center");
+  });
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;
+  const s=STEPS[cur];
+  try{
+    if(s.scene==="journey")sceneJourney(T,s.id);else if(s.scene==="dermis")sceneDermis(T,s.id);else if(s.scene==="thickthin")sceneThick(T);
+    else if(s.scene==="mel")sceneMel(T);else if(s.scene==="colour")sceneColour(T);else if(s.scene==="uvb")sceneUVB(T);
+    else if(s.scene==="relay")sceneRelay(T);else sceneTrade(T);
+  }catch(e){console.error(e)}
+  requestAnimationFrame(frame);
+}
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+window.__setT=v=>{T=v;paused=true};
+window.__go=i=>go(i);
+})();
+</script>
+</body>
+</html>
