@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bone Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;
+  --pI:#7B5CC9;--pE:#1B6E88;--pG:#2F8A57;--pF:#B4462F;--pM:#57666F;
+  /* tissue palette */
+  --emb:#EFEAF3;--mes:#9C8BB8;--ob:#2A9D8F;--ocl:#7B5CC9;--osteoid:#F3E6C4;
+  --bone:#C9A55A;--bone-dk:#9C7A3C;--compact:#E2C88C;--cart:#C6E0EE;--cart-edge:#5C8FAE;--calc:#9FC2D6;
+  --vessel:#C0392B;--marrow:#F2C4C0;--yellowm:#F6E7B8;--hema:#8E1F1F;--fibro:#D3C2EA;--peri:#8A5A2B;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
+  --pI:#A98BEF;--pE:#4FB3D1;--pG:#4FBF7F;--pF:#E07A62;--pM:#A3B2BA;
+  --emb:#241F2B;--mes:#9C8BB8;--osteoid:#5A4E33;--cart:#2B4656;--cart-edge:#7FB3D1;--calc:#3E6378;
+  --marrow:#5A2A2A;--yellowm:#4D4326;--fibro:#3E3354;--compact:#B99A5C;--bone:#D9B66A;--bone-dk:#E2C88C;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
+  --pI:#A98BEF;--pE:#4FB3D1;--pG:#4FBF7F;--pF:#E07A62;--pM:#A3B2BA;
+  --emb:#241F2B;--mes:#9C8BB8;--osteoid:#5A4E33;--cart:#2B4656;--cart-edge:#7FB3D1;--calc:#3E6378;
+  --marrow:#5A2A2A;--yellowm:#4D4326;--fibro:#3E3354;--compact:#B99A5C;--bone:#D9B66A;--bone-dk:#E2C88C;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+.instr{color:var(--ink-soft);font-size:15px;margin:0 0 10px}
+.msg{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--good);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--warn);border:1px solid var(--warn)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+[hidden]{display:none!important}
+/* svg tissue classes */
+svg{display:block;width:100%;height:auto}
+.emb{fill:var(--emb)}.mes{fill:var(--mes)}.mesl{stroke:var(--mes);stroke-width:1}
+.ob{fill:var(--ob);stroke:rgba(0,0,0,.25);stroke-width:.6}.ocl{fill:var(--ocl);stroke:rgba(0,0,0,.3);stroke-width:.6}
+.osteoid{fill:var(--osteoid);stroke:var(--bone-dk);stroke-width:1.2}
+.compact{fill:var(--compact);stroke:var(--bone-dk);stroke-width:1.2}
+.cart{fill:var(--cart)}.cartE{fill:var(--cart);stroke:var(--cart-edge);stroke-width:1.2}
+.calc{fill:var(--calc)}
+.chondro{fill:var(--cart-edge);opacity:.65}.chondroD{fill:none;stroke:var(--cart-edge);stroke-width:1}
+.marrow{fill:var(--marrow)}.yellowm{fill:var(--yellowm)}.hema{fill:var(--hema);opacity:.9}.fibro{fill:var(--fibro);stroke:var(--pI);stroke-width:.8}
+.vessel{fill:none;stroke:var(--vessel);stroke-width:2.6;stroke-linecap:round}
+.peri{stroke:var(--peri);stroke-width:2.2;fill:none}.periB{fill:var(--peri);opacity:.35}
+.trab{stroke:var(--bone);stroke-linecap:round;fill:none}
+.lac{fill:var(--panel);stroke:var(--bone-dk);stroke-width:.8}.ocy{fill:var(--bone-dk)}
+.edgeC{fill:var(--cart-edge);stroke:var(--cart-edge)}.edgeP{fill:var(--peri);stroke:var(--peri)}
+.bg{fill:var(--panel)}
+.dash{fill:none;stroke:var(--ink-soft);stroke-width:1.2;stroke-dasharray:4 3}
+.lab{font:600 8.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:2.6px;stroke-linejoin:round}
+.lead{stroke:var(--ink-soft);stroke-width:.8}
+.xm{stroke:var(--ink-soft);stroke-width:1.2}
+/* study strip */
+.proc{margin-bottom:16px}
+.proc h2{font-family:var(--serif);font-size:20px;margin:0 0 2px;display:flex;align-items:center;gap:8px}
+.proc h2 i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.proc .where{color:var(--ink-soft);font-size:14.5px;margin:0 0 10px}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:10px}
+.frame{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:6px}
+.frame .n{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft)}
+.frame p{margin:4px 2px 2px;font-size:13.5px;line-height:1.35}
+.frame b{display:block;font-size:13.5px}
+.frame.on{outline:3px solid var(--gold)}
+.bigidea{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:0 0 16px;font-size:15px}
+/* sort */
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 14px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--good);margin-left:4px}
+ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:6px 8px;touch-action:none;user-select:none;cursor:grab}
+.item.drag{box-shadow:0 10px 24px -8px rgba(0,0,0,.4);cursor:grabbing;border-color:var(--accent);position:relative;z-index:2}
+.item .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);width:20px;text-align:right;flex:0 0 auto}
+.item .thumb{width:118px;flex:0 0 auto;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft)}
+.item .txt{flex:1;font-size:15px}
+.mv{display:flex;flex-direction:column;gap:2px}
+.mv button{width:30px;height:26px;border:1px solid var(--rule);background:var(--panel-2);border-radius:4px;cursor:pointer;font-size:12px;padding:0}
+.item.right{background:var(--good-wash);border-color:var(--good)}
+.item.off{background:var(--warn-wash);border-color:var(--warn)}
+.item.hinted{box-shadow:0 0 0 3px var(--gold)}
+@media (max-width:600px){.item .thumb{width:80px}.item .txt{font-size:14px}}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+/* classify */
+.stmt{font-family:var(--serif);font-size:22px;line-height:1.35;margin:6px 0 16px;min-height:60px}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.bucket{border:2px solid var(--rule);background:var(--panel);border-radius:var(--r);padding:14px;cursor:pointer;text-align:left;font-size:15.5px;font-weight:600;display:flex;align-items:center;gap:10px}
+.bucket i{width:14px;height:14px;border-radius:50%;flex:0 0 auto}
+.bucket:hover{border-color:var(--accent)}
+.bucket.right{border-color:var(--good);background:var(--good-wash)}
+.bucket.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.why{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.why.show{display:block}
+.meter{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:14px;color:var(--ink-soft)}
+.meter b{color:var(--ink)}
+.pbar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.pbar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.tally div{border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;font-size:14px;background:var(--panel-2)}
+/* name that stage */
+.nts{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.nts{grid-template-columns:1fr}}
+.bigpic{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:var(--r);padding:8px}
+.qlab{font-weight:600;margin:4px 0 8px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+footer{max-width:1180px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Bone Tissue &middot; USC Upstate</div>
+    <h1>Bone Builder</h1>
+    <p class="sub">How bones form, how they grow longer, and how a broken bone heals.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="study" type="button">Look first</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="sort" type="button">Game 1 &middot; Put it in order</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="class" type="button">Game 2 &middot; Which process?</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="nts" type="button">Game 3 &middot; Name that stage</button>
+  </div>
+
+  <section id="tab-study">
+    <div class="bigidea"><b>The big idea:</b> bone never appears out of nothing. It is always built on top of something else. In <b>intramembranous</b> ossification, bone is built directly in a membrane of mesenchyme. In <b>endochondral</b> ossification, bone replaces a cartilage model. <b>Fracture healing</b> reuses the endochondral plan: clot, then cartilage, then bone, then remodeling.</div>
+    <div id="study"></div>
+  </section>
+
+  <section id="tab-sort" hidden>
+    <div class="card">
+      <div class="rounds" id="rounds"></div>
+      <p class="instr" id="instr"></p>
+      <div class="bar"><label class="mode"><input type="checkbox" id="showPics" checked> Show pictures on the cards</label></div>
+      <ol class="list" id="list" aria-label="Stages to put in order"></ol>
+      <div class="bar" style="margin-top:14px">
+        <button class="btn" id="checkBtn" type="button">Check my order</button>
+        <button class="tbtn" id="hintBtn" type="button">Hint</button>
+        <button class="tbtn" id="shuffleBtn" type="button">Shuffle again</button>
+        <button class="tbtn" id="answerBtn" type="button">Show answer</button>
+      </div>
+      <div class="msg" id="msg" role="status"></div>
+      <div id="film" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <section id="tab-class" hidden>
+    <div class="card">
+      <div class="meter"><span>Card <b id="cN">1</b> of <b id="cT"></b></span><span>Correct <b id="cOk">0</b></span><span>Streak <b id="cStreak">0</b></span></div>
+      <div class="pbar"><i id="cBar"></i></div>
+      <p class="instr" style="margin-top:10px">Where does this belong? Pick one.</p>
+      <div class="stmt" id="stmt"></div>
+      <div class="buckets" id="buckets"></div>
+      <div class="why" id="why"></div>
+      <div class="bar" style="margin-top:14px"><button class="btn" id="cNext" type="button" hidden>Next card &rarr;</button><button class="tbtn" id="cRestart" type="button">Restart deck</button></div>
+      <div id="cDone"></div>
+    </div>
+  </section>
+
+  <section id="tab-nts" hidden>
+    <div class="card">
+      <div class="meter"><span>Picture <b id="nN">1</b> of <b id="nT"></b></span><span>Score <b id="nScore">0</b></span><span>Streak <b id="nStreak">0</b></span></div>
+      <div class="pbar"><i id="nBar"></i></div>
+      <div class="nts" style="margin-top:12px">
+        <div class="bigpic" id="nPic"></div>
+        <div>
+          <p class="qlab">1. Which process is this?</p>
+          <div class="opts" id="nQ1"></div>
+          <div id="nQ2wrap" hidden><p class="qlab">2. Which stage?</p><div class="opts" id="nQ2"></div></div>
+          <div class="why" id="nWhy"></div>
+          <div class="bar"><button class="btn" id="nNext" type="button" hidden>Next picture &rarr;</button><button class="tbtn" id="nRestart" type="button">New set</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Pictures are simplified diagrams, not to scale.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+
+/* ================= SVG ILLUSTRATIONS ================= */
+let SD=1;function seed(n){SD=(n*9973+7)%2147483647||1}function R(){SD=(SD*16807)%2147483647;return(SD-1)/2147483646}
+const f=n=>(+n).toFixed(1);
+const ell=(cx,cy,rx,ry)=>(x,y)=>((x-cx)/rx)**2+((y-cy)/ry)**2<1;
+const rect=(x0,y0,x1,y1)=>(x,y)=>x>x0&&x<x1&&y>y0&&y<y1;
+const or=(...fs)=>(x,y)=>fs.some(g=>g(x,y));
+const not=g=>(x,y)=>!g(x,y);
+const and=(...fs)=>(x,y)=>fs.every(g=>g(x,y));
+function lab(x,y,t,anchor,lx,ly){return (lx!=null?`<line class="lead" x1="${lx}" y1="${ly}" x2="${x}" y2="${y+ (y<ly?2:-6)}"/>`:"")+`<text class="lab" x="${x}" y="${y}" text-anchor="${anchor||"middle"}">${t}</text>`}
+function mesField(n,inside,sd){seed(sd);let s="";let c=0,g=0;while(c<n&&g<n*20){g++;const x=4+R()*192,y=4+R()*132;if(!inside(x,y))continue;c++;const a=R()*6.28;
+  for(let k=0;k<3;k++){const b=a+k*2.09;s+=`<line class="mesl" x1="${f(x)}" y1="${f(y)}" x2="${f(x+4.5*Math.cos(b))}" y2="${f(y+4.5*Math.sin(b))}"/>`}
+  s+=`<circle class="mes" cx="${f(x)}" cy="${f(y)}" r="2.1"/>`}return s}
+function scatter(n,inside,sd,draw){seed(sd);let s="",c=0,g=0;while(c<n&&g<n*30){g++;const x=R()*200,y=R()*140;if(!inside(x,y))continue;c++;s+=draw(x,y,R())}return s}
+function lattice(inside,x0,y0,x1,y1,step,sd,w){seed(sd);const N=[];
+  for(let y=y0;y<=y1+.1;y+=step){const row=[];for(let x=x0;x<=x1+.1;x+=step){const jx=x+(R()-.5)*step*.6,jy=y+(R()-.5)*step*.6;row.push(inside(jx,jy)?[jx,jy]:null)}N.push(row)}
+  let s="";const L=(p,q)=>`<line x1="${f(p[0])}" y1="${f(p[1])}" x2="${f(q[0])}" y2="${f(q[1])}"/>`;
+  for(let r=0;r<N.length;r++)for(let c=0;c<N[r].length;c++){const p=N[r][c];if(!p)continue;const a=N[r][c+1],b=N[r+1]&&N[r+1][c],d=N[r+1]&&N[r+1][c+1];
+    if(a&&R()>.22)s+=L(p,a);if(b&&R()>.22)s+=L(p,b);if(d&&R()>.72)s+=L(p,d)}
+  return `<g class="trab" stroke-width="${w||3}">${s}</g>`}
+const BONE=[`<ellipse cx="42" cy="70" rx="30" ry="40"/>`,`<ellipse cx="158" cy="70" rx="30" ry="40"/>`,`<rect x="42" y="50" width="116" height="40"/>`].join("");
+function outline(edge,fill){return `<g class="${edge}" stroke-width="5">${BONE}</g><g class="${fill}">${BONE}</g>`}
+const inBone=or(ell(42,70,27,37),ell(158,70,27,37),rect(42,53,158,87));
+const chondros=(n,inside,sd,big)=>scatter(n,inside,sd,(x,y,r)=>`<ellipse class="${big&&r<.35?"chondroD":"chondro"}" cx="${f(x)}" cy="${f(y)}" rx="${big?4:2.2}" ry="${big?3:1.6}"/>`);
+const ocl=(x,y,rot)=>`<g transform="translate(${x} ${y}) rotate(${rot||0})"><ellipse class="ocl" rx="7" ry="4"/><circle cx="-3" cy="0" r="1" fill="#fff"/><circle cx="0" cy="0" r="1" fill="#fff"/><circle cx="3" cy="0" r="1" fill="#fff"/></g>`;
+const ob=(x,y)=>`<circle class="ob" cx="${f(x)}" cy="${f(y)}" r="3.6"/>`;
+const wrap=(inner,aria)=>`<svg viewBox="0 0 200 140" role="img" aria-label="${aria}"><rect class="bg" x="0" y="0" width="200" height="140"/>${inner}</svg>`;
+
+const ART={
+ i1:L=>{let s=`<rect class="emb" x="0" y="0" width="200" height="140"/>`+mesField(46,not(ell(100,70,34,34)),11);
+   s+=`<path class="vessel" d="M60 96 C 85 80 110 66 142 44"/>`;
+   for(let k=0;k<9;k++){const a=k/9*6.283;s+=ob(100+18*Math.cos(a),70+18*Math.sin(a))}
+   s+=`<circle class="dash" cx="100" cy="70" r="31"/>`;
+   if(L)s+=lab(100,128,"ossification center")+lab(36,16,"mesenchymal cells","start")+lab(156,36,"capillary");
+   return s},
+ i2:L=>{let s=`<rect class="emb" x="0" y="0" width="200" height="140"/>`+mesField(36,not(ell(100,70,52,34)),12);
+   s+=`<path class="osteoid" d="M58 72 C 56 50 84 44 104 46 C 130 47 148 56 146 72 C 144 90 122 98 100 96 C 76 95 60 90 58 72 Z"/>`;
+   for(let k=0;k<14;k++){const a=k/14*6.283;s+=ob(102+49*Math.cos(a),71+28*Math.sin(a))}
+   [[86,66],[110,62],[122,80],[96,82]].forEach(p=>{s+=`<ellipse class="lac" cx="${p[0]}" cy="${p[1]}" rx="5" ry="3.5"/><circle class="ocy" cx="${p[0]}" cy="${p[1]}" r="2"/>`});
+   if(L)s+=lab(100,128,"osteoid (calcifying)")+lab(26,16,"osteoblasts","start",52,62)+lab(170,22,"osteocyte",null,124,78);
+   return s},
+ i3:L=>{let s=`<rect class="emb" x="0" y="0" width="200" height="140"/><rect class="periB" x="0" y="6" width="200" height="14"/><rect class="periB" x="0" y="120" width="200" height="14"/>`;
+   s+=mesField(30,or(rect(0,6,200,20),rect(0,120,200,134)),13)+mesField(10,rect(0,24,200,116),14);
+   s+=`<path class="vessel" d="M0 52 C 40 44 70 62 110 50 S 170 44 200 56"/><path class="vessel" d="M0 92 C 50 98 80 82 120 92 S 180 98 200 88"/>`;
+   s+=lattice(rect(14,28,186,112),14,30,186,110,15,21,4.2);
+   if(L)s+=lab(100,16,"periosteum forming")+lab(100,131,"periosteum forming")+lab(30,70,"trabeculae","start");
+   return s},
+ i4:L=>{let s=`<rect class="periB" x="0" y="8" width="200" height="10"/><rect class="periB" x="0" y="122" width="200" height="10"/>`;
+   s+=`<rect class="compact" x="0" y="18" width="200" height="22"/><rect class="compact" x="0" y="100" width="200" height="22"/><rect class="marrow" x="0" y="40" width="200" height="60"/>`;
+   s+=lattice(rect(-2,40,202,100),4,44,196,96,13,22,4);
+   if(L)s+=lab(100,32,"compact bone")+lab(100,114,"compact bone")+lab(100,72,"spongy bone + red marrow")+lab(100,6,"periosteum");
+   return s},
+
+ e1:L=>{let s=outline("edgeC","cart")+chondros(70,inBone,31);
+   if(L)s+=lab(100,128,"hyaline cartilage model")+lab(100,14,"perichondrium",null,100,48);
+   return s},
+ e2:L=>{const mid=rect(78,52,122,88);let s=outline("edgeC","cart")+chondros(55,and(inBone,not(rect(74,50,126,90))),32);
+   s+=`<rect class="calc" x="78" y="52" width="44" height="36"/>`+chondros(9,rect(81,56,119,84),33,true);
+   s+=`<rect class="compact" x="72" y="45" width="56" height="7"/><rect class="compact" x="72" y="88" width="56" height="7"/>`;
+   if(L)s+=lab(100,128,"chondrocytes enlarge; matrix calcifies")+lab(100,24,"bone collar",null,100,45);
+   return s},
+ e3:L=>{let s=outline("edgeC","cart")+chondros(48,and(inBone,not(rect(60,50,140,90))),34);
+   s+=`<rect class="calc" x="62" y="52" width="76" height="36"/><ellipse class="marrow" cx="100" cy="70" rx="27" ry="17"/>`+lattice(ell(100,70,25,15),76,56,124,84,9,35,2.6);
+   s+=`<rect class="compact" x="62" y="45" width="76" height="7"/><rect class="compact" x="62" y="88" width="76" height="7"/>`;
+   s+=`<path class="vessel" d="M100 2 C 94 18 106 30 100 47 L 100 60 M100 60 L 90 66 M100 60 L 111 68"/>`;
+   if(L)s+=lab(100,128,"primary ossification center")+lab(130,12,"blood vessel","start");
+   return s},
+ e4:L=>{let s=outline("edgeC","cart")+chondros(40,and(inBone,not(rect(42,48,158,92))),36);
+   s+=`<rect class="marrow" x="44" y="52" width="112" height="36"/>`+lattice(or(rect(44,54,76,86),rect(124,54,156,86)),46,56,154,84,9,37,2.6);
+   s+=`<rect class="compact" x="44" y="45" width="112" height="9"/><rect class="compact" x="44" y="86" width="112" height="9"/>`+ocl(84,60,10)+ocl(116,80,-10);
+   if(L)s+=lab(100,73,"medullary cavity")+lab(100,128,"osteoclasts hollow out the shaft")+lab(56,30,"spongy bone",null,58,62);
+   return s},
+ e5:L=>{let s=ART.e4(false);
+   s+=`<ellipse class="marrow" cx="36" cy="70" rx="14" ry="18"/>`+lattice(ell(36,70,12,16),24,56,48,84,8,38,2.4);
+   s+=`<ellipse class="marrow" cx="164" cy="70" rx="14" ry="18"/>`+lattice(ell(164,70,12,16),152,56,176,84,8,39,2.4);
+   s+=`<path class="vessel" d="M0 64 C 8 60 14 70 24 68"/><path class="vessel" d="M200 76 C 192 80 186 70 176 72"/>`;
+   if(L)s+=lab(100,128,"secondary ossification centers")+lab(100,73,"medullary cavity");
+   return s},
+ e6:L=>{let s=outline("edgeP","cart");
+   s+=`<rect class="marrow" x="44" y="52" width="112" height="36"/>`;
+   s+=`<ellipse class="marrow" cx="48" cy="70" rx="24" ry="38"/>`+lattice(ell(48,70,22,36),26,36,70,104,9,40,2.6);
+   s+=`<ellipse class="marrow" cx="152" cy="70" rx="24" ry="38"/>`+lattice(ell(152,70,22,36),130,36,174,104,9,41,2.6);
+   s+=lattice(or(rect(70,54,84,86),rect(116,54,130,86)),70,56,130,84,8,42,2.4);
+   s+=`<rect class="compact" x="70" y="45" width="60" height="9"/><rect class="compact" x="70" y="86" width="60" height="9"/>`;
+   s+=`<rect class="cartE" x="64" y="40" width="6" height="60"/><rect class="cartE" x="130" y="40" width="6" height="60"/>`;
+   if(L)s+=lab(100,73,"medullary cavity")+lab(100,128,"epiphyseal plates")+lab(14,20,"articular cartilage","start",16,56);
+   return s},
+
+ g1:L=>{let s=`<rect class="compact" x="0" y="0" width="200" height="22"/>`+lattice(rect(0,0,200,22),6,4,194,20,10,51,2.2)+`<rect class="cart" x="0" y="22" width="200" height="118"/>`;
+   s+=chondros(26,rect(6,30,194,134),52);
+   if(L)s+=lab(100,14,"epiphysis side")+lab(100,128,"reserve zone");
+   return s},
+ g2:L=>{let s=`<rect class="cart" x="0" y="0" width="200" height="140"/>`;
+   for(let c=0;c<6;c++)for(let y=12;y<120;y+=9.5){s+=`<ellipse class="chondro" cx="${22+c*31}" cy="${y}" rx="10" ry="3.2"/>`}
+   if(L)s+=lab(100,131,"proliferative zone: columns");
+   return s},
+ g3:L=>{let s=`<rect class="cart" x="0" y="0" width="200" height="140"/>`;
+   for(let c=0;c<6;c++)for(let y=14;y<120;y+=18){s+=`<ellipse class="chondro" cx="${22+c*31}" cy="${y}" rx="${11+y/40}" ry="${6+y/40}"/>`}
+   if(L)s+=lab(100,131,"hypertrophy: cells enlarge");
+   return s},
+ g4:L=>{let s=`<rect class="calc" x="0" y="0" width="200" height="140"/>`;
+   for(let c=0;c<6;c++)for(let y=12;y<80;y+=20){s+=`<ellipse class="chondroD" cx="${22+c*31}" cy="${y}" rx="12" ry="7"/>`}
+   s+=`<rect class="compact" x="0" y="92" width="200" height="48"/>`;
+   for(let c=0;c<5;c++){s+=`<rect class="compact" x="${32+c*31}" y="${40}" width="8" height="54"/>`;s+=ob(30+c*31,58)+ob(42+c*31,70)}
+   s+=`<path class="vessel" d="M70 140 C 64 120 76 104 70 84"/><path class="vessel" d="M140 140 C 146 122 134 106 140 86"/>`;
+   if(L)s+=lab(100,124,"calcified matrix → bone")+lab(100,108,"diaphysis side");
+   return s},
+
+ f1:L=>fracture(1,L),f2:L=>fracture(2,L),f3:L=>fracture(3,L),f4:L=>fracture(4,L)
+};
+const GAP="92,28 100,48 94,70 102,92 96,112 106,112 112,92 104,70 110,48 102,28";
+function fracture(st,L){let s="";
+  if(st===2)s+=`<ellipse class="cartE" cx="102" cy="70" rx="44" ry="56"/>`+chondros(26,and(ell(102,70,42,54),not(rect(0,36,200,104))),61);
+  if(st===3)s+=`<ellipse class="marrow" cx="102" cy="70" rx="44" ry="56"/>`+lattice(ell(102,70,42,54),60,16,144,124,10,62,3);
+  if(st===4)s+=`<ellipse class="compact" cx="102" cy="70" rx="24" ry="40"/>`;
+  s+=`<rect class="yellowm" x="0" y="54" width="200" height="32"/><rect class="compact" x="0" y="38" width="200" height="16"/><rect class="compact" x="0" y="86" width="200" height="16"/>`;
+  if(st===4)s+=`<rect class="compact" x="86" y="52" width="32" height="36" style="stroke:none"/><line x1="96" y1="40" x2="108" y2="100" stroke="var(--bone-dk)" stroke-width=".8" stroke-dasharray="2 3"/>`;
+  s+=`<line class="peri" x1="0" y1="35" x2="200" y2="35"/><line class="peri" x1="0" y1="105" x2="200" y2="105"/>`;
+  if(st===1){s+=`<polygon points="${GAP}" class="bg"/><ellipse class="hema" cx="102" cy="70" rx="24" ry="46"/>`;
+    [[80,46],[84,94],[122,46],[118,94]].forEach(p=>s+=`<path class="xm" d="M${p[0]-3} ${p[1]-3} l6 6 M${p[0]+3} ${p[1]-3} l-6 6"/>`)}
+  if(st===2){s+=`<polygon points="${GAP}" class="fibro"/><path class="vessel" style="stroke-width:1.6" d="M98 40 C 104 52 96 60 102 72 S 98 92 104 100"/>`}
+  if(st===3){s+=`<polygon points="${GAP}" class="marrow"/>`+lattice((x,y)=>x>90&&x<112,88,30,112,110,7,63,2.6)}
+  if(st===4){s+=ocl(102,24,0)+ocl(102,116,0)+ocl(82,30,-20)}
+  if(L){const t=["","fracture hematoma (clot)","fibrocartilaginous callus","bony callus (spongy bone)","remodeling by osteoclasts"][st];s+=lab(100,134,t);
+    if(st===2)s+=lab(150,14,"external callus","middle",136,30);
+    if(st===1)s+=lab(40,20,"dead bone cells","middle",78,44);}
+  return s}
+
+/* ================= DATA ================= */
+const P={
+ I:{name:"Intramembranous ossification",col:"--pI",where:"Builds the flat bones of the skull, the mandible and the clavicles. No cartilage stage: bone forms directly in mesenchyme.",
+    stages:[["i1","Ossification center forms","Mesenchymal cells cluster and become osteoblasts, forming an ossification center."],
+            ["i2","Osteoid is laid down and calcifies","Osteoblasts secrete osteoid, which calcifies. Osteoblasts that get trapped become osteocytes."],
+            ["i3","Trabeculae and periosteum form","Osteoid forms trabeculae around blood vessels. Mesenchyme at the surface condenses into the periosteum."],
+            ["i4","Compact bone covers spongy bone","Compact bone forms at the surfaces over the spongy bone. Blood vessels between the trabeculae become red marrow."]]},
+ E:{name:"Endochondral ossification",col:"--pE",where:"Builds most of the skeleton, including all long bones like the femur and humerus. Bone replaces a hyaline cartilage model.",
+    stages:[["e1","Cartilage model","Mesenchymal cells become chondrocytes and build a hyaline cartilage model of the bone, wrapped in perichondrium."],
+            ["e2","Cartilage calcifies; bone collar","Chondrocytes in the middle enlarge and die as the matrix calcifies. The perichondrium becomes periosteum and builds a bone collar."],
+            ["e3","Primary ossification center","Blood vessels invade the middle and bring osteoblasts that build spongy bone: the primary ossification center."],
+            ["e4","Medullary cavity forms","Osteoclasts hollow out the medullary cavity while bone spreads toward the ends of the shaft."],
+            ["e5","Secondary ossification centers","Secondary ossification centers form in the epiphyses, around the time of birth."],
+            ["e6","Only articular cartilage and growth plates remain","Hyaline cartilage remains only at the articular surfaces and the epiphyseal plates, where growth in length continues."]]},
+ G:{name:"Growth at the epiphyseal plate",col:"--pG",where:"How a long bone grows longer during childhood. Read the zones from the epiphysis side toward the diaphysis.",
+    stages:[["g1","Reserve zone","Reserve zone: small, resting chondrocytes anchor the plate to the epiphysis."],
+            ["g2","Proliferative zone","Proliferative zone: chondrocytes divide and stack up in columns."],
+            ["g3","Zone of maturation and hypertrophy","Zone of maturation and hypertrophy: the chondrocytes grow much larger."],
+            ["g4","Zone of calcified matrix","Zone of calcified matrix: chondrocytes die, the matrix calcifies, and osteoblasts build bone on it."]]},
+ F:{name:"Fracture healing",col:"--pF",where:"How a broken bone repairs itself. It copies the endochondral plan: clot, cartilage, spongy bone, then remodeling.",
+    stages:[["f1","Fracture hematoma","Torn blood vessels bleed and a fracture hematoma (clot) forms. Bone cells at the broken ends die."],
+            ["f2","Fibrocartilaginous callus","Capillaries grow in and phagocytes clean up. Fibroblasts and chondroblasts build a fibrocartilaginous callus that bridges the break, plus an external cartilage callus."],
+            ["f3","Bony callus","Osteoblasts replace the cartilage callus with spongy bone: the bony callus."],
+            ["f4","Remodeling","Osteoclasts trim the extra bone and compact bone replaces spongy bone along the shaft. This takes months."]]}
+};
+const ORDER=["I","E","G","F"];
+function art(id,labels,aria){return wrap(ART[id](labels),aria||"diagram")}
+
+/* ================= STUDY TAB ================= */
+function buildStudy(){
+  $("#study").innerHTML=ORDER.map(k=>{const p=P[k];return `<div class="card proc"><h2><i style="background:var(${p.col})"></i>${p.name}</h2><p class="where">${p.where}</p>
+   <div class="strip">${p.stages.map((s,i)=>`<div class="frame"><div class="n">Stage ${i+1}</div>${art(s[0],true,s[1])}<b>${s[1]}</b><p>${s[2]}</p></div>`).join("")}</div></div>`}).join("");
+}
+
+/* ================= GAME 1: ORDER ================= */
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let RI=0,checks=0,hints=0,solved=false;const list=$("#list");
+const stageById={};ORDER.forEach(k=>P[k].stages.forEach((s,i)=>stageById[s[0]]={proc:k,i:i,short:s[1],text:s[2]}));
+function buildRounds(){const res=store.get("bb-done")||{};$("#rounds").innerHTML="";
+  ORDER.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===RI);b.innerHTML=P[k].name+(res[k]?'<span class="ok">✓</span>':"");b.onclick=()=>{RI=i;newRound()};$("#rounds").appendChild(b)})}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function answer(){return P[ORDER[RI]].stages.map(s=>s[0])}
+function newRound(){const ans=answer();let o;do{o=shuffle(ans)}while(o.filter((c,i)=>c===ans[i]).length>1);
+  list.innerHTML="";o.forEach(id=>list.appendChild(makeItem(id)));
+  const p=P[ORDER[RI]];$("#instr").innerHTML=`<b>${p.name}.</b> ${p.where} Put the stages in order, first to last.`;
+  checks=0;hints=0;solved=false;setMsg("","");$("#film").innerHTML="";renumber();buildRounds();applyPics()}
+function makeItem(id){const li=document.createElement("li");li.className="item";li.dataset.id=id;const st=stageById[id];
+  li.innerHTML=`<span class="pos"></span><span class="thumb">${art(id,false,"stage picture")}</span><span class="txt">${st.text}</span><span class="mv"><button type="button" aria-label="Move up">▲</button><button type="button" aria-label="Move down">▼</button></span>`;
+  const [up,dn]=li.querySelectorAll(".mv button");
+  up.onclick=()=>{const p=li.previousElementSibling;if(p&&!solved){list.insertBefore(li,p);changed();up.focus()}};
+  dn.onclick=()=>{const n=li.nextElementSibling;if(n&&!solved){list.insertBefore(n,li);changed();dn.focus()}};
+  let dragging=false;
+  li.addEventListener("pointerdown",e=>{if(e.target.closest("button")||solved)return;dragging=true;li.classList.add("drag");try{li.setPointerCapture(e.pointerId)}catch(_){}});
+  li.addEventListener("pointermove",e=>{if(!dragging)return;const kids=[...list.children];const me=kids.indexOf(li);
+    for(let k=0;k<kids.length;k++){const el=kids[k];if(el===li)continue;const r=el.getBoundingClientRect();
+      if(e.clientY>r.top&&e.clientY<r.bottom){const mid=r.top+r.height/2;
+        if(k>me&&e.clientY>mid){list.insertBefore(el,li);changed()}else if(k<me&&e.clientY<mid){list.insertBefore(el,li.nextElementSibling);changed()}break}}});
+  const end=()=>{dragging=false;li.classList.remove("drag")};li.addEventListener("pointerup",end);li.addEventListener("pointercancel",end);
+  return li}
+function renumber(){[...list.children].forEach((li,i)=>li.querySelector(".pos").textContent=i+1)}
+function changed(){renumber();[...list.children].forEach(li=>li.classList.remove("right","off","hinted"))}
+function current(){return [...list.children].map(li=>li.dataset.id)}
+function setMsg(t,c){const m=$("#msg");m.className="msg"+(t?" show "+c:"");m.innerHTML=t}
+function applyPics(){const on=$("#showPics").checked;list.querySelectorAll(".thumb").forEach(t=>t.style.display=on?"":"none")}
+$("#showPics").onchange=applyPics;
+$("#checkBtn").onclick=()=>{if(solved)return;checks++;const ans=answer(),o=current();let n=0;
+  [...list.children].forEach((li,i)=>{const ok=o[i]===ans[i];if(ok)n++;li.classList.toggle("right",ok);li.classList.toggle("off",!ok)});
+  if(n===ans.length)win();else setMsg(`<b>${n} of ${ans.length}</b> in the right spot. ${n>=ans.length-2?"So close!":"Tip: look at the pictures. What has to exist before the next thing can be built?"}`,"warn")};
+$("#hintBtn").onclick=()=>{if(solved)return;const ans=answer(),o=current();const i=o.findIndex((c,k)=>c!==ans[k]);if(i<0)return;hints++;
+  const li=list.querySelector(`[data-id="${ans[i]}"]`);list.insertBefore(li,list.children[i]);changed();li.classList.add("hinted");
+  setMsg(`Hint: stage ${i+1} is <b>${stageById[ans[i]].short}</b>.`,"warn")};
+$("#shuffleBtn").onclick=newRound;
+$("#answerBtn").onclick=()=>{const ans=answer();list.innerHTML="";ans.forEach(id=>{const li=makeItem(id);li.classList.add("right");list.appendChild(li)});renumber();applyPics();solved=true;
+  setMsg("Here's the correct order. Read it once, then press <b>Shuffle again</b> and try it yourself.","warn");film()};
+function win(){solved=true;const res=store.get("bb-done")||{};res[ORDER[RI]]=1;store.set("bb-done",res);
+  const stars=hints===0&&checks<=2?3:(hints<=1?2:1);
+  setMsg(`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Nice work!</b> Checks used: ${checks}. Hints used: ${hints}. Watch it play out below.`+(RI<ORDER.length-1?` <button class="tbtn" id="nextRound" type="button" style="margin-left:6px">Next round →</button>`:""),"good");
+  const nb=$("#nextRound");if(nb)nb.onclick=()=>{RI++;newRound()};buildRounds();film()}
+let filmTimer=null;
+function film(){const p=P[ORDER[RI]];$("#film").innerHTML=`<div class="strip">${p.stages.map((s,i)=>`<div class="frame" data-k="${i}"><div class="n">Stage ${i+1}</div>${art(s[0],true,s[1])}<b>${s[1]}</b></div>`).join("")}</div>`;
+  clearInterval(filmTimer);let k=0;const step=()=>{document.querySelectorAll("#film .frame").forEach((fr,j)=>fr.classList.toggle("on",j===k));k=(k+1)%p.stages.length};step();filmTimer=setInterval(step,1500)}
+
+/* ================= GAME 2: CLASSIFY ================= */
+const BK={I:["Intramembranous","--pI"],E:["Endochondral","--pE"],F:["Fracture healing","--pF"],M:["More than one of these","--pM"]};
+const DECK=[
+ ["Builds the flat bones of the skull.","I","Flat skull bones, the mandible and the clavicles form by intramembranous ossification."],
+ ["Begins with a hyaline cartilage model of the bone.","E","Endochondral means \"inside cartilage\": bone replaces a cartilage model."],
+ ["Bone forms directly from mesenchyme, with no cartilage stage.","I","That is the defining feature of intramembranous ossification."],
+ ["Builds the femur and the humerus.","E","Long bones (and most other bones) form by endochondral ossification."],
+ ["Starts with a blood clot called a hematoma.","F","Torn vessels bleed into the break and form a fracture hematoma."],
+ ["A primary ossification center forms in the diaphysis.","E","Blood vessels invade the middle of the cartilage model and bone forms there first."],
+ ["Secondary ossification centers form in the epiphyses.","E","These appear around birth and turn the epiphyses into spongy bone."],
+ ["Leaves an epiphyseal plate so the bone can grow longer.","E","The growth plate is leftover hyaline cartilage between the epiphysis and diaphysis."],
+ ["A fibrocartilaginous callus bridges the gap.","F","Fibroblasts and chondroblasts build this soft callus in the first weeks after a break."],
+ ["Osteoblasts secrete osteoid.","M","Osteoblasts make new bone matrix in every one of these processes."],
+ ["Cartilage is built first, then replaced by bone.","M","Both endochondral ossification and fracture healing go through a cartilage stage. That's why fracture healing is described as copying the endochondral plan."],
+ ["Osteoclasts remove bone to reshape it.","M","Osteoclasts carve the medullary cavity during endochondral ossification and trim the callus during fracture healing. Remodeling happens throughout life."],
+ ["Surface mesenchyme condenses to become the periosteum.","I","In intramembranous ossification there is no perichondrium, so the periosteum comes straight from mesenchyme."],
+ ["Chondrocytes enlarge and die as the matrix around them calcifies.","E","This happens in the middle of the cartilage model (and again in the growth plate)."],
+ ["Phagocytes clean up dead bone and debris.","F","Dead cells at the broken ends must be cleared before repair."],
+ ["Ends with spongy bone sandwiched between two plates of compact bone.","I","This flat-bone sandwich (called diploë in the skull) is the end product of intramembranous ossification."],
+ ["The perichondrium turns into periosteum and builds a bone collar.","E","The bone collar around the diaphysis forms early in endochondral ossification."],
+ ["A bony callus of spongy bone replaces the cartilage callus.","F","Weeks after the break, osteoblasts turn the soft callus into a hard, bony callus."]
+];
+let deck=[],ci=0,cOk=0,streak=0,answered=false,misses={};
+function cStart(){deck=shuffle(DECK);ci=0;cOk=0;streak=0;misses={};$("#cDone").innerHTML="";$("#cT").textContent=deck.length;cShow()}
+function cShow(){answered=false;const d=deck[ci];$("#cN").textContent=ci+1;$("#cOk").textContent=cOk;$("#cStreak").textContent=streak;$("#cBar").style.width=(ci/deck.length*100)+"%";
+  $("#stmt").textContent=d[0];$("#why").className="why";$("#cNext").hidden=true;
+  const b=$("#buckets");b.innerHTML="";let first=true;
+  Object.keys(BK).forEach(k=>{const x=document.createElement("button");x.type="button";x.className="bucket";x.innerHTML=`<i style="background:var(${BK[k][1]})"></i>${BK[k][0]}`;
+    x.onclick=()=>{if(answered)return;
+      if(k===d[1]){x.classList.add("right");answered=true;if(first){cOk++;streak++}else{streak=0}
+        $("#why").innerHTML=(first?"<b>Yes!</b> ":"<b>Got it.</b> ")+d[2];$("#why").className="why show";$("#cNext").hidden=false;$("#cNext").textContent=ci===deck.length-1?"See results":"Next card →";$("#cOk").textContent=cOk;$("#cStreak").textContent=streak;$("#cNext").focus()}
+      else{x.classList.add("wrong");if(first){misses[d[1]]=(misses[d[1]]||0)+1}first=false;streak=0;$("#cStreak").textContent=0}};
+    b.appendChild(x)})}
+$("#cNext").onclick=()=>{if(ci<deck.length-1){ci++;cShow()}else cEnd()};
+$("#cRestart").onclick=cStart;
+function cEnd(){$("#cBar").style.width="100%";const weak=Object.keys(misses).sort((a,b)=>misses[b]-misses[a]);
+  $("#cDone").innerHTML=`<div class="msg show good" style="margin-top:16px"><b>Deck done: ${cOk} of ${deck.length} right on the first try.</b> ${cOk>=deck.length-2?"Excellent.":"Every miss is something you now know."}</div>`+
+   (weak.length?`<div class="tally">${weak.map(k=>`<div><b>${BK[k][0]}</b><br>${misses[k]} first-try miss${misses[k]>1?"es":""}. Review it on the Look first tab.</div>`).join("")}</div>`:"")}
+
+/* ================= GAME 3: NAME THAT STAGE ================= */
+let nset=[],ni=0,nScore=0,nStreak=0,nFirst=true;
+function nStart(){const all=Object.keys(stageById);nset=shuffle(all).slice(0,12);ni=0;nScore=0;nStreak=0;$("#nT").textContent=nset.length;nShow()}
+function nShow(){const id=nset[ni],st=stageById[id];nFirst=true;
+  $("#nN").textContent=ni+1;$("#nScore").textContent=nScore;$("#nStreak").textContent=nStreak;$("#nBar").style.width=(ni/nset.length*100)+"%";
+  $("#nPic").innerHTML=art(id,false,"Unlabeled diagram to identify");$("#nQ2wrap").hidden=true;$("#nWhy").className="why";$("#nNext").hidden=true;
+  const q1=$("#nQ1");q1.innerHTML="";
+  ORDER.forEach(k=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=P[k].name;
+    b.onclick=()=>{if(q1.dataset.done)return;if(k===st.proc){b.classList.add("right");q1.dataset.done=1;nQ2(id)}else{b.classList.add("wrong");nFirst=false}};q1.appendChild(b)});
+  delete q1.dataset.done}
+function nQ2(id){const st=stageById[id];$("#nQ2wrap").hidden=false;const q2=$("#nQ2");q2.innerHTML="";delete q2.dataset.done;
+  P[st.proc].stages.forEach((s,i)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=(i+1)+". "+s[1];
+    b.onclick=()=>{if(q2.dataset.done)return;if(s[0]===id){b.classList.add("right");q2.dataset.done=1;
+        if(nFirst){nScore++;nStreak++}else nStreak=0;$("#nScore").textContent=nScore;$("#nStreak").textContent=nStreak;
+        $("#nPic").innerHTML=art(id,true,s[1]);
+        $("#nWhy").innerHTML=(nFirst?"<b>Perfect.</b> ":"<b>Got it.</b> ")+s[2];$("#nWhy").className="why show";
+        $("#nNext").hidden=false;$("#nNext").textContent=ni===nset.length-1?"See score":"Next picture →"}
+      else{b.classList.add("wrong");nFirst=false}};q2.appendChild(b)})}
+$("#nNext").onclick=()=>{if(ni<nset.length-1){ni++;nShow()}else{$("#nBar").style.width="100%";$("#nWhy").innerHTML=`<b>Set complete: ${nScore} of ${nset.length} perfect on the first try.</b> Press <b>New set</b> for different pictures.`;$("#nNext").hidden=true}};
+$("#nRestart").onclick=nStart;
+
+/* ================= tabs / theme ================= */
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  ["study","sort","class","nts"].forEach(n=>$("#tab-"+n).hidden=t.dataset.tab!==n)});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark")};
+
+buildStudy();newRound();cStart();nStart();
+})();
+</script>
+</body>
+</html>

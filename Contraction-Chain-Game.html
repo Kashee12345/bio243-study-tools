@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contraction Chain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;--actR:#1B6E88;--gold:#C9A227;--gold-wash:#F6EFD3;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--actR:#4FB3D1;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;--actR:#4FB3D1;--gold:#E0BE48;--gold-wash:#352E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:8px 13px;cursor:pointer;font-size:14.5px}
+.tbtn:hover{border-color:var(--accent)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:10px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.rounds{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.round{border:1.5px solid var(--rule);background:var(--panel-2);border-radius:99px;padding:6px 14px;cursor:pointer;font-size:14px}
+.round[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink);font-weight:600}
+.round .ok{color:var(--good);margin-left:4px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+.timer{font-family:var(--mono);font-size:20px;font-weight:600;min-width:72px}
+.mode{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-soft)}
+.mode input{accent-color:var(--accent);width:18px;height:18px}
+.instr{color:var(--ink-soft);font-size:14.5px;margin:0 0 10px}
+ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--rule);border-left:6px solid var(--ink-faint);border-radius:var(--r);padding:8px 8px 8px 10px;touch-action:none;user-select:none;cursor:grab;transition:background .15s,border-color .15s}
+.item.drag{box-shadow:0 10px 24px -8px rgba(0,0,0,.4);cursor:grabbing;border-color:var(--accent);z-index:2;position:relative}
+.item .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);width:22px;text-align:right;flex:0 0 auto}
+.item .grip{color:var(--ink-faint);font-size:18px;line-height:1;flex:0 0 auto}
+.item .txt{flex:1;font-size:15px}
+.item .mv{display:flex;flex-direction:column;gap:2px}
+.mv button{width:30px;height:24px;border:1px solid var(--rule);background:var(--panel-2);border-radius:4px;cursor:pointer;font-size:12px;padding:0;line-height:1}
+.mv button:hover{border-color:var(--accent)}
+.item.right{background:var(--good-wash);border-color:var(--good)}
+.item.off{background:var(--warn-wash);border-color:var(--warn)}
+.item.hinted{box-shadow:0 0 0 3px var(--gold)}
+.a1{border-left-color:var(--act1)!important}.a2{border-left-color:var(--act2)!important}.a3{border-left-color:var(--act3)!important}.aR{border-left-color:var(--actR)!important}
+.hidecol .item{border-left-color:var(--ink-faint)!important}
+.msg{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);font-size:15px;display:none}
+.msg.show{display:block}
+.msg.good{background:var(--good-wash);color:var(--good);border:1px solid var(--good)}
+.msg.warn{background:var(--warn-wash);color:var(--warn);border:1px solid var(--warn)}
+.side h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.side p,.side li{font-size:14.5px}
+.side ul{padding-left:18px;margin:6px 0}
+.key{display:flex;flex-direction:column;gap:5px;font-size:14px}
+.key span{display:flex;align-items:center;gap:8px}
+.key i{width:14px;height:14px;border-radius:3px;display:inline-block}
+.best{font-family:var(--mono);font-size:13px;color:var(--ink-soft)}
+.stars{font-size:22px;letter-spacing:2px;color:var(--gold)}
+/* scenarios */
+.sc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.sc-n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.sc-title{font-family:var(--serif);font-size:22px;font-weight:600;margin:0 0 6px}
+.sc-desc{margin:0 0 14px}
+.qlab{font-weight:600;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.opt{text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;cursor:pointer;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.opt:disabled{cursor:default}
+.explain{margin-top:14px;padding:12px 14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;display:none}
+.explain.show{display:block}
+.score{font-family:var(--mono);font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;background:var(--panel-2);cursor:pointer;padding:0}
+.chip.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+.chip.done{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.chip.done.cur{background:var(--accent);color:#fff}
+footer{max-width:1100px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Muscle Physiology &middot; USC Upstate</div>
+    <h1>Contraction Chain</h1>
+    <p class="sub">Put the steps in order, then figure out what breaks when one link fails.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="sort" type="button">Part 1 &middot; Build the chain</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="break" type="button">Part 2 &middot; What breaks if…?</button>
+  </div>
+
+  <!-- PART 1 -->
+  <section id="tab-sort">
+    <div class="grid">
+      <div class="card">
+        <div class="rounds" id="rounds"></div>
+        <p class="instr" id="instr"></p>
+        <div class="bar">
+          <span class="timer" id="timer" aria-live="off">0:00</span>
+          <label class="mode"><input type="checkbox" id="relaxed" checked> Relaxed mode (timer hidden)</label>
+          <label class="mode"><input type="checkbox" id="colors" checked> Color by act</label>
+        </div>
+        <ol class="list" id="list" aria-label="Steps to put in order"></ol>
+        <div class="bar" style="margin-top:14px">
+          <button class="btn" id="checkBtn" type="button">Check my order</button>
+          <button class="tbtn" id="hintBtn" type="button">Hint</button>
+          <button class="tbtn" id="shuffleBtn" type="button">Shuffle again</button>
+          <button class="tbtn" id="answerBtn" type="button">Show answer</button>
+        </div>
+        <div class="msg" id="msg" role="status"></div>
+      </div>
+      <aside class="card side">
+        <h3>How to play</h3>
+        <ul>
+          <li>Drag a card up or down, or use the &#9650; &#9660; buttons.</li>
+          <li>Press <b>Check my order</b> as often as you like. Green cards are in the right spot.</li>
+          <li><b>Hint</b> moves one card to its correct spot.</li>
+          <li>Start with Act 1. Build up to the full chain.</li>
+        </ul>
+        <h3 style="margin-top:14px">Card colors</h3>
+        <div class="key">
+          <span><i style="background:var(--act1)"></i>Act 1 · Nerve talks to muscle</span>
+          <span><i style="background:var(--act2)"></i>Act 2 · Signal releases calcium</span>
+          <span><i style="background:var(--act3)"></i>Act 3 · Filaments slide</span>
+          <span><i style="background:var(--actR)"></i>Relaxation</span>
+        </div>
+        <p style="margin-top:10px;color:var(--ink-soft)">Turn colors off when you are ready for a challenge.</p>
+        <h3 style="margin-top:14px">Your results</h3>
+        <div class="best" id="bests"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section id="tab-break" hidden>
+    <div class="card">
+      <div class="sc-top">
+        <div class="chips" id="scChips"></div>
+        <div class="score" id="scScore"></div>
+      </div>
+      <div class="sc-n" id="scN"></div>
+      <h2 class="sc-title" id="scTitle"></h2>
+      <p class="sc-desc" id="scDesc"></p>
+      <p class="qlab">1. Which link in the chain is broken?</p>
+      <div class="opts" id="scQ1"></div>
+      <div id="q2wrap" hidden>
+        <p class="qlab">2. So what happens to the muscle?</p>
+        <div class="opts" id="scQ2"></div>
+      </div>
+      <div class="explain" id="scExp"></div>
+      <div class="bar" style="margin-top:14px">
+        <button class="tbtn" id="scPrev" type="button">&larr; Previous</button>
+        <button class="btn" id="scNext" type="button">Next scenario &rarr;</button>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Pair with the Contraction Walkthrough. Printable card sort available as a separate PDF.</footer>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- data ---------- */
+const CARDS={
+ c1:["a1","An action potential travels down the motor neuron to the axon terminal."],
+ c2:["a1","Voltage-gated Ca²⁺ channels open, and Ca²⁺ enters the axon terminal."],
+ c3:["a1","Synaptic vesicles release ACh into the synaptic cleft (exocytosis)."],
+ c4:["a1","ACh binds to receptors on the motor end plate."],
+ c5:["a1","Receptor channels open and Na⁺ rushes in: the end-plate potential."],
+ c6:["a1","A muscle action potential spreads along the sarcolemma."],
+ c7:["a2","The action potential travels down the T-tubules."],
+ c8:["a2","Voltage sensors (DHPR) in the T-tubule pull open SR release channels (RyR)."],
+ c9:["a2","Ca²⁺ floods out of the sarcoplasmic reticulum into the cytosol."],
+ c10:["a3","Ca²⁺ binds to troponin."],
+ c11:["a3","Tropomyosin moves off the myosin-binding sites on actin."],
+ c12:["a3","Cocked myosin heads bind to actin, forming cross-bridges."],
+ c13:["a3","Power stroke: myosin heads pivot and pull thin filaments toward the M line."],
+ c14:["a3","ATP binds to myosin, and the head lets go of actin."],
+ c15:["a3","ATP is split into ADP + Pᵢ, and the myosin head re-cocks."],
+ r1:["aR","The motor neuron stops firing, so no new ACh is released."],
+ r2:["aR","Acetylcholinesterase (AChE) breaks down the ACh in the synaptic cleft."],
+ r3:["aR","ACh receptors close, and muscle action potentials stop."],
+ r4:["aR","SR pumps use ATP to move Ca²⁺ back into the SR."],
+ r5:["aR","Ca²⁺ comes off troponin."],
+ r6:["aR","Tropomyosin covers the binding sites again, and the muscle relaxes."]
+};
+const ROUNDS=[
+ {id:"act1",name:"Round 1 · Act 1",instr:"Act 1: how the nerve passes its message to the muscle. Six cards.",order:["c1","c2","c3","c4","c5","c6"]},
+ {id:"act23",name:"Round 2 · Acts 2 & 3",instr:"Act 2 and Act 3: from the muscle action potential to sliding filaments. Ten cards.",order:["c6","c7","c8","c9","c10","c11","c12","c13","c14","c15"]},
+ {id:"relax",name:"Round 3 · Relaxation",instr:"How the muscle turns itself off. Six cards.",order:["r1","r2","r3","r4","r5","r6"]},
+ {id:"full",name:"Round 4 · Full chain",instr:"The whole thing: all fifteen contraction steps, nerve to cross-bridge cycle.",order:["c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c11","c12","c13","c14","c15"]}
+];
+
+/* ---------- part 1 ---------- */
+let R=0,startT=0,elapsed=0,running=false,checks=0,hints=0,solved=false;
+const list=$("#list");
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  // avoid an already-correct or nearly-correct start
+  return a}
+function buildRounds(){
+  const res=store.get("cc-results")||{};
+  $("#rounds").innerHTML="";
+  ROUNDS.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className="round";b.setAttribute("aria-pressed",i===R);
+    b.innerHTML=r.name+(res[r.id]?'<span class="ok">✓</span>':"");b.onclick=()=>{R=i;newRound()};$("#rounds").appendChild(b)});
+  const lines=ROUNDS.map(r=>{const x=res[r.id];return `${r.name.split(" · ")[1]}: ${x?("done"+(x.best!=null?" · best "+fmt(x.best):"")+(x.cleanest!=null?" · fewest hints "+x.cleanest:"")):"not yet"}`});
+  $("#bests").innerHTML=lines.join("<br>");
+}
+function fmt(s){s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function newRound(){
+  const r=ROUNDS[R];let o;
+  do{o=shuffle(r.order)}while(o.filter((c,i)=>c===r.order[i]).length>1);
+  list.innerHTML="";o.forEach(id=>list.appendChild(makeItem(id)));
+  $("#instr").textContent=r.instr;
+  checks=0;hints=0;solved=false;elapsed=0;startT=performance.now();running=true;
+  setMsg("","");renumber();buildRounds();
+}
+function makeItem(id){
+  const li=document.createElement("li");li.className="item "+CARDS[id][0];li.dataset.id=id;
+  li.innerHTML=`<span class="pos"></span><span class="grip" aria-hidden="true">⋮⋮</span><span class="txt">${CARDS[id][1]}</span>
+   <span class="mv"><button type="button" aria-label="Move up">▲</button><button type="button" aria-label="Move down">▼</button></span>`;
+  const [up,dn]=li.querySelectorAll(".mv button");
+  up.onclick=()=>{const p=li.previousElementSibling;if(p){list.insertBefore(li,p);changed();up.focus()}};
+  dn.onclick=()=>{const n=li.nextElementSibling;if(n){list.insertBefore(n,li);changed();dn.focus()}};
+  let dragging=false;
+  li.addEventListener("pointerdown",e=>{if(e.target.closest("button")||solved)return;dragging=true;li.classList.add("drag");li.setPointerCapture(e.pointerId)});
+  li.addEventListener("pointermove",e=>{if(!dragging)return;
+    const kids=[...list.children];const me=kids.indexOf(li);
+    for(let k=0;k<kids.length;k++){const el=kids[k];if(el===li)continue;const r=el.getBoundingClientRect();
+      if(e.clientY>r.top&&e.clientY<r.bottom){const mid=r.top+r.height/2;
+        if(k>me&&e.clientY>mid){list.insertBefore(el,li);changed()}
+        else if(k<me&&e.clientY<mid){list.insertBefore(el,li.nextElementSibling);changed()}
+        break}}});
+  const end=()=>{if(!dragging)return;dragging=false;li.classList.remove("drag")};
+  li.addEventListener("pointerup",end);li.addEventListener("pointercancel",end);
+  return li;
+}
+function renumber(){[...list.children].forEach((li,i)=>li.querySelector(".pos").textContent=i+1)}
+function changed(){renumber();[...list.children].forEach(li=>li.classList.remove("right","off","hinted"))}
+function current(){return [...list.children].map(li=>li.dataset.id)}
+function setMsg(t,c){const m=$("#msg");m.className="msg"+(t?" show "+c:"");m.innerHTML=t}
+$("#checkBtn").onclick=()=>{
+  if(solved)return;checks++;
+  const ans=ROUNDS[R].order,o=current();let n=0;
+  [...list.children].forEach((li,i)=>{const ok=o[i]===ans[i];if(ok)n++;li.classList.toggle("right",ok);li.classList.toggle("off",!ok)});
+  if(n===ans.length)win();
+  else setMsg(`<b>${n} of ${ans.length}</b> cards are in the right spot. ${n>=ans.length-2?"So close!":"Keep going. Ask yourself: what has to happen right before this?"}`,"warn");
+};
+$("#hintBtn").onclick=()=>{
+  if(solved)return;const ans=ROUNDS[R].order,o=current();
+  const i=o.findIndex((c,k)=>c!==ans[k]);if(i<0)return;hints++;
+  const li=list.querySelector(`[data-id="${ans[i]}"]`);list.insertBefore(li,list.children[i]);changed();li.classList.add("hinted");
+  setMsg(`Hint: card ${i+1} is <b>${CARDS[ans[i]][1]}</b>`,"warn");
+};
+$("#shuffleBtn").onclick=newRound;
+$("#answerBtn").onclick=()=>{const ans=ROUNDS[R].order;list.innerHTML="";ans.forEach(id=>{const li=makeItem(id);li.classList.add("right");list.appendChild(li)});renumber();
+  solved=true;running=false;setMsg("Here's the correct order. Read it through once, then press <b>Shuffle again</b> and try it yourself.","warn")};
+function win(){
+  solved=true;running=false;
+  const r=ROUNDS[R];const res=store.get("cc-results")||{};const prev=res[r.id]||{};
+  res[r.id]={best:prev.best!=null?Math.min(prev.best,elapsed):elapsed,cleanest:prev.cleanest!=null?Math.min(prev.cleanest,hints):hints};store.set("cc-results",res);
+  const stars=hints===0&&checks<=2?3:(hints<=2?2:1);
+  const next=R<ROUNDS.length-1?` <button class="tbtn" id="nextRound" type="button" style="margin-left:6px">Next round →</button>`:"";
+  setMsg(`<span class="stars">${"★".repeat(stars)}${"☆".repeat(3-stars)}</span><br><b>Chain complete!</b> ${$("#relaxed").checked?"":"Time "+fmt(elapsed)+". "}Checks used: ${checks}. Hints used: ${hints}.${next}`,"good");
+  const nb=$("#nextRound");if(nb)nb.onclick=()=>{R++;newRound()};
+  buildRounds();
+}
+$("#relaxed").onchange=e=>{$("#timer").style.visibility=e.target.checked?"hidden":"visible";store.set("cc-relaxed",e.target.checked)};
+$("#colors").onchange=e=>list.classList.toggle("hidecol",!e.target.checked);
+setInterval(()=>{if(running){elapsed=(performance.now()-startT)/1000;$("#timer").textContent=fmt(elapsed)}},250);
+
+/* ---------- part 2 ---------- */
+const OUT={limp:"It can't contract. It stays limp (paralysis).",weak:"It contracts weakly and tires out fast.",stuck:"It can't relax. It stays contracted or stiff."};
+const STEPOPTS={
+ c1:"Action potential down the motor neuron",c3:"Vesicles release ACh",c4:"ACh binds its receptors",c6:"Muscle action potential",
+ c9:"Ca²⁺ released from the SR",c11:"Tropomyosin uncovers sites",c14:"ATP lets myosin release",r2:"AChE clears ACh",r4:"SR pumps return Ca²⁺"};
+const SC=[
+ {t:"Botulinum toxin",d:"Botulinum toxin (the active ingredient in Botox) stops synaptic vesicles from fusing with the axon terminal membrane.",
+  opts:["c1","c3","c4","r2"],ans:["c3"],out:"limp",
+  exp:"No vesicle fusion means no ACh is released. The muscle never gets the message, so it can't contract. Large doses cause flaccid (limp) paralysis; tiny injected doses relax wrinkle-causing face muscles."},
+ {t:"Curare",d:"Curare is a plant poison once used on hunting darts. It sits in the ACh receptors on the motor end plate, so ACh can't bind.",
+  opts:["c3","c4","c9","c14"],ans:["c4"],out:"limp",
+  exp:"ACh is released, but it can't bind its receptors, so no Na⁺ flows in and no muscle action potential starts. Result: paralysis. Drugs that work the same way are used to relax muscles during surgery."},
+ {t:"Myasthenia gravis",d:"In this autoimmune disease, the body's own antibodies attack and destroy many ACh receptors on the motor end plate. Some receptors are left.",
+  opts:["c3","c4","r2","c11"],ans:["c4"],out:"weak",
+  exp:"With fewer receptors, the end-plate potential is smaller and sometimes too small to trigger an action potential. Muscles are weak and tire quickly, often starting with the eyelids. One treatment blocks AChE so ACh lasts longer at the remaining receptors."},
+ {t:"Organophosphate pesticides",d:"Some insecticides block the enzyme acetylcholinesterase (AChE).",
+  opts:["c3","c4","r2","r4"],ans:["r2"],out:"stuck",
+  exp:"ACh is never cleared from the synaptic cleft. It keeps stimulating the receptors, so the muscle keeps firing: twitching, spasms, and trouble relaxing. That includes the breathing muscles, which is why these chemicals are dangerous."},
+ {t:"Rigor mortis",d:"A few hours after death, cells have used up all their ATP.",
+  opts:["c9","c11","c14","r4"],ans:["c14"],out:"stuck",
+  exp:"Myosin needs ATP to let go of actin. With no ATP, cross-bridges stay locked and the body becomes stiff. (Calcium also leaks out of the SR and can't be pumped back.) The stiffness fades days later as the proteins break down."},
+ {t:"Malignant hyperthermia",d:"In people with a certain inherited variant, some anesthetic gases make the SR calcium-release channels (ryanodine receptors) stay open.",
+  opts:["c4","c9","c14","r2"],ans:["c9"],out:"stuck",
+  exp:"Ca²⁺ keeps pouring out of the SR, so cross-bridges keep cycling. Muscles go rigid, burn huge amounts of ATP and make dangerous heat. The emergency drug dantrolene works by closing those SR channels."},
+ {t:"SR pumps fail",d:"Imagine the SR calcium pumps (SERCA) stop working, while everything else is normal.",
+  opts:["c9","c11","r2","r4"],ans:["r4"],out:"stuck",
+  exp:"Ca²⁺ stays in the cytosol, stays on troponin, and tropomyosin never covers the binding sites. The muscle can't relax properly. A rare inherited condition with weak SR pumps (Brody disease) causes muscles that are slow to relax after exercise."},
+ {t:"Tetrodotoxin",d:"Tetrodotoxin, a poison found in pufferfish, blocks voltage-gated Na⁺ channels.",
+  opts:["c1","c3","c6","r2"],ans:["c1","c6"],out:"limp",
+  exp:"Action potentials need voltage-gated Na⁺ channels, both in the motor neuron and in the sarcolemma. Block them and no signal travels at all, so the muscle can't be stimulated. Either of those links counts as correct here."}
+];
+let si=0;const scState=SC.map(()=>({q1:null,q2:null,first:null}));
+function scRender(){
+  const s=SC[si],st=scState[si];
+  $("#scChips").innerHTML="";SC.forEach((x,i)=>{const b=document.createElement("button");b.type="button";b.className="chip"+(i===si?" cur":"")+(scState[i].q2===true?" done":"");b.textContent=i+1;b.setAttribute("aria-label","Scenario "+(i+1));b.onclick=()=>{si=i;scRender()};$("#scChips").appendChild(b)});
+  const got=scState.filter(x=>x.q2===true).length,first=scState.filter(x=>x.first===true).length;
+  $("#scScore").textContent=`Solved ${got} of ${SC.length} · first-try ${first}`;
+  $("#scN").textContent="Scenario "+(si+1)+" of "+SC.length;$("#scTitle").textContent=s.t;$("#scDesc").textContent=s.d;
+  const q1=$("#scQ1");q1.innerHTML="";
+  s.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=STEPOPTS[o];
+    if(st.q1===true&&s.ans.includes(o))b.classList.add("right");
+    b.onclick=()=>{if(st.q1===true)return;
+      if(s.ans.includes(o)){b.classList.add("right");st.q1=true;if(st.first===null)st.first=true;$("#q2wrap").hidden=false;scRender()}
+      else{b.classList.add("wrong");st.first=false;b.textContent=STEPOPTS[o]+" — not this one";}};
+    q1.appendChild(b)});
+  $("#q2wrap").hidden=st.q1!==true;
+  const q2=$("#scQ2");q2.innerHTML="";
+  Object.keys(OUT).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=OUT[k];
+    if(st.q2===true&&k===s.out)b.classList.add("right");
+    b.onclick=()=>{if(st.q2===true)return;if(k===s.out){st.q2=true;scRender()}else{b.classList.add("wrong");st.first=false}};
+    q2.appendChild(b)});
+  const e=$("#scExp");e.classList.toggle("show",st.q2===true);e.innerHTML=st.q2===true?"<b>Why:</b> "+s.exp:"";
+  $("#scPrev").disabled=si===0;$("#scNext").textContent=si===SC.length-1?"Back to scenario 1":"Next scenario →";
+}
+$("#scPrev").onclick=()=>{si=Math.max(0,si-1);scRender()};
+$("#scNext").onclick=()=>{si=(si+1)%SC.length;scRender()};
+
+/* ---------- tabs / theme ---------- */
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  $("#tab-sort").hidden=t.dataset.tab!=="sort";$("#tab-break").hidden=t.dataset.tab!=="break"});
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark")};
+
+const rx=store.get("cc-relaxed");if(rx===false)$("#relaxed").checked=false;
+$("#timer").style.visibility=$("#relaxed").checked?"hidden":"visible";
+newRound();scRender();
+})();
+</script>
+</body>
+</html>

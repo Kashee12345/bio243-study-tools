@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bone Formation Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--good:#2F6F4F;--good-wash:#DEEDE4;--gold:#C9A227;
+  --pI:#7B5CC9;--pE:#1B6E88;--pG:#2F8A57;--pF:#B4462F;
+  --emb:#EFEAF3;--mes:#9C8BB8;--ob:#2A9D8F;--ocl:#7B5CC9;--osteoid:#F3E6C4;
+  --bone:#C9A55A;--bone-dk:#9C7A3C;--compact:#E2C88C;--cart:#C6E0EE;--cart-edge:#5C8FAE;--calc:#9FC2D6;
+  --vessel:#C0392B;--marrow:#F2C4C0;--yellowm:#F6E7B8;--hema:#8E1F1F;--fibro:#D3C2EA;--peri:#8A5A2B;--glow:#F2B33B;--phago:#6E7F88;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
+  --pI:#A98BEF;--pE:#4FB3D1;--pG:#4FBF7F;--pF:#E07A62;
+  --emb:#241F2B;--osteoid:#5A4E33;--cart:#2B4656;--cart-edge:#7FB3D1;--calc:#3E6378;
+  --marrow:#5A2A2A;--yellowm:#4D4326;--fibro:#3E3354;--compact:#B99A5C;--bone:#D9B66A;--bone-dk:#E2C88C;--phago:#A3B2BA;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--good:#6BC293;--good-wash:#17301F;--gold:#E0BE48;
+  --pI:#A98BEF;--pE:#4FB3D1;--pG:#4FBF7F;--pF:#E07A62;
+  --emb:#241F2B;--osteoid:#5A4E33;--cart:#2B4656;--cart-edge:#7FB3D1;--calc:#3E6378;
+  --marrow:#5A2A2A;--yellowm:#4D4326;--fibro:#3E3354;--compact:#B99A5C;--bone:#D9B66A;--bone-dk:#E2C88C;--phago:#A3B2BA;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 180px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--panel)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2)}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol,.body ul{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Bone Tissue &middot; USC Upstate</div>
+    <h1>Bone Formation Walkthrough</h1>
+    <p class="sub">Watch bone form, grow longer, and heal, one step at a time. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Use the left and right arrow keys to move between steps. Pair this with the Bone Builder game. Diagrams are simplified and not to scale.</footer>
+
+<script>
+(function(){
+"use strict";
+const TRACKS={I:{name:"Intramembranous ossification",col:"pI"},E:{name:"Endochondral ossification",col:"pE"},G:{name:"Growth at the epiphyseal plate",col:"pG"},F:{name:"Fracture healing",col:"pF"}};
+const STEPS=[
+{tr:0,scene:"map",id:"map",title:"Four stories about bone",
+ body:`<p>Bone is never made out of nothing. It is always built on top of something else. Keep that one idea in mind and these four stories make sense:</p>
+ <ol><li><b>Intramembranous ossification:</b> bone is built directly inside a sheet of embryonic tissue (mesenchyme). It makes flat bones like the skull.</li>
+ <li><b>Endochondral ossification:</b> a cartilage model is built first, then replaced by bone. It makes most bones, including all long bones.</li>
+ <li><b>Growth at the epiphyseal plate:</b> a strip of cartilage keeps making new cartilage that turns into bone, so long bones get longer.</li>
+ <li><b>Fracture healing:</b> a broken bone repeats the endochondral plan: clot, cartilage, bone, then cleanup.</li></ol>`,
+ analogy:"Two ways to build a house. Intramembranous: build straight on the empty lot. Endochondral: build a full clay model first, then swap the clay for stone piece by piece.",
+ terms:[["Ossification","Making bone. (Os = bone.)"],["Mesenchyme","Embryonic connective tissue. Its cells can become bone, cartilage and other tissues."],["Osteoblast","Bone-building cell."],["Osteoclast","Bone-removing cell."]],
+ check:{q:"What is the main difference between intramembranous and endochondral ossification?",opts:[
+  ["Endochondral ossification builds a cartilage model first. Intramembranous does not.",1,"Yes. \"Endo-chondral\" means inside cartilage."],
+  ["Only intramembranous ossification uses osteoblasts.",0,"Both use osteoblasts to lay down bone."],
+  ["Endochondral ossification only happens after a fracture.",0,"It builds most of the skeleton before birth. Fracture healing copies it later."],
+  ["There is no difference.",0,"The starting material is different: mesenchyme vs. a cartilage model."]]},
+ caption:"Four processes: two ways to make bone, one way to grow it longer, one way to repair it."},
+
+/* ---------- Intramembranous ---------- */
+{tr:"I",scene:"im",id:"i1",title:"Mesenchymal cells form an ossification center",
+ body:`<p>Inside the embryo, a sheet of <b>mesenchyme</b> sits where a flat bone will be. Near a blood vessel, some <b>mesenchymal cells</b> gather into a cluster.</p>
+ <p>They change into <b>osteoblasts</b>, the bone-building cells. This cluster is the <b>ossification center</b>, where bone will start.</p>`,
+ analogy:"Workers arrive at an empty lot, put on hard hats, and gather where the first wall will go.",
+ terms:[["Mesenchymal cell","An unspecialized embryonic cell that can become an osteoblast."],["Ossification center","The spot where bone formation begins."]],
+ check:{q:"In intramembranous ossification, what do the mesenchymal cells turn into first?",opts:[
+  ["Osteoblasts",1,"Right. They build bone directly. No cartilage step."],
+  ["Chondrocytes",0,"Chondrocytes make cartilage. That's the endochondral path."],
+  ["Osteoclasts",0,"Osteoclasts remove bone. They come from blood cell lines, not mesenchyme."],
+  ["Red blood cells",0,"Red blood cells are made in red marrow later."]]},
+ caption:"Mesenchymal cells near a capillary cluster together and become osteoblasts.",
+ legend:[["mes","Mesenchymal cell"],["ob","Osteoblast"],["vessel","Capillary"]]},
+{tr:"I",scene:"im",id:"i2",title:"Osteoblasts lay down osteoid, which hardens",
+ body:`<p>The osteoblasts secrete <b>osteoid</b>: soft, unmineralized bone matrix (mostly collagen). Within days, calcium salts are deposited in it and it <b>calcifies</b> (hardens).</p>
+ <p>Some osteoblasts get trapped inside the matrix they made. Once trapped, they are called <b>osteocytes</b>. They stay alive and maintain the bone.</p>`,
+ analogy:"Pouring wet cement that hardens. A few workers get cemented in and stay on as caretakers.",
+ terms:[["Osteoid","Soft bone matrix made by osteoblasts, before it is mineralized."],["Calcification","Calcium salts hardening the matrix."],["Osteocyte","A mature bone cell trapped in a small space (lacuna) in the matrix."]],
+ check:{q:"What is an osteocyte?",opts:[
+  ["An osteoblast that got trapped in the matrix it made.",1,"Yes. It now maintains the bone around it."],
+  ["A cell that dissolves bone.",0,"That's an osteoclast."],
+  ["A cartilage cell.",0,"That's a chondrocyte."],
+  ["Soft bone matrix.",0,"That's osteoid."]]},
+ caption:"Osteoid grows and calcifies. Trapped osteoblasts become osteocytes.",
+ legend:[["ob","Osteoblast"],["osteoid","Osteoid"],["bone","Calcium deposits"],["ocy","Osteocyte"]]},
+{tr:"I",scene:"im",id:"i3",title:"Trabeculae form and the periosteum appears",
+ body:`<p>Osteoid keeps being laid down around the blood vessels. It forms a web of thin bars called <b>trabeculae</b>. This first bone is spongy (woven) bone.</p>
+ <p>Meanwhile, the mesenchyme on the surface packs together and becomes the <b>periosteum</b>, the tough membrane that covers bone.</p>`,
+ analogy:"Building a scaffold of beams around the plumbing, then wrapping the outside in a tarp.",
+ terms:[["Trabeculae","Thin bars of bone that make up spongy bone."],["Periosteum","The membrane covering the outside of bone. Its inner layer has osteoblasts."]],
+ check:{q:"Where does the periosteum come from in intramembranous ossification?",opts:[
+  ["Mesenchyme at the surface packs together into a membrane.",1,"Right. There's no cartilage, so there's no perichondrium to convert."],
+  ["The perichondrium around a cartilage model.",0,"That's how it forms in endochondral ossification."],
+  ["Osteoclasts.",0,"Osteoclasts remove bone. They don't make membranes."],
+  ["The medullary cavity.",0,"Flat bones don't have a medullary cavity."]]},
+ caption:"Trabeculae spread around the blood vessels. Surface mesenchyme condenses into periosteum.",
+ legend:[["bone","Trabeculae"],["vessel","Blood vessel"],["peri","Periosteum"]]},
+{tr:"I",scene:"im",id:"i4",title:"Compact bone covers the spongy bone",
+ body:`<p>Just under the periosteum, the trabeculae fill in and become solid <b>compact bone</b>. The middle stays spongy.</p>
+ <p>The blood vessels trapped between the trabeculae become <b>red bone marrow</b>. The result is a sandwich: compact bone, spongy bone, compact bone. In the skull, the spongy middle is called the <b>diploë</b>.</p>
+ <p>This is how the <b>flat bones of the skull</b>, the <b>mandible</b> and the <b>clavicles</b> form.</p>`,
+ analogy:"A sandwich panel: two solid outer sheets with a lightweight honeycomb in between.",
+ terms:[["Compact bone","Dense, solid outer bone."],["Spongy bone","Bone made of trabeculae, with marrow in the spaces."],["Diploë","The spongy layer between the two compact plates of a skull bone."]],
+ check:{q:"Which bones form by intramembranous ossification?",opts:[
+  ["Flat bones of the skull, the mandible and the clavicles.",1,"Yes."],
+  ["The femur and humerus.",0,"Long bones form by endochondral ossification."],
+  ["The vertebrae.",0,"Vertebrae form from cartilage models (endochondral)."],
+  ["Every bone in the body.",0,"Most bones are endochondral. Only a few, mostly flat ones, are intramembranous."]]},
+ caption:"Compact plates thicken at the surfaces. Red marrow fills the spongy middle.",
+ legend:[["compact","Compact bone"],["bone","Spongy bone"],["marrow","Red marrow"],["peri","Periosteum"]]},
+
+/* ---------- Endochondral ---------- */
+{tr:"E",scene:"long",id:"e1",title:"A hyaline cartilage model is built",
+ body:`<p>In the embryo, mesenchymal cells crowd together in the shape of the future bone. They become <b>chondrocytes</b> (cartilage cells) and build a small <b>hyaline cartilage model</b> of the bone.</p>
+ <p>A membrane called the <b>perichondrium</b> wraps around the model.</p>`,
+ analogy:"Making a clay model of the bone first. Later, the clay will be swapped for stone.",
+ terms:[["Chondrocyte","A cartilage cell."],["Hyaline cartilage","Smooth, glassy cartilage. The model is made of it."],["Perichondrium","The membrane around cartilage."]],
+ check:{q:"What is the model made of?",opts:[
+  ["Hyaline cartilage",1,"Yes. That's why it's called endochondral (\"inside cartilage\")."],
+  ["Fibrocartilage",0,"Fibrocartilage appears in fracture repair, not in the model."],
+  ["Spongy bone",0,"Bone comes later. It replaces the model."],
+  ["Osteoid",0,"Osteoid is bone matrix. Here, the first tissue is cartilage."]]},
+ caption:"Mesenchymal cells gather in the bone's shape and become chondrocytes in a cartilage model.",
+ legend:[["mes","Mesenchymal cell"],["cart","Hyaline cartilage"],["cartE","Chondrocyte / perichondrium"]]},
+{tr:"E",scene:"long",id:"e2",title:"The middle calcifies and a bone collar forms",
+ body:`<p>In the middle of the shaft, the chondrocytes <b>enlarge</b>. The cartilage matrix around them <b>calcifies</b>. Cartilage has no blood vessels, so once the matrix is calcified, nutrients can't reach the cells and they <b>die</b>.</p>
+ <p>At the same time, the perichondrium around the middle becomes <b>periosteum</b>. Its osteoblasts build a thin <b>bone collar</b> around the shaft.</p>`,
+ analogy:"The clay in the middle dries and cracks. A stone belt is wrapped around the model's waist.",
+ terms:[["Calcified cartilage","Cartilage matrix hardened with calcium. It blocks nutrients."],["Bone collar","A ring of bone around the middle of the shaft."]],
+ check:{q:"Why do the chondrocytes in the middle die?",opts:[
+  ["The calcified matrix blocks nutrients from reaching them.",1,"Right. Cartilage has no blood vessels, so cells depend on diffusion."],
+  ["Osteoclasts eat them.",0,"Osteoclasts arrive later to remove matrix, but the cells die from lack of nutrients first."],
+  ["They turn into osteoblasts.",0,"Osteoblasts come in with blood vessels in the next step."],
+  ["Blood vessels crush them.",0,"Vessels haven't arrived yet."]]},
+ caption:"Middle chondrocytes enlarge, the matrix calcifies and the cells die. A bone collar forms.",
+ legend:[["cart","Cartilage"],["calc","Calcified cartilage"],["compact","Bone collar"],["peri","Periosteum"]]},
+{tr:"E",scene:"long",id:"e3",title:"Blood vessels arrive: the primary ossification center",
+ body:`<p>Blood vessels grow through the bone collar into the calcified middle. They bring <b>osteoblasts</b> (and cells that clear away the old matrix).</p>
+ <p>The osteoblasts lay bone on the leftover calcified cartilage, making <b>spongy bone</b>. This spot is the <b>primary ossification center</b>.</p>`,
+ analogy:"A road is built into the middle of the site, and the construction crew drives in.",
+ terms:[["Primary ossification center","The first area of bone inside the cartilage model, in the diaphysis."],["Diaphysis","The shaft of a long bone."]],
+ check:{q:"What brings osteoblasts into the middle of the model?",opts:[
+  ["Invading blood vessels.",1,"Yes. No blood supply, no bone."],
+  ["Chondrocytes turning into osteoblasts.",0,"The middle chondrocytes have died. New cells arrive with the vessels."],
+  ["The epiphyseal plate.",0,"That forms much later."],
+  ["Synovial fluid.",0,"That is joint fluid. It doesn't build bone."]]},
+ caption:"A blood vessel enters the middle and spongy bone forms: the primary ossification center.",
+ legend:[["vessel","Blood vessel"],["ob","Osteoblast"],["bone","Spongy bone"],["marrow","Marrow"]]},
+{tr:"E",scene:"long",id:"e4",title:"The medullary cavity is hollowed out",
+ body:`<p>Bone spreads from the middle toward both ends of the shaft, and the bone collar thickens along the diaphysis.</p>
+ <p>Behind it, <b>osteoclasts</b> break down the spongy bone in the very center. This creates the hollow <b>medullary cavity</b>, which fills with marrow.</p>`,
+ analogy:"A demolition crew follows the builders, clearing out the middle to make a long hallway.",
+ terms:[["Osteoclast","A large cell that dissolves bone."],["Medullary cavity","The hollow center of the shaft, filled with marrow."]],
+ check:{q:"Which cell hollows out the medullary cavity?",opts:[
+  ["Osteoclasts",1,"Yes. They dissolve the bone in the center."],
+  ["Osteoblasts",0,"Osteoblasts build bone. Here, bone is removed."],
+  ["Osteocytes",0,"Osteocytes maintain bone. They don't carve it out."],
+  ["Chondrocytes",0,"Chondrocytes make cartilage."]]},
+ caption:"Bone spreads toward the ends. Osteoclasts hollow out the medullary cavity behind it.",
+ legend:[["ocl","Osteoclast"],["bone","Spongy bone"],["marrow","Medullary cavity (marrow)"],["compact","Compact bone"]]},
+{tr:"E",scene:"long",id:"e5",title:"Secondary ossification centers form in the ends",
+ body:`<p>Around the time of birth, blood vessels enter the <b>epiphyses</b> (the ends). Bone starts forming there too. These are the <b>secondary ossification centers</b>.</p>
+ <p>The epiphyses become spongy bone, but the medullary cavity does not reach into them.</p>`,
+ analogy:"Two more crews start work at each end of the building.",
+ terms:[["Epiphysis","The end of a long bone."],["Secondary ossification center","Area of bone formation in an epiphysis."]],
+ check:{q:"Where do secondary ossification centers form?",opts:[
+  ["In the epiphyses",1,"Yes. The primary center is in the diaphysis; secondary centers are in the ends."],
+  ["In the diaphysis",0,"The diaphysis has the primary center."],
+  ["In the medullary cavity",0,"The cavity is hollow, filled with marrow."],
+  ["In the periosteum",0,"The periosteum covers bone; it isn't an ossification center."]]},
+ caption:"Blood vessels enter the epiphyses and secondary ossification centers form.",
+ legend:[["vessel","Blood vessel"],["bone","Spongy bone"],["cart","Cartilage still left"]]},
+{tr:"E",scene:"long",id:"e6",title:"Only two kinds of cartilage remain",
+ body:`<p>Bone replaces almost all of the cartilage. Hyaline cartilage remains in only two places:</p>
+ <ul><li><b>Articular cartilage</b> on the joint surfaces, where it stays for life.</li>
+ <li>The <b>epiphyseal plates</b> (growth plates) between each epiphysis and the shaft. They let the bone grow longer until early adulthood.</li></ul>`,
+ analogy:"The stone building is done, except for two strips of clay: smooth caps at the joints, and growth strips near each end.",
+ terms:[["Articular cartilage","Cartilage covering the ends of bones in joints."],["Epiphyseal plate","Hyaline cartilage plate where a long bone grows in length."]],
+ check:{q:"Which two places keep hyaline cartilage in a growing long bone?",opts:[
+  ["The articular surfaces and the epiphyseal plates.",1,"Yes."],
+  ["The medullary cavity and the periosteum.",0,"Neither has cartilage."],
+  ["The diaphysis and the bone collar.",0,"These are bone."],
+  ["None. All cartilage is replaced.",0,"Cartilage stays at the joints and at the growth plates."]]},
+ caption:"Cartilage remains only at the articular surfaces and the epiphyseal plates.",
+ legend:[["cart","Articular cartilage / epiphyseal plate"],["bone","Spongy bone"],["compact","Compact bone"],["marrow","Marrow"]]},
+
+/* ---------- Growth plate ---------- */
+{tr:"G",scene:"plate",id:"g1",title:"Reserve zone",
+ body:`<p>Zoom in on an epiphyseal plate. It has layers, or <b>zones</b>. Read them from the epiphysis down toward the shaft.</p>
+ <p>The <b>reserve zone</b> is next to the epiphysis. Its small chondrocytes are not dividing much. Their job is to <b>anchor</b> the plate to the bone of the epiphysis.</p>`,
+ analogy:"A conveyor belt. The reserve zone is the frame that bolts the belt to the wall.",
+ terms:[["Reserve zone","Small, resting chondrocytes that anchor the plate to the epiphysis."]],
+ check:{q:"What is the reserve zone's main job?",opts:[
+  ["Anchoring the growth plate to the epiphysis.",1,"Yes."],
+  ["Dividing rapidly.",0,"That's the proliferative zone, next down."],
+  ["Building bone.",0,"Bone is built at the bottom of the plate."],
+  ["Calcifying the matrix.",0,"That happens in the bottom zone."]]},
+ caption:"The whole plate is moving like a conveyor. The reserve zone is the anchor at the top.",
+ legend:[["bone","Bone"],["cart","Cartilage"],["cartE","Chondrocytes"]]},
+{tr:"G",scene:"plate",id:"g2",title:"Proliferative zone",
+ body:`<p>In the <b>proliferative zone</b>, chondrocytes divide quickly and stack up in <b>columns</b>, like a pile of coins.</p>
+ <p>The new cells push older cells down toward the shaft. This is what makes the plate add new cartilage on the epiphysis side.</p>`,
+ analogy:"New boxes are added to the conveyor belt.",
+ terms:[["Proliferative zone","Chondrocytes divide and form columns."]],
+ check:{q:"In which zone do chondrocytes divide rapidly?",opts:[
+  ["Proliferative zone",1,"Yes. \"Proliferate\" means multiply."],
+  ["Reserve zone",0,"Reserve zone cells are mostly resting."],
+  ["Zone of maturation and hypertrophy",0,"Here cells grow larger, not more numerous."],
+  ["Zone of calcified matrix",0,"Here the cells die."]]},
+ caption:"Cells divide and stack into columns, pushing older cells toward the shaft.",
+ legend:[["cartE","Dividing chondrocytes"]]},
+{tr:"G",scene:"plate",id:"g3",title:"Zone of maturation and hypertrophy",
+ body:`<p>Further down, the older chondrocytes stop dividing and <b>grow much larger</b> (hypertrophy means enlargement).</p>
+ <p>Their swelling makes the matrix between them thin, getting it ready to calcify.</p>`,
+ analogy:"Boxes on the belt puff up as they move along.",
+ terms:[["Hypertrophy","Enlargement of cells."]],
+ check:{q:"What happens to chondrocytes in this zone?",opts:[
+  ["They get much larger.",1,"Yes."],
+  ["They divide quickly.",0,"That was the zone above."],
+  ["They turn into osteoblasts.",0,"Chondrocytes don't become osteoblasts. Osteoblasts arrive with blood vessels."],
+  ["They move back up to the epiphysis.",0,"Cells only move down, toward the shaft."]]},
+ caption:"Chondrocytes stop dividing and swell as they move down the column.",
+ legend:[["cartE","Enlarging chondrocytes"]]},
+{tr:"G",scene:"plate",id:"g4",title:"Zone of calcified matrix: bone replaces cartilage",
+ body:`<p>At the bottom, the matrix <b>calcifies</b> and the chondrocytes <b>die</b>. Blood vessels from the shaft grow in. Osteoblasts lay <b>bone</b> on the calcified cartilage, and osteoclasts remodel it.</p>
+ <p>New cartilage is added at the top while cartilage is turned into bone at the bottom. The plate stays about the same thickness, but it moves the epiphysis away from the shaft. <b>That is how a long bone grows longer.</b></p>
+ <p>In early adulthood the plate is fully replaced by bone. What is left is the <b>epiphyseal line</b>, and growth in length stops.</p>`,
+ analogy:"At the end of the belt, the boxes are swapped for bricks. The belt keeps running, so the building gets taller.",
+ terms:[["Zone of calcified matrix","Chondrocytes die, matrix calcifies, bone is laid down."],["Epiphyseal line","The bony remnant of the growth plate after growth stops."]],
+ check:{q:"When the epiphyseal plate becomes the epiphyseal line, what does that mean?",opts:[
+  ["The bone can no longer grow in length.",1,"Yes. No more cartilage means no more lengthening."],
+  ["The bone can no longer grow in width.",0,"Bones can still thicken from the periosteum (appositional growth)."],
+  ["The bone can no longer heal fractures.",0,"Adults heal fractures, just more slowly."],
+  ["The bone starts growing faster.",0,"Growth in length stops."]]},
+ caption:"Cartilage calcifies and is replaced by bone at the bottom while new cells are added at the top.",
+ legend:[["calc","Calcified matrix"],["ob","Osteoblast"],["bone","New bone"],["vessel","Blood vessel"]]},
+
+/* ---------- Fracture ---------- */
+{tr:"F",scene:"frac",id:"f1",title:"A fracture hematoma forms",
+ body:`<p>When a bone breaks, blood vessels in the bone and periosteum tear. Blood pools and clots, forming a <b>fracture hematoma</b> within hours.</p>
+ <p>Without blood flow, bone cells near the broken ends <b>die</b>. The area swells and becomes painful.</p>`,
+ analogy:"An accident scene: the area is blocked off and cleanup can't start until the scene is secured.",
+ terms:[["Fracture hematoma","A blood clot that forms at the break."]],
+ check:{q:"What forms first after a bone breaks?",opts:[
+  ["A fracture hematoma (blood clot).",1,"Yes. Torn vessels bleed into the break."],
+  ["A bony callus.",0,"That comes weeks later."],
+  ["Compact bone.",0,"Compact bone is the last thing restored."],
+  ["A fibrocartilaginous callus.",0,"That's the next stage."]]},
+ caption:"The bone breaks, torn vessels bleed, and a clot fills the gap. Cells at the ends die.",
+ legend:[["hema","Hematoma"],["compact","Compact bone"],["yellowm","Marrow cavity"]]},
+{tr:"F",scene:"frac",id:"f2",title:"A soft callus bridges the break",
+ body:`<p>Over the next days, new <b>capillaries</b> grow into the clot. <b>Phagocytes</b> clean up the clot and dead bone.</p>
+ <p>Fibroblasts and chondroblasts move in and build a <b>fibrocartilaginous callus</b> that bridges the broken ends. An <b>external callus</b> of cartilage and bone forms a collar around the outside.</p>`,
+ analogy:"Putting a temporary patch on it, like wrapping a broken pipe in strong tape.",
+ terms:[["Fibrocartilaginous callus","A soft bridge of fibrocartilage and hyaline cartilage."],["Phagocyte","A cell that engulfs debris."]],
+ check:{q:"What is the callus made of at this stage?",opts:[
+  ["Fibrocartilage and cartilage.",1,"Yes. That's why it's called the soft callus."],
+  ["Compact bone.",0,"Bone comes in later stages."],
+  ["Blood clot only.",0,"The clot is being cleared and replaced."],
+  ["Spongy bone.",0,"That's the next stage."]]},
+ caption:"Capillaries grow in, phagocytes clear debris, and a cartilage callus bridges the gap.",
+ legend:[["vessel","Capillary"],["phago","Phagocyte"],["fibro","Fibrocartilage"],["cart","External callus"]]},
+{tr:"F",scene:"frac",id:"f3",title:"The bony callus",
+ body:`<p>Over several weeks, <b>osteoblasts</b> turn the cartilage callus into <b>spongy bone</b>. This is the <b>bony callus</b>. It joins the broken ends firmly.</p>
+ <p>Notice the pattern: cartilage first, then bone. That's the same plan as endochondral ossification.</p>`,
+ analogy:"The tape patch is rebuilt in concrete.",
+ terms:[["Bony callus","Spongy bone that replaces the cartilage callus."]],
+ check:{q:"Which cells turn the cartilage callus into bone?",opts:[
+  ["Osteoblasts",1,"Yes, the bone builders."],
+  ["Osteoclasts",0,"Osteoclasts remove bone; they matter more in the next stage."],
+  ["Chondrocytes",0,"They make cartilage, not bone."],
+  ["Red blood cells",0,"They carry oxygen; they don't build bone."]]},
+ caption:"Spongy bone grows in from the edges and replaces the cartilage callus.",
+ legend:[["bone","Spongy bone"],["ob","Osteoblast"],["cart","Cartilage being replaced"]]},
+{tr:"F",scene:"frac",id:"f4",title:"Remodeling",
+ body:`<p>Finally, <b>osteoclasts</b> remove the extra bone of the callus, and <b>compact bone</b> replaces spongy bone along the shaft walls.</p>
+ <p>Remodeling can take months. The healed bone often looks almost normal, though a slight thickening may remain.</p>`,
+ analogy:"Sanding off the extra concrete so the pipe is smooth again.",
+ terms:[["Remodeling","Reshaping bone by removing (osteoclasts) and adding (osteoblasts) bone."]],
+ check:{q:"What do osteoclasts do during remodeling?",opts:[
+  ["Remove the extra bone of the callus.",1,"Yes."],
+  ["Form the blood clot.",0,"The clot forms from blood, in stage 1."],
+  ["Make cartilage.",0,"Chondroblasts make cartilage, in stage 2."],
+  ["Lay down new bone.",0,"That's the osteoblasts' job."]]},
+ caption:"Osteoclasts trim the callus and compact bone is restored along the shaft.",
+ legend:[["ocl","Osteoclast"],["compact","Compact bone"]]},
+
+{tr:0,scene:"map",id:"recap",title:"You made it. Here is the whole picture.",
+ body:`<ol>
+ <li class="h">Intramembranous</li><li>Mesenchyme → osteoblasts → osteoid → trabeculae and periosteum → compact bone over spongy bone.</li>
+ <li class="h">Endochondral</li><li>Cartilage model → middle calcifies, bone collar → primary center → medullary cavity → secondary centers → only articular cartilage and growth plates left.</li>
+ <li class="h">Growth plate</li><li>Reserve → proliferative → hypertrophy → calcified matrix → bone. Plate closes into the epiphyseal line in adulthood.</li>
+ <li class="h">Fracture healing</li><li>Hematoma → fibrocartilaginous callus → bony callus → remodeling.</li></ol>
+ <p>Next: test yourself in the <b>Bone Builder</b> game.</p>`,
+ analogy:"Build on an empty lot, or build a clay model and swap in stone. Keep a strip of clay to grow taller. Patch breaks with tape, then concrete, then sand it smooth.",
+ terms:[],check:null,caption:"Four processes, one rule: bone is always built on something."}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const done=new Set();let cur=0;
+function buildChain(){const el=$("#chain");el.innerHTML="";
+  const groups=[["Start","accent",[0]]];
+  ["I","E","G","F"].forEach(k=>groups.push([TRACKS[k].name,TRACKS[k].col,STEPS.map((s,i)=>s.tr===k?i:-1).filter(i=>i>=0)]));
+  groups.push(["Finish","accent",[STEPS.length-1]]);
+  groups.forEach((g,gi)=>{const d=document.createElement("div");d.className="actgrp";if(gi===0||gi===groups.length-1)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[1]})"></i>${g[0]}</div>`;const dots=document.createElement("div");dots.className="dots";
+    g[2].forEach((i,j)=>{const b=document.createElement("button");b.type="button";b.className="dot";b.dataset.i=i;b.textContent=i===0?"★":(i===STEPS.length-1?"✓":j+1);
+      b.setAttribute("aria-label",STEPS[i].title);b.onclick=()=>go(i);dots.appendChild(b)});d.appendChild(dots);el.appendChild(d)})}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+function render(){const s=STEPS[cur];const t=TRACKS[s.tr];
+  const within=s.tr?STEPS.filter(x=>x.tr===s.tr):[];const n=within.indexOf(s)+1;
+  $("#stepno").innerHTML=t?`<span class="actchip" style="background:var(--${t.col})">${t.name}</span><span>Stage ${n} of ${within.length}</span>`:"";
+  $("#title").textContent=s.title;$("#body").innerHTML=s.body;$("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(x=>`<div><dt>${x[0]}</dt><dd>${x[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(l=>`<span><i style="background:var(--${l[0]==="cartE"?"cart-edge":l[0]==="ocy"?"bone-dk":l[0]})"></i>${l[1]}</span>`).join("");
+  const ck=$("#check");if(!s.check)ck.style.display="none";else{ck.style.display="";$("#q").textContent=s.check.q;const fb=$("#fb");fb.textContent="";fb.className="fb";const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};box.appendChild(b)})}
+  $("#prev").disabled=cur===0;$("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";$("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";refreshDots()}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;render()}
+$("#prev").onclick=()=>go(cur-1);$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0};let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas basics ---------------- */
+const W=800,H=460;const cv=$("#stage");const ctx=cv.getContext("2d");let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+function readColors(){const s=getComputedStyle(document.documentElement);
+ ["panel","panel-2","ink","ink-soft","ink-faint","rule","accent","good","warn","pI","pE","pG","pF","emb","mes","ob","ocl","osteoid","bone","bone-dk","compact","cart","cart-edge","calc","vessel","marrow","yellowm","hema","fibro","peri","glow","phago"].forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;const lerp=(a,b,t)=>a+(b-a)*t;const TAU=Math.PI*2;
+function rng(sd){let a=sd>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function ellipse(x,y,rx,ry,fill,stroke,lw,rot){ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),rot||0,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:a;g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||600} ${size}px "IBM Plex Sans",system-ui,sans-serif`;ctx.textAlign=o.align||"center";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+  ctx.globalAlpha=(o.alpha==null?1:o.alpha)*.9;ctx.fillStyle=C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=o.alpha==null?1:o.alpha;ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5);ctx.globalAlpha=1}
+function leader(x1,y1,x2,y2,a){ctx.globalAlpha=a==null?1:a;ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.globalAlpha=1}
+function arrow(x1,y1,x2,y2,col,lw){ctx.strokeStyle=col;ctx.lineWidth=lw||2.5;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();const a=Math.atan2(y2-y1,x2-x1),h=10;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function mesCell(x,y,a,col,s){s=s||1;ctx.strokeStyle=col||C.mes;ctx.lineWidth=1.6;for(let k=0;k<3;k++){const b=a+k*2.09;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+9*s*Math.cos(b),y+9*s*Math.sin(b));ctx.stroke()}circ(x,y,4.2*s,col||C.mes)}
+function obCell(x,y,s){circ(x,y,7*(s||1),C.ob,"rgba(0,0,0,.25)",1);circ(x+1.5,y-1,2.2*(s||1),"rgba(255,255,255,.55)")}
+function oclCell(x,y,rot,s){s=s||1;ctx.save();ctx.translate(x,y);ctx.rotate(rot||0);ellipse(0,0,17*s,9*s,C.ocl,"rgba(0,0,0,.3)",1);for(let k=-1;k<=1;k++)circ(k*6*s,0,2.2*s,"rgba(255,255,255,.85)");ctx.restore()}
+function chondro(x,y,s,dead,a){ctx.globalAlpha=a==null?1:a;if(dead)ellipse(x,y,6*s,4.4*s,null,C["cart-edge"],1.2);else ellipse(x,y,5*s,3.6*s,C["cart-edge"]);ctx.globalAlpha=1}
+function osteocyte(x,y,a){ctx.globalAlpha=a;ellipse(x,y,10,7,C.panel,C["bone-dk"],1.2);ctx.strokeStyle=C["bone-dk"];ctx.lineWidth=1;for(let k=0;k<6;k++){const b=k*1.05;ctx.beginPath();ctx.moveTo(x+9*Math.cos(b),y+6*Math.sin(b));ctx.lineTo(x+16*Math.cos(b),y+11*Math.sin(b));ctx.stroke()}circ(x,y,4,C["bone-dk"]);ctx.globalAlpha=1}
+function vesselPath(pts,p,lw,col){if(p<=0)return;ctx.strokeStyle=col||C.vessel;ctx.lineWidth=lw||5;ctx.lineCap="round";ctx.beginPath();
+  let total=0;const L=[];for(let i=1;i<pts.length;i++){const d=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);L.push(d);total+=d}
+  let rem=total*p;ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length&&rem>0;i++){const d=L[i-1];const t=Math.min(1,rem/d);ctx.lineTo(lerp(pts[i-1][0],pts[i][0],t),lerp(pts[i-1][1],pts[i][1],t));rem-=d}ctx.stroke();ctx.lineCap="butt"}
+function wave(x0,x1,y,amp,per,ph){const pts=[];for(let x=x0;x<=x1;x+=10)pts.push([x,y+amp*Math.sin((x+ph)/per)]);return pts}
+// lattice: edges with midpoints, drawn when region(mid) true
+function makeLattice(inside,x0,y0,x1,y1,step,sd){const r=rng(sd);const N=[];
+  for(let y=y0;y<=y1+.1;y+=step){const row=[];for(let x=x0;x<=x1+.1;x+=step){const jx=x+(r()-.5)*step*.6,jy=y+(r()-.5)*step*.6;row.push(inside(jx,jy)?[jx,jy]:null)}N.push(row)}
+  const E=[];const add=(p,q)=>E.push({a:p,b:q,m:[(p[0]+q[0])/2,(p[1]+q[1])/2],j:r()});
+  for(let i=0;i<N.length;i++)for(let c=0;c<N[i].length;c++){const p=N[i][c];if(!p)continue;const a=N[i][c+1],b=N[i+1]&&N[i+1][c],d=N[i+1]&&N[i+1][c+1];
+    if(a&&r()>.2)add(p,a);if(b&&r()>.2)add(p,b);if(d&&r()>.7)add(p,d)}return E}
+function drawLattice(E,show,lw,col){ctx.strokeStyle=col||C.bone;ctx.lineWidth=lw||6;ctx.lineCap="round";ctx.beginPath();
+  for(const e of E){const s=show(e);if(s<=0)continue;if(s>=1){ctx.moveTo(e.a[0],e.a[1]);ctx.lineTo(e.b[0],e.b[1])}else{const m=e.m;ctx.moveTo(lerp(m[0],e.a[0],s),lerp(m[1],e.a[1],s));ctx.lineTo(lerp(m[0],e.b[0],s),lerp(m[1],e.b[1],s))}}
+  ctx.stroke();ctx.lineCap="butt"}
+function mix(c1,c2,t){const h=c=>{c=c.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');return [0,2,4].map(i=>parseInt(c.substr(i,2),16))};try{const A=h(c1),B=h(c2);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(',')+')'}catch(e){return c2}}
+const inEll=(x,y,cx,cy,rx,ry)=>rx>0&&ry>0&&((x-cx)/rx)**2+((y-cy)/ry)**2<1;
+
+/* ================= MAP ================= */
+function sceneMap(t){ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const act=Math.floor(t/2)%4;const ph=(t%2)/2;
+  const B=[["I","Intramembranous","bone from mesenchyme"],["E","Endochondral","bone replaces cartilage"],["G","Growth plate","bones grow longer"],["F","Fracture healing","clot → cartilage → bone"]];
+  B.forEach((b,i)=>{const x=20+i*195,on=i===act;const col=C["p"+b[0]];
+    ctx.fillStyle=C["panel-2"];rr(x,80,180,280,10);ctx.fill();ctx.strokeStyle=on?col:C.rule;ctx.lineWidth=on?4:1.5;ctx.stroke();
+    ctx.fillStyle=col;rr(x,80,180,40,10);ctx.fill();ctx.fillRect(x,104,180,16);
+    ctx.font='600 15px "IBM Plex Sans",sans-serif';ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(b[1],x+90,101);
+    ctx.font='500 13px "IBM Plex Sans",sans-serif';ctx.fillStyle=C["ink-soft"];ctx.fillText(b[2],x+90,335);
+    const cx=x+90,cy=225,q=on?ease(ph):1;
+    if(i===0){ctx.fillStyle=C.emb;rr(cx-70,cy-70,140,140,8);ctx.fill();for(let k=0;k<8;k++)mesCell(cx-55+((k*37)%110),cy-55+((k*53)%110),k,C.mes,.7);
+      ctx.strokeStyle=C.bone;ctx.lineWidth=5;ctx.lineCap="round";ctx.beginPath();for(let k=0;k<5;k++){ctx.moveTo(cx-40,cy-30+k*15);ctx.lineTo(cx-40+80*q,cy-30+k*15+((k%2)?6:-6)*q)}ctx.stroke();ctx.lineCap="butt"}
+    if(i===1){ellipse(cx-45,cy,26,42,C.cart,C["cart-edge"],2);ellipse(cx+45,cy,26,42,C.cart,C["cart-edge"],2);ctx.fillStyle=C.cart;ctx.fillRect(cx-45,cy-18,90,36);
+      ctx.fillStyle=C.compact;ctx.fillRect(cx-40*q,cy-22,80*q,8);ctx.fillRect(cx-40*q,cy+14,80*q,8);ellipse(cx,cy,30*q,12*q,C.marrow)}
+    if(i===2){ctx.fillStyle=C.cart;ctx.fillRect(cx-60,cy-70,120,140);for(let c=0;c<4;c++)for(let k=0;k<6;k++){const y=cy-60+((k*22+ph*22*(on?1:0))%132);ellipse(cx-45+c*30,y,8+y/80-cy/80+3,3+(y-cy+70)/30,C["cart-edge"])}
+      ctx.fillStyle=C.compact;ctx.fillRect(cx-60,cy+50,120,20)}
+    if(i===3){ctx.fillStyle=C.compact;ctx.fillRect(cx-70,cy-30,140,14);ctx.fillRect(cx-70,cy+16,140,14);ctx.fillStyle=C.yellowm;ctx.fillRect(cx-70,cy-16,140,32);
+      const st=on?Math.floor(ph*4):3;const cols=[C.hema,C.fibro,C.bone,C.compact];ellipse(cx,cy,14+8*(st===3?0:1),40-(st===3?10:0),cols[st])}
+    if(i<3)arrow(x+182,225,x+193,225,C["ink-faint"],2)});
+  ctx.font='500 14px "IBM Plex Sans",sans-serif';ctx.fillStyle=C["ink-soft"];ctx.textAlign="center";ctx.fillText("One rule for all four: bone is always built on something.",W/2,405)}
+
+/* ================= INTRAMEMBRANOUS ================= */
+const IM=(()=>{const r=rng(5);const cells=[];for(let i=0;i<80;i++)cells.push({x:20+r()*760,y:20+r()*420,a:r()*6.3});
+  const c=[400,230];cells.forEach(m=>m.d=Math.hypot(m.x-c[0],m.y-c[1]));const sorted=cells.slice().sort((a,b)=>a.d-b.d);
+  const recruits=sorted.slice(0,14);recruits.forEach((m,k)=>{const ang=k/14*TAU;m.tx=400+52*Math.cos(ang);m.ty=230+52*Math.sin(ang);m.rec=true;m.ang=ang});
+  const lat=makeLattice((x,y)=>x>30&&x<770&&y>78&&y<382,40,85,760,375,38,9);
+  const seeds=[[400,230],[190,150],[620,310],[640,140],[170,320]];
+  lat.forEach(e=>{e.birth=Math.min(...seeds.map(s=>Math.hypot(e.m[0]-s[0],e.m[1]-s[1])))/260+e.j*.12});
+  const trapped=[[360,215],[438,205],[420,258],[372,252]];
+  return {cells,lat,trapped}})();
+function imBg(){ctx.fillStyle=C.emb;ctx.fillRect(0,0,W,H)}
+function imVessels(a){ctx.globalAlpha=a;vesselPath(wave(-10,810,150,14,70,0),1,6);vesselPath(wave(-10,810,320,12,60,40),1,6);ctx.globalAlpha=1}
+function sceneIM(t,id){const P={i1:5,i2:5.5,i3:6,i4:6}[id];const p=Math.min(1,(t%(P+1.5))/P);
+  imBg();
+  if(id==="i1"){vesselPath([[160,360],[300,290],[400,232],[520,170],[660,110]],1,6);
+    IM.cells.forEach(m=>{if(m.rec){const q=ease(seg(p,.1,.6));const x=lerp(m.x,m.tx,q),y=lerp(m.y,m.ty,q);const c=seg(p,.5,.75);
+        if(c<1)mesCell(x,y,m.a+t,C.mes,1);if(c>0){ctx.globalAlpha=c;obCell(x,y,1.1);ctx.globalAlpha=1}}
+      else mesCell(m.x+Math.sin(t+m.a)*2,m.y+Math.cos(t*1.3+m.a)*2,m.a,C.mes,1)});
+    const d=seg(p,.75,.9);if(d>0){ctx.globalAlpha=d;ctx.setLineDash([8,6]);circ(400,230,82,null,C["ink-soft"],2);ctx.setLineDash([]);ctx.globalAlpha=1;label(400,340,"Ossification center",{alpha:d})}
+    label(110,30,"Mesenchymal cells",{size:12});label(690,90,"Capillary",{size:12});
+    if(p>.5&&p<.8)label(400,135,"Becoming osteoblasts",{color:C.ob});
+  }
+  if(id==="i2"){IM.cells.forEach(m=>{if(!m.rec&&!inEll(m.x,m.y,400,230,190,120))mesCell(m.x,m.y,m.a,C.mes,1)});
+    const g=ease(seg(p,.05,.65));const rx=lerp(40,160,g),ry=lerp(28,95,g);
+    ellipse(400,230,rx,ry,C.osteoid,C["bone-dk"],2);
+    const cal=seg(p,.45,.85);if(cal>0){const r=rng(3);ctx.fillStyle=C.bone;ctx.globalAlpha=cal;for(let k=0;k<160;k++){const a=r()*TAU,d=Math.sqrt(r());const x=400+Math.cos(a)*d*rx*.95,y=230+Math.sin(a)*d*ry*.95;ctx.fillRect(x,y,3,3)}ctx.globalAlpha=1}
+    IM.trapped.forEach((q,k)=>{const inside=inEll(q[0],q[1],400,230,rx-10,ry-8);if(inside){const o=seg(p,.55+k*.05,.8+k*.05);if(o<1)obCell(q[0],q[1]);if(o>0)osteocyte(q[0],q[1],o)}});
+    for(let k=0;k<22;k++){const a=k/22*TAU;obCell(400+(rx+9)*Math.cos(a),230+(ry+9)*Math.sin(a))}
+    label(400,230+ry+40,cal>.3?"Osteoid calcifies (hardens)":"Osteoblasts secrete osteoid",{});
+    if(p>.7){label(640,90,"Trapped → osteocyte",{color:C["bone-dk"]});leader(585,98,446,200)}
+  }
+  if(id==="i3"||id==="i4"){
+    const peri=id==="i3"?ease(seg(p,.4,.9)):1;
+    const marrow=id==="i4"?seg(p,.4,.8):0;
+    if(marrow>0){ctx.globalAlpha=marrow;ctx.fillStyle=C.marrow;ctx.fillRect(0,78,W,304);ctx.globalAlpha=1}
+    imVessels(1-marrow*.7);
+    IM.cells.forEach(m=>{if(m.y>70&&m.y<390){if(id==="i3")mesCell(m.x,m.y,m.a,C.mes,1)}
+      else{const ty=m.y<230?lerp(m.y,42,peri):lerp(m.y,418,peri);mesCell(m.x,ty,m.a,C.mes,.9)}});
+    ctx.globalAlpha=peri*.55;ctx.fillStyle=C.peri;ctx.fillRect(0,28,W,30);ctx.fillRect(0,402,W,30);ctx.globalAlpha=1;
+    const grow=id==="i3"?ease(seg(p,0,.75))*1.25:2;
+    drawLattice(IM.lat,e=>clamp((grow-e.birth)/.08,0,1),9,C.bone);
+    if(id==="i3"&&p<.3)ellipse(400,230,60,36,C.osteoid,C["bone-dk"],2);
+    if(id==="i4"){const h=ease(seg(p,.05,.6))*58;ctx.fillStyle=C.compact;ctx.strokeStyle=C["bone-dk"];ctx.lineWidth=2;
+      ctx.fillRect(0,58,W,h);ctx.strokeRect(-2,58,W+4,h);ctx.fillRect(0,402-h,W,h);ctx.strokeRect(-2,402-h,W+4,h);
+      if(h>40){label(400,58+h/2,"Compact bone");label(400,402-h/2,"Compact bone")}
+      if(marrow>.5)label(400,230,"Spongy bone + red marrow (diploë)")}
+    label(400,16,"Periosteum",{size:12,alpha:Math.max(.3,peri)});
+    if(id==="i3"&&p>.35)label(110,230,"Trabeculae",{});
+  }
+}
+
+/* ================= ENDOCHONDRAL (long bone) ================= */
+const LB=(()=>{const inBone=(x,y)=>inEll(x,y,170,230,92,132)||inEll(x,y,630,230,92,132)||(x>170&&x<630&&y>182&&y<278);
+  const r=rng(11);const ch=[];let g=0;while(ch.length<230&&g<20000){g++;const x=60+r()*680,y=90+r()*280;if(inBone(x,y))ch.push({x,y,mx:x+(r()-.5)*260,my:y+(r()-.5)*200,a:r()*6})}
+  const lat=makeLattice(inBone,70,95,730,365,22,12);return {inBone,ch,lat}})();
+// state: cart(0..1) form, mes(0..1) gather, grow(0..1) center chondro enlarge, calc, dead, collar(half-width), vessel(0..1), pri(0..1), dia(0..1 fraction to 230), cav(halfwidth), sec(0..1.6), secV, peri(0..1 full outline brown), plate glow, arrows
+function boneRegion(x,y,s){
+  if(s.pri>0&&inEll(x,y,400,230,90*s.pri,46*s.pri))return true;
+  if(s.dia>0&&x>280&&x<520&&y>184&&y<276&&Math.abs(x-400)<120*s.dia)return true;
+  if(s.sec>0){if(x<262&&inEll(x,y,185,230,78,126)&&inEll(x,y,170,230,70*s.sec,95*s.sec))return true;if(x>538&&inEll(x,y,615,230,78,126)&&inEll(x,y,630,230,70*s.sec,95*s.sec))return true}
+  return false}
+function sceneLong(t,s,labels){
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  // mesenchyme gathering (e1)
+  const shapes=()=>{ctx.beginPath();ctx.ellipse(170,230,100,140,0,0,TAU);ctx.moveTo(730,230);ctx.ellipse(630,230,100,140,0,0,TAU);ctx.rect(170,175,460,110)};
+  if(s.cart>0){ctx.strokeStyle=mix(C.panel,C["cart-edge"],s.cart);ctx.lineWidth=8;shapes();ctx.stroke();ctx.fillStyle=mix(C.panel,C.cart,s.cart);shapes();ctx.fill()}
+  // periosteum (brown) over diaphysis outline where collar exists
+  if(s.calc>0){ctx.globalAlpha=s.calc;ctx.fillStyle=C.calc;ctx.fillRect(320,180,160,100);const r=rng(2);ctx.fillStyle=C["cart-edge"];for(let k=0;k<90;k++)ctx.fillRect(320+r()*160,180+r()*100,2.5,2.5);ctx.globalAlpha=1}
+  // marrow under bone regions
+  ctx.fillStyle=C.marrow;
+  if(s.pri>0)ellipse(400,230,90*s.pri,46*s.pri,C.marrow);
+  if(s.dia>0){const hw=120*s.dia;ctx.fillRect(400-hw,184,hw*2,92)}
+  if(s.sec>0){ctx.save();ctx.beginPath();ctx.rect(0,0,262,H);ctx.clip();ellipse(170,230,Math.min(70*s.sec,90),Math.min(95*s.sec,128),C.marrow);ctx.restore();
+    ctx.save();ctx.beginPath();ctx.rect(538,0,262,H);ctx.clip();ellipse(630,230,Math.min(70*s.sec,90),Math.min(95*s.sec,128),C.marrow);ctx.restore()}
+  // chondrocytes
+  LB.ch.forEach(c=>{if(s.cart<=0&&s.mes<=0)return;
+    if(s.mes<1){const q=ease(s.mes);const x=lerp(c.mx,c.x,q),y=lerp(c.my,c.y,q);const mA=1-seg(q,.55,.8);if(mA>0){ctx.globalAlpha=mA;mesCell(x,y,c.a,C.mes,.8);ctx.globalAlpha=1}const cA=seg(q,.5,.8);if(cA>0)chondro(x,y,1,false,cA);return}
+    if(boneRegion(c.x,c.y,s))return;
+    const center=c.x>320&&c.x<480;const sc=center?1+1.2*s.grow:1;chondro(c.x,c.y,sc,center&&s.dead>.5)});
+  // lattice
+  if(s.pri>0||s.dia>0||s.sec>0){drawLattice(LB.lat,e=>{if(!boneRegion(e.m[0],e.m[1],s))return 0;if(s.cav>0&&Math.abs(e.m[0]-400)<s.cav&&e.m[1]>186&&e.m[1]<274)return 0;return 1},7,C.bone)}
+  if(s.cav>0){ctx.fillStyle=C.marrow;ctx.fillRect(400-s.cav,190,s.cav*2,80)}
+  // collar
+  if(s.collar>0){ctx.fillStyle=C.compact;ctx.strokeStyle=C["bone-dk"];ctx.lineWidth=1.5;const w=s.collar;ctx.fillRect(400-w,166,2*w,18);ctx.strokeRect(400-w,166,2*w,18);ctx.fillRect(400-w,276,2*w,18);ctx.strokeRect(400-w,276,2*w,18);
+    ctx.strokeStyle=C.peri;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(400-w,162);ctx.lineTo(400+w,162);ctx.moveTo(400-w,298);ctx.lineTo(400+w,298);ctx.stroke()}
+  // plates
+  if(s.plate>0){[262,522].forEach(x=>{ctx.fillStyle=C.cart;ctx.fillRect(x,150,16,160);ctx.strokeStyle=C["cart-edge"];ctx.lineWidth=2;ctx.strokeRect(x,150,16,160);
+      for(let y=158;y<305;y+=8)ellipse(x+8,y,5,2.2,C["cart-edge"]);
+      if(s.glowP>0)glow(x+8,230,90,C.glow,.35*s.glowP)})}
+  // vessels
+  if(s.vessel>0)vesselPath([[400,10],[392,60],[408,110],[400,170],[400,230],[372,250]],s.vessel,6);
+  if(s.vessel>.9)vesselPath([[400,230],[432,212]],1,5);
+  if(s.secV>0){vesselPath([[0,200],[40,210],[80,220],[130,226]],s.secV,5);vesselPath([[800,260],[760,250],[720,240],[670,234]],s.secV,5)}
+  // osteoblasts along new bone
+  if(s.obA>0){ctx.globalAlpha=s.obA;[[375,212],[430,246],[410,205],[365,248],[440,215]].forEach(q=>obCell(q[0],q[1]));ctx.globalAlpha=1}
+  if(s.ocl>0){ctx.globalAlpha=s.ocl;oclCell(400-s.cav+4,206,.2);oclCell(400+s.cav-4,254,-.2);oclCell(400-s.cav+10,258,-.3);oclCell(400+s.cav-10,202,.3);ctx.globalAlpha=1}
+  if(s.arrows>0){ctx.globalAlpha=s.arrows;arrow(250,390,130,390,C.good,3);arrow(550,390,670,390,C.good,3);label(400,390,"Growth in length at the plates",{color:C.good});ctx.globalAlpha=1}
+  if(labels)labels();
+}
+function sceneE(t,id){const per={e1:5,e2:6,e3:6,e4:6.5,e5:5.5,e6:6}[id];const p=Math.min(1,(t%(per+1.5))/per);
+  const base={cart:1,mes:1,grow:0,calc:0,dead:0,collar:0,vessel:0,pri:0,dia:0,cav:0,sec:0,secV:0,obA:0,ocl:0,plate:0,glowP:0,arrows:0};
+  const E2={...base,grow:1,calc:1,dead:1,collar:80};
+  const E3={...E2,vessel:1,pri:1,collar:110,obA:1};
+  const E4={...E3,pri:1,dia:1,cav:80,collar:122,obA:0,ocl:0};
+  const E5={...E4,sec:.55,secV:1};
+  let s;
+  if(id==="e1"){s={...base,cart:ease(seg(p,.45,.85)),mes:seg(p,0,.7)};
+    sceneLong(t,s,()=>{if(p<.45)label(400,40,"Mesenchymal cells gather in the shape of the bone");else{label(400,40,"Hyaline cartilage model");if(p>.85){label(400,415,"Perichondrium wraps the model",{color:C["cart-edge"]});leader(400,404,400,375)}}})}
+  if(id==="e2"){const g=ease(seg(p,.05,.45));s={...base,grow:g,calc:seg(p,.3,.6),dead:seg(p,.55,.8),collar:80*ease(seg(p,.5,.95))};
+    sceneLong(t,s,()=>{label(400,40,p<.3?"Chondrocytes in the middle enlarge":(p<.55?"The matrix calcifies":(p<.8?"Cells die: no nutrients get through":"Bone collar forms around the shaft")));
+      if(p>.6){label(400,415,"Bone collar (from new periosteum)",{color:C.peri});leader(400,404,400,298)}})}
+  if(id==="e3"){const v=ease(seg(p,0,.35));s={...E2,vessel:v,pri:ease(seg(p,.38,.95)),collar:lerp(80,110,seg(p,.3,1)),obA:seg(p,.3,.45)};
+    sceneLong(t,s,()=>{label(400,40,p<.35?"A blood vessel grows into the middle":"Osteoblasts build spongy bone");if(p>.6){label(400,415,"Primary ossification center",{color:C.pE});leader(400,404,400,280)}})}
+  if(id==="e4"){const g=ease(seg(p,0,.7));s={...E3,dia:lerp(.75,1,g)*Math.max(seg(p,0,.7),.75),pri:1,cav:lerp(0,82,ease(seg(p,.3,.95))),collar:lerp(110,122,g),obA:0,ocl:seg(p,.25,.4)};
+    s.dia=lerp(.75,1,g);
+    sceneLong(t,s,()=>{label(400,40,p<.3?"Bone spreads toward the ends of the shaft":"Osteoclasts hollow out the medullary cavity");if(p>.4){label(400,415,"Medullary cavity",{color:C.ocl});leader(400,404,400,272)}})}
+  if(id==="e5"){s={...E4,secV:ease(seg(p,0,.35)),sec:.55*ease(seg(p,.35,.95))};
+    sceneLong(t,s,()=>{label(400,40,p<.35?"Blood vessels enter the epiphyses":"Secondary ossification centers form");if(p>.5){label(170,415,"Secondary center",{color:C.pE});label(630,415,"Secondary center",{color:C.pE})}})}
+  if(id==="e6"){s={...E5,sec:lerp(.55,1.7,ease(seg(p,0,.5))),plate:seg(p,.45,.55),glowP:seg(p,.55,.7)*(.6+.4*Math.sin(t*4)),arrows:seg(p,.75,.9)};
+    sceneLong(t,s,()=>{if(p>.5){label(150,40,"Articular cartilage",{color:C["cart-edge"]});leader(150,52,90,140);label(650,40,"Articular cartilage",{color:C["cart-edge"]});leader(650,52,710,140);
+        label(400,40,"Epiphyseal plates",{color:C.pG});leader(370,52,272,148);leader(430,52,528,148)}})}
+}
+
+/* ================= GROWTH PLATE ================= */
+const ZONES=[["Reserve zone",62,120],["Proliferative zone",120,245],["Maturation & hypertrophy",245,335],["Calcified matrix",335,392]];
+function scenePlate(t,id){const zi={g1:0,g2:1,g3:2,g4:3}[id];
+  ctx.fillStyle=C.cart;ctx.fillRect(0,0,W,H);
+  // epiphysis bone top
+  ctx.fillStyle=C.marrow;ctx.fillRect(0,0,W,62);ctx.strokeStyle=C.bone;ctx.lineWidth=7;ctx.lineCap="round";ctx.beginPath();for(let x=-20;x<W;x+=46){ctx.moveTo(x,8);ctx.lineTo(x+40,30);ctx.moveTo(x+20,56);ctx.lineTo(x+46,24)}ctx.stroke();
+  // calcified band
+  ctx.fillStyle=C.calc;ctx.fillRect(0,335,W,60);
+  // diaphysis bone bottom
+  ctx.fillStyle=C.marrow;ctx.fillRect(0,392,W,68);
+  // reserve cells
+  const r=rng(4);for(let k=0;k<26;k++){chondro(30+r()*(W-180),70+r()*44,1)}
+  // columns conveyor
+  const v=14;const cols=[];for(let c=0;c<6;c++)cols.push(60+c*100);
+  cols.forEach((cx,ci)=>{for(let k=0;k<22;k++){const u=(k/22+t*.035+ci*.013)%1;
+      const y=u<.55?120+125*(u/.55):(u<.8?245+90*((u-.55)/.25):335+57*((u-.8)/.2));
+      let rx=13,ry=4.5,dead=false;
+      if(y>245){const q=seg(y,245,335);rx=lerp(13,24,q);ry=lerp(4.5,10,q)}
+      if(y>335){dead=true;rx=24;ry=10}
+      if(y>385)continue;
+      if(dead){ctx.globalAlpha=1-seg(y,350,385);ellipse(cx,y,rx,ry,null,C["cart-edge"],1.4);ctx.globalAlpha=1}else ellipse(cx,y,rx,ry,C["cart-edge"])}});
+  // bone spicules + osteoblasts between columns
+  for(let c=0;c<5;c++){const x=110+c*100;ctx.fillStyle=C.compact;ctx.fillRect(x-6,350,12,50);obCell(x-12,368,.8);obCell(x+12,382,.8)}
+  ctx.strokeStyle=C.bone;ctx.lineWidth=8;ctx.lineCap="round";ctx.beginPath();for(let x=-20;x<W;x+=50){ctx.moveTo(x,400);ctx.lineTo(x+44,446);ctx.moveTo(x+30,452);ctx.lineTo(x+50,404)}ctx.stroke();ctx.lineCap="butt";
+  // vessels from below
+  [[160],[460]].forEach(([x])=>vesselPath([[x,470],[x-10,430],[x+8,395],[x,360]],1,5));
+  // zone highlight
+  ZONES.forEach((z,i)=>{const on=i===zi;ctx.globalAlpha=on?1:.0;ctx.strokeStyle=C.glow;ctx.lineWidth=4;ctx.strokeRect(4,z[1]+2,W-178,z[2]-z[1]-4);ctx.globalAlpha=1;
+    ctx.fillStyle=on?C.pG:C.panel;rr(W-166,z[1]+(z[2]-z[1])/2-15,160,30,15);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+    ctx.font=`${on?600:500} 12.5px "IBM Plex Sans",sans-serif`;ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(z[0],W-86,z[1]+(z[2]-z[1])/2+.5)});
+  label(110,32,"Epiphysis (bone)",{size:12});label(130,430,"Diaphysis (bone)",{size:12});
+  arrow(W-190,140,W-190,320,C["ink-faint"],2);
+  if(zi===3){const a=.5+.5*Math.sin(t*3);arrow(400,60,400,8,C.good,3);label(520,20,"Epiphysis is pushed away → bone lengthens",{color:C.good,alpha:.6+.4*a})}
+}
+
+/* ================= FRACTURE ================= */
+const GAPL=[[382,140],[404,182],[388,230],[410,280],[394,322]],GAPR=[[418,322],[434,280],[414,230],[432,182],[408,140]];
+const FR=(()=>{const lat=makeLattice((x,y)=>inEll(x,y,408,230,150,190),250,40,570,420,20,21);
+  const r=rng(8);const debris=[];for(let k=0;k<16;k++)debris.push([392+r()*30,160+r()*150]);return {lat,debris}})();
+function gapPath(open){ctx.beginPath();GAPL.forEach((p,i)=>{const x=p[0]-open*6;i?ctx.lineTo(x,p[1]):ctx.moveTo(x,p[1])});GAPR.forEach(p=>ctx.lineTo(p[0]+open*6,p[1]));ctx.closePath()}
+function sceneFrac(t,s,labels){ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  if(s.ext>0){ellipse(408,230,150*s.ext,190*s.ext,C.cart,C["cart-edge"],2);if(s.bony>0){ctx.globalAlpha=Math.min(1,s.bony*1.3);ellipse(408,230,150*s.ext,190*s.ext,C.marrow);ctx.globalAlpha=1}}
+  if(s.bony>0){drawLattice(FR.lat,e=>{if(!inEll(e.m[0],e.m[1],408,230,148*s.ext,188*s.ext))return 0;return clamp((Math.abs(e.m[0]-408)/150-(1-s.bony))*6+(s.bony>=1?1:0),0,1)},7,C.bone)}
+  if(s.bump>0)ellipse(408,230,lerp(150,60,s.bump),lerp(190,110,s.bump),C.compact,C["bone-dk"],2);
+  ctx.fillStyle=C.yellowm;ctx.fillRect(0,190,W,80);ctx.fillStyle=C.compact;ctx.strokeStyle=C["bone-dk"];ctx.lineWidth=1.5;ctx.fillRect(0,150,W,40);ctx.fillRect(0,270,W,40);
+  ctx.strokeStyle=C.peri;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,146);ctx.lineTo(W,146);ctx.moveTo(0,314);ctx.lineTo(W,314);ctx.stroke();
+  // gap
+  if(s.crack>0&&s.healed<1){ctx.save();gapPath(s.crack);ctx.fillStyle=C.panel;ctx.globalAlpha=1-s.healed;ctx.fill();ctx.restore();
+    ctx.save();gapPath(s.crack);ctx.clip();
+    if(s.hema>0)ellipse(408,230,90*s.hema,200*s.hema,C.hema);
+    if(s.fib>0){ctx.globalAlpha=s.fib;ellipse(408,230,60,220*s.fib,C.fibro);ctx.globalAlpha=1}
+    if(s.bony>0){ctx.globalAlpha=s.bony;ctx.fillStyle=C.marrow;ctx.fillRect(370,130,80,200);ctx.globalAlpha=1;drawLattice(FR.lat,e=>Math.abs(e.m[0]-408)<40?clamp((s.bony-.5)*4,0,1):0,7,C.bone)}
+    ctx.restore()}
+  if(s.hema>0&&s.crack>0){ctx.globalAlpha=.85*s.hema*(1-s.fib);ellipse(408,230,80*s.hema,150*s.hema,C.hema);ctx.globalAlpha=1}
+  if(s.dead>0){ctx.globalAlpha=s.dead;ctx.strokeStyle=C["ink-soft"];ctx.lineWidth=2;[[350,170],[355,290],[466,170],[460,290],[340,280],[470,180]].forEach(q=>{ctx.beginPath();ctx.moveTo(q[0]-5,q[1]-5);ctx.lineTo(q[0]+5,q[1]+5);ctx.moveTo(q[0]+5,q[1]-5);ctx.lineTo(q[0]-5,q[1]+5);ctx.stroke()});ctx.globalAlpha=1}
+  if(s.cap>0){vesselPath([[300,250],[350,240],[390,250],[410,232]],s.cap,3.5);vesselPath([[520,210],[470,222],[430,212],[412,230]],s.cap,3.5);vesselPath([[408,80],[400,130],[414,170],[404,200]],s.cap,3.5)}
+  if(s.phago>0){FR.debris.forEach((d,i)=>{const gone=seg(s.phago,i/16*.7,i/16*.7+.2);if(gone<1){ctx.globalAlpha=1-gone;ctx.fillStyle=C.hema;ctx.fillRect(d[0],d[1],5,5);ctx.globalAlpha=1}});
+    for(let k=0;k<3;k++){const y=170+k*60+Math.sin(t*1.5+k)*20;ctx.globalAlpha=Math.min(1,s.phago*3)*(1-s.fib*.6);circ(405+Math.cos(t+k)*6,y,10,C.phago);circ(401+Math.cos(t+k)*6,y-3,3.5,C.panel);ctx.globalAlpha=1}}
+  if(s.obA>0){ctx.globalAlpha=s.obA;const x=150*(1-s.bony)*.9;[[408-x-20,110],[408+x+20,350],[408+x+16,120],[408-x-16,345]].forEach(q=>obCell(q[0],q[1]));ctx.globalAlpha=1}
+  if(s.ocl>0){ctx.globalAlpha=s.ocl;const rx=lerp(150,60,s.bump)+8,ry=lerp(190,110,s.bump)+8;for(let k=0;k<4;k++){const a=-Math.PI/2+(k<2?-1:1)*(.35+.25*(k%2))+(k>=2?Math.PI:0)+Math.sin(t+k)*.08;oclCell(408+rx*Math.cos(a),230+ry*Math.sin(a),a+Math.PI/2)}ctx.globalAlpha=1}
+  if(labels)labels()}
+function sceneF(t,id){const per={f1:5,f2:6,f3:5.5,f4:6}[id];const p=Math.min(1,(t%(per+1.5))/per);
+  const b={crack:1,hema:0,dead:0,fib:0,ext:0,cap:0,phago:0,bony:0,obA:0,bump:0,ocl:0,healed:0};
+  if(id==="f1"){const s={...b,crack:ease(seg(p,0,.15)),hema:ease(seg(p,.2,.7)),dead:seg(p,.6,.85)};
+    sceneFrac(t,s,()=>{label(400,40,p<.2?"The bone breaks":(p<.6?"Torn vessels bleed and a clot forms":"Bone cells at the broken ends die"));if(p>.45){label(600,410,"Fracture hematoma",{color:C.hema});leader(560,398,450,330)}})}
+  if(id==="f2"){const s={...b,hema:1-seg(p,.2,.6)*0.6,dead:1-seg(p,.3,.6),cap:ease(seg(p,0,.35)),phago:seg(p,.15,.6),fib:ease(seg(p,.45,.85)),ext:ease(seg(p,.55,.95))*.75};
+    sceneFrac(t,s,()=>{label(400,40,p<.35?"Capillaries grow into the clot":(p<.55?"Phagocytes clear the clot and dead bone":"Fibrocartilaginous callus bridges the break"));
+      if(p>.8){label(640,410,"External callus",{color:C["cart-edge"]});leader(600,398,500,360);label(170,410,"Internal callus (fibrocartilage)",{color:C.pI});leader(240,398,400,310)}})}
+  if(id==="f3"){const s={...b,fib:1,ext:.75,bony:ease(seg(p,.05,.9)),obA:seg(p,0,.15)*(1-seg(p,.85,1))};
+    sceneFrac(t,s,()=>{label(400,40,"Osteoblasts replace the cartilage with spongy bone");if(p>.6){label(640,410,"Bony callus",{color:C["bone-dk"]});leader(600,398,500,360)}})}
+  if(id==="f4"){const q=ease(seg(p,.1,.85));const s={...b,fib:1,ext:lerp(.75,.45,q),bony:1,bump:q,ocl:seg(p,0,.1)*(1-seg(p,.9,1)),healed:seg(p,.5,.9)};
+    sceneFrac(t,s,()=>{label(400,40,p<.5?"Osteoclasts trim away the extra bone":"Compact bone is restored along the shaft");if(p>.2){label(640,410,"Osteoclasts",{color:C.ocl});leader(600,398,500,340)}})}
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);const s=STEPS[cur];
+  try{if(s.scene==="map")sceneMap(T);else if(s.scene==="im")sceneIM(T,s.id);else if(s.scene==="long")sceneE(T,s.id);else if(s.scene==="plate")scenePlate(T,s.id);else sceneF(T,s.id)}catch(e){console.error(e)}
+  requestAnimationFrame(frame)}
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+window.__setT=v=>{T=v;paused=true};
+})();
+</script>
+</body>
+</html>

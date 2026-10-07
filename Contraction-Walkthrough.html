@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contraction Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#E3E7EA;--panel:#F7F9FA;--panel-2:#EDF1F3;--sunk:#D5DBDF;
+  --ink:#10161A;--ink-soft:#57666F;--ink-faint:#8A99A2;--rule:#C4CDD3;--rule-soft:#D9E0E4;
+  --accent:#1B6E88;--accent-ink:#0E4356;--accent-wash:#DCEAF0;
+  --warn:#B4632A;--warn-wash:#F6E7D8;--bad:#A9372F;--bad-wash:#F7DFDC;--good:#2F6F4F;--good-wash:#DEEDE4;
+  --act1:#7B5CC9;--act2:#D98A1C;--act3:#C4644F;
+  /* stage palette */
+  --ecf:#EAF1F5;--neuron:#EADCC8;--neuron-edge:#9C8466;--myelin:#F7F1E6;
+  --fiber:#F3DDD7;--fiber-edge:#B5776A;--cyto:#F6E9E5;
+  --sr:#D8E8D1;--sr-edge:#6D9460;--dhpr:#7B5CC9;--ryr:#2F6F4F;
+  --ca:#D98A1C;--ach:#7B5CC9;--na:#2F7FC1;--atp:#2F8A57;--pi:#B4632A;
+  --actin:#C4644F;--actin-2:#D98872;--myosin:#4F6F94;--head:#6B8DB5;--tropo:#2B3238;--troponin:#C9A227;
+  --glow:#F2B33B;--zdisc:#10161A;
+  --shadow:0 1px 2px rgba(16,22,26,.08),0 6px 18px -8px rgba(16,22,26,.18);
+  --r:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;
+  --ecf:#14222A;--neuron:#3A3226;--neuron-edge:#B39773;--myelin:#4A4234;
+  --fiber:#3A2522;--fiber-edge:#C07F72;--cyto:#2A1D1B;
+  --sr:#23331F;--sr-edge:#86B577;--dhpr:#A98BEF;--ryr:#6BC293;
+  --ca:#F2A93B;--ach:#A98BEF;--na:#5AA9E6;--atp:#4FBF7F;--pi:#E39A5B;
+  --actin:#D7745F;--actin-2:#B65E4B;--myosin:#6E93BE;--head:#8FB1D9;--tropo:#E8EEF1;--troponin:#E0BE48;
+  --glow:#F2B33B;--zdisc:#E8EEF1;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1519;--panel:#172026;--panel-2:#1D282F;--sunk:#0A1014;
+  --ink:#E8EEF1;--ink-soft:#A3B2BA;--ink-faint:#6E7F88;--rule:#2C3A42;--rule-soft:#24313A;
+  --accent:#4FB3D1;--accent-ink:#A9DDEC;--accent-wash:#15323D;
+  --warn:#E39A5B;--warn-wash:#3A2717;--bad:#E07067;--bad-wash:#3B1E1B;--good:#6BC293;--good-wash:#17301F;
+  --act1:#A98BEF;--act2:#F2A93B;--act3:#E08A74;
+  --ecf:#14222A;--neuron:#3A3226;--neuron-edge:#B39773;--myelin:#4A4234;
+  --fiber:#3A2522;--fiber-edge:#C07F72;--cyto:#2A1D1B;
+  --sr:#23331F;--sr-edge:#86B577;--dhpr:#A98BEF;--ryr:#6BC293;
+  --ca:#F2A93B;--ach:#A98BEF;--na:#5AA9E6;--atp:#4FBF7F;--pi:#E39A5B;
+  --actin:#D7745F;--actin-2:#B65E4B;--myosin:#6E93BE;--head:#8FB1D9;--tropo:#E8EEF1;--troponin:#E0BE48;
+  --glow:#F2B33B;--zdisc:#E8EEF1;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.topbar{background:var(--panel);border-bottom:1px solid var(--rule)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:2px 0 0;line-height:1.2}
+.sub{margin:2px 0 0;color:var(--ink-soft);font-size:15px}
+.tbtn{background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r);padding:7px 12px;cursor:pointer;font-size:14px}
+.tbtn:hover{border-color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:16px}
+/* chain map */
+.chain{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.actgrp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1 1 220px}
+.actgrp .an{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.actgrp .an i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--panel-2);font-family:var(--mono);font-size:13px;cursor:pointer;display:grid;place-items:center;padding:0}
+.dot:hover{border-color:var(--accent)}
+.dot.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+.dot.done:not(.cur){background:var(--good-wash);border-color:var(--good);color:var(--good)}
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
+.stage{padding:10px}
+.canvas-holder{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule-soft);background:var(--ecf)}
+canvas{display:block;width:100%}
+.stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px;font-size:14px;color:var(--ink-soft)}
+.stagebar input[type=range]{accent-color:var(--accent);width:110px}
+.caption{flex:1 1 220px;font-size:14px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 4px 2px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.explain{padding:18px 20px}
+.stepno{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actchip{padding:2px 8px;border-radius:99px;color:#fff;font-size:11px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:6px 0 10px}
+.body p{margin:0 0 10px}
+.body ol{margin:0 0 10px;padding-left:22px}
+.body li{margin-bottom:4px}
+.analogy{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:4px;padding:10px 12px;margin:12px 0}
+.analogy b{display:block;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--accent-ink);margin-bottom:2px}
+.analogy p{margin:0}
+.terms{margin:12px 0 0;padding:0}
+.terms div{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-soft)}
+.check{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);padding:14px;background:var(--panel-2)}
+.check h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.check .q{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1.5px solid var(--rule);border-radius:var(--r);padding:9px 12px;margin:0 0 8px;cursor:pointer;font-size:15px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--good-wash)}
+.opt.wrong{border-color:var(--warn);background:var(--warn-wash)}
+.fb{margin:6px 0 0;font-size:14.5px}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--warn)}
+.calm{font-size:13px;color:var(--ink-faint);margin:8px 0 0}
+.nav{display:flex;align-items:center;gap:12px;margin-top:14px}
+.navbtn{background:var(--accent);color:#fff;border:0;border-radius:var(--r);padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.navbtn.sec{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.navbtn:disabled{opacity:.4;cursor:default}
+.prog{flex:1;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.recap{margin:0;padding-left:22px}
+.recap li{margin-bottom:5px}
+.recap .h{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;list-style:none;margin:10px 0 4px -22px}
+footer{max-width:1240px;margin:0 auto;padding:6px 16px 28px;font-size:13px;color:var(--ink-faint)}
+sub,sup{line-height:0}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div>
+    <div class="kicker">BIOL 243 &middot; Muscle Physiology &middot; USC Upstate</div>
+    <h1>Contraction Walkthrough</h1>
+    <p class="sub">From a nerve signal to a moving muscle, one step at a time. Go at your own pace. Nothing here is graded.</p>
+  </div>
+  <button class="tbtn" id="themeBtn" type="button">Light / dark</button>
+</div></header>
+
+<div class="wrap">
+  <nav class="chain" id="chain" aria-label="Steps"></nav>
+  <div class="grid">
+    <section class="card stage" aria-label="Animation">
+      <div class="canvas-holder"><canvas id="stage" role="img" aria-label=""></canvas></div>
+      <div class="stagebar">
+        <button class="tbtn" id="pauseBtn" type="button">Pause</button>
+        <button class="tbtn" id="replayBtn" type="button">Replay</button>
+        <label>Speed <input type="range" id="speed" min="0.25" max="1.75" step="0.25" value="1"></label>
+        <span class="caption" id="caption"></span>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card explain" aria-live="polite">
+      <div class="stepno" id="stepno"></div>
+      <h2 id="title"></h2>
+      <div class="body" id="body"></div>
+      <div class="analogy" id="analogy"><b>Think of it like this</b><p></p></div>
+      <dl class="terms" id="terms"></dl>
+      <div class="check" id="check">
+        <h3>Quick check</h3>
+        <p class="q" id="q"></p>
+        <div id="opts"></div>
+        <p class="fb" id="fb"></p>
+        <p class="calm">Wrong answers are fine here. Read why, then try again.</p>
+      </div>
+      <div class="nav">
+        <button class="navbtn sec" id="prev" type="button">&larr; Back</button>
+        <div class="prog"><i id="progbar"></i></div>
+        <button class="navbtn" id="next" type="button">Next &rarr;</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>Dr. Akash Garg &middot; BIOL 243 Human Anatomy &amp; Physiology &middot; Tip: use the left and right arrow keys to move between steps. Pair this with the Contraction Chain sorting game.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- step content ---------------- */
+const ACTS={1:{name:"Act 1 · Nerve talks to muscle",short:"Neuromuscular junction",col:"act1"},
+            2:{name:"Act 2 · Signal releases calcium",short:"Excitation–contraction coupling",col:"act2"},
+            3:{name:"Act 3 · Filaments slide",short:"Sliding filament / cross-bridge cycle",col:"act3"}};
+const STEPS=[
+{act:0,scene:"map",id:"map",title:"The big picture: three acts",
+ body:`<p>A muscle contraction is a chain reaction. Each step causes the next one. It looks like a lot, but it is really just <b>three acts</b>:</p>
+ <ol><li><b>Act 1 – Nerve talks to muscle.</b> A nerve sends a chemical message (ACh) across a tiny gap. This happens at the <b>neuromuscular junction</b>.</li>
+ <li><b>Act 2 – The signal releases calcium.</b> An electrical signal spreads through the muscle cell and opens the cell's calcium storage tanks. This is <b>excitation–contraction coupling</b>.</li>
+ <li><b>Act 3 – Filaments slide.</b> Calcium lets myosin grab actin and pull. The filaments slide past each other. This is the <b>sliding filament theory</b>.</li></ol>
+ <p>If you always know which act you are in, you are never lost.</p>`,
+ analogy:"A doorbell, a vault, and a tug-of-war team. The nerve rings the doorbell (Act 1). The alarm unlocks the calcium vault (Act 2). The team pulls the rope hand over hand (Act 3).",
+ terms:[["Motor neuron","The nerve cell that tells a skeletal muscle fiber to contract."],["Muscle fiber","One skeletal muscle cell. It is long and has many nuclei."],["Calcium (Ca²⁺)","The ion that switches contraction on inside the muscle."]],
+ check:{q:"What is calcium's main job inside the muscle fiber?",opts:[
+  ["It carries the message across the gap from nerve to muscle.",0,"That messenger is acetylcholine (ACh), in Act 1."],
+  ["It uncovers the spots on actin so myosin can grab them.",1,"Yes. Calcium is the switch that lets myosin and actin connect."],
+  ["It gives myosin the energy to pull.",0,"The energy comes from ATP, not calcium."],
+  ["It makes the filaments shorter.",0,"The filaments never get shorter. They slide past each other."]]},
+ caption:"Three acts: nerve to muscle, signal to calcium, calcium to movement."},
+
+{act:1,scene:"nmj",id:"ap",title:"A signal travels down the motor neuron",
+ body:`<p>A <b>motor neuron</b> controls skeletal muscle fibers. An <b>action potential</b> (a fast electrical signal) races down its axon to the end, called the <b>axon terminal</b>.</p>
+ <p>The axon terminal sits very close to the muscle fiber, but they <b>do not touch</b>. The tiny gap between them is the <b>synaptic cleft</b>. The whole meeting point is the <b>neuromuscular junction (NMJ)</b>.</p>`,
+ analogy:"A text message traveling to your friend's phone. It has to arrive before anything else can happen.",
+ terms:[["Action potential","A quick electrical signal that travels along a cell membrane."],["Axon terminal","The end of the motor neuron, next to the muscle fiber."],["Synaptic cleft","The tiny fluid-filled gap between nerve and muscle."],["NMJ","Neuromuscular junction: where a motor neuron meets a muscle fiber."]],
+ check:{q:"Does the axon terminal touch the muscle fiber?",opts:[
+  ["Yes, they are joined together.",0,"Look at the picture again. There is a thin gap between them."],
+  ["No. A tiny gap, the synaptic cleft, separates them.",1,"Right. That gap is why the nerve needs a chemical messenger."],
+  ["No. A layer of bone separates them.",0,"There is no bone at the junction, only a tiny fluid-filled gap."]]},
+ caption:"The action potential travels down the axon to the axon terminal.",
+ legend:[["glow","Action potential"]]},
+
+{act:1,scene:"nmj",id:"ca-in",title:"Calcium enters the axon terminal",
+ body:`<p>When the action potential reaches the axon terminal, <b>voltage-gated calcium channels</b> open. <b>Calcium ions (Ca²⁺)</b> rush into the terminal from the fluid outside, because there is much more Ca²⁺ outside the cell than inside.</p>
+ <p>This calcium is the "go" signal that tells the terminal to release its chemical messenger.</p>
+ <p><i>Heads up:</i> calcium shows up twice in this story. Here it is inside the <b>nerve</b>. In Act 2 it will come from storage inside the <b>muscle</b>.</p>`,
+ analogy:"Pressing the \"send\" button. The message is written; calcium sends it.",
+ terms:[["Voltage-gated channel","A channel that opens when the electrical charge across the membrane changes."],["Ca²⁺","Calcium ion. Here it triggers the release of ACh."]],
+ check:{q:"What makes the calcium channels in the axon terminal open?",opts:[
+  ["The arrival of the action potential (a change in voltage).",1,"Yes. They are voltage-gated, so the electrical signal opens them."],
+  ["Acetylcholine binding to them.",0,"ACh hasn't been released yet. It acts on the muscle side, in the next steps."],
+  ["ATP binding to them.",0,"These channels respond to voltage, not ATP."],
+  ["Troponin pulling on them.",0,"Troponin is on the thin filaments inside the muscle, in Act 3."]]},
+ caption:"Voltage-gated Ca²⁺ channels open. Ca²⁺ flows into the axon terminal.",
+ legend:[["ca","Ca²⁺"]]},
+
+{act:1,scene:"nmj",id:"ach-release",title:"Vesicles release acetylcholine (ACh)",
+ body:`<p>The axon terminal is packed with <b>synaptic vesicles</b>, tiny bubbles full of the neurotransmitter <b>acetylcholine (ACh)</b>.</p>
+ <p>Calcium makes the vesicles fuse with the terminal's membrane and spill ACh into the synaptic cleft. This is called <b>exocytosis</b>. ACh drifts across the narrow cleft almost instantly.</p>`,
+ analogy:"Ringing a doorbell. ACh is the ring the muscle hears.",
+ terms:[["Synaptic vesicle","A small membrane bubble that stores neurotransmitter."],["Acetylcholine (ACh)","The neurotransmitter that tells skeletal muscle to contract."],["Exocytosis","Releasing a vesicle's contents by fusing it with the cell membrane."]],
+ check:{q:"Botulinum toxin (Botox) stops vesicles from releasing ACh. What happens to the muscle?",opts:[
+  ["It cannot be told to contract, so it stays relaxed and limp.",1,"Right. No ACh means no message reaches the muscle. That is how Botox smooths wrinkles."],
+  ["It contracts and cannot stop.",0,"That would happen if ACh was never cleared away. Here, ACh is never released."],
+  ["It contracts more strongly than normal.",0,"Without ACh, the muscle gets no signal at all."]]},
+ caption:"Vesicles fuse with the membrane and release ACh into the synaptic cleft.",
+ legend:[["ach","ACh"],["ca","Ca²⁺"]]},
+
+{act:1,scene:"nmj",id:"ach-bind",title:"ACh opens channels on the muscle fiber",
+ body:`<p>The part of the muscle fiber's membrane at the junction is the <b>motor end plate</b>. It is covered with <b>ACh receptors</b>.</p>
+ <p>When ACh binds, the receptor opens like a gate. <b>Sodium ions (Na⁺)</b> rush into the muscle fiber (a few K⁺ leak out). The inside of the fiber right under the end plate becomes less negative. This local change is the <b>end-plate potential</b>.</p>`,
+ analogy:"The doorbell rings and the door opens a crack.",
+ terms:[["Motor end plate","The folded part of the muscle membrane under the axon terminal."],["ACh receptor","A gate that opens when ACh binds and lets Na⁺ in."],["End-plate potential","The local change in charge at the end plate."]],
+ check:{q:"Which ion mainly rushes into the muscle fiber when the ACh receptors open?",opts:[
+  ["Sodium (Na⁺)",1,"Yes. Na⁺ flowing in is what changes the charge at the end plate."],
+  ["Calcium (Ca²⁺)",0,"Ca²⁺ entered the nerve terminal in step 2. At the end plate, it's mostly Na⁺."],
+  ["Chloride (Cl⁻)",0,"Cl⁻ would make the inside more negative, the opposite of what we need."],
+  ["ACh itself",0,"ACh stays outside. It binds the receptor, it doesn't go through it."]]},
+ caption:"ACh binds receptors on the motor end plate. Na⁺ flows in: the end-plate potential.",
+ legend:[["ach","ACh"],["na","Na⁺"]]},
+
+{act:1,scene:"nmj",id:"muscle-ap",title:"An action potential spreads across the muscle",
+ body:`<p>The end-plate potential opens <b>voltage-gated sodium channels</b> in the nearby <b>sarcolemma</b> (the muscle fiber's plasma membrane). That starts a <b>muscle action potential</b>, which spreads in both directions along the whole fiber.</p>
+ <p><b>Act 1 is done.</b> The nerve has passed its message to the muscle.</p>`,
+ analogy:"A stadium wave. It starts in one section and travels all the way around.",
+ terms:[["Sarcolemma","The plasma membrane of a muscle fiber. (Sarco- means muscle.)"],["Muscle action potential","The electrical signal spreading along the sarcolemma."]],
+ check:{q:"What is the sarcolemma?",opts:[
+  ["The plasma membrane of a muscle fiber.",1,"Right. \"Sarco\" means flesh or muscle, \"lemma\" means husk."],
+  ["A storage tank for calcium.",0,"That is the sarcoplasmic reticulum (SR), in Act 2."],
+  ["A protein on the thin filament.",0,"That describes troponin or tropomyosin."],
+  ["The gap between nerve and muscle.",0,"That is the synaptic cleft."]]},
+ caption:"A muscle action potential spreads both ways along the sarcolemma.",
+ legend:[["glow","Muscle action potential"]]},
+
+{act:2,scene:"triad",id:"ttubule",title:"The signal dives down the T-tubules",
+ body:`<p>A muscle fiber is thick. To reach the middle fast, the sarcolemma has tunnels called <b>transverse tubules (T-tubules)</b> that dip deep into the cell. The action potential travels down them.</p>
+ <p>Each T-tubule is sandwiched between two sacs of <b>sarcoplasmic reticulum (SR)</b>, the cell's <b>calcium storage tanks</b>. One T-tubule plus the two sacs beside it is a <b>triad</b>.</p>`,
+ analogy:"A fire alarm running down the hallways into every room of a building.",
+ terms:[["T-tubule","A tunnel of sarcolemma that carries the action potential deep into the fiber."],["Sarcoplasmic reticulum (SR)","A network of sacs that stores Ca²⁺ inside the muscle fiber."],["Triad","One T-tubule with an SR sac on each side."]],
+ check:{q:"Why does a muscle fiber need T-tubules?",opts:[
+  ["To carry the action potential deep inside the fiber quickly.",1,"Yes. Without them the middle of the fiber would get the signal too late."],
+  ["To store calcium.",0,"Calcium is stored in the SR, the sacs next to the T-tubule."],
+  ["To make ATP.",0,"Mitochondria make ATP."],
+  ["To hold ACh.",0,"ACh is in the nerve's vesicles and the synaptic cleft."]]},
+ caption:"The action potential travels along the sarcolemma and down the T-tubule.",
+ legend:[["glow","Action potential"],["ca","Ca²⁺ stored in SR"]]},
+
+{act:2,scene:"triad",id:"ca-release",title:"Calcium floods out of the SR",
+ body:`<p>The T-tubule wall holds <b>voltage sensors</b> (DHP receptors). When the action potential passes, they change shape and pull open <b>calcium-release channels</b> (ryanodine receptors) on the SR right next to them.</p>
+ <p>Ca²⁺ pours out of the SR into the <b>cytosol</b>, around the filaments.</p>
+ <p>This is the heart of <b>excitation–contraction coupling</b>: an electrical signal (excitation) is turned into a chemical signal, calcium, that leads to contraction.</p>`,
+ analogy:"The alarm unlocks the vault where the calcium is kept.",
+ terms:[["DHP receptor","Voltage sensor in the T-tubule wall."],["Ryanodine receptor","Ca²⁺ release channel in the SR membrane."],["Excitation–contraction coupling","The link between the action potential and the release of Ca²⁺."]],
+ check:{q:"In skeletal muscle, where does the Ca²⁺ for contraction mostly come from?",opts:[
+  ["The sarcoplasmic reticulum (SR) inside the fiber.",1,"Yes. The SR stores it and releases it on signal."],
+  ["The synaptic cleft.",0,"Ca²⁺ in Act 1 entered the nerve terminal, not the muscle."],
+  ["The axon terminal.",0,"The nerve's calcium stays in the nerve."],
+  ["Directly from the blood.",0,"Skeletal muscle uses its own SR stores."]]},
+ caption:"Voltage sensors pull open SR channels. Ca²⁺ floods into the cytosol.",
+ legend:[["dhpr","Voltage sensor (DHPR)"],["ryr","SR release channel (RyR)"],["ca","Ca²⁺"]]},
+
+{act:3,scene:"fil",id:"troponin",title:"Calcium uncovers the binding sites",
+ body:`<p><b>Thin filaments</b> are made mostly of <b>actin</b>. Actin has spots where myosin can grab on: the <b>myosin-binding sites</b>.</p>
+ <p>At rest, a long protein called <b>tropomyosin</b> lies over those spots and blocks them. <b>Troponin</b> holds tropomyosin in place.</p>
+ <p>When <b>Ca²⁺ binds to troponin</b>, troponin changes shape and pulls tropomyosin away. Now the binding sites are open.</p>`,
+ analogy:"Calcium is the key, troponin is the lock, and tropomyosin is the cover over the handholds.",
+ terms:[["Actin","The main protein of the thin filament. Has myosin-binding sites."],["Tropomyosin","A long strand that covers the binding sites at rest."],["Troponin","The protein that binds Ca²⁺ and moves tropomyosin."]],
+ check:{q:"What does Ca²⁺ bind to in this step?",opts:[
+  ["Troponin",1,"Right. Calcium binds troponin, and troponin moves tropomyosin."],
+  ["Tropomyosin",0,"Tropomyosin is moved, but calcium binds troponin."],
+  ["Myosin",0,"Myosin binds actin, not calcium."],
+  ["Actin",0,"Calcium works through troponin, not directly on actin."]]},
+ caption:"Ca²⁺ binds troponin. Tropomyosin slides away and uncovers the binding sites.",
+ legend:[["actin","Actin"],["tropo","Tropomyosin"],["troponin","Troponin"],["ca","Ca²⁺"]],cyc:-1},
+
+{act:3,scene:"fil",id:"bind",title:"Myosin grabs actin: a cross-bridge forms",
+ body:`<p><b>Myosin heads</b> stick out from the <b>thick filament</b>. Each head is already "cocked" (energized). It is still holding the ADP and phosphate (P<sub>i</sub>) left from an ATP it split earlier.</p>
+ <p>Once the binding sites are open, the head attaches to actin. This connection is a <b>cross-bridge</b>.</p>`,
+ analogy:"In a tug-of-war, a hand reaches out and grabs the rope.",
+ terms:[["Myosin head","The part of myosin that grabs actin and pulls."],["Cross-bridge","A myosin head attached to actin."],["Cocked head","A myosin head holding ADP + Pᵢ, ready to pull."]],
+ check:{q:"Why can't myosin grab actin in a resting muscle?",opts:[
+  ["Tropomyosin covers the binding sites.",1,"Yes. Until Ca²⁺ moves tropomyosin away, the sites are blocked."],
+  ["There is no myosin at rest.",0,"Myosin is always there. It's just blocked."],
+  ["There is no ATP at rest.",0,"A resting muscle has ATP. The block is tropomyosin."],
+  ["The T-tubules are empty.",0,"T-tubules carry the signal. They don't block binding."]]},
+ caption:"The cocked myosin head (holding ADP + Pᵢ) attaches to actin: a cross-bridge.",
+ legend:[["head","Myosin head"],["actin","Actin"],["pi","ADP + Pᵢ"]],cyc:0},
+
+{act:3,scene:"fil",id:"power",title:"The power stroke",
+ body:`<p>The phosphate (P<sub>i</sub>) is released and the myosin head <b>pivots</b>. The pivot pulls the thin filament toward the <b>center of the sarcomere (the M line)</b>. ADP is released at the end.</p>
+ <p>This pull is the <b>power stroke</b>. It is the moment force is made.</p>`,
+ analogy:"The hand pulls the rope toward the middle of the team.",
+ terms:[["Power stroke","The pivot of the myosin head that pulls the thin filament."],["M line","The middle of the sarcomere. Thin filaments are pulled toward it."]],
+ check:{q:"During the power stroke, the thin filament moves…",opts:[
+  ["toward the M line (the center of the sarcomere).",1,"Yes. Both ends of the sarcomere are pulled toward the middle."],
+  ["away from the M line.",0,"That would make the sarcomere longer, not shorter."],
+  ["nowhere. The thick filament gets shorter instead.",0,"Neither filament changes length. They slide."],
+  ["nowhere. It gets shorter instead.",0,"Filaments keep their length. They slide."]]},
+ caption:"Pᵢ leaves, the head pivots, and the thin filament slides toward the M line.",
+ legend:[["head","Myosin head"],["pi","Pᵢ / ADP released"]],cyc:1},
+
+{act:3,scene:"fil",id:"detach",title:"ATP makes myosin let go",
+ body:`<p>A new <b>ATP</b> binds to the myosin head. This makes the head <b>let go</b> of actin.</p>
+ <p>Important: ATP is needed to <b>release</b>, not just to pull. With no ATP, myosin stays stuck to actin. That is why a body becomes stiff after death (<b>rigor mortis</b>).</p>`,
+ analogy:"The hand opens to let go of the rope.",
+ terms:[["ATP","The cell's energy molecule. Binding ATP releases myosin from actin."],["Rigor mortis","Stiffness after death: no ATP, so cross-bridges cannot let go."]],
+ check:{q:"What happens if a muscle fiber runs completely out of ATP?",opts:[
+  ["Myosin stays stuck to actin, so the muscle locks stiff.",1,"Right. That's rigor mortis."],
+  ["The muscle goes limp because myosin can't bind.",0,"Myosin can still bind. It's letting go that needs ATP."],
+  ["Tropomyosin covers the binding sites.",0,"Tropomyosin is controlled by Ca²⁺, not by this ATP."],
+  ["Nothing changes.",0,"Without ATP, cross-bridges can't let go."]]},
+ caption:"ATP binds the myosin head, and the head releases actin.",
+ legend:[["atp","ATP"],["head","Myosin head"]],cyc:2},
+
+{act:3,scene:"fil",id:"recock",title:"Myosin re-cocks",
+ body:`<p>Myosin splits the ATP into ADP + P<sub>i</sub> (<b>ATP hydrolysis</b>). The energy released swings the head back into the cocked, high-energy position.</p>
+ <p>It is now ready to grab again, farther along the thin filament.</p>`,
+ analogy:"Reaching forward for a new grip on the rope.",
+ terms:[["ATP hydrolysis","Splitting ATP into ADP + Pᵢ, which releases energy."],["Re-cocking","Using that energy to reset the myosin head."]],
+ check:{q:"What is the energy from splitting ATP used for in this step?",opts:[
+  ["To re-cock the myosin head.",1,"Yes. The head stores that energy for the next power stroke."],
+  ["To open the ACh receptors.",0,"ACh opens those, back in Act 1."],
+  ["To release Ca²⁺ from the SR.",0,"Ca²⁺ release is triggered by the voltage sensors, not this ATP."],
+  ["To move tropomyosin.",0,"Ca²⁺ and troponin move tropomyosin."]]},
+ caption:"ATP is split into ADP + Pᵢ. The head swings back to the cocked position.",
+ legend:[["atp","ATP"],["pi","ADP + Pᵢ"]],cyc:3},
+
+{act:3,scene:"fil",id:"cycle",title:"The cycle repeats",
+ body:`<p>As long as <b>Ca²⁺ and ATP</b> are present, the cycle repeats: <b>attach → pull → release → re-cock</b>.</p>
+ <p>Each step forward, the head grabs a site farther along. Hundreds of heads work at slightly different times, so some are always holding on and the filament never slips back.</p>`,
+ analogy:"A tug-of-war team pulling hand over hand. Grab, pull, let go, reach forward. Over and over.",
+ terms:[["Cross-bridge cycle","Attach, power stroke, release, re-cock. Repeats while Ca²⁺ and ATP are present."]],
+ check:{q:"Which two things must be present for cross-bridge cycling to keep going?",opts:[
+  ["Ca²⁺ and ATP",1,"Yes. Ca²⁺ keeps the sites open; ATP lets heads release and re-cock."],
+  ["ACh and Na⁺",0,"Those start the signal in Act 1, but the cycle itself needs Ca²⁺ and ATP."],
+  ["Tropomyosin and K⁺",0,"Tropomyosin actually blocks binding."],
+  ["Troponin and glucose",0,"Troponin is needed, but it only works when Ca²⁺ binds it. The fuel is ATP."]]},
+ caption:"Attach → power stroke → release → re-cock, again and again.",
+ legend:[["head","Myosin head"],["atp","ATP"]],cyc:"all"},
+
+{act:3,scene:"sarc",id:"sarc",title:"Sliding filaments shorten the sarcomere",
+ body:`<p>The <b>sarcomere</b> is the repeating unit of a myofibril, from one <b>Z disc</b> to the next. As thin filaments slide toward the M line, the Z discs are pulled closer together.</p>
+ <p>The filaments themselves do <b>not</b> get shorter. They just overlap more. Watch the bands:</p>
+ <ol><li><b>I band</b> gets narrower (thin filaments only).</li><li><b>H zone</b> gets narrower (thick filaments only).</li><li><b>A band</b> stays the same (it is the length of the thick filaments).</li></ol>
+ <p>Thousands of sarcomeres shortening together shorten the whole muscle. This is the <b>sliding filament theory</b>.</p>`,
+ analogy:"Two hands with fingers sliding between each other. The fingers don't shrink, but the hands get closer.",
+ terms:[["Sarcomere","Z disc to Z disc. The unit that shortens."],["A band","The length of the thick filaments. Stays the same."],["I band / H zone","Regions with only thin or only thick filaments. Both shrink."]],
+ check:{q:"Which band stays the same length during contraction?",opts:[
+  ["The A band",1,"Yes. The A band is the thick filament length, and thick filaments don't shrink."],
+  ["The I band",0,"The I band shrinks as thin filaments slide into the A band."],
+  ["The H zone",0,"The H zone shrinks as thin filaments slide toward the middle."],
+  ["The whole sarcomere",0,"The sarcomere is what shortens."]]},
+ caption:"Z discs move closer. I band and H zone shrink. A band stays the same.",
+ legend:[["actin","Thin filament"],["myosin","Thick filament"]]},
+
+{act:3,scene:"relax",id:"relax",title:"Relaxation: everything resets",
+ body:`<ol><li>Nerve signals stop, and the enzyme <b>acetylcholinesterase (AChE)</b> in the synaptic cleft breaks down ACh. No more muscle action potentials.</li>
+ <li><b>Calcium pumps</b> in the SR membrane use <b>ATP</b> to pump Ca²⁺ back into the SR.</li>
+ <li>Ca²⁺ leaves troponin, and <b>tropomyosin slides back</b> over the binding sites. Myosin can't grab actin, and the muscle relaxes.</li></ol>`,
+ analogy:"Stop ringing the doorbell, lock the calcium back in the vault, and put the covers back over the handholds.",
+ terms:[["Acetylcholinesterase (AChE)","Enzyme in the cleft that breaks down ACh."],["SR Ca²⁺ pump (SERCA)","Uses ATP to move Ca²⁺ back into the SR."]],
+ check:{q:"Relaxation uses ATP. What for?",opts:[
+  ["To pump Ca²⁺ back into the SR.",1,"Yes. Relaxation is active work. (ATP is also needed for myosin to let go.)"],
+  ["To help ACh bind its receptor.",0,"ACh binding doesn't need ATP, and relaxation means ACh is being cleared."],
+  ["To release Ca²⁺ from the SR.",0,"That's the opposite. Relaxation puts Ca²⁺ back."],
+  ["Relaxation doesn't use ATP.",0,"It does. The SR calcium pumps run on ATP."]]},
+ caption:"AChE clears ACh, pumps return Ca²⁺ to the SR, tropomyosin covers the sites.",
+ legend:[["ach","ACh"],["ca","Ca²⁺"],["atp","ATP"],["tropo","Tropomyosin"]]},
+
+{act:0,scene:"map",id:"recap",title:"You made it. Here is the whole chain.",
+ body:`<ol class="recap">
+ <li class="h">Act 1 · Nerve talks to muscle</li>
+ <li>Action potential travels down the motor neuron.</li><li>Ca²⁺ enters the axon terminal.</li><li>Vesicles release ACh into the synaptic cleft.</li><li>ACh binds receptors; Na⁺ flows in (end-plate potential).</li><li>A muscle action potential spreads along the sarcolemma.</li>
+ <li class="h">Act 2 · Signal releases calcium</li>
+ <li>The action potential travels down the T-tubules.</li><li>Voltage sensors open SR channels; Ca²⁺ floods out.</li>
+ <li class="h">Act 3 · Filaments slide</li>
+ <li>Ca²⁺ binds troponin; tropomyosin uncovers binding sites.</li><li>Myosin binds actin (cross-bridge).</li><li>Power stroke pulls thin filament toward M line.</li><li>ATP binds; myosin lets go.</li><li>ATP is split; myosin re-cocks. Repeat while Ca²⁺ and ATP remain.</li><li>Sarcomere shortens; filaments stay the same length.</li>
+ <li class="h">Relaxation</li>
+ <li>AChE clears ACh, SR pumps Ca²⁺ back, tropomyosin covers the sites.</li></ol>
+ <p>Next: try putting these steps in order yourself in the <b>Contraction Chain</b> game.</p>`,
+ analogy:"Doorbell → vault → tug-of-war. Then turn off the bell, lock the vault, and cover the handholds.",
+ terms:[],check:null,caption:"The full chain, from nerve signal to relaxation."}
+];
+
+/* ---------------- DOM ---------------- */
+const $=s=>document.querySelector(s);
+const chainEl=$("#chain");
+const done=new Set();
+let cur=0;
+function buildChain(){
+  chainEl.innerHTML="";
+  const groups=[[0,"Start","accent",[0]],[1,ACTS[1].name,"act1",[]],[2,ACTS[2].name,"act2",[]],[3,ACTS[3].name,"act3",[]],[4,"Finish","accent",[STEPS.length-1]]];
+  STEPS.forEach((s,i)=>{if(s.act>0)groups[s.act][3].push(i)});
+  groups.forEach(g=>{
+    const d=document.createElement("div");d.className="actgrp";
+    if(g[0]===0||g[0]===4)d.style.flex="0 0 auto";
+    d.innerHTML=`<div class="an"><i style="background:var(--${g[2]})"></i>${g[1]}</div>`;
+    const dots=document.createElement("div");dots.className="dots";
+    g[3].forEach(i=>{const b=document.createElement("button");b.type="button";b.className="dot";b.textContent=i===0?"★":(i===STEPS.length-1?"✓":i);
+      b.setAttribute("aria-label","Step "+i+": "+STEPS[i].title);b.onclick=()=>go(i);b.dataset.i=i;dots.appendChild(b)});
+    d.appendChild(dots);chainEl.appendChild(d);
+  });
+}
+function refreshDots(){document.querySelectorAll(".dot").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("cur",i===cur);b.classList.toggle("done",done.has(i))})}
+const LEG={glow:"--glow",ca:"--ca",ach:"--ach",na:"--na",atp:"--atp",pi:"--pi",actin:"--actin",tropo:"--tropo",troponin:"--troponin",head:"--head",myosin:"--myosin",dhpr:"--dhpr",ryr:"--ryr"};
+function render(){
+  const s=STEPS[cur];
+  const a=ACTS[s.act];
+  $("#stepno").innerHTML=(s.act?`<span class="actchip" style="background:var(--${a.col})">${a.name}</span>`:"")+
+    (cur>0&&cur<STEPS.length-1?`<span>Step ${cur} of ${STEPS.length-2}</span>`:"");
+  $("#title").textContent=s.title;
+  $("#body").innerHTML=s.body;
+  $("#analogy p").textContent=s.analogy;
+  $("#terms").innerHTML=s.terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join("");
+  $("#caption").textContent=s.caption;
+  cv.setAttribute("aria-label","Animation: "+s.caption);
+  $("#legend").innerHTML=(s.legend||[]).map(l=>`<span><i style="background:var(${LEG[l[0]]})"></i>${l[1]}</span>`).join("");
+  const ck=$("#check");
+  if(!s.check){ck.style.display="none"}else{
+    ck.style.display="";
+    $("#q").textContent=s.check.q;
+    const fb=$("#fb");fb.textContent="";fb.className="fb";
+    const box=$("#opts");box.innerHTML="";
+    s.check.opts.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.remove("wrong"));
+        if(o[1]){b.classList.add("right");fb.className="fb ok";fb.textContent="✓ "+o[2];done.add(cur);refreshDots()}
+        else{b.classList.add("wrong");fb.className="fb no";fb.textContent="Not quite. "+o[2]}};
+      box.appendChild(b)});
+  }
+  $("#prev").disabled=cur===0;
+  $("#next").textContent=cur===STEPS.length-1?"Start over":"Next →";
+  $("#progbar").style.width=(cur/(STEPS.length-1)*100)+"%";
+  refreshDots();
+}
+function go(i){cur=Math.max(0,Math.min(STEPS.length-1,i));T=0;cycleBase=0;render();}
+$("#prev").onclick=()=>go(cur-1);
+$("#next").onclick=()=>go(cur===STEPS.length-1?0:cur+1);
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+let paused=false;
+$("#pauseBtn").onclick=()=>{paused=!paused;$("#pauseBtn").textContent=paused?"Play":"Pause"};
+$("#replayBtn").onclick=()=>{T=0;cycleBase=0};
+let speed=1;$("#speed").oninput=e=>speed=+e.target.value;
+$("#themeBtn").onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue("--ground").trim().toLowerCase()==="#0e1519";
+  r.setAttribute("data-theme",dark?"light":"dark");readColors()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(readColors,30));
+
+/* ---------------- canvas ---------------- */
+const W=800,H=460;
+const cv=document.getElementById("stage");const ctx=cv.getContext("2d");
+let K=1;
+function fit(){const w=cv.parentElement.clientWidth;const dpr=window.devicePixelRatio||1;cv.style.height=(w*H/W)+"px";cv.width=Math.round(w*dpr);cv.height=Math.round(w*H/W*dpr);K=cv.width/W}
+window.addEventListener("resize",fit);
+const C={};
+function readColors(){const s=getComputedStyle(document.documentElement);
+  ["ground","panel","panel-2","ink","ink-soft","ink-faint","rule","accent","good","warn","bad","act1","act2","act3","ecf","neuron","neuron-edge","myelin","fiber","fiber-edge","cyto","sr","sr-edge","dhpr","ryr","ca","ach","na","atp","pi","actin","actin-2","myosin","head","tropo","troponin","glow","zdisc"]
+  .forEach(k=>C[k]=s.getPropertyValue("--"+k).trim())}
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const TAU=Math.PI*2;
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function circ(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,r,0,TAU);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1.5;ctx.stroke()}}
+function glow(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);ctx.globalAlpha=a==null?1:a;g.addColorStop(0,col);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+function ion(x,y,col,r,a){ctx.globalAlpha=a==null?1:a;circ(x,y,r||5,col,"rgba(0,0,0,.25)",1);ctx.globalAlpha=1}
+function label(x,y,txt,o){o=o||{};const size=o.size||13;ctx.font=`${o.weight||500} ${size}px "IBM Plex Sans",system-ui,sans-serif`;
+  ctx.textAlign=o.align||"left";ctx.textBaseline="middle";
+  if(o.pill!==false){const w=ctx.measureText(txt).width;let x0=x;if(ctx.textAlign==="center")x0=x-w/2;if(ctx.textAlign==="right")x0=x-w;
+    ctx.globalAlpha=.88;ctx.fillStyle=C.panel;rr(x0-5,y-size*.75,w+10,size*1.5,4);ctx.fill();ctx.globalAlpha=1;
+    if(o.border){ctx.strokeStyle=o.border;ctx.lineWidth=1.5;ctx.stroke()}}
+  ctx.fillStyle=o.color||C.ink;ctx.fillText(txt,x,y+.5)}
+function line(x1,y1,x2,y2,col,lw,dash){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col;ctx.lineWidth=lw||1.2;ctx.setLineDash(dash||[]);ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,col,lw){line(x1,y1,x2,y2,col,lw||2);const a=Math.atan2(y2-y1,x2-x1),h=9;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.45),y2-h*Math.sin(a-.45));ctx.lineTo(x2-h*Math.cos(a+.45),y2-h*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=col;ctx.fill()}
+function chipText(x,y,txt,col){ctx.font='600 11px "IBM Plex Mono",monospace';ctx.textAlign="center";ctx.textBaseline="middle";const w=ctx.measureText(txt).width;
+  ctx.fillStyle=col;rr(x-w/2-5,y-8,w+10,16,8);ctx.fill();ctx.fillStyle="#fff";ctx.fillText(txt,x,y+.5)}
+// pseudo-random but stable
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+
+/* ===== Scene: map ===== */
+function sceneMap(t){
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const act=Math.floor(t/2.2)%3;
+  const boxes=[[30,"act1","Act 1","Nerve talks to muscle"],[290,"act2","Act 2","Signal releases calcium"],[550,"act3","Act 3","Filaments slide"]];
+  boxes.forEach((b,i)=>{
+    const on=i===act;
+    ctx.fillStyle=C["panel-2"];rr(b[0],90,220,270,10);ctx.fill();
+    ctx.strokeStyle=on?C[b[1]]:C.rule;ctx.lineWidth=on?4:1.5;ctx.stroke();
+    ctx.fillStyle=C[b[1]];rr(b[0],90,220,36,10);ctx.fill();ctx.fillRect(b[0],110,220,16);
+    ctx.font='600 14px "IBM Plex Mono",monospace';ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(b[2].toUpperCase(),b[0]+110,108);
+    ctx.font='600 15px "IBM Plex Sans",sans-serif';ctx.fillStyle=C.ink;ctx.fillText(b[3],b[0]+110,335);
+    const cx=b[0]+110,cy=225;
+    const ph=(t%2.2)/2.2;
+    if(i===0){ // neuron terminal + ACh
+      ctx.fillStyle=C.neuron;ctx.fillRect(cx-12,140,24,40);rr(cx-60,170,120,50,22);ctx.fill();ctx.strokeStyle=C["neuron-edge"];ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle=C.fiber;ctx.fillRect(cx-90,250,180,50);ctx.strokeStyle=C["fiber-edge"];ctx.strokeRect(cx-90,250,180,50);
+      for(let k=0;k<6;k++){const q=on?(ph+k/6)%1:.0;ion(cx-40+k*16,lerp(225,248,q),C.ach,4)}
+    } else if(i===1){
+      ctx.fillStyle=C.sr;rr(cx-70,175,140,70,20);ctx.fill();ctx.strokeStyle=C["sr-edge"];ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle=C.glow;ctx.beginPath();ctx.moveTo(cx+5,140);ctx.lineTo(cx-12,170);ctx.lineTo(cx+2,170);ctx.lineTo(cx-8,195);ctx.lineTo(cx+16,162);ctx.lineTo(cx+2,162);ctx.closePath();ctx.fill();
+      for(let k=0;k<8;k++){const q=on?(ph+k/8)%1:0;const ang=k/8*TAU;ion(cx+Math.cos(ang)*lerp(20,95,q)*.9,215+Math.sin(ang)*lerp(10,60,q),C.ca,4,on?1-q*.6:1)}
+    } else {
+      const off=on?Math.sin(ph*TAU)*14:0;
+      ctx.fillStyle=C.myosin;rr(cx-55,218,110,12,6);ctx.fill();
+      ctx.fillStyle=C.actin;rr(cx-95+off,192,85,8,4);ctx.fill();rr(cx+10-off,192,85,8,4);ctx.fill();rr(cx-95+off,248,85,8,4);ctx.fill();rr(cx+10-off,248,85,8,4);ctx.fill();
+      ctx.fillStyle=C.zdisc;ctx.fillRect(cx-98+off,180,4,90);ctx.fillRect(cx+94-off,180,4,90);
+      arrow(cx-70+off,290,cx-30+off,290,C.act3,2);arrow(cx+70-off,290,cx+30-off,290,C.act3,2);
+    }
+    if(i<2){arrow(b[0]+226,225,b[0]+254,225,C["ink-soft"],2.5)}
+  });
+  ctx.font='500 13px "IBM Plex Sans",sans-serif';ctx.fillStyle=C["ink-soft"];ctx.textAlign="center";
+  ctx.fillText("Each act causes the next. Then relaxation runs it all backwards.",W/2,400);
+}
+
+/* ===== Scene: NMJ ===== */
+const VES=[[300,200],[350,228],[400,206],[450,230],[500,200],[330,158],[470,158],[400,150]];
+const REC=[];for(let i=0;i<6;i++)REC.push(220+i*60+15);
+function nmjBase(st){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,H);
+  // fiber w/ junctional folds
+  ctx.beginPath();ctx.moveTo(-5,300);ctx.lineTo(220,300);
+  for(let i=0;i<6;i++){const x0=220+i*60;ctx.lineTo(x0+30,300);ctx.lineTo(x0+34,330);ctx.lineTo(x0+56,330);ctx.lineTo(x0+60,300)}
+  ctx.lineTo(W+5,300);ctx.lineTo(W+5,H+5);ctx.lineTo(-5,H+5);ctx.closePath();
+  ctx.fillStyle=C.fiber;ctx.fill();ctx.strokeStyle=C["fiber-edge"];ctx.lineWidth=2.5;ctx.stroke();
+  // faint striations
+  ctx.globalAlpha=.18;for(let x=10;x<W;x+=26){ctx.fillStyle=(Math.floor(x/26)%2)?C.actin:C.myosin;ctx.fillRect(x,370,13,90)}ctx.globalAlpha=1;
+  // axon + myelin
+  ctx.fillStyle=C.neuron;ctx.fillRect(381,-5,38,140);ctx.strokeStyle=C["neuron-edge"];ctx.lineWidth=2;
+  line(381,-5,381,112,C["neuron-edge"],2);line(419,-5,419,112,C["neuron-edge"],2);
+  ctx.fillStyle=C.myelin;rr(368,-20,64,78,22);ctx.fill();ctx.strokeStyle=C["neuron-edge"];ctx.lineWidth=1.5;ctx.stroke();
+  // terminal
+  rr(240,105,320,160,62);ctx.fillStyle=C.neuron;ctx.fill();ctx.strokeStyle=C["neuron-edge"];ctx.lineWidth=2.5;ctx.stroke();
+  ctx.fillStyle=C.neuron;ctx.fillRect(383,95,34,20);
+  // mitochondrion
+  ctx.save();ctx.translate(520,150);ctx.rotate(-.4);ctx.beginPath();ctx.ellipse(0,0,24,11,0,0,TAU);ctx.fillStyle=C["neuron-edge"];ctx.globalAlpha=.35;ctx.fill();ctx.globalAlpha=1;ctx.restore();
+  // vesicles
+  VES.forEach((v,i)=>{if(st.skipVes&&st.skipVes.includes(i))return;drawVesicle(v[0],v[1],16,1)});
+  // ca channels
+  [330,470].forEach(x=>{const o=st.caOpen?5:1;ctx.fillStyle=st.caOpen?C.ca:C["ink-faint"];ctx.fillRect(x-o-6,256,6,18);ctx.fillRect(x+o,256,6,18)});
+  // receptors
+  REC.forEach(x=>{const o=st.recOpen?4:0.5;ctx.fillStyle=st.recOpen?C.good:C["ink-soft"];ctx.fillRect(x-o-5,290,5,16);ctx.fillRect(x+o,290,5,16)});
+}
+function drawVesicle(x,y,r,a){ctx.globalAlpha=a;circ(x,y,r,C.panel,C["neuron-edge"],1.5);for(let k=0;k<5;k++){const an=k/5*TAU+.3;circ(x+Math.cos(an)*r*.48,y+Math.sin(an)*r*.48,2.6,C.ach)}ctx.globalAlpha=1}
+function nmjLabels(extra){
+  label(445,40,"Motor neuron axon (myelinated)");label(580,120,"Axon terminal");
+  label(600,282,"Synaptic cleft");label(610,420,"Muscle fiber");
+  label(40,282,"Motor end plate →",{size:12});
+  if(extra)extra();
+}
+function sceneNMJ(t,id){
+  if(id==="ap"){
+    const p=(t%3.2)/3.2;
+    nmjBase({});
+    const y=lerp(-10,150,ease(seg(p,0,.55)));
+    if(p<.6){glow(400,y,34,C.glow,.95);circ(400,y,7,C.glow)}
+    const a=seg(p,.5,.65)*(1-seg(p,.8,1));
+    if(a>0){ctx.globalAlpha=a;rr(240,105,320,160,62);ctx.strokeStyle=C.glow;ctx.lineWidth=7;ctx.stroke();ctx.globalAlpha=1}
+    nmjLabels(()=>{label(440,Math.min(y,140),"Action potential",{color:C.warn,weight:600})});
+  }
+  else if(id==="ca-in"){
+    const p=(t%3)/3;
+    nmjBase({caOpen:true});
+    // extracellular Ca
+    for(let i=0;i<14;i++){const x=i<7?40+rnd(i)*170:590+rnd(i)*170;const y=140+rnd(i+30)*140;ion(x,y+Math.sin(t*2+i)*3,C.ca,4.5,.75)}
+    [330,470].forEach((cx,ci)=>{for(let j=0;j<6;j++){const q=(p+j/6+ci*.08)%1;const y=lerp(296,212,q);const x=cx+Math.sin(j*2+q*6)*7*q;ion(x,y,C.ca,5,Math.min(1,(1-q)*2.5))}});
+    nmjLabels(()=>{label(150,240,"Ca²⁺ outside",{color:C.warn,weight:600,size:12});label(470,250,"Ca²⁺ channels open",{size:12,align:"center"})});
+  }
+  else if(id==="ach-release"){
+    const p=(t%3.4)/3.4;
+    nmjBase({skipVes:[1,3]});
+    [[350,228],[450,230]].forEach((v,vi)=>{
+      const mv=ease(seg(p,0,.35));const y=lerp(v[1],252,mv);const fuse=seg(p,.35,.5);
+      if(fuse<1)drawVesicle(v[0],y,16*(1-fuse*.6),1-fuse);
+      const sp=seg(p,.4,.95);
+      if(sp>0)for(let k=0;k<9;k++){const ox=(k-4)*15*sp+Math.sin(k*3+t*3)*2;ion(v[0]+ox,268+20*sp+Math.sin(k)*4*sp,C.ach,4,1-seg(p,.9,1))}
+    });
+    for(let i=0;i<4;i++)ion(320+i*50,240,C.ca,4,.6);
+    nmjLabels(()=>{label(400,85,"Vesicles fuse and release ACh (exocytosis)",{align:"center",weight:600})});
+  }
+  else if(id==="ach-bind"){
+    const p=(t%3.2)/3.2;const open=p>.33;
+    nmjBase({recOpen:open});
+    REC.forEach((rx,i)=>{const sx=rx+(rnd(i)-.5)*50;const q=ease(seg(p,0,.33));ion(lerp(sx,rx,q),lerp(272,284,q),C.ach,4.5)});
+    if(open){for(let i=0;i<REC.length;i++)for(let j=0;j<3;j++){const q=((p-.33)*2.2+j/3)%1;ion(REC[i]+Math.sin(j+q*5)*5,lerp(278,375,q),C.na,4.5,1-q*.7)}}
+    const ga=seg(p,.45,.7);if(ga>0){ctx.save();ctx.globalAlpha=ga*.5;ctx.beginPath();ctx.ellipse(400,365,190,28,0,0,TAU);ctx.fillStyle=C.glow;ctx.fill();ctx.restore();
+      label(400,365,"+ + +  end-plate potential  + + +",{align:"center",weight:600,color:C.warn})}
+    for(let i=0;i<5;i++)ion(60+i*28,250,C.na,4.5,.7);
+    nmjLabels(()=>{label(110,225,"Na⁺ outside",{size:12,color:C.na,weight:600});label(400,85,"ACh binds receptors → gates open → Na⁺ rushes in",{align:"center",weight:600})});
+  }
+  else if(id==="muscle-ap"){
+    const p=(t%3.4)/3.4;
+    nmjBase({recOpen:true});
+    REC.forEach(x=>ion(x,284,C.ach,4.5));
+    ctx.save();ctx.globalAlpha=.35;ctx.beginPath();ctx.ellipse(400,350,170,22,0,0,TAU);ctx.fillStyle=C.glow;ctx.fill();ctx.restore();
+    const d=ease(seg(p,0,.85))*400;
+    const chans=[50,130,670,750];
+    chans.forEach(x=>{const reached=Math.abs(x-400)<d;ctx.fillStyle=reached?C.good:C["ink-soft"];const o=reached?3:.5;ctx.fillRect(x-o-4,292,4,16);ctx.fillRect(x+o,292,4,16)});
+    [-1,1].forEach(dir=>{const x=400+dir*(d+20);
+      if(d>5){const g=ctx.createLinearGradient(x-dir*90,0,x,0);g.addColorStop(0,"rgba(242,179,59,0)");g.addColorStop(1,C.glow);ctx.strokeStyle=g;ctx.lineWidth=9;ctx.beginPath();
+        const a=dir<0?Math.max(x,0):Math.min(x,W);const b=x-dir*90;ctx.moveTo(dir<0?Math.min(b,220):Math.max(b,580),300);ctx.lineTo(a,300);ctx.stroke();
+        if(x>0&&x<W)circ(x,300,6,C.glow)}});
+    nmjLabels(()=>{label(400,85,"Muscle action potential spreads both ways along the sarcolemma",{align:"center",weight:600});
+      if(d>40){arrow(300,395,140,395,C.warn,2.5);arrow(500,395,660,395,C.warn,2.5)}
+      label(90,330,"voltage-gated Na⁺ channels",{size:11.5,align:"center"});});
+  }
+}
+
+/* ===== Scene: triad ===== */
+const DH=[205,265,325];
+function triadBase(st){
+  ctx.fillStyle=C.ecf;ctx.fillRect(0,0,W,70);
+  ctx.fillStyle=C.cyto;ctx.fillRect(0,70,W,H-70);
+  // myofibrils hint
+  ctx.globalAlpha=.3;for(let x=0;x<W;x+=22){ctx.fillStyle=(Math.floor(x/22)%2)?C.actin:C.myosin;ctx.fillRect(x,100,11,30);ctx.fillRect(x,405,11,40)}ctx.globalAlpha=1;
+  // longitudinal SR
+  ctx.fillStyle=C.sr;ctx.strokeStyle=C["sr-edge"];ctx.lineWidth=1.5;
+  rr(30,232,230,56,24);ctx.fill();ctx.stroke();rr(540,232,230,56,24);ctx.fill();ctx.stroke();
+  rr(240,150,125,230,36);ctx.fill();ctx.stroke();rr(435,150,125,230,36);ctx.fill();ctx.stroke();
+  // ca stores
+  for(let i=0;i<16;i++){const n=st.release?Math.round(16-6*st.release):16;if(i>=n)continue;
+    const jx=Math.sin(t0*2+i)*2;ion(262+(i%4)*27+jx,175+Math.floor(i/4)*45+((i%2)*10),C.ca,4.5,.9);ion(457+(i%4)*27-jx,175+Math.floor(i/4)*45+((i%2)*10),C.ca,4.5,.9)}
+  // sarcolemma + T tubule
+  ctx.fillStyle=C.ecf;rr(385,62,30,370,14);ctx.fill();ctx.fillRect(385,55,30,20);
+  ctx.strokeStyle=C["fiber-edge"];ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,70);ctx.lineTo(385,70);ctx.lineTo(385,418);ctx.arcTo(385,432,400,432,14);ctx.arcTo(415,432,415,418,14);ctx.lineTo(415,70);ctx.lineTo(W,70);ctx.stroke();
+  // DHPR + RyR
+  DH.forEach(y=>{[[378,365],[415,422]].forEach((pr,si)=>{
+    ctx.save();ctx.translate(pr[0]+3.5,y);if(st.dh)ctx.rotate((si?-1:1)*.35*st.dh);ctx.fillStyle=C.dhpr;rr(-3.5,-9,7,18,2);ctx.fill();ctx.restore();
+    const o=st.ryr?4*st.ryr:0;ctx.fillStyle=C.ryr;ctx.fillRect(pr[1],y-9-o,13,7);ctx.fillRect(pr[1],y+2+o,13,7)})});
+}
+let t0=0;
+function sceneTriad(t,id){
+  t0=t;
+  if(id==="ttubule"){
+    const p=(t%3.4)/3.4;triadBase({});
+    const L=385+360;const d=ease(seg(p,0,.85))*L;const a=1-seg(p,.9,1);
+    [[0,1],[W,-1]].forEach(([sx,dir])=>{
+      ctx.globalAlpha=a*.85;ctx.strokeStyle=C.glow;ctx.lineWidth=7;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(sx,70);
+      const wall=dir>0?385:415;
+      if(d<385){ctx.lineTo(sx+dir*d,70);ctx.stroke();ctx.globalAlpha=a;circ(sx+dir*d,70,7,C.glow)}
+      else{ctx.lineTo(wall,70);ctx.lineTo(wall,70+(d-385));ctx.stroke();ctx.globalAlpha=a;circ(wall,70+(d-385),7,C.glow)}
+      ctx.globalAlpha=1;ctx.lineCap="butt"});
+    label(20,40,"Sarcolemma",{});label(430,40,"T-tubule opening",{});
+    label(302,400,"SR (Ca²⁺ store)",{align:"center",size:12});label(497,400,"SR (Ca²⁺ store)",{align:"center",size:12});
+    label(400,447,"T-tubule",{align:"center",size:12,weight:600});
+    label(660,205,"Triad = SR + T-tubule + SR",{align:"center",size:12});
+  } else {
+    const p=(t%3.6)/3.6;const dh=ease(seg(p,0,.2));const ry=ease(seg(p,.15,.3));
+    triadBase({dh:dh,ryr:ry,release:seg(p,.3,.9)});
+    // pulse in tubule walls
+    ctx.globalAlpha=(1-seg(p,0,.25))*.8;ctx.strokeStyle=C.glow;ctx.lineWidth=6;line(385,150,385,380,C.glow,6);line(415,150,415,380,C.glow,6);ctx.globalAlpha=1;
+    if(ry>.5){DH.forEach((y,yi)=>{[[371,-1],[429,1]].forEach(([x,dir])=>{for(let j=0;j<4;j++){
+      const q=((p-.3)*1.6+j/4+yi*.07)%1;if(p<.3)continue;
+      const up=(j+yi)%2===0;const ty=up?115:425;const tx=x+dir*(120+j*30);
+      const qx=ease(q);ion(lerp(x,tx,qx),lerp(y,ty,q),C.ca,4.5,1-seg(q,.8,1))}})})}
+    label(20,40,"Sarcolemma",{});
+    label(170,175,"Voltage sensor (DHPR)",{size:12,align:"center"});line(232,178,376,DH[0],C["ink-soft"],1);
+    label(630,175,"Ca²⁺ release channel (RyR)",{size:12,align:"center"});line(560,178,428,DH[0]-4,C["ink-soft"],1);
+    label(400,447,"Ca²⁺ floods the cytosol and reaches the myofibrils",{align:"center",size:12.5,weight:600});
+  }
+}
+
+/* ===== Scene: filaments ===== */
+const PX=400,PY=326;
+function filBase(s,trop,caBound,headA,headL,nuc,extra){
+  ctx.fillStyle=C.cyto;ctx.fillRect(0,0,W,H);
+  // thin filament beads
+  const off=((s%25)+25)%25;
+  for(let x=off-50;x<W+50;x+=25){circ(x,151,12.5,C["actin-2"],null);}
+  for(let x=off-50+12.5;x<W+50;x+=25){circ(x,169,12.5,C.actin,null);}
+  // binding sites
+  const soff=(((475+s)%150)+150)%150;
+  const exposed=trop>.8;
+  for(let x=soff-150;x<W+150;x+=150){ctx.beginPath();ctx.ellipse(x,180,7,4,0,0,TAU);ctx.fillStyle=exposed?C.good:C.zdisc;ctx.fill();if(exposed){glow(x,182,16,C.good,.5)}}
+  // tropomyosin
+  const ty=lerp(178,140,trop);
+  ctx.strokeStyle=C.tropo;ctx.lineWidth=7;ctx.lineCap="round";ctx.beginPath();
+  for(let x=-10;x<=W+10;x+=6){const y=ty+Math.sin((x-s)/30)*2.5;x===-10?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke();ctx.lineCap="butt";
+  // troponin
+  const toff=(((550+s)%150)+150)%150;
+  for(let x=toff-150;x<W+150;x+=150){const y=ty;circ(x-7,y-3,7,C.troponin,C.zdisc,1);circ(x+6,y-5,6,C.troponin,C.zdisc,1);circ(x,y+5,6,C.troponin,C.zdisc,1);
+    if(caBound)ion(x+12,y-14,C.ca,5)}
+  // thick filament
+  ctx.fillStyle=C.myosin;rr(20,PY+2,W-40,22,11);ctx.fill();
+  // bg heads
+  for(let k=-6;k<=6;k++){if(k===0)continue;const x=PX+k*75;const a=-70*Math.PI/180;
+    ctx.globalAlpha=.35;line(x,PY+4,x+105*Math.cos(a),PY+4+105*Math.sin(a),C.myosin,6);
+    ctx.save();ctx.translate(x+105*Math.cos(a),PY+4+105*Math.sin(a));ctx.rotate(a);ctx.beginPath();ctx.ellipse(0,0,18,11,0,0,TAU);ctx.fillStyle=C.head;ctx.fill();ctx.restore();ctx.globalAlpha=1}
+  // main head
+  const a=headA*Math.PI/180;const tx=PX+headL*Math.cos(a),ty2=PY+headL*Math.sin(a);
+  line(PX,PY+4,tx,ty2,C.myosin,9);
+  ctx.save();ctx.translate(tx,ty2);ctx.rotate(a);ctx.beginPath();ctx.ellipse(0,0,24,15,0,0,TAU);ctx.fillStyle=C.head;ctx.fill();ctx.strokeStyle=C.zdisc;ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
+  if(nuc){chipText(tx+(headA>-90?34:-34),ty2+26,nuc,nuc==="ATP"?C.atp:C.pi)}
+  // static labels
+  label(14,120,"Thin filament (actin)",{size:12});
+  label(14,PY+42,"Thick filament (myosin)",{size:12});
+  label(PX,PY+42,"Myosin head",{size:12,align:"center",weight:600});
+  if(extra)extra(tx,ty2);
+}
+const CYC=["1 Attach","2 Power stroke","3 Release (ATP)","4 Re-cock"];
+function cycleBar(k){CYC.forEach((c,i)=>{const x=110+i*190;const on=i===k;ctx.fillStyle=on?C.act3:C["panel-2"];rr(x-80,402,160,32,16);ctx.fill();ctx.strokeStyle=on?C.act3:C.rule;ctx.lineWidth=1.5;ctx.stroke();
+  ctx.font=`${on?600:500} 13px "IBM Plex Sans",sans-serif`;ctx.fillStyle=on?"#fff":C["ink-soft"];ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(c,x,418.5);
+  if(i<3)arrow(x+82,418,x+106,418,C["ink-faint"],1.5)})}
+let cycleBase=0;
+function sceneFil(t,id){
+  const st=STEPS[cur];
+  if(id==="troponin"){
+    const p=(t%4)/4;const caB=p>.3;const tr=ease(seg(p,.35,.6));
+    filBase(0,tr,caB,-60,125,"ADP·Pi",()=>{
+      if(!caB){const q=seg(p,0,.3);for(let k=-1;k<=4;k++){const x=((550)%150)+k*150;ion(x+12,lerp(30,124,ease(q)),C.ca,5)}}
+      label(640,214,"Tropomyosin",{size:12});label(560,100,"Troponin",{size:12});
+      if(tr>.95)label(PX,62,"Binding sites exposed",{align:"center",weight:600,color:C.good});
+      else label(PX,62,caB?"Ca²⁺ binds troponin → tropomyosin moves":"Ca²⁺ arrives",{align:"center",weight:600});
+    });
+    cycleBar(-1);
+  }
+  else if(id==="bind"){
+    const p=(t%3)/3;const L=lerp(125,150,ease(seg(p,.1,.5)));
+    filBase(0,1,true,-60,L,"ADP·Pi",(tx,ty)=>{if(p>.5){glow(tx,ty-12,30,C.good,.4);label(tx+40,ty-50,"Cross-bridge!",{weight:600,color:C.good})}});
+    cycleBar(0);
+  }
+  else if(id==="power"){
+    const p=(t%3.4)/3.4;const m=ease(seg(p,.25,.7));const a=lerp(-60,-120,m);const s=-150*m;
+    const nuc=p<.08?"ADP·Pi":(p<.75?"ADP":"");
+    filBase(s,1,true,a,150,nuc,(tx,ty)=>{
+      const q=seg(p,.06,.3);if(q>0&&q<1){ion(tx+20+q*60,ty+20-q*70,C.pi,5,1-q);label(tx+30+q*60,ty-q*70,"Pᵢ",{size:11,pill:false,color:C.pi})}
+      const r=seg(p,.72,.95);if(r>0&&r<1){ion(tx-30-r*50,ty+30+r*40,C.pi,6,1-r)}
+      if(m>0&&m<1)arrow(PX+40,64,PX-60,64,C.act3,3);
+      label(PX,92,"Thin filament pulled toward the M line ←",{align:"center",weight:600});
+    });
+    cycleBar(1);
+  }
+  else if(id==="detach"){
+    const p=(t%3.2)/3.2;const L=lerp(150,125,ease(seg(p,.45,.7)));
+    filBase(0,1,true,-120,L,p>.4?"ATP":"ADP",(tx,ty)=>{
+      if(p<=.4){const q=ease(seg(p,0,.4));chipText(lerp(700,tx-34,q),lerp(440,ty+26,q),"ATP",C.atp)}
+      if(p>.7)label(tx,ty-56,"Released",{align:"center",weight:600,color:C.atp});
+    });
+    cycleBar(2);
+  }
+  else if(id==="recock"){
+    const p=(t%3.2)/3.2;const a=lerp(-120,-60,ease(seg(p,.4,.8)));
+    const nuc=p<.3?"ATP":"ADP·Pi";
+    filBase(0,1,true,a,125,nuc,(tx,ty)=>{if(p>.28&&p<.42)glow(tx,ty,46,C.glow,.7);if(p>.8)label(tx,ty-50,"Cocked and ready",{align:"center",weight:600})});
+    cycleBar(3);
+  }
+  else { // full cycle
+    const per=2.6;const cyc=Math.floor(t/per);const p=(t%per)/per;
+    let a,L,nuc,k;const sBase=-150*cyc;let s=sBase;
+    if(p<.2){a=-60;L=lerp(125,150,ease(seg(p,0,.2)));nuc="ADP·Pi";k=0}
+    else if(p<.5){const m=ease(seg(p,.2,.5));a=lerp(-60,-120,m);L=150;s=sBase-150*m;nuc="ADP";k=1}
+    else if(p<.75){a=-120;s=sBase-150;L=lerp(150,125,ease(seg(p,.6,.75)));nuc="ATP";k=2}
+    else {a=lerp(-120,-60,ease(seg(p,.75,1)));L=125;s=sBase-150;nuc="ADP·Pi";k=3}
+    filBase(s,1,true,a,L,nuc,()=>{label(PX,62,"Cycles completed: "+cyc,{align:"center",weight:600});if(k===1)arrow(PX+40,92,PX-60,92,C.act3,3)});
+    cycleBar(k);
+  }
+}
+
+/* ===== Scene: sarcomere ===== */
+function sceneSarc(t){
+  ctx.fillStyle=C.cyto;ctx.fillRect(0,0,W,H);
+  const p=(t%6)/6;const c=ease(seg(p,.05,.4))*(1-ease(seg(p,.6,.95)));
+  const half=330-90*c;const zl=400-half,zr=400+half;
+  const thickY=[150,210,270,330],thinY=[120,180,240,300,360];
+  // thin
+  thinY.forEach(y=>{ctx.fillStyle=C.actin;rr(zl-30,y-3,230,6,3);ctx.fill();rr(zr-200,y-3,230,6,3);ctx.fill()});
+  // thick
+  thickY.forEach(y=>{ctx.fillStyle=C.myosin;rr(250,y-7,300,14,7);ctx.fill();
+    for(let x=258;x<=542;x+=14){if(Math.abs(x-400)<26)continue;const d=x<400?-1:1;line(x,y-7,x+d*4,y-12,C.head,2.5);line(x,y+7,x+d*4,y+12,C.head,2.5)}});
+  // Z discs
+  [zl,zr].forEach(x=>{ctx.strokeStyle=C.zdisc;ctx.lineWidth=3;ctx.beginPath();for(let y=100;y<=380;y+=14){ctx.lineTo(x+((y/14)%2?5:-5),y)}ctx.stroke()});
+  line(400,120,400,360,C["ink-soft"],1.5,[4,4]);
+  label(zl,88,"Z disc",{align:"center",size:12});label(zr,88,"Z disc",{align:"center",size:12});label(400,88,"M line",{align:"center",size:12});
+  // brackets
+  function br(x1,x2,y,txt,col){line(x1,y,x2,y,col,2);line(x1,y-6,x1,y+6,col,2);line(x2,y-6,x2,y+6,col,2);label((x1+x2)/2,y+16,txt,{align:"center",size:12,weight:600,color:col})}
+  const hl=zl+200,hr=zr-200;
+  br(250,550,398,"A band (same)",C.myosin);
+  br(zl,250,398,"I band",C.actin);br(550,zr,398,"I band",C.actin);
+  if(hr-hl>8)br(hl,hr,52,"H zone",C.warn);else label(400,52,"H zone gone",{align:"center",size:12,color:C.warn,weight:600});
+  label(14,24,`Sarcomere length: ${Math.round(half*2/660*100)}% of resting`,{weight:600});
+  label(W-14,24,c>.02?(p<.5?"Contracting…":"Relaxing…"):"At rest",{align:"right",weight:600,color:C.act3});
+}
+
+/* ===== Scene: relaxation ===== */
+function sceneRelax(t){
+  ctx.fillStyle=C.panel;ctx.fillRect(0,0,W,H);
+  const p=(t%4)/4;
+  const P=[[10,"1  AChE clears ACh"],[275,"2  Pumps return Ca²⁺"],[540,"3  Sites covered"]];
+  P.forEach(([x,tl])=>{ctx.fillStyle=C["panel-2"];rr(x,20,250,420,8);ctx.fill();ctx.strokeStyle=C.rule;ctx.lineWidth=1;ctx.stroke();
+    ctx.font='600 14px "IBM Plex Sans",sans-serif';ctx.fillStyle=C.ink;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(tl,x+14,44)});
+  // panel 1
+  ctx.fillStyle=C.neuron;rr(30,70,210,100,30);ctx.fill();ctx.strokeStyle=C["neuron-edge"];ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle=C.ecf;ctx.fillRect(22,172,226,58);
+  ctx.fillStyle=C.fiber;ctx.fillRect(22,230,226,200);line(22,230,248,230,C["fiber-edge"],2.5);
+  [60,110,160,210].forEach(x=>{ctx.fillStyle=C["ink-soft"];ctx.fillRect(x-6,222,4,15);ctx.fillRect(x+2,222,4,15)});
+  [85,185].forEach((x,i)=>{ // AChE pacman
+    const m=.25+.2*Math.abs(Math.sin(t*5+i));ctx.beginPath();ctx.moveTo(x,200);ctx.arc(x,200,12,m,TAU-m);ctx.closePath();ctx.fillStyle=C.dhpr;ctx.globalAlpha=.7;ctx.fill();ctx.globalAlpha=1});
+  for(let k=0;k<4;k++){const q=(p+k/4)%1;const tx=k%2?185:85;const sx=tx+(k<2?-50:50)*(k%2?-1:1);
+    if(q<.5){ion(lerp(sx,tx-14,q*2),lerp(180,200,q*2),C.ach,4.5)}else{const r=(q-.5)*2;ion(tx-14-r*20,200-r*16,C.ach,3,1-r);ion(tx+14+r*20,200+r*16,C.ach,3,1-r)}}
+  label(135,290,"ACh split into pieces",{align:"center",size:12});label(135,315,"→ receptors close",{align:"center",size:12});label(135,340,"→ no more action potentials",{align:"center",size:12});
+  // panel 2
+  ctx.fillStyle=C.sr;rr(300,230,200,160,30);ctx.fill();ctx.strokeStyle=C["sr-edge"];ctx.lineWidth=2;ctx.stroke();
+  const pumps=[345,400,455];pumps.forEach(x=>{ctx.fillStyle=C.atp;rr(x-9,222,18,18,4);ctx.fill()});
+  for(let i=0;i<9;i++)ion(320+(i%3)*60+rnd(i)*20,280+Math.floor(i/3)*30,C.ca,4.5,.9);
+  pumps.forEach((x,i)=>{for(let j=0;j<3;j++){const q=(p*1.3+j/3+i*.1)%1;ion(x+Math.sin(j*4)*30*(1-q),lerp(110,265,q),C.ca,4.5,q>.85?(1-q)*6:1)}});
+  chipText(400,95,"ATP → ADP + Pᵢ",C.atp);
+  label(400,412,"Ca²⁺ goes back into the SR",{align:"center",size:12});
+  // panel 3
+  const cov=ease(seg(p,.3,.7));
+  for(let x=560;x<=780;x+=22){circ(x,236,11,C["actin-2"])}for(let x=571;x<=780;x+=22){circ(x,252,11,C.actin)}
+  [593,681,769].forEach(x=>{ctx.beginPath();ctx.ellipse(x,262,6,3.5,0,0,TAU);ctx.fillStyle=cov>.5?C.zdisc:C.good;ctx.fill()});
+  const ty=lerp(218,262,cov);ctx.strokeStyle=C.tropo;ctx.lineWidth=6;ctx.lineCap="round";line(552,ty,785,ty,C.tropo,6);ctx.lineCap="butt";
+  [637,725].forEach(x=>{circ(x,ty-2,6,C.troponin,C.zdisc,1);const q=seg(p,0,.3);ion(x+10+q*30,ty-12-q*90,C.ca,5,1-q)});
+  ctx.fillStyle=C.myosin;rr(560,350,220,14,7);ctx.fill();
+  line(665,350,700,300,C.myosin,7);ctx.beginPath();ctx.ellipse(705,292,18,11,-.9,0,TAU);ctx.fillStyle=C.head;ctx.fill();
+  label(665,140,"Ca²⁺ leaves troponin",{align:"center",size:12});label(665,395,"Myosin can't grab → muscle relaxes",{align:"center",size:12});
+}
+
+/* ---------------- loop ---------------- */
+let T=0,last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)T+=dt*speed;
+  ctx.setTransform(K,0,0,K,0,0);ctx.clearRect(0,0,W,H);
+  const s=STEPS[cur];
+  try{
+    if(s.scene==="map")sceneMap(T);else if(s.scene==="nmj")sceneNMJ(T,s.id);else if(s.scene==="triad")sceneTriad(T,s.id);
+    else if(s.scene==="fil")sceneFil(T,s.id);else if(s.scene==="sarc")sceneSarc(T);else sceneRelax(T);
+  }catch(e){console.error(e)}
+  requestAnimationFrame(frame);
+}
+readColors();buildChain();fit();render();requestAnimationFrame(frame);
+if(document.fonts)document.fonts.ready.then(()=>{});
+})();
+</script>
+</body>
+</html>
