@@ -46,27 +46,24 @@
     set: function (k, v) { try { localStorage.setItem("gk-" + k, v); } catch (e) {} }
   };
 
-  /* ---------- animation clock (pause / slow motion for every canvas) ---------- */
+  /* ---------- animation clock ----------
+     Animations ALWAYS play by default. Nothing is wrapped or slowed until a
+     student presses Pause or Reduce motion on this page. The device's
+     reduced-motion setting is not used to stop animations, and the choice is
+     not remembered between pages. */
   var realNow = performance.now.bind(performance);
-  var rate = 1, base = realNow(), vbase = base;
-  function vnow() { return vbase + (realNow() - base) * rate; }
-  function setRate(r) { var v = vnow(); base = realNow(); vbase = v; rate = r; }
-  try { performance.now = vnow; } catch (e) {}
   var realRAF = window.requestAnimationFrame.bind(window);
-  window.requestAnimationFrame = function (cb) { return realRAF(function () { cb(vnow()); }); };
-
-  var reduceMQ = window.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)") : null;
-  var savedReduce = store.get("reduce");
-  var state = {
-    reduce: savedReduce === null ? !!(reduceMQ && reduceMQ.matches) : savedReduce === "1",
-    paused: false,
-    speaking: false,
-    descOpen: store.get("desc") === "1"
-  };
-  // People who ask their device for reduced motion start with animations paused.
-  if (state.reduce && savedReduce === null) state.paused = true;
-  function applyClock() { setRate(state.paused ? 0 : (state.reduce ? 0.35 : 1)); }
-  applyClock();
+  var rate = 1, base = 0, vbase = 0, clockOn = false;
+  function vnow() { return clockOn ? vbase + (realNow() - base) * rate : realNow(); }
+  function installClock() {
+    if (clockOn) return;
+    base = realNow(); vbase = base; clockOn = true;
+    try { performance.now = vnow; } catch (e) {}
+    window.requestAnimationFrame = function (cb) { return realRAF(function () { cb(vnow()); }); };
+  }
+  function setRate(r) { installClock(); var v = vnow(); base = realNow(); vbase = v; rate = r; }
+  var state = { reduce: false, paused: false, speaking: false, descOpen: store.get("desc") === "1" };
+  function applyClock() { if (!clockOn && !state.paused && !state.reduce) return; setRate(state.paused ? 0 : (state.reduce ? 0.4 : 1)); }
 
   /* ---------- describe-this-step API (pages call window.gkDescribe(text)) ---------- */
   var descText = "";
@@ -128,7 +125,6 @@
   function build() {
     var st = h("style", { id: "gk-style" }, CSS);
     document.head.appendChild(st);
-    if (state.reduce) document.documentElement.classList.add("gk-reduce");
     if (!document.documentElement.getAttribute("lang")) document.documentElement.setAttribute("lang", "en");
 
     var isIndex = file === "index.html" || file === "";
@@ -176,7 +172,7 @@
 
     ui.pause.addEventListener("click", function () { state.paused = !state.paused; applyClock(); paint(); say(state.paused ? "Animations paused." : "Animations playing."); });
     ui.reduce.addEventListener("click", function () {
-      state.reduce = !state.reduce; store.set("reduce", state.reduce ? "1" : "0");
+      state.reduce = !state.reduce;
       document.documentElement.classList.toggle("gk-reduce", state.reduce); applyClock(); paint();
       say(state.reduce ? "Reduced motion on: animations run slowly." : "Reduced motion off.");
     });
@@ -192,7 +188,6 @@
       anchor.parentNode.insertBefore(ui.descBox, anchor.nextSibling);
     }
     paint();
-    if (state.paused) say("Animations are paused because your device asks for reduced motion. Press Play to watch them.");
 
     // keep description and speech in step with the page
     var title = document.getElementById("title");
